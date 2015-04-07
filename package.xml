@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+    <name>SchemaOrg</name>
+    <version>1.2.3</version>
+    <stability>stable</stability>
+    <license>Iuvo Commercial Extension</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Provide meta data on your product pages for better search result visibility! Include ratings, price and stock status on your organic search results.</summary>
+    <description>Unobtrusively inset meta data from the schema.org standard to make your search result more visible. Provide meta data on your product pages for better search result visibility! Include ratings, price and stock status on your organic search results.</description>
+    <notes>See documentation for details</notes>
+    <authors><author><name>Justin Pratt</name><user>iuvocommerce</user><email>sales@iuvocommerce.com</email></author></authors>
+    <date>2012-10-11</date>
+    <time>05:05:55</time>
+    <contents><target name="magecommunity"><dir name="Iuvo"><dir name="Schema"><dir name="Block"><dir name="Adminhtml"><dir name="Catalog"><dir name="Product"><file name="Tab.php" hash="432736e3c30c677bda502da3911a3d0f"/></dir></dir></dir><file name="Schema.php" hash="7206182050c2d849bf6d4be698fa7e0a"/></dir><dir name="etc"><file name="config.xml" hash="20c1fbf173f2f1e44c60f4ae017849ca"/><file name="system.xml" hash="ba85a1c84e876450a6d470cb8cf0a4ce"/></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Iuvo_Schema.xml" hash="cfb0d13109587dfb49565f6a400c35ea"/></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="layout"><file name="schema.xml" hash="7ffff735fcc879a2fe7207a13dc4195f"/></dir><dir name="template"><dir name="iuvo"><file name="meta.phtml" hash="6485648877f4ea9ba9503b8c3b62077d"/></dir><dir name="page"><dir name="html"><file name="breadcrumbs.phtml" hash="ec7793259397ed77dcfb2513c62b466a"/></dir></dir></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.2.0</min><max>6.0.0</max></php></required></dependencies>
+</package>
