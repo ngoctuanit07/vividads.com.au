@@ -1,0 +1,134 @@
+<?php
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @copyright  Copyright (c) 2013 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Multi Fees extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @author     MageWorx Dev Team
+ */
+$helper   = Mage::helper('multifees');
+$code = $this->getCode();
+$addressId = $this->getAddressId();
+if ($addressId>0) {
+    $feePostName .= 'address['.$addressId.'][fee]';    
+} else {    
+    $feePostName = 'fee';
+    $addressId = 0;
+}
+
+$multifees = $helper->getMultifees(3, 0, 2, 0, $code); // Shipping Fee, no hidden
+if (count($multifees)>0) {    
+?>
+<div class="multifees-shipping-fee" id="multifees_shipping_<?php if ($addressId) echo $addressId . '_'; echo $code; ?>" style="display:none;">
+    <?php $_optionId = ''; ?>
+    <?php foreach ($multifees as $fee) { ?>
+        <div class="fee-items">
+            <div class="fee-title">
+                <?php echo $fee->getTitle() ?>
+                <?php if ($fee->getRequired()) { ?>
+                    <span class="required">*</span>
+                <?php } ?>
+            </div>
+            <?php if ($fee->getDescription()) { ?><p class="note"><?php echo $fee->getDescription() ?></p><?php } ?>
+
+            <?php $feeOptions = $fee->getOptions(true, $addressId) ?>
+            <?php if (count($feeOptions)>0) { ?>
+                <div class="fee-options">
+                    <?php if ($fee->getInputType()==1) { //if drop-down ?>
+                         <table class="options">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select name="<?php echo $feePostName ?>[<?php echo $fee->getId() ?>][options][]" id="multifees_<?php echo $code ?>_<?php echo $fee->getId() ?>" onchange="MultiFees.setOptionImage(<?php echo $fee->getId() ?>, this.value, '<?php echo $code ?>'); MultiFees.shippingSubmit('<?php echo $code ?>');" <?php if ($fee->getRequired()) { ?>class="required-entry"<?php } ?>>
+                                        <?php if (true || !$fee->getRequired()) { ?><option value=""><?php echo $this->__('None') ?></option><?php } ?>
+                                        <?php foreach ($feeOptions as $option) { ?>
+                                            <option value="<?php echo $option->getId() ?>" <?php if ($option->getIsDefault()) { ?> selected="selected"<?php } ?>>
+                                            <?php echo $option->getTitle() ?> - <?php echo $helper->getOptionFormatPrice($option, $fee) ?>
+                                            </option>
+                                        <?php } ?>
+                                        </select>
+                                        <?php
+                                            $imgHtml = '';
+                                            $imgJs = '';
+                                            foreach ($feeOptions as $option) {
+                                                if ($option->getIsDefault()) $imgHtml = $helper->getOptionImgHtml($option->getId());
+                                                $arr = $helper->getOptionImgHtml($option->getId(), true);
+                                                if ($arr) $imgJs .= 'feeOptionImgData['.$option->getId().']=["'.$arr['url'].'", "'.$arr['big_img_url'].'"];';
+                                            }
+                                            if ($imgJs) echo '<script type="text/javascript">'.$imgJs.'</script>';
+                                        ?>
+                                        <div class="multifees-option-file" id="multifees-option-file-<?php echo $code ?>-<?php echo $fee->getId() ?>" <?php if (!$imgHtml) {?>style="display:none;"<?php } ?>>
+                                            <?php if ($imgHtml) echo $imgHtml; else echo $helper->getEmptyOptionImgHtml(); ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                           </tbody>
+                        </table>
+                    <?php } else { //if not drop-down ?>
+                        <table class="options">
+                            <tbody>
+                            <?php foreach ($feeOptions as $option) { ?>
+                                <tr>
+                                    <td><?php $imgHtml = $helper->getOptionImgHtml($option->getId()); if ($imgHtml) echo $imgHtml; else  echo '&nbsp;'; ?></td>
+                                    <td><input type="<?php if ($fee->getInputType()==2) {echo 'radio';} else {echo 'checkbox';} ?>" name="<?php echo $feePostName ?>[<?php echo $fee->getId() ?>][options][]" id="multifees_<?php echo $code ?>_<?php echo $fee->getId() ?>_<?php echo $option->getId() ?>" <?php if ($option->getIsDefault()) { ?>checked="checked"<?php } ?> value="<?php echo $option->getId() ?>"  <?php if ($fee->getRequired()) { ?>class="validate-one-required-by-name"<?php } ?> onclick="MultiFees.shippingSubmit('<?php echo $code ?>');" /></td>
+                                    <td onclick="MultiFees.labelClick(this, 'shipping', '<?php echo $code ?>')"><?php echo $option->getTitle() ?> - <?php echo $helper->getOptionFormatPrice($option, $fee) ?></td>
+                                </tr>
+                            <?php } // endforeach ?>                                
+                            </tbody>
+                        </table>
+                    <?php } 
+                        // additional fields
+                        if ($fee->getEnableDateField()) { ?>
+                        <div class="multifees-date">
+                            <?php $dateId = 'multifees_date_' .$code.'_' .$fee->getId(); ?>
+                            <label for="<?php echo $dateId ?>"><?php echo $fee->getDateFieldTitle() ?></label>
+                            <input name="<?php echo $feePostName ?>[<?php echo $fee->getId() ?>][date]" id="<?php echo $dateId ?>" value="<?php echo $this->getFeeDate($fee->getId(), $addressId) ?>" class="input-text validate-date" onchange="MultiFees.shippingSubmit('<?php echo $code ?>');" />
+                            <script type="text/javascript">
+                            //<![CDATA[
+                                Calendar.setup({
+                                    inputField : "<?php echo $dateId ?>",
+                                    ifFormat   : "<?php echo $this->getDateFormat() ?>",
+                                    align      : false, // important!
+                                    singleClick: true
+                                });
+                            //]]>
+                            </script>
+                        </div>
+                    <?php } ?>
+                    <?php if ($fee->getEnableCustomerMessage()) { ?>
+                        <div class="multifees-massage">
+                            <label>
+                                <?php echo $fee->getCustomerMessageTitle() ?><br/>
+                                <textarea name="<?php echo $feePostName ?>[<?php echo $fee->getId() ?>][message]" rows="5" rows="5" style="width:99%" onchange="MultiFees.shippingSubmit('<?php echo $code ?>');"><?php echo $this->getFeeMessage($fee->getId(), $addressId) ?></textarea>
+                            </label>
+                        </div>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+            <div class="clear"></div>
+        </div>
+    <?php } // end foreach ?>
+</div>
+<?php } ?>

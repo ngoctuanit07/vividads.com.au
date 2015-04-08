@@ -1,0 +1,59 @@
+ <?php
+
+$product_id = Mage::registry('current_product')->getId();
+$url = Mage::helper("adminhtml")->getUrl("timeline/adminhtml_timeline/savetimeproduct");
+
+$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+$temptableTimeline=Mage::getSingleton('core/resource')->getTableName('product_timeline');
+//$sqlTimeline="SELECT * FROM ".$temptableTimeline." WHERE product_id = '".$product_id."' ";
+$sqlTimeline = $connectionRead->select()
+			->from($temptableTimeline, array('*'))
+			->where('product_id=?',$product_id);  
+$chkTimeline = $connectionRead->fetchAll($sqlTimeline);
+	
+?>
+
+<div class="maintimeline">
+    <form enctype="multipart/form-data" name="form_planning" id="form_planning" method="POST" action="<?php echo $url?>">
+    <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+    <input type="hidden" name="product_id" value="<?php echo $product_id;?>"/>
+    <table class="timelinetab">
+        <tr>
+            <td class="timecap">Artwork delay time</td>
+            <td><input type="text" name="artwork" value="<?php echo $chkTimeline[0]['artwork_day']?>" /></td>
+            <td><input type="checkbox" name="sunday_artwork" value="1" <?php if($chkTimeline[0]['sunday_artwork'] == 1)echo 'checked';?>/> Exclude Sunday</td>
+            <td><input type="checkbox" name="holiday_artwork" value="1" <?php if($chkTimeline[0]['holiday_artwork'] == 1)echo 'checked';?>/> Exclude Holiday</td>
+        </tr>
+        <tr>
+            <td class="timecap">Proof approval delay time</td>
+            <td><input type="text" name="proof" value="<?php echo $chkTimeline[0]['proof_day']?>" /></td>
+            <td><input type="checkbox" name="sunday_proof" value="1" <?php if($chkTimeline[0]['sunday_proof'] == 1)echo 'checked';?>/> Exclude Sunday</td>
+            <td><input type="checkbox" name="holiday_proof" value="1" <?php if($chkTimeline[0]['holiday_proof'] == 1)echo 'checked';?>/> Exclude Holiday</td>
+        </tr>
+        <tr>
+            <td class="timecap">Production Start delay time</td>
+            <td><input type="text" name="production" value="<?php echo $chkTimeline[0]['production_day']?>" /></td>
+            <td><input type="checkbox" name="sunday_production" value="1" <?php if($chkTimeline[0]['sunday_production'] == 1)echo 'checked';?>/> Exclude Sunday</td>
+            <td><input type="checkbox" name="holiday_production" value="1" <?php if($chkTimeline[0]['holiday_production'] == 1)echo 'checked';?>/> Exclude Holiday</td>
+        </tr>
+        <tr>
+            <td class="timecap">Delivary delay time</td>
+            <td><input type="text" name="delivary" value="<?php echo $chkTimeline[0]['delivary_day']?>" /></td>
+            <td><input type="checkbox" name="sunday_delivary" value="1" <?php if($chkTimeline[0]['sunday_delivary'] == 1)echo 'checked';?>/> Exclude Sunday</td>
+            <td><input type="checkbox" name="holiday_delivary" value="1" <?php if($chkTimeline[0]['holiday_delivary'] == 1)echo 'checked';?>/> Exclude Holiday</td>
+        </tr>
+        <tr>
+            <td class="timecap">Shipping delay time</td>
+            <td><input type="text" name="shipping" value="<?php echo $chkTimeline[0]['shipping_day']?>" /></td>
+            <td><input type="checkbox" name="sunday_shipping" value="1" <?php if($chkTimeline[0]['sunday_shipping'] == 1)echo 'checked';?>/> Exclude Sunday</td>
+            <td><input type="checkbox" name="holiday_shipping" value="1" <?php if($chkTimeline[0]['holiday_shipping'] == 1)echo 'checked';?>/> Exclude Holiday</td>
+        </tr>
+        <tr>
+            <td colspan="4"><button type="submit" name="submit">Save</button></td>
+        </tr>
+    </table>
+    </form>
+</div>
+

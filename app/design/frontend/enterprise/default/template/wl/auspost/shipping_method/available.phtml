@@ -1,0 +1,370 @@
+<?php
+
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+ 
+?>
+<?php if (!($_shippingRateGroups = $this->getShippingRates())): ?>
+    <p><?php echo $this->__('Sorry, no quotes are available for this order at this time.') ?></p>
+<?php else: ?>
+<dl class="sp-methods">
+    <?php $shipping_data = Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData(); ?>
+    <?php if (!preg_match('/\A\[Collection Point #[\d]+\]/i', trim($shipping_data['street']))) : ?>
+        <ul class="texttip"><li>
+            Nominate Shipping Speed
+        </li></ul>
+        <dd>
+            <select id="auspost_delivery_network">
+                <option selected="selected" value="1"><?php echo $this->__('Standard Delivery') ?></option>
+                <option value="101"><?php echo $this->__('Express Delivery') ?></option>
+            </select><p>&nbsp;</p>
+        </dd>
+        <?php $shippingCodePrice = array(); ?>
+        <?php $toPostcode = !empty($shipping_data['postcode']) ? $shipping_data['postcode'] : null; ?>
+        <?php $dateAvailable = Mage::helper('auspost/delivery')->isOptionAvailable(2, $toPostcode); ?>
+        <?php $dayAvailable = Mage::helper('auspost/delivery')->isOptionAvailable(5, $toPostcode); ?>
+        <?php $timeAvailable = Mage::helper('auspost/delivery')->isOptionAvailable(8, $toPostcode); ?>
+        <?php $_sole = count($_shippingRateGroups) == 1; ?>
+            <?php foreach ($_shippingRateGroups as $code => $_rates): ?>
+                <?php if ($code != 'auspost') continue; ?>
+                <!--dt><?php echo ucfirst($this->getCarrierName($code)) .' - '. $code ?></dt-->
+                <!-- standard method -->
+                <dd>
+                    <ul>
+                        <?php $_sole = $_sole && count($_rates) == 1; ?>
+                        <?php foreach ($_rates as $r => $_rate): ?>
+                            <?php $shippingCodePrice[] = "'".$_rate->getCode()."':".(float)$_rate->getPrice(); ?>
+                            <?php $methodType = $_rate->getCode(); $methodType = explode('_', $methodType); $methodType = array_pop($methodType); ?>
+                            <?php if($methodType == 1 || $methodType == 101) : ?>
+                                <li>
+                                   <?php if ($_rate->getErrorMessage()): ?>
+                                   <ul class="messages"><li class="error-msg"><ul><li><?php echo $_rate->getErrorMessage() ?></li></ul></li></ul>
+                                   <?php else: ?>
+                                        <?php if ($_sole) : ?>
+                                        <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" /></span>
+                                        <?php else: ?>
+                                        <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio"/>
+                                            <?php if ($_rate->getCode() === $this->getAddressShippingMethod()): ?>
+                                            <script type="text/javascript">
+                                                //<![CDATA[
+                                                    lastPrice = <?php echo (float)$_rate->getPrice(); ?>;
+                                                //]]>
+                                            </script>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                        <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
+                                        <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                                        <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+                                        <?php echo $_excl; ?>
+                                        <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                            (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                        <?php endif; ?>
+                                        </label>
+                                   <?php endif ?>
+                                </li>
+                                <?php unset($_rates[$r]); ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </dd>
+                <?php if ($dateAvailable || $dayAvailable || $timeAvailable) : ?>
+                     <?php if ($dateAvailable) : ?>   
+                        <?php $arr_sv[] = '<strong>Date</strong>'; ?>
+                     <?php endif; ?>   
+                     <?php if ($dayAvailable) : ?>
+                        <?php $arr_sv[] = '<strong>Day</strong>'; ?>
+                     <?php endif; ?>
+                     <?php if ($timeAvailable) : ?>
+                        <?php $arr_sv[] = '<strong>Time</strong>'; ?>
+                     <?php endif; ?>
+                     <?php
+                         $b = array_pop($arr_sv);
+                	 	 $a = implode(', ', $arr_sv);
+                	 	 $sv = $a.' or '.$b;
+                     ?>
+                    <dd>
+                        <hr style="border-color: #DEDEDE;" noshade="noshade" size="1" /><br />
+                        <?php $str_message = 'You can choose from a range of Australia Post delivery schedule options by '.$sv; ?>
+                        <p><?php echo $this->__($str_message); ?></p>
+                    </dd>
+                <?php endif; ?>
+                <!-- date methods -->
+                <?php if ($dateAvailable && !empty($_rates)) : ?>
+                    <ul class="texttip"><li>
+                        Nominate delivery date&nbsp;<button class="infotip" id="date_tt" onclick="return false;"></button>
+                    </li></ul>
+                    <dd>
+                        <ul>
+                            <?php foreach ($_rates as $r => $_rate): ?>
+                                <?php $shippingCodePrice[] = "'".$_rate->getCode()."':".(float)$_rate->getPrice(); ?>
+                                <?php $methodType = $_rate->getCode(); $methodType = explode('_', $methodType); $methodType = array_pop($methodType); ?>
+                                <?php if (!Mage::helper('auspost/delivery')->isOptionAvailable($methodType, $toPostcode)) continue; ?>
+                                <?php if ($methodType > 1 && $methodType <=4 || $methodType > 101 && $methodType <=104) : ?>
+                                    <li>
+                                       <?php if ($_rate->getErrorMessage()): ?>
+                                       <ul class="messages"><li class="error-msg"><ul><li><?php echo $_rate->getErrorMessage() ?></li></ul></li></ul>
+                                       <?php else: ?>
+                                            <?php if ($_sole) : ?>
+                                            <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" /></span>
+                                            <?php else: ?>
+                                            <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio"/>
+                                                <?php if ($_rate->getCode() === $this->getAddressShippingMethod()): ?>
+                                                <script type="text/javascript">
+                                                    //<![CDATA[
+                                                        lastPrice = <?php echo (float)$_rate->getPrice(); ?>;
+                                                    //]]>
+                                                </script>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
+                                            <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                                            <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+                                            <?php echo $_excl; ?>
+                                            <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                                (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                            <?php endif; ?>
+                                            </label>
+                                       <?php endif ?>
+                                    </li>
+                                    <?php unset($_rates[$r]); ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    </dd>
+                <?php endif; ?>
+                <!-- day methods -->
+                <?php if ($dayAvailable && !empty($_rates)) : ?>
+                    <ul class="texttip"><li>
+                        Nominate delivery day/s &nbsp; <button class="infotip" id="day_tt" onclick="return false;"></button>
+                    </li></ul>
+                    <dd>
+                        <ul>
+                            <?php foreach ($_rates as $r => $_rate): ?>
+                                <?php $shippingCodePrice[] = "'".$_rate->getCode()."':".(float)$_rate->getPrice(); ?>
+                                <?php $methodType = $_rate->getCode(); $methodType = explode('_', $methodType); $methodType = array_pop($methodType); ?>
+                                <?php if (!Mage::helper('auspost/delivery')->isOptionAvailable($methodType, $toPostcode)) continue; ?>
+                                <?php if ($methodType > 4 && $methodType <=7 || $methodType > 104 && $methodType <=107) : ?>
+                                    <li>
+                                       <?php if ($_rate->getErrorMessage()): ?>
+                                       <ul class="messages"><li class="error-msg"><ul><li><?php echo $_rate->getErrorMessage() ?></li></ul></li></ul>
+                                       <?php else: ?>
+                                            <?php if ($_sole) : ?>
+                                            <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" /></span>
+                                            <?php else: ?>
+                                            <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio"/>
+                                                <?php if ($_rate->getCode() === $this->getAddressShippingMethod()): ?>
+                                                <script type="text/javascript">
+                                                    //<![CDATA[
+                                                        lastPrice = <?php echo (float)$_rate->getPrice(); ?>;
+                                                    //]]>
+                                                </script>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
+                                            <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                                            <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+                                            <?php echo $_excl; ?>
+                                            <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                                (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                            <?php endif; ?>
+                                            </label>
+                                       <?php endif ?>
+                                    </li>
+                                    <?php unset($_rates[$r]); ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    </dd>
+                <?php endif; ?>
+                <!-- time methods -->
+                <?php if ($timeAvailable && !empty($_rates)) : ?>
+                    <ul class="texttip"><li>
+                        Nominate delivery window &nbsp; <button class="infotip" id="time_tt" onclick="return false;"></button>
+                    </li></ul>
+                    <dd>
+                        <ul>
+                            <?php foreach ($_rates as $r => $_rate): ?>
+                                <?php $shippingCodePrice[] = "'".$_rate->getCode()."':".(float)$_rate->getPrice(); ?>
+                                <?php $methodType = $_rate->getCode(); $methodType = explode('_', $methodType); $methodType = array_pop($methodType); ?>
+                                <?php if (!Mage::helper('auspost/delivery')->isOptionAvailable($methodType, $toPostcode)) continue; ?>
+                                <?php if ($methodType > 7 && $methodType <=9 || $methodType > 107 && $methodType <=109) : ?>
+                                    <li>
+                                       <?php if ($_rate->getErrorMessage()): ?>
+                                       <ul class="messages"><li class="error-msg"><ul><li><?php echo $_rate->getErrorMessage() ?></li></ul></li></ul>
+                                       <?php else: ?>
+                                            <?php if ($_sole) : ?>
+                                            <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" /></span>
+                                            <?php else: ?>
+                                            <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio"/>
+                                                <?php if ($_rate->getCode() === $this->getAddressShippingMethod()): ?>
+                                                <script type="text/javascript">
+                                                    //<![CDATA[
+                                                        lastPrice = <?php echo (float)$_rate->getPrice(); ?>;
+                                                    //]]>
+                                                </script>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
+                                            <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                                            <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+                                            <?php echo $_excl; ?>
+                                            <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                                (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                            <?php endif; ?>
+                                            </label>
+                                       <?php endif ?>
+                                    </li>
+                                    <?php unset($_rates[$r]); ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    </dd>
+                <?php endif; ?>
+            <?php endforeach; ?>     
+        <br clear="all" />
+        <div id="delivery_schedule_table" align="center">&nbsp;</div>
+        <?php $auspost_delivery_dates = Mage::getSingleton('checkout/session')->getAuspostDeliveryDates(); ?>
+        <input id="auspost_delivery_dates" type="hidden" name="auspost_delivery_dates" value="<?php echo $auspost_delivery_dates ?>" />
+    <?php else : ?>
+        <?php $_sole = count($_shippingRateGroups) == 1; ?>
+        <?php foreach ($_shippingRateGroups as $code => $_rates): ?>
+            <dd>
+                <ul>
+                    <?php $_sole = $_sole && count($_rates) == 1; ?>
+                    <?php foreach ($_rates as $r => $_rate): ?>
+                        <li>
+                           <?php if ($_rate->getErrorMessage()): ?>
+                           <ul class="messages"><li class="error-msg"><ul><li><?php echo $_rate->getErrorMessage() ?></li></ul></li></ul>
+                           <?php else: ?>
+                                <?php if ($_sole) : ?>
+                                    <input class="no-display" name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" />
+                                <?php else: ?>
+                                    <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio"/>
+                                    <?php if ($_rate->getCode() === $this->getAddressShippingMethod()): ?>
+                                    <script type="text/javascript">
+                                        //<![CDATA[
+                                            lastPrice = <?php echo (float)$_rate->getPrice(); ?>;
+                                        //]]>
+                                    </script>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
+                                <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                                <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+                                <?php echo $_excl; ?>
+                                <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                    (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)   
+                                <?php endif; ?>
+                                </label>
+                           <?php endif ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </dd>
+        <?php endforeach; ?>  
+    <?php endif; ?>
+</dl>
+<span id="timeslot-please-wait" class="please-wait" style="display:none;"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'/frontend/enterprise/wl/images/opc-ajax-loader.gif';  ?>" alt="Loading ..." title="Loading ..." class="v-middle" /> Loading ...</span>
+
+<div class="tooltip" style="display:none;right:330px" id="date_tt_tooltip" >
+    <span>Provides the option to choose a specific delivery date or date and time for the delivery of your goods</span>
+</div>
+<div class="tooltip" style="display:none;right:320px" id="day_tt_tooltip" >
+    <span>Provides the option to choose a range of delivery days (Mon-Fri) or days and time for the delivery of your goods.</span>
+</div>
+<div class="tooltip" style="display:none;right:308px" id="time_tt_tooltip" >
+    <span>Provides the option to choose a specified timed window for the delivery of your goods.<br/>
+            AM = 7am - 12pm <br/> PM = 12pm - 5pm
+</span>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    <?php if (!empty($shippingCodePrice)): ?>
+        var shippingCodePrice = {<?php echo implode(',',$shippingCodePrice); ?>};
+    <?php endif; ?>
+    <?php if (!preg_match('/\A\[Collection Point #[\d]+\]/i', trim($shipping_data['street']))) : ?>   
+        standardShippingMethods();
+        $$('input[type="radio"][name="shipping_method"]').each(function(el){
+            if (el.checked) {
+                
+                    var type = el.id.split('_').pop();
+                    if (type>100)
+                    {
+                        jQuery('#auspost_delivery_network').val(101);
+                        expressShippingMethods();
+                    }
+                    else
+                    {
+                        jQuery('#auspost_delivery_network').val(1);
+                        standardShippingMethods();
+                    }
+                
+                    loadScheduleTable(el.id, '<?php echo $this->getUrl("auspost/data/getBusinessDaysAjax") ?>', '<?php echo date('Y-m-d') ?>');
+                
+            }
+            Event.observe(el, 'click', function() {
+                loadScheduleTable(el.id, '<?php echo $this->getUrl("auspost/data/getBusinessDaysAjax") ?>', '<?php echo date('Y-m-d') ?>');
+                if (el.checked == true) {
+                    var getShippingCode = el.getValue();
+                    <?php if (!empty($shippingCodePrice)): ?>
+                        var newPrice = shippingCodePrice[getShippingCode];
+                        if (!lastPrice) {
+                            lastPrice = newPrice;
+                            quoteBaseGrandTotal += newPrice;
+                        }
+                        if (newPrice != lastPrice) {
+                            quoteBaseGrandTotal += (newPrice-lastPrice);
+                            lastPrice = newPrice;
+                        }
+                    <?php endif; ?>
+                    checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
+                    return false;
+                }
+           });
+        });
+        jQuery('#auspost_delivery_network').change(function() {
+            var cmd = jQuery(this).val();
+            if (cmd == 101)
+                expressShippingMethods();
+            else
+                standardShippingMethods();
+        });
+
+        jQuery(':button.infotip').mouseover(function(event){
+                var tt = jQuery('#' + this.id + '_tooltip');
+                var t = event.pageY - 280;
+                tt.css({'top': t});
+                tt.fadeIn(500)
+            }
+        )
+        jQuery(':button.infotip').mouseout(function(event){
+                var tt = jQuery('#' + this.id + '_tooltip').fadeOut(500);
+            }
+
+        )
+    <?php endif; ?>
+//]]>
+</script>
+<?php endif; ?>

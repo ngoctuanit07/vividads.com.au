@@ -1,0 +1,153 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<style>
+iframe{
+	float:left;
+	border:none;
+}
+</style>
+<?php /*?> <div class="contact_info"><img src="<?php echo $this->getSkinUrl('images/phone_info.png');?>" alt="contact info"/></div><?php */?>
+<div class="intro">
+<p>
+Head Office<br> 
+
+<span>Vivid Ads Pty. Ltd. (ABN  49210655341)</span><br>
+<span>1/2 Phillip Court,  Port Melbourne</span><br>
+<span>Victoria 3207 Australia</span><br>
+<span>Tel:     1300 72 16 14 (Australia wide)</span><br>
+<span>Fax:    03 8456 6234</span><br> </p>
+</div>
+<div class="cate_listing" style="margin-top:10px;">
+<div class="content">
+		                  <p align="justify" style="color:#636363;">Vivid Ads Pty Ltd 
+							(Australia) is Australian owned and operated, 
+							specializing in the sale and distribution of 
+							innovative banners, portable displays, retail 
+							signage, graphic design and wide format printing.<br>
+						<br>
+							We cater for tradeshows, exhibitions and corporate 
+							events. Graphics and 
+							displays are one of the most powerful marketing 
+							tools you can utilize to promote your company. For 
+							over 7 years we have created graphics and displays 
+							of all types and sizes, from banners to displays, to 
+							floor and window graphics, we make your image pop. Our team of talented designers can take your ideas from  the concept stage right through to the completed graphic application.  The result is vivid, sharp, eye popping digital graphics that get your  company noticed and more business through your door. Our 
+                          commitment to  customer service starts the minute we answer the phone. The ability to  respond to your project needs, from project design, image proofs, and  on time product delivery to one on one project consulting. At Vivid  Ads, we are not just looking for a sale, but also the opportunity to  build a relationship as your preferred digital print and signage  solutions provider.</p>
+                  <p align="justify"  style="color:#636363;">We have been in 
+                         exhibition displays business for a long time and we're still here because 
+                         of the quality of our products and the standard of our 
+                         service. We have continued to invest in the latest 
+                         production technology to give you, our customer, the 
+                         complete advertising, graphic design &amp; display 
+                         solution.<br>
+                         <br>
+                         We welcome you to try our services and experience the 
+                          difference in quality and service!<br>
+	                    </p>
+                         </div>
+    
+
+ 
+<div class="clearer" style="clear:both;">
+</div>
+<div class="cate_listing" style="margin-top:20px;padding:0px !important;">
+  <?php $_helper = $this->helper('catalog/category') ?>
+  <?php $j=1;?>
+  <ul class="products-grid">
+    <?php foreach ($_helper->getStoreCategories() as $_category) { ?>
+    <?php 
+$catId = $_category->getId();
+$category = Mage::getModel('catalog/category')->load($catId); 
+$catUrl = $category->getUrl();
+$catThumb = $category->getThumbnail();
+$catName =  $category->getName();
+$catDes = $category->getDescription();
+			$_img_path = Mage::getBaseUrl('media').'catalog/category/'; 
+			$mypath = $_img_path.'' .$catThumb;
+      		$minPrice=Mage::getSingleton('catalog/layer')
+			->setCurrentCategory($catId)
+			->getProductCollection()
+			->getMinPrice();
+			$collection = Mage::getSingleton('catalog/category')->load($catId)
+            ->getProductCollection()
+            ->addAttributeToSelect('*');
+//var_dump($collection);
+if(count($collection)>=1){$minimumPrice = 5000000; 
+foreach ($collection as $_product){
+//	echo $_product->getName();
+	 $specialPrice =  $_product->getSpecialPrice();
+	if($specialPrice){
+	 if($minimumPrice > $specialPrice){
+		$minimumPrice = $specialPrice;
+		}
+	  }
+	 $price = $_product->getPrice();
+	 if($minimumPrice > $price){
+		$minimumPrice = $price;
+		}
+}
+} else{$minimumPrice = 250; }
+?>
+    <li class="hover_pro item<?php if($j%3==0){ ?> last<?php } ?>">
+      <div class="sale-label sale-top-left"></div>
+      <div class="mask-product">
+        <div class="pro-det-con"> <a href="<?php echo $catUrl; ?>" title="<?php echo $catName; ?>" class="product-image"> <img src="<?php echo $mypath; ?>" width="220" height="252" alt="<?php echo $catName; ?>" /> </a>
+          <div style="top:0;" class="product-detail-content">
+            <div class="product-detail-description"> <?php echo  substr($catDes,0,150)."..."; ?> </div>
+            <p class="product-detail-read-more"> <a href="<?php echo $catUrl; ?>">Read More</a> </p>
+          </div>
+        </div>
+        <h2 class="product-name"><a href="<?php echo $catUrl; ?>" title="<?php echo $catName; ?>"> <?php echo $catName;// substr($catName,0,35)."...";?> </a></h2>
+      </div>
+      <div class="btn-bg">
+        <div class="pric-btn" style=" text-align: center; color: #fff; font: 12px 'Raleway'; text-decoration: none; height:26px; width:134px; float:left; line-height:26px;"> <?php echo 'From AUD '.ceil($minimumPrice).".00";
+		//			  echo Mage::helper('core')->currency($_product->getPrice());
+					  ?> </div>
+        <div class="browse-btn"> <a class="category-browse" title="<?php echo $catName; ?>" href="<?php echo $catUrl; ?>"> <span>More Info</span> </a> </div>
+      </div>
+      <?php //echo $this->getPriceHtml($_product, true) ?>
+    </li>
+    <? $j++;?>
+    <?php } ?>
+  </ul>
+  <div class="banner">
+    <p style="font-size:12px; color:#fff; line-height:25px; text-align:justify; width:97%; float:left; margin:10px;">
+      <?php //echo $catDes; ?>
+      When it comes to trade shows & media backdrop banner walls, it’s all about catching the eye. The impact of your display can make or break your success at the show. Banner stands very popular because they’re portable, flexible, and not too expensive. One drawback is that everybody uses them. So how do you make sure your banner stand draws attention—and doesn’t make you blend in? Here are a few tips for using a banner stand effectively. </p>
+  </div>
+  <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('external-block')->toHtml() ?>
+ <?php /*?> <div id="quoteLoader"></div><?php */?>
+  <!-- <iframe src='http://usedbooths.com.au/index.php/externalform/?store_id=166' height='1450' width='930'></iframe>--> 
+</div>
+
+</div>
+     

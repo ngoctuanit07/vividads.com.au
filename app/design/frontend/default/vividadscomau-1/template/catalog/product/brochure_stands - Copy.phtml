@@ -1,0 +1,311 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php /*?><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('top_menu_slider')->toHtml() ?>
+<div class="contact_info"><img src="<?php echo $this->getSkinUrl('images/phone_info.png');?>" alt="contact info"/></div><?php */?>
+<?php  $catName = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getName(); ?>
+<?php  $curCatId = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId(); ?>
+<?php
+$full= $catName;
+$full1=explode(' ', $full);
+$first=$full1[0];
+$rest=ltrim($full, $first.' ');
+//echo "$first + $rest";
+?>
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+?>
+
+<div class="intro">
+  <h2><?php echo $first; ?> <span style="color:#ec761c;"><?php echo $rest;?> </span></h2>
+  <?php $catDes = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getDescription();?>
+  <?php
+$full_des= $catDes;
+$full_des=explode(' ', $full_des);
+
+$first_des=$full_des[0].' '.$full_des[1].' '.$full_des[2].' '.$full_des[3].' '.$full_des[4].' '.$full_des[5].' '.$full_des[6].' '.$full_des[7].' '.$full_des[8].' '.$full_des[9];
+ $start = strlen($first_des);
+ $end = strlen($catDes);
+ 
+ //$rest_des=ltrim($full_des, $first_des.' ');
+//echo "$first + $rest";
+?>
+  <p><span style="color:#f37d4b;"><?php echo $first_des; ?></span><?php echo substr($catDes,$start,$end);?> </p>
+</div>
+<?php  $imageUrl = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getImageUrl();?>
+<?php if(!$_productCollection->count()): ?>
+<div class="cate_listing">
+  <div class="pro_left">
+    <?php if($curCatId==4074) { ?>
+    <h3>Exhibition Stand By Booth Size</h3>
+    <p style="font-family:Arial, serif, sans-serif; font-size:12px; color:white;"> Exhibitions and marketing camaigns are the perfect opportunity to introduce your company to the public &amp; we want to help you with your company's image. We have a huge selection of tradeshow exhibits, press media wall, tradeshow fabric banner stands, pop up booths,  portable exhibits &amp; presentation boards. Make an impression with our advertising &amp; promotional marketing display products. Vivid Ads (Advertising &amp; Display Solutions) is Australia's choice to buy in-stock exhibit stands, fabric mural media backdrop walls, expo booth displays, road show displays, trade fair booths (exhibit / expo) equipments and outdoor advertsing mesh signs and banners. </p>
+    <?php } ?>
+    <?php
+
+$root_cat= $curCatId;
+$_category = Mage::getModel('catalog/category')->load($root_cat);
+$_subcategories = $_category->getChildrenCategories();
+        //gets all sub categories of parent category 'Brands'
+        $cats = Mage::getModel('catalog/category')->load($root_cat)->getChildren();
+        $catIds = explode(',',$cats);
+
+        $categories = array();
+        foreach($catIds as $catId) {
+            $category = Mage::getModel('catalog/category')->load($catId); 
+			 
+//	echo	$thumbnail=Mage::getModel('catalog/category')->load($catId)->getThumbnail();
+            $categories[$category->getName()] = array(
+                'url' => $category->getUrl(),
+                'img' => $category->getThumbnail()
+            );
+        }
+
+        ksort($categories, SORT_STRING);
+		/*echo '<pre>';
+		print_r($categories);
+		echo '</pre>';*/
+    ?>
+    <?php if($categories){ ?>
+    <?php foreach($categories as $name => $data):  ?>
+    <div class="cate_detail">
+      <?php $_img_path = Mage::getBaseUrl('media').'catalog/category/'; ?>
+      <?php  $mypath = $_img_path.'' .$data['img']; ?>
+      <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_a">
+      <?php if($data['img']){ ?>
+      <img width="188" height="241" class="cat-image" src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getThumbnail()); ?>" alt="<?php echo $name?>"/>
+      <?php } else { ?>
+      <img width="188" height="241" class="cat-image" src="<?php echo $this->getSkinUrl('images/noimage.png'); ?>" alt="<?php echo $name?>"/>
+      <?php	} ?>
+      </a> <a href="<?php echo $data['url']; ?>" class="cate_detail_h">
+      <h3><?php echo $name; //substr($name,0,15).".." ?> </h3>
+      </a> <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_i"> <img class="cat-image" src="<?php echo $this->getSkinUrl('images/btn_detail.png');?>" alt="category image"/> </a> </div>
+    <?php endforeach; ?>
+    <?php } ?>
+  </div>
+  <div class="pro_right"> <img width="308" height="331" src="<?php echo $imageUrl;?>" alt="Category Image" />
+    <div class="gallery"> <img width="258" height="64" src="<?php echo $this->getSkinUrl('images/Gallery.jpg');?>" alt="Category Image" /> </div>
+  </div>
+</div>
+<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('external-block')->toHtml() ?>
+
+<!--<p class="note-msg"><?php //echo $this->__('There are no products matching the selection.') ?></p>-->
+
+<?php else: ?>
+<div class="cate_listing">
+  <?php // List mode ?>
+  <?php $_iterator = 0; ?>
+  <div class="pro_right"> <img width="308" height="331" src="<?php echo $imageUrl;?>" alt="<?php echo $name?>" /> </div>
+  <?php $counter =1?>
+  <?php $data_array = array(); $i =1; ?>
+  <?php foreach ($_productCollection as $_product): ?>
+  <?php //echo '<pre>'; print_r($_product); echo '</pre>'; ?>
+   <?php  $product = Mage::getModel('catalog/product')->load($_product->getId());?>
+    <?php $p_sku = $product->getSku();?>
+  <?php  $productId = $_product->getId();$i =1;
+
+ $price = $_product->getPrice();
+
+		$productNew = Mage::getModel('catalog/product')->load($productId);
+		$_tier_prices = $productNew->getTier_price();
+
+	if(count($_tier_prices)>0){
+			foreach($_tier_prices as $_tier_price ){
+
+			  $data_array[$i]['price_qty'] = $_tier_price['price_qty'];
+
+              $data_array[$i]['price'] = $price -( $price * $_tier_price['price'] / 100);
+
+			  $i++;
+
+			  	
+
+				
+
+			}
+	}
+
+		
+
+		
+
+		/*var_dump($data_array);
+
+		 exit; */
+
+ ?>
+  <div class="pro_left wide <?php if ($counter ==1){?>child<?php }?>">
+    <div class="p_image"> <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"> <img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getThumbnail()); ?>" width="252" height="252" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /> </a>
+      <?php 		if(count($_tier_prices)>0){ ?>
+      <div class="row-pricing"> <strong><?php echo ('Quantity')?></strong> <strong><?php echo ('Reduced Prices')?></strong>
+        <ul>
+          <dd><?php echo ('1 to 1:')?></dd>
+          <dt><?php echo Mage::helper('core')->currency($_product->getPrice(),true,false);?></dt>
+          <?php 
+
+	//	$result = '';
+
+	//echo count($_tier_prices);
+			$j=1;
+
+			foreach($_tier_prices as $_tier_price ){?>
+          <?php if($j>=count($_tier_prices)){ ?>
+          <dd><?php echo intval($data_array[$j]['price_qty']).' or  greater';?></dd>
+          <?php } else{ ?>
+          <dd><?php echo intval($data_array[$j]['price_qty']).' to '.intval($data_array[$j+1]['price_qty']-1);?></dd>
+          <?php } ?>
+          <dt><?php echo '$'.round($data_array[$j]['price'],2);?></dt>
+          <?php
+//	 $result.='<div> Price Quantity <div >Price Quantity = '.$_tier_price['price_qty'].'</div>'.'<div> Price = '.$_tier_price['price'].'</div>';
+
+				$j++;
+
+				}
+
+	
+
+		
+
+		//	echo $result;
+  
+
+?>
+        </ul>
+      </div>
+      <?php } ?>
+    </div>
+    <?php if ($counter ==1){?>
+    <div class="p_detail" >
+      <h4><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h4>
+      <?php  $product = Mage::getModel('catalog/product')->load($_product->getId());
+$store_id = $this->helper('core')->getStoreId(); ?>
+      <h3><?php echo "Product Model : ".$store_id."-".$product->getSku() ?></h3>
+      <h3><?php echo "Price : ".$_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?></h3>
+      <?php //echo $_formattedSpecialPrice = Mage::helper('core')->currency($_product->getFinalPrice(),true,false); ?>
+      <?php if($_product->isSaleable()): ?>
+      <?php else: ?>
+      <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+      <?php endif; ?>
+      <p> <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?> </p>
+    </div>
+    <div class="row-icons"> <img style="float:left;" src="<?php echo $this->getSkinUrl('images/brochure_stand.jpg');?>" alt="Icons" class="<?php if ($counter ==1){?>ico<?php }?>" /> <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn <?php if ($counter ==1){?>detail<?php }?>"> <img  src="<?php echo $this->getSkinUrl('images/button_06.gif');?>" alt="Icons" /> </a> </div>
+    <?php }else {?>
+    <div class="p_detail" style="margin-left:10px;">
+      <h4><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h4>
+      <?php  $product = Mage::getModel('catalog/product')->load($_product->getId());
+$store_id = $this->helper('core')->getStoreId(); ?>
+      <h3><?php echo "Product Model : ".$store_id."-".$product->getSku() ?></h3>
+      <h3><?php echo "Price : ".$_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?></h3>
+      <?php //echo $_formattedSpecialPrice = Mage::helper('core')->currency($_product->getFinalPrice(),true,false); ?>
+      <?php if($_product->isSaleable()): ?>
+      <?php else: ?>
+      <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+      <?php endif; ?>
+      <p> <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?> </p>
+      <img style="float:left;" src="<?php echo $this->getSkinUrl('images/brochure_stand.jpg');?>" alt="Icons" class="<?php if ($counter ==1){?>ico<?php }?>" /> <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn <?php if ($counter ==1){?>detail<?php }?>"> <img  src="<?php echo $this->getSkinUrl('images/button_06.gif');?>" alt="Icons" /> </a> </div>
+    <?php }?>
+  </div>
+  <?php // Product Image ?>
+  <?php // Product description ?>
+  <?php $counter++;?>
+  <?php endforeach; ?>
+  <script type="text/javascript">decorateList('products-list', 'none-recursive')</script> 
+</div>
+<?php endif; ?>
+<div class="cate_listing"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('category_detail_bottom')->toHtml() ?>
+  <?php if($curCatId == 4087){?>
+  <div class="cate_listing">
+    <div class="banner">
+      <p>
+        <embed type="application/x-shockwave-flash" src="https://picasaweb.google.com/s/c/bin/slideshow.swf" width="400" height="267" flashvars="host=picasaweb.google.com&hl=en_GB&feat=flashalbum&RGB=0x000000&feed=https%3A%2F%2Fpicasaweb.google.com%2Fdata%2Ffeed%2Fapi%2Fuser%2FPopupbannerstands%2Falbumid%2F5191298164862019489%3Falt%3Drss%26kind%3Dphoto%26hl%3Den_GB" pluginspage="http://www.macromedia.com/go/getflashplayer"></embed></p>
+      <p class="auto-style10">Your literature is your link to future sales with the 
+        
+        leads you generate by attending trade shows. So keep your brochures and sales 
+        
+        sheets handy and on display in an appropriate literature holders. We offer two 
+        
+        styles of trade show literature racks; Collapsible brochure displays, Flat pack 
+        
+        literature display. All are compact, and easy to transport. Sturdy and 
+        
+        beautifully functional when set-up. Literature holders from Vivid display your 
+        
+        collateral material and helps to keep your trade show booth tidy and organized.</p>
+      <p class="auto-style10">Fanning your product brochures on a table top is an 
+        
+        invitation for a mess and looks unprofessional. Literature holders can also be 
+        
+        used in a more permanent way to display your corporate literature in your store, 
+        
+        or office waiting room. But it is on the tradeshow floor where space is at a 
+        
+        premium. It is advisable to display your materials with the smallest footprint 
+        
+        possible.</p>
+      <p class="auto-style10">When traveling to trade shows two main objectives come 
+        
+        to mind: Sell your product and do so without breaking your back or budget 
+        
+        displaying your product. Our Pop Up, Folding and easy assemble products will 
+        
+        have your booth up and running in no time! Businesses spend hundreds and 
+        
+        thousands of dollars on marketing materials and literature to promote their 
+        
+        business image. Why fall short when it comes to displaying your valuable 
+        
+        information? As a manufacturer, our Portable &amp; Folding Magazine Racks &amp; 
+        
+        Literature Stands for display and trade shows are always In-Stock and Ready to 
+        
+        Ship. With a Literature Holder &amp; Magazine rack you can make all your materials 
+        
+        accessible to clients and start improving business today!</p>
+      <p class="auto-style10">We offer brochure holder, brochure, holder, point of 
+        
+        sale, pos, business card holder, exhibition products, wall display, foyer stand, 
+        
+        trolley, display trolley, carousel, display carousel, pamphlet display, portable 
+        
+        brochure stands, brochure holders, literature displays, brochure display leaflet 
+        
+        display, menu holder, business card holder, postcard holder, postcard display. 
+        
+        We don't hire (rent) exhibition furniture! Spyder Display (Spider),&nbsp; Brand 
+        
+        Stand Display2go &amp; Expand Displays are not our brands.</p>
+    </div>
+  </div>
+  <?php } ?>
+  <iframe src='http://usedbooths.com.au/index.php/externalform/?store_id=166' height='860' width='930'></iframe>
+</div>

@@ -1,0 +1,30 @@
+<div class="block block-category">
+
+    <!--<div class="block-title">
+
+        <strong><span>Galleries</span></strong>
+
+    </div>-->
+
+    <?php $cnt = count($this->getCategories()); ?>
+
+    <div class="block-content menu">
+
+        <?php if ($cnt > 0): ?>
+
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('gallery-left-menu')->toHtml(); ?>        
+
+        <?php else: ?>
+
+            No gallery configured yet.
+
+        <?php endif; ?>
+
+    </div>
+
+ 
+
+</div>        
+
+   
+

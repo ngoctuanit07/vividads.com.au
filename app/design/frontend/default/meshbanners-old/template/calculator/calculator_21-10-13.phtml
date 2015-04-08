@@ -1,0 +1,641 @@
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl()?>css/calculator-style.css">
+<div class="test-image"><img src="<?php echo $this->getSkinUrl()?>images/tab.jpg" alt="" title="" /></div>
+
+<div class="show" id="calc-load" style="display: block;">
+	<p align="center"><img alt="Loading Calculator... Please Wait" src="<?php echo $this->getSkinUrl()?>images/calculator/calc-load.gif" id="load"></p>
+</div>
+<script>
+jQuery(window).load(function(){
+  jQuery('#load').fadeOut(2000);
+  if (jQuery('#load').css('display','none')) {
+  jQuery('#cal_id_whole').css('display','block');
+  }
+});
+</script>
+<?php $storeId = Mage::app()->getStore()->getStoreId();
+$CategoryCollection = Mage::getModel('catalog/category')->getCategories(3);
+?>
+
+<div class="whole-calculator" id="cal_id_whole" style="display: none;">
+  <div id="tabs">
+    <ul class="whole_tabs">
+      <li><a href="#tab-1">Custom</a></li>
+      <li class="standard"><a href="#tab-2">Standard</a></li>
+    </ul>
+    <div class="two_divs" id="two_div_id">
+    <div id="tab-1">
+	<div class="total_divs_tab">
+	<div class="calculator_left">
+		<div class="calculator_left_color">
+			<div class="calculator_left_whole_portion">
+				<div class="calculator_left_pro">
+				<span>Product</span>
+					<div class="hold_cls_drop">
+						<div class="product_cls_drop">
+							<div class="current_category_name">
+							    <span class="category_main">
+								    <span id="current_category">
+									<span class="arrow-down"></span>
+									<?php $CountCatid = 1;foreach($CategoryCollection as $CategoryCols){
+										if($CountCatid == 1){
+										$CategoryCols = Mage::getModel('catalog/category')->load($CategoryCols->getId());
+										foreach($CategoryCols->getProductCollection() as $Procollection){
+										$Procollection = Mage::getModel('catalog/product')->load($Procollection->getId());?>
+									    <span class="cat_img"><img alt="Andorra" src="<?php echo $CategoryCols->getImageUrl();?>"></span> <span class="pro_name_txt"><?php echo $Procollection->getName()?> <span class="pro_name_des"><?php if (strlen(strip_tags($Procollection->getShortDescription())) > 40)echo substr(strip_tags($Procollection->getShortDescription()), 0, 37) . '...';else echo strip_tags($Procollection->getShortDescription());?></span></span><input type="hidden" id="pid" value="<?php echo $Procollection->getId()?>" />
+									<?php }}
+									$CountCatid++;
+									}?>
+									</span>
+							    </span>
+							</div>
+						</div>
+				
+						<div class="cat_dropdown_select" style="display: none;">
+							<ul class="cat-pro-drop">
+							    <?php foreach($CategoryCollection as $CategoryColl){
+								 $CategoryColl = Mage::getModel('catalog/category')->load($CategoryColl->getId());
+								 if($CategoryColl['is_active'] == 1){ 
+								//echo "<pre>";print_r($CategoryColl->getProductCollection());
+								foreach($CategoryColl->getProductCollection() as $Procollection){
+								    $Procollection = Mage::getModel('catalog/product')->load($Procollection->getId());
+								?>
+								<li class="fetch_country ">
+									<span class="currency_flag">
+									    <span alt="cat" class="country_item">
+										<span class="cat_img"><img alt="<?php echo $CategoryColl->getName()?>" src="<?php echo $CategoryColl->getImageUrl()?>"></span><span class="pro_name_txt"><?php echo $Procollection->getName()?><span class="pro_name_des"><?php if (strlen(strip_tags($Procollection->getShortDescription())) > 40)echo substr(strip_tags($Procollection->getShortDescription()), 0, 37) . '...';else echo strip_tags($Procollection->getShortDescription());?></span></span>
+										<input type="hidden" value="<?php echo $Procollection->getId()?>" />
+									    </span>
+									</span>
+								    </li>
+								<?php }}}?>
+							</ul>
+						</div>
+				</div>
+			</div>
+			
+			<div class="inches-dropdown-select">
+			      <span>Units</span>
+			      <select class="inches-drop">
+					<option value="mm">Millimetres (mm)</option>
+					<option value="cm">Centimetres (cm)</option>
+					<option value="m">Metres (m)</option>
+					<option value=in"">Inches (in)</option>
+					<option value="ft">Feet (ft)</option>
+			      </select>
+			</div>
+			</div>
+		<div class="estimate">
+			<p class="calclogos"><a title="Click here for more SPORT SIGN Factory Photos &amp; Info" href="eventsigns.php"><img border="0" width="63" height="19" align="right" src="<?php echo $this->getSkinUrl()?>images/calculator/logo-small-sports.png"></a> <a title="Click here for more FENCE SIGN Factory Photos &amp; Info" href="fencesigns.php"><img border="0" width="63" height="19" align="right" src="<?php echo $this->getSkinUrl()?>images/calculator/logo-small-fence.png"></a> <a title="Click here for more BANNER SIGN Factory Photos &amp; Info" href="bannersigns.php"><img border="0" width="63" height="19" align="right" src="<?php echo $this->getSkinUrl()?>images/calculator/logo-small-banners.png"></a></p>
+			<p class="calcdate">Estimate Created on: October 7th 2013</p>
+		</div>
+			
+		</div>
+		<div class="middle_container">
+			<div class="middle_left">
+				<div class="quantity_width_height">
+					  <div class="quantity_cus">
+					      <p class="subheading">Quantity</p>
+					      <p class="subheading_quantityinput">
+					      <input type="text" value="1" tabindex="1" size="5" maxlength="5" id="quantity" name="quantity">
+					      </p>
+					  </div>
+					  <div class="vert-separator"></div>
+					  <div class="width_cus">
+					      <p class="subheading darkgrey"><img width="26" height="8" alt="width" src="<?php echo $this->getSkinUrl()?>images/calculator/width-arrows.png">&nbsp;<b>Width</b> (<span class="lblunit">mm</span>)</p>
+					      <p class="subheading_widthinput">
+					      <input type="text" tabindex="2" maxlength="7" size="6" id="width" name="width">
+					      </p>
+					  </div>
+					  <div class="height_cus">
+					      <p class="subheading_heigttext"><b>Height</b> (<span class="lblunit">mm</span>)</p>
+					      <p class="subheading_heigthinput">
+						  <input type="text" tabindex="3" maxlength="7" size="6" id="height" name="height"> </p>
+					  </div>
+				  </div>
+		 <!--for custom options-->
+			<div class="custopmoption_cls_whole">
+				
+				<div class="customoption_cls_dropwhole">
+				<?php /*$CountCatid = 1;foreach($CategoryCollection as $CategoryCols){
+									if($CountCatid == 1){
+									$CategoryCols = Mage::getModel('catalog/category')->load($CategoryCols->getId());
+									foreach($CategoryCols->getProductCollection() as $Procollection){
+									$Procollection = Mage::getModel('catalog/product')->load($Procollection->getId());
+									foreach($Procollection->getOptions() as $optionKey => $optionVal) {
+									$OptioTitle = $optionVal->getTitle();?>
+									<span><?php echo $OptioTitle?></span>
+									<?php }}}
+									$CountCatid++;
+				}*/?>
+					<div class="customoption_cls_drop">
+						<div class="current_customoption_name">
+							<ul class="label_1">
+							   
+							<?php $CountCatid = 1;foreach($CategoryCollection as $CategoryCols){
+									if($CountCatid == 1){
+									$CategoryCols = Mage::getModel('catalog/category')->load($CategoryCols->getId());
+									foreach($CategoryCols->getProductCollection() as $Procollection){
+									$Procollection = Mage::getModel('catalog/product')->load($Procollection->getId());
+									foreach($Procollection->getOptions() as $optionKey => $optionVal) {
+									$OptioTitle = $optionVal->getTitle();
+									$OptioTitleId = $optionVal->getId();?>
+									<?php 
+									$CountId = 1;//foreach($optionVal->getValues() as $valuesKey => $valuesVal) {
+									if($CountId == 1){
+									//echo "<pre>";print_r($v);?>
+									<span class="customoption_title"><?php echo $OptioTitle?></span><?php }?>
+									<a class="question_image" target="_blank" href="#"></a>
+									<li class="sub_label_1"><?php if($CountId == 1){?>
+									<span class="custom_arrow_down"></span>
+									<span class="customoption_img"><img alt="customoption" src="<?php echo $this->getSkinUrl();?>images/calculator/hemmed.png"></span> <span class="customoption_txt1"><?php $CountOId = 1;foreach($optionVal->getValues() as $valuesKey => $valuesVal) {
+										if($CountOId == 1){?> <span class="customoption_txt"><?php echo $valuesVal->getTitle()?></span><span class="Text_customoption">Hemmed along all edges</span><?php }?></span><input type="hidden" id="cusoptioid" value="<?php echo $valuesVal->getId()?>" /><?php $CountOId++; }}?>
+								
+								<ul class="label_2" style="display: none;">
+									<?php foreach($optionVal->getValues() as $valuesKey => $valuesVal) {?>
+									<li class="sub_label_2"><span class="total_img_customoption"><span class="customoption_img"><img alt="customoption" src="<?php echo $this->getSkinUrl();?>images/calculator/hemmed.png"></span> <span class="whole_customoption_txt"><span class="customoption_txt" id="<?php echo $valuesVal->getId()?>"><?php echo $valuesVal->getTitle()?></span><span class="Text_customoption">Hemmed along all edges</span><input type="hidden" id="cusoptioid" value="<?php echo $valuesVal->getId()?>" /></span></span></li>
+									<?php }?>
+								</ul>
+								</li>
+								<?php $CountId++;
+								//}
+								}}}
+								$CountCatid++;
+								}?>
+							    </ul>
+						    </span>
+						</div>
+					
+					</div>
+		
+					<?php /*<div class="whole_uls_title">
+						<ul>
+							<?php 	$CountCatid = 1;
+								foreach($CategoryCollection as $CategoryCols){
+									if($CountCatid == 1){
+									$CategoryCols = Mage::getModel('catalog/category')->load($CategoryCols->getId());
+									foreach($CategoryCols->getProductCollection() as $Procollection){
+									$Procollection = Mage::getModel('catalog/product')->load($Procollection->getId());
+									foreach($Procollection->getOptions() as $optionKey => $optionVal) {
+										$OptioTitle = $optionVal->getTitle();?>
+									<?php foreach($optionVal->getValues() as $valuesKey => $valuesVal) {?>
+										<div class="whole_uls" style="display: none;">
+											<ul>
+												<li>
+												<span class="customoption_flag">
+													    <span alt="customoption" class="customoption_item">
+														<span class="customoption_txt"><img alt="<?php //echo $CategoryColl->getName()?>" src="<?php echo $this->getSkinUrl();?>images/calculator/hemmed.png"></span><span class="customoption_txt"><?php echo $valuesVal->getTitle()?></span>
+														<input type="hidden" value="<?php echo $valuesVal->getId()?>" />
+													    </span>
+												</span>
+											</li>
+											</ul>
+										</div>
+							<?php }}}}
+							$CountCatid++;
+							}?>
+		<!--				</ul>
+		-->	
+					</div>*/?>
+					
+			<div class="get_text"><span class="hide lngdes" id="lngdes_3"><img width="16" height="16" align="left" src="<?php echo $this->getSkinUrl()?>images/calculator/dura-fence-mesh.png" class="padicon"> Dura Fence Mesh Banner (used by Builders, Construct &amp; Temporary Fencing Co's etc) is a super tough outdoor grade heavy duty mesh banner sign for site fences, hoarding, privacy &amp; dust control etc &amp; other. Step Repeat Print or Full Length Graphic(s) <a href="fencesigns.php">Examples</a></span></div>		
+		</div>
+	</div>
+		
+    </div>
+    
+			<div class="calculator_right">
+				<div class="price_box">
+				<span>Price ea.</span><input type="text" id="org_price" name=price_nm value="$0.00" />
+			</div>
+			<div class="oct_sale_box">
+				<span>Oct 5% Sale</span><input type="text" id="sale_price" name=sale_nm value="$0.00" />
+			</div>
+		
+			<div class="discount_box">
+				<span>Bonus Discount 7%</span><input type="text" id="discount_price" name=discount_nm value="$0.00" />
+			</div>
+		
+			<div class="price_box">
+				<span>Sub Total:
+			 </span><input type="text" id="subtotal_price" name=price_nm value="$0.00" />
+			</div>
+		
+			<div class="calculate_button">
+			<input type="reset" value="Reset" id="btnreset" name="btnreset">
+			<div class="vert-separator"></div>
+			<input type="button" value="Calculate" id="btncalculate" name="btncalculate">
+			</div>
+			<div class="addtoquote">
+				<button id="btnAddQuote" style="width:130px;" class="btn btn-primary" type="button"><i class="icon-plus icon-white"></i><span>Add to Quote</span>
+				</button>
+			</div>
+			<p class="brown">
+			Includes: GST<br>
+			October 2013 <span id="bonusdisc"></span> <br>
+			Includes: Storewide Sale<br>&amp; Bonus Discount</p>
+	
+			</div>
+		</div>
+    
+		<div class="qty_item_lower">
+			<ul>
+				<li>
+					<div class="bin_image">
+						<img class="bin-icon" alt="Bin / Delete" src="<?php echo $this->getSkinUrl()?>images/calculator/bin.gif">	
+					</div>
+					<div class="qty_cal">
+						<span class="txt_q"><b>Qty</b></span>
+					</div>
+					<div class="itam_cal">
+						<span class="txt_item"><b>Item</b></span>
+					</div>
+
+					<div class="text_cal">
+						<span class="whole_txt">Fill in details above and click "Add to Quote"</span>
+					</div>
+					<div class="price_aud">
+						<span class="txt_price"><b>Price AUD</b></span>
+					</div>
+
+
+				
+			</ul>
+		    
+			    
+			   
+			    
+		</div>
+		
+		<div class="lower2">
+			<div class="lower_sub1">
+				<span id="weightkg" class="we_left"><b>Weight:</b> 0.00 kg</span>
+				<div class="shppng_free">
+					<span>SHIPPING</span><input type="text" value="FREE" maxlength="24" size="15" id="shipping_id" name="shipping">
+				</div>
+
+			</div>
+			<div class="lower_sub2">
+			<div class="print">
+				<a class="print-link" href="javascript:printQuote();" title="Print Line Items Quote"><img width="16" height="16" src="<?php echo $this->getSkinUrl()?>images/calculator/print-icon.png"> Print</a>		
+			</div>
+			<button id="btnSubmit" style="width:120px;" class="btn btn-success right" type="button"> <i class="icon-circle-arrow-right icon-white"></i> <span>Start Order</span> </button>
+			<span>Total</span><input type="text" value="$0.00" maxlength="24" size="15" id="totalprice_id" name="totalprice">
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+    
+    <!--for 2nd tab-->
+    <div id="tab-2">
+      	<div class="total_divs_tab">
+	<div class="calculator_left">
+
+        <div class="pro-caption">
+            <span>product</span>
+        </div>
+        
+        <div class="current_category_name">
+            <span class="category_main">
+                    <span id="current_category2">
+                            <span class="cat_img"><img alt="Andorra" src="<?php echo $this->getSkinUrl()?>/images/calculator/dura-fence-mesh.png"></span> <span class="pro_name_txt">Product Name</span><span class="pro_des_text">dddd</span>
+                        </span>
+            </span>
+        </div>
+        
+        <div class="cat_dropdown_select" style="display: none;">
+        <ul class="cat-pro-drop">
+            <?php foreach($CategoryCollection as $CategoryColl){
+                 $CategoryColl = Mage::getModel('catalog/category')->load($CategoryColl->getId()); 
+                //echo "<pre>";print_r($CategoryColl->getProductCollection());
+                foreach($CategoryColl->getProductCollection() as $Procollection){
+                    $Procollection = Mage::getModel('catalog/product')->load($Procollection->getId());
+                ?>
+            <li alt="AD" class="fetch_country ">
+                    <span class="currency_flag">
+                        <span alt="EUR" class="country_item">
+                            <span class="cat_img"><img alt="<?php echo $CategoryColl->getName()?>" src="<?php echo $CategoryColl->getImageUrl()?>"></span><span class="pro_name_txt"><?php echo $Procollection->getName()?></span><span class="pro_des_text"><?php echo $Procollection->getShortDescription()?></span>
+                        </span>
+                    </span>
+                </li>
+         
+        
+        <?php }}?>
+        </ul>
+        </div>
+        <div class="inches-dropdown-select">
+      <span>Units</span><select class="inches-drop">
+        
+        <option value="mm">Millimetres (mm)</option>
+        <option value="cm">Centimetres (cm)</option>
+        <option value="m">Metres (m)</option>
+        <option value=in"">Inches (in)</option>
+        <option value="ft">Feet (ft)</option>
+      </select>
+        </div>
+        
+      <div class="right">
+        <p class="calclogos"><a title="Click here for more SPORT SIGN Factory Photos &amp; Info" href="eventsigns.php"><img border="0" width="63" height="19" align="right" src="<?php echo $this->getSkinUrl()?>calculator/logo-small-sports.png"></a> <a title="Click here for more FENCE SIGN Factory Photos &amp; Info" href="fencesigns.php"><img border="0" width="63" height="19" align="right" src="<?php echo $this->getSkinUrl()?>calculator/logo-small-fence.png"></a> <a title="Click here for more BANNER SIGN Factory Photos &amp; Info" href="bannersigns.php"><img border="0" width="63" height="19" align="right" src="<?php echo $this->getSkinUrl()?>calculator/logo-small-banners.png"></a></p>
+        <p class="calcdate">Estimate Created on: October 7th 2013</p>
+	<div class="price_box">
+		<span>Price ea.</span><input type="text" name= price_nm value="" />
+	</div>
+	<div class="oct_sale_box">
+		<span>Oct 5% Sale</span><input type="text" name= sale_nm value="" />
+	</div>
+
+
+	<div class="discount_box">
+		<span>Bonus Discount 7%</span><input type="text" name= discount_nm value="" />
+	</div>
+
+	<div class="price_box">
+		<span>Sub Total:
+	 </span><input type="text" name= price_nm value="" />
+	</div>
+	
+    </div>
+      
+        <div class="quantity_cus">
+            <p class="subheading">Quantity</p>
+            <p class="subheading_quantityinput">
+            <input type="number" value="1" tabindex="1" size="5" maxlength="5" id="quantity2" name="quantity">
+            </p>
+        </div>
+        
+
+    </div>
+    
+	<div class="calculator_right">
+        
+	</div>
+</div>
+
+    </div>
+    </div>
+  </div>
+</div>
+<div id="take_org_price">
+	
+</div>
+
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+	jQuery('#tab-1').hide();
+	jQuery('#tab-2').hide();
+	
+	jQuery('#tab-1').show();
+	jQuery('#tabs ul li:first').addClass('active');
+	jQuery('#tabs ul li a').click(function(){ 
+	jQuery('#tabs ul li').removeClass('active');
+	jQuery(this).parent().addClass('active'); 
+	var currentTab = jQuery(this).attr('href'); //alert(currentTab);
+	if (currentTab == '#tab-2') {
+	    jQuery('#tab-1').hide();
+	    jQuery('#tab-2').show();
+	}
+	if (currentTab == '#tab-1') {
+	    jQuery('#tab-2').hide();
+	    jQuery('#tab-1').show();
+	}
+	
+	return false;
+	});
+	jQuery("#current_category").click(function(e){
+	    
+	    //alert("OK");
+	    //alert(jQuery(e.target).attr("id")+" "+jQuery(e.target).parent().attr("id"));
+	    
+	    if(jQuery(e.target).attr("id")=="current_category" || jQuery(e.target).parent().attr("id")=="current_category")
+	    {
+		if(jQuery(".cat_dropdown_select").css("display")=="none")
+		{
+		    jQuery(".cat_dropdown_select").slideDown(500);
+		    //alert("OK");
+		    jQuery(".arrow-down").addClass("active-down");
+		    jQuery(".arrow-down").removeClass("active-up");
+		    
+		}
+		else
+		{
+			jQuery(".cat_dropdown_select").slideUp(500);
+			jQuery(".arrow-down").removeClass("active-down");
+			jQuery(".arrow-down").addClass("active-up");
+		}
+	    }
+	});
+
+	jQuery(".cat_dropdown_select ul li .country_item").click(function(){
+	    
+		jQuery(".cat_dropdown_select ul li").removeClass("active");
+		jQuery(this).parent().parent().addClass("active");
+		
+		
+		//alert(jQuery(this).html());
+		jQuery("#current_category").html(jQuery(this).html());
+		//jQuery("#current_category").html(jQuery(".cat_img").html());
+		//jQuery("#current_category").html(jQuery(".pro_name_des").html());
+		jQuery(".cat_dropdown_select").slideUp(500);
+		jQuery(".arrow-down").addClass("active-down");
+		jQuery(".arrow-down").removeClass("active-up");
+
+	    
+	});
+	jQuery("body").click(function(e){
+	    
+	   // alert(jQuery(e.target).attr("class")+"===="+jQuery(e.target).parent().attr("class"));
+	    if(jQuery(e.target).attr("id")!="current_category" && jQuery(e.target).attr("class")!="pro_name_txt")
+	    {
+		jQuery(".cat_dropdown_select").slideUp(500);
+		jQuery(".arrow-down").removeClass("active-down");
+		jQuery(".arrow-down").addClass("active-up");
+
+	    }
+	    
+	  
+	    });
+	
+	//custom option
+	
+	jQuery(".sub_label_1").click(function(e){
+
+       // alert(e.target.className);
+
+       if(e.target.className!="sub_label_2" && jQuery(this).find(".label_2").css("display")!="block")
+       {
+		jQuery(".label_2").slideUp(500);
+		jQuery(this).find(".label_2").slideDown(500);
+		jQuery(".custom_arrow_down").addClass("custom_active_down");
+		jQuery(".custom_arrow_down").removeClass("custom_active_up");
+
+       }
+       else if(e.target.className!="sub_label_2")
+       {
+		jQuery(this).find(".label_2").slideUp(500);
+		jQuery(".custom_arrow_down").addClass("custom_active_up");
+		jQuery(".custom_arrow_down").removeClass("custom_active_down");
+
+       }
+
+    });
+	
+	//jQuery(".current_customoption_name ul li .total_img_customoption").click(function(){
+	//	
+	//    alert("OK");
+	//    alert(jQuery(".customoption_txt").attr("id"));
+	//    jQuery(".current_customoption_name ul li").removeClass("active");
+	//    jQuery(this).parent().parent().addClass("active");
+	//    jQuery(".sub_label_1").html(jQuery(this).html());
+	//    jQuery(".current_customoption_name").slideUp(500);
+	//    
+	//});
+
+	
+	jQuery("body").click(function(e){
+	    
+	   // alert(jQuery(e.target).attr("class")+"===="+jQuery(e.target).parent().attr("class"));
+	    if(jQuery(e.target).attr("id")!="sub_label_1" && jQuery(e.target).attr("class")!="customoption_txt")
+	    {
+		 jQuery(".label_2").slideUp(500);
+		jQuery(".custom_arrow_down").addClass("custom_active_up");
+		jQuery(".custom_arrow_down").removeClass("custom_active_down");
+
+		 
+	    }
+	    
+	  
+	    });
+
+	//custom option end
+
+	//price calculate
+	
+	jQuery("#height").keyup(function() {
+		var hiddenProId = jQuery("#current_category input[type='hidden']").val();
+		var Qty = jQuery("#quantity").val();
+		var Width = jQuery("#width").val();
+		var Height = jQuery("#height").val();
+		
+		
+		//alert(Qty + Height + Width);
+		//var price = jQuery("#org_price").val(Qty);
+		var BaseUrl = "<?php echo str_replace("index.php/","",$this->getUrl('', array('_secure'=>false))); ?>";
+		var BaseUrl = BaseUrl.split("mesh_banners");
+		var BaseUrl = BaseUrl[0];
+		//alert(BaseUrl);
+		    jQuery.ajax({
+		       url: BaseUrl+'ajax/price_calculate.php',
+		       type: 'post',
+		       data:({'pro_id':hiddenProId,'qty':Qty,'height':Height,'width':Width}),
+		       success: function(msg){
+			//alert(msg);
+			jQuery("#take_org_price").html(msg);
+			var PriceTake = jQuery("#hidden_take_org_price").val();
+			var Priceea =jQuery("#org_price").val(PriceTake);
+			//var octsalecalculate = (5/100)*Priceea;
+			//var octsalecalculate = (Priceea - octsalecalculate);
+			var PriceTakeOct = jQuery("#hidden_take_oct_price").val();
+			var octsale =jQuery("#sale_price").val(PriceTakeOct);
+			var PriceTakediscount = jQuery("#hidden_take_discount_price").val();
+			var discount =jQuery("#discount_price").val(PriceTakediscount);
+			var PSubTotalVal = jQuery("#hidden_subtotal_price").val();
+			var subtotal =jQuery("#subtotal_price").val(PSubTotalVal);
+
+
+		       }
+		   });
+
+	});
+	//price calculate End
+	    
+	var hiddenPId = jQuery("#current_category input[type='hidden']").val();
+	//alert(hiddenPId);
+	var BaseUrl = "<?php echo str_replace("index.php/","",$this->getUrl('', array('_secure'=>false))); ?>";
+	var BaseUrl = BaseUrl.split("mesh_banners");
+	var BaseUrl = BaseUrl[0];
+	//alert(BaseUrl);
+	//    jQuery.ajax({
+	//       url: BaseUrl+'ajax/calculator.php',
+	//       type: 'post',
+	//       data:({'p_id':hiddenPId}),
+	//       success: function(msg){
+	//	//alert(msg);
+	//       }
+	//   });
+
+	jQuery("#current_category").click(function(){
+		var clickhiddenPId = jQuery("#current_category input[type='hidden']").val();
+		//alert(clickhiddenPId);
+	});
+
+
+});
+</script>
+
+
+
+            <?php
+                
+                /*
+                    This shows how to load specific fields from a record in the database.
+                    1) Note the load(15), this corresponds to saying "select * from table where table_id = 15"
+                    2) You can then just use the get(fieldname) to pull specific data from the table.
+                    3) If you have a field named news_id, then it becomes getNewsId, etc.
+                */
+                /*
+                $news = Mage::getModel('calculator/calculator')->load(15);
+                echo $news->getNewsId();
+                echo $news->getTitle();
+                echo $news->getContent();
+                echo $news->getStatus();
+                */
+                
+                /*
+                    This shows an alternate way of loading datas from a record using the database the "Magento Way" (using blocks and controller).
+ 					Uncomment blocks in /app/code/local/Namespace/Module/controllers/IndexController.php if you want to use it.
+
+               */
+                /*
+                $object = $this->getCalculator();
+                echo 'id: '.$object['test_id'].'<br/>';
+				echo 'title: '.$object['title'].'<br/>';
+				echo 'content: '.$object['content'].'<br/>';
+				echo 'status: '.$object['status'].'<br/>';
+                */            
+            
+            
+                /*
+                    This shows how to load multiple rows in a collection and save a change to them.
+                    1) The setPageSize function will load only 5 records per page and you can set the current Page with the setCurPage function.
+                    2) The $collection->walk('save') allows you to save everything in the collection after all changes have been made.
+                */
+                /*
+                $i = 0;
+                
+                $collection = Mage::getModel('calculator/calculator')->getCollection();
+                $collection->setPageSize(5);
+                $collection->setCurPage(2);
+                $size = $collection->getSize();
+                $cnt = count($collection);
+                foreach ($collection as $item) {
+                    $i = $i+1;
+                    $item->setTitle($i);
+                    echo $item->getTitle();
+                }
+
+                $collection->walk('save');
+                */
+                
+                /*
+                    This shows how to load a single record and save a change.
+                    1) Note the setTitle, this corresponds to the table field name, title, and then you pass it the text to change.
+                    2) Call the save() function only on a single record.
+                */
+                /*
+                $object = Mage::getModel('calculator/calculator')->load(1);
+                $object->setTitle('This is a changed title');
+                $object->save();
+				*/
+
+            ?> 

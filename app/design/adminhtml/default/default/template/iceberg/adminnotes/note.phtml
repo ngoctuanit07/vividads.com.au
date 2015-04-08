@@ -1,0 +1,101 @@
+<?php
+/**
+ * TODO - add multiline and admin user functions to parent block class 
+ * - multiline, only first line is shown.  if too long, first line is truncated
+ * - admin user, text is shown as is - allowing html 
+ */
+?>
+
+<?php $_note = $this->getNote(); ?>
+
+<?php
+
+if (!function_exists('getcleanNote'))
+{
+	function getcleanNote($note, $text)
+	{
+		// Allow a particular user to post html content.
+		// TODO - REWRITE THIS TO USE PERMISSIONS
+		// - this should be done by checking a user permission.
+		// - this should also be stored in the db: "allow_html" in note table.
+		// - then we do not need to do a lookup on each display
+		if ($note->getUsername()=='Admin')
+		{
+			return nl2br($text);
+		}
+		
+		return nl2br(htmlspecialchars($text));
+	}
+}
+?>
+
+<div class="notification-global<?php if( $_note->isHidden() && !$this->getDoNotHide()) : ?> adminnote-hidden<?php endif;?> adminnote-type-<?php echo $_note->getType(); ?>">
+    <div class="f-right adminnote-manage-note">
+   		<small>by <strong><?php echo $_note->getFirstname() . ' ' . $_note->getLastname(); ?></strong></small>
+   		<small>on <strong><?php echo Mage::getModel('core/date')->date("M j, Y",strtotime($_note->getCreatedAt()));?></strong></small>
+
+   		&nbsp; 
+   		
+   		<?php if( !$_note->isHidden() ) : ?>
+    		<a href="#" onclick="return adminNoteStatus(this, <?php echo $_note->getNoteId(); ?>,1);"><img src="<?php echo $this->getSkinUrl('iceberg/adminnotes/hide.gif') ?>" alt="Hide" title="Hide"  /></a>
+    	<?php else: ?>
+    		<a href="#" onclick="return adminNoteStatus(this, <?php echo $_note->getNoteId(); ?>,0);"><img src="<?php echo $this->getSkinUrl('iceberg/adminnotes/show.gif') ?>" alt="Unhide" title="Unhide"  /></a>
+    	<?php endif;?>
+    	<?php if( $_note->isEditable() ) : ?><a href="#" onclick="return adminNoteEdit(this);"><img src="<?php echo $this->getSkinUrl('iceberg/adminnotes/edit.gif') ?>" alt="Edit Note" title="Edit Note" /></a><?php endif; ?>
+    	<?php if( $_note->isDeletable() ) : ?><a href="#" onclick="return adminNoteDeleteConfirm(this , <?php echo $_note->getNoteId(); ?>, '<?php echo $this->__('Are you sure you want to delete this note?')?>' );"><img src="<?php echo $this->getSkinUrl('iceberg/adminnotes/delete.gif') ?>" alt="Delete Note" title="Delete Note" /></a><?php endif; ?>
+
+    </div>
+	<span class="adminnote-note-content">
+		<strong class="label"><?php echo htmlspecialchars($_note->getTitle() ); ?>:</strong>
+		<?php
+		$maxlen = 250;
+		?>
+		
+		<?php if (count( $lines = split("\n",$_note->getNote())) > 1): ?>
+			<span class="shortnote">
+				<?php if (strlen($lines[0]) > $maxlen): ?>
+				
+					<?php echo getcleanNote($_note, substr($lines[0],0,$maxlen) ) ?>
+					[<a href="#" onclick="adminNoteShowMore(this); return false;">Show More...</a>]
+					
+				<?php else: ?>
+				
+					<?php echo getcleanNote($_note, $lines[0] ) ?>
+					[<a href="#" onclick="adminNoteShowMore(this); return false;">Show More...</a>]
+					
+				<?php endif; ?>
+			</span>
+			<span class="longnote" style="display:none">
+				<?php echo getcleanNote($_note, $_note->getNote()); ?>
+			</span>
+			
+		<?php elseif (strlen($_note->getNote()) > $maxlen): ?>	
+			<span class="shortnote">
+				<?php echo getcleanNote($_note, substr($_note->getNote(),0,$maxlen) ) ?>
+				[<a href="#" onclick="adminNoteShowMore(this); return false;">Show More...</a>]
+			</span>
+			<span class="longnote" style="display:none">
+				<?php echo getcleanNote($_note, $_note->getNote()); ?>
+			</span>
+		<?php
+		else :
+			echo getcleanNote($_note, $_note->getNote());
+		endif;
+		?>
+	</span>
+	<span class="adminnote-note-edit" style="display: none;">
+		<?php /*<input type="text" value="<?php echo $_note->getTitle(); ?>" /> */ ?>
+		<select onclick="adminNoteTypeChange(this)">
+			<?php foreach( $_note->getTypes() as $k => $v ) :?>
+				<option value="<?php echo $k; ?>" <?php if( $k == $_note->getType() ) :?>selected<?php endif;?>><?php echo $v; ?></option>
+			<?php endforeach; ?>
+		</select>
+		<textarea onkeyup="adminNoteUpdateText(this);"><?php echo $_note->getNote(); ?></textarea>
+		<div class="buttons">
+			<button onclick="adminNoteUpdate(this,<?php echo $_note->getId(); ?>);"><span>Save Note</span></button>
+			<button onclick="adminNoteEditCancel(this);"><span>Cancel</span></button>
+		</div>
+	</span>
+</div>
+
+<?php $_note->setSeen(); ?>

@@ -1,0 +1,80 @@
+<div class="permissionname">
+    <form id="permission_form" name="permission_form" method="post" action="<?php echo $this->getBaseUrl()?>permissions/adminhtml_permissions/permissionsave/key/<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+        <input id="form_key" name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+    <table style="width:100%;" class="permissiontab">
+        <tr>
+            <td class="permisiontd">
+                 Select User :
+            </td>
+            <td>
+                 <select name="user" id="user" onchange="loadpermission(this.value)">
+                            <?php
+                                $adminUserModel = Mage::getModel('admin/user');
+                                $userCollection = $adminUserModel->getCollection()->load();
+                                $i = 0;
+                                foreach($userCollection as $user)
+                                {
+                                    if($i == 0)
+                                    {
+                                        if(Mage::getSingleton('core/session')->getPermissionuser() == "")
+                                        $currentid = $user->getId();
+                                        else
+                                        $currentid = Mage::getSingleton('core/session')->getPermissionuser();
+                                    }
+                                    
+                                    $selected = '';
+                                    if($currentid == $user->getId())
+                                    $selected = 'selected';
+                                    
+                                    echo '<option value="'.$user->getId().'" '.$selected.' >'.$user->getUsername().'</option>';
+                                    $i++;
+                                }
+                            ?></select> 
+            </td>
+             <td >
+                <button type='submit' name="submit">Save</button>
+            </td>
+        </tr>
+         <tr>
+            <td >
+              
+            </td>
+            <td id="permission_list">
+              
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+
+<script type="text/javascript">
+    function loadpermission(id)
+    {
+        
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+        xmlhttp.onreadystatechange=function()
+          {
+          if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+                //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+                //alert(xmlhttp.responseText);
+                
+                document.getElementById('permission_list').innerHTML = xmlhttp.responseText;
+              
+            }
+          }
+          form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+        xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/permissions/adminhtml_permissions/loadpermission/?user_id="+id+"&form_key="+form_key+"&isAjax=true",true);
+        xmlhttp.send();
+        
+    }
+    loadpermission(<?php echo $currentid;?>);
+</script>

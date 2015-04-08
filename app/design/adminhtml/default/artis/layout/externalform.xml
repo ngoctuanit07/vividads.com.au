@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <externalform_adminhtml_externalform_index>
+        <reference name="content">
+            <block type="externalform/adminhtml_externalform" name="externalform" />
+        </reference>
+    </externalform_adminhtml_externalform_index>
+</layout>

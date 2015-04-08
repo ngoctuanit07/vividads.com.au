@@ -1,0 +1,66 @@
+<div style="border-bottom: 1px solid #DDDDDD;clear: both;display: block;float: left;margin-bottom: 25px;padding-bottom: 25px;">
+<?php 
+$BaseUrl = Mage::getBaseUrl();
+//echo "<pre>";
+//print_r($this->getImage()->getData());
+//echo "</pre>";
+?>
+<?php $cnt = count($this->getImage()); ?>
+<?php if ($cnt > 0): ?>
+    <?php foreach ($this->getImage() as $item): ?>  
+        <div class="category-title" >
+            <h1><?php //if()?><?php echo $item->getTitle(); ?></h1>
+        </div>
+        <p><?php echo $item->getContent(); ?></p>
+        <div class="imageDetail" >
+            <img style="margin:0 10px 10px 0; border-radius: 5px; border:5px solid #a89ca1;" src="<?php echo $this->resizeImage($item->getFilename(), 400, ''); ?>" alt="<?php echo $item->getTitle(); ?>" />
+            
+        </div>
+        <div class="model-no" style="clear: both;display: block;float: left;text-align: left;">
+            <h4>Model No: </h4>
+            <?php
+            echo Mage::app()->getStore()->getStoreId()."-".$item->getModelNo()
+            ?>
+        </div>
+        <div class="tags" style="clear: both;display: none;float: left;text-align: left;">
+            <h4>Tags: </h4>
+            <?php
+            if ($item->getTags() != "") {
+                $tags = str_replace(" ", "", $item->getTags());
+                $tmpTags = explode(",", $tags);
+                foreach ($tmpTags as $tag) {
+                    echo "<a href='#'>" . $tag . "</a>, ";
+                }
+            } else {
+                echo "N/A";
+            }
+            ?>
+        </div>
+        <div class="city-name" style="clear: both;display: none;float: left;text-align: left;">
+            <h4>In City: </h4>
+            <?php
+            if($item->getCity() != ""){
+                echo "<a href='#'>" . $item->getCity() . "</a>";            
+            }
+            else{
+                echo "N/A";
+            }
+            ?>
+        </div>
+        <div class="country-name" style="clear: both;display: none;float: left;text-align: left;">
+            <h4>In Country: </h4>
+            <?php
+            if($item->getCountry() != ""){
+                echo "<a href='#'>" . $item->getCountry() . "</a>";            
+            }
+            else{
+                echo "N/A";
+            }
+            ?>
+        </div>
+    <?php endforeach; ?> 
+<?php else: ?>
+    <div>There is no Images here</div>
+<?php endif; ?>
+</div>
+<div class="clearfix"><br /></div>

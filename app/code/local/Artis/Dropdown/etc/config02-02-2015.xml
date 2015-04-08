@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<config>
+
+      <modules>
+
+            <Artis_Dropdown>
+
+                  <version>0.1.0</version>
+
+            </Artis_Dropdown>
+
+      </modules>
+
+   <!--for frontend-->
+
+		<frontend>
+
+        <routers>
+
+            <dropdown>
+
+                <use>standard</use>
+
+                <args>
+
+                    <module>Artis_Dropdown</module>
+
+                    <frontName>dropdown</frontName>
+
+                </args>
+
+            </dropdown>
+
+        </routers>
+
+        <layout>
+
+            <updates>
+
+                <dropdown>
+
+                    <file>dropdown.xml</file>
+
+                </dropdown>
+
+            </updates>
+
+        </layout>
+
+    </frontend>
+
+
+
+
+
+      <global>
+
+     
+
+      <blocks>
+
+      <dropdown>
+
+          <class>Artis_Dropdown_Block</class>
+
+      </dropdown>
+
+      <page>
+
+          <rewrite>
+
+            <html_topmenu>Artis_Dropdown_Block_Html_Topmenu</html_topmenu>
+
+          </rewrite>
+
+      </page>
+
+        </blocks>
+
+      </global>
+
+</config>

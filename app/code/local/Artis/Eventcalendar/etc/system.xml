@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <artis translate="label" module="eventcalendar">
+            <label>Artis Extensions</label>
+            <sort_order>10</sort_order>
+        </artis>
+    </tabs>
+    <sections>
+        <artis translate="label" module="eventcalendar">
+            <label>Extension Options</label>
+            <tab>Artis</tab>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <artis_group translate="label" module="eventcalendar">
+                    <label>My Extension Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <artis_input translate="label">
+                            <label>My Input Field: </label>
+                            <comment>My Comment</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </artis_input>
+                        <artis_select translate="label">
+                            <label>My Dropdown: </label>
+                            <comment>Source model provider Magento's default Yes/No values</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </artis_select>
+                    </fields>
+                </artis_group>
+            </groups>
+        </artis>
+    </sections>
+</config>

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * MD_Vividslider.
+ * Company: Vivid Ads Inc Australia
+ * Author: AShfaq Ahmed
+ * 
+ *
+ * NOTICE OF LICENSE
+ *
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.vividads.com.au
+ *
+ * @category   MD
+ * @package    Vividslider
+ * @copyright  Copyright (c) 2014 Vivid Ads Ashfaq Ahmed (http://www.vividads.com.au)
+ */
+
+-->
+
+<config>
+    <menu>
+	
+	<vividslider module="vividslider">
+				<title>Vivid Slider</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<items module="vividslider">
+						<title>Vivid Slider</title>
+						<sort_order>0</sort_order>
+						<action>vividslider/adminhtml_vividslider</action>
+					</items>
+				</children>
+			</vividslider>
+        
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <vividslider translate="title" module="vividslider">
+                                        <title>Vivid Slider</title>
+                                    </vividslider>							
+                                </children>
+                            </config>
+                            <Mconnect_Brandlogo>
+                                <title>Vivider Slider</title>
+                                <sort_order>10</sort_order>
+                            </Mconnect_Brandlogo>								
+                        </children>											
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>		
+</config>

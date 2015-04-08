@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <FMA_Reviewsplus>
+      <version>1.0.0</version>
+    </FMA_Reviewsplus>
+  </modules>
+  <frontend>
+    <routers>
+      <reviewsplus>
+        <use>standard</use>
+          <args>
+            <module>FMA_Reviewsplus</module>
+            <frontName>reviewsplus</frontName>
+          </args>
+      </reviewsplus>
+      <review>
+      	<args>
+      		<modules>
+      			<FMA_Reviewsplus before="Mage_Review">FMA_Reviewsplus</FMA_Reviewsplus>
+      		</modules>
+      	</args>
+      </review>
+    </routers>
+		<layout>
+		  <updates>
+		  	<reviewsplus>
+			  <file>reviewsplus.xml</file>
+			</reviewsplus>
+		  </updates>
+		</layout>
+  </frontend>
+  
+  <global>
+    <helpers>
+      <reviewsplus>
+        <class>FMA_Reviewsplus_Helper</class>
+      </reviewsplus>
+    </helpers>
+    <blocks>
+      <reviewsplus>
+		<class>FMA_Reviewsplus_Block</class>
+	  </reviewsplus>
+	  <adminhtml>
+	    <rewrite>
+          <review_edit_form>FMA_Reviewsplus_Block_Adminhtml_Review_Edit_Form</review_edit_form>
+        </rewrite> 
+      </adminhtml>
+      <review>
+      	<rewrite>
+      	<product_view_list>FMA_Reviewsplus_Block_Product_View_List</product_view_list>
+        <view>FMA_Reviewsplus_Block_View</view>
+      </rewrite>
+      </review> 
+    </blocks>
+	<models>
+	  <reviewsplus>
+		<class>FMA_Reviewsplus_Model</class>
+		<resourceModel>reviewsplus_mysql4</resourceModel>
+	  </reviewsplus>
+	  <reviewsplus_mysql4>
+		<class>FMA_Reviewsplus_Model_Mysql4</class>
+		<entities>	
+			<reviewsplus>
+				<table>reviewsplus</table>
+			</reviewsplus>	  
+	    </entities>
+	  </reviewsplus_mysql4>
+	  <review_resource>
+	  	<rewrite>
+	  		<review_collection>FMA_Reviewsplus_Model_Mysql4_Reviewsplus_Collection</review_collection>
+	  	</rewrite>
+	  </review_resource>
+    <reviewsplus_adminhtml>
+        <class>FMA_Reviewsplus_Adminhtml_Model</class>
+    </reviewsplus_adminhtml>
+	</models>
+	<resources>
+	  <reviewsplus_setup>
+		<setup>
+		  <module>FMA_Reviewsplus</module>
+		</setup>
+		<connection>
+		  <use>core_setup</use>
+		</connection>
+	  </reviewsplus_setup>
+	  <reviewsplus_write>
+		<connection>
+            <use>core_write</use>
+        </connection>
+	  </reviewsplus_write>
+	  <reviewsplus_read>
+		<connection>
+		  <use>core_read</use>
+		</connection>
+	  </reviewsplus_read>
+	</resources>
+    <events>
+	  <review_save_after> <!-- identifier of the event we want to catch -->
+        <observers>
+          <review_save_after_handler> <!-- identifier of the event handler -->
+            <type>model</type> <!-- class method call type; valid are model, object and singleton -->
+            <class>reviewsplus/observer</class> <!-- observers class alias -->
+            <method>reviewreply</method>  <!-- observer's method to be called -->
+            <args></args> <!-- additional arguments passed to observer -->
+          </review_save_after_handler>
+        </observers>
+      </review_save_after>
+      
+      <reviewsplus_controller_review_vote_after> <!-- identifier of the event we want to catch -->
+      	<observers>
+      		<reviewsplus_controller_review_vote_after_handler> <!-- identifier of the event handler -->
+      			<type>singleton</type><!-- class method call type; valid are model, object and singleton -->
+      			<class>reviewsplus/observer</class><!-- observers class alias -->
+      			<method>countVotes</method> <!-- observer's method to be called -->
+      			
+      		</reviewsplus_controller_review_vote_after_handler>
+      	</observers>
+      </reviewsplus_controller_review_vote_after>
+
+      <checkout_onepage_controller_success_action>
+        <observers>
+          <checkout_onepage_controller_success_action_handler>
+            <type>singleton</type>
+            <class>reviewsplus/observer</class>
+            <method>getfeedback</method>
+            
+          </checkout_onepage_controller_success_action_handler>
+        </observers>
+      </checkout_onepage_controller_success_action>
+    </events>
+    <template>
+        <email>
+            <customer_feedback_email module="reviewsplus">
+                <label>customer feedback email module</label>
+                <file>customer_feedback_email.html</file>
+                <type>html</type>
+            </customer_feedback_email>
+        </email>
+    </template>
+  </global>
+  
+  <admin>
+	<routers>
+	  <reviewsplus>
+	    <use>admin</use>
+		<args>
+		  <module>FMA_Reviewsplus</module>
+		  <frontName>reviewsplus</frontName>
+		</args>
+	  </reviewsplus>
+	</routers>
+  </admin>
+  <crontab>
+    <jobs>
+      <fma_reviewsplus>
+          <schedule>
+            <cron_expr>*/5 * * * *</cron_expr>
+          </schedule>
+        <run>
+          <model>reviewsplus/observer::customerfeedbackCron</model>
+        </run>
+      </fma_reviewsplus>
+    </jobs>
+  </crontab>
+</config> 

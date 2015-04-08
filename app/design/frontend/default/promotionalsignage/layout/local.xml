@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+     
+<layout>
+    <default>
+     
+        <!-- Remove callouts and rarely used stuff -->
+        <remove name="right.poll"/>
+        <remove name="right.permanent.callout"/>
+        <remove name="left.permanent.callout"/>
+        <remove name="left.newsletter"/>
+        <remove name="paypal.partner.right.logo"/>
+     
+        <!-- add the local stylesheet -->
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/local.css</stylesheet>
+            </action>
+        </reference>
+     
+    </default>
+</layout>

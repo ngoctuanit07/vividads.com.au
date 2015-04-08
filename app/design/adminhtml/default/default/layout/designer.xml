@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <!--<designer_adminhtml_designer_index>
+        <reference name="content">
+            <block type="designer/adminhtml_designer" name="designer" />
+        </reference>
+    </designer_adminhtml_designer_index>-->
+    <adminhtml_sales_order_view>
+        <reference name="sales_order_tabs">
+            <action method="addTab">
+                <name>my_custom_tab2</name>
+                <block>designer/adminhtml_sales_order_view_tab</block>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+    <adminhtml_catalog_product_edit>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>my_custom_tab3</name>
+                <block>designer/adminhtml_catalog_product_tab</block>
+            </action>
+        </reference>
+    </adminhtml_catalog_product_edit>
+</layout>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <magentools_tab module="social" translate="label">
+            <label>MAGENTOOLS</label>
+            <sort_order>100</sort_order>
+        </magentools_tab>
+    </tabs>
+    <sections>
+        <social module="social" translate="label">
+            <label>Social</label>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <tab>magentools_tab</tab>
+            <groups>
+                <pinterest translate="label">
+                    <label>Pinterest Configuration</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        
+                        <email translate="Pinterest Email Address">
+                            <label>Email</label>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                        </email>
+                        
+                        <password translate="Pinterest Password">
+                            <label>Password</label>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>password</frontend_type>
+                        </password>
+                        
+                        <include_sku translate="Pinterest Password">
+                            <label>Include Product SKU in Pin?</label>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>                            
+                        </include_sku>
+                        
+                        <include_price translate="Pinterest Password">
+                            <label>Include Price in Pin?</label>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </include_price>
+                        
+                        <max_pins_allowed translate="Pinterest Password">
+                            <label>Maximum Pins Allowed at a time</label>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                            <comment>20 is recommended</comment>
+                        </max_pins_allowed>
+                                                
+                    </fields>
+                </pinterest>
+
+		<facebook translate="label">
+                    <label>Facebook Configuration</label>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+
+                        <email translate="Facebook Email Address">
+                            <label>Email</label>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                        </email>
+
+                        <app_id translate="Facebook APP ID">
+                            <label>App ID</label>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                        </app_id>
+			
+                        <app_secret translate="Facebook App Secret">
+                            <label>App Secret</label>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>password</frontend_type>
+                        </app_secret>
+
+                        <page_id translate="Page ID where to auto-post">
+                            <label>Page ID</label>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                        </page_id>			
+			
+                        <max_posts_allowed translate="Max posts allowed">
+                            <label>Max Posts Allowed at a time</label>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                            <comment>20 is recommended</comment>
+                        </max_posts_allowed>
+			
+                        <include_sku translate="Include SKU">
+                            <label>Include SKU in post</label>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+				<frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </include_sku>
+			
+                        <include_price translate="Include Price">
+                            <label>Include Price in post</label>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+				<frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>If there is a special price, that will be taken</comment>
+                        </include_price>
+			
+                        <include_link translate="Include Product link">
+                            <label>Include Product link in post</label>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+				<frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </include_link>
+
+                    </fields>
+                </facebook>
+
+		<twitter translate="label">
+                    <label>Twitter Configuration</label>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+
+                        <username translate="Twitter Email Address">
+                            <label>Username</label>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                        </username>
+			
+                        <consumer_key translate="Twitter Consumer Key">
+                            <label>Consumer Key</label>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                        </consumer_key>
+			
+                        <consumer_secret translate="Twitter Consumer Secret">
+                            <label>Consumer Secret</label>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>password</frontend_type>
+                        </consumer_secret>
+			
+                        <access_token translate="Twitter Access Token">
+                            <label>Access Token</label>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                        </access_token>
+			
+                        <access_token_secret translate="Access Token Secret">
+                            <label>Access Token Secret</label>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>password</frontend_type>
+                        </access_token_secret>
+
+                        <max_tweets_allowed translate="Max tweets allowed">
+                            <label>Max Tweets Allowed at a time</label>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                            <comment>20 is recommended</comment>
+                        </max_tweets_allowed>
+			
+                        <include_sku translate="Include SKU">
+                            <label>Include SKU in tweet</label>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+				<frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </include_sku>
+			
+                        <include_price translate="Include Price">
+                            <label>Include Price in tweet</label>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+				<frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>If there is a special price, that will be taken</comment>
+                        </include_price>
+			
+                        <include_link translate="Include Product link">
+                            <label>Include Product link in tweet</label>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+				<frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </include_link>
+			
+			
+                    </fields>
+                </twitter>
+
+
+
+            </groups>
+        </social>
+
+    </sections>
+</config>

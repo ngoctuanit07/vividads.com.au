@@ -1,0 +1,211 @@
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+
+<div class="page-title">
+    <h1><?php echo $this->__('My Quotations') ?></h1>
+</div>
+<?php
+$magentoCurrentUrl = Mage::helper('core/url')->getCurrentUrl();
+
+$strurl = explode('?',$magentoCurrentUrl);
+
+$pagesize = $_REQUEST['limit'];
+
+?>
+<div class="pager">
+    
+        <p class="amount">
+                    <strong><?php echo $this->getQuotations()->getSize()?> Item(s)</strong>
+            </p>
+<?php
+
+if($pagesize == '')
+$pagesize = 10;
+
+$total = $this->getQuotations()->getSize()/$pagesize;
+$total_round = round($this->getQuotations()->getSize()/$pagesize);
+
+
+
+if(strpos($magentoCurrentUrl,'/p/'))
+$strurl1 = substr($strurl[0], 0, -2);
+else
+{
+    $strurl1 = $strurl[0].'p/';
+}
+
+
+if($total >= 1)
+{
+    if($total > $total_round)
+    {
+	$total = $total+1;
+    }
+    else
+    {
+	$total = $total_round;
+    }
+    
+    echo '<div class="quote_page">';
+    for($i=1;$i<=$total;$i++)
+    {
+	if(strpos($magentoCurrentUrl,'/p/'.$i.'/'))
+	echo '<span class="reg_pager">'.$i.'</span>';
+	else
+	echo '<span class="reg_pager"><a href="'.$strurl1.$i.'/?'.$strurl[1].'">'.$i.'</a></span>';
+    }
+    echo '</div>';
+}
+
+
+?>
+    
+        <div class="limiter">
+        <label>Show</label>
+        <select onchange="setLocation(this.value)">
+                    <option value="<?php echo $strurl[0].'?';?>limit=10" <?php if($pagesize == 10)echo 'selected';?>>
+                10            </option>
+                    <option value="<?php echo $strurl[0].'?';?>limit=20" <?php if($pagesize == 20)echo 'selected';?>>
+                20            </option>
+                    <option value="<?php echo $strurl[0].'?';?>limit=50" <?php if($pagesize == 50)echo 'selected';?>>
+                50            </option>
+                </select> per page    </div>
+    
+    
+        </div>
+
+
+
+<?php if($this->getQuotations()->getSize()): ?>
+<table cellspacing="0" class="data-table" id="my-quotations-table">
+    <thead>
+        <tr>
+            <th><?php echo $this->__('Quotation #') ?></th>
+            <th><?php echo $this->__('CREATED DATE') ?></th>
+	    <th><?php echo $this->__('QUOTE TOTAL') ?></th>
+            <th><?php echo $this->__('QUOTED BY') ?></th>
+            <th><?php echo $this->__('STATUS') ?></th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $_odd = ''; ?>
+        <?php foreach ($this->getQuotations() as $_quotation): ?>
+        	<?php $_quotation->checkExpirationDateAndApply(); ?>
+            <tr>
+                <td><?php echo $_quotation->getincrement_id() ?></td>
+                <td><?php echo $this->formatDate($_quotation->getcreated_time()) ?></td>
+		<td><?php
+		//echo $_quotation->getId();
+		$transactionTable=Mage::getSingleton('core/resource')->getTableName('quotation_items');
+		$sqlPaymentSystem="SELECT SUM(price_ht) as SUM_QUOTE FROM ".$transactionTable." WHERE  quotation_id = '".$_quotation->getId()."' ";
+		try {
+			$chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlPaymentSystem);
+			$resultsSystem = $chkSystem->fetch();
+		} catch (Exception $e){
+		echo $e->getMessage();
+		}
+		
+		echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($resultsSystem['SUM_QUOTE'],2,'.','');
+		
+		?></td>
+                <td><?php echo $this->htmlEscape($_quotation->getCustomerName()); ?></td>
+                <td><?php echo $this->__($_quotation->getstatus()); ?></td>
+                <td class="a-center">
+                    <?php if ($_quotation->isViewableByCustomer()): ?>
+                            <a href="<?php echo $this->getViewUrl($_quotation) ?>" class="view-link"><?php echo $this->__('View Quotation') ?></a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<script type="text/javascript">decorateTable('my-quotations-table')</script>
+
+<?php else: ?>
+    <p><?php echo $this->__('You have no quotation available.') ?></p>
+<?php endif ?>
+
+<?php if (Mage::getStoreConfig('quotation/quotation_request/allow_text') && Mage::helper('quotation')->currentCustomerCanRequestQuote()): ?>
+
+<p>&nbsp;</p>
+
+
+
+<div class="pager">
+    
+<p class="amount">
+	    <strong><?php echo $this->getQuotations()->getSize()?> Item(s)</strong>
+    </p>
+<?php
+
+if($pagesize == '')
+$pagesize = 10;
+
+$total = $this->getQuotations()->getSize()/$pagesize;
+$total_round = round($this->getQuotations()->getSize()/$pagesize);
+
+
+
+if(strpos($magentoCurrentUrl,'/p/'))
+$strurl1 = substr($strurl[0], 0, -2);
+else
+{
+    $strurl1 = $strurl[0].'p/';
+}
+
+
+
+
+if($total >= 1)
+{
+    if($total > $total_round)
+    {
+	$total = $total+1;
+    }
+    else
+    {
+	$total = $total_round;
+    }
+    
+    echo '<div class="quote_page">';
+    for($i=1;$i<=$total;$i++)
+    {
+	if(strpos($magentoCurrentUrl,'/p/'.$i.'/'))
+	echo '<span class="reg_pager">'.$i.'</span>';
+	else
+	echo '<span class="reg_pager"><a href="'.$strurl1.$i.'/?'.$strurl[1].'">'.$i.'</a></span>';
+    }
+    echo '</div>';
+}
+?>
+
+<div class="limiter">
+<label>Show</label>
+<select onchange="setLocation(this.value)">
+	    <option value="<?php echo $strurl[0].'?';?>limit=10" <?php if($pagesize == 10)echo 'selected';?>>
+	10            </option>
+	    <option value="<?php echo $strurl[0].'?';?>limit=20" <?php if($pagesize == 20)echo 'selected';?>>
+	20            </option>
+	    <option value="<?php echo $strurl[0].'?';?>limit=50" <?php if($pagesize == 50)echo 'selected';?>>
+	50            </option>
+	</select> per page    </div>
+
+
+</div>
+
+<!--<div class="page-title">
+    <h1><?php //echo $this->__('Request for a new quotation') ?></h1>
+</div>-->
+
+<?php //echo $this->__('To request for a new quotation, please fill the field below being as accurate as possible to describe your needs'); ?>
+<p>&nbsp;</p>
+<!--<form id="form_request" name="form_request" method="POST" action="<?php //echo $this->getNewRequestPostUrl(); ?>">
+<center>
+<textarea cols="110" rows="10" id="description" name="description"></textarea>
+<p>&nbsp;</p>
+<br><button type="submit" title="Save" class="button"><span><span><?php //echo $this->__('Submit') ?></span></span></button> 
+</center>
+</form>-->
+
+<?php endif; ?>

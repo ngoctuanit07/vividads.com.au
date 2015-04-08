@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<sections>		
+		<muploadultimate translate="label">
+			<label>Mico Upload Ultimate</label>
+			<tab>micosolutions</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>300</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<config translate="label">
+                    <label>Base Config</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+						<active translate="label">
+                            <label>Enable Module</label>
+							<frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</active>						
+						<license translate="label">
+                            <label>License</label>
+							<frontend_type>textarea</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[<a href="http://ecommerce.micosolutions.com" target="_blank">Get license</a> code in your account area at MicoSolutions]]></comment>
+						</license>
+					</fields>
+				</config>
+				<folder translate="label">
+                    <label>File and Folder</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+						<fileExt translate="label">
+                            <label>File Extension</label>
+							<frontend_type>textarea</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[<b>jpeg,jpg,gif,png,tif,bmp,psd,ai,pdf,eps,cdr,zip</b> and more.]]></comment>
+						</fileExt>
+						<fileFilter translate="label">
+                            <label>File Type Filter Text</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[<b>Images Files</b> or <b>Graphic Files</b> or <b>Source Files</b>.<br/> This is the file type filter title in the OS pop-up window in the browser when client searches for files to upload. It is not the filter type, just the text that is presented in the OS window]]></comment>
+						</fileFilter>
+						<fileMin translate="label">
+                            <label>File Min Size</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Example: <b>512kb</b> or <b>1mb</b> or ...]]></comment>
+						</fileMin>
+						<fileMax translate="label">
+                            <label>File Max Size</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Example: <b>512kb</b> or <b>10mb</b> or <b>512mb</b> or ...]]></comment>
+						</fileMax>
+						<fileChunk translate="label">
+                            <label>File Chunk Size</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Used for chunking larger files into smaller pieces to reduce php runtime and memory conflicts. 
+							Should be set to a value like: <b>512kb</b> or <b>1mb</b> or <b>2mb</b>]]></comment>
+						</fileChunk>
+						<tmpFolder translate="label">
+                            <label>Temporary Folder</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>19</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[
+							<br/>Support:{site_id},{site_name},{site_code},{site_domain}
+							<br/>Example: <b>media/tmp/{site_id}</b> 
+							<br/> OR <b>media/tmp/{site_domain}</b>
+							<br/> OR <b>media/tmp</b>
+							]]></comment>
+						</tmpFolder>
+						<tmpFilename translate="label">
+                            <label>Temporary File Name</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Set the uploaded file names for temporary only.
+							<br/>Support:{site_id},{site_name},{site_code},{site_domain},{filename},{hex}
+							<br/>Example:<br/><b>{site_domain}-{filename}-{hex}</b>
+							<br/>]]></comment>
+						</tmpFilename>
+						<orderFolder translate="label">
+                            <label>Order Folder</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Path relative to your Magento installation. <br/>Example: <b>orders/{ordernumber}</b> OR <b>uploads/{customernumber}/{ordernumber}</b>]]></comment>
+						</orderFolder>
+						<orderFilename translate="label">
+                            <label>Order File Name</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Set the uploaded file names for completed orders only.
+							<br/>Example:<br/><b>{index}-{sku}-{optiontitle}-{filename}-qty-{qty}</b>
+							<br/><br/><b>{index}</b> - Used when multiple products are purchased in same order. Files will have an index number so you know they belong together per line item. 
+							For example, if a customer orders two business card items in the same order and uploads 2 images - front and back image - per item, the files can be indexed 1_filename_front, 1_filename_back, 2_filename_front, 2_filename_back.
+							<br/><br/><b>{sku}</b> - The aggregate sku for the product. Includes individual option skus also.
+							<br/><br/><b>{optiontitle}</b> - The title of the option. <em>spaces will use underscore _</em>
+							<br/><br/><b>{filename}</b> - The original name of the file. <em>spaces will use underscore _</em>
+							<br/><br/><b>{qty}</b> - The line item quantity.<br/><br/>]]></comment>
+						</orderFilename>
+					</fields>
+				</folder>
+				<uploader>
+					<label>Uploader Config</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+					<fields>
+						<auto translate="label">
+                            <label>Auto Upload</label>
+							<frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</auto>
+						<runtimes translate="label">
+                            <label>Uploader Runtimes</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Example: <b>html5,flash,html4</b><br/>
+							Be sure to include in the order you would like the runtime to degrade.]]></comment>
+						</runtimes>
+						<selectText translate="label">
+                            <label>Select Button Text</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Example: <b>Select File</b> 
+							<br/>You can also customize this with CSS. See documentation for more details.]]></comment>
+						</selectText>
+						<uploadText translate="label">
+                            <label>Upload Button Text</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Example: <b>Upload Now</b>
+							<br/>You can also customize this with CSS. See documentation for more details.]]></comment>
+						</uploadText>
+						<convertPath translate="label">
+                            <label>Convert Path</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>19</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[When using ImageMagick thumbnail engine below, you may have to specify your convert path.<br/>
+							Example: <b>convert</b> or <b>/usr/bin/convert</b><br/>]]></comment>
+						</convertPath>
+						<thumbnailEngine translate="label">
+                            <label>Thumbnail Engine</label>
+							<frontend_type>select</frontend_type>
+							<source_model>mupload/system_config_engine</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>							
+						</thumbnailEngine>						
+						<thumbnailExt translate="label">
+                            <label>Thumbnail Extension</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Supported file types for:<br/><br/>
+							ImageMagick and Imagick:<br/><b>jpg,gif,png,jpeg,bmp,psd,ai,eps,pdf,tif,ps</b><br/><br/>
+							Magento Core:<br/><b>jpg,gif,png,jpeg,bmp</b><br/><br/>]]></comment>
+						</thumbnailExt>
+						<thumbnailWidth translate="label">
+                            <label>Thumbnail Width</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Example: <b>100</b> or <b>200</b> or ...]]></comment>
+						</thumbnailWidth>
+						<thumbnailReplace translate="label">
+                            <label>Thumbnail Path Replace</label>
+							<frontend_type>textarea</frontend_type>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Use this setting to specify a different thumbnail file storage location. If you do not want to store files 
+							in /media/custom_options/quote/xx then you can change the path here. It is very useful for managing customer files, especially 
+							when dealing with abandoned cart uploaded files.<br/><br/>Linux Server: <b>orders=>orders/thumbnails, custom_options/quote=>thumbnails</b>
+							<br/><br/>Window Server: <b>orders=>orders/thumbnails, custom_options\quote=>thumbnails</b><br/><br/>]]></comment>
+						</thumbnailReplace>
+						<thumbnailSize translate="label">
+                            <label>Thumbnail Max File Size</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[This is an optional setting to be used with the Magento Core engine for thumb creation. 
+							Some servers limit memory when using Magento core. When left empty, this setting inherits the server setting (usually 5mb).
+							Input the value in bytes.
+							<br/>Example : <b>10000000</b> bytes<br/><br/>]]></comment>
+						</thumbnailSize>
+						<multiFile translate="label">
+                            <label>Multi-file Upload</label>
+							<frontend_type>select</frontend_type>
+                            <source_model>mupload/system_config_multifile</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Enables multiple file uploads per custom option or for all custom options (of type FILE). Normally you can only upload 
+							one file per custom option in magento. With this enabled the customer can upload 1 to many files.<br/><br/>]]></comment>
+						</multiFile>						
+						<multiOptions translate="label">
+                            <label>Multi-file Option Labels</label>
+							<frontend_type>textarea</frontend_type>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Example: <b>Background,Design files</b>
+							<br/>These values will be ignored when Multi-file Upload=<b>Yes, All options</b>]]></comment>
+						</multiOptions>
+					</fields>
+				</uploader>
+				<resolution>
+					<label>Front-end Resolution Feedback</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>6</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+					<fields>						
+						<quality translate="label">
+                            <label>Quality config</label>
+							<frontend_type>textarea</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Example: <b>bad=0,low=1.4,fair=2.2,good=3.5,great=5</b>]]></comment>
+						</quality>
+						<template translate="label">
+                            <label>Quality Template</label>
+							<frontend_type>textarea</frontend_type>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[<b>&lt;div class="mico-mupload-quality mico-mupload-{qualityType}-quality"&gt;{quality} MegaPixel&lt;/div&gt;&lt;div class="clear-both"&gt;&lt;/div&gt;</b>]]></comment>
+						</template>
+						<templateCart translate="label">
+                            <label>Cart Template</label>
+							<frontend_type>textarea</frontend_type>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[
+								Support:
+								<br/>{title} : file Name
+								<br/>{link} : link to image
+								<br/>{img} : image included img html tag 
+								<br/>{sizePX} : size in W x H format 
+								<br/>{quality} : size (megePixel)
+								<br/>{qualityType} : type of quality
+								<br/>
+								Example:
+								<br/>
+								<b>
+								{img}&lt;a href="{link}" target="_blank"&gt;{title}&lt;/a&gt; {sizePX}
+								</b>
+								<br/>
+								or
+								<br/>
+								<b>
+									&lt;a href="{link}" target="_blank"&gt;{title}&lt;/a&gt; {sizePX} &lt;br/&gt; {img}
+								</b>
+								<br/>
+								or
+								<br/>
+								<b>
+									{img}&lt;a href="{link}" target="_blank"&gt;{title}&lt;/a&gt; {quality} MegaPixel
+								</b>
+							]]></comment>
+						</templateCart>
+                    </fields>
+				</resolution>
+			</groups>			
+		</muploadultimate>
+	</sections>
+</config>

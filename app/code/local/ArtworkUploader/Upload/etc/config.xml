@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ 
+ * @category    ArtworkUploader
+ * @package     ArtworkUploader_Upload
+ * @copyright   Copyright (c) 2013 Vivid Ads. (http://www.vividads.com.au)
+ * @license     http://www.vividads.com.au  License (AFL 3.0)
+ */
+-->
+<config>
+
+    <modules>
+        <!-- This node's name has to be the same as module's full name
+        including namespace -->
+        <ArtworkUploader_Upload>
+            <!-- Current version of module -->
+            <version>0.1.0</version>
+        </ArtworkUploader_Upload>
+    </modules>
+    <frontend>
+        <!-- Module aliases are located in this block -->
+        <routers>
+            <!-- This node's name should be the same as our alias -->
+            <upload>
+                <!-- use parameter specifies which of basic routers needs to be used.
+                This can be "standard" for frontend or "admin" for backend -->
+                <use>standard</use>
+                <!-- router arguments block -->
+                <args>
+                    <!-- This parameter specifies the full name of out module -->
+                    <module>ArtworkUploader_Upload</module>
+                    <!-- This parameter sets module alias -->
+                    <frontName>upload</frontName>
+                </args>
+            </upload>
+        </routers>
+ <!-- This node contains module layout configuration -->
+        
+	   <layout>
+            <updates>
+                <!-- module alias -->
+                <Upload>
+                    <!-- File for loading -->
+                    <file>upload.xml</file>
+					
+                </Upload>
+            </updates>
+        </layout>
+	
+    </frontend>
+	
+	<global>
+		<helpers>
+            <upload>
+                <class>ArtworkUploader_Upload_Helper</class>
+            </upload>
+        </helpers>
+		
+		<blocks>
+			<upload>
+                <class>ArtworkUploader_Upload_Block</class>
+            </upload>
+		</blocks>
+		
+		<models>
+            <upload>
+                <class>ArtworkUploader_Upload_Model</class>
+                <resourceModel>upload_mysql4</resourceModel>
+            </upload>
+            <upload_mysql4>
+                <class>ArtworkUploader_Upload_Model_Mysql4</class>
+                <entities>
+                    <upload>
+                        <table>proofs</table>
+					</upload>										
+                </entities>
+            </upload_mysql4>
+        </models>
+		
+		<resources>
+            <upload_setup>
+                <setup>
+                    <module>ArtworkUploader_Upload</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </upload_setup>
+            <upload_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </upload_write>
+            <upload_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </upload_read>
+        </resources>
+			
+	
+	</global>
+ 
+  <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <artworkuploaderoptions>
+                                            <title>Artwork Uploader Module Section</title>
+                                        </artworkuploaderoptions>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+
+  
+</config>

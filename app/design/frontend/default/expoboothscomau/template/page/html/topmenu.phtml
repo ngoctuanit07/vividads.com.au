@@ -1,0 +1,61 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+ 
+?>
+<?php
+/**
+ * Top menu for store
+ *
+ * @see Artist_Dropdown_controllers_Index
+ */
+ 
+// print_r($this->getData());
+
+
+?>
+
+<input type="hidden" id="catimage"/>
+<input type="hidden" id="topcat" />
+<?php
+$currentUrl = "";
+if (!in_array(Mage::app()->getFrontController()->getAction()->getFullActionName(), array('cms_index_noRoute', 'cms_index_defaultNoRoute'))) {
+    $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+    $currentUrl = basename($currentUrl);
+}?>
+
+<div class="Navigation">
+  <ul>
+    <li ><a title="Home" href="<?php echo Mage::getBaseUrl();?>" class="<?php if($currentUrl == "expobooths.com.au" || $currentUrl == "index.php"){echo "home";} ?>">
+	<?php echo __('Home');?></a></li>
+    <li><a href="<?php echo $this->getUrl('about-us')?>" class="<?php if($currentUrl == "about-us"){echo "selected";} ?>"><?php echo $this->__('About Us')?></a></li>
+    <li><a href="<?php echo $this->getUrl('gallery')?>" class="<?php if ($currentUrl=="gallery"){echo "selected";}?>"><?php echo $this->__('Gallery')?></a></li>
+    <li><a href="<?php echo $this->getUrl('upload')?>" class="<?php if($currentUrl=="upload"){echo "selected";}?>"><?php echo $this->__('Upload Artwork')?></a></li>
+    <li><a href="<?php echo $this->getUrl('artwork')?>" class="<?php if($currentUrl=="artwork"){echo "selected";}?>"><?php echo $this->__('Artwork Guides')?></a></li>
+    <li><a href="<?php echo $this->getUrl('news')?>" class="<?php if($currentUrl=="news"){echo "selected";}?>"><?php echo $this->__('Our Clients')?></a></li>
+    <li><a href="<?php echo $this->getUrl('contact-us')?>" class="<?php if ($currentUrl=="contact-us") {echo "quote";}?>"><?php echo $this->__('Get a Quote')?></a></li>
+    <li><a href="<?php echo $this->getUrl('contact-us')?>" class="<?php if ($currentUrl=="contact-us") {echo "selected";}?>"><?php echo $this->__('Contact Us')?></a></li>
+  </ul>
+</div>

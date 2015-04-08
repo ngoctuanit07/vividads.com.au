@@ -1,0 +1,248 @@
+<?php
+
+
+
+$currentUrl = "";
+
+if (!in_array(Mage::app()->getFrontController()->getAction()->getFullActionName(), array('cms_index_noRoute', 'cms_index_defaultNoRoute'))) {
+
+    $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+
+    $currentUrl = basename($currentUrl);
+
+}
+
+
+
+//echo $currentUrl;.
+
+/**
+
+ * @var Mage_Page_Block_Html_Header $this
+
+ */
+
+
+
+$getItemCount = Mage::helper("checkout/cart")->getItemsCount();
+
+if (Mage::helper('checkout/cart')->getSummaryCount() == "") {
+
+    $cartCount = "0";
+
+} else {
+
+    $cartCount = Mage::helper('checkout/cart')->getSummaryCount();
+
+}
+
+
+
+$quote = Mage::getSingleton('checkout/cart')->getQuote();
+
+
+
+if (Mage::helper('checkout/cart')->getSummaryCount() == "") {
+
+    $subTotal = Mage::helper('core')->currency(0.00);
+
+} else {
+
+    $subTotal = Mage::helper('core')->currency(number_format($quote->getSubtotal(), 2));
+
+}
+
+	$customerData = Mage::getSingleton('customer/session')->getCustomer();
+
+?>
+
+
+
+<link rel="stylesheet" type="text/css"   href="<?php echo $this->getSkinUrl() ?>css/quote.css" />
+
+<script type="text/javascript">
+
+    var itemsincart =<?= $getItemCount ?>;
+
+    function getQutefunc()
+
+    {
+
+        var id = '#dialog';
+
+        //Get the screen height and width
+
+        var maskHeight = jQuery(document).height();
+
+        var maskWidth = jQuery(window).width();
+
+
+
+        //Set heigth and width to mask to fill up the whole screen
+
+        jQuery('#mask').css({'width': maskWidth, 'height': maskHeight});
+
+        //transition effect
+
+        jQuery('#mask').fadeIn(1000);
+
+        jQuery('#mask').fadeTo("slow", 0.8);
+
+
+
+        //Get the window height and width
+
+
+
+        var winH = jQuery(window).height();
+
+        var winW = jQuery(window).width();
+
+		
+
+        //Set the popup window to center
+
+        jQuery(id).css('top', winH / 2 - jQuery(id).height() / 2);
+
+        jQuery(id).css('left', winW / 2 - jQuery(id).width() / 2);
+
+
+
+        //transition effect
+
+        jQuery(id).fadeIn(2000);
+
+       
+
+	    //if mask is clicked
+
+        jQuery('#mask').click(function() {
+
+            //$(this).hide();
+
+            //$('.window').hide();
+
+        });
+
+
+
+    }
+
+
+
+    jQuery(document).ready(function() {
+
+
+
+        //if close button is clicked
+
+        jQuery('.window .magento_close').click(function(e) {
+
+
+
+            //Cancel the link behavior
+
+            e.preventDefault();
+
+            //jQuery('#mask').hide();
+
+            //jQuery('.window').hide();
+
+            jQuery('#mask').fadeOut(1000);
+
+            jQuery('.window').fadeOut(1000);
+
+        });
+
+    });
+
+
+
+</script>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl(); ?>css/lightbox.css" media="all" />
+
+<script type="text/javascript">    
+
+	function getQuote(storeid)
+
+    {       getQutefunc();
+
+			//alert(storeid);
+
+    }
+
+</script>
+
+<div class="header-container">
+
+    <div class="header">
+
+        <?php if ($this->getIsHomePage()): ?>
+
+            <div class=""><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></div>
+
+        <?php else: ?>
+
+            <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+
+        <?php endif ?>
+
+        <?php //echo $this->getChildHtml('topSearch') ?>
+
+            <div class="form-search"><img src="<?php echo $this->getSkinUrl('images/sales_number.png')?>"></div>
+
+        
+
+        <div class="clear"></div>
+
+        <div class="quick-access">
+
+            <?php echo $this->getChildHtml('store_language') ?>
+
+            <?php // echo $this->getChildHtml('topMenu')  ?> 
+
+            <?php //echo $this->getChildHtml('topLinks')  ?>
+
+            <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('topmenu')->toHtml(); ?>
+
+            <div class="quick-access">
+
+                <ul><li class="<?php if($currentUrl == "tablethrows.com.au" || $currentUrl == "index.php"){echo "quick-access_selected";} ?>"><a title="Home" href="<?php echo Mage::getBaseUrl();?>">Home</a></li> <li class="<?php if($currentUrl == "upload"){echo "quick-access_selected";} ?>"><a title="Send Artwork" href="<?php echo Mage::getBaseUrl();?>upload">Send Artwork</a></li>
+
+                    <li class="<?php if($currentUrl == "gallery"){echo "quick-access_selected";} ?>"><a title="Gallery" href="<?php echo Mage::getBaseUrl();?>gallery">Gallery</a></li>
+
+                    <li class="<?php if($currentUrl == "our-clients.html"){echo "quick-access_selected";} ?>"><a title="Our Clients" href="<?php echo Mage::getBaseUrl();?>our-clients">Our Clients</a></li>
+
+                    <li class="<?php if($currentUrl == "services"){echo "quick-access_selected";} ?>"><a href="<?php echo Mage::getBaseUrl();?>services">Services</a></li>
+
+                    <?php /*?><li class="<?php if($currentUrl == "offers.html"){echo "quick-access_selected";} ?> offer"><a title="Vendor Section" href="<?php echo Mage::getBaseUrl();?>offers.html/">Offers</a></li><?php */?>
+
+                    <li class="<?php if($currentUrl == "contact-us"){echo "quick-access_selected";} ?>"><a title="Express Inquiry" href="<?php echo Mage::getBaseUrl();?>contact-us">Express Inquiry</a></li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+            <div class="clear"></div>
+
+        <?php // echo $this->getChildHtml('topBar') ?>
+
+        <!--<div class="ad1"><img src="<?php echo $this->getSkinUrl(); ?>images/ribbon.jpg" />
+
+		/div>-->
+
+        <?php echo $this->getChildHtml('topContainer'); ?>
+
+        <?php //echo $this->getChildHtml('youamaslider');//if($currentUrl == "tablethrows.com.au" || $currentUrl == "index.php"){echo $this->getChildHtml('youamaslider');} ?>
+
+        </div>
+
+</div>
+
+
+

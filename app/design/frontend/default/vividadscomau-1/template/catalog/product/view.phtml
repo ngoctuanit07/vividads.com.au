@@ -1,0 +1,828 @@
+<?php
+
+
+
+/**
+
+
+
+ * Magento
+
+
+
+ *
+
+
+
+ * NOTICE OF LICENSE
+
+
+
+ *
+
+
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+
+
+ * It is also available through the world-wide-web at this URL:
+
+
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+
+
+ * If you did not receive a copy of the license and are unable to
+
+
+
+ * obtain it through the world-wide-web, please send an email
+
+
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+
+
+ *
+
+
+
+ * DISCLAIMER
+
+
+
+ *
+
+
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+
+
+ * versions in the future. If you wish to customize Magento for your
+
+
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+
+
+ *
+
+
+
+ * @category    design
+
+
+
+ * @package     default_modern
+
+
+
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+
+
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+
+
+ */
+
+
+
+
+
+
+
+/**
+
+
+
+ * Product view template
+
+
+
+ *
+
+
+
+ * @see Mage_Catalog_Block_Product_View
+
+
+
+ * @see Mage_Review_Block_Product_View
+
+
+
+ */
+
+//Zend_Debug::dump($this->helper('catalog/output'));
+
+
+
+?>
+
+<?php
+
+/**
+
+ * Product list template
+
+ *
+
+ * @see Mage_Catalog_Block_Product_List
+
+ */
+
+$curCatId = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId();
+
+/*load category */
+
+$_category = Mage::getSingleton('catalog/category')->load($curCatId);
+
+$_cat_video = $_category->getCat_video();
+
+
+
+?>
+
+
+
+  
+
+ 
+
+
+
+
+
+<div class="top_menu">
+
+                        <ul>
+
+                        <li><a class="green" href="<?php echo $this->getUrl('');?>">Home</a></li>
+
+                        <li><a href="<?php echo $this->getUrl('contacts_us');?>">Contact Us</a></li>
+
+                        <li><a href="<?php echo $this->getUrl('artwork');?>">Artwork Guide </a></li>
+
+                        <li><a href="https://picasaweb.google.com/107954288426326953438?noredirect=1" target="_blank">Gallery</a></li>
+
+                        <li><a href="<?php echo $this->getUrl('customer-service');?>">Customer Service</a></li>
+
+                        <li><a href="<?php echo $this->getUrl('portable-expo');?>">Portable Expo Booth</a></li>
+
+                        <li><a href="<?php echo $this->getUrl('our-clients');?>">Our Clients</a></li>
+
+                        <li><a href="<?php echo $this->getUrl('get_a_quote');?>">Get A Free Quote in 2 Minutes</a></li>
+
+                        <li><a href="<?php echo $this->getUrl('upload');?>">Upload Artwork </a></li>
+
+                        <li><a href="<?php echo $this->getUrl('about_us');?>">Who We Are</a></li>
+
+                        </ul>
+
+                        </div>
+
+<div class="clearer"></div>
+
+
+
+<?php 
+
+		if($_cat_video !=null){
+
+?>
+
+<p style="margin:0px; float:right;" >
+
+<iframe width="940" height="375" frameborder="0" allowfullscreen="" mozallowfullscreen="" webkitallowfullscreen="" src="//player.vimeo.com/video/<?php echo $_cat_video;?>"></iframe>
+
+</p>
+
+<?php 
+
+		}else{
+
+?>
+
+
+
+<div class="youama-slider-block" style="margin-top:0px; float:right;">
+
+<img src="<?php echo $this->getSkinUrl()?>images/slider0_1.jpg" width="937" />
+
+</div>
+
+<?php 
+
+		}
+
+?>
+
+
+
+<div class="contact_info"><img alt="contact info" src="<?php echo $this->getSkinUrl()?>images/phone_info.png"></div>
+<?php echo $this->getLayout()->getBlock("breadcrumbs")->toHtml(); ?>
+<div class="clearer"></div>
+
+
+
+
+
+
+
+<?php $_helper = $this->helper('catalog/output'); ?>
+
+<?php $_product = $this->getProduct(); ?>
+
+
+
+<?php   
+
+
+
+$catId = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId();
+
+
+
+
+
+
+
+ 
+
+ //Zend_debug::dump($_prod->getCategoryIds()); exit;
+
+//echo '<pre>'; echo var_dump($_product); echo '</pre>';?>
+
+
+
+<script type="text/javascript">
+
+
+
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+
+
+
+</script>
+
+
+
+
+
+
+
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+
+     <?php   echo $this->getLayout()->createBlock('cms/block')->setBlockId('top_menu_slider')->toHtml(); ?>
+
+<div class="product-view">
+
+
+
+    <div class="product-essential">
+
+
+
+    <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+
+
+
+        <div class="no-display">
+
+
+
+            <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+
+
+
+            <input type="hidden" name="related_product" id="related-products-field" value="" />
+
+
+
+        </div>
+
+
+
+ <?php if(Mage::registry('current_category')){ $catName = Mage::registry('current_category')->getName();   } ?>        
+
+
+
+<?php
+
+
+
+$full= $catName;
+
+
+
+$full1=explode(' ', $full);
+
+
+
+$first=$full1[0];
+
+
+
+$rest=ltrim($full, $first.' ');
+
+
+
+//echo "$first + $rest";
+
+
+
+?>	
+
+
+
+		<div class="intro">                
+
+
+
+        <h2><?php echo $first; ?> <span style="color:#ec761c;"><?php echo $rest;?> </span></h2>
+
+
+
+<?php $catDes = $_product->getDescription();?>
+
+
+
+<?php
+
+
+
+$full_des= $catDes;
+
+
+
+$full_des=explode(' ', $full_des);
+
+
+
+$first_des=$full_des[0].' '.$full_des[1].' '.$full_des[2].' '.$full_des[3].' '.$full_des[4].' '.$full_des[5].' '.$full_des[6].' '.$full_des[7].' '.$full_des[8].' '.$full_des[9];
+
+
+
+ $start = strlen($first_des);
+
+
+
+ $end = strlen($catDes);
+
+
+
+ //$rest_des=ltrim($full_des, $first_des.' ');
+
+
+
+//echo "$first_des ";
+
+
+
+?>        
+
+
+
+        
+
+
+
+     
+
+
+
+        <p><span style="color:#f37d4b;"><?php echo $first_des; ?></span><?php echo substr($catDes,$start,$end);?> </p>
+
+
+
+        </div>
+
+
+
+        <div class="product_listing" style="padding:0 !important;">
+
+
+
+        <div class="pro_left">
+
+
+
+        <h1>
+
+
+
+        <?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+
+
+
+        </h1>
+
+
+
+        <?php //echo $_product->getAttributeText('sku') ?>
+
+
+
+        <h3>
+
+
+
+        <?php echo "Product Model : ".$_product->getSku() ?>
+
+
+
+        </h3>
+
+ <?php 
+
+$specialPrice = round($_product->getSpecialPrice(),2);
+
+if($specialPrice>0) { ?>
+
+	       <h3><?php echo "Price : ";?><strike><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?></strike></h3>
+
+	<h3><?php echo "Now : $".round($_product->getSpecialPrice(),3);?></h3>
+
+<?php	} else{ ?>
+
+<h3><?php echo "Price : ".$_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?></h3>     
+
+<?php } ?>
+
+               
+
+
+
+        
+
+
+
+        
+
+
+
+        <?php //echo $_product->getTierPriceHtml() ?>
+
+
+
+        <?php echo $this->getChildHtml('alert_urls') ?>
+
+
+
+        <?php //echo $this->getChildHtml('product_type_data') ?>
+
+
+
+         
+
+
+
+         <?php //print_r($_product->getAttributeText('dimension'));?> 
+
+
+
+            <?php //echo $this->getChildHtml('extrahint') ?>
+
+
+
+             
+
+
+
+            <?php //echo htmlspecialchars($_product->getAttributeText('dimension')); ?>
+
+
+
+            <?php //echo $description = $_product->getData('dimension');  ?>
+
+
+
+        </div>
+
+
+
+        <div class="pro_right">
+
+
+
+      
+
+
+
+<!--        <img src="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(308,331);?>" alt="Product Image" />-->
+
+
+
+		<img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getImage()); ?>" alt="<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>" />
+
+
+
+        <div class="gallery">
+
+
+
+          <?php //echo $description = $_product->getData('banner_images');  ?>
+
+
+
+        </div>
+
+
+
+        
+
+
+
+        
+
+
+
+        </div>
+
+
+
+        
+
+
+
+         <?php //echo htmlspecialchars($_product->getAttributeText('vivid_info')); ?>
+
+
+
+          <?php echo $description = $_product->getData('vivid_info');  ?>
+
+
+
+        
+
+
+
+        
+
+
+
+        <div class="bottom_form">
+
+
+
+  <iframe src='http://usedbooths.com.au/index.php/externalform/?store_id=166' height='850' width='930'>
+
+  </iframe>
+
+
+
+</div>
+
+
+
+ 
+
+
+
+</div>
+
+
+
+</form>
+
+
+
+
+
+
+
+        </div>
+
+
+
+        </div>
+
+
+
+		
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        <div class="clearer"></div>
+
+
+
+        
+
+
+
+    <script type="text/javascript">
+
+
+
+    //<![CDATA[
+
+
+
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+
+
+
+        productAddToCartForm.submit = function(button, url) {
+
+
+
+            if (this.validator.validate()) {
+
+
+
+                var form = this.form;
+
+
+
+                var oldUrl = form.action;
+
+
+
+
+
+
+
+                if (url) {
+
+
+
+                   form.action = url;
+
+
+
+                }
+
+
+
+                var e = null;
+
+
+
+                try {
+
+
+
+                    this.form.submit();
+
+
+
+                } catch (e) {
+
+
+
+                }
+
+
+
+                this.form.action = oldUrl;
+
+
+
+                if (e) {
+
+
+
+                    throw e;
+
+
+
+                }
+
+
+
+
+
+
+
+                if (button && button != 'undefined') {
+
+
+
+                    button.disabled = true;
+
+
+
+                }
+
+
+
+            }
+
+
+
+        }.bind(productAddToCartForm);
+
+
+
+
+
+
+
+        productAddToCartForm.submitLight = function(button, url){
+
+
+
+            if(this.validator) {
+
+
+
+                var nv = Validation.methods;
+
+
+
+                delete Validation.methods['required-entry'];
+
+
+
+                delete Validation.methods['validate-one-required'];
+
+
+
+                delete Validation.methods['validate-one-required-by-name'];
+
+
+
+                if (this.validator.validate()) {
+
+
+
+                    if (url) {
+
+
+
+                        this.form.action = url;
+
+
+
+                    }
+
+
+
+                    this.form.submit();
+
+
+
+                }
+
+
+
+                Object.extend(Validation.methods, nv);
+
+
+
+            }
+
+
+
+        }.bind(productAddToCartForm);
+
+
+
+    //]]>
+
+
+
+    </script>
+
+
+
+    </div>
+
+
+
+
+
+
+
+     
+
+
+
+</div>
+
+
+

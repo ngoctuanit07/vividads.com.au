@@ -1,0 +1,113 @@
+<table cellspacing="0" class="grid-header" width="100%">
+    <tr>
+        <td><h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Quotation Items'); ?></h4></td>
+    </tr>
+</table>
+
+<?php echo $this->getChildHtml('quotationitems') ?>
+
+<p>&nbsp;</p>
+<?php /* ?>
+<table cellspacing="0" class="grid-header" width="100%">
+    <tr>
+        <td><h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Add Products'); ?></h4></td>
+        <td class="a-right">
+            <button class="scalable add" type="button" onclick="showAddProductDiv('tab_add_product');"><span><?php echo $this->__('Add From Products List') ?></span></button>
+            <button class="scalable add" type="button" onclick="showAddProductDiv('tab_add_fake');"><span><?php echo $this->__('Add Fake Product') ?></span></button>
+        </td>
+    </tr>
+</table>
+<?php */?>
+
+<div class="entry-edit" id="tab_add_fake" style="display:none;">
+    <fieldset id="my-fieldset">
+        <table border="0" width="100%">
+            <tr>
+                <td colspan="2"><b><?php echo $this->__('Add fake product'); ?></b></td>
+            </tr>
+            <tr>
+                <td><?php echo $this->__('Name'); ?></td>
+                <td><input type="text" id="fake_name" name="fake_name"></td>
+            </tr>
+            <tr>
+                <td><?php echo $this->__('Qty'); ?></td>
+                <td><input type="text" id="fake_qty" name="fake_qty"></td>
+            </tr>
+            <tr>
+                <td><?php echo $this->__('Price'); ?></td>
+                <td><input type="text" id="fake_price" name="fake_price"></td>
+            </tr>
+            <tr>
+                <td><?php echo $this->__('Weight'); ?></td>
+                <td><input type="text" id="fake_weight" name="fake_weight"></td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+
+<div class="entry-edit" id="tab_add_product">
+    <fieldset id="my-fieldset">
+        <i><?php echo $this->__('Fill product quantity in textbox and click on save button to add products to quote'); ?></i>
+        <input type="hidden" name="add_product_log" id="add_product_log" />
+        <?php echo $this->getChildHtml('quotation_add_products') ?>
+        <script>persistantProductSelection = new persistantGridControl(ProductSelectionJsObject, 'add_product_log', 'add_qty_', '');</script>
+    </fieldset>
+</div>
+
+<script type="text/javascript">
+    ToggleQuoteWeightFieldVisibility();
+    ToggleQuotePriceFieldVisibility();
+    //InitAllFinalPrice();
+
+</script>
+
+<div id="popup-window-mask" style="display:none;"></div>
+<div id="product_composite_configure" class="product-configure-popup" style="display:none;">
+    <iframe name="product_composite_configure_iframe" id="product_composite_configure_iframe" src="#" style="width:0; height:0; border:0px solid #fff; position:absolute; top:-1000px; left:-1000px" onload="window.productConfigure && productConfigure.onLoadIFrame()"></iframe>
+    <form action="" method="post" id="product_composite_configure_form" enctype="multipart/form-data" onsubmit="productConfigure.onConfirmBtn(); return false;" target="product_composite_configure_iframe">
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head fieldset-legend">Configure Product</h4>
+            </div>
+            <div id="product_composite_configure_messages" style="display: none;" >
+                <ul class="messages"><li class="error-msg"></li></ul>
+            </div>
+            <div id="product_composite_configure_form_fields" class="content"></div>
+            <div id="product_composite_configure_form_additional" style="display:none;"></div>
+            <div id="product_composite_configure_form_confirmed" style="display:none;"></div>
+            <div class="buttons-set a-right">
+                <button type="button" class="scalable" onclick="productConfigure.onCancelBtn()" id="product_composite_configure_form_cancel"><span><span><span>Cancel</span></span></span></button>
+                <button type="submit" class="scalable"><span><span><span>OK</span></span></span></button>
+            </div>
+        </div>
+        <input type="hidden" name="as_js_varname" value="iFrameResponse" />
+        <input type="hidden" name="form_key" value="TgYN932kcDLH3GoJ" />
+    </form>
+    <div id="product_composite_configure_confirmed" style="display:none;"></div>
+
+    <script type="text/javascript">
+        var productCompositeConfigureForm = new varienForm('product_composite_configure_form');
+    </script>
+</div>
+<script type="text/javascript">
+    editForm = new varienForm('edit_form', '');
+    </script>
+
+
+
+    <script type="text/javascript">
+    Event.observe(window, 'load',  function() {
+        if (window.productConfigure) {
+            productConfigure.addListType('product_to_add', {
+                urlFetch: 'http://tablethrows.co.nz/index.php/zulfe/sales_order_create/configureProductToAdd/'
+            });
+            productConfigure.addListType('quote_items', {
+                urlFetch: 'http://tablethrows.co.nz/index.php/zulfe/sales_order_create/configureQuoteItems/'
+            });
+        }
+    });
+</script>
+<div id="loading-mask" style="display:none">
+    <p class="loader" id="loading_mask_loader"><img src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/ajax-loader-tr.gif" alt="Loading..."/><br/>Please wait...</p>
+</div>
+

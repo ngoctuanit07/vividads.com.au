@@ -1,0 +1,130 @@
+<div class="page-title category-title">
+	<h1>All Vendors Information</h1>
+</div>
+
+<?php $_vendors=$this->getVendors(); ?>
+<?php if(!$_vendors->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no vendors.') ?></p>
+<?php else: ?>
+<div class="category-products">   
+	<?php
+    echo $this->getPagerHtml();
+	$_page  = $this->getRequest()->getParam('p') ? $this->getRequest()->getParam('p') : 1;
+	$_limit = $this->getRequest()->getParam('limit') ? $this->getRequest()->getParam('limit') : 9;
+	$_mode = $this->getRequest()->getParam('mode') ? $this->getRequest()->getParam('mode') : 'grid';
+	$_start = (($_page * $_limit) - $_limit) + 1;
+	$_end = ($_start + $_limit) - 1;
+	$currentUrl = $this->helper('core/url')->getCurrentUrl();
+	?>
+    
+    <div class="sorter">
+        <p class="view-mode">
+        	<label><?php echo $this->__('View as') ?>:</label>
+            <?php if($_mode == 'grid'): ?>
+                <?php
+				$posi = strpos($currentUrl, 'mode=grid');
+				if ($posi !== false) {
+					$currentUrl = str_replace('?mode=grid&', '?', $currentUrl);
+					$currentUrl = str_replace('&mode=grid&', '&', $currentUrl);
+					$currentUrl = str_replace('?mode=grid', '', $currentUrl);
+					$currentUrl = str_replace('&mode=grid', '', $currentUrl);
+				}
+				$pos = strpos($currentUrl, '?');
+				?>
+                <strong class="grid" title="Grid">Grid</strong>&nbsp;
+                <a class="list" title="List" href="<?php echo $currentUrl ?><?php echo !$pos ? '?mode=list' : '&amp;mode=list' ?>">List</a>&nbsp;
+            <?php elseif($_mode == 'list'): ?>
+                <?php
+				$posi = strpos($currentUrl, 'mode=list');
+				if ($posi !== false) {
+					$currentUrl = str_replace('?mode=list&', '?', $currentUrl);
+					$currentUrl = str_replace('&mode=list&', '&', $currentUrl);
+					$currentUrl = str_replace('?mode=list', '', $currentUrl);
+					$currentUrl = str_replace('&mode=list', '', $currentUrl);
+				}
+				$pos = strpos($currentUrl, '?');
+				?>
+                <a class="grid" title="Grid" href="<?php echo $currentUrl ?><?php echo !$pos ? '?mode=grid' : '&amp;mode=grid' ?>">Grid</a>&nbsp;
+                <strong class="list" title="List">List</strong>&nbsp;
+            <?php endif; ?>
+		</p>
+    </div>
+    
+    <?php // List mode ?>
+    <?php if($_mode != 'grid'): ?>
+    <?php $_iterator = 0; ?>
+    <ol class="products-list" id="products-list">
+    <?php foreach ($_vendors as $_vendor): ?>
+        <?php $_iterator++; ?>
+		<?php if($_iterator >= $_start and $_iterator <= $_end): ?>
+        <li class="item<?php if( $_iterator == sizeof($_vendors) ): ?> last<?php endif; ?>">
+            <div class="product-shop" style="margin-left: 0">
+                <div class="f-fix">
+                    <h2 class="product-name"><a href="<?php echo $this->getUrl('vendorlist').$_vendor->getUsername(); ?>" title="<?php echo $_vendor->getCompany_name(); ?>"><?php echo $_vendor->getCompany_name(); ?></a></h2>
+                    <div class="price-box" style="width: 100%;">
+                        <span class="regular-price">
+                        	<span class="price"><?php echo $_vendor->getUsername(); ?></span>
+                        </span>                        
+                    </div>
+                    <div class="price-box" style="width: 100%; margin-bottom: 15px;">
+                        <span class="regular-price">
+							<?php $num = Mage::getModel('vendorlist/data')->getNumOfProduts($_vendor->getVendor_code());?>
+                            <span class="price">Products: <?php echo $num; ?> </span>
+                        </span>                        
+                    </div>
+                    
+                    <div class="price-box">
+                        <span class="regular-price">
+                        	<label style="font-size: 13px; font-weight: bold; color: #444444;">Location: </label>
+                            <span class="price" ><?php echo $_vendor->getAddress().'; '.$_vendor->getCity().'; '.$_vendor->getState().'; '.$_vendor->getZip(); ?></span>
+                        </span>                        
+                    </div>
+                </div>
+            </div>
+        </li>
+        <?php endif ?>
+    <?php endforeach ?>
+    </ol>
+    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+    <?php else: ?>
+
+    <?php // Grid Mode ?>
+	<?php
+	$_collectionSize = $_vendors->count();
+    $_columnCount = 3;
+    $i=0; foreach ($_vendors as $_vendor):
+	?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+            <?php if($i >= $_start and $i <= $_end): ?>
+            <li style="padding: 12px 10px 35px;" class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+              <h2 class="product-name"><a href = "<?php echo $this->getUrl('vendorlist').$_vendor->getUsername(); //echo $this->getUrl('vendorlist/all/index',array('name'=>$_vendor->getUsername())); ?>"> <?php echo $_vendor->getCompany_name();?></a></h2>                
+              <div class="price-box">
+              <span class="regular-price">
+              <span class="price"><?php echo $_vendor->getUsername(); ?></span>
+              </span>                        
+              </div>
+              <div class="price-box">
+              <span class="regular-price">
+              <?php $num = Mage::getModel('vendorlist/data')->getNumOfProduts($_vendor->getVendor_code());?>
+              <span class="price">Products: <?php echo $num; ?> </span>
+              </span>                        
+              </div>
+              <h3 style="font-size: 12px;">Location:</h3>
+              <div class="price-box">
+              <span class="regular-price">
+              <span class="price" ><?php echo $_vendor->getAddress().'; <br> '.$_vendor->getCity().'; '.$_vendor->getState().'; '.$_vendor->getZip(); ?></span>
+              </span>                        
+              </div>
+            </li>
+            <?php endif ?>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+	<?php endif ?>
+	<?php echo $this->getPagerHtml() ?>
+</div>
+<?php endif; ?>

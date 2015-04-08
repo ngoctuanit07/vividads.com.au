@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <permissions_adminhtml_permissions_index>
+        <reference name="content">
+            <block type="permissions/adminhtml_permissions" name="permissions" />
+        </reference>
+    </permissions_adminhtml_permissions_index>
+</layout>

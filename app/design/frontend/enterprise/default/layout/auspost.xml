@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <checkout_onepage_index>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/auspost/styles.css</stylesheet>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/jquery-1.7.1.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/noconflict.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/checkout.js</name>
+            </action>
+            <action method="addCss">
+                <stylesheet>css/auspost/fancybox/jquery.fancybox-1.3.4.css</stylesheet>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/fancybox/jquery.fancybox-1.3.4.pack.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/shipping.js</name>
+            </action>
+        </reference>
+        <reference name="checkout.onepage.shipping">
+            <action method="setTemplate">
+                <template>wl/auspost/shipping.phtml</template>
+            </action>
+        </reference>
+        <reference name="checkout.onepage.billing">
+            <action method="setTemplate">
+                <template>wl/auspost/billing.phtml</template>
+            </action>
+        </reference>
+    </checkout_onepage_index>
+
+    <checkout_onepage_shippingmethod>
+        <reference name="root">
+            <action method="setTemplate" ifconfig="carriers/auspost/active"><template>wl/auspost/shipping_method/available.phtml</template></action>
+        </reference>
+    </checkout_onepage_shippingmethod>
+
+    <sales_order_history>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/jquery-1.7.1.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/noconflict.js</name>
+            </action>
+        </reference>
+        <reference name="sales.order.history">
+            <action method="setTemplate" ifconfig="carriers/auspost/auspost_enable_tracking"><template>wl/auspost/order/history.phtml</template></action>
+            <block type="auspost/order_tracking" name="auspost.order.tracking" template="wl/auspost/order/tracking.phtml"/>
+        </reference>
+    </sales_order_history>
+    <customer_address_form>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/auspost/styles.css</stylesheet>
+            </action>
+            <action method="addCss">
+                <stylesheet>css/auspost/fancybox/jquery.fancybox-1.3.4.css</stylesheet>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/jquery-1.7.1.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/noconflict.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/fancybox/jquery.fancybox-1.3.4.pack.js</name>
+            </action>
+        </reference>
+        <reference name="customer_address_edit">
+            <action method="setTemplate"><template>wl/auspost/address/edit.phtml</template></action>
+        </reference>
+    </customer_address_form>
+    <checkout_cart_index>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/auspost/styles.css</stylesheet>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/jquery-1.7.1.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/auspost/noconflict.js</name>
+            </action>
+        </reference>
+        <reference name="checkout.cart.shipping">
+            <action method="setTemplate" ifconfig="carriers/auspost/auspost_enable_postcode_capability">
+                <template>wl/auspost/cart/shipping.phtml</template>
+            </action>
+        </reference>
+    </checkout_cart_index>
+    <auspost_data_getshippingdurationajax translate="label">
+        <!--<update handle="auspost_box" />-->
+        <block type="auspost/page_ajax_duration" name="page_ajax_duration" output="toHtml" template="wl/auspost/page/ajax/duration.phtml"/>
+    </auspost_data_getshippingdurationajax>
+
+    <auspost_data_getcollectionpointsajax>
+        <block type="auspost/page_ajax_collectionPoint" name="page_ajax_collectionpoint" output="toHtml" template="wl/auspost/page/ajax/collection_points.phtml"/>
+    </auspost_data_getcollectionpointsajax>
+    
+    <auspost_data_getcollectionpointbyidajax>
+        <block type="auspost/page_ajax_collectionPoint" name="page_ajax_collectionpointbyid" output="toHtml" template="wl/auspost/page/ajax/collection_point_by_id.phtml"/>
+    </auspost_data_getcollectionpointbyidajax>
+    
+    <auspost_data_getbusinessdaysajax>
+        <block type="auspost/page_ajax_deliverySchedule" name="page_ajax_getbusinessdays" output="toHtml" template="wl/auspost/page/ajax/getbusinessdays.phtml"/>
+    </auspost_data_getbusinessdaysajax>
+    
+    <auspost_data_gettrackingajax>
+        <block type="auspost/order_tracking" name="page_ajax_gettrackingajax" output="toHtml" template="wl/auspost/page/ajax/tracking_results.phtml"/>
+    </auspost_data_gettrackingajax>
+    
+    <auspost_data_auspostlogin>
+        <block type="auspost/page_ajax_customerAddress" name="page_ajax_auspostlogin" output="toHtml" template="wl/auspost/page/ajax/auspost_login.phtml"/>
+    </auspost_data_auspostlogin>
+    
+    <auspost_data_getcustomeraddress>
+        <block type="auspost/page_ajax_customerAddress" name="page_ajax_customeraddress" output="toHtml" template="wl/auspost/page/ajax/customer_address.phtml"/>
+    </auspost_data_getcustomeraddress>
+    
+    <auspost_data_getaddressvalidate>
+        <block type="auspost/page_ajax_addressValidate" name="page_ajax_addressvalidate" output="toHtml" template="wl/auspost/page/ajax/address_validate.phtml"/>
+    </auspost_data_getaddressvalidate>
+    
+    <auspost_data_getaddressvalidateresult>
+        <block type="auspost/page_ajax_addressValidate" name="page_ajax_addressvalidateresult" output="toHtml" template="wl/auspost/page/ajax/address_validate_result.phtml"/>
+    </auspost_data_getaddressvalidateresult>
+
+    <auspost_data_testapi>
+        <block type="auspost/page_testApi" name="page_testapi" output="toHtml" template="wl/auspost/page/testapi.phtml"/>
+    </auspost_data_testapi>
+
+</layout>

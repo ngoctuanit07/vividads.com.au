@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <designer_index_index>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/2columns-left.phtml</template>
+            </action>
+        </reference>
+        <update handle="customer_account"/>
+        <reference name="content">
+            <block type="designer/designer" name="designer" template="designer/designer.phtml" />
+        </reference>
+    </designer_index_index>
+    
+    <!-- Add my quotes tab in customer account-->
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="designer">
+                <name>designer</name>
+                <path>sales/order/history/type/1/</path>
+                <label>My Artwork</label>
+            </action>
+        </reference>
+    </customer_account>
+
+
+</layout> 

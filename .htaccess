@@ -906,15 +906,19 @@ Header append Vary User-Agent
 
 
 
-    #FileETag none
 
 
 
+ #FileETag none
 
 
-RewriteCond %{HTTP_HOST} ^www\.(.+)
-RewriteCond %{HTTPS}s/%1 ^(on(s)|offs)/(.+)
-RewriteRule ^ http%2://%3%{REQUEST_URI} [L,R=301]
+#RewriteCond %{HTTP_HOST} ^vividads.com.au$ [NC]
+#RewriteRule ^(.*)$ http://www.vividads.com.au/$1 [R=301,L]
+
+
+#RewriteCond %{HTTP_HOST} ^www\.(.+)
+#RewriteCond %{HTTPS}s/%1 ^(on(s)|offs)/(.+)
+#RewriteRule ^ http%2://%3%{REQUEST_URI} [L,R=301]
 
 
 

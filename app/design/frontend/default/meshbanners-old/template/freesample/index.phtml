@@ -1,0 +1,467 @@
+
+
+
+
+
+
+
+<!--<script type="text/javascript" src="<?php echo $this->getJsUrl();?>jquery-1.9.1.js"></script>-->
+<script language="JavaScript" type="text/javascript" src="<?php echo $this->getJsUrl();?>ajax_captcha.js"></script>
+<?php if(!$_POST['first_name'])
+    {
+/*$osolCaptchaLoadFromSSL = $_SERVER['SERVER_PORT']==443?true:false;*/ ?>
+<div class="headingtitle"><h2 class="samplebook">FREE Sample Book</h2></div>
+<div class="freesamplemmain">
+    <h2 class="freesampl">FREE Sample Book</h2>
+    <div class="upperdection">
+        
+        <div class="upperdectionright">
+            <p>Please send me a <b class="blue">FREE Sample Book</b> containing all the Fence, Sports &amp; Banner Signage Materials.</p>
+            </div>
+    </div>
+    <div class="midsection">
+        <div class="midsectionmain"><img title="FREE Sample book of materials" src="<?php echo $this->getSkinUrl();?>images/samplebook-medium.png"></div>
+        <div class="midsectionright">
+            <form  style="padding-left:15px; font-family:Verdana, Arial, Helvetica, sans-serif;"  method="POST" id="contact" name="contact" >
+				
+		<div class="reciver">
+                    <p align="center" class="blue"><b>Receiver Details</b></p>
+                </div>
+                <ul>
+                <!-- MSTableType="nolayout" -->
+                
+                
+                
+                
+                <li>
+                    
+                <div class="uppertext">First Name:<span class="green">*</span>
+                </div>
+                <div class="txtsample"><input type="text" tabindex="1" maxlength="40" size="25" id="first_name" name="first_name">
+                </div>
+                </li>
+                <li>
+                <div class="uppertext">Last Name:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="2" maxlength="40" size="25" id="last_name" name="last_name">
+                </li>
+                <li>
+                <div class="uppertext">Your Email:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="3" maxlength="40" size="25" id="email" name="email"></div>
+                </li>
+                <li>
+                <div class="uppertext">Your Phone:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="4" maxlength="18" size="25" id="phone_number" name="phone_number"></div>
+                </li>
+                <li>
+                <div class="uppertext">Company Name:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="5" maxlength="40" size="25" id="companyname" name="companyname"></div>
+                </li>
+                <li>
+                <div class="uppertext">Website:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="6" maxlength="50" size="25" id="website" name="website"></div>
+                </li>
+                </ul>
+                
+                <div class="shipaddress">
+                <p align="center" class="blue"><b>Shipping Address</b><br>
+                <span class="blue">Note: We do not ship to Post Office Box addresses </span></p>
+                </div>
+                
+                <ul>
+                <li>
+                <div class="uppertext">Address:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="7" maxlength="30" size="25" id="address1" name="address1"></div>
+                </li>
+                <li>
+                <div class="uppertext">Address:&nbsp;&nbsp;&nbsp;</div>
+                <div class="txtsample"><input type="text" tabindex="8" maxlength="30" size="25" id="address2" name="address2"></div>
+                </li>
+                <li>
+                <div class="uppertext">Suburb/City:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="9" maxlength="30" size="25" id="suburb" name="suburb"></div>
+                </li>
+                <li>
+                <div class="uppertext">State:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="10" maxlength="30" size="25" id="state" name="state"></div>
+                </li>
+                <li>
+                <div class="uppertext">Zip/Postcode:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="11" maxlength="18" size="12" id="postcode" name="postcode"></div>
+                </li>
+                
+                <li>
+                <div class="uppertext">Country:&nbsp;<span class="green">*</span></div>
+                
+                <div class="txtsample">
+                <div tabindex="11" id="dk_container_country" class="dk_container dk_theme_default" style="display: block;">
+                <div class="dk_options">
+                <!--<ul class="dk_options_inner">
+                <li class="dk_option_current"><a data-dk-dropdown-value="">Select a Country</a></li>
+                <li class=""><a data-dk-dropdown-value="Australia">Australia</a></li>
+                <li class=""><a data-dk-dropdown-value="Austria">Austria</a></li>
+                <li class=""><a data-dk-dropdown-value="Brazil">Brazil</a></li>
+                <li class=""><a data-dk-dropdown-value="Canada">Canada</a></li>
+                <li class=""><a data-dk-dropdown-value="China">China</a></li>
+                <li class=""><a data-dk-dropdown-value="Egypt">Egypt</a></li>
+                <li class=""><a data-dk-dropdown-value="France">France</a></li>
+                <li class=""><a data-dk-dropdown-value="Germany">Germany</a></li>
+                <li class=""><a data-dk-dropdown-value="Great Britain">Great Britain</a></li>
+                <li class=""><a data-dk-dropdown-value="Greece">Greece</a></li>
+                <li class=""><a data-dk-dropdown-value="Hungary">Hungary</a></li>
+                <li class=""><a data-dk-dropdown-value="Italy">Italy</a></li>
+                <li class=""><a data-dk-dropdown-value="Luxembourg">Luxembourg</a></li>
+                <li class=""><a data-dk-dropdown-value="Morocco">Morocco</a></li>
+                <li class=""><a data-dk-dropdown-value="Netherlands">Netherlands</a></li>
+                <li class=""><a data-dk-dropdown-value="New Zealand">New Zealand</a></li>
+                <li class=""><a data-dk-dropdown-value="Norway">Norway</a></li>
+                <li class=""><a data-dk-dropdown-value="Papua New Guinea">Papua New Guinea</a></li>
+                <li class=""><a data-dk-dropdown-value="Poland">Poland</a></li>
+                <li class=""><a data-dk-dropdown-value="Portugal">Portugal</a></li>
+                <li class=""><a data-dk-dropdown-value="Qatar">Qatar</a></li>
+                <li class=""><a data-dk-dropdown-value="Romania">Romania</a></li>
+                <li class=""><a data-dk-dropdown-value="Russia">Russia</a></li>
+                <li class=""><a data-dk-dropdown-value="Saudi Arabia">Saudi Arabia</a></li>
+                <li class=""><a data-dk-dropdown-value="Singapore">Singapore</a></li>
+                <li class=""><a data-dk-dropdown-value="South Africa">South Africa</a></li>
+                <li class=""><a data-dk-dropdown-value="Sweden">Sweden</a></li>
+                <li class=""><a data-dk-dropdown-value="Switzerland">Switzerland</a></li>
+                <li class=""><a data-dk-dropdown-value="Turkey">Turkey</a></li>
+                <li class=""><a data-dk-dropdown-value="Uruguay">Uruguay</a></li>
+                <li class=""><a data-dk-dropdown-value="USA">USA</a></li>
+                <li class=""><a data-dk-dropdown-value="Venezuela">Venezuela</a></li>
+                </ul>-->
+                </div></div>
+                <select tabindex="11" id="country" name="country" >
+                <option selected="selected" disabled="disabled" value="">Select a Country</option>
+                <option name="country" value="Australia" >Australia</option>
+                <option name="country" value="Austria" >Austria</option>
+                <option name="country" value="Brazil" >Brazil</option>
+                <option name="country" value="Canada" >Canada</option>
+                <option name="country" value="China" >China</option>
+                <option name="country" value="Egypt" >Egypt</option>
+                <option name="country" value="France" >France</option>
+                <option name="country" value="Germany" >Germany</option>
+                <option name="country" value="Great Britain" >Great Britain</option>
+                <option name="country" value="Greece" >Greece</option>
+                <option name="country" value="Hungary" >Hungary</option>
+                <option name="country" value="Italy" >Italy</option>
+                <option name="country" value="Luxembourg" >Luxembourg</option>
+                <option name="country" value="Morocco" >Morocco</option>
+                <option name="country" value="Netherlands" >Netherlands</option>
+                <option name="country" value="New Zealand" >New Zealand</option>
+                <option name="country" value="Norway" >Norway</option>
+                <option name="country" value="Papua New Guinea" >Papua New Guinea</option>
+                <option name="country" value="Poland" >Poland</option>
+                <option name="country" value="Portugal" >Portugal</option>
+                <option name="country" value="Qatar" >Qatar</option>
+                <option name="country" value="Romania" >Romania</option>
+                <option name="country" value="Russia" >Russia</option>
+                <option name="country" value="Saudi Arabia" >Saudi Arabia</option>
+                <option name="country" value="Singapore" >Singapore</option>
+                <option name="country" value="South Africa" >South Africa</option>
+                <option name="country" value="Sweden" >Sweden</option>
+                <option name="country" value="Switzerland" >Switzerland</option>
+                <option name="country" value="Turkey" >Turkey</option>
+                <option name="country" value="Uruguay" >Uruguay</option>
+                <option name="country" value="USA" >USA</option>
+                <option name="country" value="Venezuela" >Venezuela</option>
+                </select>
+                
+                </li>
+                
+                
+                <li>
+                
+                <span id="nameError" class="error">Please enter the required fields</span>
+                
+                </li>
+                <li>
+                    <li class="captcha">
+                        
+                        
+
+                <div class="uppertext">Enter Code:</div>
+                    
+                    
+                    <div class="txtsample"> 
+                    <img id="imgCaptcha" src="http://192.168.0.55/tablethrows/create_image.php" />
+                    <a href="javascript:void(0);" onclick="reload();" class="reset">Reset Code</a>
+                    </div>
+                    <div class="captchatxt"><input id="txtCaptcha" type="text" name="txtCaptcha" value="" maxlength="10" size="32" /></div>
+                    
+                    
+                    <div id="result">&nbsp;</div>
+
+		
+   
+   
+                    </li>
+                
+                
+                <!--<input type="submit" class="btn btn-success" value="Submit" onclick="chkvalue();">-->
+                <!--<button class="btn-success" onclick="">Submit</button>-->
+                <input type="button" class="btn-success form-button" onclick="getParam(document.contact)" value="Submit">
+                
+                
+                </li>								
+                
+                </ul>
+                                
+                
+                                
+                </form>
+
+            
+            </div>
+    </div>
+    <div class="bottom">
+        <img width="618" height="412" alt="Fabric Signage Samples" src="<?php echo $this->getSkinUrl();?>images/samplebook-montage.jpg">
+    </div>
+</div>
+<?php
+    } ?>
+
+<style type="text/css">  
+.error {
+	font-family: Tahoma;
+	font-size: 12px;	
+	color: #1077dd; 
+	display:none;
+} 
+
+td{
+padding:3px;
+}
+</style>
+
+
+
+
+<?php
+    if ($_POST['first_name']!='' || $_POST['last_name']!='' || $_POST['email']!='' || $_POST['phone_number']!='' || $_POST['companyname']!='' || $_POST['website']!='' || $_POST['address1']!='' || $_POST['suburb']!='' || $_POST['state']!='' || $_POST['postcode']!='' || $_POST['country']!='')
+    {
+        //echo $_POST['first_name'];
+        
+        $resource = Mage::getSingleton('core/resource');
+        $Readconn = $resource->getConnection('core_write');                     
+        $tableName = Mage::getSingleton('core/resource')->getTableName(' freesample');
+        $sql="insert into `".$tableName."` (First Name,Last Name,email,phone,companyname,website,address,city,state,zipcode,countr) values ('".$_POST['first_name']."','".$_POST['last_name']."','".$_POST['email']."','".$_POST['phone_number']."','".$_POST['companyname']."','".$_POST['website']."','".$_POST['address1']."','".$_POST['suburb']."','".$_POST['state']."','".$_POST['postcode']."','".$_POST['country']."')";
+        
+        $sample=$Readconn->query("insert into `freesample` values('NULL','".$_POST['first_name']."','".$_POST['last_name']."','".$_POST['email']."','".$_POST['phone_number']."','".$_POST['companyname']."','".$_POST['website']."','".$_POST['address1']."','".$_POST['suburb']."','".$_POST['state']."','".$_POST['postcode']."','".$_POST['country']."')");
+        if($sample)
+        {?>
+        <div class="test-image"><img title="" alt="" src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/tab2.jpg"></div>
+            
+         <?php echo '<div class="sucess"><h2><Thank You</h2><span class="user"></span><span>Your message has been sent</span><span><a href="#">Continue shopping</a></span></div>';
+                                    
+        }
+    }
+?>
+
+
+<script type="text/javascript">
+
+
+    jQuery(function() {
+        //alert("welcome");
+        jQuery( "#downloads_video_overlay" ).hide();
+      jQuery(".btn-success").click(function() {  
+        //alert("welcome");
+        
+      });  
+    });
+    /*Security Code*/
+    function getXmlHttpRequestObject() {
+    if (window.XMLHttpRequest) {
+    return new XMLHttpRequest(); //Mozilla, Safari ...
+    } else if (window.ActiveXObject) {
+    return new ActiveXObject("Microsoft.XMLHTTP"); //IE
+    } else {
+    //Display our error message
+    alert("Your browser doesn't support the XmlHttpRequest object.");
+    }
+    }
+
+    //Our XmlHttpRequest object
+    var receiveReq = getXmlHttpRequestObject();
+    
+    //Initiate the AJAX request
+    function makeRequest(url, param) {
+    //If our readystate is either not started or finished, initiate a new request
+     if (receiveReq.readyState == 4 || receiveReq.readyState == 0) {
+       //Set up the connection to captcha_test.html. True sets the request to asyncronous(default) 
+       receiveReq.open("POST", url, true);
+       //Set the function that will be called when the XmlHttpRequest objects state changes
+       receiveReq.onreadystatechange = updatePage; 
+    
+       receiveReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+       receiveReq.setRequestHeader("Content-length", param.length);
+       receiveReq.setRequestHeader("Connection", "close");
+    
+       //Make the request
+       receiveReq.send(param);
+     }   
+    }
+
+    //Called every time our XmlHttpRequest objects state changes
+    function updatePage() {
+        //alert(receiveReq.readyState);
+     //Check if our response is ready
+     if (receiveReq.readyState == 4) {
+       //Set the content of the DIV element with the response text
+       //alert(receiveReq.response);
+       if (receiveReq.response==1) {
+        //code
+        jQuery( "#contact" ).submit();
+       }
+       else {
+       //alert(receiveReq.response);
+       document.getElementById('result').innerHTML = receiveReq.responseText; }
+       
+       //Get a reference to CAPTCHA image
+       img = document.getElementById('imgCaptcha'); 
+       //Change the image
+       img.src = 'http://mesh-banners.com.au/create_image.php?' + Math.random();
+     }
+    }
+    function reload() {
+        var img = document.getElementById('imgCaptcha'); 
+       //Change the image
+       img.src = 'http://mesh-banners.com.au/create_image.php?' + Math.random();
+    }
+
+    //Called every time when form is perfomed
+    function getParam(theForm) {
+     //Set the URL
+     //alert("welcome");
+     var url = 'http://mesh-banners.com.au/captcha.php';
+     //Set up the parameters of our AJAX call
+     var postStr = theForm.txtCaptcha.name + "=" + encodeURIComponent( theForm.txtCaptcha.value );
+     //alert(theForm.txtCaptcha.value);
+     //Call the function that initiate the AJAX request
+     makeRequest(url, postStr);
+    }
+//function resetNum(rest){
+//	var randnm=Math.random();
+//	document.turing.src='http://www.durabanners.com.au/qsi/quickquestions/contact-sample.php?changeTuringNumber=1&amp;rnd='+randnm;
+//}
+//
+//function trim(s) {
+//  while (s.substring(0,1) == ' ') {
+//    s = s.substring(1,s.length);
+//  }
+//  while (s.substring(s.length-1,s.length) == ' ') {
+//    s = s.substring(0,s.length-1);
+//  }
+//  return s;
+//}
+//
+//function chkvalue() {
+//    var firstname = document.getElementById("first_name").value;
+//    if (firstname == "") {
+//        return false;
+//    }
+//}
+//function checkForm() {
+//	firstname = document.getElementById("first_name").value;
+//	lastname = document.getElementById("last_name").value;
+//	email = document.getElementById("email").value;
+//	phone = document.getElementById("phone_number").value;
+//	company = document.getElementById("companyname").value;
+//	website = document.getElementById("website").value;
+//	address1 = document.getElementById("address1").value;
+//	suburb = document.getElementById("suburb").value;
+//	state = document.getElementById("state").value;
+//	postcode = document.getElementById("postcode").value;
+//	countryindex = document.getElementById("country").selectedIndex;
+//	country = document.getElementById("country").value;
+//	phone = phone.replace(/^\s+|\s+$/g, '') ;
+//	turing = document.getElementById("turing").value;
+//	
+//	if (firstname == "") {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("first_name").select();
+//		document.getElementById("first_name").focus();
+//		return false;
+//	} if (lastname == "") {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("last_name").select();
+//		document.getElementById("last_name").focus();
+//		return false;
+//	} else if (email== "") {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("email").select();
+//		document.getElementById("email").focus();
+//		return false;
+//	} else if (phone== "") {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("phone_number").select();
+//		document.getElementById("phone_number").focus();
+//		return false;
+//	} else if (phone.length&lt;5) {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("phone_number").select();
+//		document.getElementById("phone_number").focus();
+//		return false;
+//	}  else if (company== "") {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("companyname").select();
+//		document.getElementById("companyname").focus();
+//		return false;
+//	} else if (website== "") {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("website").select();
+//		document.getElementById("website").focus();
+//		return false;
+//	} else if (address1== "") {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("address1").select();
+//		document.getElementById("address1").focus();
+//		return false;
+//	} else if (suburb== "") {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("suburb").select();
+//		document.getElementById("suburb").focus();
+//		return false;
+//	} else if (state== "") {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("state").select();
+//		document.getElementById("state").focus();
+//		return false;
+//	} else if (postcode== "") {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("postcode").select();
+//		document.getElementById("postcode").focus();
+//		return false;
+//	} else if (countryindex == 0) {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		return false;
+//	} else if (turing.length&lt;6) {
+//		hideAllErrors();
+//		document.getElementById("nameError").style.display = "inline";
+//		document.getElementById("turing").select();
+//		document.getElementById("turing").focus();
+//		return false;
+//	} else {
+//		return true;
+//	}
+//	
+//}
+//
+//function hideAllErrors() {
+//	document.getElementById("nameError").style.display = "none";
+//}
+
+</script>

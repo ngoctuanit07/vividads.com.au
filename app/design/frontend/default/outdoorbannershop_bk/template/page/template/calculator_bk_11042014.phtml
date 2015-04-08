@@ -1,0 +1,206 @@
+<script type="text/javascript" src="<?php echo $this->getJsUrl()?>jquery-latest.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+
+function loadProduct(cid){
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/loadproduct';
+	if(cid > 0){
+		
+		jQuery('#loader').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, catId: cid },  
+			success:function(result){
+				jQuery('#loader').css('display','none');
+				jQuery('#mainProduct').html(result);
+			}
+		});
+	}else{
+		alert('Please select a valid category');
+	}
+}
+
+function loadProductDetails(pid){
+	pidar = pid.split(':');
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/loadproductdetails';
+	
+	//url= '<?php echo Mage::getBaseUrl();?>customoptions/index/index/id/'+pidar[1]+'/';
+	//url= '<?php echo Mage::getBaseUrl();?>catalog/product/view/id/610/';
+	
+	if(pid != ''){
+		jQuery('#loader').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, pId: pid },  
+			success:function(result){
+				//alert(result)
+				ret = result.split('##');
+				jQuery('#loader').css('display','none');
+				jQuery('#total_display').html(ret[0]);
+				jQuery('#total_display_1').html(ret[0]);
+				jQuery('#cusopt').html(ret[1]);
+				
+				
+			}
+		});
+		
+	}else{
+		alert('Please select a valid product');
+	}
+	
+}
+
+
+function getchildren(optid,optval){
+	//alert(optid);
+	//alert(optval);
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/getchildopt';
+	if(optval != 0){
+		//jQuery('#loader').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, optId: optid, optvalId :optval  },  
+			success:function(result){
+				//alert(result);
+				//jQuery('#loader').css('display','none');
+				jQuery('#cusopt_1').html(result);
+				
+				//ret = result.split('##');
+				//for (var i=1;i<ret.length;i++)
+				//{
+				//	jQuery('#opt__'+ret[i]).css('display','block');
+				//}
+				//jQuery('#cusopt dl').each(function(){
+				//	var dl = jQuery(this);
+				//	var dlId = dl.attr('id').split('__');
+				//	
+				//	if(result.indexOf(dlId[1]) == -1 && dlId[1] != optid){
+				//		
+				//		jQuery('#opt__'+dlId[1]).css('display','none');
+				//	}
+				//	
+				//
+				//
+				//});
+				
+			}
+		});
+		
+		
+		
+	}else{
+		alert('Please select a valid product');
+	}
+}
+
+</script>
+
+
+
+<?php
+	$storeId=Mage::app()->getStore()->getId();
+	$rootCategoryId = Mage::app()->getStore($storeId)->getRootCategoryId();
+	$categories = Mage::getModel('catalog/category')->getCategories($rootCategoryId);
+?>
+
+
+
+<div class="formInfo">
+	<div id="instantBox" class="clearfix">
+		<div class="lable"></div>
+		<div class="lable lable2"></div>
+		<div class="instantBox-body clearfix">
+			<!---------Left Starts ---------->
+			<div class="instantPrice float-L">
+				<dl class="clearfix">
+				<dt>Category</dt>
+				<dd id="mainCategories">   
+					<select name="category" class="textfield" id="category" onchange="loadProduct(this.value)">
+					    <option value="0">--Please select--</option>
+					    <?php foreach($categories as $_category){ ?>
+					    <option value="<?php echo $_category->getId();?>"><?php echo $_category->getName();?></option>
+					    <?php } ?>
+					</select> 
+				</dd>
+				</dl>
+				
+				<dl class="clearfix">
+				<dt>Product</dt>
+				<dd>
+					<div id="mainProduct">
+					  <select class="textfield" id="product_sel">
+					  <option value="0">--Please select--</option>
+					  </select>
+					</div>
+					<div id="loader" style="display:none; margin-left:100px;">
+					<img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/>
+					</div>                     
+				</dd>
+				</dl>
+				
+				<div class="option" id="cusopt"></div>
+				<div class="option" id="cusopt_1"></div>
+				
+				
+				<dl class="clearfix">
+				<dt>Price</dt>
+				<dd class="price">
+				  <div id="total_display" class="float-L">$0.00</div>
+				  
+				</dd>
+			        </dl>
+				
+				
+				<div class="pricebottom">
+					<span class="prcbutn" style="height:0px">
+						<input type="button" style="color:transparent;" value="start order" class="startOrder-btn" title="Start Order" name="getprice">
+					</span>
+					<dl class="totalprice blue-clr">
+						<div class="pricetopbg"></div>
+						<span id="grandtotaldisplay"> TOTAL PRICE : <span id="total_display_1">$0.00 </span></span>
+						<div class="pricebtmbg"></div>
+					</dl>
+				</div>
+			</div>
+			<!------------Left Ends------- -->
+			<div class="instant-separator float-L">
+				<div class="ortext"></div>
+		        </div>
+			
+			<!--Right Starts -->
+			<div class="quickStart-Order float-L">
+				<div class="quickStart-Order float-L">
+					<div class="title blue-clr">3 Easy ways to order</div>
+					<div class="align-C">Category:
+						<select name="3wayproduct" class="textfield dropdown" style="width:215px;" id="3wayproduct" >
+							<option value="0">--Please select--</option>
+						</select>
+					</div>
+					
+					<div id="mainProduct2">                
+						Product:
+						<select class="textfield" name="porduct_sel" id="product_sel" style="width:215px; margin-left:8px;">
+							<option value="0">--Please select--</option>
+						</select>                  
+					</div>               
+					<div id="loaderp2" style="display:none; margin-left:100px;">
+					<img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/>
+					</div>
+					
+					<div class="StartorderButtons">
+						<input name="submit-prt-ready" type="button" value="print ready" title="Submit Print Ready Design" class="buttons" id="printreadybtn" style="color:transparent;" />
+						<input name="order-form" value="design tool" type="button" title="Design Your Own Banner" class="buttons designYour-banner" id="prdbtn" style="color:transparent;" />
+						<input name="product-details" type="button" value="letusdesign" title="Let us Design Your Banner" class="buttons letus-design-banner" id="letusbtn"  style="color:transparent;" />
+					</div>
+					
+				</div>
+			
+					
+			</div>
+			<!--Right Ends -->
+		</div>
+	</div>
+</div>

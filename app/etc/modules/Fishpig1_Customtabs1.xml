@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Fishpig1_Customtabs1>
+            <active>false</active>
+            <codePool>local</codePool>
+        </Fishpig1_Customtabs1>
+    </modules>
+</config>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <factoryphotos_adminhtml_factoryphotos_index>
+        <reference name="content">
+            <block type="factoryphotos/adminhtml_factoryphotos" name="factoryphotos" />
+        </reference>
+        <!--For editor in admin-->
+    </factoryphotos_adminhtml_factoryphotos_index>
+    <factoryphotos_adminhtml_factoryphotos_edit>
+      <update handle="editor"/>
+   </factoryphotos_adminhtml_factoryphotos_edit>
+
+</layout>

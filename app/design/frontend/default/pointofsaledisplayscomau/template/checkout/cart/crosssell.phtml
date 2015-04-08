@@ -1,0 +1,167 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Cart cross sell items template
+ *
+ * @see Mage_Checkout_Block_Cart_Crosssell
+ */
+?>
+<?php if($this->getItemCount()): ?>
+<?php /* ?>
+<div class="crosssell">
+    <h2><?php echo $this->__('Based on your selection, you may be interested in the following items:') ?></h2>
+    <ul id="crosssell-products-list">
+    <?php foreach ($this->getItems() as $_item): ?>
+        <li class="item">
+            <a class="product-image" href="<?php echo $_item->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(75); ?>" width="75" height="75" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" /></a>
+            <div class="product-details">
+                <h3 class="product-name"><a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a></h3>
+                <?php echo $this->getPriceHtml($_item, true) ?>
+                <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_item) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                <ul class="add-to-links">
+                    <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                        <li><a href="<?php echo $this->getAddToWishlistUrl($_item) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                    <?php endif; ?>
+                    <?php if($_compareUrl=$this->getAddToCompareUrl($_item)): ?>
+                        <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+    <script type="text/javascript">decorateList('crosssell-products-list', 'none-recursive')</script>
+</div>
+<?php */ ?>
+
+
+<!-- Custom coding for slider -->
+<script type="text/javascript">
+var $j = jQuery.noConflict();
+$j(document).ready(function(){
+  var currentPosition = 0;
+  var slideWidth = 250;
+  var slides = $j('.slide');
+  var numberOfSlides = slides.length;
+
+  // Remove scrollbar in JS
+  $j('#slidesContainer').css('overflow', 'hidden');
+
+  // Wrap all .slides with #slideInner div
+  slides
+    .wrapAll('<div id="slideInner"></div>')
+    // Float left to display horizontally, readjust .slides width
+	.css({
+      'float' : 'left',
+      'width' : slideWidth
+    });
+
+  // Set #slideInner width equal to total width of all slides
+  $j('#slideInner').css('width', slideWidth * numberOfSlides);
+
+  // Insert controls in the DOM
+  $j('#slideshow')
+    .prepend('<span class="control" id="leftControl">Clicking moves left</span>')
+    .append('<span class="control" id="rightControl">Clicking moves right</span>');
+
+  // Hide left arrow control on first load
+  manageControls(currentPosition);
+
+  // Create event listeners for .controls clicks
+  $j('.control')
+    .bind('click', function(){
+    
+	//window.clearInterval(cycle); cycle=window.setInterval(cycleShow, 5000);
+
+    // Determine new position
+	currentPosition = ($j(this).attr('id')=='rightControl') ? currentPosition+1 : currentPosition-1;
+    
+	// Hide / show controls
+    manageControls(currentPosition);
+    // Move slideInner using margin-left
+    $j('#slideInner').animate({
+      'marginLeft' : slideWidth*(-currentPosition)
+    });
+  });
+
+  // manageControls: Hides and Shows controls depending on currentPosition
+  function manageControls(position){
+    // Hide left arrow if position is first slide
+	if(position==0){ $j('#leftControl').hide() } else{ $j('#leftControl').show() }
+	// Hide right arrow if position is last slide
+    if(position>=numberOfSlides-2){ $j('#rightControl').hide() } else{ $j('#rightControl').show() }
+  }	
+
+function setPosition(position) {
+
+      currentPosition=parseInt(position)
+      manageControls(currentPosition);
+      $j('#slideInner').animate({
+      'marginLeft' : slideWidth*(-currentPosition)
+      });
+  }
+
+//var cycle=window.setInterval(cycleShow, 5000);
+
+function cycleShow(){
+
+	if(currentPosition==numberOfSlides-2) {
+	   currentPosition=0;
+	}
+	else {
+	   currentPosition++;
+	}
+	setPosition(currentPosition);
+}
+});
+</script>
+
+<div class="crosssell">
+    <h2><?php echo $this->__('Related Products') ?></h2>
+    <!-- Slideshow HTML -->
+    <div id="slideshow">
+        <div id="slidesContainer">
+            <?php foreach ($this->getItems() as $_item): ?>
+                    <div class="slide"> 
+                        <a class="product-image" href="<?php echo $_item->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>">
+                        <img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(175); ?>" width="175" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" />
+                        </a>
+                        <div class="product-shop">
+                            <h3 class="product-name">
+                                <a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a>
+                            </h3>
+                            <?php echo $this->getPriceHtml($_item, true) ?>
+                        </div>
+                    </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <!-- Slideshow HTML -->
+</div>
+<!-- End Custom code -->
+<?php endif; ?>

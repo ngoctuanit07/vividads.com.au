@@ -1,0 +1,59 @@
+<?php
+$session = Mage::getSingleton('core/session');
+$pinterestBoards = $session->getPinterestBoards();
+if(is_array($pinterestBoards) && isset($pinterestBoards[0]['value'])) {
+    $boards = $pinterestBoards;
+} else {
+    $email = Mage::getStoreConfig("social/pinterest/email");
+    $pass = Mage::getStoreConfig("social/pinterest/password");
+    $pin = Mage::getModel('social/autopin');
+    $loginError = $pin->loginToPinterest($email, $pass);
+    if (!$loginError) {    
+        $boards = $pin->getBoards();
+        $session->setPinterestBoards($boards);
+    } else {
+        Mage::log("Pinterest error: ".$loginError);
+    }
+}
+
+$board_select = "<select name='board_id'><option value=''>-- Please select board --</option>";
+foreach((array)$boards as $board) {
+    $board_select .= "<option value='".$board['value']."'>".$board['name']."</option>";
+}
+$board_select .= "</select>";
+?>
+
+<div style="" id="product_info_tabs_group_50_content">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend">MagenTools settings for Product</h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div id="group_fields50" class="fieldset fieldset-wide">
+
+		<div><h3>Pinterest</h3></div><hr>
+            <div style="padding-bottom: 15px;color:gray">
+		To pin the product image to Pinterest, select the board below.<br/>
+                Please note that the Pinterest board you will select will not be saved into the database, it will just pin this product image and forget.<br />
+            </div>
+	    
+            <div style="padding-bottom:20px;">
+             <label for="boards">Select Pinterest Board to Auto-Pin Product's Image into: </label>
+             <?php echo $board_select; ?>
+            </div>
+
+
+		<div><h3>Facebook</h3></div><hr>
+	    <div style="padding-bottom:20px;"><label>Auto-post to Facebook? </label>
+		<select name="facebook" id="facebook"><option value="1">Yes</option><option value="0" selected="selected">No</option></select>
+	    </div>
+
+
+		<div><h3>Twitter</h3></div><hr>
+	    <div style="padding-bottom:20px;"><label>Auto-tweet to Twitter? </label>
+		<select name="twitter" id="twitter"><option value="1">Yes</option><option value="0" selected="selected">No</option></select>
+	    </div>
+
+        </div>
+    </div>
+</div>

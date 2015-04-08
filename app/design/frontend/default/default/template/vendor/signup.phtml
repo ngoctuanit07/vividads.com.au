@@ -1,0 +1,145 @@
+<?php
+$session	= Mage::getSingleton('vendor/session');
+
+$this->getLayout()->getMessagesBlock()->setMessages($session->getMessages(true));
+echo $this->getMessagesBlock()->getGroupedHtml();
+
+$post	= $session->getData("postdata");
+$session->unsetData("postdata");
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl("css/vendor.css"); ?>" media="all" />
+
+<div class="page-head">
+  <h3><?php echo $this->__('Vendor Sign up') ?></h3>
+</div>
+<form action="<?php echo $this->getUrl("vendor/signup/post"); ?>" method="post" enctype="multipart/form-data" id="form-validate">
+  <fieldset class="group-select wide">
+    <table cellspacing="0" cellpadding="3">
+      <tr>
+        <td>Vendor Company Name <span class="required">*</span>:</td>
+        <td>
+          <input type="text" name="companyname" class="input-text required-entry" value="<?php echo !empty($post) ? $post["companyname"] : "" ?>">
+        </td>
+      </tr>
+      <tr>
+        <td>Vendor Company Logo:</td>
+        <td>
+          <input type="file" name="companylogo" class="input-text">
+        </td>
+      </tr>
+      <tr>
+        <td width="235">Vendor Username <span class="required">*</span>:</td>
+        <td>
+          <input type="text" name="name" value="<?php echo !empty($post) ? $post["name"] : "" ?>" class="input-text required-entry">
+        </td>
+      </tr>
+<?php
+      if (Mage::getStoreConfig('vendor/general/sku_prefix') == 1) {
+?>
+      <tr>
+        <td>SKU prefix for your products:</td>
+        <td>
+          <input type="text" name="sku_prefix" class="input-text" value="<?php echo !empty($post) ? $post["sku_prefix"] : "" ?>">
+        </td>
+      </tr>
+<?php
+      }
+?>
+      <tr>
+        <td>Email <span class="required">*</span>:</td>
+        <td>
+          <input type="text" name="email" value="<?php echo !empty($post) ? $post["email"] : "" ?>" class="validate-email required-entry input-text">
+        </td>
+      </tr>
+      <tr>
+        <td>Password <span class="required">*</span>: </td>
+        <td>
+          <input type="password" name="pass" value="" class="validate-password required-entry input-text">
+        </td>
+      </tr>
+      <tr>
+        <td>Confirm Password <span class="required">*</span>: </td>
+        <td>
+          <input type="password" name="pass2" value="" class="validate-cpassword required-entry input-text">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>First Name <span class="required">*</span>:</td>
+        <td>
+          <input type="text" name="firstname" value="<?php echo !empty($post) ? $post["firstname"] : "" ?>" class="input-text required-entry">
+        </td>
+      </tr>
+      <tr>
+        <td>Last Name <span class="required">*</span>:</td>
+        <td>
+          <input type="text" name="lastname" value="<?php echo !empty($post) ? $post["lastname"] : "" ?>" class="input-text required-entry">
+        </td>
+      </tr>
+      <tr>
+        <td>Address <span class="required">*</span>:</td>
+        <td>
+          <input type="text" name="address" value="<?php echo !empty($post) ? $post["address"] : "" ?>" class="input-text required-entry">
+        </td>
+      </tr>
+      <tr>
+        <td>City <span class="required">*</span>:</td>
+        <td>
+          <input type="text" name="city" value="<?php echo !empty($post) ? $post["city"] : "" ?>" class="input-text required-entry">
+        </td>
+      </tr>
+      <tr>
+        <td>State <span class="required">*</span>:</td>
+        <td>
+          <input type="text" name="state" value="<?php echo !empty($post) ? $post["state"] : "" ?>" class="input-text required-entry">
+        </td>
+      </tr>
+      <tr>
+        <td>Zip <span class="required">*</span>:</td>
+        <td>
+          <input type="text" name="zip" value="<?php echo !empty($post) ? $post["zip"] : "" ?>" class="input-text required-entry">
+        </td>
+      </tr>
+      <tr>
+        <td>Country <span class="required">*</span>:</td>
+        <td>
+          <input type="text" name="country" value="<?php echo !empty($post) ? $post["country"] : "" ?>" class="input-text required-entry">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Vendor URL:</td>
+        <td>
+          <input type="text" name="url" value="<?php echo !empty($post) ? $post["url"] : "" ?>" class="input-text">
+        </td>
+      </tr>
+      <tr>
+        <td>Tell us about your company and brands <span class="required">*</span>:</td>
+        <td>
+          <textarea name="aboutcompany" class="input-text required-entry" style="width:300px;height:150px;"><?php echo !empty($post) ? $post["aboutcompany"] : "" ?></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td>PayPal Email:<br>
+	(We pay a lot of our Vendors via PayPal.  Please enter the email address connected to your PayPal account in which we should send payment)</td>
+        <td>
+          <input type="text" name="paypalemail" value="<?php echo !empty($post) ? $post["paypalemail"] : "" ?>" class="validate-email input-text">
+        </td>
+      </tr>
+    </table>
+  </fieldset>
+
+  <div class="button-set">
+    <p class="required">* Required Fields</p>
+    <button type="submit" class="form-button"><span>Submit</span></button>
+  </div>
+
+
+</form>
+<script type="text/javascript">
+  var dataForm = new VarienForm('form-validate', true);
+</script>

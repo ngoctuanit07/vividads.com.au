@@ -1,0 +1,192 @@
+<?php
+
+   $product_id = Mage::registry('current_product')->getId();
+ $url = Mage::helper("adminhtml")->getUrl("vendor/adminhtml_vendor/setoption");
+ 
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl()?>vendor.css" />
+
+<script type="text/javascript">
+    
+function add_another3()
+{
+	i = document.getElementById('form_count1').value;
+	
+	i++;
+	
+	var str = '<table id="tab1_'+i+'" class="tabclass" style="width: 100%;" cellpadding="0" cellspacing="0"><tr><td><table style="width: 100%;" cellpadding="0" cellspacing="0"><tr><td>Title</td></tr><tr><td><input class="caption" type="text" name="title['+i+']"/></td></tr></table></td>      <td><span class="removeitem" onclick="div_remove3('+i+')" id="rem_'+i+'" style="cursor:pointer;">Remove</span></td></tr><tr><td class="grid"><table style="width: 100%;" class="border" cellpadding="0" cellspacing="0"><thead><tr class="headings"><td class="tabtitle">Title</td><td class="tabtitle">Value</td><td class="tabfile">File</td><td class="tablink"><span onclick="add_row1('+i+');" style="cursor:pointer;float: right;" class="addanother">Add New</span></td></tr></thead><tbody id="row1_'+i+'"></tbody ></table></td></tr></table>';
+	
+	jQuery("#content3").append(str);
+	document.getElementById('form_count1').value = i;
+	
+}
+
+function div_remove3(id)
+{
+	i = document.getElementById('form_count1').value;
+	jQuery("#tab1_"+id).remove();
+}
+
+function add_row1(id)
+{
+      l = document.getElementById('row_count1').value;
+	
+      l++;
+	
+      var str = '<tr id="ind_'+l+'"><td><input type="text" name="customtitle['+id+'][]"/></td><td><input type="text" name="customvalue['+id+'][]"/></td><td><input type="file" name="customfile['+id+'][]"/></td><td><span class="removeitem" onclick="row_remove3('+l+')" id="rem_'+l+'" style="cursor:pointer;">Remove</span></td></tr>';
+	
+      jQuery("#row1_"+id).append(str);
+      document.getElementById('row_count1').value = l;
+}
+
+function row_remove3(id)
+{
+	jQuery("#ind1_"+id).remove();
+}
+</script>
+<!--<table id="tab_'+i+'" class="tabclass">
+   <tr>
+      <td>
+	 <table>
+	    <tr>
+	       <td>Title</td>
+	    </tr>
+	    <tr>
+	       <td><input type="text" name="title[]"/></td>
+	    </tr>
+	 </table>
+      </td>
+      <td>
+	 <span class="removeitem" onclick="div_remove3('+i+')" id="rem_'+i+'" style="cursor:pointer;">Remove</span>
+      </td>
+   </tr>
+   <tr>
+      <td>
+	 <table>
+	    <tr>
+	       <td>Title</td>
+	       <td>File</td>
+	       <td></td>
+	    </tr>
+	    <tr>
+	       <td>Title</td>
+	       <td>File</td>
+	       <td></td>
+	    </tr>
+	 </table>
+      </td>
+   </tr>
+</table>-->
+<!--<tr id="ind_'+l+'">
+   <td><input type="text" name="customvalue[]"/></td>
+   <td><input type="file" name="customfile[]"/></td>
+   <td><span class="removeitem" onclick="row_remove3('l+')" id="rem_'+l+'" style="cursor:pointer;">Remove</span></td>
+</tr>-->
+
+<div class="entry-edit">
+   <form action="<?php  echo str_replace('//s','/admin/s',$url);?>" method="post" enctype="multipart/form-data">
+             <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+        <div class="entry-edit-head"><h4>Warehouse Instructions</h4><span onclick="add_another3();" style="cursor:pointer;float: right;" title="Add book suggetion" class="addanother">Add another</span> <span class="submitclass" ><input name="submit" id="submit" type="submit"  class="submit-img" style="float: right;" value="Submit" /></span></div>
+	<input type="hidden" name="product_id" value="<?php echo $product_id;?>"/>
+	<input type="hidden" name="type" value="2"/>
+        <div class="order-totals">
+         
+           <div class="total_proof">
+            
+                <table class="total_proof1" style="width: 100%;" cellpadding="0" cellspacing="0">
+                     
+                    <tr class="txt">
+                        <td valign="top">
+                         <?php
+			   $temptableOption=Mage::getSingleton('core/resource')->getTableName('vendor_option');
+			   $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+			   
+			    $select = $connectionRead->select()
+			      ->from($temptableOption, array('*'))
+			      ->where('type=?',2)
+			      ->where('product_id=?',$product_id);
+			      
+			      $result = $connectionRead->fetchAll($select);
+			      
+			      $url2 = Mage::helper('adminhtml')->getUrl('vendor/adminhtml_vendor/downloadcustom');
+			      
+			      $i = 1;
+			      $l=1;
+			      foreach($result as $option)
+			      {
+				 if($option['parent_id'] == 0)
+				 {
+				 ?>
+				 <table id="tab1_<?php echo $i?>" class="tabclass" style="width: 100%;" cellpadding="0" cellspacing="0">
+				    <tr>
+				       <td>
+					  <table style="width: 100%;">
+					     <tr>
+						<td>Title</td>
+					     </tr>
+					     <tr>
+						<td>
+						   <input class="caption" type="text" name="title[<?php echo $i?>]" value="<?php echo $option['title'];?>"/>
+						</td>
+					     </tr>
+					  </table>
+				       </td>
+				       <td>
+					  <span class="removeitem" onclick="div_remove3('<?php echo $i?>')" id="rem_<?php echo $i?>" style="cursor:pointer;">Remove</span>
+				       </td>
+				    </tr>
+				    <tr>
+				       <td class="grid">
+					  <table style="width: 100%;" class="border" cellpadding="0" cellspacing="0">
+					     <thead>
+						<tr class="headings">
+						   <td class="tabtitle">Title</td>
+						   <td class="tabtitle">Value</td>
+						   <td class="tabfile">File</td>
+						   <td class="tablink">
+						      <span onclick="add_row1('<?php echo $i?>');" style="cursor:pointer;float: right;" class="addanother">Add New</span>
+						   </td>
+						</tr>
+					     </thead>
+					     <tbody id="row1_<?php echo $i?>">
+					     <?php
+					     
+						foreach($result as $value)
+						{
+						   if($value['parent_id'] == $option['entity_id'])
+						   {
+						?>
+						<tr id="ind1_<?php echo $l;?>"><td><input type="text" name="customtitle[<?php echo $i?>][]" value="<?php echo $value['sub_title']?>"/></td><td><input type="text" name="customvalue[<?php echo $i?>][]" value="<?php echo $value['sub_title']?>"/></td><td><input type="file" name="customfile[<?php echo $i?>][]" /><a href="<?php echo str_replace('//s','/admin/s',$url2).'file/'.$value['file'].'/';?>"><?php echo $value['file']?></a><input type="hidden" name="existfile[<?php echo $i?>][]" value="<?php echo $value['file']?>"/></td><td><span class="removeitem" onclick="row_remove3('<?php echo $l;?>')" id="rem_<?php echo $l;?>'" style="cursor:pointer;">Remove</span></td></tr>
+						   <?php
+						   }
+						   $l++;
+						}
+					     ?>
+					     </tbody >
+					  </table>
+				       </td>
+				    </tr>
+				 </table>
+			
+			<?php
+				    $i++;
+				 }
+			      }
+			 ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="10" align="left" valign="middle" colspan="6" id="content3">
+                        
+			</td>
+                    </tr>
+                   
+                </table>
+                <input type="hidden" id="form_count1" value="<?php echo $i?>" />
+                <input type="hidden" id="store" name="store" value="<?php echo $this->getRequest()->getParam('store');?>" />
+            <input type="hidden" id="row_count1" value="<?php echo $l?>"  />
+        </div>
+            
+        </div>
+	</form>
+    </div>

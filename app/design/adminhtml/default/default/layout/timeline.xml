@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <timeline_adminhtml_timeline_index>
+        <reference name="content">
+            <block type="timeline/adminhtml_timeline" name="timeline" />
+        </reference>
+    </timeline_adminhtml_timeline_index>
+    <adminhtml_catalog_product_edit>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>my_custom_tab4</name>
+                <block>timeline/adminhtml_catalog_product_tab</block>
+            </action>
+        </reference>
+    </adminhtml_catalog_product_edit>
+</layout>

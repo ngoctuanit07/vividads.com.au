@@ -1,0 +1,190 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+            
+	
+	    
+?>
+<?php
+$carriers = Mage::getStoreConfig('carriers', Mage::app()->getStore()->getId());
+foreach ($carriers as $carrierCode => $carrierConfig) {
+     if($carrierConfig['active'] == 1){
+//echo "<pre>";print_r($carrierConfig);echo "</pre>";
+}}?>
+<form id="edit_form" method="post" action="<?php echo $this->getSaveUrl() ?>">
+    <?php echo $this->getBlockHtml('formkey')?>
+    <?php  $_order = $this->getShipment()->getOrder() ?>
+    <?php echo $this->getChildHtml('order_info') ?>
+
+    <div class="box-left">
+        <!--Billing Address-->
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-payment-method"><?php echo Mage::helper('sales')->__('Payment Information') ?></h4>
+            </div>
+            <fieldset>
+                <div><?php echo $this->getPaymentHtml() ?></div>
+                <div><?php echo Mage::helper('sales')->__('The order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="box-right">
+        <!--Shipping Address-->
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-shipping-method"><?php echo Mage::helper('sales')->__('Shipping Information') ?></h4>
+                <a href="javascript:void(0);" id="shp_chng" onclick="statusPopup('show_shipping_methods');" title="<?php echo $this->__('Choose Shipping Method') ?>"><?php echo $this->__('Choose Shipping Method') ?></a>
+            </div>
+            
+            <fieldset>
+                <div>
+                    <strong><?php echo $this->escapeHtml($_order->getShippingDescription()) ?></strong>
+                    <?php echo $this->helper('sales')->__('Total Shipping Charges'); ?>:
+
+                    <?php if ($this->helper('tax')->displayShippingPriceIncludingTax()): ?>
+                        <?php $_excl = $this->displayShippingPriceInclTax($_order); ?>
+                    <?php else: ?>
+                        <?php $_excl = $this->displayPriceAttribute('shipping_amount', false, ' '); ?>
+                    <?php endif; ?>
+                    <?php $_incl = $this->displayShippingPriceInclTax($_order); ?>
+
+                    <?php echo $_excl; ?>
+                    <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                        (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                    <?php endif; ?>
+                </div>
+                <div class="shiipping_method_all"><span>Current Shipping Method : </span><br>
+                    <div class="shipping_custom_rates">
+                        <div id="changed_shipping_method">
+                         
+                         <br />
+                        </div>
+                    </div>
+                </div>
+                <div><?php echo $this->getChildHtml('shipment_tracking') ?></div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    
+    <!---------------Custom code for address displaying as a shipping methods------------------------>
+
+     <?php
+            $methods = Mage::getSingleton('shipping/config')->getActiveCarriers();
+	
+	    $options = array();
+	
+	    foreach($methods as $_code => $_method)
+	    {
+		if(!$_title = Mage::getStoreConfig("carriers/$_code/title"))
+		    $_title = $_code;
+	
+		$options[] = array('value' => $_code, 'label' => $_title . " ($_code)");
+	    }
+           
+	   
+     ?>
+     
+     <div class="shipping-adr-custom" id="show_shipping_methods" style="display: none;">
+             <select name="sel_adr" id="order_customshipping_method">
+                 <?php
+                    foreach($options as $val)
+                    {
+               
+               ?>
+                              <option value="<?php echo $val["value"]; ?>">
+                                  <?php echo $val["label"];?>
+                              </option>
+                 <?php
+                        
+                    }
+                 ?>
+                 
+             </select>
+	     <br/><input type="button" id="set_current_method" value="Select" onclick="set_shiping_method();" />
+             <!--<a href="javascript:void(0);" id="set_current_method" onclick="set_shiping_method();">Set Shipping Method</a>-->
+             
+         <a id="crs_custom_2" href="javascript:void(0);" class="cross" onclick="closePopup('show_shipping_methods');">Close Window</a>
+     
+     </div>
+     <input type="hidden" name="new_shipping_methods" id="new_shipping_methods" value="" />
+     
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-products"><?php echo Mage::helper('sales')->__('Items to Ship') ?></h4>
+        </div>
+    </div>
+    <div id="ship_items_container">
+            <?php echo $this->getItemsHtml() ?>
+    </div>
+</form>
+<?php echo $this->getChildHtml('shipment_packaging') ?>
+<script type="text/javascript">
+//<![CDATA[
+    document.observe("dom:loaded", function() {
+        setTimeout(function(){
+            packaging.setConfirmPackagingCallback(function(){
+                packaging.setParamsCreateLabelRequest($('edit_form').serialize(true));
+                packaging.sendCreateLabelRequest();
+            });
+            packaging.setLabelCreatedCallback(function(response){
+                setLocation("<?php echo $this->getUrl(
+                    '*/sales_order/view',
+                    array('order_id' => $this->getShipment()->getOrderId())
+                ); ?>");
+            });
+            packaging.setCancelCallback(function() {
+                packaging.cleanPackages();
+                $('create_shipping_label').checked = false;
+                toggleCreateLabelCheckbox();
+            });
+            packaging.setItemQtyCallback(function(itemId){
+                var item = $$('[name="shipment[items]['+itemId+']"]')[0];
+                if (item && !isNaN(item.value)) {
+                    return item.value;
+                }
+            });
+        }, 500);
+    });
+
+    editForm = new varienForm('edit_form');
+    
+    
+    function set_shiping_method()
+    {
+          var ship_method=document.getElementById("order_customshipping_method").value;
+          
+          document.getElementById("new_shipping_methods").value=ship_method;
+          
+          document.getElementById("changed_shipping_method").innerHTML=document.getElementById("order_customshipping_method").options[document.getElementById("order_customshipping_method").selectedIndex].innerHTML;
+          
+          closePopup("show_shipping_methods");
+    }
+    
+    
+   
+//]]>
+</script>

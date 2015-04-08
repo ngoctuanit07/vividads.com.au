@@ -1,0 +1,84 @@
+<?php
+/**
+ * Email Template Manager
+ *
+ * @category:    Aitoc
+ * @package:     Aitoc_Aitemails
+ * @version      2.0.13
+ * @license:     POwWoRanFs2vVHb6wy050abrHO3ftlyCeMSf01dXU3
+ * @copyright:   Copyright (c) 2013 AITOC, Inc. (http://www.aitoc.com)
+ */
+?>
+<div class="content-header">
+    <h3 class="icon-head head-system-email-template"><?php echo $this->getHeaderText() ?></h3>
+    <p class="content-buttons form-buttons">
+                <?php echo $this->getBackButtonHtml(); ?>
+                <?php echo $this->getGenerateButtonHtml(); ?>
+    </p>
+</div>
+
+<script>
+aitEmailsMassNewGenerateSubmit = function()
+{
+    if ($('aitemails_massnew_replace_checkbox') && $('aitemails_massnew_replace_checkbox').checked)
+    {
+        if (confirm('<?php echo $this->__('Are you sure you want to overwrite existing custom templates?'); ?>'))
+        {
+            $('aitemails_generate_templates_form').submit();
+        }
+    } else 
+    {
+        $('aitemails_generate_templates_form').submit();
+    }
+}
+</script>
+
+<form action="<?php echo $this->getMassNewGenerateUrl(); ?>" method="post" id="aitemails_generate_templates_form">
+    <?php echo $this->getBlockHtml('formkey')?>
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend">
+            <?php echo Mage::helper('aitemails')->__('Replace default entries') ?>
+            </h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div class="fieldset">
+            <ul class="messages">
+                <li class="notice-msg">
+                    <ul>
+                        <li><?php echo $this->__('Note that leading and trailing spaces (if any)  will not be trimmed'); ?></li>
+                    </ul>
+                </li>
+            </ul>
+            <table class="form-list" cellspacing="0">
+                <tbody>
+                    <?php if ($this->showReplaceOption()): ?>
+                    <tr>
+                        <td class="label">
+                            <?php echo $this->__('Delete existing custom templates for this store view'); ?>
+                        </td>
+                        <td class="value">
+                            <input type="checkbox" id="aitemails_massnew_replace_checkbox" name="aitemails_massnew_replace" value="1" />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="height: 20px;"></td>
+                    </tr>
+                    <?php endif; ?>
+                    <?php foreach ($this->getTemplateDefaultEntries() as $entryId => $entry): ?>
+                    <tr>
+                        <td class="label" style="width: 240px;">
+                            <?php echo $entry['value']; ?>
+                        </td>
+                        <td class="value">
+                            <input type="text" class="input-text" name="aitemails_massnew[<?php echo $entryId; ?>]" />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>

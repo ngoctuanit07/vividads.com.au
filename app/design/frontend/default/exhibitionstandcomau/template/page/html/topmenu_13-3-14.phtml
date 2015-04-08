@@ -1,0 +1,256 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+ 
+?>
+<?php
+/**
+ * Top menu for store
+ *
+ * @see Artist_Dropdown_controllers_Index
+ */
+ 
+// print_r($this->getData());
+
+
+?>
+
+<input type="hidden" id="catimage"/>
+<input type="hidden" id="topcat" />
+<?php  
+
+	$_cat_id = Mage::app()->getStore()->getRootCategoryId();
+  //fetching custom menu from category only////
+  $_categories = Mage::getModel('catalog/category')->load($_cat_id)->getChildren();
+  $_menu_ids = explode(',',$_categories); 
+ ?>
+<?php if($_categories){ ?>
+<div class="nav-container" style="margin-top:0px;">
+    <ul id="nav">
+        <?php
+		
+		$_menu_output ='';
+		 
+		$_counter=0;
+		  foreach($_menu_ids as $_menu_id){
+			 $_counter++; 
+			 $_first='';
+			 
+			 if($_counter==1){$_first = 'first';}
+			$_menu_item = Mage::getModel('catalog/category')->load($_menu_id);  
+			$_menu_item = Mage::getModel('catalog/category')->load($_menu_id);  
+			
+			$_menu_output.= '<li class="level0 nav-'.$_counter.' '.$_first.' level-top parent" >
+<a  class="level-top level_0" href="'.$_menu_item->getUrl().'"><span><span id="level_0_'.$_menu_item->getId().'">'.$_menu_item->getName().'</span></span></a>';
+			
+			/*
+			$_menu_output.= '<li class="level0 nav-'.$_counter.' '.$_first.' level-top parent" >
+<a  class="level-top level_0" href="'.$_menu_item->getUrl().'"><span><span onmouseover="loadCategory('.$_menu_item->getId().')" id="level_0_'.$_menu_item->getId().'">'.$_menu_item->getName().'</span></span></a>';
+*/
+
+/*loading sub categories or products*/
+			$_sub_categories = Mage::getModel('catalog/category')->load($_menu_item->getId())
+											->getChildrenCategories();
+											 ;
+			 //echo count($_sub_categories);
+			
+			
+/*
+$_menu_output.='<ul style="display:none;" class="menuPanel" id="level_1_'.$_menu_item->getId().'">
+<li><div id="mlevel_1_'.$_menu_item->getId().'"><div style="height:100px; line-height:100px;"><img src="media/loading.gif" style="padding-top:200px;" /></div></div></li>
+</ul>'; 
+	*/	
+		$_menu_output.='</li>';		
+		
+		 
+		  
+		  }
+		?>
+        <?php  
+		
+		
+		  echo $_menu_output;
+		/*
+			echo '<div class="current_image" style="float:left; position:absolute; 
+		left:77%; 
+		top:267px; border:0px solid #ccc;  display:none;
+		width:300px; height:200px; z-index:999999999999;">
+		<img src="media/loading.gif" style="position:relative;top:80px; left:180px;" />  </div>';
+		*/
+		?>
+		
+        
+    </ul>
+    
+</div>
+<?php
+ 
+} ?>
+
+<!--Javascript6 to load menu on mouse over -->
+
+<script language="javascript">
+<!--
+/*start jquery function */
+	
+		
+	
+	function loadCategory(categoryId){
+		
+	
+	jQuery(function(){
+		
+		
+		
+		/*mouse entering on the first parent level*/
+		//jQuery('').mouseover(function(event){
+				
+			
+				
+				/*fetching either mouse over to the parent level or sub level*/
+				
+				//var current_parent_id = event.target.id;
+				var current_parent_id = categoryId; 
+				
+				/*if parent id is not empty*/				
+				if(current_parent_id !=''){
+				//fetching the menu level 	
+				//var category_id = current_parent_id.substr(8);
+				var category_id = current_parent_id;
+				//var m_level = current_parent_id.substr(0,7);	
+									
+				var menuVars = {parent_cat_id:current_parent_id,
+								category_id:category_id,
+				                
+								};
+				
+				
+				jQuery('#level_1_'+category_id).show();
+				
+				//sending jquery ajax request for fetching sub categories
+				
+				 jQuery.ajax(
+			     { 
+				  url:'<?php echo Mage::getUrl('dropdown/index/loadSubcategories')?>', 
+				  type:'POST',
+				  data: menuVars,
+				  dataType:"HTML",
+                  beforeSend: function(xhr) { 
+   						 //console.log(xhr);
+						},
+				  success: function(data){
+					  		//console.log(data);
+							 
+							 jQuery('#mlevel_1_'+category_id).html(data);
+							//jQuery('#nav ul, #nav div').show();
+							
+					  },
+					  
+				 }
+			  );
+				
+				
+				//console.log(menuVars);				
+								
+				}
+				//console.log(event.target.id);
+			//});
+			
+		});
+		
+	}	
+		
+	function loadImage(product_id){
+		
+		
+		
+		jQuery(function(){
+			
+			var curr_product_id = product_id;
+			
+			//console.log(product_id);
+			
+			var productVars = {
+					curr_product_id: curr_product_id,
+				}
+			
+			jQuery.ajax(
+			     { 
+				  url:'<?php echo Mage::getUrl('dropdown/index/loadProductImage')?>', 
+				  type:'POST',
+				  data: productVars,
+				  dataType:"HTML",
+                  beforeSend: function(xhr) { 
+   						 //console.log(xhr);
+					jQuery('.current_image').show();
+					var image='<img src="<?php echo  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'loading.gif';?>" style="position:relative;top:80px; left:150px;" />';
+					jQuery('.current_image').html(image);	 
+						},
+				  success: function(data){
+					  		//console.log(data);
+							 
+							  jQuery('.current_image').html(data);
+							//jQuery('#nav ul, #nav div').show();
+							
+					  },
+					  
+				 }
+			  );
+			
+			
+			});
+		
+		}	
+		
+		function distroyImage(product_id){
+		
+		jQuery(function(){
+			
+			 jQuery('.current_image').hide();
+			 jQuery('.current_image').html('');
+			
+			});
+		
+		}	
+		
+	
+-->
+</script>
+
+<style>
+<!--
+
+	
+	.current_image{
+		float:left; position:relative; 
+		left:400px; 
+		top:150px; border:1px solid red; 
+		width:200px; height:150px;
+		
+		}	
+-->
+</style>
+
+

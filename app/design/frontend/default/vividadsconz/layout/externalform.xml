@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+
+
+
+<layout version="0.1.0">
+
+
+
+    <default>
+
+
+
+    </default>
+
+
+
+    <externalform_index_index>
+
+
+
+        
+
+
+
+        <reference name="root">
+
+
+
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+
+				
+
+				<block type="page/html_head" name="head" as="head">
+
+                
+
+				<!--css only -->
+
+				<action method="addCss"><stylesheet>css/styles.css</stylesheet></action>
+
+				<action method="addCss"><stylesheet>ajaxcontacts/css/styles.css</stylesheet></action>				
+
+				<action method="addCss"><stylesheet>ajaxcontacts/css/styles.css</stylesheet></action>
+
+				<action method="addCss"><stylesheet>externalform/css/style.css</stylesheet></action>				
+				<!--<action method="addJs"><script>ajaxcontacts/script.js</script></action -->
+
+				<action method="addJs"><script>jquery/jquery-1.7.1-min.js</script></action>					
+
+				
+
+                <action method="addItem"><type>skin_css</type><name>css/styles-ie.css</name><params/><if>lt IE 8</if></action>
+
+				<!--JS Only-->			
+
+				
+
+				</block>				
+
+				
+
+        </reference>
+
+
+
+	        <reference name="content">
+
+
+
+            <remove name="currency" />
+
+
+
+            <remove name="left"/>
+
+
+
+            <remove name="header"/>
+
+
+
+            <remove name="footer"/>  
+
+
+
+            <block type="externalform/externalform" name="externalform" template="externalform/externalform.phtml" />
+
+
+
+        </reference>
+
+
+
+    </externalform_index_index>
+
+
+
+</layout> 

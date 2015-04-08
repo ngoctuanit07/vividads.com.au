@@ -1,0 +1,43 @@
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ 
+ * @category    ArtworkUploader
+ * @package     ArtworkUploader_Upload
+ * @copyright   Copyright (c) 2013 Vivid Ads. (http://www.vividads.com.au)
+ * @license     http://www.vividads.com.au  License (AFL 3.0)
+ */
+
+-->
+
+<?xml version="1.0" ?>
+<!-- Root node for Magento layout configuration -->
+<layout version="0.1.0">
+
+    <!--Page handle -->
+    
+    <upload_index_index>
+    <remove name="head" />
+    <reference name="root">
+            <action method="setTemplate">
+                <template>page/2columns-left.phtml</template>
+            </action>
+			<block type="catalog/navigation" name="catalog.leftnav" before="-" template="catalog/navigation/leftnav.phtml" /></block>
+        </reference>
+        <reference name="content">
+            <block type="core/template" name="arithmetic_integer_multiply" template="arithmetic/integer/multiply.phtml"></block>
+        </reference>
+    
+        <!-- reference tag specifies the block where we a going to add child block -->
+        <reference name="content">
+            <!-- Our page content block -->
+            <block type="core/template" name="upload"  template="upload/upload.phtml" />
+	
+        </reference>
+    </upload_index_index>
+     
+
+</layout>

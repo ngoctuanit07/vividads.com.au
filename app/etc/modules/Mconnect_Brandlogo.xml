@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Mconnect_Brandlogo>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Mconnect_Brandlogo>
+    </modules>
+</config> 

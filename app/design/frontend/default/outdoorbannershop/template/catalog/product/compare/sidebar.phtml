@@ -1,0 +1,52 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER ** 
+ Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ *//* @var $this Mage_Catalog_Block_Product_Compare_Sidebar */
+?>
+
+<div class="menu-sidebar">
+<div class="side-categ">
+  <h1>Categories</h1>
+  <ul>
+    <li><a title="Mesh Ad Banners" class="link" href="<?php echo $this->getUrl('mesh-banners.html')?>"> Mesh Ad Banners </a></li>
+    <li><a title="Order Now" class="link" href="<?php echo $this->getUrl('order-now.html')?>"> Order Now </a></li>
+  </ul>
+</div>
+<div class="client-testimonial">
+  <h1>Testimonials</h1>
+</div>
+<div class="client-testimonials">
+<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonialhome')->toHtml() ?>
+
+
+</div>
+<div class="Telemarketing" style="display:none;">
+<h1>Tele Marketing</h1>
+<p>with over 30 Years of Experience our team has handled every kind of assignment imaginable</p>
+<span><a href="tel:1300721614">
+<img src="<?php echo $this->getSkinUrl()?>images/telemarketing.jpg" /></a></span>
+</div>
+
+<div class="block block-list">
+  <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('customer_support')->toHtml() ?>
+</div>

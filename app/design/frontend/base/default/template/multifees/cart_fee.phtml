@@ -1,0 +1,188 @@
+<?php
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @copyright  Copyright (c) 2013 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Multi Fees extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @author     MageWorx Dev Team
+ */
+
+
+$helper   = Mage::helper('multifees');
+$multifees = $helper->getMultifees(1, 0, 2); // cart fee, no hidden
+if (count($multifees)>0) {
+    $session = $this->_getSession();
+    $feesData = $helper->getQuoteDetailsMultifees();    
+    $isAddButtonEnabled = false;
+?>
+
+<script type="text/javascript">
+//<![CDATA[
+if (typeof feeOptionImgData=='undefined') var feeOptionImgData = [];
+//]]>
+</script>
+<div class="multifees-cart-fee <?php if ($session->getMultifeesValidationFailed()) { ?>multifees-validation-failed<?php } ?> discount"><!--box-->
+<form method="post" action="<?php echo $this->getUrl('multifees/ajax/submit/') ?>" id="multifees-form" onsubmit="feeForm.submit(this); return false;">
+    <fieldset>
+        <h2 class="head-multifees"><?php echo $this->__('Additional Fees')?></h2>
+	<div class="multifees-form discount-form">
+            <?php echo $this->getCmsBlockHtml() ?>   	
+            <?php $_optionId = ''; ?>
+            <?php $required = false; ?>
+            <?php foreach ($multifees as $fee) { ?>
+                <div class="fee-items">
+                    <div class="fee-title">
+                        <?php echo $fee->getTitle() ?>
+                        <?php if ($fee->getRequired()) {
+                                $required = true; ?>
+                            <span class="required">*</span>
+                        <?php } ?>
+                    </div>
+                    <?php if ($fee->getDescription()) { ?><p class="note"><?php echo $fee->getDescription() ?></p><?php } ?>
+
+                    <?php $feeOptions = $fee->getOptions(true) ?>
+                    <?php if (count($feeOptions)>0) { $isAddButtonEnabled = true; ?>
+                        <div class="fee-options">
+                            <?php if ($fee->getInputType()==1) { //if drop-down ?>
+                                 <table class="options">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <select name="fee[<?php echo $fee->getId() ?>][options][]" id="multifees_<?php echo $fee->getId() ?>" onchange="MultiFees.setOptionImage(<?php echo $fee->getId() ?>, this.value)" <?php if ($fee->getRequired()) { ?>class="required-entry"<?php } ?>>
+                                                <?php if (true || !$fee->getRequired()) { ?><option value=""><?php echo $this->__('None') ?></option><?php } ?>
+                                                <?php foreach ($feeOptions as $option) { ?>
+                                                    <option value="<?php echo $option->getId() ?>" <?php if ($option->getIsDefault()) { ?> selected="selected"<?php } ?>>
+                                                    <?php echo $option->getTitle() ?> - <?php echo $helper->getOptionFormatPrice($option, $fee) ?>
+                                                    </option>
+                                                <?php } ?>
+                                                </select>
+                                                <?php
+                                                    $imgHtml = '';
+                                                    $imgJs = '';
+                                                    foreach ($feeOptions as $option) {
+                                                        if ($option->getIsDefault()) $imgHtml = $helper->getOptionImgHtml($option->getId());
+                                                        $arr = $helper->getOptionImgHtml($option->getId(), true);
+                                                        if ($arr) $imgJs .= 'feeOptionImgData['.$option->getId().']=["'.$arr['url'].'", "'.$arr['big_img_url'].'"];';
+                                                    }
+                                                    if ($imgJs) echo '<script type="text/javascript">'.$imgJs.'</script>';
+                                                ?>
+                                                <div class="multifees-option-file" id="multifees-option-file-<?php echo $fee->getId() ?>" <?php if (!$imgHtml) {?>style="display:none;"<?php } ?>>
+                                                    <?php if ($imgHtml) echo $imgHtml; else echo $helper->getEmptyOptionImgHtml(); ?>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                   </tbody>
+                                </table>
+                            <?php } else { //if not drop-down ?>
+                                <table class="options">
+                                    <tbody>
+                                    <?php foreach ($feeOptions as $option) { ?>
+                                        <tr>
+                                            <td><?php $imgHtml = $helper->getOptionImgHtml($option->getId()); if ($imgHtml) echo $imgHtml; else  echo '&nbsp;'; ?></td>
+                                            <td><input type="<?php if ($fee->getInputType()==2) {echo 'radio';} else {echo 'checkbox';} ?>" name="fee[<?php echo $fee->getId() ?>][options][]" id="multifees_<?php echo $fee->getId() ?>_<?php echo $option->getId() ?>" <?php if ($option->getIsDefault()) { ?>checked="checked"<?php } ?> value="<?php echo $option->getId() ?>"  <?php if ($fee->getRequired()) { ?>class="validate-one-required-by-name"<?php } ?> /></td>
+                                            <td onclick="MultiFees.labelClick(this)"><?php echo $option->getTitle() ?> - <?php echo $helper->getOptionFormatPrice($option, $fee) ?></td>
+                                        </tr>
+                                    <?php } // endforeach ?>                                
+                                    </tbody>
+                                </table>
+                            <?php } 
+                                // additional fields
+                                if ($fee->getEnableDateField()) { ?>
+                                <div class="multifees-date">
+                                    <?php $dateId = "multifees_date_{$fee->getId()}"; ?>
+                                    <label for="<?php echo $dateId ?>"><?php echo $fee->getDateFieldTitle() ?></label>
+                                    <input name="fee[<?php echo $fee->getId() ?>][date]" id="<?php echo $dateId ?>" value="<?php echo $this->getFeeDate($fee->getId()) ?>" class="input-text validate-date" />
+                                    <script type="text/javascript">
+                                    //<![CDATA[
+                                        Calendar.setup({
+                                            inputField : "<?php echo $dateId ?>",
+                                            ifFormat   : "<?php echo $this->getDateFormat() ?>",
+                                            align      : false, // important!
+                                            singleClick: true
+                                        });
+                                    //]]>
+                                    </script>
+                                </div>
+                            <?php } ?>
+                            <?php if ($fee->getEnableCustomerMessage()) { ?>
+                                <div class="multifees-massage">
+                                    <label>
+                                        <?php echo $fee->getCustomerMessageTitle() ?><br/>
+                                        <textarea name="fee[<?php echo $fee->getId() ?>][message]"><?php echo $this->getFeeMessage($fee->getId()) ?></textarea>
+                                    </label>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    <?php } ?>
+                    <div class="clear"></div>
+                </div>
+            <?php } // end foreach ?>
+
+            <?php if ($required) { ?><p class="required">* <?php echo $this->__('Required Fee') ?></p><?php } ?>
+            <?php if ($isAddButtonEnabled) { ?>
+            <div class="buttons-set">
+                <div class="left">&nbsp;<button type="submit" class="button"><span><span><?php if ($feesData) echo $this->__('Update Fees of My Order'); else echo $this->__('Add Fees to My Order'); ?></span></span></button></div>
+                <?php if ($feesData) { //&& !$required ?>
+                    &nbsp;&nbsp;<button type="button" onclick="feeForm.clear()" class="button"><span><span><?php echo $this->__('Clear All')?></span></span></button>
+                <?php } ?>            
+            <?php } ?>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    var feeForm = new VarienForm('multifees-form', true);
+    feeForm.submit = function(button, url) {
+        if(this.validator.validate()){
+            MultiFees.submitForm(this.form, false);
+        }
+    }.bind(feeForm);
+    feeForm.clear = function(button, url) {
+        MultiFees.submitForm(this.form, true);
+    }.bind(feeForm);
+    
+    function validateFeeOptionsCallback(elmId, result){
+        var container = $(elmId).up('table.options');
+        if (result == 'failed') {
+            container.removeClassName('validation-passed');
+            container.addClassName('validation-failed');
+        } else {
+            container.removeClassName('validation-failed');
+            container.addClassName('validation-passed');
+        }
+    }
+    
+    $$('input.validate-one-required-by-name').each(function(el) {
+        if (el.id) {
+            idArr = el.id.split('_');
+            el.callbackFunction = 'validateFeeOptionsCallback';
+            el.advaiceContainer = 'fee-option-'+idArr[2]+'-container';
+        }    
+    });    
+//]]>
+</script>
+</div>
+<?php } ?>

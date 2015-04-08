@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category   Mconnect
+ * @package   Mconnect_Productupload
+ * @author     M-Connect Solutions. (http://www.mconnectsolutions.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+    <layout version="0.1.0">
+
+        <productupload_index_index>
+            <reference name="root">
+                <action method="setTemplate"><template>page/1column.phtml</template></action>
+                </reference>
+            <reference name="content">
+                <block type="productupload/productupload" name="hello" template="productupload/productupload.phtml"/>
+            </reference>
+        </productupload_index_index>
+
+        <catalog_product_view>
+        <!--<reference name="product.info.additional">
+            <block type="productupload/productupload" name="productupload.productupload" template="productupload/productupload.phtml" as="productupload_productupload">
+            </block>
+        </reference>-->
+        <reference name="product.info.additional">
+            <block type="productupload/productupload" before="product.info.description" name="productupload" template="productupload/productupload.phtml" as="productupload_productupload">
+            </block>
+        </reference>
+    </catalog_product_view>
+    
+    </layout>

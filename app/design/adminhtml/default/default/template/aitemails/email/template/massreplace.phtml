@@ -1,0 +1,79 @@
+<?php
+/**
+ * Email Template Manager
+ *
+ * @category:    Aitoc
+ * @package:     Aitoc_Aitemails
+ * @version      2.0.13
+ * @license:     POwWoRanFs2vVHb6wy050abrHO3ftlyCeMSf01dXU3
+ * @copyright:   Copyright (c) 2013 AITOC, Inc. (http://www.aitoc.com)
+ */
+?>
+<div class="content-header">
+    <h3 class="icon-head head-system-email-template"><?php echo $this->getHeaderText() ?></h3>
+    <p class="content-buttons form-buttons">
+                <?php echo $this->getBackButtonHtml(); ?>
+                <?php echo $this->getReplaceButtonHtml(); ?>
+    </p>
+</div>
+
+<script type="text/javascript">
+var iNextReplaceIndex = <?php echo $this->getReplaceFieldCntDefault(); ?>;
+aitEmailsAddReplaceRow = function()
+{
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    td.innerHTML = "<?php echo $this->__('Find'); ?>&nbsp;&nbsp;";
+    tr.appendChild(td);
+    var td = document.createElement('td');
+    td.innerHTML = '<input type="text" style="width: 220px;" class="input-text" name="aitemails_massreplace[search][' + iNextReplaceIndex + ']" />';
+    tr.appendChild(td);
+    var td = document.createElement('td');
+    td.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->__('Replace with'); ?>&nbsp;&nbsp;";
+    tr.appendChild(td);
+    var td = document.createElement('td');
+    td.innerHTML = '<input type="text" style="width: 230px;" class="input-text" name="aitemails_massreplace[replace][' + iNextReplaceIndex + ']" />';
+    tr.appendChild(td);
+    $('aitemails_replace_in_templates_table').appendChild(tr);
+    iNextReplaceIndex++;
+}
+</script>
+
+<form action="<?php echo $this->getMassReplaceProcessUrl(); ?>" method="post" id="aitemails_replace_in_templates_form">
+    <?php echo $this->getBlockHtml('formkey')?>
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend">
+            <?php echo Mage::helper('aitemails')->__('Replace in custom templates') ?>
+            </h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div class="fieldset">
+            <ul class="messages">
+                <li class="notice-msg">
+                    <ul>
+                        <li><?php echo $this->__('Note that leading and trailing spaces (if any)  will not be trimmed'); ?></li>
+                    </ul>
+                </li>
+            </ul>
+            <table class="form-list" cellspacing="0" id="aitemails_replace_in_templates_table">
+                <tbody>
+                    <?php for ($i = 0; $i < $this->getReplaceFieldCntDefault(); $i++): ?>
+                    <tr>
+                        <td><?php echo $this->__('Find'); ?>&nbsp;&nbsp;</td>
+                        <td>
+                            <input type="text" style="width: 220px;" class="input-text" name="aitemails_massreplace[search][<?php echo $i; ?>]" />
+                        </td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->__('Replace with'); ?>&nbsp;&nbsp;</td>
+                        <td>
+                            <input type="text" style="width: 230px;" class="input-text" name="aitemails_massreplace[replace][<?php echo $i; ?>]" />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <?php endfor; ?>
+                </tbody>
+            </table>
+            <a href="#" onclick="javascript: aitEmailsAddReplaceRow();"><?php echo $this->__('Add one more row'); ?></a>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Webkul_Bgvideo>
+            <version>1.0.0</version>
+        </Webkul_Bgvideo>
+    </modules>
+    <global>
+        <helpers>
+            <bgvideo>
+                <class>Webkul_Bgvideo_Helper</class>
+            </bgvideo>
+        </helpers>
+    </global>
+	<adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <bgvideo translate="title" module="bgvideo">
+                                            <title>FullpageBackGround Video</title>
+                                            <sort_order>50</sort_order>
+                                        </bgvideo>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+    <frontend>
+        <layout>
+            <updates>
+                <bgvideo>
+                      <file>bgvideo.xml</file>
+                </bgvideo>    
+            </updates> 
+        </layout>   
+    </frontend>    
+</config> 
+

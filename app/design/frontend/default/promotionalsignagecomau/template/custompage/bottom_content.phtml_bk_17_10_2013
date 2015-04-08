@@ -1,0 +1,14 @@
+<div class="home-page-cms-content">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tbody>
+            <tr>
+                <td width="321" class="home-page-left">
+                    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('bottom_left_content')->toHtml() ?>
+                </td>
+                <td class="home-page-right">
+                   <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('bottom_right_content')->toHtml() ?>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

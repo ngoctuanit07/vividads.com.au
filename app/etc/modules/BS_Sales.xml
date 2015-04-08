@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BS_Sales>
+            <active>true</active>
+            <codePool>local</codePool>
+        </BS_Sales>
+        <depends>
+                <Mage_Sales/>
+        </depends>
+    </modules>
+</config> 

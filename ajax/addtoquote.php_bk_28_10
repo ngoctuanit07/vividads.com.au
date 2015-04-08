@@ -1,0 +1,25 @@
+<?php   
+// Now login on MAGENTO
+include('../app/Mage.php');
+Mage::app();
+
+Mage::getSingleton('core/session', array('name' => 'adminhtml'));
+$proId = $_REQUEST['p_id'];
+$qty = $_REQUEST['qty'];
+$widthquote = $_REQUEST['w_q'];
+$heightquote = $_REQUEST['h_q'];
+$subtotalquote = $_REQUEST['sub_q'];
+
+//echo "R: ".$proId."<br>".$qty."<br>".$widthquote."<br>".$heightquote."<br>".$subtotalquote;
+$_productInfo = Mage::getModel('catalog/product')->load($proId);
+$Pname = $_productInfo->getName();
+$Totaldetails= $widthquote." X".$heightquote." ".$Pname;
+echo '<input type="hidden" id="hidden_take_qtyquote" value="'.$qty.'" />';
+echo '<input type="hidden" id="hidden_take_prodetailsquote" value="'.$Totaldetails.'" />';
+echo '<input type="hidden" id="hidden_take_subdetail" value="'.$subtotalquote.'" />';
+echo '<input type="hidden" id="hidden_take_crossimg" value="X" />';
+
+
+
+
+?>

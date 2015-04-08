@@ -1,0 +1,49 @@
+<?php
+ob_start();
+include_once '../app/Mage.php';
+Mage::app();
+$catid=$_REQUEST['catid'];
+//echo 'ajax';
+$category = Mage::getModel('catalog/category')->load($catid);
+$products = $category->getProductCollection()->addCategoryFilter($category);
+
+//echo count($products);
+
+
+//$_product = Mage::getModel('catalog/product')->load($prod_id);
+
+
+?>
+<span class="lab">
+    Products:
+</span>
+<span class="inp">
+    <select name="products" id="prod" onchange="getProdImage(this.value);">
+    
+        <option value="">Select a product</option>
+    <?php
+    foreach($products as $_product){
+              
+              
+    $_product = Mage::getModel('catalog/product')->load($_product->getId());
+              
+              
+    ?>
+    
+        <option value="<?php echo $_product->getSku();?>"><?php echo $_product->getName(); ?></option>
+    
+    
+    
+    <?php
+              
+              
+              
+    }
+    
+    
+    
+    
+    ?>
+    
+    </select>
+</span>

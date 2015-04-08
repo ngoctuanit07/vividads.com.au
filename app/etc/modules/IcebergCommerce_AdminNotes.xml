@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <IcebergCommerce_AdminNotes>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Cms />
+            </depends>
+        </IcebergCommerce_AdminNotes>
+    </modules>
+</config>

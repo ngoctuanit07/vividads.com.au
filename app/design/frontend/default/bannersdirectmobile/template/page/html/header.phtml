@@ -1,0 +1,174 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     default_iphone
+
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+/**
+
+ * @var Mage_Page_Block_Html_Header $this
+
+ */
+
+?>
+<style>
+.links{
+	float:right;
+    position: relative;
+    text-align: center;
+    top:-55px;
+    width:140px;
+	
+	}
+.links li{
+	float:left; 
+    width: 50px;
+	
+	}	
+.links li a{
+	color:#FF0000;
+	
+	}	
+.links li a:hover{
+	color:#2C2C2C;
+	
+	}		
+.first{
+	float:left;
+	}
+.sep{
+	width:10px !important;
+}
+</style>
+<?php $_cartItems = $this->helper('checkout/cart')->getSummaryCount(); ?>
+
+<div class="header-bg">
+
+    <!--<a class="header-logo" href="<?php echo $this->getUrl('') ?>"></a>-->
+
+	<h1 class="logo" style="float:left;margin-left:5px;margin-top:4px;">
+
+	<a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo">
+
+	<img width="54" src="<?php echo $this->getSkinUrl() ?>images/custom/bg_logo.png" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+
+	</h1>
+
+	
+
+	<div class="promotional_banner" style="cursor:pointer;text-align:left; float:left;padding-left:5px;width:80%; position:relative; top:5px;">
+
+	<h1 style="font-size:13px; line-height:25px;"><?php echo __('Banners Direct');?></h1>
+
+	
+
+	<!--<img src="<?php echo $this->getSkinUrl();?>images/promotional_banner.png" />-->
+
+		
+
+    </div>
+
+	
+
+    <!--<div class="ph-number">1300 72 16 14</div>-->
+
+</div>
+
+<header>
+
+    <div class="menu-wrapper">
+        <ul class="links">
+                        <li class="first"><a title="Log In" href="http://13expo.com.au/m/customer/account/login/">Log In</a></li>
+                        <li class="sep">|</li>
+                        <li class=" last"><a title="Register" href="http://13expo.com.au/m/customer/account/create/">Register</a></li>
+            </ul>   
+
+        <dl id="menu" style="width:83%;">
+        <span class="customer-support" style="float:left;text-align:center;width:49%;">
+        <span class="top-phone-number" style="font-size:14px;font-weight:bold;line-height:20px;position:relative;
+        top:-15px;">Sales/Support: 1300721614</span>
+        </span>  
+         
+
+            <dt class="menu dropdown" style="display:none;"><a href="#" style="width: 35px !important;"></a></dt>
+
+            <dd class="menu-box">
+
+                <?php //echo $this->getChildHtml('topLinks') ?>
+
+                <?php //echo $this->getChildHtml('checkoutLinks') ?>
+
+                <?php //echo $this->getChildHtml('accountLinks') ?>
+
+            </dd>
+
+            <dt class="cart-icon <?php echo $this->getInCart() ? 'active' : '' ?>" style="float:right;">
+
+                <a href="<?php echo $this->getUrl('checkout/cart'); ?>"><?php echo $_cartItems > 0 ? '<span>'.$_cartItems.'</span>' : ''; ?> Items(s) 
+
+                <?php echo $this->helper('checkout')->formatPrice(Mage::getSingleton('checkout/cart')->getQuote()->getGrandTotal()); ?>
+
+
+
+                </a>
+
+                
+
+            </dt>
+
+            <dd></dd>
+
+        </dl>
+
+        <div class="search"><?php echo $this->getChildHtml('topSearch') ?></div>
+
+    </div>
+
+</header>
+
+<?php echo $this->getChildHtml('topCart') ?>
+

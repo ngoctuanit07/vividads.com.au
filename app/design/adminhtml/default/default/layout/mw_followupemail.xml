@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_followupemail_rules_index>
+       <reference name="content">
+            <block type="followupemail/adminhtml_rules" name="followupemail.rules" />
+        </reference>
+    </adminhtml_followupemail_rules_index>
+	
+	<adminhtml_followupemail_rules_edit>
+        <reference name="head">
+            <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="setCanLoadRulesJs"><flag>1</flag></action>
+        </reference>
+        <reference name="left">
+            <block type="followupemail/adminhtml_rules_edit_tabs" name="followupemail_rules_edit_tabs">
+                <block type="followupemail/adminhtml_rules_edit_tab_main" name="followupemail_rules_edit_tab_main" />
+                <block type="followupemail/adminhtml_rules_edit_tab_conditions" name="followupemail_rules_edit_tab_conditions"/>
+				<block type="followupemail/adminhtml_rules_edit_tab_sendmail" name="followupemail_rules_edit_tab_sendmail"/>
+				<block type="followupemail/adminhtml_rules_edit_tab_sendtestmail" name="followupemail_rules_edit_tab_sendtestmail"/>
+                <!--<block type="followupemail/adminhtml_rules_edit_tab_actions" name="followupemail_rules_edit_tab_actions"/>	-->
+                <action method="addTab"><name>main_section</name><block>followupemail_rules_edit_tab_main</block></action>
+                <action method="addTab"><name>conditions_section</name><block>followupemail_rules_edit_tab_conditions</block></action>
+				<action method="addTab"><name>sendmail_section</name><block>followupemail_rules_edit_tab_sendmail</block></action>
+				<action method="addTab"><name>sendtestmail_section</name><block>followupemail_rules_edit_tab_sendtestmail</block></action>
+                <!--<action method="addTab"><name>actions_section</name><block>followupemail_rules_edit_tab_actions</block></action>-->
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="followupemail/adminhtml_rules_edit" name="followupemail_rules_edit"></block>
+        </reference>
+    </adminhtml_followupemail_rules_edit>
+	
+	<adminhtml_followupemail_queue_index>		
+       <reference name="content">
+            <block type="followupemail/adminhtml_queue" name="followupemail.queue" />
+        </reference>
+    </adminhtml_followupemail_queue_index>
+	
+</layout>

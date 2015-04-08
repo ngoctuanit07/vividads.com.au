@@ -1,0 +1,349 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php  $_order = $this->getOrder() ?>
+<table class="data-table" id="my-orders-table" summary="<?php echo $this->__('Items Ordered') ?>">
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th class="pro-name1" colspan="0"><?php echo $this->__('Image') ?></th>
+            <th class="sku-pro1" colspan="0"><?php echo $this->__('Product Name') ?></th>
+            <th class="sku-pro1"><?php echo $this->__('SKU') ?></th>
+            <th class="pro-price1" ><?php echo $this->__('Price') ?></th>
+            <th class="pro-qty1"><?php echo $this->__('Qty') ?></th>
+            <th class="pro-sub1"><?php echo $this->__('Subtotal') ?></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <?php echo $this->getChildHtml('order_totals') ?>
+    </tfoot>
+        <?php $_items = $_order->getItemsCollection(); ?>
+        <?php $_index = 0; ?>
+            <?php $_count = $_items->count(); ?>
+        <?php foreach ($_items as $_item): ?>
+        
+        
+        <?php if ($_item->getParentItem()) continue; ?>
+        <?php 
+			/*  tbody repeater starts here  */
+		?>
+        <tbody >
+     
+        <tr><td style="height:20px; background-color:white !important; border-bottom:1px solid #e4e4e4;" colspan="6">&nbsp;</td></tr>
+            <?php echo $this->getItemHtml($_item) ?>
+            <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $_item) && $_item->getGiftMessageId()): ?>
+            <tr class="border<?php echo ($_index++ > $_count ?' last':'') ?>" id="order-item-gift-message-<?php echo $_item->getId() ?>" style="display:none;">
+                <?php $_giftMessage=$this->helper('giftmessage/message')->getGiftMessageForEntity($_item); ?>
+                <td class="gift-message-row" colspan="7">
+                    <a href="#" title="<?php echo $this->__('Close') ?>" onclick="return giftMessageToogle('<?php echo $_item->getId() ?>');" class="btn-close"><?php echo $this->__('Close') ?></a>
+                    <dl class="gift-message">
+                        <dt><strong><?php echo $this->__('From:') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?></dt>
+                        <dt><strong><?php echo $this->__('To:') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?></dt>
+                        <dd><?php echo $this->helper('giftmessage/message')->getEscapedGiftMessage($_item) ?></dd>
+                    </dl>
+                </td>
+            </tr>
+            
+            <?php endif ?>
+        </tbody>
+        
+        <?php
+        /*end of repeater tbody*/
+        ?>
+        
+        <?php endforeach; ?>
+</table>
+<script type="text/javascript">decorateTable('my-orders-table', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>
+
+
+
+<?php
+/********************************************** Start for installment in order details page 14_04_2014  *********************************/
+/*
+$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+$temptableInstallment = Mage::getSingleton('core/resource')->getTableName('itweb_installments');
+$select = $connectionRead->select()
+->from($temptableInstallment, array('*'))
+->where('order_id=?',$_order->getId());
+$row =$connectionRead->fetchRow($select);   //return rows
+
+$Installment = Mage::getModel('installments/installments')->load($row['installment_id']);
+
+?>
+<form name="payment_submit_form" id="payment_submit_form" action="<?php echo $this->geturl().'installments/index/makePayment/'; ?>" method="post">
+	<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+			<div class="box" id="payments<?php echo $Installment->getId()?>" style="display:none;margin-top:15px;">
+				<div class="box-title">
+					<h3>Payments</h3>
+				</div>
+				<div class="box-content">
+					<table class="data-table" id="installment<?php echo $Installment->getId() ?>_table">
+						<colgroup>
+							<col width="16">
+							<col width="1">
+							<col width="1">
+							<col width="1">
+							<col>
+						</colgroup>
+						<thead>
+						<tr class="first last">
+							<th></th>
+							<th>#</th>
+							<th><span class="nobr">Amount Due</span></th>
+							<th>Status</th>
+							<th>Last Update</th>
+						</tr>
+						</thead>
+						<tbody>
+							<?php foreach($Installment->getPayments() as $k => $Payment): /** @var $Payment Itweb_Installments_Model_Installmentspayments */ /*?>
+						<tr class="<?php echo ($k % 2 ? 'even' : 'odd') ?><?php echo ($k == 0 ? ' first' : ($k == ($Installment->getNumOfInstallments() - 1) ? ' last' : '')) ?>">
+							<td>
+								<?php if ($Payment->isPaid() === false): ?>
+								<input type="checkbox" name="installment_payment[<?php echo $Installment->getOrder()->getId() ?>][]" class="order-<?php echo $Installment->getOrder()->getId() ?>" value="<?php echo $Payment->getInstallmentPaymentId() ?>">
+								<?php endif; ?>
+							</td>
+							<td><?php echo ($k + 1) ?></td>
+							<td class="nobr">
+								<?php echo Mage::helper('core')->currency($Payment->getAmountDue()) ?>
+								<?php
+								if ($Payment->isPaid() === false):
+									echo sprintf(' + %s Est. Tax', Itweb_Installments_Helper_Data::estimateTax($Payment->getAmountDue(), $Installment->getOrder()->getFullTaxInfo()));
+								endif;
+								?>
+							</td>
+							<td><em class="nobr"><?php echo $Payment->getStateHtml() ?></em></td>
+							<td class="last"><?php echo ($Payment->getUpdatedAt() > 0 ? Mage::helper('core')->formatDate($Payment->getUpdatedAt(), 'medium', false) : '') ?>
+                            <script type="text/javascript">
+                                document.observe("dom:loaded", function(){
+                                    $$('.order-<?php echo $Installment->getOrder()->getId() ?>').each(function (element) {
+                                        element.observe('click', function (event) {
+                                            $$('.order-<?php echo $Installment->getOrder()->getId() ?>').each(function (elementCheck) {
+                                                if (element.checked) {
+                                                    if (elementCheck.value < element.value) {
+                                                        elementCheck.checked = element.checked;
+                                                    }
+                                                } else {
+                                                    if (elementCheck.value > element.value) {
+                                                        elementCheck.checked = element.checked;
+                                                    }
+                                                }
+                                            });
+                                           
+                                        })
+                                    });
+                                })
+                            </script>
+                            </td>
+						</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+				<div class="box-account box-payment-method" style="margin-top:15px;">
+		<div class="box-head">
+			<h2>Payment Method Selection</h2>
+		</div>
+		<div class="box">
+			<div class="box-content">
+				<fieldset>
+					<select id="payment_method" name="payment[method]" onchange="showPaymentForm(this.options[this.selectedIndex].value)">
+						<option value="">Please Select A Payment Method</option>
+						<?php
+						/** @var $PaymentHelper Mage_Payment_Helper_Data *//*
+						$PaymentHelper = $this->helper('payment');
+						$_methods = $PaymentHelper->getStoreMethods(Mage::app()->getStore());
+						foreach($_methods as $_method):
+							/** @var $_method Mage_Payment_Model_Method_Abstract *//*
+							echo '<option value="' . $_method->getCode() . '">' . $_method->getTitle() . '</option>';
+						endforeach;
+						?>
+					</select>
+
+					<div id="payment_method_forms" style="width: 280px;">
+						<?php
+						/** @var $PaymentHelper Mage_Payment_Helper_Data *//*
+						$PaymentHelper = $this->helper('payment');
+						$Installment->getOrder()->getQuoteId();
+						$_methods = $PaymentHelper->getStoreMethods(
+							Mage::app()->getStore()
+						);
+						foreach($_methods as $_method):
+							$_method->setData('info_instance', new Mage_Payment_Model_Info());
+							/** @var $_method Mage_Payment_Model_Method_Abstract *//*
+							echo $PaymentHelper->getMethodFormBlock($_method)
+								->toHtml();
+						endforeach;
+						?>
+						<button class="button" id="payment_submit_button" type="submit" style="display:none;">
+						<span>
+							<span>Submit Payment</span>
+						</span>
+						</button>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+			</div>
+			
+			</form>
+<style>
+	#loading-process {
+		position    : absolute;
+		top         : 45%;
+		left        : 50%;
+		margin-left : -60px;
+		border      : 2px solid #f1af73;
+		padding     : 15px 60px;
+		background  : #fff4e9;
+		color       : #d85909;
+		font-size   : 1.1em;
+		font-weight : bold;
+		text-align  : center;
+		z-index     : 501;
+	}
+
+	#loading-mask {
+		/*background : url(../images/blank.gif) repeat;*//*
+		position    : absolute;
+		color       : #d85909;
+		font-size   : 1.1em;
+		font-weight : bold;
+		text-align  : center;
+		opacity     : 0.80;
+		-ms-filter  : "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+		/* IE8 *//*
+		z-index     : 500;
+	}
+
+	#loading-mask .loader {
+		position    : fixed;
+		top         : 45%;
+		left        : 50%;
+		width       : 300px;
+		margin-left : -105px;
+		padding     : 15px 30px;
+		background  : #fff4e9;
+		border      : 2px solid #f1af73;
+		color       : #d85909;
+		font-weight : bold;
+		text-align  : center;
+		z-index     : 1000;
+	}
+</style>
+<div id="loading-mask" style="display: none;">
+	<div class="loader" id="loading-mask-loader">
+		<img src="<?php echo str_replace("index.php/", "", $this->getUrl()) ?>skin/adminhtml/default/default/images/ajax-loader-tr.gif" alt="<?php echo $this->__('Loading...') ?>" /><?php echo $this->__('Processing Payment(s)....Please Wait') ?>
+	</div>
+	<div id="loading-mask"></div>
+</div>
+
+<script type="text/javascript">
+	var FORM_KEY = '<?php echo Mage::getSingleton('core/session')->getFormKey();?>';
+</script>
+<script src="<?php echo $this->getJsUrl() ?>mage/adminhtml/loader.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var currentMethod = null;
+	var FormValidate;
+	function showPaymentForm(code) {
+		if (currentMethod){
+			if ($('payment_form_' + currentMethod)){
+				$('payment_form_' + currentMethod).style.display = 'none';
+			}
+		}
+		if (code != ''){
+			if ($('payment_form_' + code)){
+				$('payment_form_' + code).style.display = '';
+			}
+			$('payment_submit_button').style.display = '';
+			if (FormValidate){
+				FormValidate.reset();
+			}
+			if ($('payment_form_' + code)){
+				FormValidate = new Validation('payment_form_' + code);
+			}
+			else {
+				FormValidate = null;
+			}
+		}
+		else {
+			$('payment_submit_button').style.display = 'none';
+		}
+		currentMethod = code;
+	}
+
+	$('payment_submit_form').observe('submit', function (event) {
+		if (!FormValidate || FormValidate.validate()){
+			var PaymentForm = [$('payment_method')];
+			if ($('payment_form_' + currentMethod)){
+				var MethodForm = Form.getElements($('payment_form_' + currentMethod));
+				for(var i = 0; i < MethodForm.length; i++){
+					PaymentForm.push(MethodForm[i]);
+				}
+			}
+
+			var selectedinstallments = Form.getElements($('installment_payments'));
+			for(var i = 0; i < selectedinstallments.length; i++){
+				PaymentForm.push(selectedinstallments[i]);
+			}
+
+			Element.show('loading-mask');
+			$('payment_submit_button').addClassName('disabled').disable();
+			var request = new Ajax.Request(
+					this.action,
+					{
+						method     : 'post',
+						onComplete : function () {
+							Element.hide('loading-mask');
+							$('payment_submit_button').removeClassName('disabled').enable();
+						},
+						onSuccess  : function (response, data) {
+							if (!response.responseJSON) {
+								response.responseJSON = response.responseText.evalJSON(true);
+							}
+							if (response.responseJSON.success){
+								setLocation('<?php echo $this->getUrl('customer/account')?>');
+							}
+							else {
+								alert(response.responseJSON.response_message);
+							}
+						},
+						onFailure  : function () {
+							alert('failed');
+						},
+						parameters : Form.serializeElements(PaymentForm)
+					}
+			);
+		}
+		Event.stop(event);
+	});
+</script>
+<?php */ /********************************************** Start for installment in order details page 14_04_2014  *********************************/?>
+

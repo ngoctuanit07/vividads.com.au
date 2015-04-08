@@ -1,0 +1,79 @@
+<?php
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @copyright  Copyright (c) 2013 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Multi Fees extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @author     MageWorx Dev Team
+ */
+
+$source = $this->getSource();
+$fullInfo = $this->getDetailsMultifees();
+$helper = Mage::helper('multifees');
+$taxInSales = $helper->getTaxInSales();
+?>
+<?php foreach ($fullInfo as $fee) {
+    //if (!isset($fee['type']) || $fee['type']!=1) continue;
+?>
+    <dl>
+        <dt><b><?php echo $fee['title']; ?></b></dt>
+        <dd style="padding-left: 10px;">
+            <table>
+            <?php foreach ($fee['options'] as $optionId=>$option) { ?>
+                <tr>
+                    <?php
+                        $imgHtml = $helper->getOptionImgHtml($optionId);
+                        if ($imgHtml) echo '<td>' . $imgHtml .'</td>';
+                    ?>
+                    <td style="vertical-align:middle;">
+                        <?php echo $option['title']; ?>
+                        <?php if (isset($option['percent'])) { ?>
+                            (<?php echo (float)$option['percent']; ?>%)
+                        <?php } ?>
+                        - <?php echo Mage::helper('adminhtml/sales')->displayPrices($source, ($taxInSales==2?$option['base_price']:$option['base_price']-$option['base_tax']), ($taxInSales==2?$option['price']:$option['price']-$option['tax'])); ?>
+                          <?php if ($taxInSales==3) echo $this->__('(Incl. Tax %s)', Mage::helper('adminhtml/sales')->displayPrices($source, $option['base_price'], $option['price'])); ?>
+                    </td>
+                 </tr>
+            <?php } //endforeach ?>                
+            </table>
+            <?php if (isset($fee['date']) && $fee['date']) echo trim($fee['date_title'], ':'). ': <i>' . $fee['date'] . '</i><br/>'; ?>
+            <?php if (isset($fee['message']) && $fee['message']) echo trim($fee['message_title'], ':'). ': <i>' . $fee['message'] . '</i>'; ?>
+        </dd>
+    </dl>
+<?php } //endforeach ?>
+<!--<div align="right">
+    <table>
+        <tr>
+            <td align="right"><b><?php //echo $helper->__('Tax:') ?></b></td>            
+            <td>&nbsp;</td>
+            <td align="right"><?php //echo Mage::helper('adminhtml/sales')->displayPrices($source, $source->getBaseMultifeesTaxAmount(), $source->getMultifeesTaxAmount()); ?></td>
+        </tr>
+        <tr>
+            <td align="right"><b><?php //echo $helper->__('Total:') ?></b></td>
+            <td>&nbsp;</td>
+            <td align="right"><?php //echo Mage::helper('adminhtml/sales')->displayPrices($source, $source->getBaseMultifeesAmount(), $source->getMultifeesAmount()); ?></td>
+        </tr>        
+    </table>
+</div>-->

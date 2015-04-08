@@ -1,0 +1,468 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+///5-12-2013 SOC
+if($this->getRequest()->getParam('shipment_id')){
+    $partShipID=$this->getRequest()->getParam('shipment_id');
+    $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+    $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+    $tableName = Mage::getSingleton('core/resource')->getTableName('partialshipping_shipment_grid');
+    $select = $connectionRead->select()->from($tableName, array('*'))->where('entity_id=?',$partShipID);
+    $row = $connectionRead->fetchRow($select);
+
+    $orderId=$row['order_id'];
+    $_shipmenIncrtId=$row['increment_id'];
+    $_order = Mage::getModel('sales/order')->load($orderId);
+    
+}else{
+    
+    $_order = $this->getOrder();
+    //echo "OID :".$_order->getId();
+}
+///5-12-2013 EOC
+?>
+<?php ///$_order = $this->getOrder() ?>
+<?php
+    $orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
+    $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+
+    //$date_post = strtotime($_order->getCreatedAtDate()); 
+    //$Ordtime=date('Y-m-d H:i:s',$date_post );
+    //
+    //$orderAdminDate = $Ordtime ;
+    //$orderAdminDate = $Ordtime ;
+    
+    //echo "ORDER ID: ".$_order->getId();
+    //echo "<pre>";print_r($_order);
+
+
+//<!--7-1--2013 SOC by GC-->
+
+    $magentoCurrentUrl = Mage::helper('core/url')->getCurrentUrl();
+    //$pos1 = stripos($magentoCurrentUrl, 'sales_order_shipment');
+    $pos2 = stripos($magentoCurrentUrl, 'sales_shipment');
+        
+
+//<!--7-1--2013 EOC by GC-->
+?>
+<div class="box-left">
+    <!--Order Information-->
+    <div class="entry-edit" >
+        <?php if ($_order->getEmailSent()):
+            $_email = Mage::helper('sales')->__('the order confirmation email was sent');
+        else:
+            $_email = Mage::helper('sales')->__('the order confirmation email is not sent');
+        endif; ?>
+        <div class="entry-edit-head">
+        <?php if ($this->getNoUseOrderLink()): ?>
+            <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?> (<?php echo $_email ?>)</h4>
+        <?php else: ?>
+            <a href="<?php echo $this->getViewUrl($_order->getId()) ?>"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?></a>
+            <strong>(<?php echo $_email ?>)</strong>
+        <?php endif; ?>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date') ?></label></td>
+                <td class="value"><strong><?php echo $orderAdminDate ?></strong></td>
+            </tr>
+            <?php if ($orderAdminDate != $orderStoreDate):?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date (%s)', $_order->getCreatedAtStoreDate()->getTimezone()) ?></label></td>
+                <td class="value"><strong><?php echo $orderStoreDate ?></strong></td>
+            </tr>
+            <?php endif;?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Status') ?></label></td>
+                <td class="value"><strong><span id="order_status">
+                
+                <!--21-11-2013 SOC-->
+                <?php
+                    if($pos2){
+                      // echo "sfsdfsd";
+                       $shipmentid=$this->getRequest()->getParam('shipment_id');
+                       $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+                       $tableName1 = Mage::getSingleton('core/resource')->getTableName('partialshipping_shipment_grid');
+                       $select = $connectionRead->select()->from($tableName1, array('*'))->where('entity_id=?',$shipmentid);
+		       $row = $connectionRead->fetchRow($select);
+                       
+                       echo $row['status'];
+                    }else{
+                        
+                        echo $_order->getStatusLabel();
+                    }
+                
+                
+                ?>
+                
+                <?php //echo $_order->getStatusLabel() ?>
+                
+                <!--21-11-2013 EOC-->
+                
+                </span></strong></td>
+            </tr>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Purchased From') ?></label></td>
+                <td class="value"><strong><?php echo $_order->getStoreName() ?></strong></td>
+            </tr>
+            <?php if($_order->getRelationChildId()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Link to the New Order') ?></label></td>
+                <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationChildId()) ?>">
+                    <?php echo $_order->getRelationChildRealId() ?>
+                </a></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getRelationParentId()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Link to the Previous Order') ?></label></td>
+                <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationParentId()) ?>">
+                    <?php echo $_order->getRelationParentRealId() ?>
+                </a></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getRemoteIp() && $this->shouldDisplayCustomerIp()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Placed from IP') ?></label></td>
+                <td class="value"><strong><?php echo $_order->getRemoteIp(); echo ($_order->getXForwardedFor())?' (' . $this->escapeHtml($_order->getXForwardedFor()) . ')':''; ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getGlobalCurrencyCode() != $_order->getBaseCurrencyCode()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getGlobalCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+                <td class="value"><strong><?php echo $_order->getBaseToGlobalRate() ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getBaseCurrencyCode() != $_order->getOrderCurrencyCode()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getOrderCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+                <td class="value"><strong><?php echo $_order->getBaseToOrderRate() ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <!--Account Information-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Account Information') ?></h4>
+            <div class="tools"><?php echo $this->getAccountEditLink()?></div>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Name') ?></label></td>
+                    <td class="value">
+                    <?php if ($_customerUrl=$this->getCustomerViewUrl()) : ?>
+                        <a href="<?php echo $_customerUrl ?>" target="_blank"><strong><?php echo $this->htmlEscape($_order->getCustomerName()) ?></strong></a>
+                    <?php else: ?>
+                        <strong><?php echo $this->htmlEscape($_order->getCustomerName()) ?></strong>
+                    <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Email') ?></label></td>
+                    <td class="value"><a href="mailto:<?php echo $_order->getCustomerEmail() ?>"><strong><?php echo $_order->getCustomerEmail() ?></strong></a></td>
+                </tr>
+                <?php if ($_groupName = $this->getCustomerGroupName()) : ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Group') ?></label></td>
+                    <td class="value"><strong><?php echo $_groupName ?></strong></td>
+                </tr>
+                <?php endif; ?>
+                <?php foreach ($this->getCustomerAccountData() as $data):?>
+                <tr>
+                    <td class="label"><label><?php echo $data['label'] ?></label></td>
+                    <td class="value"><strong><?php echo $data['value'] ?></strong></td>
+                </tr>
+                <?php endforeach;?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<div class="box-left">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Billing Address') ?></h4>
+            <div class="tools"><?php echo $this->getAddressEditLink($_order->getBillingAddress())?></div>
+        </div>
+        <fieldset>
+            <address><?php echo $_order->getBillingAddress()->getFormated(true) ?></address>
+        </fieldset>
+    </div>
+</div>
+<?php if (!$this->getOrder()->getIsVirtual()): ?>
+<div class="box-right">
+    <!--Shipping Address-->
+    
+     
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-shipping-address"><?php echo Mage::helper('sales')->__('Shipping Address') ?></h4>
+            <div class="tools"><?php echo $this->getAddressEditLink($_order->getShippingAddress())?></div>
+            <div style="display: none"> <!--28-11-2013-->
+            <a  <?php if($pos1!==false ){?> style="display: block"<?php }else{?> style="display: none" <?php } ?>href="javascript:void(0);" id="shpstatusId" onclick="statusPopup('show_address');" title="<?php echo $this->__('Choose Address') ?>"><?php echo $this->__('Choose Address') ?></a>
+            </div><!--28-11-2013-->
+            
+        </div>
+        <fieldset>
+            <div style="display: none"> <!--28-11-2013-->
+            <?php if($pos1!==false){?>
+            <input type="radio" name="shipAddress" value="<?php echo $_order->getShippingAddress()->getData('entity_id'); ?>" style="display: none"/>
+            <?php } ?>
+            </div>
+            <address><?php echo $_order->getShippingAddress()->getFormated(true) ?></address>
+            <!--7-11-2013 SOC-->
+            <div id="setAdrRes">
+            </div>
+            <!--7-11-2013 SOC-->
+        </fieldset>
+    </div>
+</div>
+<div class="clear"></div>
+<?php endif; ?>
+
+
+
+<!---------------Custom code for address displaying as a dropdown------------------------>
+<?php
+    
+    $customer_id = $_order->getCustomerId();
+    $customer = Mage::getModel('customer/customer')->load($customer_id);
+    $customerAddressCollection = Mage::getResourceModel('customer/address_collection')->addAttributeToFilter('parent_id',$customer_id)->getItems();
+        
+?>
+
+<div class="shipping-adr-custom" id="show_address" style="display: none;">
+        <!--<select onchange="newaddress('customer_form_content');" name="sel_adr" id="order-customshipping_address_customer_address_id">-->
+	<select  name="sel_adrxcv" >
+            <?php foreach($customerAddressCollection as $customerAddressCol){
+                $customer_address_id = $customerAddressCol->getData('entity_id');
+                $addressLoadId = Mage::getModel('customer/address')->load($customer_address_id);
+                $country_name=Mage::app()->getLocale()->getCountryTranslation($addressLoadId['country_id']);
+                $Name = $addressLoadId['firstname'].' '.$addressLoadId['lastname'];
+                $AdrInfo = $addressLoadId['street'].', '.$addressLoadId['city'].', '.$country_name.', '.$addressLoadId['postcode'].', '.$addressLoadId['region']; ?>
+                
+            <option value="<?php echo $customer_address_id;?>">
+                <?php echo $Name.', '.$AdrInfo;?>
+            </option>
+            <?php }?>
+            <option value="new">Add New Address</option>
+        </select>
+        <!--  7-11-2013  GC-->
+        <br/><input type="button" id="selectAddress" value="Select" onclick="setAddress();" />
+        
+    <a id="crs_custom" href="javascript:void(0);" class="cross" onclick="closePopup('show_address');">Close Window</a>
+
+</div>
+<?php
+//7-11-2013 SOC By GC
+    $items= $_order->getAllItems();
+    
+    ?>
+    
+    <input type="hidden" name="orderId" value="<?php echo $_order->getId();?>" />
+    <input type="hidden" name="orderIncrementId" value="<?php echo $_order->getIncrementId();?>" />
+    <input type="hidden" name="customerId" value="<?php echo $_order->getCustomerId();?>" />
+    
+    <?php
+    foreach($items as $itemId => $item){
+        
+    ?>
+    <input type="hidden" name="itemId[]" value="<?php echo $item->getId(); ?>" />   
+    <input type="hidden" name="proId[]" value="<?php echo $item->getProductId(); ?>" />
+    <input type="hidden" name="proName[]" value="<?php echo $item->getName(); ?>" />
+    <input type="hidden" name="proPrice[]" value="<?php echo $item->getPrice(); ?>" />
+    <input type="hidden" name="proSku[]" value="<?php echo $item->getSku(); ?>" />
+    <input type="hidden" name="proQty[]" value="<?php echo $item->getQtyOrdered(); ?>" />
+    
+    <?php
+    }
+    
+    //7-11-2013 EOC By GC
+
+
+
+
+    $OId = $_order->getId();
+    $Finalurl = "zulfe/sales_order_shipment/new/order_id/".$OId;
+    $Finalurl = str_replace('p//s','p/admin/s',$Finalurl);
+    $url = Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/newformpost");
+?>
+
+        <!--Add new address form starts-->
+        
+        
+
+
+<script type="text/javascript">
+    function statusPopup(id) {
+        var e = document.getElementById(id);
+        //alert(e);
+        if(e.style.display == 'block')
+           e.style.display = 'none';
+        else
+           e.style.display = 'block';
+            
+    }
+    function closePopup(id) {
+        var e = document.getElementById(id);
+        e.style.display = 'none';
+             
+    }
+    function newaddress(id) {
+        var SelId = document.getElementById(id);
+        var FormId = document.getElementById("order-customshipping_address_customer_address_id");
+        var selectedValue = FormId.options[FormId.selectedIndex].value;
+        if (selectedValue == 'new') {
+            if(SelId.style.display == 'block')
+                  SelId.style.display = 'none';
+               else
+                  SelId.style.display = 'block';
+                   
+        }
+        else{
+             SelId.style.display = 'none';
+        }
+    }
+    function closePopupForm(id) {
+       var e = document.getElementById(id);
+       e.style.display = 'none';
+    }
+    
+    //7-11-2013 SOC By GC
+    function setAddress(){
+        var FormId = document.getElementById("order-customshipping_address_customer_address_id");
+        var selectedValue = FormId.options[FormId.selectedIndex].value;
+        
+        
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+        xmlhttp.onreadystatechange=function()
+          {
+            
+          if (xmlhttp.readyState==4 || xmlhttp.status==200)
+            {
+                //document.getElementById('todobody').innerHTML = xmlhttp.responseText;
+                
+                if(xmlhttp.responseText != '')
+                {
+                    
+                    document.getElementById('setAdrRes').innerHTML = xmlhttp.responseText;
+                    var e = document.getElementById('show_address');
+                    e.style.display = 'none';
+                }
+                
+            }
+          }
+          url= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/setaddress"); ?>';
+          form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+          if (selectedValue !='' || selectedValue !='new') {
+            xmlhttp.open("POST",url+"?addrsid="+selectedValue+"&form_key="+form_key+"&isAjax=true",true);
+            xmlhttp.send();
+          }else{
+            alert("Select a address");
+          }
+        
+    }
+    //7-11-2013 EOC By GC
+    
+    function saveAdr(){
+        
+        var FinalUrl = '<?php echo $Finalurl?>';
+        var customerid = document.getElementById('customerid').value;
+        var ordid = document.getElementById('oid').value;
+        var firstname = document.getElementById('firstname').value;
+        var lastname = document.getElementById('lastname').value;
+        var company = document.getElementById('company').value;
+        var street = document.getElementById('street').value;
+        var city = document.getElementById('city').value;
+        var country_id = document.getElementById('country_id').value;
+        var region = document.getElementById('region').value;
+        var postcode = document.getElementById('postcode').value;
+        var telephone = document.getElementById('telephone').value;
+
+	//alert(firstname);
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+        xmlhttp.onreadystatechange=function()
+          {
+            
+          if (xmlhttp.readyState==4 || xmlhttp.status==200)
+            {
+                
+                //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+                //alert(xmlhttp.responseText);
+                
+                //document.getElementById('todobody').innerHTML = xmlhttp.responseText;
+                
+                if(xmlhttp.responseText != '')
+                {
+                    alert(xmlhttp.responseText);
+                    
+                }
+                else{
+                    if (firstname!='' && lastname!='' && street!='' && city!='' && country_id!='' && region!='' && postcode!='' && telephone!='') {
+                        window.location = FinalUrl;
+                    }
+                    //alert('There are some problem to delete.');
+                }
+              
+            }
+          }
+          form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+          if (firstname!='' && lastname!='' && street!='' && city!='' && country_id!='' && region!='' && postcode!='' && telephone!='') {
+        xmlhttp.open("POST","<?php echo $url?>?customerid="+customerid+"&oid="+ordid+"&firstname="+firstname+"&lastname="+lastname+"&company="+company+"&street="+street+"&city="+city+"&country_id="+country_id+"&region="+region+"&postcode="+postcode+"&telephone="+telephone+"&form_key="+form_key+"&isAjax=true",true);
+        xmlhttp.send();
+          }else{
+            alert("Fill up all fields");
+          }
+        
+    }
+</script>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <webkul>
+            <label>&lt;a href="http://www.webkul.com" style="background:none;" target="_blank"&gt;WEBKUL&lt;img height="10" style="margin-left: 10px;" src='http://webkul.com/blog/wp-content/uploads/2013/09/wklogo.png'/&gt;&lt;/a&gt;</label>
+            <sort_order>1</sort_order>
+        </webkul>
+    </tabs>
+    <sections>
+        <bgvideo translate="label" module="bgvideo">
+            <label>FullpageBackGround Video</label>
+            <tab>webkul</tab>
+            <sort_order>130</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <magicslide translate="label">
+                    <label>Parameters</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <youtubeid translate="label comment">
+                            <label>YouTubeID</label>
+                            <frontend_type>text</frontend_type>
+			 			    <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>e.g vRirqVffONo</comment>
+                        </youtubeid>
+                    </fields>
+			 </magicslide>
+		    </groups>                        
+        </bgvideo>
+    </sections>
+</config>

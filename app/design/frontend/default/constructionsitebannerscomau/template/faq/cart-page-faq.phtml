@@ -1,0 +1,51 @@
+<?php
+$tableFaq = Mage::getSingleton('core/resource')->getTableName('faq');
+?>
+<div class="shopping_cart_faq">
+<h3><?php echo $this->__('Frequently Asked Questions') ?></h3>
+<table cellspacing="5" cellpadding="5" border="0" width="100%">
+    <tbody>
+   
+        <?php
+        $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+        $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+        
+        //$sqlFaq="SELECT * FROM `".$tableFaq."` WHERE `answer_html`=1 AND `is_active`=1";
+        $sqlFaq = $connectionRead->select()
+                    ->from($tableFaq, array('*'))
+                    ->where("answer_html = 1 AND is_active = 1");
+        try {
+        $chkFaq = $connectionWrite->query($sqlFaq);
+        $rowFaq = $chkFaq->fetchAll();
+        //echo "Count :". count($rowFaq);
+        $cnt=0;
+                foreach($rowFaq as $rowResult)
+                {
+                    $cnt++;
+                    
+                    if($cnt%2 != 0)
+                    {
+                        echo "<tr>";
+                    }
+                    
+        ?>
+         
+        <td class="<?php if($cnt%2==0): ?>last<?php endif; ?>">
+        <p><strong><?php echo $rowResult['question']; ?></strong></p>
+        <?php echo $rowResult['answer']; ?>
+        </td>
+        <?php
+            if($cnt%2==0)
+            {
+                echo "</tr>";
+            }
+        //echo "</tr>";
+                }
+        } catch (Exception $e){
+        //echo $e->getMessage();
+        }
+        ?>
+    
+    </tbody>
+</table>
+</div>

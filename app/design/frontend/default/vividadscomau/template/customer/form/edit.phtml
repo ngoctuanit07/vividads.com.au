@@ -1,0 +1,269 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /*?><div class="page-title">
+    <h1><?php echo $this->__('Edit Account Information') ?></h1>
+</div><?php */?>
+    	<div class="smart-wrap" style="margin:30px;">
+        <form action="<?php echo $this->getUrl('customer/account/editPost') ?>" method="post" id="form-validate"  onSubmit="return validateForm(this);">
+        	<div class="smart-forms smart-container wrap-1">
+            <div class="form-header header-yellow">
+            	<h4><i class="fa fa-pencil-square"></i>Edit Account Information</h4>
+		          </div>
+        			 <div class="form-body">
+                        <?php echo $this->getBlockHtml('formkey')?>
+                         <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+                     <div class="section">
+                      <label class="field-label" for="Account Information">Account Information</label>
+                     </div>
+                     <div class="section">
+                     <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getCustomer())->toHtml() ?>
+                     </div>
+                        <div class="section">
+                      <label class="field prepend-icon">
+						<input type="text" name="email" id="email" value="<?php echo $this->htmlEscape($this->getCustomer()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="gui-input required-entry validate-email" />
+                        <label class="field-icon"><i class="fa fa-envelope"></i></label>  
+                            </label>
+                        </div>
+                        <div class="section">
+                          <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
+						<?php if ($_dob->isEnabled()): ?>
+                            <?php echo $_dob->setDate($this->getCustomer()->getDob())->toHtml() ?>
+                        <?php endif ?>
+                        </div>
+                        <div class="section">
+					   <?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+                        <?php if ($_taxvat->isEnabled()): ?>
+                          <?php echo $_taxvat->setTaxvat($this->getCustomer()->getTaxvat())->toHtml() ?>
+                        <?php endif ?>
+                        </div>
+                        <div class="section">
+					   <?php $_gender = $this->getLayout()->createBlock('customer/widget_gender') ?>
+						<?php if ($_gender->isEnabled()): ?>
+                         <?php echo $_gender->setGender($this->getCustomer()->getGender())->toHtml() ?>
+                        <?php endif ?>
+                        </div>
+                        <div class="section">
+                    <label class="option option-yellow">
+                  <input type="checkbox" name="change_password" id="change_password" value="1" onclick="setPasswordForm(this.checked)" title="<?php echo $this->__('Change Password') ?>"<?php if($this->getCustomer()->getChangePassword()==1): ?> checked="checked"<?php endif; ?> class="checkbox" />
+                      <span class="checkbox"></span> <label for="change_password"><?php echo $this->__('Change Password') ?></label>
+                        </label>
+                   </div>
+                   		<div class="section" style="margin:0px">
+ <label for="Account Information" class="field-label">Current Password<span style="color:red; font-size:12px; padding-left:10px">*</span></label>                
+                      <label class="field prepend-icon" style="padding-bottom:10px;"></label>
+                      	<input type="password" title="<?php echo $this->__('Current Password') ?>" class="gui-input" 
+                        name="current_password" id="current_password" style="padding-left:30px;"/>
+                        <label class="field-icon"><i class="fa fa-lock" style="top:-30px; left:15px;"></i>
+                            </label>
+                        </div>
+                        <div class="section"  style="margin:0px">
+ <label for="Account Information" class="field-label"><?php echo $this->__('New Password')?><span style="color:red; font-size:12px; padding-left:10px">*</span></label>                                        
+                      <label class="field prepend-icon" style="padding-bottom:10px;"></label>  
+						<input type="password" title="<?php echo $this->__('New Password') ?>" class="gui-input validate-password" 
+                        name="password" id="password" style="padding-left:30px;" />
+                        <label class="field-icon"><i class="fa fa-lock" style="top:-30px; left:15px;"></i>
+                            </label>
+                        </div>
+                        <div class="section">
+ <label for="Account Information" class="field-label"><?php echo $this->__('Confirm Password')?><span style="color:red; font-size:12px; padding-left:10px">*</span></label>                                                                
+                      <label class="field prepend-icon" style="padding-bottom:10px;"></label>  
+						<input type="password" title="<?php echo $this->__('Confirm New Password') ?>" 
+                        class="gui-input validate-cpassword" name="confirmation" id="confirmation" style="padding-left:30px;" />
+                        <label class="field-icon"><i class="fa fa-lock" style="top:-30px; left:15px;"></i>
+                            </label>
+                        </div>
+
+                        <div class="form-footer">
+        <p class="required"><?php echo $this->__('* Required Fields') ?></p>                        
+                	<button type="submit" class="button btn-yellow">Save</button>
+                </div>
+                     </div>
+            	</div>
+                </form>
+        	</div>
+<?php /*?><?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<form action="<?php echo $this->getUrl('customer/account/editPost') ?>" method="post" id="form-validate">
+    <div class="fieldset">
+        <?php echo $this->getBlockHtml('formkey')?>
+        <h2 class="legend"><?php echo $this->__('Account Information') ?></h2>
+        <ul class="form-list">
+            <li class="fields">
+                <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getCustomer())->toHtml() ?>
+            </li>
+            <li>
+                <label for="email" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                <div class="input-box">
+                    <input type="text" name="email" id="email" value="<?php echo $this->htmlEscape($this->getCustomer()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text required-entry validate-email" />
+                </div>
+            </li>
+        <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
+        <?php if ($_dob->isEnabled()): ?>
+            <li><?php echo $_dob->setDate($this->getCustomer()->getDob())->toHtml() ?></li>
+        <?php endif ?>
+        <?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+        <?php if ($_taxvat->isEnabled()): ?>
+            <li><?php echo $_taxvat->setTaxvat($this->getCustomer()->getTaxvat())->toHtml() ?></li>
+        <?php endif ?>
+        <?php $_gender = $this->getLayout()->createBlock('customer/widget_gender') ?>
+        <?php if ($_gender->isEnabled()): ?>
+            <li><?php echo $_gender->setGender($this->getCustomer()->getGender())->toHtml() ?></li>
+        <?php endif ?>
+            <li class="control">
+                <input type="checkbox" name="change_password" id="change_password" value="1" onclick="setPasswordForm(this.checked)" title="<?php echo $this->__('Change Password') ?>"<?php if($this->getCustomer()->getChangePassword()==1): ?> checked="checked"<?php endif; ?> class="checkbox" /><label for="change_password"><?php echo $this->__('Change Password') ?></label>
+            </li>
+        </ul>
+    </div>
+    <div class="fieldset" style="display:block;">
+        <h2 class="legend"><?php echo $this->__('Change Password') ?></h2>
+        <ul class="form-list">
+            <li>
+                <label for="current_password" class="required"><em>*</em><?php echo $this->__('Current Password') ?></label>
+                <div class="input-box">
+                    <input type="password" title="<?php echo $this->__('Current Password') ?>" class="input-text" name="current_password" id="current_password" />
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="password" class="required"><em>*</em><?php echo $this->__('New Password') ?></label>
+                    <div class="input-box">
+                        <input type="password" title="<?php echo $this->__('New Password') ?>" class="input-text validate-password" name="password" id="password" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="confirmation" class="required"><em>*</em><?php echo $this->__('Confirm New Password') ?></label>
+                    <div class="input-box">
+                        <input type="password" title="<?php echo $this->__('Confirm New Password') ?>" class="input-text validate-cpassword" name="confirmation" id="confirmation" />
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="buttons-set">
+        <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+        <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+        <button type="submit" title="<?php echo $this->__('Save') ?>" class="button"><span><span><?php echo $this->__('Save') ?></span></span></button>
+    </div>
+</form><?php */?>
+<script type="text/javascript">
+//<![CDATA[
+    var dataForm = new VarienForm('form-validate', true);
+    function setPasswordForm(arg){
+        if(arg){
+            $('current_password').up(3).show();
+            $('current_password').addClassName('required-entry');
+            $('password').addClassName('required-entry');
+            $('confirmation').addClassName('required-entry');
+        }else{
+            $('current_password').up(3).hide();
+            $('current_password').removeClassName('required-entry');
+            $('password').removeClassName('required-entry');
+            $('confirmation').removeClassName('required-entry');
+        }
+    }
+    <?php if($this->getCustomer()->getChangePassword()): ?>
+        setPasswordForm(true);
+    <?php endif; ?>
+	
+	  function validateForm(elem){
+	   
+	   ////gettig the elements
+	   
+	   var formData = jQuery('#form-validate').serializeArray();
+	    //console.log(formData);
+		////jQuery formdata 
+		
+		var firstname = jQuery('#firstname');
+		var lastname = jQuery('#lastname');
+		var email = jQuery('#email');
+		var current_password = jQuery('current_password');
+		var password  = jQuery('#password');		
+		var confirmation = jQuery('#confirmation');
+		
+		
+		////////////////////////////////////////////////////////////
+		
+		
+		if(firstname.val()==''){
+			alert('Oops Firstname field is empty.');
+			firstname.focus();
+			firstname.select();
+			return false;
+			}
+			
+		if(lastname.val()==''){
+			alert('Oops Lastname field is empty.');
+			lastname.focus();
+			lastname.select();
+			return false;
+			}	
+		 	
+		if(email.val()==''){
+			alert('Oops Email field is empty.');
+			email.focus();
+			email.select();
+			return false;
+			}
+		 			
+		
+		if(current_password.val()==''){
+			alert('Oops Telephone field is empty.');
+			current_password.focus();
+			current_password.select();
+			return false;
+			}	
+		
+		if(password.val()==''){
+			alert('Oops password field is empty.');
+			password.focus();
+			password.select();
+			return false;
+			}	
+		
+		if(confirmation.val()==''){
+			alert('Oops confirmation field is empty.');
+			confirmation.focus();
+			confirmation.select();
+			return false;
+			}
+				
+		if(password.val() != confirmation.val()){
+			
+			alert('Oops entered both passwords do not match.');
+			confirmation.focus();
+			confirmation.select();
+			return false;
+			}
+			
+				
+				
+	    return true;
+	   }
+  
+	
+	
+//]]>
+</script>

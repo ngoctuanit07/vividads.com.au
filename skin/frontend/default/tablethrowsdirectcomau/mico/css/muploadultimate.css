@@ -1,0 +1,71 @@
+.mico-mupload-btn-none{opacity:0.3}
+.mico-mupload-item-error{color:red;}
+.mico-mupload-uploader-item-cancel{/*display:none;*/padding:0 2px;}
+.mico-mupload-uploader-container{margin-bottom:10px; text-align:right;}
+.mico-mupload-uploader-container{}
+.mico-mupload-preview{margin-top:10px;}
+.clear-both{clear:both;}
+.mico-mupload-uploader-container-files{float:left;}
+.mico-mupload-uploader-container input.comment-files{border:none;background:#FAFAFA;}
+.mico-mupload-uploader-container-uploader-item{}
+.mico-mupload-uploader-container-uploader-item .mico-mupload-progress{padding-right:10px;}
+.mico-mupload-uploader-container-uploader-item a{padding-right:0px;}
+/**************/
+.mico-mupload-uploader-container-files{float:left;}
+.mico-mupload-uploader-container input.comment-files{}
+.mico-mupload-uploader-container #mico-mupload-uploader-container-uploader-container {
+	width:100%;
+}
+.mico-mupload-uploader-container .mico-mupload-file {
+	/*width:250px;*/
+	padding-right:16px;
+	float:left
+}
+.mico-mupload-uploader-container .mico-mupload-progress{
+	display: none;
+}
+.mico-mupload-uploader-container .mico-mupload-progress-auto{
+	display: block;
+}
+.mico-mupload-uploader-container .mico-mupload-progress-right {
+	float:left;
+}
+.mico-mupload-uploader-container .mico-mupload-progress-container {
+	margin-top: 3px;
+	border: 1px solid #CCC;
+	background: #FFF;
+	padding: 1px;
+	width:80px;
+}
+.mico-mupload-uploader-container .mico-mupload-progress-bar {
+	width: 0px;
+	height: 7px;
+	background: #CDEB8B;
+}
+.mico-mupload-uploader-container  .mico-mupload-progress-bar {
+	display: block;
+	font-size: 0;
+	line-height: 0;
+}
+.mico-mupload-uploader-container .mico-mupload-fix {
+	clear: both;
+	height: 1px;
+	margin: -1px 0 0;
+	overflow: hidden;
+}
+
+.mico-mupload-item-preview{float:left;margin:2px;}
+
+/* quality */
+.mico-mupload-uploaded-preview{float:left;width:240px;text-align:center;padding:10px 0;border:1px solid #e4e4e4;background:#f1f1f1;margin-right:10px;}
+.mico-mupload-uploaded-preview .mico-mupload-thumbnail{/*width:100px;*/}
+.mico-mupload-quality {width: 240px; height:70px; text-align:center;}
+.mico-mupload-bad-quality {background:url(../images/bad-quality.gif) bottom center no-repeat; }
+.mico-mupload-low-quality {background:url(../images/low-quality.gif) bottom center no-repeat; }
+.mico-mupload-fair-quality {background:url(../images/fair-quality.gif) bottom center no-repeat; }
+.mico-mupload-good-quality {background:url(../images/good-quality.gif) bottom center no-repeat; }
+.mico-mupload-great-quality {background:url(../images/great-quality.gif) bottom center no-repeat; }
+
+.mico-meditor-uploader-item-uploaded{display:none;}
+input.mico_custom_file_uploaded{}
+input.mico_custom_file_uploaded_none{display:none;}

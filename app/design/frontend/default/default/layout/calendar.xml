@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <calendar_index_index>
+        <reference name="content">
+            <block type="calendar/calendar" name="calendar" template="calendar/calendar.phtml" />
+        </reference>
+    </calendar_index_index>
+</layout> 

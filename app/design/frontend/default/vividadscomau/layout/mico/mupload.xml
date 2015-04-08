@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<!--<catalog_product_view>
+		<reference name="head">
+			<action method="addCss"><stylesheet>mico/css/muploadultimate.css</stylesheet></action>			
+			<action method="addItem"><type>skin_js</type><name>mico/js/uploader/mupload.min.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>mico/js/muploadultimate.js</name></action>
+		</reference>
+		<reference name="content">
+			<block type="mupload/product" name="mupload" after="product.info" template="mico/mupload/product.phtml" />
+		</reference>
+		<reference name="product.info.options">
+			<action method="addOptionRenderer"><type>file</type><block>catalog/product_view_options_type_file</block><template>mico/mupload/product_view_options_type_file.phtml</template></action>
+        </reference>
+	</catalog_product_view>-->
+	<oi_ajax_co>
+		<reference name="content">
+			<block output="toHtml" type="mupload/product" name="muploadajax" after="tierprices" template="mico/mupload/product.phtml" />
+		</reference>
+    </oi_ajax_co>
+</layout>

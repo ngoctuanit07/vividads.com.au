@@ -1,0 +1,412 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('top_menu_slider')->toHtml() ?>
+<!--<div class="contact_info"><img src="<?php //echo $this->getSkinUrl('images/phone_info.png');?>" alt="contact info"/></div>-->
+
+<?php  $catName = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getName(); ?>
+<?php  $curCatId = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId(); ?>
+<?php
+$full= $catName;
+$full1=explode(' ', $full);
+$first=$full1[0];
+$rest=ltrim($full, $first.' ');
+//echo "$first + $rest";
+?>
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+?>
+<div class="intro"><h2><?php echo $first; ?> <span style="color:#ec761c;"><?php echo $rest;?> </span></h2>
+<?php $catDes = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getDescription();?>
+<?php
+$full_des= $catDes;
+$full_des=explode(' ', $full_des);
+
+$first_des=$full_des[0].' '.$full_des[1].' '.$full_des[2].' '.$full_des[3].' '.$full_des[4].' '.$full_des[5].' '.$full_des[6].' '.$full_des[7].' '.$full_des[8].' '.$full_des[9];
+ $start = strlen($first_des);
+ $end = strlen($catDes);
+ 
+ //$rest_des=ltrim($full_des, $first_des.' ');
+//echo "$first + $rest";
+?>
+
+<p><span style="color:#f37d4b;"><?php echo $first_des; ?></span><?php echo substr($catDes,$start,$end);?> </p>
+</div>
+ 
+
+<?php  $imageUrl = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getImageUrl();?>
+
+<?php if(!$_productCollection->count()): ?>
+<div class="cate_listing">
+    <div class="pro_left">
+         <?php if($curCatId==4074) { ?>
+         <h3>Exhibition Stand By Booth Size</h3>
+         <p style="font-family:Arial, serif, sans-serif; font-size:12px; color:white;">
+                   Exhibitions and marketing camaigns are the perfect opportunity to introduce your company to the public &amp; we want to help you with your company's image. We have a huge selection of tradeshow exhibits, press media wall, tradeshow fabric banner stands, pop up booths,  portable exhibits &amp; presentation boards. Make an impression with our advertising &amp; promotional marketing display products. Vivid Ads (Advertising &amp; Display Solutions) is Australia's choice to buy in-stock exhibit stands, fabric mural media backdrop walls, expo booth displays, road show displays, trade fair booths (exhibit / expo) equipments and outdoor advertsing mesh signs and banners. 
+                </p>
+         <?php } ?>
+
+
+
+<?php
+
+$root_cat= $curCatId;
+$_category = Mage::getModel('catalog/category')->load($root_cat);
+$_subcategories = $_category->getChildrenCategories();
+        //gets all sub categories of parent category 'Brands'
+        $cats = Mage::getModel('catalog/category')->load($root_cat)->getChildren();
+        $catIds = explode(',',$cats);
+
+        $categories = array();
+        foreach($catIds as $catId) {
+            $category = Mage::getModel('catalog/category')->load($catId); 
+			 
+//	echo	$thumbnail=Mage::getModel('catalog/category')->load($catId)->getThumbnail();
+            $categories[$category->getName()] = array(
+                'url' => $category->getUrl(),
+                'img' => $category->getThumbnail()
+            );
+        }
+
+        ksort($categories, SORT_STRING);
+		/*echo '<pre>';
+		print_r($categories);
+		echo '</pre>';*/
+    ?>
+       <?php if($categories){ ?>
+            <?php foreach($categories as $name => $data):  ?>
+	  <div class="cate_detail">  
+      <?php $_img_path = Mage::getBaseUrl('media').'catalog/category/'; ?>
+      <?php  $mypath = $_img_path.'' .$data['img']; ?>        
+                    <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_a">
+                    <?php if($data['img']){ ?>
+                        <img width="188" height="241" class="cat-image" src="<?php echo $mypath; ?>" alt="category image"/>
+                        <?php } else { ?>
+			 <img width="188" height="241" class="cat-image" src="<?php echo $this->getSkinUrl('images/noimage.png'); ?>" alt="category image"/>
+							
+							
+						<?php	} ?>
+                    </a>
+                    <a href="<?php echo $data['url']; ?>" class="cate_detail_h">
+                    <h3><?php echo $name; //substr($name,0,15).".." ?> </h3>
+                    </a>
+                    <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_i">
+                        <img class="cat-image" src="<?php echo $this->getSkinUrl('images/btn_detail.png');?>" alt="category image"/>
+                    </a>
+      </div>  
+	  
+	  
+ 
+            <?php endforeach; ?>
+         
+         <?php } ?>
+         
+         
+        </div>
+        <div class="pro_right">
+        <img width="308" height="331" src="<?php echo $imageUrl;?>" alt="Category Image" />
+        <div class="gallery">
+            <img width="258" height="64" src="<?php echo $this->getSkinUrl('images/Gallery.jpg');?>" alt="Category Image" />
+         </div>
+        
+        </div>
+
+</div>
+     
+
+
+
+ 
+ 
+
+ 
+<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('external-block')->toHtml() ?>
+ 
+ 
+
+<!--<p class="note-msg"><?php //echo $this->__('There are no products matching the selection.') ?></p>-->
+<?php else: ?>
+
+<div class="cate_listing">
+    
+    <?php // List mode ?>
+    
+    <?php $_iterator = 0; ?>
+    
+    <div class="pro_left">
+         <?php if($curCatId==4074) { ?>
+         <h3>Exhibition Stand By Booth Size</h3>
+         <p style="font-family:Arial, serif, sans-serif; font-size:12px; color:white;">
+                   Exhibitions and marketing camaigns are the perfect opportunity to introduce your company to the public &amp; we want to help you with your company's image. We have a huge selection of tradeshow exhibits, press media wall, tradeshow fabric banner stands, pop up booths,  portable exhibits &amp; presentation boards. Make an impression with our advertising &amp; promotional marketing display products. Vivid Ads (Advertising &amp; Display Solutions) is Australia's choice to buy in-stock exhibit stands, fabric mural media backdrop walls, expo booth displays, road show displays, trade fair booths (exhibit / expo) equipments and outdoor advertsing mesh signs and banners. 
+                </p>
+         <?php } ?>
+         <?php if($curCatId==4078) { ?>
+         <h3>1 Meter Wide Backdrop(s)</h3>
+         <p style="font-family:Arial, serif, sans-serif; font-size:12px; color:white;">
+                  Our slimline fabric graphic display features quick, easy setup and beautiful, large-format graphics. The tubular aluminum frame is labeled and snaps together for fast, uncomplicated assembly. The full color, dye-sublimated graphics are printed on one side of the fabric, and the graphics slip easily over the frame, zipping along the bottom. Ultra light and portable!
+                </p>
+         <?php } ?>         
+ 
+       
+         
+         
+        </div>
+    <div class="pro_right">
+        <img width="308" height="331" src="<?php echo $imageUrl;?>" alt="Category Image" />
+         
+        
+        </div>
+        <?php $counter =1?>
+		
+
+    <?php foreach ($_productCollection as $_product): ?>
+    
+    <div class="pro_left wide <?php if ($counter ==1){?>child<?php }?>">
+    <div class="p_image">
+     <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image">
+    
+     <img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getThumbnail()); ?>" width="252" height="252" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+
+
+     
+     </a>
+        </div>
+        <?php if ($counter ==1){?>
+        
+        <div class="p_detail" >
+        <h4><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h4>
+       
+      <?php  $product = Mage::getModel('catalog/product')->load($_product->getId());
+$store_id = $this->helper('core')->getStoreId(); ?>
+<h3><?php echo "Product Model : ".$store_id."-".$product->getSku() ?></h3>
+<h3><?php echo "Price : ".$_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?></h3>
+<?php //echo $_formattedSpecialPrice = Mage::helper('core')->currency($_product->getFinalPrice(),true,false); ?>
+        <?php if($_product->isSaleable()): ?>
+                      
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+<p>                    
+     <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+</p>     
+                    
+        
+       </div>
+       
+        <div class="row-icons">
+        
+            <img style="float:left;" src="<?php echo $this->getSkinUrl('images/icons.png');?>" alt="Icons" class="<?php if ($counter ==1){?>ico<?php }?>" />
+              <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn <?php if ($counter ==1){?>detail<?php }?>">
+			  <img  src="<?php echo $this->getSkinUrl('images/button_06.gif');?>" alt="Icons" />
+			  </a> 
+            </div>
+            
+        <?php }else {?> 
+         
+         <div class="p_detail" style="margin-left:10px;">
+        <h4><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h4>
+       
+      <?php  $product = Mage::getModel('catalog/product')->load($_product->getId());
+$store_id = $this->helper('core')->getStoreId(); ?>
+<h3><?php echo "Product Model : ".$store_id."-".$product->getSku() ?></h3>
+<h3><?php echo "Price : ".$_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?></h3>
+<?php //echo $_formattedSpecialPrice = Mage::helper('core')->currency($_product->getFinalPrice(),true,false); ?>
+        <?php if($_product->isSaleable()): ?>
+                      
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+<p>                    
+     <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+</p>     
+                    
+        
+        
+            <img style="float:left;" src="<?php echo $this->getSkinUrl('images/icons.png');?>" alt="Icons" class="<?php if ($counter ==1){?>ico<?php }?>" />
+              <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn <?php if ($counter ==1){?>detail<?php }?>">
+			  <img  src="<?php echo $this->getSkinUrl('images/button_06.gif');?>" alt="Icons" />
+			  </a> 
+            
+            </div>
+            
+            <?php }?>
+        </div>
+      
+            <?php // Product Image ?>
+           
+            <?php // Product description ?>
+             
+                <?php $counter++;?>
+    <?php endforeach; ?>
+    
+    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+     
+    
+
+     
+</div>
+<?php endif; ?>
+  <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('popup_displays')->toHtml() ?>
+<div class="cate_listing">
+  <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('category_detail_bottom')->toHtml() ?>
+
+  <iframe src='http://usedbooths.com.au/index.php/externalform/?store_id=166' height='860' width='930'></iframe>
+  <div class="banner">
+    <embed width="400" height="267" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="host=picasaweb.google.com&amp;hl=en_GB&amp;feat=flashalbum&amp;RGB=0x000000&amp;feed=https%3A%2F%2Fpicasaweb.google.com%2Fdata%2Ffeed%2Fapi%2Fuser%2FPopupbannerstands%2Falbumid%2F5202242073784115729%3Falt%3Drss%26kind%3Dphoto%26hl%3Den_GB" src="https://picasaweb.google.com/s/c/bin/slideshow.swf" type="application/x-shockwave-flash"> 
+  </div>
+  <div class="banner">
+    <p align="left" style=" padding: 0 15px;"><font color="#FFFFFF" size="2">In an instant, your 
+      message, directional or promotional information can be displayed 
+      virtually anywhere. Self contained, and rugged, fabric  banner 
+      stands are a terrific solution for versatile advertising. No 
+      hooks, no hanging or mounting on walls or from ceilings, the 
+      banner graphic simply pulls up and out from the weighted floor 
+      base on a spring coiled mechanism, much like a window shade. 
+      With an extension rod mounted to the base, your banner stands 
+      independently at a variety of heights and is completely 
+      self-supported. Fabric Banner Stands come in a variety of 
+      light weight solutions all featuring some form of recoil 
+      mechanism for extra fast setup You'll appreciate the quick 
+      assembly and easy shipping. And the base also serves to protect 
+      your graphics from scratching or wear-and-tare in route. 
+      Products for promotions, marketing, advertising and promotional 
+      activities.<br>
+      &nbsp;To use the roll-up banners (free standing / stand alone 
+      banners), simply assemble the stand which comes with directions 
+      and all required hardware. Simply pull the banner up and insert 
+      the locking key into the position you choose. This completes set 
+      up of your advertisement, allowing for more time for other 
+      business. This type of advertising is suitable for many types of 
+      substrate from laminated graphics to textiles and is great for 
+      trade shows, flea markets, exhibitions, weddings, public events 
+      or sales. Using these products to boost sales is being done 
+      around America, where consumers are looking for any way to find 
+      the best deals.<br>
+      <br>
+      Marketing your products with a roll-up banner will bring 
+      attention to products that are out of date, being discontinued 
+      or even sale products. For retail businesses, this is commonly 
+      used to bring attention to products that must go now. This is a 
+      highly visible advertisement that can be placed inside or 
+      outside of the store and is a great sales aid. <br>
+      <br>
+      Using this type of marketing tool will not only bring visibility 
+      to your store, but also to products, sales 
+      and details you choose. There are no preloaded graphics, this is 
+      completely up to you and the best options for your business. The 
+      standard roll-up banners are the most eco friendly ways of 
+      advertising, without constantly creating more landfill waste. 
+      This product is not for outdoor use.<br>
+      <br>
+      Free standing roll up banner stands /backdrop mural media 
+      banners add another plane to your tradeshow booth. Add several 
+      retractable banner stands to your trade show booth display to 
+      create graphic back walls or set several Banner stands (Banner 
+      Bug) up in a semi circle to create a panoramic image. 
+      Retractable banner stands (banners) are easily updateable as 
+      well and you can replace the banner portion to refresh the 
+      graphic or change your message completely. We don't rent out 
+      (not for hire) exhibition furniture! Spyder Display (Spider), 
+      Banner Bug, Display2go &amp; Nimlok Displays are not our brands.<br>
+      &nbsp;</font></p>
+  </div>
+  <?php
+
+$root_cat= 4073;
+$_category = Mage::getModel('catalog/category')->load($root_cat);
+$_subcategories = $_category->getChildrenCategories();
+        //gets all sub categories of parent category 'Brands'
+        $cats = Mage::getModel('catalog/category')->load($root_cat)->getChildren();
+        $catIds = explode(',',$cats);
+
+        $categories = array();
+        foreach($catIds as $catId) {
+	 
+            $category = Mage::getModel('catalog/category')->load($catId); 
+			 
+//	echo	$thumbnail=Mage::getModel('catalog/category')->load($catId)->getThumbnail();
+            $categories[$category->getName()] = array(
+                'url' => $category->getUrl(),
+                'img' => $category->getThumbnail()
+            );
+        }
+
+        ksort($categories, SORT_STRING);
+		/*echo '<pre>';
+		print_r($categories);
+		echo '</pre>';*/
+    ?>
+  <?php $j=1;?>
+  <?php foreach($categories as $name => $data):
+			 $_img_path = Mage::getBaseUrl('media').'catalog/category/';  
+			 $mypath = $_img_path.'' .$data['img'];  
+			 if($j<=8) {
+			 if($j%4==0 ) { ?>
+  <div style="width: 281px;" class="cate_detail "> <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_a">
+    <?php if($data['img']){ ?>
+    <img width="281" height="241" class="cat-image" src="<?php echo $mypath; ?>" alt="category image"/>
+    <?php } else { ?>
+    <img width="281" height="241" class="cat-image" src="<?php echo $this->getSkinUrl('images/noimage.png'); ?>" alt="category image"/>
+    <?php	} ?>
+    </a> <a href="<?php echo $data['url']; ?>" class="cate_detail_h">
+    <h3><?php echo substr($name,0,15).".." ?> </h3>
+    </a> <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_i"> <img class="cat-image" src="<?php echo $this->getSkinUrl('images/btn_detail.png');?>" alt="category image"/> </a> </div>
+  <?php }  else { ?>
+  <div class="cate_detail"> <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_a">
+    <?php if($data['img']){ ?>
+    <img width="188" height="241" class="cat-image" src="<?php echo $mypath; ?>" alt="category image"/>
+    <?php } else { ?>
+    <img width="188" height="241" class="cat-image" src="<?php echo $this->getSkinUrl('images/noimage.png'); ?>" alt="category image"/>
+    <?php	} ?>
+    </a> <a href="<?php echo $data['url']; ?>" class="cate_detail_h">
+    <h3><?php echo substr($name,0,15).".." ?> </h3>
+    </a> <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_i"> <img class="cat-image" src="<?php echo $this->getSkinUrl('images/btn_detail.png');?>" alt="category image"/> </a> </div>
+  <?php } } $j++; ?>
+  <?php endforeach; ?>
+  
+  <div class="banner">
+    <p align="left" style=" padding: 0 15px;"><font face="Arial" color="#FFFFFF" size="2">We offer banner printing of signs for cultural events and 
+      for advertising and marketing companies Australia wide.<br>
+      We also provide banner printing for roll up banner signs, 
+      portable banners and retractable banner stands for display 
+      systems, exhibition banner signage and various trade show 
+      signage.&nbsp;Offering fast logo banner printing service.</p>
+    <p align="left" style=" padding: 0 15px;"><font face="Arial" color="#FFFFFF" size="2">We offer 
+      Portable Banner Display &amp; Trade Show Displays, Banner 
+      Stands, PopUp / Pop Up Wall Displays, Brochure Stands, Sign 
+      Holders, Promotional Banners, Pull Up / Roll Up Banners, 
+      Crowd Control Barriers, Display Boards.</font></p>
+  </div>
+</div>

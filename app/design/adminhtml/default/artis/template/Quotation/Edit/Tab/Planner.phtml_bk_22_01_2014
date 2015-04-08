@@ -1,0 +1,200 @@
+<!--script type="text/javascript" src="<?php //echo $this->getJsUrl()?>jquery/jquery-1.8.2.min.js"></script-->
+<!--script type="text/javascript" src="<?php //echo $this->getJsUrl()?>jquery/jquery.noconflict.js"></script-->
+
+<?php
+
+    $quote_id = $this->getRequest()->getParam('quote_id');
+    $quote = Mage::getModel('Quotation/Quotation')->load($quote_id);
+    
+    //$planning = Mage::helper('SalesOrderPlanning/Planning')->getPlanningForOrderId(1);
+    $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+    $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+    
+    $temptablePlanning=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+    if($connectionWrite->isTableExists($temptablePlanning))
+    {
+	//$sqlPlanning="SELECT * FROM ".$temptablePlanning." WHERE quote_id = '".$quote_id."' AND  planning_type = 'quote'  ";
+	$sqlPlanning = $connectionRead->select()
+				->from($temptablePlanning, array('*'))
+				->where("quote_id = '".$quote_id."' AND  planning_type = 'quote'");
+	$chkPlanning = $connectionRead->fetchAll($sqlPlanning);
+    }
+       $adminurl= $this->getUrl('*/*/updateDates', array('quote_id'=>$quote_id))."?isAjax=true";
+?>
+<script>
+jQuery(function(){
+		jQuery(".data input").change(function(){
+// call ajax and update dates
+			updateDates(jQuery(this));
+		});
+	}
+);
+
+	function updateDates(obj){
+		found=false;
+		$tbody=obj.closest("tbody");
+		$inputs=jQuery("input",$tbody );
+		returnResp=new Array();
+//enable  loading
+                        var r = {options:{loadArea:''}};
+                        varienLoaderHandler.handler.onCreate(r);
+// send jquery request
+		jQuery.get('<?=$adminurl?>',{objectid:obj.attr('id'),objectval:obj.val()},function(resp){
+			objid=resp.objid;
+			if(Object.keys(resp).length == 1)
+				alert('Timeline not defined in product');
+			else
+
+	                jQuery.each(resp, function(key,item){
+				if(key != 'objid'){
+					keys=new Array(key+'_'+objid,key+'_display_'+objid);
+					jQuery('#'+keys[0]).val(item[0]);
+					jQuery('#'+keys[1]).html(item[1]);
+			//		alert('#'+keys[1]+"==="+item[1]);
+				}
+                	});
+                varienLoaderHandler.handler.onComplete();
+		}, 'json');
+}
+</script>
+<form name="form_planning" id="form_planning" method="POST" action="<?php echo Mage::helper("adminhtml")->getUrl('Quotation/Admin/Update/')?>">
+<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+<input type="hidden" name="quote_id" id="quote_id" value="<?php echo $quote_id;?>">
+<div class="grid">
+    <?php
+    foreach($chkPlanning as $planning)
+    {
+        $Product = Mage::getModel('catalog/product')->load($planning['product_id']);
+        echo '<div><strong>'.$Product->getName().'</strong></div>';
+    ?>
+	<table cellspacing="0" class="data" width="100%">
+		<thead>
+			<tr class="headings">
+				<th class="a-center">&nbsp;</th>
+				<th class="a-center">Date</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><b>Order placed</b></td>
+				<td class="a-center"><span id="order_date_display_<?php echo $planning['entity_id']?>"><?php echo date("d-M-y",strtotime($planning['order_placed_date']));?></span> <input size="8" type="hidden" id="order_date_<?php echo $planning['entity_id']?>" name="order_date[<?php echo $planning['entity_id']?>]" value="<?php echo $planning['order_placed_date']?>">
+                	<img src="<?php echo $this->getSkinUrl()?>images/grid-cal.gif" class="v-middle" id="img_order_date_<?php echo $planning['entity_id']?>">
+			        <script type="text/javascript">
+		                Calendar.setup({
+		                    inputField : 'order_date_<?php echo $planning['entity_id']?>',
+                            ifFormat : '%Y-%m-%e',
+						   displayArea: 'order_date_display_<?php echo $planning['entity_id']?>',
+							daFormat: '%e-%b-%y',
+		                    button : 'img_order_date_<?php echo $planning['entity_id']?>',
+		                    align : 'Bl',
+		                    singleClick : true
+		                });
+	                </script></td>
+			</tr>
+			<tr>
+				<td><b>Artwork Submitted</b></td>
+				<td class="a-center">
+<span id="artwork_display_<?php echo $planning['entity_id']?>"><?php echo date("d-M-y",strtotime($planning['artwork_date']));?></span>
+                	<input size="8" type="hidden" id="artwork_<?php echo $planning['entity_id']?>" name="artwork[<?php echo $planning['entity_id']?>]" value="<?php echo $planning['artwork_date']?>">
+                	<img src="<?php echo $this->getSkinUrl()?>images/grid-cal.gif" class="v-middle" id="img_artwork_<?php echo $planning['entity_id']?>">
+			        <script type="text/javascript">
+		                Calendar.setup({
+		                    inputField : 'artwork_<?php echo $planning['entity_id']?>',
+		                    ifFormat : '%Y-%m-%e',
+						   displayArea: 'artwork_display_<?php echo $planning['entity_id']?>',
+							daFormat: '%e-%b-%y',
+		                    button : 'img_artwork_<?php echo $planning['entity_id']?>',
+		                    align : 'Bl',
+		                    singleClick : true
+		                });
+	                </script>
+				</td>
+			</tr>
+                        <tr>
+				<td><b>Proof Approval Date</b></td>
+				<td class="a-center">
+ <span id="proof_display_<?php echo $planning['entity_id']?>"><?php echo date("d-M-y",strtotime($planning['proof_date']));?></span>
+                                   <input size="8" type="hidden" id="proof_<?php echo $planning['entity_id']?>" name="proof[<?php echo $planning['entity_id']?>]" value="<?php echo $planning['proof_date']?>">
+                	<img src="<?php echo $this->getSkinUrl()?>images/grid-cal.gif" class="v-middle" id="img_proof_<?php echo $planning['entity_id']?>">
+			        <script type="text/javascript">
+		                Calendar.setup({
+		                    inputField : 'proof_<?php echo $planning['entity_id']?>',
+		                    ifFormat : '%Y-%m-%e',
+						   displayArea: 'proof_display_<?php echo $planning['entity_id']?>',
+							daFormat: '%e-%b-%y',
+		                    button : 'img_proof_<?php echo $planning['entity_id']?>',
+		                    align : 'Bl',
+		                    singleClick : true
+		                });
+	                </script></td>
+                        </tr>
+			<tr>
+				<td><b>Production Start</b></td>
+				<td class="a-center">
+<span id="start_display_<?php echo $planning['entity_id']?>"><?php echo date("d-M-y",strtotime($planning['start_date']));?></span>
+                	<input size="8" type="hidden" id="start_<?php echo $planning['entity_id']?>" name="start[<?php echo $planning['entity_id']?>]" value="<?php echo $planning['start_date']?>">
+                	<img src="<?php echo $this->getSkinUrl()?>images/grid-cal.gif" class="v-middle" id="img_start_<?php echo $planning['entity_id']?>">
+			        <script type="text/javascript">
+		                Calendar.setup({
+		                    inputField : 'start_<?php echo $planning['entity_id']?>',
+		                    ifFormat : '%Y-%m-%e',
+						   displayArea: 'start_display_<?php echo $planning['entity_id']?>',
+							daFormat: '%e-%b-%y',
+		                    button : 'img_start_<?php echo $planning['entity_id']?>',
+		                    align : 'Bl',
+		                    singleClick : true
+		                });
+	                </script>
+				</td>
+                        </tr>
+			<tr>
+				<td><b>Shipping date</b></td>
+				<td class="a-center">
+<span id="shipping_date_display_<?php echo $planning['entity_id']?>"><?php echo date("d-M-y",strtotime($planning['shipping_date']));?></span>
+                	<input size="8" type="hidden" id="shipping_date_<?php echo $planning['entity_id']?>" name="shipping_date[<?php echo $planning['entity_id']?>]" value="<?php echo $planning['shipping_date']?>">
+                	<img src="<?php echo $this->getSkinUrl()?>images/grid-cal.gif" class="v-middle" id="img_shipping_date_<?php echo $planning['entity_id']?>">
+			        <script type="text/javascript">
+		                Calendar.setup({
+		                    inputField : 'shipping_date_<?php echo $planning['entity_id']?>',
+		                    ifFormat : '%Y-%m-%e',
+						   displayArea: 'shipping_date_display_<?php echo $planning['entity_id']?>',
+							daFormat: '%e-%b-%y',
+		                    button : 'img_shipping_date_<?php echo $planning['entity_id']?>',
+		                    align : 'Bl',
+		                    singleClick : true
+		                });
+	                </script>
+				</td>
+                        </tr>
+			<tr>
+				<td><b>Delivery</b></td>
+				<td class="a-center">
+<span id="delivery_date_display_<?php echo $planning['entity_id']?>"><?php echo date("d-M-y",strtotime($planning['delivery_date']));?></span>
+                                    <input size="8" type="hidden" id="delivery_date_<?php echo $planning['entity_id']?>" name="delivery_date[<?php echo $planning['entity_id']?>]" value="<?php echo $planning['delivery_date']?>">
+                	<img src="<?php echo $this->getSkinUrl()?>images/grid-cal.gif" class="v-middle" id="img_delivery_date_<?php echo $planning['entity_id']?>">
+			        <script type="text/javascript">
+		                Calendar.setup({
+		                    inputField : 'delivery_date_<?php echo $planning['entity_id']?>',
+		                    ifFormat : '%Y-%m-%e',
+						   displayArea: 'delivery_date_display_<?php echo $planning['entity_id']?>',
+							daFormat: '%e-%b-%y',
+		                    button : 'img_delivery_date_<?php echo $planning['entity_id']?>',
+		                    align : 'Bl',
+		                    singleClick : true
+		                });
+	                </script></td>
+                        </tr>
+		</tbody>
+	</table>
+    <?php
+    }
+    ?>
+</div>
+
+<div class="clear"></div>
+
+<div class="a-right"><button onclick="document.getElementById('form_planning').submit()" class="scalable save" type="button"><span>Save</span></button>
+</div>
+
+</form>

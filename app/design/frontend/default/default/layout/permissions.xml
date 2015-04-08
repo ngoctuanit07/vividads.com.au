@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <permissions_index_index>
+        <reference name="content">
+            <block type="permissions/permissions" name="permissions" template="permissions/permissions.phtml" />
+        </reference>
+    </permissions_index_index>
+</layout> 

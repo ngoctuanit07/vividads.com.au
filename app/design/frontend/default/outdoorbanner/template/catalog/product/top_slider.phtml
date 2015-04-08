@@ -1,0 +1,88 @@
+
+
+  <script>
+  <!--
+  		jQuery(function () {
+
+    /* SET PARAMETERS */
+	
+		
+    var change_img_time     = 5000; 
+    var transition_speed    = 500;
+
+    var out_slideshow    = jQuery("#fSlider"),
+        listItems           = out_slideshow.children('li'),
+        listLen             = listItems.length,
+        i                   = 0,
+
+        changeList = function () {
+
+            listItems.eq(i).hide('fade',transition_speed, function () {
+                i += 1;
+                if (i === listLen) {
+                    i = 0;
+                }
+                listItems.eq(i).show('fade',transition_speed);
+            });
+
+        };
+
+    listItems.not(':first').hide();
+	
+	
+    setInterval(changeList, change_img_time);
+	
+	jQuery('#leftArrow').click(function(){ 
+     jQuery('#fSlider li:first').fadeOut(1000).next().fadeIn(1000).end().appendTo('#fSlider');
+   });
+	jQuery('#rightArrow').click(function(){ 
+     jQuery('#fSlider li:first').fadeOut(1000).next().fadeIn(1000).end().appendTo('#fSlider');
+   });
+
+});
+  -->
+  </script>
+
+<div class="hero slideshow">
+	<div class="slides flexslider">
+		<div id="leftArrow" class="leftArrow"> &lt;</div>
+        <div id="rightArrow" class="rightArrow" > &gt;</div>
+	<ul class="frame slides" id="fSlider">
+   
+   <?php 
+   		 /*fetching products from the category featured*/
+		  $_helper = Mage::helper('catalog/output');
+           $category = Mage::getModel('catalog/category')->load(101);		   
+		   
+		   $product_collection = $category->getProductCollection()->addAttributeToSelect('*');	
+		   
+		 
+				/*fetching products from the given category that is featured category*/	
+				
+						   
+		 foreach($product_collection as $_product){
+   ?>
+    <li class="slide">
+    <?php 
+		//print_r($_product->getUrl_path());
+	?>
+    <a href="<?php echo $currentUrl.$_product->getUrl_path();?>">
+    <?php 
+			$product = Mage::getModel('catalog/product')->load($_product->getId());
+			$full_path_url = Mage::helper('catalog/image')->init($product, 'image')->resize(997,493);
+	?>
+    
+    
+     <img src="<?php echo $full_path_url; ?>" /> 
+  
+    <!--<img src="<?php echo $this->getSkinUrl(); ?>featured/home_features_SEP13_vans_b.jpg" alt="" />-->
+    </a>
+	</li>
+    <?php 
+	 }
+	?>
+    
+</ul>
+
+	</div>
+</div>

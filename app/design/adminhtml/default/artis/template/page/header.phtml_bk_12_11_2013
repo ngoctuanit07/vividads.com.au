@@ -1,0 +1,710 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/** @var $this Vividads_Adminsearch_Block_Page_Header */
+?>
+<div class="header-top">
+    <a href="<?php echo $this->getHomeLink() ?>"><img src="<?php echo $this->getSkinUrl('images/logo.gif') ?>" alt="<?php echo $this->__('Magento Logo') ?>" class="logo"/></a>
+    <div class="header-right">
+        <p class="super">
+            <?php echo $this->__("Logged in as %s", $this->escapeHtml($this->getUser()->getUsername())) ?><span class="separator">|</span><?php echo $this->formatDate(null, 'full') ?><span class="separator">|</span><a href="http://golinks.magento.com/CE15" onclick="this.target = '_blank'" class="go-try"><?php echo $this->__('Try Magento Go for Free') ?></a><span class="separator">|</span><a href="<?php echo $this->getLogoutLink() ?>" class="link-logout"><?php echo $this->__('Log Out') ?></a>
+        </p>
+        <?php if (Mage::getSingleton('admin/session')->isAllowed('admin/global_search')): ?>
+            <fieldset>
+                <legend>Search</legend>
+                <span id="global_search_indicator" class="autocomplete-indicator" style="display: none">
+                    <img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading...') ?>" class="v-middle"/>
+                </span>
+                <?php $defSearch = $this->__('Global Record Search') ?>
+                <input id="global_search" name="query" type="text" class="input-text" value="<?php if (!empty($query)): ?><?php echo $query ?><?php else: ?><?php echo $defSearch ?><?php endif ?>" onfocus="if (this.value == '<?php echo $defSearch ?>')
+                            this.value = '';" onblur="if (this.value == '')
+                            this.value = '<?php echo $defSearch ?>';" />
+            <select id="global_search_option" name="global_search_option" class="select" onchange="changeoption()">
+<!--                <option value="">Global Search</option> -->
+<option value="Vividads_Adminsearch_Model_Customer">Customer Name</option>
+<option value="Vividads_Adminsearch_Model_Customer__email_">Email Address</option>
+<option value="Vividads_Adminsearch_Model_Customer___email_">Search via domain name</option>
+<option value="Vividads_Adminsearch_Model_Customer__billingtelephone_">Business Phone </option>
+<option value="Vividads_Adminsearch_Model_Order">Order Number</option>
+<option value="Vividads_Adminsearch_Model_Ticket">Ticket Number </option> </option>
+<option value="Vividads_Adminsearch_Model_Invoice">Invoice Number</option>
+<option value="Vividads_Adminsearch_Model_Quote">Quote Number</option>
+<option value="Vividads_Adminsearch_Model_Order">Proof Number</option>
+<option value="Vividads_Adminsearch_Model_Catalog">Product search</option>
+<option value="Vividads_Adminsearch_Model_Order__grand_total">Search via invoice total </option>
+<option value="Vividads_Adminsearch_Model_Quote__price_ht">Search via quote total </option>
+<option value="Vividads_Adminsearch_Model_Shipment">Search Tracking Number </option>
+            </select>
+
+                <div id="global_search_autocomplete" class="autocomplete"></div>
+            <script type="text/javascript">
+                global_search_option="";
+            function changeoption(element, entry)
+            {
+                   global_search_option=$("global_search_option").getValue();
+                   return entry + "&option="+global_search_option;
+            }
+                new Ajax.Autocompleter(
+                    'global_search',
+                    'global_search_autocomplete',
+                    '<?php echo $this->getUrl('adminsearch/adminhtml_adminsearch/search') ?>',
+                    {
+                        paramName:"query",
+                        minChars:2,
+                        indicator:"global_search_indicator",
+                        updateElement:getSelectionId,
+                        evalJSON:'force',
+                        callback:changeoption,
+                    }
+                );
+                function getSelectionId(li) {
+                    location.href = li.getAttribute('url');
+                }
+            </script>
+            </fieldset>
+        <?php endif; ?>
+    </div>
+    <!--Calendar code start-->
+    <?php
+    foreach ($chkSaleOrder as $res_chkSaleOrder) {
+        $title = "Order Id : " . $res_chkSaleOrder['entity_id']; //Event name or Product name
+        $created_dt = $res_chkSaleOrder['created_at'];
+        $arr = array();
+        $arr = explode(" ", $created_dt);
+        $dt = $arr[0];
+        $tm = $arr[1];
+        $arr_dt = array();
+        $arr_dt = explode("-", $dt);
+        $arr_tm = array();
+        $arr_dm = explode(":", $tm);
+        
+        $time_val = mktime($arr_tm[0], $arr_tm[1], $arr_tm[2], $arr_dt[1], $arr_dt[2], $arr_dt[0]);
+
+        $date_mm = date("m", $time_val);      //Start date (only month)
+        $date_dd = date("d", $time_val);      //Start date (only date)
+        $date_yy = date("Y", $time_val);      //Start date (only Year)
+
+        $edate_mm = date("m", $time_val);     //End date (only month)
+        $edate_dd = date("d", $time_val);     //End date (only date)
+        $edate_yy = date("Y", $time_val);     //End date (only year)
+
+        $start_hh = date("H", $time_val);     //Start time (hh)
+        $start_ii = date("i", $time_val);     //Start time (ii)
+
+        $end_hh = date("H", $time_val + 5);     //End time (hh)
+        $end_ii = date("i", $time_val + 5);     //End time (ii)
+
+
+        if (empty($title)) {
+            //die('ERROR: Missing title');
+        }
+
+        if (!checkdate($date_mm, $date_dd, $date_yy)) {
+            //die('ERROR: Invalid start date/time');        
+        }
+
+        if (!checkdate($edate_mm, $edate_dd, $edate_yy)) {
+            //die('ERROR: Invalid end date/time');        
+        }
+
+        $title = htmlentities($title);
+        $start = date(DATE_ATOM, mktime($start_hh, $start_ii, 0, $date_mm, $date_dd, $date_yy));
+        $end = date(DATE_ATOM, mktime($end_hh, $end_ii, 0, $edate_mm, $edate_dd, $edate_yy));
+
+        // construct event object
+        // save to server      
+        try {
+            // $event = $gcal->newEventEntry();        
+            // $event->title = $gcal->newTitle($title);        
+            // $when = $gcal->newWhen();
+            // $when->startTime = $start;
+            // $when->endTime = $end;
+            //  $event->when = array($when);        
+            // $gcal->insertEvent($event);
+        } catch (Zend_Gdata_App_Exception $e) {
+            //echo "Error: " . $e->getResponse();
+        }
+
+
+        $sqlOrder = "UPDATE " . $temptableSaleOrder . " SET is_event_set_to_google_calendar='1' WHERE entity_id='" . $res_chkSaleOrder['entity_id'] . "'";
+        try {
+            //$chkOrder = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlOrder);
+        } catch (Exception $e) {
+            //echo $e>getMessage();
+        }
+    }
+    ?>
+
+
+    <?php
+
+    function build_calendar($month, $year, $dateArray) {
+        // Create array containing abbreviations of days of week.
+        $daysOfWeek = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+        // What is the first day of the month in question?
+        $firstDayOfMonth = mktime(0, 0, 0, $month, 1, $year);
+        // How many days does this month contain?
+        $numberDays = date('t', $firstDayOfMonth);
+        // Retrieve some information about the first day of the
+        // month in question.
+        $dateComponents = getdate($firstDayOfMonth);
+        // What is the name of the month in question?
+        $monthName = $dateComponents['month'];
+        // What is the index value (0-6) of the first day of the
+        // month in question.
+        $dayOfWeek = $dateComponents['wday'];
+        
+        $todays_date = date("d", time());
+        $current_month = date("m", time());
+
+        $next_month = $month;
+        $next_year = $year;
+
+        $prev_month = $month;
+        $prev_year = $year;
+
+        $next_month++;
+        if ($next_month > 12) {
+            $next_month = 1;
+            $next_year++;
+        }
+
+        $prev_month--;
+        if ($prev_month < 1) {
+            $prev_month = 12;
+            $prev_year--;
+        }
+        /*         * ***************** Start Holiday parse ********************** */
+        $temptableHoliday = Mage::getSingleton('core/resource')->getTableName('holiday');
+        if (Mage::getSingleton('core/resource')
+                        ->getConnection('core_write')
+                        ->isTableExists(trim($temptableHoliday, '`')) !== false) {
+
+            $sqlHoliday = "SELECT * FROM " . $temptableHoliday;
+            $chkHoliday = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlHoliday);
+
+            foreach ($chkHoliday as $holidays) {
+                if ($holyday[$holidays['h_date']] != '')
+                    $holyday[$holidays['h_date']] .= '<br/> ' . $holidays['country_name'] . ' :: ' . $holidays['event'];
+                else
+                    $holyday[$holidays['h_date']] = $holidays['country_name'] . ' :: ' . $holidays['event'];
+            }
+        }
+
+        /*         * ***************** End Holiday parse ********************** */
+
+        // Create the table tag opener and day headers
+        $calendar = "<table width='100%' border='0' cellspacing='0'  cellspadding='0' class='event_calendar'>";
+        $calendar .= "<caption><b>$monthName $year</b></caption>";
+        $calendar .= "<tr>
+                           <td colspan='" . $numberDays . "'>
+                               <div style='float:left;'>        
+                                   <a href='javascript:void(0);' class='lft_arr' onclick='prev_month($month,($prev_year-1));'><</a>
+                               </div>
+                               <div style='float:left; margin-left:50px;'>        
+                                   <a href='javascript:void(0);' class='lft_arr_year' onclick='prev_month($prev_month,$prev_year);'><<</a>
+                               </div>
+                               <div style='float:left; margin-left:50px;'>        
+                                   <a href='javascript:void(0);' class='right_arr_year' onclick='next_month($next_month,$next_year);'>>></a>
+                               </div>
+                               <div style='float:right;'>        
+                                   <a href='javascript:void(0);' class='right_arr' onclick='prev_month($month,($next_year+1));'>></a>  
+                               </div>    
+                           </td></tr>";
+        $calendar .= "<tr>";
+
+        // Create the calendar headers
+        $num = $dayOfWeek;
+        for ($d = 0; $d < $numberDays; $d++) {
+
+            if ($d % 7 == 0) {
+                $calendar .= "<td class='week_header' colspan='7'>Week" . date("W", mktime(0, 0, 0, $month, ($d + 1), $year)) . "</td>";
+            }
+
+            $num++;
+            if ($num > 6) {
+                $num = 0;
+            }
+        }
+
+
+        $calendar .= "</tr><tr>";
+
+        $num = $dayOfWeek;
+        for ($d = 0; $d < $numberDays; $d++) {
+            $calendar .= '<td align="right" class="day_header">' . $daysOfWeek[$num] . '</td>';
+            $num++;
+            if ($num > 6) {
+                $num = 0;
+            }
+        }
+        // Create the rest of the calendar
+        // Initiate the day counter, starting with the 1st.
+        $currentDay = 1;
+        $calendar .= "</tr><tr>";
+        // The variable $dayOfWeek is used to
+        // ensure that the calendar
+        // display consists of exactly 7 columns.
+
+        if ($dayOfWeek > 0) {
+            //$calendar .= "<td colspan='$dayOfWeek'>&nbsp;</td>"; 
+        }
+
+        $month = str_pad($month, 2, "0", STR_PAD_LEFT);
+
+        while ($currentDay <= $numberDays) {
+            $start_time = date("Y-m-d H:i:s", mktime(0, 0, 0, $month, $currentDay, $year));
+            $end_time = date("Y-m-d H:i:s", mktime(23, 59, 59, $month, $currentDay, $year));
+
+            if ($currentDay < 10)
+                $currentDay1 = '0' . $currentDay;
+            else
+                $currentDay1 = $currentDay;
+/* disabling functionality 
+            //All query Start
+            $temptableSaleOrder = Mage::getSingleton('core/resource')->getTableName('sales_flat_order');
+            $sqlSaleOrder = "SELECT count(entity_id) as ctct FROM " . $temptableSaleOrder . " WHERE created_at between '" . $start_time . "' and '" . $end_time . "'";
+            try {
+                $chkSaleOrder = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlSaleOrder);
+            } catch (Exception $e) {
+                //echo $e>getMessage();
+            }
+
+            $tot_order_placed = 0;
+            foreach ($chkSaleOrder as $res_chkSaleOrder) {
+                $tot_order_placed = $res_chkSaleOrder["ctct"];
+            }
+
+            $temptableSaleOrder = Mage::getSingleton('core/resource')->getTableName('sales_flat_order');
+            $sqlSaleOrder = "SELECT entity_id FROM " . $temptableSaleOrder . " WHERE created_at between '" . $start_time . "' and '" . $end_time . "'";
+            try {
+                $chkSaleOrder = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlSaleOrder);
+            } catch (Exception $e) {
+                //echo $e>getMessage();
+            }
+
+            $ord_id = array();
+            $show_id = array();
+
+            foreach ($chkSaleOrder as $res_chkSaleOrder) {
+                $ord_id[] = $res_chkSaleOrder["entity_id"];
+                $show_id[] = str_pad($res_chkSaleOrder["entity_id"], 9, "100000000", STR_PAD_LEFT);
+            }
+
+            $temptableSaleOrder = Mage::getSingleton('core/resource')->getTableName('quotation');
+            $sqlSaleOrder = "SELECT count(increment_id) as ctct FROM " . $temptableSaleOrder . " WHERE created_time between '" . $start_time . "' and '" . $end_time . "'";
+            try {
+                $chkSaleOrder = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlSaleOrder);
+            } catch (Exception $e) {
+                //echo $e>getMessage();
+            }
+            $tot_quote_placed = 0;
+            foreach ($chkSaleOrder as $res_chkSaleOrder) {
+                $tot_quote_placed = $res_chkSaleOrder["ctct"];
+            }
+
+            $temptableSaleOrder = Mage::getSingleton('core/resource')->getTableName('sales_flat_invoice');
+            $sqlSaleOrder = "SELECT count(entity_id) as ctct FROM " . $temptableSaleOrder . " WHERE created_at between '" . $start_time . "' and '" . $end_time . "'";
+            try {
+                $chkSaleOrder = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlSaleOrder);
+            } catch (Exception $e) {
+                //echo $e>getMessage();
+            }
+            $tot_invoice_placed = 0;
+            foreach ($chkSaleOrder as $res_chkSaleOrder) {
+                $tot_invoice_placed = $res_chkSaleOrder["ctct"];
+            }
+
+            $temptableSaleOrder = Mage::getSingleton('core/resource')->getTableName('sales_flat_order');
+            $sqlSaleOrder = "SELECT sum(total_paid) as ctct FROM " . $temptableSaleOrder . " WHERE created_at between '" . $start_time . "' and '" . $end_time . "'";
+            try {
+                $chkSaleOrder = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlSaleOrder);
+            } catch (Exception $e) {
+                //echo $e>getMessage();
+            }
+            $total_paid = 0;
+            foreach ($chkSaleOrder as $res_chkSaleOrder) {
+                if ($res_chkSaleOrder["ctct"] > 0) {
+                    $total_paid = number_format($res_chkSaleOrder["ctct"], 2);
+                } else {
+                    $total_paid = 0;
+                }
+            }
+
+            $temptableSaleOrder = Mage::getSingleton('core/resource')->getTableName('sales_flat_order');
+            $sqlSaleOrder = "SELECT count(entity_id) as ctct FROM " . $temptableSaleOrder . " WHERE status='pending' and created_at between '" . $start_time . "' and '" . $end_time . "'";
+            try {
+                $chkSaleOrder = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlSaleOrder);
+            } catch (Exception $e) {
+                //echo $e>getMessage();
+            }
+            $pending_payments = 0;
+            foreach ($chkSaleOrder as $res_chkSaleOrder) {
+                if ($res_chkSaleOrder["ctct"] > 0) {
+                    $pending_payments = $res_chkSaleOrder["ctct"];
+                } else {
+                    $pending_payments = 0;
+                }
+            }
+
+            $temptableSaleOrder = Mage::getSingleton('core/resource')->getTableName('sales_flat_shipment');
+            $sqlSaleOrder = "SELECT sum(total_qty) as ctct FROM " . $temptableSaleOrder . " WHERE created_at between '" . $start_time . "' and '" . $end_time . "'";
+            try {
+                $chkSaleOrder = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlSaleOrder);
+            } catch (Exception $e) {
+                //echo $e>getMessage();
+            }
+            $item_shipped = 0;
+            foreach ($chkSaleOrder as $res_chkSaleOrder) {
+
+                if ($res_chkSaleOrder["ctct"] > 0) {
+                    $item_shipped = number_format($res_chkSaleOrder["ctct"], 0);
+                } else {
+                    $item_shipped = 0;
+                }
+            }
+            //All query end
+            // Seventh column (Saturday) reached. Start a new row.
+            if ($dayOfWeek == 7) {
+                $dayOfWeek = 0;
+                // $calendar .= "</tr><tr>";
+            }
+            //Mage::getBaseUrl()."/admin/sales_order/view/order_id/";
+            $currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT);
+            $date = "$year-$month-$currentDayRel";
+            if ($tot_invoice_placed > 0 || $tot_quote_placed > 0 || $item_shipped > 0 || $pending_payments > 0 || $total_paid > 0 || $holyday[$year . '-' . $month . '-' . $currentDay1] != '') {
+                $cl_nm = "activate";
+            } else {
+                $cl_nm = "";
+            }
+*/
+            if ($todays_date == $currentDay && $current_month == $month) {
+                $slectedDate = $year . '-' . $current_month . '-' . $currentDay;
+                $calendar .= '<td class="event_day ' . $cl_nm . '" align="right" style="color:#cc0000;" rel="$date"><div id="dt__' . $currentDay . '" onclick="open_pop(this.id);">' . $currentDay . '</div>               
+                                          <div class="overlay" id="ov__' . $currentDay . '"></div>
+                                           <div class="outer" id="ou__' . $currentDay . '">
+                                               <div class="cross" id="cr__' . $currentDay . '" onclick="close_pop(this.id);">X</div>
+                                               <div class="inner">
+                                                    <h6>Summary & Item Sold('.$slectedDate.')</h6>
+                                                    <div class="all_data">
+                                                        <div class="tot_quote data-row odd" style="height:135px;">
+                                                            <div class="lab_txt">Orders :</div>
+                                                            <div class="lab_val" >
+                                                                <ul>
+                                                                    <li>Canceled(<strong>0</strong>)</li>
+                                                                    <li>Closed(<strong>1</strong>)</li>
+                                                                    <li>Complete(<strong>5</strong>)</li>
+                                                                    <li>Suspected Fraud(<strong>0</strong>)</li>
+                                                                    <li>On Hold(<strong>0</strong>)</li>
+                                                                    <li>Payment Review(<strong>1</strong>)</li>
+                                                                    <li>Processing(<strong>2</strong>)</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tot_quote data-row even">
+                                                            <div class="lab_txt">Refunds :</div>
+                                                            <div class="lab_val">0</div>
+                                                        </div>
+                                                        <div class="tot_quote data-row odd">
+                                                            <div class="lab_txt">Proof Disapproved :</div>
+                                                            <div class="lab_val">0</div>
+                                                        </div>                                                        
+                                                        <div class="tot_quote data-row even">
+                                                            <div class="lab_txt">Quote Sent :</div>
+                                                            <div class="lab_val">' . $tot_quote_placed . '</div>
+                                                        </div>
+                                                        <div class="tot_invoice data-row odd">
+                                                            <div class="lab_txt">Invoice Sent :</div>
+                                                            <div class="lab_val">' . $tot_invoice_placed . '</div>
+                                                        </div>
+                                                        <div class="tot_ord data-row even" style=display:none;>
+                                                            <div class="lab_txt">Total Money Sent : </div>
+                                                            <div class="lab_val">' . $total_paid . '</div>
+                                                        </div>
+                                                        <div class="pen_pay data-row even">
+                                                            <div class="lab_txt">Pending Payments : </div>
+                                                            <div class="lab_val">' . $pending_payments . '</div>
+                                                        </div>
+                                                        <div class="pen_pay data-row odd">
+                                                            <div class="lab_txt">Items Shipped : </div>
+                                                            <div class="lab_val">' . number_format($item_shipped, 0) . '</div>
+                                                        </div>
+                                                        <div class="data-row"><hr style="" /></div>
+                                                        <div class="pen_pay data-row total-sale">
+                                                            <div class="lab_txt">Total Sale : </div>
+                                                            <div class="lab_val">0</div>
+                                                        </div>                                                        
+                                                    </div>                                                  
+                                                  ';
+                if ($holyday[$year . '-' . $month . '-' . $currentDay1] != '')
+                    $calendar .='<div class="holi_lnk">Holiday :' . $holyday[$year . '-' . $month . '-' . $currentDay1] . '</div>';
+                $calendar .='</div></div></td>';
+            }
+            else {
+                $slectedDate = $year . '-' . $month . '-' . $currentDay;
+                $calendar .= '<td class="event_day ' . $cl_nm . '" align="right"  rel="$date"><div id="dt__' . $currentDay . '" onclick="open_pop(this.id);">' . $currentDay . '</div>                 
+                                           <div class="overlay" id="ov__' . $currentDay . '"></div>
+                                           <div class="outer" id="ou__' . $currentDay . '">
+                                               <div class="cross" id="cr__' . $currentDay . '" onclick="close_pop(this.id);">X</div>
+                                               <div class="inner">
+                                               <h6>Summary & Item Sold('.$slectedDate.')</h6>
+                                                <div class="all_data">
+                                                        <div class="tot_quote data-row odd" style="height:135px;">
+                                                            <div class="lab_txt">Orders :</div>
+                                                            <div class="lab_val" >
+                                                                <ul>
+                                                                    <li>Canceled(<strong>0</strong>)</li>
+                                                                    <li>Closed(<strong>1</strong>)</li>
+                                                                    <li>Complete(<strong>5</strong>)</li>
+                                                                    <li>Suspected Fraud(<strong>0</strong>)</li>
+                                                                    <li>On Hold(<strong>0</strong>)</li>
+                                                                    <li>Payment Review(<strong>1</strong>)</li>
+                                                                    <li>Processing(<strong>2</strong>)</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tot_quote data-row even">
+                                                            <div class="lab_txt">Refunds :</div>
+                                                            <div class="lab_val">0</div>
+                                                        </div>
+                                                        <div class="tot_quote data-row odd">
+                                                            <div class="lab_txt">Proof Disapproved :</div>
+                                                            <div class="lab_val">0</div>
+                                                        </div>                                                        
+                                                        <div class="tot_quote data-row even">
+                                                            <div class="lab_txt">Quote Sent :</div>
+                                                            <div class="lab_val">' . $tot_quote_placed . '</div>
+                                                        </div>
+                                                        <div class="tot_invoice data-row odd">
+                                                            <div class="lab_txt">Invoice Sent :</div>
+                                                            <div class="lab_val">' . $tot_invoice_placed . '</div>
+                                                        </div>
+                                                        <div class="tot_ord data-row even" style=display:none;>
+                                                            <div class="lab_txt">Total Money Sent : </div>
+                                                            <div class="lab_val">' . $total_paid . '</div>
+                                                        </div>
+                                                        <div class="pen_pay data-row even">
+                                                            <div class="lab_txt">Pending Payments : </div>
+                                                            <div class="lab_val">' . $pending_payments . '</div>
+                                                        </div>
+                                                        <div class="pen_pay data-row odd">
+                                                            <div class="lab_txt">Items Shipped : </div>
+                                                            <div class="lab_val">' . number_format($item_shipped, 0) . '</div>
+                                                        </div>
+                                                        <div class="data-row"><hr style="" /></div>
+                                                        <div class="pen_pay data-row total-sale">
+                                                            <div class="lab_txt">Total Sale : </div>
+                                                            <div class="lab_val">0</div>
+                                                        </div>                                                        
+                                                    </div>
+                                                  ';
+
+                /* $calendar .='<div class="tot_ord_det">';
+                  $ctctct=0;
+                  foreach($show_id as $vvl)
+                  {
+                  $calendar .='<div class="ord_lnk"><a target="_blank" href="'.Mage::getBaseUrl()."/admin/sales_order/view/order_id/".$ord_id[$ctctct].'">Order : '.$vvl.'</a></div>';
+                  $ctctct++;
+                  }
+                  $calendar .='</div>'; */
+
+                if ($holyday[$year . '-' . $month . '-' . $currentDay1] != '')
+                    $calendar .='<div class="holi_lnk">Holiday : ' . $holyday[$year . '-' . $month . '-' . $currentDay1] . '</div>';
+                $calendar .='</div></div></td>';
+            }
+           // Increment counters
+            $currentDay++;
+            $dayOfWeek++;
+        }
+        // Complete the row of the last week in month, if necessary
+        /* if ($dayOfWeek != 7) { 
+          $remainingDays = 7 - $dayOfWeek;
+          $calendar .= "<td colspan='$remainingDays'>&nbsp;</td>";
+          } */
+        $calendar .= "</tr>";
+        $calendar .= "</table>";
+        return $calendar;
+    }
+    $dateComponents = getdate();
+    $month = $dateComponents['mon'];
+    $year = $dateComponents['year'];
+    $dateArray = Array();
+    echo '<div id="cal_out" style="height:92px; overflow:hidden; float:left; width:100%;">' . build_calendar($month, $year, $dateArray) . '</div>';
+    ?>
+    <script type="text/javascript">
+
+        function next_month(m, y)
+        {
+            //alert(m+" "+y);
+            loadXMLDoc(m, y);
+        }
+
+        function prev_month(m, y)
+        {
+            //alert(m+" "+y);
+            loadXMLDoc(m, y);
+        }
+
+        function loadXMLDoc(m, y)
+        {
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
+                    document.getElementById("cal_out").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/event_calendar.php?m=" + m + "&y=" + y, true);
+            xmlhttp.send();
+        }
+
+        function loadXMLHoli(country)
+        {
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
+                    // alert(xmlhttp.responseText);
+                    // document.getElementById("cal_out").innerHTML=xmlhttp.responseText;
+                    location.reload(true);
+                }
+            }
+            xmlhttp.open("GET", "<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/sc_set_calendar.php?country=" + country, true);
+            xmlhttp.send();
+        }
+
+        function open_pop(iid)
+        {
+            arr = Array();
+            arr = iid.split("__");
+
+            var num = arr[1];
+
+            document.getElementById("ov__" + num).style.display = "block";
+            document.getElementById("ou__" + num).style.display = "block";
+
+
+
+        }
+
+        function close_pop(iid)
+        {
+
+            arr = Array();
+            arr = iid.split("__");
+
+            var num = arr[1];
+
+            document.getElementById("ov__" + num).style.display = "none";
+            document.getElementById("ou__" + num).style.display = "none";
+
+
+        }
+
+    </script>
+
+
+    <style>
+        .outer{
+
+            border:1px solid #ff0000;
+            width:400px;
+            /*height:200px;*/
+            min-height: 200px;
+            float:left;
+            position: fixed;
+            z-index: 1000;
+            top:150px;
+            left:470px;
+            background-color: #ffffff;
+            display: none;
+
+        }
+        .inner{
+
+            border:0px solid #00ff00;
+            width:100%;                
+            position: absolute;
+            z-index: 1000;
+            top:0;
+            left:0;
+        }
+        .lab_txt{
+            width: 100px;
+            float: left;
+            text-align: left
+        }
+        .lab_val{
+            width: 100px;
+            float: left;
+            text-align: left;
+        }
+        .cross{
+            border:0px solid #00ff00;
+            width: 12px;
+            position: absolute;
+            z-index: 10000;
+            top:5px;
+            left:384px;
+            cursor: pointer;
+        }
+        .overlay{
+            position: fixed;
+            z-index: 999;
+            top:0px;
+            left:0px;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            opacity: 0.5;
+            display: none;
+
+        }
+
+
+    </style>
+
+
+
+    <!--Calendar code end-->
+</div>

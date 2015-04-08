@@ -1,0 +1,69 @@
+/* == new layout divs == */
+.leftdiv{
+	width: 184px;
+	margin-left: 10px;
+	padding: 0px;
+	
+	}
+.centerdiv{
+	width: 450px;
+	padding-left: 20px;
+	text-align: left;
+	font-family: 'Trebuchet MS' ,Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+
+	}
+.rightdiv{
+	width: 180px;
+	}
+	
+/* == formatting == */
+
+.cartstuff{
+	color: #fff;
+	font-size: 12px;
+	}
+.cartstuff a{
+	color: #fff;
+	}
+.cartstuff a:hover{
+	color: #654458;
+	font-size: 12px;
+	}
+	
+* html .leftdiv{
+	width: 184px;
+	margin: 0px;
+	padding: 0px;
+	
+	}
+.mainmenu{
+	margin-right: 8px;
+	margin-top: 5px;
+	}
+* html .mainmenu{
+	margin-right: 0px;
+	}
+.mywindowstb{
+	border-left: 1px solid #cccccc;
+	border-bottom: 1px solid #cccccc;
+	font-size: 12px;
+	}
+.mywindowstb td{
+	border-top: 1px solid #cccccc;
+	border-right: 1px solid #cccccc;
+	}
+.back2acc{
+	color: #000000;
+	text-decoration: none;
+	}
+.back2acc:hover{
+	color: #654458;
+	}
+.mywindows{
+	font-size: 12px;
+	}
+.breadcrumb{
+	text-decoration: none;
+	font-size: 10px;
+	}

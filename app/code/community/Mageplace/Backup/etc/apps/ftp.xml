@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<application>
+	<ftp>
+		<label>FTP</label>
+		<auth>0</auth>
+		<settings>
+			<host>
+				<label>Host name</label>
+				<type>text</type>
+				<required>1</required>
+			</host>
+			<port>
+				<label>Port number</label>
+				<type>text</type>
+				<required>0</required>
+				<note>Port by default - 21</note>
+			</port>
+			<username>
+				<label>Username</label>
+				<type>text</type>
+				<required>1</required>
+			</username>
+			<password>
+				<label>Password</label>
+				<type>password</type>
+				<required>0</required>
+			</password>
+			<timeout>
+				<label>Timeout</label>
+				<type>text</type>
+				<required>0</required>
+				<note>Timeout by default - 90 seconds</note>
+			</timeout>
+			<ssl>
+				<label>SSL</label>
+				<type>select</type>
+				<source_model>adminhtml/system_config_source_yesno</source_model>
+				<required>0</required>
+			</ssl>
+			<passive>
+				<label>Passive mode</label>
+				<type>select</type>
+				<source_model>adminhtml/system_config_source_yesno</source_model>
+				<required>0</required>
+				<value>1</value>
+			</passive>
+			<path>
+				<label>Path</label>
+				<type>text</type>
+				<required>0</required>
+			</path>
+			<filepartmaxsize>
+				<label>Max file size</label>
+				<type>text</type>
+				<required>0</required>
+				<note>File size that the backup will be divided into. Default size is 100 Mb.</note>
+				<value>100</value>
+			</filepartmaxsize>
+		</settings>
+	</ftp>
+</application>

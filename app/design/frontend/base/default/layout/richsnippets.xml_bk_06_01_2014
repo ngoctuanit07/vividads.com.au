@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+
+	<catalog_product_view>
+		<reference name="content">
+			<reference name="breadcrumbs">
+				<action method="setTemplate" ifconfig="grafischdirectrichsnippets/product/breadcrumb">
+					<template>richsnippets/page/html/breadcrumbs.phtml</template>
+				</action>
+			</reference>
+			<reference name="product.info">
+				<action method="setTemplate">
+					<template>richsnippets/catalog/product/view.phtml</template>
+				</action>
+				<action method="addReviewSummaryTemplate" ifconfig="grafischdirectrichsnippets/product/review">
+					<type>default</type>
+					<template>richsnippets/review/helper/summary.phtml</template>
+				</action>
+			</reference>
+			<reference name="product.info.media">
+				<action method="setTemplate" ifconfig="grafischdirectrichsnippets/product/image">
+					<template>richsnippets/catalog/product/view/media.phtml</template>
+				</action>
+			</reference>
+			<reference name="catalog_product_price_template">
+				<action method="addPriceBlockType" ifconfig="grafischdirectrichsnippets/product/price">
+					<type>simple</type>
+					<block>catalog/product_price</block>
+					<template>richsnippets/catalog/product/price.phtml</template>
+				</action>
+				<action method="addPriceBlockType" ifconfig="grafischdirectrichsnippets/product/price">
+					<type>grouped</type>
+					<block>catalog/product_price</block>
+					<template>richsnippets/catalog/product/price.phtml</template>
+				</action>
+				<action method="addPriceBlockType" ifconfig="grafischdirectrichsnippets/product/price">
+					<type>configurable</type>
+					<block>catalog/product_price</block>
+					<template>richsnippets/catalog/product/price.phtml</template>
+				</action>
+				<action method="addPriceBlockType" ifconfig="grafischdirectrichsnippets/product/price">
+					<type>virtual</type>
+					<block>catalog/product_price</block>
+					<template>richsnippets/catalog/product/price.phtml</template>
+				</action>
+				<action method="addPriceBlockType" ifconfig="grafischdirectrichsnippets/product/price">
+					<type>bundled</type>
+					<block>catalog/product_price</block>
+					<template>richsnippets/catalog/product/price.phtml</template>
+				</action>
+				<action method="addPriceBlockType" ifconfig="grafischdirectrichsnippets/product/price">
+					<type>downloadable</type>
+					<block>catalog/product_price</block>
+					<template>richsnippets/catalog/product/price.phtml</template>
+				</action>
+			</reference>
+			<reference name="product.attributes">
+				<action method="setTemplate">
+					<template>richsnippets/catalog/product/view/attributes.phtml</template>
+				</action>
+			</reference>
+		</reference>
+	</catalog_product_view>
+
+	<PRODUCT_TYPE_simple translate="label" module="catalog">
+		<reference name="product.info.simple">
+			<action method="setTemplate" ifconfig="grafischdirectrichsnippets/product/stock">
+				<template>richsnippets/catalog/product/view/type/default.phtml</template>
+			</action>
+		</reference>
+	</PRODUCT_TYPE_simple>
+
+	<PRODUCT_TYPE_grouped translate="label" module="catalog">
+		<reference name="product.info.grouped">
+			<action method="setTemplate" ifconfig="grafischdirectrichsnippets/product/stock">
+				<template>richsnippets/catalog/product/view/type/grouped.phtml</template>
+			</action>
+		</reference>
+	</PRODUCT_TYPE_grouped>
+
+	<PRODUCT_TYPE_configurable translate="label" module="catalog">
+		<reference name="product.info.configurable">
+			<action method="setTemplate" ifconfig="grafischdirectrichsnippets/product/stock">
+				<template>richsnippets/catalog/product/view/type/default.phtml</template>
+			</action>
+		</reference>
+	</PRODUCT_TYPE_configurable>
+
+	<PRODUCT_TYPE_virtual translate="label" module="catalog">
+		<reference name="product.info.virtual">
+			<action method="setTemplate" ifconfig="grafischdirectrichsnippets/product/stock">
+				<template>richsnippets/catalog/product/view/type/default.phtml</template>
+			</action>
+		</reference>
+	</PRODUCT_TYPE_virtual>
+
+	<PRODUCT_TYPE_bundled translate="label" module="catalog">
+		<reference name="product.info.bundled">
+			<action method="setTemplate" ifconfig="grafischdirectrichsnippets/product/stock">
+				<template>richsnippets/catalog/product/view/type/default.phtml</template>
+			</action>
+		</reference>
+	</PRODUCT_TYPE_bundled>
+
+	<PRODUCT_TYPE_downloadable translate="label" module="downloadable">
+		<reference name="product.info.downloadable">
+			<action method="setTemplate" ifconfig="grafischdirectrichsnippets/product/stock">
+				<template>richsnippets/downloadable/catalog/product/type.phtml</template>
+			</action>
+		</reference>
+	</PRODUCT_TYPE_downloadable>
+
+</layout>

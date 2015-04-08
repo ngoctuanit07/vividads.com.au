@@ -1,0 +1,520 @@
+<?php
+ $roles = Mage::getModel('admin/roles')->getCollection();
+foreach($roles as $role):
+   //echo '<br/>Role : '.$role->getId()." | ".$role->getRoleName();
+    $select .= '<option value="'.$role->getId().'">'.$role->getRoleName().'</option>';
+     $roleid = $role->getId();
+   
+   
+endforeach;
+
+//$taskall = array(1=>'Artwork upload delay');
+$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+	    
+$temptableLog=Mage::getSingleton('core/resource')->getTableName('adminlogger_log');
+
+$select = $connectionRead->select()
+	->from($temptableLog, array('al_description'))
+	->where('al_custom_type=?',1)
+	->group('al_description')
+	->order('al_id DESC');
+$logfetch = $connectionRead->fetchAll($select);
+foreach($logfetch as $task)
+{
+  $taskall[] = $task['al_description'];
+}
+
+foreach($taskall as $key=>$task1)
+{
+
+    $taskselect.= '<option value="'.$task1.'" >'.$task1.'</option>';
+}
+
+ $url = Mage::helper("adminhtml")->getUrl("systemalert/adminhtml_systemalert/setalert");
+ 
+ $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+ $temptableAlert=Mage::getSingleton('core/resource')->getTableName('system_alert');
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl()?>systemalert.css" />
+<div id="layout" style="display:none;">sdgdsg</div>
+<script type="text/javascript">
+ function addtask(id)
+ {
+   document.getElementById('alertid').value = id;
+   document.getElementById('totaltask').style.display = 'block';
+   document.getElementById('layout').style.display = 'block';
+ }
+ 
+ 
+ 
+ function setalert(id,type,alertid)
+ {
+     var xmlhttp;
+     if (window.XMLHttpRequest)
+       {// code for IE7+, Firefox, Chrome, Opera, Safari
+       xmlhttp=new XMLHttpRequest();
+       }
+     else
+       {// code for IE6, IE5
+       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+       }
+     xmlhttp.onreadystatechange=function()
+       {
+       if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	 {
+	     //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	     //alert(xmlhttp.responseText);
+	     location.reload();
+	     
+	   
+	 }
+       }
+       form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+     xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/systemalert/adminhtml_systemalert/setalert/?taskid="+id+"&type="+type+"&alertid="+alertid+"&form_key="+form_key+"&isAjax=true",true);
+     xmlhttp.send();
+     
+ }
+ 
+ function edittask(id)
+ {
+     var xmlhttp;
+     if (window.XMLHttpRequest)
+       {// code for IE7+, Firefox, Chrome, Opera, Safari
+       xmlhttp=new XMLHttpRequest();
+       }
+     else
+       {// code for IE6, IE5
+       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+       }
+     xmlhttp.onreadystatechange=function()
+       {
+       if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	 {
+	     document.getElementById("edittaskbody").innerHTML=xmlhttp.responseText;
+	//      Calendar.setup({
+	//		   inputField : document.getElementById('edit_form_task_').elements['edit_deadline'],
+	//		   ifFormat : '%Y-%m-%e',
+	//		   button : document.getElementById('edit_form_task_').elements['img_edit_deadline'],
+	//		   align : 'Bl',
+	//		   singleClick : true
+	//	       });
+	      document.getElementById('edittask').style.display = 'block';
+	      document.getElementById('layout').style.display = 'block';
+	     //alert(xmlhttp.responseText);
+	     //location.reload();
+	     
+	   
+	 }
+       }
+       form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+     xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/systemalert/adminhtml_systemalert/loadtask/?taskid="+id+"&form_key="+form_key+"&isAjax=true",true);
+     xmlhttp.send();
+     
+ }
+
+    
+function add_another()
+{
+	i = document.getElementById('form_count').value;
+	i++;
+	var str = '<div id="tab_'+i+'" class="tabclass2"><div class="file_class"><select name="task" id="task" onchange="setalert(this.value,\'add\');"><option>Select Task</option><?php echo $taskselect;?></select></div><span class="removeitem" onclick="div_remove('+i+')" id="rem_'+i+'" style="cursor:pointer;">Remove</span></div>';
+	jQuery("#content1").append(str);
+	document.getElementById('form_count').value = i;
+	
+}
+
+function div_remove(id,alertid)
+{
+      if(alertid == '')
+      {
+	i = document.getElementById('form_count').value;
+	jQuery("#tab_"+id).remove();
+      }
+      else{
+	   var xmlhttp;
+	 if (window.XMLHttpRequest)
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	   xmlhttp=new XMLHttpRequest();
+	   }
+	 else
+	   {// code for IE6, IE5
+	   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	   }
+	 xmlhttp.onreadystatechange=function()
+	   {
+	   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	     {
+		 
+		 //alert(xmlhttp.responseText);
+		 i = document.getElementById('form_count').value;
+		 jQuery("#tab_"+id).remove();
+		 //location.reload();
+		 
+	       
+	     }
+	   }
+	   form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	 xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/systemalert/adminhtml_systemalert/deletealert/?alertid="+alertid+"&form_key="+form_key+"&isAjax=true",true);
+	 xmlhttp.send();
+      }
+}
+
+function closediv(id)
+{
+  document.getElementById(id).style.display = 'none';
+  document.getElementById('layout').style.display = 'none';
+}
+
+function addcondition(id)
+{
+   document.getElementById('con_alertid').value = id;
+   document.getElementById('totalcondition').style.display = 'block';
+   document.getElementById('layout').style.display = 'block';
+}
+
+function loadattr(model,id)
+{
+     
+	   var xmlhttp;
+	 if (window.XMLHttpRequest)
+	   {// code for IE7+, Firefox, Chrome, Opera, Safari
+	   xmlhttp=new XMLHttpRequest();
+	   }
+	 else
+	   {// code for IE6, IE5
+	   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	   }
+	 xmlhttp.onreadystatechange=function()
+	   {
+	   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	     {
+		 
+		 //alert(xmlhttp.responseText);
+		 //i = document.getElementById('form_count').value;
+		 //jQuery("#tab_"+id).remove();
+		 //location.reload();
+		 
+		 document.getElementById("attribute_"+id).innerHTML=xmlhttp.responseText;
+		 
+	       
+	     }
+	   }
+	   form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	 xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/systemalert/adminhtml_systemalert/loadattr/?model="+model+"&form_key="+form_key+"&isAjax=true",true);
+	 xmlhttp.send();
+      
+}
+
+function add_another2()
+{
+	i = document.getElementById('condition_count').value;
+	i++;
+	var str = '<tr><td><select id="model_'+i+'" name="model[]" onchange="loadattr(this.value,\''+i+'\')"><option value="">Select Model</option><option value="product">Product</option><option value="quotation">Quotation</option><option value="order">Order</option><option value="customer">Customer</option><option value="invoice">Invoice</option><option value="shipment">Shipment</option></select></td><td><select id="attribute_'+i+'" name="attribute[]"><option value="">Select Attribute</option></select></td><td><select id="condition_'+i+'" name="condition[]"><option value="">Select Condition</option><option value="=">Is Equal</option><option value="!=">Is Not Equal</option><option value=">">Is Greater Than</option><option value=">=">Is Greater Than Or Equal To</option><option value="<">Is less Than</option><option value="<=">Is less Than Or Equal To</option></select></td><td><input type="text" id="attr_value_'+i+'" name="attr_value[]"/></td><td><select id="action_'+i+'" name="action[]"><option value="">Select Action</option><option value="OR">OR</option><option value="AND">AND</option></select></td><td></td></tr>';
+	jQuery("#content2").append(str);
+	document.getElementById('condition_count').value = i;
+	
+}
+</script>
+
+<div class="entry-edit">
+        <div class="entry-edit-head"><h4>Add System Alert</h4></div>
+        <div class="order-totals">
+         
+           <div class="total_proof">
+            <form action="<?php  echo str_replace('//s','/admin/s',$url);?>" method="post" enctype="multipart/form-data">
+             <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+                <table class="total_proof" style="width: 118%;" cellspacing="0" cellpadding="0">
+                     <tr>
+                        <td height="10" align="left" valign="middle" colspan="6">
+                        </td>
+                        <td valign="top">
+                         <span onclick="add_another();" style="cursor:pointer;" title="Add book suggetion" class="addanother">Add another</span><span class="submitclass"><?php /*?><input name="submit" id="submit" type="submit"  class="submit-img" value="Submit" /><?php */?></span>
+                        </td>
+                    </tr>
+                    <tr class="txt">
+                        <td valign="top">
+                         <div id="dvFile" class="totaldiv">
+                    <?php
+                     $select = $connectionRead->select()
+                    ->from($temptableAlert, array('*'));
+                    
+                    $result = $connectionRead->fetchAll($select);
+                    $i = 1;
+                    foreach($result as $task)
+                    {
+                        
+                        ?>
+                        
+                            <div id="tab_<?php echo $i;?>" class="tabclass">
+                          <div class="file_class">
+                            
+                          <select name="task" onchange="setalert(this.value,'edit','<?php echo $task['entity_id'];?>');">
+                                <option>Select Task</option>
+                                <?php
+                                    foreach($taskall as $key=>$task1)
+                                    {
+                                        $selected = '';
+                                        if($task['task_id'] == $task1)
+                                        $selected = 'selected';
+                                        echo '<option value="'.$task1.'" '.$selected.'>'.$task1.'</option>';
+                                    }
+                                ?>
+                             </select>
+                          </div>
+                          <div class="item_class">
+                             <?php
+			      $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+			      $temptableAlertTask=Mage::getSingleton('core/resource')->getTableName('systemalert_task');
+			      
+			      $select = $connectionRead->select()
+				       ->from($temptableAlertTask, array('*'))
+				       ->where('parent_id=?',$task['entity_id']);
+				       
+			      $result = $connectionRead->fetchAll($select);
+			      if(count($result) <= 0)
+			      {
+			        echo '<span style="cursor:pointer;" onclick="addtask('.$task['entity_id'].');">Create Task</span>';
+			      }
+			      else
+			      {
+				echo '<span style="cursor:pointer;" onclick="edittask('.$result[0]['entity_id'].');">Task '.$result[0]['entity_id'].'/Role</span>';
+			      }
+			      
+			     ?>
+                          </div>
+			  <div class="criteriadiv">
+			   <?php
+			      $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+			      $temptableCondition=Mage::getSingleton('core/resource')->getTableName('systemalert_condition');
+			      
+			      $select = $connectionRead->select()
+				       ->from($temptableCondition, array('*'))
+				       ->where('parent_id=?',$task['entity_id']);
+				       
+			      $Condition = $connectionRead->fetchAll($select);
+			      if(count($Condition) <= 0)
+			      {
+			        echo '<span style="cursor:pointer;" onclick="addcondition('.$task['entity_id'].');">Add Criteria</span>';
+			      }
+			      else
+			      {
+			       $con_all = '';
+				foreach($Condition as $con)
+				{
+				  $con_all .= ' '.$con['attr_model'].' '.$con['attr_field'].$con['attr_condition'].$con['attr_value'].' '.$con['attr_action'];
+				}
+				echo $con_all;
+			      }
+			      
+			     ?>
+			  </div>
+			  <span class="removeitem" onclick="div_remove('<?php echo $i;?>','<?php echo $task['entity_id']?>')" id="rem_<?php echo $i;?>" style="cursor:pointer;">Remove</span>
+                         </div>
+                         
+                        <?php
+                        $i++;
+                    }
+                    ?>
+                    </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="10" align="left" valign="middle" colspan="6">
+                        <div id="content1" class="tabclass"></div></td>
+                    </tr>
+                   
+                </table>
+                <input type="hidden" id="form_count" value="<?php echo $i;?>" />
+            </form>
+        </div>
+            
+        </div>
+    </div>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl().'calendar.css'?>"  />
+<link rel="stylesheet" href="<?php echo $this->getJsUrl()?>jquery-ui.css" />
+
+<?php
+$url = Mage::helper("adminhtml")->getUrl("systemalert/adminhtml_systemalert/savealerttask");
+?>
+<div class="totaltask" id="totaltask" style="display:none;">
+ <div style="cursor:pointer;" class="taskclose" onclick="closediv('totaltask');">X</div>
+ <div class="taskbody">
+  <form id="form_task_" name="form_task_" method="POST" action="<?php echo $url?>">
+   <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+   <table cellspacing="0" cellpadding="0">
+    <input type="hidden" name="alertid" id="alertid" />
+    <tr>
+     <td>Target User : </td>
+     <td>
+       <select name="target_user" id="target_user" >
+	<option value="">Assign To</option>
+	 <?php
+	  $adminUserModel = Mage::getModel('admin/user');
+	  $userCollection = $adminUserModel->getCollection()->load();
+	  foreach($userCollection as $user)
+	  {
+	   echo '<option value="'.$user->getId().'" '.$selected.' >'.$user->getUsername().'</option>';
+	  }
+	 ?>
+	</select>
+     </td>
+    </tr>
+    <tr>
+     <td>Deadline Duration : </td>
+     <td>
+      <!--<input size="6" type="text" id="deadline" name="deadline" value="">
+      <img src="<?php //echo $this->getSkinUrl('images/grid-cal.gif');?>" class="v-middle" id="img_ot_deadline">
+      <script type="text/javascript">
+	  Calendar.setup({
+	      inputField : document.getElementById('form_task_').elements['deadline'],
+	      ifFormat : '%Y-%m-%e',
+	      button : document.getElementById('form_task_').elements['img_ot_deadline'],
+	      align : 'Bl',
+	      singleClick : true
+	  });
+      </script>-->
+      
+      <select name="duration_type" >
+       <option value="">Select Type</option>
+       <option value="day" >Days</option>
+       <option value="hour">Hours</option>
+      </select>
+      
+      <select name="duration" >
+       <option value="">Select Duration</option>
+       <?php
+	for($i=1;$i<=10;$i++)
+	{
+	  echo '<option value="'.$i.'">'.$i.'</option>';
+	}
+       ?>
+      </select>
+      
+     </td>
+    </tr>
+    <tr>
+     <td>Caption : </td>
+     <td><input type="text" name="caption" id="caption"/></td>
+    </tr>
+    <tr>
+     <td>Staff Email Template : </td>
+     <td>
+      <select name="email_template">
+       <option value="">Select Email Template</option>
+       <?php
+	 $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+	 $temptableEmail=Mage::getSingleton('core/resource')->getTableName('core_email_template');
+	 
+	 $select = $connectionRead->select()
+		  ->from($temptableEmail, array('*'));
+		  
+	 $result = $connectionRead->fetchAll($select);
+	 foreach($result as $email)
+	 {
+	   echo '<option value="'.$email['template_id'].'">'.$email['template_code'].'</option>';
+	 }
+       ?>
+      </select>
+     </td>
+    </tr>
+    <tr>
+     <td>Alert Description : </td>
+     <td><textarea name="description" id="description"></textarea></td>
+    </tr>
+    <tr>
+     <td></td>
+     <td><button type="submit" name="submit" id="submit"/>Save</button></td>
+    </tr>
+   </table>
+  </form>
+  </div>
+</div>
+
+
+<div class="totaltask" id="edittask" style="display:none;">
+ <div class="taskclose" onclick="closediv('edittask');">X</div>
+ <div class="taskbody" id="edittaskbody">
+ </div>
+</div>
+
+<!-- this is for the condition div -->
+
+<?php
+$url = Mage::helper("adminhtml")->getUrl("systemalert/adminhtml_systemalert/savealertcondition");
+?>
+<div class="totalcondition" id="totalcondition" style="display:none;">
+ <div class="conditionclose" onclick="closediv('totalcondition');">X</div>
+ <div class="conditionbody" id="conditionbody">
+   <form id="form_task_" name="form_task_" method="POST" action="<?php echo $url?>">
+   <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+  <table style="width:100%">
+   <input type="hidden" id="con_alertid" name="con_alertid"/>
+   <thead>
+   <tr>
+    <th>Model</th>
+    <th>Attribute</th>
+    <th>Condition</th>
+    <th>Value</th>
+    <th>Action</th>
+    <th ><button type="button" onclick="add_another2();">Add Another Condition</button></th>
+   </tr>
+   </thead>
+   
+    <tr>
+     <td>
+      <select id="model_1" name="model[]" onchange="loadattr(this.value,'1')">
+       <option value="">Select Model</option>
+       <option value="product">Product</option>
+       <option value="quotation">Quotation</option>
+       <option value="order">Order</option>
+       <option value="customer">Customer</option>
+       <option value="invoice">Invoice</option>
+       <option value="shipment">Shipment</option>
+      </select>
+     </td>
+     <td>
+      <select id="attribute_1" name="attribute[]">
+       <option value="">Select Attribute</option>
+      </select>
+     </td>
+     <td>
+      <select id="condition_1" name="condition[]">
+       <option value="">Select Condition</option>
+       <option value="=">Is Equal</option>
+       <option value="!=">Is Not Equal</option>
+       <option value=">">Is Greater Than</option>
+       <option value=">=">Is Greater Than Or Equal To</option>
+       <option value="<">Is less Than</option>
+       <option value="<=">Is less Than Or Equal To</option>
+      </select>
+     </td>
+     <td>
+      <input type="text" id="attr_value_1" name="attr_value[]"/>
+     </td>
+     <td>
+      <select id="action_1" name="action[]">
+       <option value="">Select Action</option>
+       <option value="OR">OR</option>
+       <option value="AND">AND</option>
+      </select>
+     </td>
+     <td></td>
+    </tr>
+    <tbody id="content2">
+    
+   </tbody>
+    <tr>
+     <td></td>
+     <td></td>
+     <td></td>
+     <td></td>
+     <td></td>
+     <td><button type="submit" name="submit" id="submit"/>Save</button></td>
+    </tr>
+  </table>
+  </form>
+ </div>
+</div>
+<input type="hidden" id="condition_count" value="1"/>
+

@@ -1,0 +1,202 @@
+<?php
+/**
+ *
+ */
+?>
+<script>
+//     $.fn.myElevateZoom = function () {
+//   $('#zoomed img').removeData('elevateZoom');
+//   $('.zoomContainer').remove();
+
+//   $(this).elevateZoom({
+//     // custom options here
+//   });
+// };
+
+</script>
+<?php echo "string";?>
+<?php list($summaryData['rating_summary'], $array,$string)=$this->ratingSummary();
+            $a[]=array();
+            $a = array_count_values($array);?>
+
+<?php if($summaryData['rating_summary']):?>
+    <div class="ratings">
+        <h2><?php echo $this->__('Average Ratings : ')?></h2>
+           <div id="average-rating">
+            <div class="rating-box">
+                <div class="rating" style="width:<?php echo $summaryData['rating_summary']; ?>%">
+                </div>
+            </div>
+            <p id="average"><?php  echo $string;?></p>&nbsp;
+            </div>
+        <ul id="star_ul">
+            <!--[if IE 8]>
+                <style> #rating_vote
+                    { 
+                         margin-top: -15px ; 
+                    }</style>
+                <![endif]-->
+            <?php for($i=5; $i>=1; $i--):?>
+                <?php $prog = ($a[$i]*100)/count($array);?>
+                    <li class="star_li">
+                        <p id="stars<?php if($i==1){echo 'one';} ?>">
+                        <?php if($i>1):?>
+                        <?php echo $this->__($i.' Stars ');?>
+                        <?php elseif ($i==1):?> 
+                        <?php echo $this->__($i.' Star&nbsp ');?>
+                        <?php endif;?></p>
+                         
+                   <progress max="<?php echo count($array);?>" value="0<?php echo $a[$i]; ?>" style="<?php if ($i==1){ echo "margin-left:1px";  }?>" >  
+                            <div class="progress-bar">
+                                <span style="<?php echo 'width:'. $prog;?>%">Progress: <?php echo  round($prog);?></span>
+
+                            </div>
+                        </progress>  
+                      <p id="rating_vote"><?php echo $a[$i]; ?></p>
+                    </li>
+            <?php endfor;?>
+           
+
+
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+<?php endif;?>
+
+
+<?php $_items = $this->getReviewsCollection()->getItems();?>
+<div class="box-collateral box-reviews" id="customer-reviews">
+<?php //echo "<pre>"; print_r($_items); exit();?>
+    <?php if (count($_items)):?>
+        <?php
+            $votes = array();
+            foreach ($_items as $key => $row)
+            {
+                $votes[$key] = $row['votes'];
+            }
+            array_multisort($votes, SORT_DESC, $_items);
+         ?>
+        <?php $reviews=$this->reviewscollection(); ?>
+        <?php
+        //  echo "<pre>";
+        // print_r($reviews);
+        // exit();?>
+        <h1><?php echo $this->__('Top Rated Reviews') ?></h1>
+        <?php echo $this->getChildHtml('toolbar') ?>
+        <dl>
+        <?php foreach ($_items as $_review):?>
+            
+            <dt style="margin-top: 15px;">
+                <a href="<?php echo $this->getReviewUrl($_review->getId()) ?>"><?php echo $this->escapeHtml($_review->getTitle()) ?></a><br/><?php echo $this->__('Review by <span>%s</span>', $this->escapeHtml($_review->getNickname())) ?>
+            </dt>
+            <dd style="margin-bottom: 0px;">
+                <?php $_votes = $_review->getRatingVotes(); ?>
+                <?php if (count($_votes)): ?>
+                    <ul id="ratings">
+
+                        <?php foreach ($_votes as $_vote): ?>
+                            <li class="ratings">
+                            <?php echo $this->escapeHtml($_vote->getRatingCode()) ?>
+                            <div class="rating-box">
+                                    <div class="rating" style="width:<?php echo $_vote->getPercent() ?>%;"></div>
+                                </div>
+                           </li>
+                        <?php endforeach; ?>
+                   </ul>
+                <?php endif; ?>
+                
+                <div class="clear"></div>
+                <div id="review_detail">
+                <?php echo nl2br($this->escapeHtml($_review->getDetail())) ?>
+
+                <small class="date"><?php echo $this->__('(Posted on %s)', $this->formatDate($_review->getCreatedAt()), 'long') ?></small>
+                <?php $reply=$this->escapeHtml($_review->getReviewReply());?> 
+                <?php if(!empty($reply)): ?>
+                <p id="reply" > <strong><?php echo $this->__("Owner's Reply : ")?></strong>
+                 <?php echo $this->escapeHtml($_review->getReviewReply())?></p>
+             <?php endif;?>
+                </div>
+                <div class="clear"></div>
+            </dd>
+            <dd id="bottom-dd" >
+            <div id="left-dd" >
+         <!-- AddThis Button BEGIN -->
+                <div class="addthis_toolbox addthis_default_style ">
+                <a class="addthis_button_preferred_1"></a>
+                <a class="addthis_button_preferred_2"></a>
+                <a class="addthis_button_preferred_3"></a>
+                <a class="addthis_button_preferred_4"></a>
+                <a class="addthis_button_compact"></a>
+                <a class="addthis_counter addthis_bubble_style"></a>
+                </div>
+                <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-536cd00825bd77d1"></script>
+                <!-- AddThis Button END -->
+                </div>
+                <div id="right-dd" >
+                 
+              
+                <input id="reviewparam" name="reviewparam" 
+                        value="<?php echo Mage::getUrl('reviewsplus/index/save');?>" 
+                        type="hidden"/>
+
+            <div id="<?php echo $_review->getId();?>">
+
+               
+                <?php if(Mage::getSingleton('customer/session')->isLoggedIn()):?>
+                     
+                     <?php $customer_id=Mage::getSingleton('customer/session')->getId();?>
+                     <?php if (in_array($_review->getId(), $reviews)):?>
+                        <?php echo Mage::helper('reviewsplus')->__('You already had voted this review');?>
+                        <?php else: ?>
+                            <?php echo $this->__('Like this review?')?>
+                <a href="#" onclick="reviewhelpful(<?php echo $_review->getId();?>,1,<?php echo $customer_id; ?>)"> <?php echo $this->__('Yes')?></a>/
+                <a href="#" onclick="reviewhelpful(<?php echo $_review->getId();?>,0,<?php echo $customer_id; ?>)"> <?php echo $this->__('No')?></a>
+            <?php endif;?>
+            <?php endif;?>
+                </div>
+                </div>
+            </dd>
+            <div class="clear"></div>
+            <hr/>
+            
+        <?php endforeach; ?>
+        </dl>
+        <div class="clear"></div>
+        <?php echo $this->getChildHtml('toolbar') ?>
+    <?php endif;?>
+    <?php if(Mage::getStoreConfig('reviewsplus_sec/plus_config/review_popup')):?>
+     <script>
+    jQuery.noConflict();
+        jQuery(document).ready(function (){
+            jQuery("#review_button").click(function() {
+                jQuery.fancybox.open('#review_form_popup');
+            });
+                jQuery.fancybox.open('#review_form_popup');
+        // example code to call it - you may modify this as required
+        function start() {
+            
+            window.jQuery(document).ready(function() {
+                        
+            jQuery.fancybox.open('#review_form_popup',{
+                padding:5,
+                fitToView:true,
+                });
+        });
+        }
+        });
+        </script>
+
+        <div style='display:none'>
+        <div id="review_form_popup">
+        <?php  echo $this->getChildHtml('review_form') ?>
+        </div>
+        </div>
+        
+
+        <a href="javascript:;" id="review_button" class="review_form_popup">Add your review</a>
+    <?php else: ?>
+    <?php  echo $this->getChildHtml('review_form') ?>
+<?php endif;?>
+</div>

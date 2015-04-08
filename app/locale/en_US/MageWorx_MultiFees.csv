@@ -1,0 +1,107 @@
+"Display Additional Fees Amount in Orders, Invoices, Credit Memos","Display Additional Fees Amount in Orders, Invoices, Credit Memos"
+(Incl. Tax %s),(Incl. Tax %s)
+Above Coupon,Above Coupon
+Above Crosssell,Above Crosssell
+Above Estimate Shipping,Above Estimate Shipping
+Action,Action
+Active,Active
+Add Fee,Add Fee
+Add Image,Add Image
+Add Option,Add Option
+Additional Fees (Excl. Tax),Additional Fees (Excl. Tax)
+Additional Fees (Incl. Tax),Additional Fees (Incl. Tax)
+Additional Fees,Additional Fees
+Apply Fee To,Apply Fee To
+Apply the rule to selected payment methods (leave blank for all items),Apply the rule to selected payment methods (leave blank for all items)
+Apply the rule to selected shipping methods (leave blank for all items),Apply the rule to selected shipping methods (leave blank for all items)
+Are you sure you want to do this?,Are you sure you want to do this?
+Below Coupon,Below Coupon
+Below Crosssell,Below Crosssell
+Below Estimate Shipping,Below Estimate Shipping
+Calculation Settings,Calculation Settings
+Cannot add a record Fee. Please, try again.,Cannot add a record Fee. Please, try again.
+Cart Fee,Cart Fee
+Cart Fees,Cart Fees
+Change Image,Change Image
+Change status,Change status
+Checkbox,Checkbox
+Clear All,Clear All
+Conditions,Conditions
+Customer Groups,Customer Groups
+Customer Message Title,Customer Message Title
+Date Field Title,Date Field Title
+Delete Fee,Delete Fee
+Delete Image,Delete Image
+Delete,Delete
+Description,Description
+Disabled,Disabled
+Display Additional Fees Amount in Cart Total,Display Additional Fees Amount in Cart Total
+Display Prices in Additional Fees Block,Display Prices in Additional Fees Block
+Drop-Down,Drop-Down
+Edit Fee '%s',Edit Fee '%s'
+Edit,Edit
+Enable Customer Message,Enable Customer Message
+Enable Date Field,Enable Date Field
+Enable Payment Fees,Enable Payment Fees
+Enable Shipping Fees,Enable Shipping Fees
+Enable,Enable
+Hidden,Hidden
+Fee Information,Fee Information
+Fee Name,Fee Name
+Fee Type,Fee Type
+Fee was successfully saved,Fee was successfully saved
+Fixed,Fixed
+ID,ID
+Image,Image
+Input Type,Input Type
+Is Default,Is Default
+Labels,Labels
+MageWorx &gt; Sales,MageWorx &gt; Sales
+Manage Fee,Manage Fee
+Manage Fees,Manage Fees
+Multi Fees,Multi Fees
+Name,Name
+New Fee,New Fee
+No Fees,No Fees
+No,No
+Custom Position,Custom Position
+None,None
+of,of
+Options Settings,Options Settings
+Options,Options
+Ordered,Ordered
+One-time,One-time
+Payment Fee,Payment Fee
+Payment Fees,Payment Fees
+Payment Methods,Payment Methods
+Percent,Percent
+Please select Fee(s),Please select Fee(s)
+Position of Additional Fees Block in Cart,Position of Additional Fees Block in Cart
+Position,Position
+Price Type,Price Type
+Price,Price
+Radio Button,Radio Button
+Required,Required
+Save Fee,Save Fee
+Shipping Fee,Shipping Fee
+Shipping Fees,Shipping Fees
+Shipping Methods,Shipping Methods
+Size of Thumbnails,Size of Thumbnails
+Sort Order,Sort Order
+Static Block for Cart Page,Static Block for Cart Page
+Status,Status
+Store View Fee Customer Message Titles,Store View Fee Customer Message Titles
+Store View Fee Date Field Titles,Store View Fee Date Field Titles
+Store View Fee Descriptions,Store View Fee Descriptions
+Store View Fee Names,Store View Fee Names
+Store View,Store View
+Tax Class,Tax Class
+There are no options,There are no options
+Total of %d record(s) were successfully deleted,Total of %d record(s) were successfully deleted
+Total of %d record(s) were successfully updated,Total of %d record(s) were successfully updated
+Total,Total
+Type,Type
+Unable to find Fee to save,Unable to find Fee to save
+Update Fees of My Order,Update Fees of My Order
+Yes,Yes
+You need to select required additional fees to proceed to checkout.,You need to select required additional fees to proceed to checkout.

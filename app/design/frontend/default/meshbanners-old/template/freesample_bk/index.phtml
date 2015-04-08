@@ -1,0 +1,268 @@
+
+
+
+
+
+
+
+
+
+<?php if(!$_POST['first_name'])
+    {
+/*$osolCaptchaLoadFromSSL = $_SERVER['SERVER_PORT']==443?true:false;*/ ?>
+<div class="headingtitle"><h2 class="samplebook">FREE Sample Book</h2></div>
+<div class="freesamplemmain">
+    <h2 class="freesampl">FREE Sample Book</h2>
+    <div class="upperdection">
+        
+        <div class="upperdectionright">
+            <p>Please send me a <b class="blue">FREE Sample Book</b> containing all the Fence, Sports &amp; Banner Signage Materials.</p>
+            </div>
+    </div>
+    <div class="midsection">
+        <div class="midsectionmain"><img title="FREE Sample book of materials" src="<?php echo $this->getSkinUrl();?>images/samplebook-medium.png"></div>
+        <div class="midsectionright">
+            <form  style="padding-left:15px; font-family:Verdana, Arial, Helvetica, sans-serif;"  method="POST" id="contact" name="contact" >
+				
+		<div class="reciver">
+                    <p align="center" class="blue"><b>Receiver Details</b></p>
+                </div>
+                <ul>
+                <!-- MSTableType="nolayout" -->
+                
+                
+                
+                
+                <li>
+                    
+                <div class="uppertext">First Name:<span class="green">*</span>
+                </div>
+                <div class="txtsample"><input type="text" tabindex="1" maxlength="40" size="25" id="first_name" name="first_name">
+                </div>
+                </li>
+                <li>
+                <div class="uppertext">Last Name:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="2" maxlength="40" size="25" id="last_name" name="last_name">
+                </li>
+                <li>
+                <div class="uppertext">Your Email:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="3" maxlength="40" size="25" id="email" name="email"></div>
+                </li>
+                <li>
+                <div class="uppertext">Your Phone:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="4" maxlength="18" size="25" id="phone_number" name="phone_number"></div>
+                </li>
+                <li>
+                <div class="uppertext">Company Name:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="5" maxlength="40" size="25" id="companyname" name="companyname"></div>
+                </li>
+                <li>
+                <div class="uppertext">Website:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="6" maxlength="50" size="25" id="website" name="website"></div>
+                </li>
+                </ul>
+                
+                <div class="shipaddress">
+                <p align="center" class="blue"><b>Shipping Address</b><br>
+                <span class="blue">Note: We do not ship to Post Office Box addresses </span></p>
+                </div>
+                
+                <ul>
+                <li>
+                <div class="uppertext">Address:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="7" maxlength="30" size="25" id="address1" name="address1"></div>
+                </li>
+                <li>
+                <div class="uppertext">Address:&nbsp;&nbsp;&nbsp;</div>
+                <div class="txtsample"><input type="text" tabindex="8" maxlength="30" size="25" id="address2" name="address2"></div>
+                </li>
+                <li>
+                <div class="uppertext">Suburb/City:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="9" maxlength="30" size="25" id="suburb" name="suburb"></div>
+                </li>
+                <li>
+                <div class="uppertext">State:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="10" maxlength="30" size="25" id="state" name="state"></div>
+                </li>
+                <li>
+                <div class="uppertext">Zip/Postcode:&nbsp;<span class="green">*</span></div>
+                <div class="txtsample"><input type="text" tabindex="11" maxlength="18" size="12" id="postcode" name="postcode"></div>
+                </li>
+                
+                <li>
+                <div class="uppertext">Country:&nbsp;<span class="green">*</span></div>
+                
+                <div class="txtsample">
+                <div tabindex="11" id="dk_container_country" class="dk_container dk_theme_default" style="display: block;">
+                <div class="dk_options">
+                
+                <li>
+                
+                <span id="nameError" class="error">Please enter the required fields</span>
+                
+                </li>
+                <li>
+                    <li>
+                        
+                        <!--<table cellpadding=5 cellspacing=0 bgcolor="#E4F8E4">
+                        <tr bgcolor="#AAD6AA">
+                        <td colspan="2"><font color="#FFFFFF" face="Verdana" size="2"><b>Image Verification</b></font></td>
+                        </tr>
+                        <tr>
+                        <td style="padding: 2px;" width="10"><img src="http://www.captchacreator.com/files/code.php?configuration=/home/arifagic/public_html/files/user/configuration511418818.php"></td>
+                        <td valign="top"><font color="#000000">Please enter the text from the image</font>   <br><input type="text" name="Turing" value="" maxlength="100" size="10">
+                        [ <a href="http://www.captchacreator.com/files/whatisturing.html" onClick="window.open('http://www.captchacreator.com/files/whatisturing.html','_blank','width=400, height=300, left=' + (screen.width-450) + ', top=100');return false;">What's This?</a> ]
+                        </td>
+                        </tr>
+                        </table>-->
+                        <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('freecapctha')->toHtml()
+                        //echo $this->getChildHtml('captcha_ajax_part');
+                        $myCustomData=Mage::getSingleton('core/session')->getMyCustomData();
+                        //echo 'Security:'.$myCustomData;
+                    ?>
+
+				<div class="uppertext">Captcha</div>
+				
+					<div class="txtsample"><input id="txtCaptcha" type="text" name="txtCaptcha" value="" maxlength="10" size="32" /></div>
+				<div class="txtsample"> 
+					<img id="imgCaptcha" src="http://mesh-banners.com.au/create_image.php" />
+					<a href="javascript:void(0);" onclick="reload();" class="reset">Reset Code</a>
+				</div>
+			
+
+		<div id="result">&nbsp;</div>
+   
+   
+                    </li>
+                
+                
+                <!--<input type="submit" class="btn btn-success" value="Submit" onclick="chkvalue();">-->
+                <!--<button class="btn-success" onclick="">Submit</button>-->
+                <input type="button" class="btn-success form-button"  value="Submit">
+                
+                
+                </li>								
+                
+                </ul>
+                                
+                
+                                
+                </form>
+
+            
+            </div>
+    </div>
+    <div class="bottom">
+        <img width="618" height="412" alt="Fabric Signage Samples" src="<?php echo $this->getSkinUrl();?>images/samplebook-montage.jpg">
+    </div>
+</div>
+<?php
+    } ?>
+
+<style type="text/css">  
+.error {
+	font-family: Tahoma;
+	font-size: 12px;	
+	color: #1077dd; 
+	display:none;
+} 
+
+td{
+padding:3px;
+}
+</style>
+
+
+
+
+<?php
+    if ($_POST['first_name']!='' || $_POST['last_name']!='' || $_POST['email']!='' || $_POST['phone_number']!='' || $_POST['companyname']!='' || $_POST['website']!='' || $_POST['address1']!='' || $_POST['suburb']!='' || $_POST['state']!='' || $_POST['postcode']!='' || $_POST['country']!='')
+    {
+        //echo $_POST['first_name'];
+        
+        $resource = Mage::getSingleton('core/resource');
+        $Readconn = $resource->getConnection('core_write');                     
+        $tableName = Mage::getSingleton('core/resource')->getTableName(' freesample');
+        $sql="insert into `".$tableName."` (First Name,Last Name,email,phone,companyname,website,address,city,state,zipcode,countr) values ('".$_POST['first_name']."','".$_POST['last_name']."','".$_POST['email']."','".$_POST['phone_number']."','".$_POST['companyname']."','".$_POST['website']."','".$_POST['address1']."','".$_POST['suburb']."','".$_POST['state']."','".$_POST['postcode']."','".$_POST['country']."')";
+        
+        $sample=$Readconn->query("insert into `freesample` values('NULL','".$_POST['first_name']."','".$_POST['last_name']."','".$_POST['email']."','".$_POST['phone_number']."','".$_POST['companyname']."','".$_POST['website']."','".$_POST['address1']."','".$_POST['suburb']."','".$_POST['state']."','".$_POST['postcode']."','".$_POST['country']."')");
+        if($sample)
+        {?>
+        <div class="test-image"><img title="" alt="" src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/tab2.jpg"></div>
+            
+         <?php echo '<div class="sucess"><h2><Thank You</h2><span class="user"></span><span>Your message has been sent</span><span><a href="#">Continue shopping</a></span></div>';
+                                    
+        }
+    }
+?>
+
+
+<script type="text/javascript">
+
+
+    jQuery(function() {
+        //alert("welcome");
+        jQuery( "#downloads_video_overlay" ).hide();
+      jQuery(".btn-success").click(function() {  
+        //alert("welcome");
+        
+      });  
+    });
+    function getXmlHttpRequestObject() {
+    if (window.XMLHttpRequest) {
+    return new XMLHttpRequest(); //Mozilla, Safari ...
+    } else if (window.ActiveXObject) {
+    return new ActiveXObject("Microsoft.XMLHTTP"); //IE
+    } else {
+    //Display our error message
+    alert("Your browser doesn't support the XmlHttpRequest object.");
+    }
+    }
+
+    //Our XmlHttpRequest object
+    var receiveReq = getXmlHttpRequestObject();
+    
+    //Initiate the AJAX request
+    function makeRequest(url, param) {
+    //If our readystate is either not started or finished, initiate a new request
+     if (receiveReq.readyState == 4 || receiveReq.readyState == 0) {
+       //Set up the connection to captcha_test.html. True sets the request to asyncronous(default) 
+       receiveReq.open("POST", url, true);
+       //Set the function that will be called when the XmlHttpRequest objects state changes
+       receiveReq.onreadystatechange = updatePage; 
+    
+       receiveReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+       receiveReq.setRequestHeader("Content-length", param.length);
+       receiveReq.setRequestHeader("Connection", "close");
+    
+       //Make the request
+       receiveReq.send(param);
+     }   
+    }
+
+    //Called every time our XmlHttpRequest objects state changes
+    function updatePage() {
+        //alert(receiveReq.response);
+     //Check if our response is ready
+     if (receiveReq.readyState == 4) {
+       //Set the content of the DIV element with the response text
+       alert(receiveReq.response);
+       if (receiveReq.response==1) {
+        //code
+        //jQuery( "#contact" ).submit();
+       }
+       else {
+       //alert(receiveReq.response);
+       document.getElementById('result').innerHTML = receiveReq.responseText; }
+       
+       //Get a reference to CAPTCHA image
+       img = document.getElementById('imgCaptcha'); 
+       //Change the image
+       img.src = 'http://mesh-banners.com.au/create_image.php?' + Math.random();
+     }
+    }
+    function reload() {
+        var img = document.getElementById('imgCaptcha'); 
+       //Change the image
+       img.src = 'http://mesh-banners.com.au/create_image.php?' + Math.random();
+   

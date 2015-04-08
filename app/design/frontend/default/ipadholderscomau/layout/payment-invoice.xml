@@ -1,0 +1,9 @@
+<layout version="0.1.0">
+	<default>
+	</default>
+	<mymodule_index_index>
+		<reference>
+			<block template="sales/order/invoice/brand.phtml" />
+			</reference>
+			</mymodule_index_index>
+			</layout>

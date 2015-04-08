@@ -1,0 +1,171 @@
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl()?>css/uploadstyle.css" media="all" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl()?>css/uploadstyles.css" media="all" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl()?>css/popup.css" media="all" />
+<script src="<?php echo $this->getJsUrl('upload/jquery-1.9.1.min.js');?>"></script>
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<script src="<?php echo $this->getJsUrl('bannershop/jquery_min_17.js');?>"></script>
+	<script>
+		$(function() {
+			
+		//	$('.header').hide();
+		//	$('.footer-container,.col-left').hide();
+			
+			
+			var pull 		= $('#pull');
+				menu 		= $('nav ul');
+				menuHeight	= menu.height();
+
+			$(pull).on('click', function(e) {
+				e.preventDefault();
+				menu.slideToggle();
+			});
+
+			$(window).resize(function(){
+        		var w = $(window).width();
+        		if(w > 320 && menu.is(':hidden')) {
+        			menu.removeAttr('style');
+        		}
+    		});
+		});
+		
+		
+		
+		$(function(){
+			/*hiding the error message*/
+				
+				$('#order_id,#orderType').focus(function(e){
+					$('#errMessage').hide();
+					});	
+			
+			});
+			
+		
+		/*authenticating the order id*/
+		
+		function Authenticate(){
+		
+		var orderTypes =  document.getElementById('orderType').value;
+		var order_id =document.getElementById('order_id').value;
+					
+					
+					if(orderTypes==0){
+						document.getElementById('errMessage').style.display='block';
+						return false;
+						
+						
+					}
+					
+					if(order_id==''){
+						document.getElementById('errMessage').style.display='block';
+						return false;
+						}
+				 
+			
+			return true;
+		}
+		
+	</script>
+</head>
+
+<body>
+<div id="Header" style="display:none;">
+  <div id="Logo" class="pull-left"><img src="<?php echo $this->getSkinUrl();?>images/upload-icon.png" /></div>
+  <div id="Top-Right" class="pull-left">
+    <div id="Upload-Art-Work">
+   	    <img src="images/upload-art-work.png" /></div>
+        <div id="Nav"><nav class="clearfix">
+		<ul class="clearfix">
+		  <li><a href="#"><?php echo __('Home');?></a></li>
+		  <li><a href="#"><?php echo __('My Artwork(s)');?></a></li>
+
+		</ul>
+		<a href="#" id="pull"><?php echo __('Menu');?></a>
+	</nav></div>
+  </div>
+  </div>
+ <!--start of breadcrum-->
+ <div id="errMessage" class="errMessage">
+    <?php echo __('Oops! place an order or request a quote to get your design started / upload your artwork');?>
+ </div>
+     
+ <!--end of Error Bread crums-->
+ <form name="notes" action="<?php echo Mage::getUrl("upload/index/fetchOrder");?>"  method="post" enctype="multipart/form-data" onSubmit="return Authenticate();">
+  <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" /> 
+    <section id="Center">
+       <div id="Upload-Box">
+         <div class="upload-heading"><?php echo __('Upload your own Print Ready file /  Let us design for You');?></div>
+         <div class="Form-Column pull-left">
+           <div class="invoice-id pull-left"><?php echo __('Your Order / Invoice Id:');?></div>
+           <div class="Form-Field pull-left">
+             <div class="Text-Box">
+               <?php 
+					/*Loading the options for the order type*/
+					
+					$_order_types  = array('order_id'=>'Order Number',
+					                 'invoice_id'=>'Invoice Number',
+								  'quote_id'=>'Quote Number'
+								  );
+					
+				?>
+               <label>
+                 <select id="orderType" name="orderType">
+                   <option value="0"> <?php echo __('---Please Select---');?> </option>
+                   <?php foreach($_order_types as $_order_id=>$_order_val){
+							   echo '<option value="'.$_order_id.'"> '.$_order_val.' </option>';
+							   }?>                                  
+                   </select>
+               </label></div>
+             <div class="Text-Box">
+               <input class="texfield" type="text" value="" id="order_id" name="order_id"/>
+             </div>
+             <div class="Text-Box">
+               <div >
+                 <input class="Upload-Button" type="submit" id="submit" name="submit" value=""  /></div>
+                 
+               </div>
+             </div>
+             
+           </div>
+         </div>
+      <div class="info-box">
+         
+         <h1><?php echo __('IMPORTANT NOTE');?></h1>
+         <p><?php echo __('* For us to attach your artwork with the right order and right account we need you to enter your Quote/Invoice/Order number. Your Quote / Invoice / Order number is located in the Quote / Invoice / Order email(s) sent to you. If you have not already requested a Quote or placed your order please do so to receive your number.Please goto our website and add product to the cart to place your order or request a quote / Invoice');?></p>
+      </div>
+       </section>
+ </form>
+
+
+</body>

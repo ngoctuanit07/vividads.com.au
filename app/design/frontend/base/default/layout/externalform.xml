@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <externalform_index_index>
+        <reference name="content">
+            <block type="externalform/externalform" name="externalform" template="externalform/externalform.phtml" />
+        </reference>
+    </externalform_index_index>
+</layout> 

@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * MD_Vividslider.
+ * Company: Vivid Ads Inc Australia
+ * Author: AShfaq Ahmed
+ * 
+ *
+ * NOTICE OF LICENSE
+ *
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.vividads.com.au
+ *
+ * @category   MD
+ * @package    vividslider
+ * @copyright  Copyright (c) 2014 Vivid Ads Ashfaq Ahmed (http://www.vividads.com.au)
+ */
+-->
+
+<config>
+    <modules>
+        <MD_Vividslider>
+            <version>0.1.0</version>
+        </MD_Vividslider>
+    </modules>
+    <frontend>
+        <routers>
+            <vividslider>
+                <use>standard</use>
+                <args>
+                    <module>MD_Vividslider</module>
+                    <frontName>vividslider</frontName>
+                </args>
+            </vividslider>
+        </routers>
+        <layout>
+            <updates>
+                <vividslider>
+                    <file>vividslider.xml</file>
+                </vividslider>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+            <vividslider>
+                <use>admin</use>
+                <args>
+                    <module>MD_Vividslider</module>
+                    <frontName>vividslider</frontName>
+                </args>
+            </vividslider>
+        </routers>
+    </admin>
+    <adminhtml>
+       <menu>
+            <vividslider module="vividslider">
+                <title>Vivid Slider</title>
+                <sort_order>72</sort_order>               
+                <children>
+                    <items module="vividslider">
+                        <title>Vivid Slider</title>
+                        <sort_order>0</sort_order>
+                        <action>vividslider/adminhtml_vividslider</action>
+                    </items>
+                </children>
+            </vividslider>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <MD_Vividslider>
+                            <title>MD Vivid Slider Module</title>
+                            <sort_order>10</sort_order>
+                        </MD_Vividslider>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <vividslider translate="title" module="vividslider">
+                                            <title>MD Vivid Slider</title>
+                                        </vividslider>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <vividslider>
+                    <file>vividslider.xml</file>
+                </vividslider>
+            </updates>
+        </layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <vividslider>
+                <class>MD_Vividslider_Model</class>
+                <resourceModel>vividslider_mysql4</resourceModel>
+            </vividslider>
+            <vividslider_mysql4>
+                <class>MD_Vividslider_Model_Mysql4</class>
+                <entities>
+                    <vividslider>
+                        <table>vividslider</table>
+                    </vividslider>
+                    <vividslider_category>
+                        <table>vividslider_category</table>
+                    </vividslider_category>                    
+                    <vividslider_store>
+                        <table>vividslider_store</table>
+                    </vividslider_store>
+                </entities>
+            </vividslider_mysql4>
+        </models>
+        <resources>
+            <vividslider_setup>
+                <setup>
+                    <module>MD_Vividslider</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </vividslider_setup>
+            <vividslider_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </vividslider_write>
+            <vividslider_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </vividslider_read>
+        </resources>
+        <blocks>
+            <vividslider>
+                <class>MD_Vividslider_Block</class>
+            </vividslider>
+        </blocks>
+        <helpers>
+            <vividslider>
+                <class>MD_Vividslider_Helper</class>
+            </vividslider>
+        </helpers>
+    </global>
+    <default>
+        <vividslider>
+            <general>               
+                <slidertitle>Vividslider</slidertitle>        
+            </general>       
+        </vividslider>
+     
+        <vividslider>
+            <mainoptions>
+                <jquery>1</jquery>
+                <jquery_ui>1</jquery_ui>
+            </mainoptions>
+            <slideritem1>
+                <link>#</link>
+                <title>You installed the sweet Youama Slider</title>
+            </slideritem1>
+            <slideritem2>
+                <link>#</link>
+                <title>Lorem ipsum dolore sit amet</title>
+            </slideritem2>
+            <animations>
+                <type>random</type>
+                <speed>400</speed>
+                <pausetime>4000</pausetime>
+                <hover>1</hover>
+                <slices>15</slices>
+                <boxcols>8</boxcols>
+                <boxrows>4</boxrows>
+            </animations>
+            <design>
+                <width>1200</width>
+                <height>481</height>
+                <texten>1</texten>
+                <textsize>18</textsize>
+                <textpos>leftbottom</textpos>
+                <textopacity>0.8</textopacity>
+                <textscolor>ffffff</textscolor>
+                <bgscolor>000000</bgscolor>
+                <buttonen>1</buttonen>
+                <buttonscolor>bbbbbb</buttonscolor>
+                <buttonscolorup>ffffff</buttonscolorup>
+                <buttonpos>righttop</buttonpos>
+                <nextpreven>1</nextpreven>
+            </design>
+        </vividslider>
+    </default>
+	
+	
+	
+	
+</config>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <vividslider_adminhtml_vividslider_index>
+        <reference name="content">
+            <block type="vividslider/adminhtml_vividslider" name="vividslider" >
+				 <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+			</block>
+        </reference>
+    </vividslider_adminhtml_vividslider_index>
+</layout>

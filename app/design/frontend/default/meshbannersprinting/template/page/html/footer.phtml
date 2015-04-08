@@ -1,0 +1,186 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+ 
+       </div><!--centerContent-->
+
+<div class="clear"></div> 
+    </div><!--container-center-->
+     <div class="clear"></div> 
+     
+<div class="clear"></div> 		
+
+<!-- footerContainer -->
+
+
+ <div class="botomBg">
+ 	<div class="centerBotom">
+    	
+      <div class="topBotom">
+        <div class="links">
+        	      <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Custo mer Login</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                    <li><a href="#">References</a></li>
+                    <li><a href="#">Artwork</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Industry Links</a></li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+        </div>
+        <div class="request"><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/request.png" width="204" height="71" /></a></div><!--request-->
+        <div class="contactNo"></div>
+      </div>
+      <div class="clear"></div> 
+          <div class="payment">
+                <img src="<?php echo $this->getSkinUrl();?>images/card1.png" />
+                <img src="<?php echo $this->getSkinUrl();?>images/card2.png" />
+                <img src="<?php echo $this->getSkinUrl();?>images/card3.png" />
+                <img src="<?php echo $this->getSkinUrl();?>images/card4.png" />
+                <img src="<?php echo $this->getSkinUrl();?>images/card5.png" />
+            </div>
+             <div class="clear"></div>
+              <div class="copyright"> © 2006-2013 VividAds Pty Limited Australia. All rights reserved.</div>
+ </div><!--botomBg-->
+    </div><!--centerBotom-->
+    
+    
+</div><!--container-->
+
+<?php /*?><div class="footer-container">
+    <div class="footer">
+        <?php echo $this->getChildHtml('bottomContainer') ?>
+        <div class="f-right">
+            <img src="<?php echo $this->getSkinUrl('images/media/footer_callout.png');?>" class="footer-callout" alt="" />
+            <?php echo $this->getChildHtml('store_switcher') ?>
+        </div>
+        <div class="f-left">
+            <?php echo $this->getChildHtml('cms_footer_links') ?>
+            <?php echo $this->getChildHtml('footer_links') ?>
+            <?php echo $this->getChildHtml('newsletter') ?>
+            <p class="bugs"><?php echo $this->__('Help Us to Keep Magento Healthy') ?> - <a href="http://www.magentocommerce.com/bug-tracking" onclick="this.target='_blank'"><strong><?php echo $this->__('Report All Bugs') ?></strong></a> <?php echo $this->__('(ver. %s)', Mage::getVersion()) ?></p>
+            <address><?php echo $this->getCopyright() ?></address>
+        </div>
+    </div>
+</div><?php */?>
+<script type="text/javascript" src="include/script/cookie_compliance.js"></script>
+<div id="cookie_compliance" style="" >
+    <strong>Notice:</strong>Do you consent to receiving cookies from this site?<br/>We use these to aid in improving and maintaining our website.&nbsp;&nbsp;<a href="cookies.html">Read More</a>&nbsp;&nbsp;&nbsp;<span style="position: absolute;right:16px;"><input class="blue_button" value="Continue" type='button' onclick='cookie_compliance_ok()' /></span>
+    
+</div>
+
+<script type="text/javascript">
+
+function getInternetExplorerVersion() {
+
+    var rv = -1; // Return value assumes failure.
+
+    if (navigator.appName == 'Microsoft Internet Explorer') {
+
+        var ua = navigator.userAgent;
+
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+
+        if (re.exec(ua) != null)
+
+            rv = parseFloat(RegExp.$1);
+
+    }
+
+    return rv;
+
+}
+ 
+function cookieTop() {
+	ieVer = getInternetExplorerVersion(); 
+	 
+	 if(ieVer==8) { winhgt = document.documentElement.clientHeight; } 
+	 else { winhgt = window.innerHeight;}
+	 
+	 var newheight = eval(winhgt)-48;
+	 $('#cookie_compliance').attr('style', 'top:'+newheight+'px;');
+}
+ 
+ 
+$(window).resize(function() {  cookieTop();	  });
+$(document).ready(function() {  cookieTop();	  });
+</script>
+  
+<map name="Map">
+  <area shape="rect" coords="15,3,222,78" href="static/Artwork_and_Delivery.html" />
+</map>
+  <script type="text/javascript">
+	/**
+	 * shows the input boxes for inches and fractions when inches are selected 
+	 */
+	function toshowinchesboxes_side(uom){/*
+	   if (uom=='inch') {
+	         // show inches boxes
+			 document.getElementById('widthinchsection2').style.display = "inline";
+	         document.getElementById('dropinchsection2').style.display = "inline";          
+	   } else {
+	         // show inches boxes
+			 document.getElementById('widthinchsection2').style.display = "none";
+	         document.getElementById('dropinchsection2').style.display = "none";   
+	   }*/
+	}
+	
+	toshowinchesboxes_side('');
+
+
+	
+	</script>
+    
+     <script type="text/javascript">
+	$(document).ready(function() {
+			
+			$(".fancylink").fancybox({
+				'overlayShow'	: true,
+				'transitionIn'	: 'elastic',
+				'transitionOut'	: 'elastic',
+				'overlayColor'		: '#000',
+				'overlayOpacity'	: 0.5,
+				'centerOnScroll' : true,
+				'hideOnOverlayClick' : false,
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over" style="display:none">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+	
+	    
+
+
+
+			
+		});
+</script>

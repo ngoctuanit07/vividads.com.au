@@ -1,0 +1,114 @@
+div.socialbooster { margin:20px 0; clear: both !important; }
+div.socialbooster:first-child { margin: 0 !important; }
+/*div.socialbooster-expanded { height: 29px; overflow: hidden; }*/
+div.socialbooster .legend { float: left; font-size: 12px; font-weight: bold; line-height: 17px; padding: 5px; border: 1px solid #ccc; margin:0 !important; background: #fff url('share-bg.jpg') repeat-x !important; }
+div.socialbooster .legend ul.bookmarks { background:transparent none !important; width: auto !important; border: none !important; padding:0 !important; margin:0 !important; float: right !important; }
+div.socialbooster .legend ul.bookmarks li { margin:0 !important; width: 34px !important; }
+div.socialbooster .legend span { cursor:pointer; padding: 0 5px; }
+div.socialbooster .legend ul.bookmarks li.and-more { width: auto !important; padding-left: 5px !important; }
+div.socialbooster ul.bookmarks { width:auto !important; float:right; margin-right:12px; margin-top:3px; /*margin:-1px 0 0 0 !important; padding:5px 0 0 5px !important; float: left !important;*/ }
+div.socialbooster ul.bookmarks { /*background:#fff none !important; outline:0 none !important; border: 1px solid #ccc; */}
+div.socialbooster ul.bookmarks li {
+    display:inline !important;
+    float:left !important;
+    list-style-type:none !important;
+    margin:0 0 10px 0;
+    height:17px !important;
+    width:40px !important;
+    cursor:pointer !important;
+    padding:0 !important;
+    background-color:transparent !important;
+    border:0 none !important;
+    outline:0 none !important;
+    clear:none !important;
+}
+div.socialbooster ul.bookmarks li.sb-googleplusone { width: 55px !important; }
+div.socialbooster ul.bookmarks li:before, div.socialbooster ul.bookmarks li:after, div.socialbooster ul.bookmarks li a:before, div.socialbooster ul.bookmarks li a:after { content:none !important; }
+div.socialbooster ul.bookmarks a {
+    display:block !important;
+    width:40px !important;
+    height:17px !important;
+    text-indent: -9999px !important;
+    background-color:transparent !important;
+}
+div.socialbooster ul.socials a:hover, div.socialbooster ul.socials li:hover { background-color:transparent !important; border:0 none !important; outline:0 none !important; }
+li.sb-diigo, li.sb-digg, li.sb-reddit, li.sb-stumbleupon, li.sb-delicious, li.sb-yahoobuzz, li.sb-blinklist, li.sb-technorati, li.sb-facebook, li.sb-twitter, li.sb-myspace, li.sb-mixx, li.sb-scriptstyle, li.sb-designfloat, li.sb-mail, li.sb-comfeed, li.sb-newsvine, li.sb-devmarks, li.sb-linkedin, li.sb-google, li.sb-misterwong, li.sb-izeby, li.sb-twittley, li.sb-tipd, li.sb-pfbuzz, li.sb-friendfeed, li.sb-blogmarks, li.sb-fwisp, li.sb-designmoo, li.sb-bobrdobr, li.sb-yandex, li.sb-memoryru, li.sb-100zakladok, li.sb-moemesto, li.sb-ning, li.sb-hackernews, li.sb-identica, li.sb-printfriendly, li.sb-designbump, li.sb-fleck, li.sb-netvibes, li.sb-netvouz, li.sb-nujij, li.sb-globalgrind, li.sb-wikio, li.sb-xerpi, li.sb-sphinn, li.sb-blogospherenews, li.sb-posterous, li.sb-techmeme, li.sb-ekudos, li.sb-pingfm, li.sb-tomuse, li.sb-webblend, li.sb-wykop, li.sb-blogengage, li.sb-hyves, li.sb-pusha, li.sb-hatena, li.sb-mylinkvault, li.sb-slashdot, li.sb-squidoo, li.sb-propeller, li.sb-faqpal, li.sb-evernote, li.sb-meneame, li.sb-bitacoras, li.sb-jumptags, li.sb-bebo, li.sb-n4g, li.sb-strands, li.sb-orkut, li.sb-tumblr, li.sb-stumpedia, li.sb-current, li.sb-blogger, li.sb-plurk, li.sb-googlebuzz { background:url('social-booster-sprite.png') no-repeat !important; }
+li.sb-newsvine { background-position:left bottom !important; }
+li.sb-linkedin { background-position:-40px bottom !important; }
+li.sb-devmarks { background-position:-80px bottom !important; }
+li.sb-google { background-position:-120px bottom !important; }
+li.sb-scriptstyle { background-position:-160px bottom !important; }
+li.sb-mail { background-position:-200px bottom !important; }
+li.sb-comfeed { background-position:-240px bottom !important; }
+li.sb-twitter { background-position:-280px bottom !important; }
+li.sb-technorati { background-position:-320px bottom !important; }
+li.sb-stumbleupon { background-position:-360px bottom !important; }
+li.sb-reddit { background-position:-400px bottom !important; }
+li.sb-myspace { background-position:-440px bottom !important; }
+li.sb-mixx { background-position:-480px bottom !important; }
+li.sb-diigo { background-position:-520px bottom !important; }
+li.sb-digg { background-position:-560px bottom !important; }
+li.sb-designfloat { background-position:-600px bottom !important; }
+li.sb-yahoobuzz { background-position:-640px bottom !important; }
+li.sb-delicious { background-position:-680px bottom !important; }
+li.sb-blinklist { background-position:-720px bottom !important; }
+li.sb-facebook { background-position:-760px bottom !important; }
+li.sb-misterwong { background-position:-800px bottom !important; }
+li.sb-izeby { background-position:-840px bottom !important; }
+li.sb-twittley { background-position:-880px bottom !important; }
+li.sb-tipd { background-position:-920px bottom !important; }
+li.sb-pfbuzz { background-position:-960px bottom !important; }
+li.sb-friendfeed { background-position:-1000px bottom !important; }
+li.sb-blogmarks { background-position:-1040px bottom !important; }
+li.sb-fwisp { background-position:-1080px bottom !important; }
+li.sb-designmoo { background-position:-1120px bottom !important; }
+li.sb-bobrdobr { background-position:-1160px bottom !important; }
+li.sb-memoryru { background-position:-1200px bottom !important; }
+li.sb-100zakladok { background-position:-1240px bottom !important; }
+li.sb-yandex { background-position:-1280px bottom !important; }
+li.sb-moemesto { background-position:-1320px bottom !important; }
+li.sb-marrows { background-position:-1360px bottom !important; }
+li.sb-identica { background-position:-1400px bottom !important; }
+li.sb-hackernews { background-position:-1440px bottom !important; }
+li.sb-ning { background-position:-1480px bottom !important; }
+li.sb-designbump { background-position:-1520px bottom !important; }
+li.sb-printfriendly { background-position:-1560px bottom !important; }
+li.sb-fleck{ background-position:-1600px bottom !important; }
+li.sb-netvibes{ background-position:-1640px bottom !important; }
+li.sb-netvouz{ background-position:-1680px bottom !important; }
+li.sb-nujij{ background-position:-1720px bottom !important; }
+li.sb-globalgrind{ background-position:-1760px bottom !important; }
+li.sb-wikio{ background-position:-1800px bottom !important; }
+li.sb-xerpi{ background-position:-1840px bottom !important; }
+li.sb-sphinn{ background-position:-1880px bottom !important; }
+li.sb-blogospherenews{ background-position:-1920px bottom !important; }
+li.sb-posterous{ background-position:-1960px bottom !important; }
+li.sb-techmeme{ background-position:-2000px bottom !important; }
+li.sb-ekudos{ background-position:-2040px bottom !important; }
+li.sb-pingfm{ background-position:-2080px bottom !important; }
+li.sb-tomuse{ background-position:-2120px bottom !important; }
+li.sb-webblend{ background-position:-2160px bottom !important; }
+li.sb-wykop{ background-position:-2200px bottom !important; }
+li.sb-blogengage{ background-position:-2240px bottom !important; }
+li.sb-hyves { background-position:-2280px bottom !important; }
+li.sb-pusha { background-position:-2320px bottom !important; }
+li.sb-hatena { background-position:-2360px bottom !important; }
+li.sb-mylinkvault { background-position:-2400px bottom !important; }
+li.sb-slashdot { background-position:-2440px bottom !important; }
+li.sb-squidoo { background-position:-2480px bottom !important; }
+li.sb-propeller { background-position:-2520px bottom !important; }
+li.sb-faqpal { background-position:-2560px bottom !important; }
+li.sb-evernote { background-position:-2600px bottom !important; }
+li.sb-meneame { background-position:-2640px bottom !important; }
+li.sb-bitacoras { background-position:-2680px bottom !important; }
+li.sb-jumptags { background-position:-2720px bottom !important; }
+li.sb-bebo { background-position:-2760px bottom !important; }
+li.sb-n4g { background-position:-2800px bottom !important; }
+li.sb-strands { background-position:-2840px bottom !important; }
+li.sb-orkut { background-position:-2880px bottom !important; }
+li.sb-tumblr { background-position:-2920px bottom !important; }
+li.sb-stumpedia { background-position:-2960px bottom !important; }
+li.sb-current { background-position:-3000px bottom !important; }
+li.sb-blogger { background-position:-3040px bottom !important; }
+li.sb-plurk { background-position:-3080px bottom !important; }
+li.sb-googlebuzz { background-position:-3520px bottom !important; }

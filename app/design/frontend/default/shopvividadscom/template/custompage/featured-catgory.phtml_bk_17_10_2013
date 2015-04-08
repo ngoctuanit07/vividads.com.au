@@ -1,0 +1,95 @@
+<div class="display-list">
+<div class="display-list-top"></div>
+<div class="display-list-content">
+    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+        <tbody>
+            <tr>
+                <th colspan="6"><strong>Find Your Perfect Display</strong>&nbsp; Rollover the categories for a quick description of our products</th>
+            </tr>
+            
+            <tr>
+            
+            
+            <?php
+                $collection = Mage::getModel('catalog/category')->getCollection()
+                ->addAttributeToSelect('name')
+                ->addAttributeToSelect('is_active')
+                ->addAttributeToSelect('thumbnail')
+                ->addAttributeToSelect('url')
+                ->addAttributeToSelect('description')
+                ->addAttributeToFilter('is_active', 1)
+                ->addAttributeToFilter('is_featured', 3)
+                ->setPage(0, 6)
+                ->load();
+                //echo "Count :".$collection->count();
+                foreach ($collection as $_childCategory){
+                    $_img= $_childCategory->getThumbnail();
+                    $catName=$_childCategory->getName();
+                    $getCatUrl=$_childCategory->getUrl();
+                    $cur_category=Mage::getModel('catalog/category')->load($_childCategory->getId());
+                    //echo $getCatUrl;
+            ?>
+            
+            <td>
+            <div class="display-list-category-img"> 
+            <a onmousemove="onHover(this);" title="<?php echo $catName; ?>" href="<?php echo $getCatUrl; ?>">
+                <img width="153" height="136" onmousemove="onHover(this);" src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$_childCategory->getThumbnail()  ?>" alt="<?php echo $catName; ?>">
+                
+                <span class="display-list-category-details" style="display:none;">
+                    <span class="display-list-category-details-top"></span>
+                      <span class="display-list-category-details-content">
+                        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td width="210">
+                                        <img width="210" height="187" src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$_childCategory->getThumbnail()  ?>" alt="<?php echo $catName; ?>"></td>
+                                    <td width="5">
+                                    </td>
+                                    <td class="description-td">
+                                        <p><strong><?php echo $catName; ?></strong></p>
+                                        <p></p><p style="font-size:14px; padding-top:8px; line-height:22px;">
+                                        <?php echo $cur_category->getShortDescription(); ?>
+                                        </p><p></p>	
+                                        <p><button class="browse" onclick="setLocation('<?php echo $getCatUrl; ?>');" title="Browse"><span>Browse</span></button></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </span>
+                      <span class="display-list-category-details-bottom"></span>
+                </span>
+                
+            </a>
+            </div>
+            <div class="display-list-category-button">
+                <span onclick="setLocation('<?php echo $getCatUrl; ?>');"><?php echo $catName; ?></span>
+            </div>
+            &nbsp;
+            </td>
+            <?php } ?>
+            
+            </tr>
+            
+            
+        </tbody>
+    </table>
+</div>
+<div class="display-list-bottom"></div>
+</div>
+<script type="text/javascript">
+   function onHover(element)
+   {
+        jQuery(element).find('.display-list-category-details').show();
+        jQuery(element).hover(
+            function()
+            {
+                jQuery(element).find('.display-list-category-details').show();
+            },
+            function()
+            {
+                jQuery(element).find('.display-list-category-details').hide();
+            }
+        );
+        
+   }
+</script>

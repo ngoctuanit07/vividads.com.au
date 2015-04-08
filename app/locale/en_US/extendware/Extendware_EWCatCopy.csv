@@ -1,0 +1,28 @@
+"Category Copy","Category Copy"
+"Category copy was not completed","Category copy was not completed"
+"Category has been copied. Ensure you re-index data in System -> Index Management","Category has been copied. Ensure you re-index data in System -> Index Management"
+"Category Information","Category Information"
+"Category or parent category is non-existant","Category or parent category is non-existant"
+Configuration,Configuration
+"Copy Category","Copy Category"
+"Copy Products","Copy Products"
+"Copy Subcategories","Copy Subcategories"
+"Copy To","Copy To"
+"Copy URL Keys","Copy URL Keys"
+Extendware,Extendware
+General,General
+"General Information","General Information"
+"If set to no the URL key will have ""-1"" appended to it.","If set to no the URL key will have ""-1"" appended to it."
+"Infinite loop encountered when copying category","Infinite loop encountered when copying category"
+Main,Main
+"Manage Categories","Manage Categories"
+"Parent Category","Parent Category"
+"Please <u>read the help descriptions, field descriptions, fieldset descriptions, and user guides</u> so you may configure this extension to suit your needs.","Please <u>read the help descriptions, field descriptions, fieldset descriptions, and user guides</u> so you may configure this extension to suit your needs."
+"Please fill out form completely","Please fill out form completely"
+"Please re-index data in System -> Index Management","Please re-index data in System -> Index Management"
+"Reference Category","Reference Category"
+"Select whether the categories copied are the reference category or the subcategories of the references category","Select whether the categories copied are the reference category or the subcategories of the references category"
+Settings,Settings
+"Subcategories of Reference Category","Subcategories of Reference Category"
+Subject,Subject
+"The category to copy will be copied underneath the parent category","The category to copy will be copied underneath the parent category"

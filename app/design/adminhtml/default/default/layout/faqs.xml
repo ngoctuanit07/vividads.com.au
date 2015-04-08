@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+
+	<faqsadmin_cms_wysiwyg_images_index>
+        <remove name="footer" />
+        <remove name="head" />
+        <reference name="left">
+            <block name="wysiwyg_images.js" type="adminhtml/cms_wysiwyg_images_content" template="cms/browser/js.phtml" />
+            <block name="wysiwyg_images.tree" type="adminhtml/cms_wysiwyg_images_tree" template="cms/browser/tree.phtml" />
+        </reference>
+        <reference name="content">
+            <block name="wysiwyg_images.content"  type="adminhtml/cms_wysiwyg_images_content" template="cms/browser/content.phtml">
+                <block name="wysiwyg_images.uploader" type="adminhtml/cms_wysiwyg_images_content_uploader" template="cms/browser/content/uploader.phtml" />
+                <block name="wysiwyg_images.newfolder" type="adminhtml/cms_wysiwyg_images_content_newfolder" template="cms/browser/content/newfolder.phtml" />
+            </block>
+        </reference>
+    </faqsadmin_cms_wysiwyg_images_index>
+
+    <faqsadmin_adminhtml_faqs_index>
+		<update handle="editor" />
+        <reference name="content">
+            <block type="faqs/adminhtml_faqs" name="faqs" />
+        </reference>
+    </faqsadmin_adminhtml_faqs_index>
+    
+    <faqsadmin_adminhtml_topic_index>
+		<update handle="editor" />
+        <reference name="content">
+            <block type="faqs/adminhtml_topic" name="topic" />
+        </reference>
+    </faqsadmin_adminhtml_topic_index>
+	
+	<faqsadmin_adminhtml_faqs_edit>
+			<update handle="editor"/>
+	</faqsadmin_adminhtml_faqs_edit>
+	
+	<faqsadmin_adminhtml_faqs_new>
+   	    <update handle="editor" />
+	</faqsadmin_adminhtml_faqs_new>
+    
+</layout>

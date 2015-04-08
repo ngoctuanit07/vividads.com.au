@@ -1,0 +1,190 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#basket_icon {  display:block; background:url(../images/basket_icon.png) no-repeat; width:31px; height:26px;}
+#basket_go {  display:block; background:url(../images/basket_go.png) no-repeat; width:25px; height:23px; float:right; margin-left:5px;}
+
+#basket_icon:hover, #basket_go:hover { opacity:0.5 } 
+
+.footerContainer { width:100%; ;}
+#footerTop { background:url(../images/footer_png.png) center top repeat-x;height:57px;}
+#footerWrapper { background:#e9dfaf; padding:20px 0px; height:130px;}
+#footerContent { width:960px; margin:0px auto; color:#3353b4; text-shadow:1px 1px 1px #fff; line-height:1.4em;}
+#footerContent a {color:#3353b4; }
+
+.footerFill {  background:#e9dfaf;}
+
+#footerLeft 	{ height:100%; float:left; width: 269px; border-right:1px solid #bdbe9c; font-size:14px; text-align:center;  }
+#footerCenter 	{ height:100%; float:left; width: 418px; border-right:1px solid #bdbe9c; border-left:1px solid #f6f6d6; text-align:center; font-size:14px;}
+#footerRight 	{ height:100%; float:left; width: 269px; border-left:1px solid #f6f6d6; font-size:14px; text-align:center;  }
+#footerRight ul, #footerRight li { list-style:none; list-style-position:inside; display:inline; padding:0px; margin:0px;}
+#footerRight a { text-decoration:none }
+
+input[type='text'],input[type='password'], textarea { border:1px solid #ccc; border-radius:5px; padding:3px; font-family:Arial, Helvetica, sans-serif;}
+.mailbox {
+	
+	margin:0px;
+	padding:0px;
+	width:250px;
+}
+
+.mailbox_inner {
+	
+	margin:0px 10px;
+}
+
+.footer_header	{
+	font-size:20px;
+	margin:8px 0px;
+	padding:0px;
+	font-family:'AvantGardeGothicITCW01B 731063';
+	
+	font-style:italic;
+	
+}
+
+
+.mailholder {
+	width:176px;
+	height:32px;
+	padding:0px;
+	background:url(../images/mail_input.png) no-repeat top left;
+	margin:6px 0px 10px 27px;
+}
+
+
+
+input.mailinput {
+	margin:0px;
+	padding:0px;
+	border:none;
+	background:none;
+	height:30px;
+	line-height:30px;
+	width:138px;
+	margin-left:5px;
+	font-size:14px;
+	color:#000;
+}
+
+.mailbutton {
+	background:url(../images/mail_go.png) no-repeat top right;
+	margin:0px;
+	padding:0px;
+	border:none;
+	float:right;
+	cursor:pointer;
+	height:32px;
+	width:32px;
+}
+
+#sagepay_logos { margin:20px 200px; }
+
+#link_get_started { display:block; float:right; margin:-10px 70px 0px 0px; }
+#link_contact_us, .link_view_item { display:block; float:right;  }
+#link_get_started:hover, #link_contact_us:hover, .link_view_item:hover { opacity:0.5 }
+
+
+.content_about_us { background:#FFF; border-radius:15px;padding:10px 23px 15px 23px; text-align:center;  }
+.content_about_us p { color:#1a0378; font-family:Arial, Helvetica, sans-serif; font-size:18px; }
+.content_about_us p+p, .content_about_us p+p+p+p, .content_about_us p+p+p+p+p+p { background:#d7e3f3; margin:0px -23px 0.5em -23px; padding:0.5em 23px;  }
+.content_about_us p+p+p, .content_about_us p+p+p+p+p, .content_about_us p+p+p+p+p+p+p { background:#fff;  }
+
+/*
+.cart_details input[type=button], .cart_details input[type=submit] { background:url(../images/btn_gradient.png) repeat-x; color:#fff;font-family:'AvantGardeGothicITCW01M 731090'; border:none; border-radius:8px;
+}
+
+.cart_details input[type=button]:hover , .cart_details input[type=submit]:hover { opacity:0.5; }
+*/
+
+.blue_button {  background:url(../images/blue_button.png) no-repeat top right; height:32px; padding: 0px 34px 0px 5px; color:#FFF; 
+				border-radius:8px; border:none; text-align:right; font-size:14px; font-family: 'AvantGardeGothicITCW01B 731069'; font-weight:normal;
+				text-decoration:none; white-space:nowrap;
+				line-height:32px; cursor:pointer; display:inline-block; }
+.blue_button:hover { opacity:0.5; color:#fff; text-decoration:none;}
+
+input..blue_button { height:32px; }
+
+#cookie_compliance { vertical-align:center;z-index:9999;display:block;position:fixed;height:42px;left:0px;right:0px;width:100%; background:#666666; -moz-box-shadow: 0 0 8px #444444; -webkit-box-shadow: 0 0 8px#444444; box-shadow: 0 0 8px #444444;opacity:.80; -ms-filter: alpha(opacity=80); filter: alpha(opacity=80);-khtml-opacity: .80; -moz-opacity: .80; color:#FFFFFF;font-family:Arial, Helvetica, sans-serif;font-size:12px; text-align:left; font-weight:bold; padding:8px 0px 0px 8px; }
+
+#cookie_compliance a { color:#fff; } 
+#cookie_compliance .blue_button  { margin-top:-14px; }
+
+/** Uploader ***/
+
+#uploader { width:500px; height:420px; border:none;overflow:hidden; }
+
+.clear { clear:both; }
+
+#uploadbody { font-family:Arial, Helvetica, sans-serif; }
+#uploadbody h1 { font-family:'ITCAvantGardeW01-CnBd';
+	float:none;	
+	display:block;
+	font-size:24px;
+	color:#3353b4;
+	margin:5px 0px 0px 0px;
+	position:relative;
+	top:0px;
+	font-weight:normal;  }
+	
+#uploadbody h2 { font-family:'ITCAvantGardeW01-CnBd';
+	float:none;	
+	display:block;
+	font-size:18px;
+	color:#666;
+	margin:15px 0px 0px 0px;
+	position:relative;
+	top:0px;
+	font-weight:normal;}
+
+#uploadbody  #pb_outer {
+	height: 30px;
+	border: 1px solid #ccc;
+	background-color:#efefef;
+	width: 450px;
+	margin: 20px 0px;
+	border-radius:5px;
+}
+#uploadbody  #pb_inner {
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #3353b4;
+	line-height:30px;
+	height: 30px;
+	width: 1px;
+	text-align: right;
+	border-radius:5px;
+}
+
+#uploadbody  #pb_counter {
+	font-weight: bold;
+	color: #ccc;
+	line-height:40px;
+	height: 30px;
+	width: 1px;
+	text-align: right;
+	border-radius:5px;
+	position:absolute;
+	width:450px;
+	font-size:16px;
+}
+
+#uploadbody input { margin-top:3px; margin-bottom:3px;  }
+#uploadbody .blue_button { margin-top:20px;}
+
+#uploadbody input[type=text] { width:350px; padding:5px;border:1px solid #ccc;}
+
+#user_email_warn {  font-size:11px; color:#900;}
+
+/**** End Uploader ****/
+
+#google_map { width:320px; height:250px; border-radius:15px; border: 1px solid #999; float:right;}
+
+.content_curved a:link, .content_curved a:visited { text-decoration:none; color:#3353b4; font-weight:bold }
+.content_curved a:hover { text-decoration:underline; font-weight:boldl; }
+
+.product_addon { border-radius:10px; border:2px solid #efefef;padding:10px; float:left; margin:5px 10px 5px 0px; width:250px}
+.product_add { border-radius:10px; background:#efefef;padding:10px;}
+
+.cart_curved { border:1px solid #ccc; margin:5px 0 0 0; padding:10px; border-radius:15px; font-size:14px; }
+.cart_curved td { font-size:14px; color:#666;}

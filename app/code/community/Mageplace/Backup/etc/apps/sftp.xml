@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<application>
+	<sftp>
+		<label>SFTP</label>
+		<auth>0</auth>
+		<settings>
+			<host>
+				<label>Host name</label>
+				<type>text</type>
+				<required>1</required>
+			</host>
+			<port>
+				<label>Port number</label>
+				<type>text</type>
+				<required>0</required>
+				<note>Port by default - 22</note>
+			</port>
+			<username>
+				<label>Username</label>
+				<type>text</type>
+				<required>1</required>
+			</username>
+			<password>
+				<label>Password</label>
+				<type>password</type>
+				<required>0</required>
+			</password>
+			<timeout>
+				<label>Timeout</label>
+				<type>text</type>
+				<required>0</required>
+				<note>Timeout by default - 10 seconds</note>
+			</timeout>
+			<path>
+				<label>Path</label>
+				<type>text</type>
+				<required>0</required>
+			</path>
+			<filepartmaxsize>
+				<label>Max file size</label>
+				<type>text</type>
+				<required>0</required>
+				<note>File size that the backup will be divided into. Default size is 100 Mb.</note>
+				<value>100</value>
+			</filepartmaxsize>
+		</settings>
+	</sftp>
+</application>

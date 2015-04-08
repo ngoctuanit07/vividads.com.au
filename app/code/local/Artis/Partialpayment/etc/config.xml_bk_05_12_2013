@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<config>
+      <modules>
+            <Artis_Partialpayment>
+                  <version>0.1.0</version>
+            </Artis_Partialpayment>
+      </modules>
+      <stores>
+        <admin>
+            <!-- override default admin design package and theme -->
+            <design>
+                <package>
+                    <name>default</name>
+                </package>
+                <theme>
+                    <!-- this is the theme name -->
+                    <default>artis</default>
+                </theme>
+            </design>
+        </admin>
+    </stores>
+      <admin>
+            <routers>
+                  <partialpayment>
+				<use>admin</use>
+				<args>
+					<module>Artis_Partialpayment</module>
+					<frontName>partialpayment</frontName>
+				</args>
+			</partialpayment>
+                <adminhtml>
+                    <args>
+                        <modules>
+                            <Artis_Partialpayment before="Mage_Adminhtml">Artis_Partialpayment_Adminhtml</Artis_Partialpayment>
+                        </modules>
+                    </args>
+                </adminhtml>
+            </routers>
+      </admin>
+      <global>
+     
+        <models>
+            <partialpayment>
+                <class>Artis_Partialpayment_Model</class>
+                <resourceModel>Artis_Partialpayment_mysql4</resourceModel>
+            </partialpayment>
+            
+            <adminhtml>
+                    <rewrite>
+                        <sales_order_create>Artis_Partialpayment_Model_Adminhtml_Sales_Order_Create</sales_order_create>
+                    </rewrite>
+            </adminhtml>
+            
+            <sales>
+                    <rewrite>
+                        <order_invoice>Artis_Partialpayment_Model_Sales_Order_Invoice</order_invoice>
+                        <order_pdf_invoice>Artis_Partialpayment_Model_Sales_Order_Pdf_Abstract</order_pdf_invoice>
+                    </rewrite>
+            </sales>
+            
+            
+            <Partialpayment_myslq4>
+                    <class>Artis_Partialpayment_Model_Mysql4</class>
+            </Partialpayment_myslq4> 
+        </models>
+
+         
+         
+            <resources>
+                  <Partialpayment_setup>
+                        <setup>
+                              <module>Artis_Partialpayment</module>
+                        </setup>
+                        <connection>
+                              <use>core_setup</use>
+                        </connection>
+                  </Partialpayment_setup>
+                  <Partialpayment_write>
+                        <connection>
+                            <use>core_write</use>
+                        </connection>
+                    </Partialpayment_write>
+                    <Partialpayment_read>
+                        <connection>
+                            <use>core_read</use>
+                        </connection>
+                    </Partialpayment_read>
+            </resources>
+      <blocks>
+      <partialpayment>
+          <class>Artis_Partialpayment_Block</class>
+      </partialpayment>
+      <adminhtml>
+          <rewrite>
+            <sales_order_create_billing_method_form>Artis_Partialpayment_Block_Payment_Form_Container</sales_order_create_billing_method_form>
+	    <!--<sales_order_view>Artis_Partialpayment_Block_Adminhtml_Sales_Order_View</sales_order_view>-->
+            <!--<catalog_product_edit_tabs>Altima_Lookbook_Block_Adminhtml_Catalog_Product_Edit_Tabs</catalog_product_edit_tabs>-->
+          </rewrite>
+      </adminhtml>
+      <sales>
+          <rewrite>
+            <order_history>Artis_Partialpayment_Block_Sales_Order_History</order_history>
+          </rewrite>
+      </sales>
+        </blocks>
+      </global>
+</config>

@@ -1,0 +1,413 @@
+<?php if(Mage::getStoreConfig('bs_carpet/general/active')==1 && $this->getProduct()->getIsCarpetProduct()==1): ?>
+	<script type="text/javascript">	
+	//<![CDATA[
+	/**
+	 * BS Custom Carpet Option
+	 *
+	 * @author		BoSua <info@bochamsua.com>
+	 */
+	Carpet = Class.create();
+	Carpet.prototype = {
+		initialize : function(config){
+			this.config = config;	
+			if(config && config.iscarpet) {
+				this.price = parseFloat(this.config.price);
+				if(config.width_type == 'field'){
+					this.widthid = "options_" + config.widthid + "_text";
+				}else if(config.width_type == 'select'){
+					this.widthid = "select_" + config.widthid;
+				}
+				
+				this.lengthid = "options_" + config.lengthid + "_text";	
+				this.originalPrice = <?php echo $this->getProduct()->getPrice() ?>;
+				this.widthType = config.width_type;
+				this.taxPercent = <?php echo $this->getProduct()->getTaxPercent() ?>*1;
+				this.currencyRate = <?php echo Mage::app()->getStore()->getCurrentCurrencyRate(); ?>*1 ;
+				this.load();
+			}
+		},	
+		load : function(){		
+
+			var widthInput = $(this.widthid);
+			if(this.widthType == 'field'){
+				widthInput.observe('keyup',function(){
+					widthInput.setValue(widthInput.getValue().replace(/[^0-9.]/g,''));				
+					
+					});	
+				widthInput.observe('keyup',this.getFromFields.bind(this));	
+			}else if(this.widthType == 'select'){
+				widthInput.observe('change',this.getFromFields.bind(this));	
+			}
+			
+				
+			var lengthInput = $(this.lengthid);				
+			lengthInput.observe('keyup',function(){
+				lengthInput.setValue(lengthInput.getValue().replace(/[^0-9.]/g,''));				
+				
+				});	
+			lengthInput.observe('keyup',this.getFromFields.bind(this));
+			$('qty').setStyle({display: "none"});
+			$$(".add-to-cart label").each(function(j){
+				j.setStyle({display: "none"});
+				});
+			this.getFromRoomInput();
+			$('carpet_width').innerHTML = this.getFieldValue($(this.widthid));
+			$('carpet_length').innerHTML = this.getFieldValue($(this.lengthid));
+
+
+			if(this.config.options){
+				this.config.options.each(function (option){
+
+					if(option.type == 'drop_down'){
+						$('select_'+option.id).observe('change', function(){							
+							
+							ca.getFromQty();	
+												
+							
+						}.bind(this));
+					}else if (option.type == 'checkbox' || option.type ==  'radio'){
+
+						$$('#options-'+option.id+'-list input').each(function (el){
+							el.observe('click', function(){
+								ca.getFromQty();	
+								
+
+							});	
+						}.bind(this));
+						
+
+					}
+				});
+				
+				
+			}
+
+			
+		},
+		calcRoom : function(){
+			var widthInput = $(this.widthid);				
+			var lengthInput = $(this.lengthid);	
+
+			var width_type = this.widthType;
+			var max_length = this.config.maxlength * 1;
+
+			if(max_length <=0){
+				max_length = 999999;
+			}
+			
+			var widths = this.config.widths;
+
+			
+			if ($('room_width')==null) return;
+			var room_width = $('room_width').getValue() * 1;
+			var room_length = $('room_length').getValue() * 1;
+			var tmp = 0;
+			if (room_width > room_length) {
+				tmp = room_width;
+				room_width = room_length;
+				room_length = tmp;
+				$('room_width').setValue(room_width);
+				$('room_length').setValue(room_length);
+			}
+			var room_area = 0;
+			var room_circum = 0;
+				
+			var qty = 0;
+			if (this.isNumeric(room_width)&&this.isNumeric(room_length)) {
+				var room_area = room_width * room_length;
+				var room_circum = (room_width*2)+(room_length*2);
+				$('room_area').innerHTML = room_area.toFixed(2);
+				$('room_circum').innerHTML = room_circum.toFixed(2);
+		
+				var available = false;
+				var useWidth1 = 10000;
+				var useLength1 = 10000;
+				var useIndex1 = 0;
+
+				var useWidth2 = 10000;
+				var useLength2 = 10000;
+				var useIndex2 = 0;
+
+				var message = "";
+				var results;
+				 
+				if (widths !="") {
+					// need to select required carpet width and length, then
+					var temp_withs = ""+widths;
+					var sizes = temp_withs.split(",");
+					var many = sizes.length;
+					
+					
+					var this_size;
+					var debug = "";
+					
+					
+					
+					for (var x = 0; x < many; x++) {
+						this_size = sizes[x]*1;
+						//find best match to width
+						if ((room_width<=this_size)&&(this_size<useWidth1)) {
+							useWidth1 = this_size;
+							useLength1 = room_length;
+							useIndex1 = x;
+							available = true;
+						}
+						//find best match to length
+						if ((room_length<=this_size)&&(this_size<useLength2)) {
+							useWidth2 = this_size;
+							useLength2 = room_width;
+							useIndex2 = x;
+							available = true;
+						}
+					}
+					
+					// make sure we pick the most efficient direction of roll
+					if ((useWidth1*useLength1) > (useWidth2*useLength2)) {
+						useWidth1 = useWidth2;
+						useLength1 = useLength2;
+						useIndex1 = useIndex2;
+					} 
+					
+					//can't have extreme lengths of carpet
+					if (useLength1 > max_length) available = false;
+					
+					
+				} else {
+					available = true;
+					useWidth1 = room_width;
+					useLength1 = room_length;
+				}
+
+				if (available) {				
+					//put into results
+					$('carpet_width').innerHTML = useWidth1;
+					$('carpet_length').innerHTML = useLength1;
+			
+					//put back into page form
+					
+					if(width_type == 'select'){
+						widthInput.selectedIndex = useIndex1;
+					}else if (width_type == 'field'){
+						
+						widthInput.setValue(useWidth1);
+					}
+					
+					lengthInput.setValue(useLength1);
+					
+					message = "none";
+					results = "block";
+				} else {
+					//this.getFromFields();
+					message = "block";
+					//results = "none";
+				}	
+				this.getFromRoomInput();
+				$('large_message').style.display = message;
+				$('large_result').style.display = results;
+				
+			}
+		},
+		getFromFields : function(){	
+			var max_length = parseFloat(this.config.maxlength);
+
+			if(max_length <=0){
+				max_length = 999999;
+			} 
+			
+			var _length = this.getFieldValue($(this.lengthid));		
+			if (!_length){
+				_length = 0;
+			}else {
+				_length = parseFloat(_length);
+				if (_length < 0) _length = 0;
+			}
+
+			if(_length > max_length) {
+				$('large_message').style.display = "block";
+				
+			} else {
+				$('large_message').style.display = "none";
+			}			
+			var _width = this.getFieldValue($(this.widthid));
+			
+			$('carpet_width').innerHTML = _width;
+			$('carpet_length').innerHTML = _length
+
+			var room_area = _width * _length;
+			$('actual_area').innerHTML = room_area.toFixed(2);
+			
+			var _qty = _width * _length;
+			
+			
+			//$('qty').setValue(_qty);
+			$('actual_area').innerHTML = _qty;
+			
+			this.getFromQty();
+		},
+		getFromRoomInput : function(){	
+			
+			
+			var _room_width = $('room_width').getValue();
+			var _room_length = $('room_length').getValue();
+
+			var room_area = _room_width * _room_length;
+			var room_circum = (_room_width*2)+(_room_length*2);
+			$('room_area').innerHTML = room_area.toFixed(2);
+			$('room_circum').innerHTML = room_circum.toFixed(2);
+			this.getFromFields();
+			
+		},
+		getFromQty : function(){	
+			var  _qty = parseFloat($('actual_area').innerHTML);
+			if (!_qty) {_qty = 1} else if (_qty < 1) {
+				_qty = 1;
+			}
+
+			this.getPrice();
+		},
+		getFieldValue : function(f) {
+			var val = 0;
+			if (f.type == "select-one" || f.type == "select-multiple") {
+				var index = f.selectedIndex;
+					if(index >= 0){
+						val = f.options[index].innerHTML;
+					}
+			} else {
+				val = f.getValue()
+			}
+			if(!val) return 0;
+			return parseFloat(val)
+		},
+		getPrice : function(){		
+			var original_price = this.originalPrice;
+			var val		= parseFloat($('actual_area').innerHTML);//$('qty').getValue()		
+			var price	= parseFloat(this.price * 1);	
+			var currencyRate = parseFloat(this.currencyRate * 1);
+			if(currencyRate == 0){
+				currencyRate = 1;
+			}
+			var taxPercent = parseFloat(this.taxPercent * 1);		
+			var tprice = 0;
+			if (this.config.prices){
+				this.config.prices.each(function (item){
+					qty = parseFloat(item.price_qty);
+					if (val >= qty){
+						tprice = parseFloat(item.price);
+					}
+				});
+				if (tprice && (tprice < price)){
+					price = tprice;
+
+				}
+				var check = optionsPrice.formatPrice(price);
+				this.addTierRowClass(check);				
+			}
+
+			
+
+			//Should include prices from all other options
+			var option_price = 0;
+			if (this.config.options){
+				this.config.options.each(function (item){
+					if(item.type == 'drop_down'){
+						var e = $('select_'+item.id);
+						var price = e.options[e.selectedIndex].getAttribute('price');
+						option_price = option_price + parseFloat(price);
+					}else if(item.type == 'checkbox' || item.type == 'radio'){
+						$$('#options-'+item.id+'-list input').each(function (el){
+							if(el.checked){
+								price = el.getAttribute('price');
+								option_price = option_price + parseFloat(price);
+							}
+						});
+					}
+				});
+				
+							
+			}
+
+
+			var totalPrice = (price + option_price) * currencyRate;
+			//totalPrice = totalPrice.toFixed(2);
+			
+			
+			var currencyPrice = val * totalPrice;
+
+			//var currencyPrice = total ;
+			//currencyPrice = currencyPrice.toFixed(2);
+			
+			var currencyPriceInclTax = currencyPrice * (1+taxPercent/100);
+			//currencyPriceInclTax = currencyPriceInclTax.toFixed(2);
+			
+			//var total_price =  optionsPrice.formatPrice(total);
+
+			var excludeTax = optionsPrice.formatPrice(currencyPrice);
+			var includeTax = optionsPrice.formatPrice(currencyPriceInclTax);
+			
+			$('total_price').innerHTML = includeTax;
+			$$(".price-box .price").each(function(j) {
+				j.innerHTML = excludeTax;
+			});
+
+			$$(".price-box .price-including-tax .price").each(function(j) {
+				j.innerHTML = includeTax;
+			});
+			$$(".price-box .price-excluding-tax .price").each(function(j) {
+				j.innerHTML = excludeTax;
+			});
+
+
+			$$(".price-box .old-price .price").each(function(j) {
+				j.innerHTML = optionsPrice.formatPrice(val * original_price * currencyRate);;
+			});
+
+			$$(".price-box .special-price .price-including-tax .price").each(function(j) {
+				j.innerHTML = includeTax;
+			});
+			$$(".price-box .special-price .price-excluding-tax .price").each(function(j) {
+				j.innerHTML = excludeTax;
+			});
+
+			
+			
+			
+		},
+		update : function(){
+			if(!config || !config.iscarpet)  return;
+			this.getFromFields();
+		},
+		
+		addTierRowClass : function(bs){			
+
+			$$('.tier-prices li').each(function(el){
+				el.removeClassName('tierRow');
+				if(el.innerHTML.include(bs)){
+					el.addClassName('tierRow');
+				}
+			}.bind(this));
+
+		},
+		conversion : function() {
+			var feet = $("calc_feet").value;
+			var inches = $("calc_inches").value;
+			var result = ((feet*12)+inches*1)*0.0254;
+			$("calc_metres").innerHTML = result.toFixed(3);
+		},
+		isNumeric : function(value) {
+			return typeof value != "boolean" && value !== null && !isNaN(+ value);
+		},
+		numberOnly : function(inputObj,wholeNumbers) {
+			if (wholeNumbers) 
+				inputObj.value = inputObj.value.replace(/[^0-9]/g,'')
+			else
+				inputObj.value = inputObj.value.replace(/[^0-9.]/g,'');
+			return true;
+		}
+	}
+
+	
+	ca = new Carpet(<?php echo $this->getBoSuaCarpetJsonConfig() ?>);	
+	
+	//]]>
+	</script>
+	<?php endif; ?>

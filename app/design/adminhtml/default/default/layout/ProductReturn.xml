@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+        
+    <productreturn_admin_grid>
+    	<reference name="content">
+    		<block type="ProductReturn/Admin_Grid" name="productreturngrid" template="ProductReturn/Grid.phtml" />
+    	</reference>
+    </productreturn_admin_grid>
+    
+    <productreturn_admin_gridorder>
+    	<reference name="content">
+    		<block type="ProductReturn/Admin_GridOrder" name="productreturngridorder" template="ProductReturn/GridOrder.phtml" />
+    	</reference>
+    </productreturn_admin_gridorder>
+
+    <productreturn_admin_edit>
+    	<reference name="head">
+    		<action method="addJs"><script>mdn/productReturn.js</script></action>
+    	</reference>
+    	 <reference name="left">
+            <block type="ProductReturn/Productreturn_Edit_Tabs" name="productreturn_tabs">              
+            </block>
+        </reference>
+    	<reference name="content">
+            <block type="ProductReturn/Productreturn_Edit" name="productreturn_edit"></block>
+        </reference>
+    	
+    </productreturn_admin_edit>
+    
+    <adminhtml_sales_order_view>
+        <reference name="sales_order_tabs">
+                <action method="addTab"><name>product_return</name><block>ProductReturn/Admin_Sales_Order_View_Tab_ProductReturn</block></action>
+        </reference>
+    </adminhtml_sales_order_view>
+    
+    <adminhtml_customer_edit>
+        <reference name="customer_edit_tabs">
+                <action method="addTab"><name>product_return</name><block>ProductReturn/Admin_Customer_Edit_Tab_ProductReturn</block></action>
+        </reference>
+    </adminhtml_customer_edit>
+    
+    <productreturn_admin_productexchangeselectionpopup>
+    	<reference name="head">
+    		<action method="addJs"><script>mdn/productReturn.js</script></action>
+    	</reference>
+        <reference name="root">
+            <action method="setTemplate"><template>page/popup.phtml</template></action>
+        </reference>
+    	<reference name="content">
+    		<block type="ProductReturn/Productreturn_Edit_ProductExchangePopup" name="productexchangepopup" template="ProductReturn/ProductExchangePopup.phtml" />
+    	</reference>
+    </productreturn_admin_productexchangeselectionpopup>
+
+    <productreturn_pendingproducts_grid>
+    	<reference name="content">
+    		<block type="ProductReturn/Admin_PendingProducts_Grid" name="pendingproductsgrid" template="ProductReturn/PendingProducts/Grid.phtml" />
+    	</reference>
+    </productreturn_pendingproducts_grid>
+    
+    <productreturn_supplierreturn_grid>
+    	<reference name="content">
+    		<block type="ProductReturn/Admin_SupplierReturn_Grid" name="supplierreturngrid" template="ProductReturn/SupplierReturn/Grid.phtml" />
+    	</reference>
+    </productreturn_supplierreturn_grid>
+    
+</layout>

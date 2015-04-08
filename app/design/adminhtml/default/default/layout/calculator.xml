@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <calculator_adminhtml_calculator_index>
+        <reference name="content">
+            <block type="calculator/adminhtml_calculator" name="calculator" />
+        </reference>
+    </calculator_adminhtml_calculator_index>
+</layout>

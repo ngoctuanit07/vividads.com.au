@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <!--<action method="addItem"><type>skin_css</type><name>css/event_calendar.css</name></action>           -->
+            <!--<action method="addItem"><type>skin_js</type><name>js/calvis.js</name></action>-->
+            <!--<action method="addItem"><type>skin_js</type><name>js/Dialog.js</name></action>-->
+            <!--<action method="addItem"><type>skin_css</type><name>css/paragridma.css</name></action>-->
+            <!--<action method="addItem"><type>skin_css</type><name>css/eventCalendar.css</name></action>-->
+            <!--<action method="addItem"><type>skin_css</type><name>css/eventCalendar_theme_responsive.css</name></action>-->
+            <!--<action method="addItem"><type>skin_js</type><name>js/jquery.min.js</name></action>-->
+            <!--<action method="addItem"><type>skin_js</type><name>js/jquery.eventCalendar.min.js</name></action>-->
+        </reference>
+    </default>
+
+    <eventcalendar_adminhtml_eventcalendar_index>
+         
+        <reference name="content">
+            <block type="eventcalendar/adminhtml_eventcalendar" name="eventcalendar" />
+        </reference>
+    </eventcalendar_adminhtml_eventcalendar_index>
+    
+    <adminhtml_sales_order_view>
+        <reference name="sales_order_tabs">
+                <action method="addTab">
+                    <name>abc</name>
+                    <block>eventcalendar/adminhtml_sales_order_view_tab</block>
+                </action>
+        </reference>
+    </adminhtml_sales_order_view>
+</layout>

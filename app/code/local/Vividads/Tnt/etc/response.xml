@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+			<enquiry xmlns="http://www.tntexpress.com.au">
+			  <ratedTransitTimeEnquiry>
+				<cutOffTimeEnquiry>
+				  <collectionAddress>
+					<suburb>Sydney</suburb>
+					<postCode>2000</postCode>
+					<state>NSW</state>
+				  </collectionAddress>
+				  <deliveryAddress>
+					<suburb>$city</suburb>
+					<postCode>$postCode</postCode>
+					<state>VIC</state>
+				  </deliveryAddress>
+				  <shippingDate>'.$date.'</shippingDate>
+				  <userCurrentLocalDateTime>
+					2007-11-05T10:00:00
+				  </userCurrentLocalDateTime>
+				  <dangerousGoods>
+					<dangerous>false</dangerous>
+				  </dangerousGoods>
+				  <packageLines packageType="D">
+					<packageLine>
+					  <numberOfPackages>1</numberOfPackages>
+					  <dimensions unit="cm">
+						<length>$length</length>
+						<width>$width</width>
+						<height>$height</height>
+					  </dimensions>
+					  <weight unit="kg">
+						<weight>$weight</weight>
+					  </weight>
+					</packageLine>
+				  </packageLines>
+				</cutOffTimeEnquiry>
+				<termsOfPayment>
+				  <senderAccount>21664906</senderAccount>
+				  <payer>S</payer>
+				</termsOfPayment>
+			  </ratedTransitTimeEnquiry>
+			</enquiry>

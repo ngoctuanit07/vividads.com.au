@@ -1,0 +1,47 @@
+<?php
+class Artis_Systemalert_IndexController extends Mage_Core_Controller_Front_Action
+{
+    public function indexAction()
+    {
+    	
+    	/*
+    	 * Load an object by id 
+    	 * Request looking like:
+    	 * http://site.com/systemalert?id=15 
+    	 *  or
+    	 * http://site.com/systemalert/id/15 	
+    	 */
+    	/* 
+		$systemalert_id = $this->getRequest()->getParam('id');
+
+  		if($systemalert_id != null && $systemalert_id != '')	{
+			$systemalert = Mage::getModel('systemalert/systemalert')->load($systemalert_id)->getData();
+		} else {
+			$systemalert = null;
+		}	
+		*/
+		
+		 /*
+    	 * If no param we load a the last created item
+    	 */ 
+    	/*
+    	if($systemalert == null) {
+			$resource = Mage::getSingleton('core/resource');
+			$read= $resource->getConnection('core_read');
+			$systemalertTable = $resource->getTableName('systemalert');
+			
+			$select = $read->select()
+			   ->from($systemalertTable,array('systemalert_id','title','content','status'))
+			   ->where('status',1)
+			   ->order('created_time DESC') ;
+			   
+			$systemalert = $read->fetchRow($select);
+		}
+		Mage::register('systemalert', $systemalert);
+		*/
+
+			
+		$this->loadLayout();     
+		$this->renderLayout();
+    }
+}

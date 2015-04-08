@@ -1,0 +1,74 @@
+jQuery(document).ready(function () {
+							
+	
+	
+	activeItem = jQuery("#accordion li:first");
+	jQuery(activeItem).addClass('active');
+	//    
+	//jQuery(".onlytabs li").click(function(){
+	//    
+	//    jQuery(".onlytabs li").removeClass("active");
+	//    jQuery(this).addClass("active");
+	//    arr=Array();
+	//    arr=jQuery(this).attr("id").split("__");
+	//    var make_id="#acc__"+arr[1];
+	//    jQuery("#accordion .accro_content").hide();
+	//    
+	//    
+	//    
+	//    
+	//    
+	//    //jQuery(activeItem).show();
+	//    jQuery(make_id).find('.accro_content').show();
+	//    activeItem = this;
+	//});
+	
+	//jQuery(".go_to_nxt_tab").click(function(){
+	//	
+	//	arr=Array();
+	//	
+	//	arr=jQuery(this).attr("id").split("__");
+	//	
+	//	var make_id="#acc__"+arr[1];
+	//	jQuery(activeItem).animate({width: "50px"}, {duration:300, queue:false});
+	//	jQuery(make_id).animate({width: "450px"}, {duration:300, queue:false});
+	//	activeItem = jQuery(make_id);
+	//	
+	//});
+	
+	jQuery("#accordion li").click(function(){
+	    
+	    jQuery("#accordion li").removeClass("active");
+	    jQuery(this).addClass("active");
+	    
+	    jQuery(activeItem).animate({width: "35px"}, {duration:500, queue:false});
+	    jQuery(this).animate({width: "450px"}, {duration:500, queue:false});
+	    activeItem = this;
+	});
+	
+	jQuery(".go_to_nxt_tab").click(function(){
+		var strid = jQuery(this).attr('id').split('__');
+	    jQuery("#accordion li").removeClass("active");
+	    jQuery('#acc__'+strid[1]).addClass("active");
+	    
+	    jQuery(activeItem).animate({width: "35px"}, {duration:500, queue:false});
+	    jQuery('#acc__'+strid[1]).animate({width: "450px"}, {duration:500, queue:false});
+	    activeItem = jQuery('#acc__'+strid[1]);
+	    return false;
+	    
+	});
+	
+	//jQuery(".go_to_nxt_tab").click(function(){
+	//    
+	//    var strid = jQuery(this).attr('id').split('__');
+	//    jQuery("#accordion li").removeClass("active");
+	//    jQuery('#acc__'+strid[1]).addClass("active");
+	//    
+	//    jQuery(activeItem).animate({width: "35px"}, {duration:500, queue:false});
+	//    jQuery('#acc__'+strid[1]).animate({width: "450px"}, {duration:500, queue:false});
+	//    activeItem = jQuery('#acc__'+strid[1]);
+	//});
+	
+		
+
+});

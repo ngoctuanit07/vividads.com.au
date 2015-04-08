@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MagenTools_Social>
+            <version>0.1.0</version>
+        </MagenTools_Social>
+    </modules>
+
+    <admin>
+        <routers>
+            <social>
+                <use>admin</use>
+                <args>
+                    <module>MagenTools_Social</module>
+                    <frontName>social</frontName>
+                </args>
+            </social>
+        </routers>        
+    </admin>
+    
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <social translate="title" module="social">
+                                            <title>Social</title>
+                                            <sort_order>10</sort_order>
+                                          </social>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>                        
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+            <catalog_product_save_after>
+                <observers>
+                    <social_save_product_data>
+                        <type>singleton</type>
+                        <class>social/observer</class>
+                        <method>saveSocialTabData</method>
+                    </social_save_product_data>
+                </observers>
+            </catalog_product_save_after>
+            
+            <core_block_abstract_prepare_layout_before>
+                <observers>
+                    <social_core_block_abstract_prepare_layout_before>
+                        <class>social/observer</class>
+                        <method>addMassAction</method>
+                    </social_core_block_abstract_prepare_layout_before>
+                </observers>
+            </core_block_abstract_prepare_layout_before>
+        
+        </events>
+        <layout>
+            <updates>
+                <social>
+                    <file>social.xml</file>
+                </social>
+            </updates>
+        </layout>
+    </adminhtml>
+    
+    <global>
+        <blocks>
+           <social>
+               <class>MagenTools_Social_Block</class>
+           </social>
+           <catalog>
+               <adminhtml>
+                    <rewrite>
+                        <product_grid>MagenTools_Social_Block_Catalog_Product_Grid</product_grid>
+                    </rewrite>
+                </adminhtml>
+            </catalog>
+        </blocks>
+        <models>
+            <social>
+                <class>MagenTools_Social_Model</class>
+            </social>
+        </models>
+        
+        <helpers>
+            <social>
+                <class>MagenTools_Social_Helper</class>
+            </social>
+        </helpers>
+    </global>
+    
+     <default>
+        <system>
+            <adminnotification>
+                <feed_url>www.magentools.com/notifications/notifications.rss</feed_url>
+                <popup_url>widgets.magentocommerce.com/notificationPopup</popup_url>
+                <severity_icons_url>widgets.magentocommerce.com/%s/%s.gif</severity_icons_url>
+                <use_https>0</use_https>
+                <frequency>1</frequency>
+                <last_update>0</last_update>
+            </adminnotification>
+        </system>
+    </default> 
+
+</config>

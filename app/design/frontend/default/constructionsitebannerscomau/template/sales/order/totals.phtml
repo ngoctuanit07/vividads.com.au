@@ -1,0 +1,509 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     base_default
+
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+/**
+
+ * @var $this Mage_Sales_Block_Order_Totals
+
+ * @see Mage_Sales_Block_Order_Totals
+
+ */
+
+?>
+
+<?php
+
+/*************** dev code by start ********************/
+
+$_order   = $this->getOrder();
+
+$order = Mage::getModel('sales/order')->load($_order->getId());
+
+/*************** dev code by end ********************/
+
+
+
+    
+
+    ?>
+
+<?php foreach ($this->getTotals() as $_code => $_total): ?>
+
+    <?php if ($_total->getBlockName()): ?>
+
+        <?php echo $this->getChildHtml($_total->getBlockName(), false); ?>
+
+    <?php else:?>
+
+    <tr>
+
+	<td colspan="4">
+
+
+
+    </td>
+
+    <td style="background-color:#dceef6; border-width: 1px 0px 0px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px;">
+
+	  <?php if ($_total->getStrong()):?>
+
+    <?php echo $this->escapeHtml($_total->getLabel());?>
+
+    <?php else:?>
+
+    <?php echo $this->escapeHtml($_total->getLabel());?>
+
+    <?php endif?>
+
+    </td>
+
+
+
+    <td  style="background-color:#dceef6; border-width: 0px 0px 1px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px;">
+
+	   <?php if ($_total->getStrong()):?>
+
+            <?php echo $this->formatValue($_total) ?>
+
+            <?php else:?>
+
+            <?php echo $this->formatValue($_total) ?>
+
+            <?php endif?>
+
+    </td>
+
+    </tr>
+
+    <?php endif?>
+
+	<?php endforeach?>
+
+	<?php /**************************** Start by Dev ***************************************/?>
+
+
+
+<tr>
+
+	<td colspan="4">
+
+
+
+    </td>
+
+    <td style="background-color:#dceef6; border-width: 1px 0px 0px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px;">
+
+	 <?php echo $this->__('Total Paid');?>
+
+    </td>
+
+
+
+    <td  style="background-color:#dceef6; border-width: 1px 0px 0px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px;" >
+
+	  <?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($order->getTotalPaid(),2,'.','') ?>
+
+    </td>
+
+    </tr>
+
+<tr>
+
+    <td colspan="4"></td>
+
+    <td style="background-color:#dceef6; border-width: 1px 0px 1px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px;" >
+
+     <?php echo $this->__('Total Due');?>
+
+    </td>
+
+    
+
+    <td  style="background-color:#dceef6; border-width: 1px 0px 1px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px; text-align:left !important;" <?php echo $this->getValueProperties()?>>
+
+    <?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($order->getTotalDue(),2,'.','') ?>
+
+    
+
+    <?php if($order->getTotalDue() >0){?>
+
+    <a href="Javascript:void(0)"  class="paynow" id="paynow">Paynow</a>
+
+    <?php } ?>
+
+    </td>
+
+</tr>
+
+<?php /**************************** End by dev ***************************************/?>
+
+
+
+<!--/////////25-4-2014 ANZ gc Starts/////////////-->
+
+<tr>
+<td colspan="4">
+<div class="total_payment" id="total_paymentbb" style="display:none;">
+<?php   $url = $this->getBaseUrl(''); ?>
+<?php if(($url)=='http://13expo.com.au/') { ?>
+    <div class="close_div" id="closediv">Close</div>
+<?php } ?>
+    <div class="block_div">
+      <div class="offline_payment">
+       <?php
+	    //$url = Mage::helper('adminhtml')->getUrl('partialpayment/adminhtml_partialpayment/payment');
+	    $method = new Artis_Partialpayment_Block_Payment_Form_Container();
+	    $methodform = new Artis_Checkout_Block_Onepage_Payment_Methods(); /*<!--28-4-2014 S -->*/
+	    $_methods       = $method->getMethods();
+	    $_methodsCount  = count($_methods);
+	    $_counter = 0;
+	    //$url = Mage::helper('adminhtml')->getUrl('partialpayment/adminhtml_partialpayment/paymentfront');
+	    //$url = Mage::getBaseUrl
+
+	?>
+
+	<form id="edit_form" action="<?php  echo Mage::getBaseUrl()?>partialpayment/index/paymentfront" method="get" enctype="multipart/form-data">
+	 <input name="orderid" id="orderid" value="<?php echo $_order->getId();?>"  type="hidden">
+	    <table>
+		<tr><td colspan="50" >
+		<table>
+		<tbody>
+
+		    <tr><td colspan="50">
+
+			<div class="entry-edit-front">
+
+			    <div class="entry-edit-head">
+
+				<div style="float: right;"></div>
+    
+				<h4 class="fieldset-legend head-payment-method icon-head">Payment Method</h4>
+
+			    </div>
+
+			    <div class="fieldset">
+				<table>
+				    <tbody>
+					<tr>
+					    <td class="lebelall">Amount</td>
+					    <td><input type="text" class="required-entry" value="<?php echo $order->getTotalDue() ?>" id="received_amount" name="amount" readonly ></td>
+					</tr>
+					<tr>
+					    <td class="lebelall">Date</td>
+					    <td>
+						<input type="text" id="date" value="<?php echo date("Y-m-d")?>" name="date" readonly>
+    					    </td>
+					</tr>
+				    </tbody>
+				</table>
+				<div id="order-billing_method_form">
+
+				    <dl class="payment-methods">
+
+				    <?php
+
+				    $i =1;
+
+				    foreach ($_methods as $_method){
+
+					$_code = $_method->getCode();
+
+					$_counter++; ?>
+
+					<dt>
+
+					<?php if ($_methodsCount > 1): ?>
+
+					    <input id="p_method_<?php echo $_code ?>" checked="checked" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" onclick="payment.switchMethod('<?php echo $_code ?>')" />
+
+					<?php else :?>
+
+					    <span class="no-display"><input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" checked="checked" /></span>
+
+					<?php endif;?>
+
+			    
+
+					<label for="p_method_<?php echo $_code ?>"><?php echo $_method->getTitle() ?></label>
+
+					</dt>
+
+					
+
+					<!--28-4-2014 S -->					
+
+					<?php //$html = $methodform->getPaymentMethodFormHtml($_method); ?>
+
+					<dd>
+
+					    <?php //echo $html; ?>
+
+					    <?php //echo $method->getChildHtml('payment.method.'.$_code) ?>
+
+					    <?php //$cardtype = new Mage_Payment_Block_Form_Cc(); ?>
+
+					    <ul class="form-list" id="payment_form_<?php echo $_code ?>">
+
+						
+
+						<li>
+
+						    <label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
+
+						    <div class="input-box">
+
+							<select id="<?php echo $_code ?>_cc_type" name="payment[cc_type]" class="required-entry validate-cc-type-select">
+
+							    <option value=""><?php echo $this->__('--Please Select--')?></option>
+
+							    <option value="AE">American Express</option>
+
+							    <option value="VI">Visa</option>
+
+							    <option value="MC">MasterCard</option>
+
+							</select>
+
+						    </div>
+
+						</li>
+
+						<li>
+
+						    <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
+
+						    <div class="input-box">
+
+							<input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="" />
+
+						    </div>
+
+						</li>
+
+						
+
+						<li id="<?php echo $_code ?>_cc_type_exp_div">
+
+						    <label for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
+
+						    <div class="input-box">
+
+							<div class="v-fix">
+
+							    <select id="<?php echo $_code ?>_expiration" name="payment[cc_exp_month]" class="month validate-cc-exp required-entry">
+
+							    <option value=""><?php echo $this->__('Month')?></option>
+
+							    <?php $month = array('January','February','March','April','May','June','July','August','September','October','November','December');?>
+
+							    <?php for($i=0;$i<12;$i++){
+
+								$j = $i+1;
+
+								if($i <=9){$v = '0'.$j.'-'.$month[$i];}
+
+								else{ $v = $j.'-'.$month[$i]; }
+
+							    ?>
+
+								<option value="<?php echo $j; ?>"><?php echo $v ?></option>
+
+							    <?php } ?>
+
+							    
+
+							    </select>
+
+							</div>
+
+							<div class="v-fix">
+
+							    
+
+							    <select id="<?php echo $_code ?>_expiration_yr" name="payment[cc_exp_year]" class="year required-entry">
+
+								<?php $y = date('Y'); $yz = $y + 10;?>
+
+								<option value=""><?php echo $this->__('Year')?></option>
+
+								<?php for($i= $y ;$i<= $yz;$i++){ ?>
+
+								    
+
+								<option value="<?php echo $i; ?>"><?php echo $i ?></option>
+
+								<?php } ?>
+
+							    </select>
+
+							</div>
+
+						    </div>
+
+						</li>
+
+						
+
+						<li id="<?php echo $_code ?>_cc_type_cvv_div" class="inputccv">
+
+						    <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Card Verification Number') ?></label>
+
+						    <div class="input-box">
+
+							<div class="v-fix">
+
+							    <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry validate-cc-cvn" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
+
+							</div>
+
+							
+
+						    </div>
+
+						</li>
+
+					    </ul>
+
+    					</dd>
+
+					
+
+    					
+
+					<!--28-4-2014 E -->
+
+				    <?php
+
+				    if($_counter==1){
+
+					break;
+
+				    }
+
+				    }
+
+				    ?>
+
+				    </dl>
+
+				</div>
+
+			    </div>
+
+			</div>
+
+		    </td></tr>
+
+		</tbody></table>
+		<?php //echo $this->getChildHtml('billing_method') ?>
+		</td></tr>
+		
+		<tr><td colspan="50" style="text-align:center;"><button type="submit" name="submit" id="submit"  >Submit</button></td></tr>
+	    </table>
+
+	</form>
+	
+	
+      </div>
+
+    </div>
+</div>
+
+</td></tr>
+
+
+
+
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>js/opcheckout.js"></script>
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>js/onepagecheckout.pack.js"></script>
+
+<script type="text/javascript">
+
+    jQuery.noConflict();
+
+    jQuery(document).ready(function(){
+
+	jQuery("#paynow").click(function(){
+
+    	    jQuery("#total_paymentbb").slideToggle();
+
+	    jQuery('.payment-methods').find( "input:checked" ).trigger('click');
+
+	});
+
+	jQuery("#closediv").click(function(){
+
+	    jQuery("#total_paymentbb").slideToggle();
+
+	});
+
+    
+
+    });
+
+</script>
+
+<script type="text/javascript">
+
+//<![CDATA[
+
+<?php echo $this->getChildChildHtml('scripts'); ?>
+
+var payment = new Payment('payment-method');
+
+payment.init();
+
+//]]>
+
+</script>
+
+<!--/////////25-4-2014 ANZ gc ends/////////////-->

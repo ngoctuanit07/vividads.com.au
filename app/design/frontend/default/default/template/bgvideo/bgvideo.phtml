@@ -1,0 +1,20 @@
+<style type="text/css">
+	/*** 
+	set the width and height to match your images 
+	**/
+	.main-container {background:transparent !important}
+	.footer-container {border-top:0px !important}
+	.header-container {background:transparent !important;border:0px !important}
+	.main{background:none repeat scroll 0 0 rgba(11, 11, 11, 0.8) !important; border:none !important;color:white;}
+	.wrapper{position:relative !important;z-index:99 !important; }
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.3.min.js"></script>
+<script type="text/javascript"  src="http://ajax.googleapis.com/ajax/libs/swfobject/2.1/swfobject.js"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('bgvideo/js/jquery.tubular.js') ?>"></script>
+<script type="text/javascript">
+	var $j = jQuery.noConflict(); 
+	$j('document').ready(function() {
+		var options = { videoId: "<?php echo Mage::getStoreConfig('bgvideo/magicslide/youtubeid'); ?>", start: 0};
+		$j("body").tubular(options);
+	});
+</script>

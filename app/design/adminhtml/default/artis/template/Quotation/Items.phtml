@@ -1,0 +1,116 @@
+<?php   echo $this->getGridParentHtml(); ?>
+
+<script type="text/javascript">
+<?php
+//call js functions to display "standard price" considering options and final price
+foreach ($this->getCollection() as $item) {
+    if ($item->getProduct()->gethas_options() == 1) {
+        echo "updatePriceForCustomOptions_" . $item->getId() . "();\n";
+    }
+    echo "DisplayFinalPrice(" . $item->getId() . ");";
+}
+// Start for bundle item 24_02_2014
+?>
+
+
+jQuery('.item_box td input[type=checkbox]').click(function(){
+    
+    if(this.checked)
+    {
+	var proid = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().find('.bundle_main').attr('id').split('_');
+	//alert(jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().find('.bundle_main').attr('id'));
+	pricechange(this.value,'add',proid[2]);
+    }
+    else
+    {
+	var proid = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().find('.bundle_main').attr('id').split('_');
+	//alert(jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().find('.bundle_main').attr('id'));
+	pricechange(this.value,'del',proid[2]);
+    }
+    
+    });
+
+function pricechange(product_id,type,bundle_id)
+{
+    var price = jQuery('#price_ht_'+bundle_id).val();
+    
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+      {// code for IE7+, Firefox, Chrome, Opera, Safari
+      xmlhttp=new XMLHttpRequest();
+      }
+    else
+      {// code for IE6, IE5
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+    xmlhttp.onreadystatechange=function()
+      {
+      if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	{
+	  // alert(xmlhttp.responseText);
+	  
+	   var main_price = xmlhttp.responseText;
+	   if(main_price != '')
+	   jQuery('#price_ht_'+bundle_id).val(main_price);
+	}
+      }
+      form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+    xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/Quotation/Admin/pricechange/?price="+price+"bundle_id="+bundle_id+"&product_id="+product_id+"&type="+type+"&form_key="+form_key+"&isAjax=true",true);
+    xmlhttp.send();
+}
+// End for bundle item 24_02_2014
+
+function close_bundle(id)
+{
+  document.getElementById('main_bundle_'+id).style.display = 'none';
+  document.getElementById('layout1').style.display = 'none';
+}
+
+function bundle_open(id)
+{
+    document.getElementById('main_bundle_'+id).style.display = 'block';
+    document.getElementById('layout1').style.display = 'block';
+}
+</script>
+
+
+<style>
+.bundle_main{
+    position: absolute;
+left: 355px;
+top: 54px;
+width: 657px;
+background-color: white;
+box-shadow: 0 0 10px #000000;
+z-index: 9999;
+}
+.close_bundle{
+float: right;
+margin-right: 10px;
+margin-top: 10px;
+font-size: 25px;
+}
+.bundle_item{
+width: 478px;
+margin-left: 50px;
+margin-top: 12px;
+margin-bottom: 12px;
+}
+
+.item_box table td{
+    width: 150px;
+}
+
+.layout1{
+	background-color: black;
+width: 100%;
+height: 100%;
+position: fixed;
+top: 0px;
+left: 0px;
+z-index: 999;
+opacity: 0.5;
+}
+
+</style>
+<div class="layout1" id="layout1" style="display:none;"></div>

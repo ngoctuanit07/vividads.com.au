@@ -1,0 +1,205 @@
+<?php
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @copyright  Copyright (c) 2012 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Multi Fees extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @author     MageWorx Dev Team
+ */
+
+echo htmlspecialchars_decode($this->getFromElement('apply_fieldset'));
+?>
+
+<div class="entity-edit" id="matage-options-panel">    
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Options') ?></h4>
+    </div>
+    <div class="box">
+        <div class="hor-scroll">
+            <table class="dynamic-grid" cellspacing="0"  cellpadding="0">
+                <tr id="fee-options-table">
+                    <?php foreach ($this->getStores() as $_store): ?>
+                        <th><?php echo $_store->getName(); if ($_store->getStoreId() == 0) { ?> <span class="required">*</span><?php } ?></th>
+                    <?php endforeach; ?>
+                    <th><?php echo $this->__('Price') ?> <span class="required">*</span></th>
+                    <th><?php echo $this->__('Price Type') ?></th>
+                    <th><?php echo $this->__('Position') ?></th>
+                    <th class="nobr a-center"><?php echo $this->__('Is Default') ?></th>
+                    <th style="width:220px !important;"><?php echo $this->getAddNewButtonHtml() ?></th>
+                </tr>
+            </table>
+        </div>
+        <input type="hidden" id="option-count-check" value="" />
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var templateText =
+        '<tr class="option-row" id="option-row-{{id}}">'+
+        <?php foreach ($this->getStores() as $_store): ?>
+            '<td><input name="options[title][{{id}}][<?php echo $_store->getId() ?>]" value="{{store<?php echo $_store->getId() ?>}}" class="input-text<?php if($_store->getId()==0) { ?> required-option<?php } ?>" type="text" /><\/td>'+
+        <?php endforeach; ?>
+            '<td><input class="input-text required-option validate-zero-or-greater" type="text" name="options[price][{{id}}]" value="{{price}}" /></td>'+
+            '<td class="a-center"><?php echo $this->getPriceTypeOfForm() ?></td>'+
+            '<td><input class="input-text" type="text" name="options[order][{{id}}]" value="{{sort_order}}" /><\/td>'+
+            '<td class="a-center"><input class="input-radio-checkbox" type="{{default_input_type}}" name="options[default][]" value="{{id}}" {{checked}} {{disabled}} /><\/td>'+
+            '<td class="a-left">'+
+                '<input type="hidden" class="delete-flag" name="options[delete][{{id}}]" value="" />'+
+                '<?php echo $this->getAddImageButtonHtml().'&nbsp;'.$this->getDeleteButtonHtml() ?>'+
+            '<\/td>'+
+        '<\/tr>'+
+        '<tr id="file-option-row-{{id}}">'+
+            '<td colspan="<?php echo count($this->getStores()) + 5 ?>">'+
+            '{{image}} <div id="file-upload-{{id}}"></div>'+
+            '</td>'+
+	'</tr>';
+
+var feeOption = {
+    table : $('fee-options-table'),
+    templateSyntax : /(^|.|\r|\n)({{(\w+)}})/,
+    templateText : templateText,
+    itemCount : 0,
+    totalItems : 0,
+    add: function(data) {
+        this.template = new Template(this.templateText, this.templateSyntax);
+        if(!data.id){
+            data = {};
+            data.id  = 'new_op_'+this.itemCount;
+            data.add_image_button = '<?php echo $this->__('Add Image'); ?>'
+            elInputType = $('input_type');
+            if (elInputType && elInputType.value==3) data.default_input_type = 'checkbox'; else data.default_input_type = 'radio';
+        }
+
+        Element.insert(this.table, {after: this.template.evaluate(data)});
+        this.setPriceType(data);
+        this.bindRemoveButtons();
+        this.itemCount++;
+        this.totalItems++;
+        this.updateItemsCountField();
+    },
+    remove: function(event){
+        var element = $(Event.findElement(event, 'tr')); 
+        // !!! Button already
+        // have table parent in safari
+        // Safari workaround
+        element.ancestors().each(function(parentItem){
+           if (parentItem.hasClassName('option-row')) {
+               element = parentItem;
+               throw $break;
+           } else if (parentItem.hasClassName('box')) {
+               throw $break;
+           }
+        });
+
+        if(element){            
+            this.removeFileOptionRow(element.id);
+            
+            var elementFlags = element.getElementsByClassName('delete-flag');
+            if(elementFlags[0]){
+                elementFlags[0].value=1;
+            }            
+            
+            element.addClassName('no-display');
+            element.addClassName('template');
+            element.hide();
+            this.totalItems--;
+            this.updateItemsCountField();
+        }
+    },    
+    removeFileOptionRow: function(strId) {
+    	var tmp = strId.split('-');
+    	var fileRow = $('file-option-row-'+ tmp[2]);
+        if (fileRow) {
+        	fileRow.remove();
+        }
+    },    
+    updateItemsCountField: function() {
+        if (this.totalItems > 0) {
+            $('option-count-check').value = '1';
+        } else {
+            $('option-count-check').value = '';
+        }
+    },
+    setPriceType: function(data){
+        if (data.id) $('option_price_type_'+data.id).value = data.price_type;        
+    },
+    bindRemoveButtons: function(){
+        var buttons = $$('.delete-option');
+        for(var i=0;i<buttons.length;i++){
+            if(!$(buttons[i]).binded){
+                $(buttons[i]).binded = true;
+                Event.observe(buttons[i], 'click', this.remove.bind(this));
+            }
+        }
+    },
+    createFileField: function(strId) {
+        var id = strId.split('-');
+        var tpl = '<table class="multifees-file-row" cellspacing="0" cellpadding="0"><tr>'+
+            '<td><input class="input-file" type="file" name="file_'+ id[3] +'" value="" /></td>'+
+            '<td class="td-button"><span title="<?php echo $this->__('Hide') ?>">'+
+            '<button type="button" onclick="feeOption.cleanFileRow(\''+ id[3] +'\')" class="delete delete-select-row icon-btn"><span><?php echo $this->__('Hide') ?></span></button></span></td>'+
+            '</tr></table>';
+        var field = $('file-upload-'+ id[3]);
+        if (field) field.update(tpl);
+    },
+    cleanFileRow: function(optionId) {
+        var fileRow = $('file-upload-'+ optionId);
+        if (fileRow) fileRow.update('');
+    },
+    changeInputType: function(value) {
+        $$('.input-radio-checkbox').each(function(item) {
+            if (value==3) {
+                if (item.type=='radio') item.type='checkbox';
+                item.disabled = false;
+            } else if (value==4) {
+                if (item.type=='radio') item.type='checkbox';
+                item.checked = true;
+                item.disabled = true;
+            } else {
+                if (item.type=='checkbox') item.type='radio';
+                item.disabled = false;
+            }
+        });
+    }
+}
+
+feeOption.bindRemoveButtons();
+
+if($('add_new_option_button')){
+    Event.observe('add_new_option_button', 'click', feeOption.add.bind(feeOption));
+}
+Validation.addAllThese([
+    ['required-option', '<?php echo Mage::helper('catalog')->__('Failed') ?>', function(v) {
+        return !Validation.get('IsEmpty').test(v);
+}]]);
+Validation.addAllThese([
+    ['required-options-count', '<?php echo Mage::helper('catalog')->__('Options is required') ?>', function(v) {
+        return !Validation.get('IsEmpty').test(v);
+}]]);
+<?php foreach ($this->getOptionValues() as $_value): ?>
+    feeOption.add(<?php echo $_value->toJson() ?>);
+<?php endforeach; ?>
+//]]>
+</script>

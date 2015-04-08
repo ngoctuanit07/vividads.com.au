@@ -1,0 +1,36 @@
+
+
+  
+  <script type="text/javascript">
+    $(function(){
+      SyntaxHighlighter.all();
+    });
+    $(window).load(function(){
+      $('.flexslider').flexslider({
+        animation: "slide",
+        start: function(slider){
+          $('body').removeClass('loading');
+        }
+      });
+    });
+  </script>
+
+
+<div class="brand slideshow">
+    <div class="slides">
+        <div class="frame hover">
+        <ul class="slide" style="height:65px; overflow:hidden;">
+<?php 
+		for($i0; $i<20; $i++){
+?>
+
+<li class="item">
+<a title="View shoes from adidas" href="http://localhost/outbanners/adidas/">
+<img src="<?php echo $this->getSkinUrl(); ?>brands/adidas.png" alt="adidas Logo" /></a>
+</li>
+<?php
+}
+?>
+
+</ul>    </div>
+</div>

@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @copyright  Copyright (c) 2013 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Multi Fees extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @author     MageWorx Dev Team
+ */
+-->
+<layout version="0.1.0">    
+    <mageworx_multifees_fee_index>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>multifees.css</name><params/></action>
+        </reference>
+        <reference name="content">
+            <block type="mageworx/multifees_fee" name="multifees" template="multifees/fee.phtml"></block>
+        </reference>
+    </mageworx_multifees_fee_index>
+    
+    <mageworx_multifees_fee_edit>
+        <update handle="editor"/>
+        <reference name="head">
+            <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="setCanLoadRulesJs"><flag>1</flag></action>
+            <action method="addItem"><type>skin_css</type><name>multifees.css</name><params/></action> 
+            
+            <action method="addItem"><type>js_css</type><name>mageworx/lightbox/css/lightbox.css</name><params/></action> 
+            <action method="addItem"><type>js</type><name>mageworx/lightbox/js/lightbox.js</name><params/></action>
+        </reference>
+        <reference name="content">
+            <block type="mageworx/multifees_fee_edit" name="multifees_fee_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="mageworx/multifees_fee_edit_tabs" name="multifees_fee_edit_tabs">
+                <block type="mageworx/multifees_fee_edit_tab_main" name="multifees_fee_edit_tab_main" />
+                <block type="mageworx/multifees_fee_edit_tab_conditions" name="multifees_fee_edit_tab_conditions"/>
+                <block type="mageworx/multifees_fee_edit_tab_options" name="multifees_fee_edit_tab_options"/>
+                <block type="mageworx/multifees_fee_edit_tab_labels" name="multifees_fee_edit_tab_labels"/>
+                <action method="addTab"><name>main_section</name><block>multifees_fee_edit_tab_main</block></action>
+                <action method="addTab"><name>conditions_section</name><block>multifees_fee_edit_tab_conditions</block></action>
+                <action method="addTab"><name>options_section</name><block>multifees_fee_edit_tab_options</block></action>
+                <action method="addTab"><name>labels_section</name><block>multifees_fee_edit_tab_labels</block></action>
+            </block>
+        </reference>
+    </mageworx_multifees_fee_edit>
+    
+    <adminhtml_sales_order_view>
+        <reference name="head">
+            <action method="addItem"><type>js_css</type><name>mageworx/lightbox/css/lightbox.css</name><params/></action>
+            <action method="addItem"><type>js</type><name>mageworx/lightbox/js/lightbox.js</name><params/></action>
+            <action method="addItem"><type>skin_css</type><name>multifees.css</name><params/></action>
+        </reference>
+        <reference name="order_totals">
+            <block type="adminhtml/sales_order_totals_item" name="multifees" template="multifees/fee_totals.phtml" />            
+        </reference>
+        <reference name="order_tab_info">
+            <block type="adminhtml/sales_order_totals_item" name="multifees_details" template="multifees/fee_details.phtml" />
+        </reference>
+    </adminhtml_sales_order_view>    
+    
+    <adminhtml_sales_order_create_index>
+        <reference name="head">
+            <action method="addItem"><type>js_css</type><name>mageworx/lightbox/css/lightbox.css</name><params/></action>
+            <action method="addItem"><type>js</type><name>mageworx/lightbox/js/lightbox.js</name><params/></action>
+            <action method="addItem"><type>skin_css</type><name>multifees.css</name><params/></action>
+        </reference>
+        <reference name="data">
+            <block type="mageworx/multifees_sales_order_create_fee" name="multifees" template="multifees/sales_fee.phtml" />
+        </reference>
+        <reference name="before_body_end">
+            <block type="core/template" name="checkout.cart.multifees.wrapper" as="multifees_wrapper" template="multifees/wrapper.phtml"/>
+        </reference>
+    </adminhtml_sales_order_create_index>
+    
+    <adminhtml_sales_order_create_load_block_data>
+        <reference name="data">
+            <block type="mageworx/multifees_sales_order_create_fee" name="multifees" template="multifees/sales_fee.phtml" />
+        </reference>
+    </adminhtml_sales_order_create_load_block_data>
+    
+    <adminhtml_sales_order_create_load_block_multifees>
+        <reference name="content">        
+            <block type="mageworx/multifees_sales_order_create_fee" name="multifees" template="multifees/sales_fee.phtml" />
+        </reference>
+    </adminhtml_sales_order_create_load_block_multifees>
+    
+    
+    
+    <adminhtml_sales_order_invoice_new>
+        <reference name="invoice_totals">
+            <block type="adminhtml/sales_order_totals_item" name="multifees" template="multifees/fee_totals.phtml" />
+        </reference>
+    </adminhtml_sales_order_invoice_new>
+    
+    <adminhtml_sales_order_invoice_updateqty>
+        <reference name="invoice_totals">
+            <block type="adminhtml/sales_order_totals_item" name="multifees" template="multifees/fee_totals.phtml" />
+        </reference>
+    </adminhtml_sales_order_invoice_updateqty>
+    
+    <adminhtml_sales_order_invoice_view>
+        <reference name="invoice_totals">
+            <block type="adminhtml/sales_order_totals_item" name="multifees" template="multifees/fee_totals.phtml" />
+        </reference>        
+    </adminhtml_sales_order_invoice_view>
+    
+    <adminhtml_sales_order_creditmemo_new>
+        <reference name="creditmemo_totals">
+            <block type="adminhtml/sales_order_totals_item" name="multifees" template="multifees/fee_totals.phtml" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_new>
+    
+    <adminhtml_sales_order_creditmemo_updateqty>
+        <reference name="creditmemo_totals">
+            <block type="adminhtml/sales_order_totals_item" name="multifees" template="multifees/fee_totals.phtml" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_updateqty>
+    
+    <adminhtml_sales_order_creditmemo_view>
+        <reference name="creditmemo_totals">
+            <block type="adminhtml/sales_order_totals_item" name="multifees" template="multifees/fee_totals.phtml" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_view>
+
+</layout>

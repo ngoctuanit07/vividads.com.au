@@ -1,0 +1,463 @@
+<?php
+
+class Artis_Systemalert_Adminhtml_SystemalertController extends Mage_Adminhtml_Controller_action
+{
+
+	protected function _initAction() {
+		$this->loadLayout()
+			->_setActiveMenu('systemalert/items')
+			->_addBreadcrumb(Mage::helper('adminhtml')->__('Items Manager'), Mage::helper('adminhtml')->__('Item Manager'));
+		
+		return $this;
+	}   
+ 
+	public function indexAction() {
+		$this->_initAction()
+			->renderLayout();
+	}
+
+	public function editAction() {
+		$id     = $this->getRequest()->getParam('id');
+		$model  = Mage::getModel('systemalert/systemalert')->load($id);
+
+		if ($model->getId() || $id == 0) {
+			$data = Mage::getSingleton('adminhtml/session')->getFormData(true);
+			if (!empty($data)) {
+				$model->setData($data);
+			}
+
+			Mage::register('systemalert_data', $model);
+
+			$this->loadLayout();
+			$this->_setActiveMenu('systemalert/items');
+
+			$this->_addBreadcrumb(Mage::helper('adminhtml')->__('Item Manager'), Mage::helper('adminhtml')->__('Item Manager'));
+			$this->_addBreadcrumb(Mage::helper('adminhtml')->__('Item News'), Mage::helper('adminhtml')->__('Item News'));
+
+			$this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
+
+			$this->_addContent($this->getLayout()->createBlock('systemalert/adminhtml_systemalert_edit'))
+				->_addLeft($this->getLayout()->createBlock('systemalert/adminhtml_systemalert_edit_tabs'));
+
+			$this->renderLayout();
+		} else {
+			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('systemalert')->__('Item does not exist'));
+			$this->_redirect('*/*/');
+		}
+	}
+ 
+	public function newAction() {
+		$this->_forward('edit');
+	}
+ 
+	public function saveAction() {
+		if ($data = $this->getRequest()->getPost()) {
+			
+			if(isset($_FILES['filename']['name']) && $_FILES['filename']['name'] != '') {
+				try {	
+					/* Starting upload */	
+					$uploader = new Varien_File_Uploader('filename');
+					
+					// Any extention would work
+	           		$uploader->setAllowedExtensions(array('jpg','jpeg','gif','png'));
+					$uploader->setAllowRenameFiles(false);
+					
+					// Set the file upload mode 
+					// false -> get the file directly in the specified folder
+					// true -> get the file in the product like folders 
+					//	(file.jpg will go in something like /media/f/i/file.jpg)
+					$uploader->setFilesDispersion(false);
+							
+					// We set media as the upload dir
+					$path = Mage::getBaseDir('media') . DS ;
+					$uploader->save($path, $_FILES['filename']['name'] );
+					
+				} catch (Exception $e) {
+		      
+		        }
+	        
+		        //this way the name is saved in DB
+	  			$data['filename'] = $_FILES['filename']['name'];
+			}
+	  			
+	  			
+			$model = Mage::getModel('systemalert/systemalert');		
+			$model->setData($data)
+				->setId($this->getRequest()->getParam('id'));
+			
+			try {
+				if ($model->getCreatedTime == NULL || $model->getUpdateTime() == NULL) {
+					$model->setCreatedTime(now())
+						->setUpdateTime(now());
+				} else {
+					$model->setUpdateTime(now());
+				}	
+				
+				$model->save();
+				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('systemalert')->__('Item was successfully saved'));
+				Mage::getSingleton('adminhtml/session')->setFormData(false);
+
+				if ($this->getRequest()->getParam('back')) {
+					$this->_redirect('*/*/edit', array('id' => $model->getId()));
+					return;
+				}
+				$this->_redirect('*/*/');
+				return;
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                Mage::getSingleton('adminhtml/session')->setFormData($data);
+                $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+                return;
+            }
+        }
+        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('systemalert')->__('Unable to find item to save'));
+        $this->_redirect('*/*/');
+	}
+ 
+	public function deleteAction() {
+		if( $this->getRequest()->getParam('id') > 0 ) {
+			try {
+				$model = Mage::getModel('systemalert/systemalert');
+				 
+				$model->setId($this->getRequest()->getParam('id'))
+					->delete();
+					 
+				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item was successfully deleted'));
+				$this->_redirect('*/*/');
+			} catch (Exception $e) {
+				Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+				$this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+			}
+		}
+		$this->_redirect('*/*/');
+	}
+
+    public function massDeleteAction() {
+        $systemalertIds = $this->getRequest()->getParam('systemalert');
+        if(!is_array($systemalertIds)) {
+			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('Please select item(s)'));
+        } else {
+            try {
+                foreach ($systemalertIds as $systemalertId) {
+                    $systemalert = Mage::getModel('systemalert/systemalert')->load($systemalertId);
+                    $systemalert->delete();
+                }
+                Mage::getSingleton('adminhtml/session')->addSuccess(
+                    Mage::helper('adminhtml')->__(
+                        'Total of %d record(s) were successfully deleted', count($systemalertIds)
+                    )
+                );
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            }
+        }
+        $this->_redirect('*/*/index');
+    }
+	
+    public function massStatusAction()
+    {
+        $systemalertIds = $this->getRequest()->getParam('systemalert');
+        if(!is_array($systemalertIds)) {
+            Mage::getSingleton('adminhtml/session')->addError($this->__('Please select item(s)'));
+        } else {
+            try {
+                foreach ($systemalertIds as $systemalertId) {
+                    $systemalert = Mage::getSingleton('systemalert/systemalert')
+                        ->load($systemalertId)
+                        ->setStatus($this->getRequest()->getParam('status'))
+                        ->setIsMassupdate(true)
+                        ->save();
+                }
+                $this->_getSession()->addSuccess(
+                    $this->__('Total of %d record(s) were successfully updated', count($systemalertIds))
+                );
+            } catch (Exception $e) {
+                $this->_getSession()->addError($e->getMessage());
+            }
+        }
+        $this->_redirect('*/*/index');
+    }
+  
+    public function exportCsvAction()
+    {
+        $fileName   = 'systemalert.csv';
+        $content    = $this->getLayout()->createBlock('systemalert/adminhtml_systemalert_grid')
+            ->getCsv();
+
+        $this->_sendUploadResponse($fileName, $content);
+    }
+
+    public function exportXmlAction()
+    {
+        $fileName   = 'systemalert.xml';
+        $content    = $this->getLayout()->createBlock('systemalert/adminhtml_systemalert_grid')
+            ->getXml();
+
+        $this->_sendUploadResponse($fileName, $content);
+    }
+
+    protected function _sendUploadResponse($fileName, $content, $contentType='application/octet-stream')
+    {
+        $response = $this->getResponse();
+        $response->setHeader('HTTP/1.1 200 OK','');
+        $response->setHeader('Pragma', 'public', true);
+        $response->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true);
+        $response->setHeader('Content-Disposition', 'attachment; filename='.$fileName);
+        $response->setHeader('Last-Modified', date('r'));
+        $response->setHeader('Accept-Ranges', 'bytes');
+        $response->setHeader('Content-Length', strlen($content));
+        $response->setHeader('Content-type', $contentType);
+        $response->setBody($content);
+        $response->sendResponse();
+        die;
+    }
+    
+    
+    public function setalertAction()
+    {
+	//print_r($_REQUEST);exit;
+	extract($_REQUEST);
+	
+	$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+	$temptableAlert=Mage::getSingleton('core/resource')->getTableName('system_alert');
+	
+	if($type == 'add')
+	{
+		$connectionWrite->beginTransaction();
+		$data = array();
+		$data['task_id']=$taskid;
+		$connectionWrite->insert($temptableAlert, $data);
+		$connectionWrite->commit();
+	}
+	else if($type == 'edit')
+	{
+		$connectionWrite->beginTransaction();
+		$data = array();
+		$data['task_id']=$taskid;
+		$where = $connectionWrite->quoteInto('entity_id =?', $alertid);
+		$connectionWrite->update($temptableAlert, $data, $where);
+		$connectionWrite->commit();
+	}
+	
+	
+	//$this->_redirect('*/*/');
+	
+    }
+    
+    public function savealerttaskAction()
+    {
+	//print_r($_REQUEST);exit;
+	extract($_REQUEST);
+	
+	$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+	$temptableAlert=Mage::getSingleton('core/resource')->getTableName('systemalert_task');
+	
+	$userid = Mage::getSingleton('admin/session')->getUser()->getId();
+	
+	
+	$connectionWrite->beginTransaction();
+	$data = array();
+	$data['parent_id']=$alertid;
+	$data['target_id']=$target_user;
+	$data['user_id']=$userid;
+	$data['deadline_date']=$deadline;
+	$data['caption']=$caption;
+	$data['description']=$description;
+	$data['postdate']=NOW();
+	$connectionWrite->insert($temptableAlert, $data);
+	$connectionWrite->commit();
+	
+	$this->_redirect('*/*/');
+    }
+    
+    public function loadtaskAction()
+    {
+	$url = Mage::helper("adminhtml")->getUrl("systemalert/adminhtml_systemalert/editalerttask");
+	
+	extract($_REQUEST);
+	
+	$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+	$temptableAlertTask=Mage::getSingleton('core/resource')->getTableName('systemalert_task');
+	
+	$select = $connectionRead->select()
+		 ->from($temptableAlertTask, array('*'))
+		 ->where('entity_id=?',$taskid);
+		 
+	$result = $connectionRead->fetchRow($select);
+	
+	if($result['complete'] == 1)
+	$checked = 'checked';
+	
+	echo '<form id="edit_form_task_" name="edit_form_task_" method="POST" action="'.$url.'">
+		<input name="form_key" type="hidden" value="'.Mage::getSingleton('core/session')->getFormKey().'">
+		<table cellspacing="0" cellpadding="0">
+		 <input type="hidden" name="alertid" id="alertid" value="'.$result['entity_id'].'" />
+		 <tr>
+		  <td>Target User : </td>
+		  <td>
+		    <select name="target_user" id="target_user" >
+		     <option value="">Assign To</option>';
+		    
+		       $adminUserModel = Mage::getModel('admin/user');
+		       $userCollection = $adminUserModel->getCollection()->load();
+		       foreach($userCollection as $user)
+		       {
+				$selected = '';
+				if($result['target_id'] == $user->getId())
+				$selected = 'selected';
+			
+				echo '<option value="'.$user->getId().'" '.$selected.' >'.$user->getUsername().'</option>';
+		       }
+		  
+	echo	     '</select>
+		  </td>
+		 </tr>
+		 <tr>
+		  <td>Deadline Date : </td>
+		  <td>
+		   <input size="6" type="text" id="edit_deadline" name="edit_deadline" value="'.$result['deadline_date'].'">
+		   <img src="'.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/grid-cal.gif'.'" class="v-middle" id="img_edit_deadline">
+		   
+		  </td>
+		 </tr>
+		 <tr>
+		  <td>Complete : </td>
+		  <td>
+		   <input size="6" type="checkbox" id="complete" name="complete" value="1" '.$checked.' >
+		  </td>
+		 </tr>
+		 <tr>
+		  <td>Caption : </td>
+		  <td><input type="text" name="caption" id="caption" value="'.$result['caption'].'"/></td>
+		 </tr>
+		 <tr>
+		  <td>Alert Description : </td>
+		  <td><textarea name="description" id="description">'.$result['description'].'</textarea></td>
+		 </tr>
+		 <tr>
+		  <td></td>
+		  <td><button type="submit" name="submit" id="submit">Save</button></td>
+		 </tr>
+		</table>
+	       </form>';
+    }
+    
+    public function editalerttaskAction()
+    {
+	//print_r($_REQUEST);exit();
+	
+	extract($_REQUEST);
+	
+	$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+	$temptableAlert=Mage::getSingleton('core/resource')->getTableName('systemalert_task');
+	
+	$userid = Mage::getSingleton('admin/session')->getUser()->getId();
+	
+	
+	$connectionWrite->beginTransaction();
+	$data = array();
+	$data['target_id']=$target_user;
+	$data['deadline_date']=$edit_deadline;
+	$data['caption']=$caption;
+	$data['description']=$description;
+	$data['complete']=$complete;
+	$where = $connectionWrite->quoteInto('entity_id =?', $alertid);
+	$connectionWrite->update($temptableAlert, $data, $where);
+	$connectionWrite->commit();
+	
+	$this->_redirect('*/*/');
+    }
+    
+    public function deletealertAction()
+    {
+	//print_r($_REQUEST);exit();
+	extract($_REQUEST);
+	
+	$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+	$temptableAlertTask=Mage::getSingleton('core/resource')->getTableName('systemalert_task');
+	$temptableAlert=Mage::getSingleton('core/resource')->getTableName('system_alert');
+	
+	$connectionWrite->beginTransaction();
+	$condition = array($connectionWrite->quoteInto('parent_id=?', $alertid));
+	$connectionWrite->delete($temptableAlertTask, $condition);
+	$connectionWrite->commit();
+	
+	$connectionWrite->beginTransaction();
+	$condition = array($connectionWrite->quoteInto('entity_id=?', $alertid));
+	$connectionWrite->delete($temptableAlert, $condition);
+	$connectionWrite->commit();
+	
+    }
+    
+    public function loadattrAction()
+    {
+	//print_r($_REQUEST);exit;
+	extract($_REQUEST);
+	$table['quotation'] = Mage::getSingleton('core/resource')->getTableName('quotation');
+	$table['order'] = Mage::getSingleton('core/resource')->getTableName('sales_flat_order');
+	$table['customer'] = Mage::getSingleton('core/resource')->getTableName('customer_entity');
+	$table['invoice'] = Mage::getSingleton('core/resource')->getTableName('sales_flat_invoice');
+	$table['shipment'] = Mage::getSingleton('core/resource')->getTableName('partialshipping_shipment_grid');
+	
+	$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+	
+	
+	if($model == 'product')
+	{
+		$attributes = Mage::getModel('catalog/product')->getAttributes();
+		//$attributeArray = array();
+	    
+		foreach($attributes as $a){
+		    foreach ($a->getEntityType()->getAttributeCodes() as $attributeName) {
+			//$attributeArray[$attributeName] = $attributeName;
+			echo '<option value="'.$attributeName.'">'.$attributeName.'</option>';
+		    }
+		}
+	}
+	else{
+		
+		$select = $connectionRead->select()
+			->from('information_schema.columns', array('column_name'))
+			->where('table_name =?',$table[$model])
+			->group('column_name');
+			
+		$result = $connectionRead->fetchAll($select);
+	
+		foreach($result as $column)
+		{
+			echo '<option value="'.$column['column_name'].'">'.$column['column_name'].'</option>';
+		}
+	}
+	
+    }
+    
+    public function savealertconditionAction()
+    {
+	//print_r($_REQUEST);exit;
+	extract($_REQUEST);
+	$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+	$temptableCondition=Mage::getSingleton('core/resource')->getTableName('systemalert_condition');
+	
+	$userid = Mage::getSingleton('admin/session')->getUser()->getId();
+	
+	foreach($model as $key=>$model_value)
+	{
+		if($model_value != '' and $attribute[$key] != '' and $condition[$key] != '' and $attr_value[$key] != '')
+		{
+			$connectionWrite->beginTransaction();
+			$data = array();
+			$data['parent_id']=$con_alertid;
+			$data['attr_model']=$model_value;
+			$data['attr_field']=$attribute[$key];
+			$data['attr_condition']=$condition[$key];
+			$data['attr_value']=$attr_value[$key];
+			$data['attr_action']=$action[$key];
+			$connectionWrite->insert($temptableCondition, $data);
+			$connectionWrite->commit();
+		}
+	}
+	
+	$this->_redirect('*/*/');
+    }
+    
+}

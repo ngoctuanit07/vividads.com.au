@@ -1,0 +1,12 @@
+<?php $keyword = $this->getRequest()->getParam('keyword');?>
+<form id="gallery_search_form" action="<?php echo $this->getUrl('gallery/search/result', array('_secure' => true));?>" method="get">
+    <div class="gallery-form-search">
+        <input id="gallery-search" type="text" name="keyword" value="<?php echo $keyword//($keyword) ? $keyword:Mage::helper('gallery')->__('Find a photo'); ?>" class="input-text"/>
+        <button type="submit" title="<?php echo $this->__('Search') ?>" class="button"><span><span><?php echo $this->__('Search') ?></span></span></button>
+        <script type="text/javascript">
+        //<![CDATA[
+            var gallerySearchForm = new Varien.searchForm('gallery_search_form', 'gallery-search', '<?php echo $this->__('Find a photo...') ?>');
+        //]]>
+        </script>
+    </div>
+</form>

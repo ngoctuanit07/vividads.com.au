@@ -1,0 +1,46 @@
+<?php   
+// Now login on MAGENTO
+include('../app/Mage.php');
+Mage::app();
+
+Mage::getSingleton('core/session', array('name' => 'adminhtml'));
+$proId = $_REQUEST['p_id'];
+$qty = $_REQUEST['qty'];
+$widthquote = $_REQUEST['w_q'];
+$heightquote = $_REQUEST['h_q'];
+$subtotalquote = $_REQUEST['sub_q'];//echo $subtotalquote;
+$finish = $_REQUEST['finish'];
+$sweing = $_REQUEST['finisoption'];
+
+
+//echo "R: ".$proId."<br>".$qty."<br>".$widthquote."<br>".$heightquote."<br>".$subtotalquote;
+$_productInfo = Mage::getModel('catalog/product')->load($proId);
+$Pname = $_productInfo->getName();
+$Totaldetails= $widthquote." X".$heightquote." ".$Pname;
+//echo '<li><div class="bin_image">
+//	    <img class="bin-icon" alt="Bin / Delete" src=" http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/calculator/bin.gif">	
+//	  </div>';
+////echo '<input type="hidden" id="hidden_take_qtyquote" value="'.$qty.'" />';
+////echo '<input type="hidden" id="hidden_take_prodetailsquote" value="'.$Totaldetails.'" />';
+////echo '<input type="hidden" id="hidden_take_subdetail" value="'.$subtotalquote.'" />';
+////echo '<input type="hidden" id="hidden_take_crossimg" value="X" />';
+//echo '<div class="qty_cal"><span class="txt_q">'.$qty.'</span></div><div class="qty_cal"><span class="txt_q">'.$Totaldetails.'</span></div>X';
+//echo '</li>';
+$resource = Mage::getSingleton('core/resource');
+	$Readconn = $resource->getConnection('core_write');                     
+	$tableName = Mage::getSingleton('core/resource')->getTableName('calculator');
+	/*$SelectSubscriptioId= "SELECT * FROM ` ".$tableName."` WHERE session_id='".$sessionId."'";
+	$rows = $Readconn->fetchAll($SelectSubscriptioId);*///print_r($rows);
+	//if(count($rows)==0)
+	{
+	//echo "hello";
+        $sessionId=$_REQUEST['sessionId'];
+        //$sql="insert into `".$tableName."` (session_id,Width,Height,Sewing,Finish,proid) values ('".$sessionId."',$widthquote,$heightquote,$sweing,$finish,$proId)";
+
+	$Readconn->query("insert into `".$tableName."` (session_id,Width,Height,Sewing,Finish,proid) values ('".$sessionId."',$widthquote,$heightquote,'".$sweing."','".$finish."',$proId)");
+        }
+
+
+
+
+?>

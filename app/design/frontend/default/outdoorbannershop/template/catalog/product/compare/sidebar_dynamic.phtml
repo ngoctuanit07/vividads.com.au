@@ -1,0 +1,540 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     base_default
+
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+/* @var $this Mage_Catalog_Block_Product_Compare_Sidebar */
+
+?>
+
+<?php 
+
+$_helper = $this->helper('catalog/product_compare');
+
+$_items = $_helper->getItemCount() > 0 ? $_helper->getItemCollection() : null;
+
+?>
+
+<script >
+
+/*function addToCart for product sample button*/
+
+	 
+
+	 function addToCartSample(productId){
+
+		 
+
+		
+
+		//var url = 'checkout/cart/add?product='+product_id+'&qty;='+quantity+'';
+
+		//setLocation('http://outdoorbannershop.com.au/checkout/icart/add/uenc/aHR0cDovL291dGRvb3JiYW5uZXJzaG9wLmNvbS5hdS9mbGFncy9mZWF0dXJlLWZsYWdzLmh0bWw,/product/'+product_id+'/price/'+grandTotal+'/');
+
+		 	 
+
+		setLocation('<?=$this->getUrl();?>checkout/icart/add/uenc/aHR0cDovL291dGRvb3JiYW5uZXJzaG9wLmNvbS5hdS9mbGFncy9mZWF0dXJlLWZsYWdzLmh0bWw,/product/'+productId+'/price/0/qty/0');
+
+		
+
+		
+
+	}
+
+</script>
+
+
+
+<div id="leftbar" class="float-L">
+
+  <?php 
+
+	//$productId = 321;
+
+			/*adding saple kit product to the cart */
+
+		//	$product = Mage::getModel('catalog/product')
+
+ 	                     // set the current store ID
+
+ 	      //               ->setStoreId(Mage::app()->getStore()->getId())
+
+ 	                     // load the product object
+
+ 	        //             ->load($productId);
+
+			//print_r($product->getData());		 
+
+	?>
+
+  <div class="sample_kit">
+
+    <?php /*?>        <input type="button" value="a" name="Free Sample kit" onclick="javascript:addToCartSample(<?php echo $product->getId();?>);" /><?php */?>
+
+<!--    <input type="button" value="a" name="Free Sample kit" onclick="showContactsForm({url: 'http://outdoorbannershop.com.au/ajaxcontacts/index/form/',         post_url: 'http://outdoorbannershop.com.au/ajaxcontacts/index/',width: 650,height: 460,ok_label: 'Submit',cancel_label: 'Cancel'}); return false;" />-->
+
+<p><a href="tel:1300721614"><img src="<?php echo $this->getSkinUrl();?>images/call_us_now.jpg"}}" alt="" /></a></p>
+<p><img style="cursor: pointer;" onclick="showContactsForm({url: 'http://outdoorbannershop.com.au/ajaxcontacts/index/form/',         post_url: 'http://outdoorbannershop.com.au/ajaxcontacts/index/',width: 650,height: 460,ok_label: 'Submit',cancel_label: 'Cancel'}); return false;" src="<?php echo $this->getSkinUrl();?>images/quote_now.jpg"}}" alt="" /></p>
+
+
+  </div>
+
+  
+
+  <!-- Left Navigation -->
+
+  <div class="leftBlock">
+
+    <div class="clear"></div>
+
+    <div class="leftNav">
+
+      <div class="leftBlock-title grey-gredient-bg blue-clr"><b>Our Products</b></div>
+
+      <ul>
+
+        <?php 
+
+				/*Nevigation should be here///*/
+
+		
+
+			$storeId    = Mage::app()->getStore()->getId();
+
+			
+
+			$_store = Mage::getModel('catalog/category')->load(1460);
+
+			$_main_categories = $_store->getChildrenCategories();
+
+					
+
+			?>
+
+        
+
+        <!-- Left Navigation Menu -->
+
+        
+
+        <?php
+
+           		$nCounter=0;
+
+				foreach($_main_categories as $_category){
+
+					if($_category->getName() !='Home Category'){
+
+					
+
+					
+
+			?>
+
+        <li class="main-category"> <a href="<?=$_category->getUrl();?>" class="link" title="<?=$_category->getName();?>">
+
+          <?=$_category->getName();?>
+
+          </a>
+
+          <div class="plus"> <a href="javascript:void(0);" style="color:#F27D00;font-size:15px;" onclick="showCategory('mainCategoryShow<?=$nCounter;?>','mainCategory<?=$nCounter;?>','fullBannerCategory<?=$nCounter;?>');" id="mainCategory<?=$nCounter;?>"> <span class="plus" style="display:none;"> </span> </a> </div>
+
+          <input type="hidden" name="mainCategoryShow<?=$nCounter;?>" id="mainCategoryShow<?=$nCounter;?>" value="1" />
+
+        </li>
+
+        <?php
+
+            		$_cat = Mage::getModel('catalog/category')->load($_category->getId());
+
+					$_sub_categories = $_cat->getChildrenCategories();
+
+					
+
+					$selected ='';
+
+					$url = Mage::helper('core/url')->getCurrentUrl();
+
+					$catUrl=basename($_category->getUrl());
+
+					$catUrl = substr($catUrl,0, strpos($catUrl,'.'));
+
+					
+
+					
+
+					if(strpos($url,$catUrl)){
+
+						
+
+						$selected = 'style="display:block"';
+
+						}
+
+					
+
+			?>
+
+        <?php /*?><li>
+
+                  <div id="fullBannerCategory<?=$nCounter;?>" <?=$selected?> class="subcategory"  >
+
+                    <ul>
+
+                   <?php foreach($_sub_categories as $_s_category){ 
+
+				        $cSubCat='';
+
+						$url = Mage::helper('core/url')->getCurrentUrl();
+
+										
+
+					   
+
+					   if(strpos($url,basename($_s_category->getUrl))){
+
+						   $cSubCat ='style="color:#f00;"';
+
+						   }
+
+				   
+
+				   ?>
+
+                        <li><a <?=$cSubCat;?>  href="<?=$_s_category->getUrl();?>" title="<?=$_s_category->getName();?>" > <?=$_s_category->getName();?> </a></li>
+
+                    <?php
+
+					}
+
+				?>
+
+                    </ul>
+
+                  </div>
+
+                </li><?php */?>
+
+        <li>
+
+          <div class="subcategory" id="fullBannerCategory0" style="display: block;">
+
+            <ul>
+
+    <li><a title="<?php echo $this->__('Builders Ad Mesh &trade;')?>" href="<?php echo $this->getUrl()?>outdoor-builders-mesh-banner.html"> <?php echo $this->__('Builders Ad Mesh &trade;')?> </a></li>
+
+            <li><a title="<?php echo $this->__('Construction Ad Mesh &trade;')?>" href="<?php echo $this->getUrl()?>outdoor-construction-mesh-banner-1516.html"> <?php echo $this->__('Construction Ad Mesh &trade;')?> </a></li>
+
+            <li><a title="<?php echo $this->__('Fence Ad Mesh ™')?>" href="<?php echo $this->getUrl()?>outdoor-fence-mesh-banner.html"> <?php echo $this->__('Fence Ad Mesh ™')?> </a></li>            </ul>
+
+          </div>
+
+        </li>
+
+        <?php
+
+           $nCounter++;
+
+		   
+
+		    
+
+					}
+
+		    
+
+		    } //end of of foreach
+
+			?>
+
+        
+
+        <!-- End of Left Nevigation Menu -->
+
+        
+
+      </ul>
+
+    </div>
+
+    <div class="shadowSprite shadow210"></div>
+
+  </div>
+
+   <!--<script>
+
+	 
+
+	  	function showCategory(txtBox,obj, subCatsBox){
+
+		var $=jQuery.noConflict();	
+
+			
+
+		$(document).ready(function(){
+
+			
+
+			if($('#'+txtBox).val()==1){
+
+			$('#'+obj).html('<span class="minus" title="click to hide category"></span>');
+
+			$('#'+subCatsBox).toggle();
+
+			$('#'+txtBox).val(0);
+
+			}else{
+
+				$('#'+obj).html('<span class="plus" title="click to show category"></span>');
+
+				$('#'+subCatsBox).toggle();
+
+				$('#'+txtBox).val(1);
+
+				}
+
+			});
+
+		}
+
+	  
+
+	  </script> -->
+
+  
+
+  <!-- Left Navigation -->
+
+  <div class="leftBlock clearfix">
+
+    <div id="left-slider">
+
+      <?php 
+
+		 		//left sidebar static block////
+
+				//left-sidebar-hompage
+
+			echo $this->getLayout()->createBlock('cms/block')->setBlockId('left-sidebar-hompage')->toHtml() 
+
+				
+
+		 ?>
+
+    </div>
+
+    <div class="shadowSprite shadow210"></div>
+
+  </div>
+
+  <div class="leftBlock">
+
+    <div id="home-Testi">
+
+      <div class="padding">
+
+        <div class="title clearfix"><a href="<?php echo $this->getUrl('testimonial')?>" title="<?php echo $this->__('Testimonials')?>" rel="nofollow"><?php echo $this->__('Testimonials')?></a></div>
+
+        <div class="testi-content">
+
+          <p id="testimonal_comment">
+
+            <?php 
+
+		 		//left sidebar static block////
+
+				//left-sidebar-hompage
+
+			echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial')->toHtml() 
+
+				
+
+		 ?>
+
+          </p>
+
+          <?php /*?><p class="userName" id="testimonal_commentBy">- Richdarwin</p><?php */?>
+
+        </div>
+
+        <?php /*?><div class="buttons"> <a href="javascript:void(0);" onclick="return testimonial('prev');" style="display:none;" id="prev_testimonial" class="prev float-L" rel="nofollow"> </a> <a href="javascript:void(0);" onclick="return testimonial('next');" id="next_testimonial" class="next float-L" rel="nofollow"></a>
+
+              <input type="hidden" value="1" name="testimonid" id="testimonid"/>
+
+            </div><?php */?>
+
+      </div>
+
+      <div class="testi-faces"></div>
+
+    </div>
+
+    <div class="shadowSprite shadow210"></div>
+
+  </div>
+
+  
+
+  <!-- Latets News -->
+
+  
+
+  <div id="latestblogcomment"  style="background: url(<?php echo $this->getSkinUrl();?>images/bg-blog.png) no-repeat left bottom #f1f1f1 !important; border:2px solid #ccc; padding:7px;" class="clearfix"> </div>
+
+  <div class="shadowSprite shadow210"></div>
+
+  <script type="text/javascript">
+
+	  function fetchblogpost()
+
+	  {
+
+	  	  var strURL = 'headlines.php';
+
+ 		  var req = getXMLHTTP();		
+
+		  if(req)
+
+		  {
+
+				req.onreadystatechange = function()
+
+				{
+
+					if (req.readyState == 4)
+
+					{
+
+						if (req.status == 200)
+
+						{
+
+							if(req.responseText !== 0)
+
+							{
+
+ 								document.getElementById('latestblogcomment').innerHTML = req.responseText;
+
+ 							}
+
+						}
+
+					}
+
+				}
+
+				req.open("GET", strURL, true);
+
+				req.send(null);
+
+			}	
+
+	  }
+
+	 </script> 
+
+  <script type="text/javascript">fetchblogpost();</script> 
+
+  <!-- Latets News --> 
+
+</div>
+
+<div class="block block-list block-compare" style="display:none;">
+
+  <div class="block-title"> <strong><span><?php echo $this->__('Compare Products') ?>
+
+    <?php if($_helper->getItemCount() > 0): ?>
+
+    <small><?php echo $this->__('(%d)', $_helper->getItemCount()) ?></small>
+
+    <?php endif; ?>
+
+    </span></strong> </div>
+
+  <div class="block-content">
+
+    <?php if($_helper->getItemCount() > 0): ?>
+
+    <ol id="compare-items">
+
+      <?php foreach($_items as $_index => $_item): ?>
+
+      <li class="item">
+
+        <input type="hidden" class="compare-item-id" value="<?php echo $_item->getId() ?>" />
+
+        <a href="<?php echo $_helper->getRemoveUrl($_item) ?>" title="<?php echo $this->__('Remove This Item') ?>" class="btn-remove" onclick="return confirm('<?php echo $this->__('Are you sure you would like to remove this item from the compare products?') ?>');"><?php echo $this->__('Remove This Item') ?></a>
+
+        <p class="product-name"><a href="<?php echo $this->getProductUrl($_item) ?>"><?php echo $this->helper('catalog/output')->productAttribute($_item, $_item->getName(), 'name') ?></a></p>
+
+      </li>
+
+      <?php endforeach; ?>
+
+    </ol>
+
+    <script type="text/javascript">decorateList('compare-items')</script>
+
+    <div class="actions"> <a href="<?php echo $_helper->getClearListUrl() ?>" onclick="return confirm('<?php echo $this->__('Are you sure you would like to remove all products from your comparison?') ?>');"><?php echo $this->__('Clear All') ?></a>
+
+      <button type="button" title="<?php echo $this->__('Compare') ?>" class="button" onclick="popWin('<?php echo $_helper->getListUrl() ?>','compare','top:0,left:0,width=820,height=600,resizable=yes,scrollbars=yes')"><span><span><?php echo $this->__('Compare') ?></span></span></button>
+
+    </div>
+
+    <?php else: ?>
+
+    <p class="empty"><?php echo $this->__('You have no items to compare.') ?></p>
+
+    <?php endif; ?>
+
+  </div>
+
+</div>
+
+<div class="block block-list"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('customer_support')->toHtml() ?> </div>
+

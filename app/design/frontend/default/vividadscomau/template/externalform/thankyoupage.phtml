@@ -1,0 +1,22 @@
+<?php 
+	/*
+			Thank you page
+			Block: Core/Template
+	*/
+	///get order number///
+	$quote_no = Mage::getSingleton('core/session')->getQuoteNo();
+?>
+<div style="background:#fff;clear: both;float: left;margin: 10px;padding: 10px 0;width: 920px;">
+<h1 style="text-align:left;">Thank you for requesting a quote from Vivid Ads Australia. </h1>
+<h3 style="color:#000; padding-left:10px; text-align:left;">
+Your pre-generated quote number is <?php echo $quote_no;?>.
+<br/>
+One of our experienced sales representatives will compile and e-mail you a quote shortly.
+<br/>
+
+Vivid Ads Team
+</h3>
+</div>
+<?php 
+Mage::getSingleton("core/session",array('name' => 'frontend'))->setQuoteNo('');
+?>
