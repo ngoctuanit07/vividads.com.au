@@ -1,0 +1,159 @@
+a:4:{s:4:"data";s:5762:"
+<div class="footer-container">
+<div class="footer clearfix">
+   	        <div class="links">
+<div class="block-title"><strong><span>Company</span></strong></div>
+<ul>
+<li><a href="http://www.vividads.com.au/about_us/">About Us</a></li>
+<li><a href="http://www.vividads.com.au/catalog/seo_sitemap/category">Sitemap</a></li>
+<li><a href="http://www.vividads.com.au/terms/">Terms &amp; Conditions</a></li>
+<li><a href="http://www.vividads.com.au/contact-us/">Contact Us</a></li>
+</ul>
+</div><div class="links">
+<div class="block-title"><strong><span>Customer Service</span></strong></div>
+<ul>
+<li><a href="http://www.vividads.com.au/customer/account/">My Account</a></li>
+<li><a href="https://www.vividads.com.au/sales/order/history/">Ordering</a></li>
+<li><a href="http://www.vividads.com.au/ProductReturn/Front/List/">Shipping &amp; Returns</a></li>
+<li><a href="http://www.vividads.com.au/sales/order/history/">Order Status</a></li>
+<li><a href="http://www.vividads.com.au/faqs/">FAQs</a></li>
+</ul>
+</div><div class="links">
+<div class="block-title"><strong><span>Services</span></strong></div>
+<ul>
+<li><a href="http://www.vividads.com.au/artwork/">Artwork Guidelines</a></li>
+<li><a href="http://www.vividads.com.au/artwork/">Graphic Templates</a></li>
+<li><a href="http://www.vividads.com.au/upload/">Upload Artwork</a></li>
+<li><a href="#">Compress Artwork</a></li>
+</ul>
+</div>
+<div class="block block-subscribe">
+    <div class="block-title">
+        <strong><span>Newsletter</span></strong>
+    </div>
+
+<form action="https://www.vividads.com.au/newsletter/subscriber/new/" method="post" id="newsletter-validate-detail">
+
+    <div class="block-content">
+
+    <div class="form-subscribe-header">Join our newsletter for lots of great offers and information about our products and services</div>
+
+        <div class="input-box">
+
+           <input type="text" placeholder="Email Address" name="email" id="newsletter" title="Sign up for our newsletter" class="input-text required-entry validate-email" />
+
+        </div>
+
+        <button type="submit" title="Submit" class="button"><span><span>Submit</span></span></button>
+
+    </div>
+
+</form>
+
+<script type="text/javascript">
+
+//<![CDATA[
+
+ //   var newsletterSubscriberFormDetail = new VarienForm('newsletter-validate-detail');
+
+//    new Varien.searchForm('newsletter-validate-detail', 'newsletter', 'Enter your email address');
+
+//]]>
+
+</script>
+
+</div>
+
+<div class="footer_social">
+<div class="block-title"><strong><span>Connect</span></strong></div>
+<!--<a href="#" class="facebook">&nbsp;</a>
+<a href="#" class="twitter">&nbsp;</a>
+<a href="#" class="youtube">&nbsp;</a>
+<a href="#" class="vimeo">&nbsp;</a>
+<a href="#" class="google">&nbsp;</a>-->
+</div>	    
+<div style="float: left; margin-right: 70px;" class="socialaddthis">
+ <!-- Check whether the plugin is enabled -->
+
+<!-- AddThis Button BEGIN -->
+
+<!-- AddThis API Config -->
+<script type='text/javascript'>
+var addthis_product = 'mag-sp-2.0.0';
+var addthis_config 	= {
+pubid : 'xa-525fbbd6215b4f1a'
+}
+</script>
+<!-- AddThis API Config END -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" >
+<a class="addthis_button_preferred_1"></a>
+<a class="addthis_button_preferred_2"></a>
+<a class="addthis_button_preferred_3"></a>
+<a class="addthis_button_preferred_4"></a>
+<a class="addthis_button_compact"></a>
+<!--<a class="addthis_counter addthis_bubble_style"></a>-->
+</div>
+
+<script>
+	var ats_widget =  function(){
+	    if(typeof addthis_conf == 'undefined'){
+	        var at_script = document.createElement('script');
+	        at_script.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-525fbbd6215b4f1a';
+	        document.getElementsByTagName('head')[0].appendChild(at_script);
+	        var addthis_product = 'mag-sp-2.1.0';
+	    }
+	};
+	if(window.addEventListener)
+		window.addEventListener('load',ats_widget);        
+	else                
+		window.attachEvent('onload',ats_widget);           	    
+</script>	    
+<!-- AddThis Button END -->
+<style>
+#at3win #at3winheader h3 {
+	text-align:left !important;
+}
+</style>
+ </div>
+<div class="contact-container">
+                
+<div class="textwidget"><h3>Free Call (Australia Only): <strong style="color:#000;">1300 721 614</strong></h3>
+<div class="footer_item"><strong style="color: rgb(0, 0, 0); float: left; font-size: 12px; letter-spacing: normal; width: 100%;">Head Office</strong>
+<p style="font-size: 12px; float: left; margin: 0px; line-height: normal;">1/2 Phillip Court, Port Melbourne<br>
+Victoria 3207 Australia </p>
+</div>
+<div class="footer_item" style="font-size: 12px; float: left; margin: 0px;"> Ph: 1300 72 16 14<br>
+  Fax: +613 8456 6234 </div>
+</div>
+</div>
+<div style="float: left; width: 100%; text-align: center; padding: 0px 0px 20px; font-size:12px;" class="item">
+© VividAds Pty Limited  Australia. All rights reserved.</div>
+
+
+</div>
+</div>
+<script type="text/javascript">
+var __lc = {};
+__lc.license = 3920361;
+
+(function() {
+	var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+	lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+})();
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-886401-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+";s:8:"lifetime";i:7200;s:6:"expire";i:1428402244;s:8:"priority";i:8;}
