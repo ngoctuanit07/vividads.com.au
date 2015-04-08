@@ -1,0 +1,2 @@
+[02-Feb-2015 08:57:04 UTC] PHP Warning:  require_once(/home/tablethr/public_html/wp/wp-admin/includes/upgrade.php): failed to open stream: No such file or directory in /home/tablethr/public_html/wp/wp-admin/setup-config.php on line 36
+[02-Feb-2015 08:57:04 UTC] PHP Fatal error:  require_once(): Failed opening required '/home/tablethr/public_html/wp/wp-admin/includes/upgrade.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/tablethr/public_html/wp/wp-admin/setup-config.php on line 36

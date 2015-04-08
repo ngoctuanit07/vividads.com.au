@@ -1,0 +1,13 @@
+[29-Dec-2014 11:49:16 Australia/Melbourne] PHP Warning:  unlink(../state/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
+[29-Dec-2014 11:49:16 Australia/Melbourne] PHP Warning:  unlink(../conf/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
+[29-Dec-2014 11:49:16 Australia/Melbourne] PHP Warning:  unlink(../plugins/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
+[02-Feb-2015 03:18:59 Australia/Melbourne] PHP Warning:  unlink(../state/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
+[03-Feb-2015 01:31:24 Australia/Melbourne] PHP Warning:  unlink(../state/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
+[03-Feb-2015 01:31:24 Australia/Melbourne] PHP Warning:  unlink(../state/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
+[03-Feb-2015 01:31:24 Australia/Melbourne] PHP Warning:  unlink(../conf/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
+[03-Feb-2015 01:31:24 Australia/Melbourne] PHP Warning:  unlink(../plugins/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
+[06-Feb-2015 16:10:49 Australia/Melbourne] PHP Warning:  unlink(../state/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
+[06-Feb-2015 16:10:49 Australia/Melbourne] PHP Warning:  unlink(../conf/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
+[20-Feb-2015 05:52:53 Australia/Melbourne] PHP Fatal error:  Class 'CustomSQLUtility' not found in /home/tablethr/public_html/magmi/inc/magmi_pluginhelper.php on line 131
+[20-Feb-2015 05:52:54 Australia/Melbourne] PHP Fatal error:  Class 'CustomSQLUtility' not found in /home/tablethr/public_html/magmi/inc/magmi_pluginhelper.php on line 131
+[10-Mar-2015 02:47:08 Australia/Melbourne] PHP Warning:  unlink(../state/__testwr__): No such file or directory in /home/tablethr/public_html/magmi/inc/fshelper.php on line 14
