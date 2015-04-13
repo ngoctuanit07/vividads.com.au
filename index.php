@@ -116,12 +116,12 @@ $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 's
         $mageRunType = 'website';
     break; 
 	
-	  case 'outdoorbannershop.com.au':
+	/*  case 'outdoorbannershop.com.au':
     case 'www.outdoorbannershop.com.au':
         $mageRunCode = 'outdoorbannershop_com_au';
         $mageRunType = 'website';
     break;
-	
+	*/
 	case 'meshbannersprinting.com.au':
     case 'www.meshbannersprinting.com.au':
         $mageRunCode = 'meshbannersprinting_com_au';
@@ -140,6 +140,8 @@ $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 's
         $mageRunCode = 'vividads_com_sg';
         $mageRunType = 'website';
     break;
+	 
+	 
 	 
 	case 'shop.vividads.com.sg':
     case 'www.shop.vividads.com.sg':
@@ -267,11 +269,27 @@ $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 's
         $mageRunType = 'website';
     break;
 
-    case 'outdoorbannershop.com':
+   /* case 'outdoorbannershop.com':
     case 'www.outdoorbannershop.com':
         $mageRunCode = 'outdoorbannershop_com';
         $mageRunType = 'website';
     break;
+*/
+
+case 'outdoorbannershop.com.au':
+    case 'www.outdoorbannershop.com.au':
+        $mageRunCode = 'vividads_com_au';
+        $mageRunType = 'website';
+    break;
+
+
+/* redirecting the mobile sites */
+
+    case 'm.vividads.com.au':     
+        $mageRunCode = 'vividadscomau_mobile';
+        $mageRunType = 'website';
+    break;
+
 
 
 	
