@@ -41,6 +41,7 @@ class Artis_Designer_IndexController extends Mage_Core_Controller_Front_Action
 		Mage::register('designer', $designer);
 		 
 		*/ 
+		
     			
 		$this->loadLayout();     
 		$this->renderLayout();

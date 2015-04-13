@@ -75,6 +75,8 @@ class MDN_Quotation_Model_Quotation_Notification extends Mage_Core_Model_Abstrac
         //return $quote;
     }
 
+
+
     /**
      * Send an email to store manager to notify about new quote request
      */

@@ -10,6 +10,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
         $this->renderLayout();
     }
 
+
     /**
      * Edit quote
      */
@@ -65,8 +66,8 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 		    $customerid = $orderModel->getCustomer()->getEntity_id();
 		 
 		    $session = $this->_getSession();
-			var_dump($session);
-			exit;
+			//var_dump($session);
+			//exit;
 		 
 		 
 		try {
@@ -199,11 +200,9 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 		
         $where = $connectionWrite->quoteInto('quotation_id =?', $quote->getId());
 		
-		
-		
         $connectionWrite->update($tableQuotation, $data, $where);
         
-		
+		$connectionWrite->commit();
 		
 		//Zend_debug::dump($connectionWrite->update($tableQuotation, $data, $where)); exit;
 		//$connectionWrite->commit();
