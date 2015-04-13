@@ -30,6 +30,7 @@
  *
  * @see Mage_Catalog_Block_Product_List
  */
+  
 ?>
 
 <!--
@@ -38,8 +39,6 @@
 <script type="text/javascript" src="<?php echo $ajaxCart;?> "></script>-->
 <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('top_menu_slider')->toHtml() ?>
 <!--<div class="contact_info"><img src="<?php //echo $this->getSkinUrl('images/phone_info.png');?>" alt="contact info"/></div>-->
-
-
 
 <?php  $catName = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getName(); ?>
 <?php  $curCatId = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId(); ?>
@@ -203,8 +202,8 @@ exit;*/
       <?php 	} ?>
       <div class="mask-product">
         <div class="pro-det-con"> <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"> 
-          <!--<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(220); ?>" width="220" height="252" alt="<?php  echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /> -->
-         <img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getThumbnail()); ?>" width="220" height="252" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /> 
+          <!--<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(220); ?>" width="220" height="252" alt="<?php  echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /> --> 
+          <img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getThumbnail()); ?>" width="220" height="252" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /> 
           <!-- This is top right sticker code-->
           <?php if($_product->getGreensticker()==1){
 		$_img_path = Mage::getBaseUrl('media').'xj/sticker/deal.png'; ?>
@@ -214,7 +213,7 @@ exit;*/
           <?php if($_product->getPurplesticker()==1){
 	//	$_img_path = Mage::getBaseUrl('media').'xj/sticker/5/-/5-icon-1.png'; ?>
           <?php $price = $_product->getPrice();  $spePrice = $_product->getSpecialPrice(); if($spePrice){ $perprice = 100 - ($spePrice/$price)*100;}else{ $perprice = 0;	}	?>
-<!--          <span class="stickerimgmediaLeft" style="bottom:4px;color: #fff;font-size: 19px;font-weight: bold;position: absolute;z-index: 100;"><?php echo '-'.round($perprice).'%';?></span> -->
+          <!--          <span class="stickerimgmediaLeft" style="bottom:4px;color: #fff;font-size: 19px;font-weight: bold;position: absolute;z-index: 100;"><?php echo '-'.round($perprice).'%';?></span> --> 
           <!--<img src="<?php echo $_img_path; ?>"  alt="b" class="stickerimgmediaLeft" />	-->
           <?php		$_img_path = Mage::getBaseUrl('media').'xj/sticker/bottomleft.png'; ?>
           <img src="<?php echo $_img_path; ?>" height="70"  alt="b" class="stickerimgmediaLeft" />
@@ -250,11 +249,8 @@ exit;*/
             <p class="product-detail-read-more"> <a href="<?php echo $_product->getProductUrl() ?>">Read More</a> </p>
           </div>
         </div>
-        
       </div>
-      <h2 class="product-name">
-        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"> 
-		<?php echo $_product->getName();?> </a></h2>
+      <h2 class="product-name"> <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"> <?php echo $_product->getName();?> </a></h2>
       <?php 
     	$_product = Mage::getModel('catalog/product')->load($_product->getId());
 		$store_id = $this->helper('core')->getStoreId(); ?>
@@ -276,27 +272,20 @@ exit;*/
 		  }
 					  ?>
         </div>
-      <div style="width:30px; float:left; margin-left:-10px;">
-      <!--<a href="<?php echo $this->getUrl()?>">-->
-     <!--<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>-->
-      <!--<img height="27" src="<?php echo $this->getSkinUrl()?>images/minishoppingcart.png"/>-->
-      <!--</a>--></div>
+        <div style="width:30px; float:left; margin-left:-10px;"> 
+        
+        <a href="<?php echo str_replace('icart','cart', $this->getAddToCartUrl($_product) ); ?>"> 
+          <!--<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span>
+	 
+	 <?php // echo $this->__('Add to Cart') ?></span></span></button>--> 
+          
+           <img height="27" title="Click to Add to Cart '<?php echo $_product->getName();?>' "  src="<?php echo $this->getSkinUrl()?>images/minishoppingcart.png"/> 
+          </a>
+          </div>
+        
         <div class="browse-btn" style="width:100px; float:right;"> <a class="category-browse" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>" href="<?php echo $_product->getProductUrl() ?>"> <span>More Info</span> </a> 
-          <!--<a href="<?php echo $this->getAddToCartUrl($_product) ?>" title="<?php echo $this->__('Add to Cart') ?>" class="btn-cart ajax-cart btn-add-cart" data-url="<?php echo $this->getAddToCartUrl($_product); ?>" data-id="<?php echo $_product->getId(); ?>"><span></span><?php echo $this->__('Add to Cart') ?></a>--> 
-        </div>
+        <!--<a href="<?php echo $this->getAddToCartUrl($_product) ?>" title="<?php echo $this->__('Add to Cart') ?>" class="btn-cart ajax-cart btn-add-cart" data-url="<?php echo $this->getAddToCartUrl($_product); ?>" data-id="<?php echo $_product->getId(); ?>"><span></span><?php echo $this->__('Add to Cart') ?></a>--> </div>
       </div>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       <?php //echo $this->getPriceHtml($_product, true) ?>
     </li>
     <?php endforeach ?>
