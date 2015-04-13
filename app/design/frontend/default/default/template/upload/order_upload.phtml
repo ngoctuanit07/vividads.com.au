@@ -137,13 +137,11 @@ function openFileOption(id)
 
 
 ///opening after changeing the file conetns
-function changeImg(id){
-	
+function changeImg(id){	
   
 	}
 				
-		$(function() {
-			
+		$(function() {			
 			
 			//$('.header').hide();
 			//$('.footer-container,.col-left').hide();
@@ -176,10 +174,10 @@ $(function(){
 	
 	 $('.uploadFile').change(function(event){
 		 
-		//  var confirmUpload = confirm('Do you really want to upload this file?');
-		// if(!confirmUpload){
-		//	 return false;
-		//	 }
+		   var confirmUpload = confirm('Please confirm you want to upload selected file?');
+		  if(!confirmUpload){
+		 	 return false;
+		 	 }
 		 //console.log(event.target.id);
 		 var previewClass = event.target.id;
 		 var idStart = previewClass.indexOf('[');
@@ -380,18 +378,19 @@ $(function(){
 		  
 		  // console.log($('submit_form_1011_10'));
 		 	////uplaoding files////
-			
+			var progbar = $('#file_info_progress_bar_'+item_id+'_'+file_id);
 			$('#submit_form_'+item_id+'_'+file_id).ajaxSubmit(
 			{
 				beforeSend:function(){
 					//console.log('uploading');
 					var pWidth=0;
 					$('#file_info_'+item_id+'_'+file_id).show();
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).show();
-					var image = '<div style="width:100%;text-align:center;"><img src="<?php echo $this->getUrl();?>media/loading6.gif" /></div>';
+					//$('#file_info_progress_bar_'+item_id+'_'+file_id).show();
+					progbar.show();
+					//var image = '<div style="width:100%;text-align:center;"><img src="<?php echo $this->getUrl();?>media/loading6.gif" /></div>';
 					 //setTimeout(pr,10);
 					//pWidth++;
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).html(image);
+					//$('#file_info_progress_bar_'+item_id+'_'+file_id).html(image);
 					$('#file_info_download_'+item_id+'_'+file_id).hide();
 					
 					//$('#file_info_progress_bar_'+item_id+'_'+file_id).width(''+pWidth+'%');
@@ -400,20 +399,26 @@ $(function(){
 					},
 				uploadProgress: function(event, position, total, percentComplete) {
 					 pWidth = percentComplete + '%';
-					//bar.width(percentVal)
-					//percent.html(percentVal);
-					// console.log(percentVal, position, total);
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).width('100%');
-					var image = '<div style="width:100%;text-align:center;"><img src="<?php echo $this->getUrl();?>media/loading6.gif" /></div>';
+					//progbar.width(percentVal)
+					// percent.html(percentVal);
+					//  console.log('total='+total);
+					//  console.log('percente='+percentComplete);
+					//$('#file_info_progress_bar_'+item_id+'_'+file_id).width('100%');
+					var progressinfo_lbl = '<div class="progress_txt">Uploaded '+pWidth+'</div>';
+					progbar.width(pWidth);
+					progbar.html(progressinfo_lbl);
+				//	var image = '<div style="width:100%;text-align:center;"><img src="<?php echo $this->getUrl();?>media/loading6.gif" /></div>';
 					 //setTimeout(pr,10);
 					//pWidth++;
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).html(image);
+				//	$('#file_info_progress_bar_'+item_id+'_'+file_id).html(image);
 					
 					//console.log('total='+total+' percent'+percentComplete);
 				},	
 				complete:function(e){
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).width('100%');
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).html('<div class="progress_txt">Uploaded 100%</div>');
+					//$('#file_info_progress_bar_'+item_id+'_'+file_id).width('100%');
+					progbar.width('100%');
+					//$('#file_info_progress_bar_'+item_id+'_'+file_id).html('<div class="progress_txt">Uploaded 100%</div>');
+					progbar.html('<div class="progress_txt">Uploaded 100%</div>');
 					//$('#file_info_download_'+item_id+'_'+file_id).show('fade');
 				 //console.log(e);
 				
@@ -1249,6 +1254,9 @@ $(function(){
     margin-left: 2px;
     margin-top: 12px;
     width: 0%;
+	color:#FFF;
+	background-color:#FFF;
+	text-align:center;
 	display:none;
 	}
 	.progress_txt{background-color: #2C8AE7;
@@ -1534,8 +1542,8 @@ $(function(){
             </div>      
                   <div class="clr"></div>
                   <!--upload files box start here-->
-                  <div class="uploadFilesPanel">
-                     <div class="uploadFilesBox">
+                  <div class="uploadFilesPanel" style="width:1150px !important;">
+                     <div class="uploadFilesBox" style="width:780px !important;">
                      <!--thumbnailbox-->
     <ul class="uploaded_thumbnails files_thumbnails_<?php echo $_item_id;?>_<?php echo $counter;?>" id="uploadedFiles<?php echo $_item_id;?>_<?php echo $counter;?>"> 
      <input type="hidden" id="client_files_url_<?php echo $_item_id;?>" name="client_files_url" value="<?php echo $_path.$_sku.'/client_sent_files';?>" />                           
@@ -1618,14 +1626,12 @@ $(function(){
 						
 			?>
                            
- <img src="<?php echo $_file_src;?>" alt="<?php echo $_customer_file['file'];?>" id="preview_image_<?php echo $_item_id;?>_<?php echo $_id;?>" class="preview_image_thumb"  a" width="140" height="100"/>       
+ <img src="<?php echo $_file_src;?>" alt="<?php echo $_customer_file['file'];?>" id="preview_image_<?php echo $_item_id;?>_<?php echo $_id;?>" class="preview_image_thumb"   width="140" height="100"/>       
                                </div>
                                </div>
                                </div> 
      <div class="file_info" style="display:block;" id="file_info_<?php echo $_item_id;?>_<?php echo $_id;?>">
-     <div class="file_info_progress_bar" id="file_info_progress_bar_<?php echo $_item_id;?>_<?php echo $_id;?>">
-     
-     </div>   
+     <div class="file_info_progress_bar" id="file_info_progress_bar_<?php echo $_item_id;?>_<?php echo $_id;?>">   </div>   
                                
                                <div  style="display:block;" class="file_info_name" id="file_info_name_<?php echo $_item_id;?>_<?php echo $_id;?>" ><b>File: </b> <?php echo $_customer_file['file'];?></div>
                                <div class="file_info_size" id="file_info_size_<?php echo $_item_id;?>_<?php echo $_id;?>"><b>Size: </b><?php 
@@ -1854,7 +1860,8 @@ $(function(){
       <input class="input_text" id="msg_input_<?php echo $_item_id;?>_<?php echo $counter;?>" name="msg_input_<?php echo $_item_id;?>_<?php echo $counter;?>" type="text" placeholder="<?php echo __('Your message here...')?>" />
       <input class="sendButton" type="button"  id="<?php echo $_item_id;?>_<?php echo $counter;?>" name="<?php echo $_item_id;?>_<?php echo $counter;?>"  value="Send" title="Type your message and hit send button"  />
        </div> 
-       <div class="send_email" id="<?php echo $_item_id;?>_<?php echo $counter;?>"><label>
+       <div class="send_email" id="<?php echo $_item_id;?>_<?php echo $counter;?>">
+       <label>
        <input type="checkbox" name="send_email_<?php echo $_item_id;?>_<?php echo $counter;?>" id="send_email_<?php echo $_item_id;?>_<?php echo $counter;?>" value="1" checked /> 
        <?php echo __('I want to send Email');?></label> </div>         
            </div>
@@ -1866,7 +1873,7 @@ $(function(){
                  
                  <div class="clr"></div>
                   <!--upload files box start here-->
-                  <div class="artworkProofPanel">
+                  <div class="artworkProofPanel" style="width:850px !important;">
                   
         <?php 
 		 		/*proof tilte*/
