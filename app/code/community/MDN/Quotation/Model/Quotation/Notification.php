@@ -75,6 +75,8 @@ class MDN_Quotation_Model_Quotation_Notification extends Mage_Core_Model_Abstrac
         //return $quote;
     }
 
+
+
     /**
      * Send an email to store manager to notify about new quote request
      */
@@ -97,7 +99,7 @@ class MDN_Quotation_Model_Quotation_Notification extends Mage_Core_Model_Abstrac
         
         $customerData = Mage::getModel('customer/customer')->load($quote->getCustomer()->getId())->getData();
         $sendTo = $customerData['email'];
-		$sendTo1 = array_merge($sendTo1, array($sendTo));
+		//$sendTo1 = array_merge($sendTo1, array($sendTo));
 		//var_dump($sendTo);
                 
         $tableBilling = Mage::getSingleton('core/resource')->getTableName('quotation_billing');
@@ -560,13 +562,25 @@ class MDN_Quotation_Model_Quotation_Notification extends Mage_Core_Model_Abstrac
                             null,
                             null,
                             $data);
-	   var_dump($emailtemplate);
+	   Zend_debug::dump($emailtemplate);
+	   Zend_debug::dump($sendTo1)
+	   
 	   echo $emailtemplate->getTemplate_text();
 	    exit;					
 	 	*/ 					
-	   				 
+	   	
+					 
 		//var_dump($sendTo1); exit;
 	    Mage::getModel('Quotation/Core_Email_Template')
+                    ->setDesignConfig(array('area' => 'adminhtml', 'store' => $quote->getCustomer()->getStoreId()))
+                    ->sendTransactionalWithAttachment(
+                            $templateId,
+                            $identityId,
+                            $sendTo,
+                            null,
+                             $data);
+		 
+		 Mage::getModel('Quotation/Core_Email_Template')
                     ->setDesignConfig(array('area' => 'adminhtml', 'store' => $quote->getCustomer()->getStoreId()))
                     ->sendTransactionalWithAttachment(
                             $templateId,
