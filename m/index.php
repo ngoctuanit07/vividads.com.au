@@ -93,9 +93,17 @@ $_host = $_SERVER['HTTP_HOST'];
  switch($_host) {
     
 	case 'vividads.com.au':
+	case 'www.vividads.com.au':
             $mageRunCode = 'vividadscomau_mobile';
         	$mageRunType = 'website';
     break;	
+	
+	case 'outdoorbannershop.com':
+	case 'www.outdoorbannershop.com':
+            $mageRunCode = 'vividadscomau_mobile';
+        	$mageRunType = 'website';
+    break;	
+	
 	case '13expo.com.au':
             $mageRunCode = 'expo_mobile';
         	$mageRunType = 'website';
