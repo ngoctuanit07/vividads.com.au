@@ -139,7 +139,7 @@ class MDN_AdvancedStock_MiscController extends Mage_Adminhtml_Controller_Action 
               ->addObject($invoice)
               ->save();
             
-            $invoice->sendEmail(true, '');
+          //  $invoice->sendEmail(true, '');
 	    //End 03_03_2014
             
             $items = $order->getAllItems();

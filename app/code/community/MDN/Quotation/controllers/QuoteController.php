@@ -113,16 +113,18 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
         
 		 $order_id = $this->getRequest()->getParam('order_id');
          $layout = $this->loadLayout();
-		 //$quote = Mage::getModel('Quotation/Quotation')->load($QuoteId);
-		 $order = Mage::getModel('sales/order')->load($order_id);
+		
 		 
+		 //$quote = Mage::getModel('Quotation/Quotation')->load($QuoteId);
+		   $order = Mage::getModel('sales/order')->load($order_id);
+		  
 		    $orderModel = Mage::getModel('sales/order')->load($order->getIncrement_id(), 'increment_id');
             $order_id = $orderModel->getEntity_id();			
 		    $customerid = $orderModel->getCustomer_id();		 
 		    $session = Mage::getModel('customer/session', array('name'=>'frontend'));		
 	        $customer = Mage::getModel('customer/customer')->load($customerid);				
             $session->setCustomerAsLoggedIn($customer);
-		 
+		 	
        //  $this->checkQuoteOwner($order);
 				 
 		 
