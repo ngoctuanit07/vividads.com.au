@@ -67,7 +67,7 @@
 		
 		var elements = {
 		 				 
-						 'phone_left':jQuery('#phone_left'),
+						// 'phone_left':jQuery('#phone_left'),
 						 'cl_banner':jQuery('#clients_banner'),
 		 				 'testimonial':jQuery('#testimonial'),
 						 'artwork_banner':jQuery('#artwork_banner'),
@@ -88,6 +88,21 @@
 		//defining array of divs for meauring heights
 		var divheights= Array();
 		var totalHeight= pre_height;
+		
+		 if( jQuery('body').hasClass('cms-home')) {
+			    clm_height = clm_height-1200;
+			//console.log(jQuery('body').hasClass('catalog-product-view'));
+					jQuery('.clients-banner').show();					
+					jQuery('.artwork-banner').show();
+					jQuery('.testimonial').show();
+					//jQuery('.price-guarante').show();
+					jQuery('.stand_design').show();
+					jQuery('.likeus').show();
+					
+			
+			   }else{   
+		 
+		
 		jQuery.each(elements,function(key , val){
 			 	 val.hide();
 				var phone_left_height = elements.phone_left.height();
@@ -232,7 +247,9 @@
 				*/
 
 			 });
+			 
 		 	//console.log(divheights); 
+	       }//end of home
 	});
 </script>
 
