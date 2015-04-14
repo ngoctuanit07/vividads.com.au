@@ -69,8 +69,10 @@ echo '</pre>'; */
         }
 ?>
 <script type="text/javascript">
+		/*updating and covering script conflict*/
+   <!--
     var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
-	 
+	 -->
 </script>
 <div class="product-view">
 
@@ -873,11 +875,13 @@ function setAjaxData(data,iframe){
     }
 }
 function showMessage(message){
-    $('body').append('<div class="alert"></div>');
-    var $alert = jQuery('.alert');
+   
+    jQuery('body').append('<div class="alert"></div>');
+    
+	var $alert = jQuery('.alert');
     $alert.slideDown(400);
     $alert.html(message).append('<button></button>');
-    $('button').click(function () {
+    jQuery('button').click(function () {
         $alert.slideUp(400);
     });
     $alert.slideDown('400', function () {
@@ -889,7 +893,7 @@ function showMessage(message){
     });
 }
 	jQuery(function($) {
-    	$('.ajax-cart').live('click', function(){
+    	jQuery('.ajax-cart').live('click', function(){
         setLocationAjax($(this).attr('data-url'), $(this).attr('data-id'));
         return false;
     });
@@ -908,7 +912,7 @@ function showMessage(message){
 	    if ('https:' == document.location.protocol) {
 		    url = url.replace('http:', 'https:');
 	    }
-        $('#ajax_loading' + id).css('display', 'block');
+        jQuery('#ajax_loading' + id).css('display', 'block');
         try {
             $.ajax({
                 url:url,
@@ -918,7 +922,7 @@ function showMessage(message){
 					// console.log(data); 
 					// console.log(data.qty);
                   //  $('#ajax_loading' + id).css('display', 'none');
-				   $('#quote_items_qty').html('('+data.qty+')');
+				   jQuery('#quote_items_qty').html('('+data.qty+')');
                   //   showMessage(data.message);
 				//	alert('Product add to cart.');
                    if (data.status != 'ERROR' && $('.cart-top-container').length) {
