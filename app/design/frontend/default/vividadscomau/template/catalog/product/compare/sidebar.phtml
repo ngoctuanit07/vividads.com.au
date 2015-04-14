@@ -54,6 +54,13 @@
 			   clm_height = clm_height-550;
 			//console.log(jQuery('body').hasClass('catalog-product-view'));
 			   }
+			   
+			///check if we are on product view page
+		 
+		   if( jQuery('body').hasClass('cms-home')) {
+			    clm_height = clm_height-1200;
+			//console.log(jQuery('body').hasClass('catalog-product-view'));
+			   }   
 		 
 		 // console.log('pre='+pre_height);
 		  
@@ -84,12 +91,12 @@
 		jQuery.each(elements,function(key , val){
 			 	 val.hide();
 				var phone_left_height = elements.phone_left.height();
-				//console.log('main Column Height = '+clm_height);				 
+				 console.log('main Column Height = '+clm_height);				 
 				totalHeight +=val.height();				
 				
 				if( totalHeight<= clm_height){					
 					 divheights [key]= val.height();
-					//  console.log(totalHeight);
+					  console.log(totalHeight);
 				 jQuery('#'+key).show();
 				}
 				 
@@ -228,6 +235,7 @@
 		 	//console.log(divheights); 
 	});
 </script>
+
 <link rel="stylesheet" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/base/default/css/phoneorder.css" type="text/css" media="screen" />
 <!--<div class="clearer"></div>-->
 <div class="block block-list block-compare" style="margin-bottom:0px; border:none 0px;">

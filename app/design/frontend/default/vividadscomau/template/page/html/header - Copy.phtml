@@ -334,14 +334,14 @@ if($customer_pages==1)
 
 <div class="counters" style="float:left; width:100%;text-align:center;"> <img src="<?php echo $this->getSkinUrl('images/numbers.png');?>" width="1200" alt="Vivid Contact Info" />
   <div class="project" style="float:left;width:25%;">
-    <h3 id="counter" ></h3>
+    <h3 id="counter1" ></h3>
     <h4>Happy Customers</h4>
   </div>
-  <!--<div class="project" style="float:left;width:20%;">
+  <?php /*?><div class="project" style="float:left;width:20%;">
     <h3 id="counter1"  ></h3>
     <h4>Awesome Projects</h4>
-  </div>-->
-  <div class="project" style="float:left;width:25%;">
+  </div><?php */?>
+  <!--<div class="project" style="float:left;width:25%;">
     <h3 id="counter2" ></h3>
     <h4>Items Sold</h4>
   </div>
@@ -354,7 +354,7 @@ if($customer_pages==1)
     <h4>Social Followers</h4>
   </div>
   <div class="project" style="float:left;width:16.66%; display:none;">
-    <h3 id="counter4" >
+    <h3 id="counter4" > 
       <?php //echo rand(1,20);
 	    /*$visitor_collection = Mage::getResourceModel('log/visitor_collection')->useOnlineFilter();
         $visitor_count = count($visitor_collection);    
@@ -374,7 +374,7 @@ if($customer_pages==1)
 	?>
     </h3>
     <h4>Visitors Today</h4>
-  </div>
+  </div-->
 </div>
 <?php			}
 		}
@@ -391,15 +391,12 @@ if($customer_pages==1)
 <div class="uploader_artwork" style="display:block;">
   <?php /*?><div  id="quote_items_qty" class="quote_items_qty">(<?php echo $quote_qty;?>)</div><?php */?>
   <a title="Upload Artwork" href="<?php echo $curl;?>upload/" class="upload_icon artwork_upload"><span></span></a> <a  id="getqute" title="Quick Quote" href="javascript:void(0)" class="upload_icon get_quote"><span></span></a> <a title="Design Templates" href="<?php echo $curl;?>artwork/" class="upload_icon design-templates"><span></span></a> </div>
-
-
-
-<?php   
-		if($current_product == null) {
+ 
+<?php  if($current_product == null) {
 	 ?>
  <script>
 			 
-			jQuery(document).ready(function(){
+			jQuery(window).bind('load',function(){
 				 
 				function sdf_FTS(_number,_decimal,_separator)
 				{
@@ -416,9 +413,11 @@ if($customer_pages==1)
 				return r;
 				}
 				 
-				window.onload  = setTimeout(function(){
+				var countersDiv =jQuery('.counters');
+				 
+				setTimeout(function(){
 					jQuery('#counter').text('0');
-					//jQuery('#counter1').text('0');
+					jQuery('#counter1').text('0');
 					jQuery('#counter2').text('0');
 					jQuery('#counter3').text('0');					
 					jQuery('#counter5').text('0');					
@@ -426,7 +425,7 @@ if($customer_pages==1)
 					
 					 setInterval(function(){
 						var curval=parseInt(jQuery('#counter').text().replace(' ',''));
-						//var curval1=parseInt(jQuery('#counter1').text().replace(' ',''));
+						var curval1=parseInt(jQuery('#counter1').text().replace(' ',''));
 						var curval2=parseInt(jQuery('#counter2').text().replace(' ',''));
 						var curval3=parseInt(jQuery('#counter3').text().replace(' ',''));
 						var curval5=parseInt(jQuery('#counter5').text().replace(' ',''));
@@ -439,7 +438,6 @@ if($customer_pages==1)
 						if(curval1<=66500){
 							jQuery('#counter1').text(sdf_FTS((curval1+500),0,' '));
 						}
-						*/
 						if(curval2<=924024){
 							jQuery('#counter2').text(sdf_FTS((curval2+2500),0,' '));
 						}
@@ -453,12 +451,13 @@ if($customer_pages==1)
 						if(curval5<=50000){
 							jQuery('#counter5').text(sdf_FTS((curval5+500),0,' '));
 						}
-						 
+						 */
 						/*if(curval3>=954024){
 							$('#counter3').text('Over 1 Million +');
 						}*/
-					}, 400); 
+					}, 2); 
 				}, 2000);
 			});
 	</script>
-<?php } ?>
+<?php }  ?>
+ 
