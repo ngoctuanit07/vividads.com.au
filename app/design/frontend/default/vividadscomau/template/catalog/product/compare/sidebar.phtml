@@ -39,7 +39,7 @@
 		
 		 var parmanent_elements = {
 			 					'block_list':block_list,								
-								 'left_menu':left_menu,							  
+								'left_menu':left_menu,							  
 			 };  
 		var pre_height = 0;		
 		
@@ -51,33 +51,35 @@
 		///check if we are on product view page
 		 
 		   if( jQuery('body').hasClass('catalog-product-view')) {
-			   clm_height = clm_height-550;
+			   clm_height = clm_height-1250;
 			//console.log(jQuery('body').hasClass('catalog-product-view'));
 			   }
 			   
 			///check if we are on product view page
-		 
+		 /*
 		   if( jQuery('body').hasClass('cms-home')) {
 			    clm_height = clm_height-1200;
 			//console.log(jQuery('body').hasClass('catalog-product-view'));
 			   }   
-		 
+		 */
 		 // console.log('pre='+pre_height);
 		  
 		
 		var elements = {
 		 				 
-						// 'phone_left':jQuery('#phone_left'),
+						 'phone_left':jQuery('#phone_left'),
 						 'cl_banner':jQuery('#clients_banner'),
 		 				 'testimonial':jQuery('#testimonial'),
 						 'artwork_banner':jQuery('#artwork_banner'),
-						 'save_img':jQuery('#save_img'),
-						 'tnt_img':jQuery('#tnt_img'),
-						 'quality_img':jQuery('#quality_img'),
-						 'customer_services_img':jQuery('#customer_services_img'),
-						 'best_offer':jQuery('#best_offer'),
-						 'best_choice':jQuery('#best_choice'),
-						 'best_seller':jQuery('#best_seller'),
+						 'price_guarante':jQuery('#price_guarante'),
+						// 'save_img':jQuery('#save_img'),
+						// 'tnt_img':jQuery('#tnt_img'),
+						// 'quality_img':jQuery('#quality_img'),
+						// 'customer_services_img':jQuery('#customer_services_img'),
+						 'best_offer_div':jQuery('#best_offer_div'),
+						// 'best_choice':jQuery('#best_choice'),
+						// 'best_seller':jQuery('#best_seller'),
+						 
 						 'secure':jQuery('#secure'),
 						 'likeus':jQuery('#likeus'),
 						 'stand_design':jQuery('#stand_design'),						 
@@ -326,19 +328,19 @@ $counter =0;
 <div id="clients_banner" class="clients-banner" style="display:none !important;"> <a href="<?php echo $this->getUrl('our-clients')?>"><img src="<?php echo $this->getSkinUrl()?>images/client_banner.png" /></a> </div>
 <div id="testimonial" class="testimonial" style="display:none !important;"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial')->toHtml() ?> </div>
 <div id="artwork_banner" class="artwork-banner" style="display:none !important;"> <a href="<?php echo $this->getUrl('upload')?>"><img src="<?php echo $this->getSkinUrl()?>images/upload_banner.png" /></a> </div>
-<div class="price-guarante">
+<div class="price-guarante" id="price_guarante" style="height:580px; display:none !important; ">
   <ul>
-    <li id="save_img" style="display:none !important;"><img src="<?php echo $this->getSkinUrl()?>images/buy_factory.png "/></li>
-    <li id="tnt_img" style="display:none !important;"><img src="<?php echo $this->getSkinUrl()?>images/fast_delivery.png "/></li>
-    <li id="quality_img" style="display:none !important;"><img src="<?php echo $this->getSkinUrl()?>images/quality_assurance_banner.png "/></li>
-    <li id="customer_services_img" style="display:none !important;"><img src="<?php echo $this->getSkinUrl()?>images/customer_care.png "/></li>
+    <li id="save_img" ><img src="<?php echo $this->getSkinUrl()?>images/buy_factory.png "/></li>
+    <li id="tnt_img" ><img src="<?php echo $this->getSkinUrl()?>images/fast_delivery.png "/></li>
+    <li id="quality_img" ><img src="<?php echo $this->getSkinUrl()?>images/quality_assurance_banner.png "/></li>
+    <li id="customer_services_img" ><img src="<?php echo $this->getSkinUrl()?>images/customer_care.png "/></li>
   </ul>
 </div>
-<div class="best_offer">
+<div class="best_offer" id="best_offer_div" style="height:400px; display:none !important;">
   <ul>
-    <li id="best_offer" style="display:none !important;"><img src="<?php echo $this->getSkinUrl()?>images/best_offer.png" alt="Best Offer" /> </li>
-    <li id="best_choice" style="display:none !important;"><img src="<?php echo $this->getSkinUrl()?>images/best_choice.png" alt="Best Choice" /> </li>
-    <li id="best_seller" style="display:none !important;"><img src="<?php echo $this->getSkinUrl()?>images/best_seller.png" alt="Best Seller" /> </li>
+    <li id="best_offer" ><img src="<?php echo $this->getSkinUrl()?>images/best_offer.png" alt="Best Offer" /> </li>
+    <li id="best_choice" ><img src="<?php echo $this->getSkinUrl()?>images/best_choice.png" alt="Best Choice" /> </li>
+    <li id="best_seller" ><img src="<?php echo $this->getSkinUrl()?>images/best_seller.png" alt="Best Seller" /> </li>
   </ul>
 </div>
 <div class="stand_design" id="stand_design" style="display:none !important;"> <img src="<?php echo $this->getSkinUrl()?>images/stand_design.png"  alt="Banner Stand"/> </div>
