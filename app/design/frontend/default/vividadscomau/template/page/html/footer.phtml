@@ -47,6 +47,7 @@
 </ul>
 </div><div class="links">
 <div class="block-title"><strong><span><?php echo $this->__('Services')?></span></strong></div>
+
 <ul>
 <li><a href="<?php echo $this->getUrl('artwork');?>"><?php echo $this->__('Artwork Guidelines')?></a></li>
 <li><a href="<?php echo $this->getUrl('artwork')?>"><?php echo $this->__('Graphic Templates')?></a></li>
@@ -63,16 +64,23 @@
 <?php //echo $this->getLayout()->createBlock('newsletter/subscribe')->setTemplate('newsletter/subscribe.phtml')->toHtml(); ?>
 
 <div class="footer_social">
-<div class="block-title"><strong><span>Connect</span></strong></div>
+<div class="block-title"><strong><span>Connect</span></strong>
+</div>
 <!--<a href="#" class="facebook">&nbsp;</a>
 <a href="#" class="twitter">&nbsp;</a>
 <a href="#" class="youtube">&nbsp;</a>
 <a href="#" class="vimeo">&nbsp;</a>
 <a href="#" class="google">&nbsp;</a>-->
 </div>	    
-<div style="float: left; margin-right: 70px;" class="socialaddthis">
+<div  class="socialaddthis">
  <?php echo $this->getLayout()->createBlock('sharingtool/share')->setBlockId('addthis_sharetool')->toHtml(); ?>
- </div>
+ <table width="135" border="0" cellpadding="2" cellspacing="0" title="Click to Verify - This site chose Symantec SSL for secure e-commerce and confidential communications." style="float: right; width: 322px; margin: -65px 0px 0px 0px ; padding: 0px;">
+<tr>
+<td width="135" align="center" valign="top"><script type="text/javascript" src="https://seal.websecurity.norton.com/getseal?host_name=www.vividads.com.au&amp;size=L&amp;use_flash=YES&amp;use_transparent=YES&amp;lang=en"></script><br />
+<a href="http://www.symantec.com/ssl-certificates" target="_blank"  style="color:#000000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing:.5px; text-align:center; margin:0px; padding:0px;">ABOUT SSL CERTIFICATES</a></td>
+</tr>
+</table>
+</div>
 <div class="contact-container">
                 
 <div class="textwidget"><h3>Free Call (Australia Only): <strong style="color:#000;">1300 721 614</strong></h3>
@@ -84,19 +92,15 @@ Victoria 3207 Australia </p>
   Fax: +613 8456 6234 </div>
 </div>
 </div>
-<div style="float: left; width: 100%; text-align: center; padding: 0px 0px 20px; font-size:12px;" class="item">
+ <div style="float: left; width: 100%; text-align: center; padding: 0px 0px 20px; font-size:12px;" class="item">
 <?php echo $this->__('© VividAds Pty Limited  Australia. All rights reserved.'); ?>
 </div>
+</div>
 
 
-</div>
-</div>
-<table width="135" border="0" cellpadding="2" cellspacing="0" title="Click to Verify - This site chose Symantec SSL for secure e-commerce and confidential communications.">
-<tr>
-<td width="135" align="center" valign="top"><script type="text/javascript" src="https://seal.websecurity.norton.com/getseal?host_name=www.vividads.com.au&amp;size=L&amp;use_flash=YES&amp;use_transparent=YES&amp;lang=en"></script><br />
-<a href="http://www.symantec.com/ssl-certificates" target="_blank"  style="color:#000000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing:.5px; text-align:center; margin:0px; padding:0px;">ABOUT SSL CERTIFICATES</a></td>
-</tr>
-</table>
+ 
+ </div>
+
 
 <script type="text/javascript">
 var __lc = {};
