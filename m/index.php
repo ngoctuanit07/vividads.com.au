@@ -102,7 +102,9 @@ $_host = $_SERVER['HTTP_HOST'];
 	case 'www.outdoorbannershop.com':
             $mageRunCode = 'vividadscomau_mobile';
         	$mageRunType = 'website';
-    break;	
+    break;
+	
+		
 	
 	case '13expo.com.au':
             $mageRunCode = 'expo_mobile';

@@ -2,8 +2,8 @@
 /**
  * Magento
  *
- * NOTICE OF LICENSE
- *
+ * NOTICE OF LICENSE 
+ * 
  * This source file is subject to the Academic Free License (AFL 3.0)
  * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
@@ -84,12 +84,12 @@
 		jQuery.each(elements,function(key , val){
 			 	 val.hide();
 				var phone_left_height = elements.phone_left.height();
-				console.log('main Column Height = '+clm_height);				 
+				//console.log('main Column Height = '+clm_height);				 
 				totalHeight +=val.height();				
 				
 				if( totalHeight<= clm_height){					
 					 divheights [key]= val.height();
-					  console.log(totalHeight);
+					//  console.log(totalHeight);
 				 jQuery('#'+key).show();
 				}
 				
@@ -349,7 +349,7 @@ jQuery(function() {
         return false;
       } 
 			 var filter = /^[0-9-+]+$/;
-		 console.log(filter.test(phone));
+		// console.log(filter.test(phone));
 		  if (!(filter.test(phone))) {
 		jQuery("label#phone_error").css("color", "red");		
         jQuery("input#phone").focus();			  
@@ -364,7 +364,7 @@ jQuery(function() {
 
 		var dataString = 'phone='+ phone + '&url=' + url + '&cusName='+cusName;
 		var getUrl = '<?php echo $formUrl;?>';
-		console.log(dataString+getUrl);
+		//console.log(dataString+getUrl);
   //alert (dataString);return false;
   jQuery.ajax({
     type: "get",
@@ -395,7 +395,7 @@ jQuery(function(jQuery) {
         return false;
          } 
 		 var filter = /^[0-9-+]+$/;
-		 console.log(filter.test(phone));
+		// console.log(filter.test(phone));
 		  if (!(filter.test(phone))) {
 		jQuery("label#phone_error").css("color", "red");		
         jQuery("input#phone").focus();			  
@@ -410,7 +410,7 @@ jQuery(function(jQuery) {
 
 		var dataString = 'phone='+ phone + '&url=' + url + '&cusName='+cusName;
 		var getUrl = '<?php echo $formUrl;?>';
-		console.log(dataString+getUrl);
+		//console.log(dataString+getUrl);
   //alert (dataString);return false;
   jQuery.ajax({
     type: "get",

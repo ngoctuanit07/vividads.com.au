@@ -173,11 +173,12 @@ function changeImg(id){
 $(function(){	
 	
 	 $('.uploadFile').change(function(event){
-		 
+		 /*
 		   var confirmUpload = confirm('Please confirm you want to upload selected file?');
 		  if(!confirmUpload){
 		 	 return false;
 		 	 }
+		*/	 
 		 //console.log(event.target.id);
 		 var previewClass = event.target.id;
 		 var idStart = previewClass.indexOf('[');
@@ -291,7 +292,7 @@ $(function(){
 					 total_ext=file_ext.length;
 					var file_extension = file_ext[total_ext-1];
 					 					
-					 // console.log(file_extension);
+					   console.log(file_extension);
 					  
 					 if(file_extension == 'psd'){					
 						preview.attr("src", file_icons['psd_icon']);
@@ -1861,8 +1862,8 @@ $(function(){
       <input class="sendButton" type="button"  id="<?php echo $_item_id;?>_<?php echo $counter;?>" name="<?php echo $_item_id;?>_<?php echo $counter;?>"  value="Send" title="Type your message and hit send button"  />
        </div> 
        <div class="send_email" id="<?php echo $_item_id;?>_<?php echo $counter;?>">
-       <label>
-       <input type="checkbox" name="send_email_<?php echo $_item_id;?>_<?php echo $counter;?>" id="send_email_<?php echo $_item_id;?>_<?php echo $counter;?>" value="1" checked /> 
+       <label style="display:none;">
+       <input type="checkbox"  name="send_email_<?php echo $_item_id;?>_<?php echo $counter;?>" id="send_email_<?php echo $_item_id;?>_<?php echo $counter;?>" value="0"  /> 
        <?php echo __('I want to send Email');?></label> </div>         
            </div>
                      </div>
