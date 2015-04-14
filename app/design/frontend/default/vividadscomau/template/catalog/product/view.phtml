@@ -453,18 +453,17 @@ jQuery('.right_float').bxSlider({
               </div>
               
             </div>
-            <div>
-      <?php
-			$gallery1 =	$_product->getGalleryOne();
-			$gallery2 = $_product->getGalleryTwo();
-			$gallery3 =	$_product->getGalleryThree();
-			
-			$gallery = array($gallery1,$gallery2,$gallery3);
-			echo  $gallery[0],  $gallery[1],  $gallery[2]  ;
-				?>
+                     <?php
+            $gallery1 =    $_product->getGalleryOne();
+            $gallery2 = $_product->getGalleryTwo();
+            $gallery3 =    $_product->getGalleryThree();
+           
+            $gallery = array($gallery1,$gallery2,$gallery3);
+            echo  $gallery[0],  $gallery[1],  $gallery[2]  ;
+                ?>
+    
+                       
      
-            			
-      
           </div>
             <div class="pro-img-right" style="position:relative; right:25px;">
               <?php if($_product->getPackage_image() !='')
