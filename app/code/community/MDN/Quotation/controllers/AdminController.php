@@ -2129,22 +2129,24 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                 $result = $connectionRead->fetchRow($select);
                 
                  $last_item_id = $result['item_id'];
-                
-           
-		 
-		        
+               
          //$products = array('1' => array('qty' => 1),'2' =>array('qty' => 1));
          foreach ($quote->getItems() as $productId=>$product) {
                 $_product = Mage::getModel('catalog/product')->load($product->getProductId());
                 
-                $last_item_id++;               
-               
+                $last_item_id++;   
                 
              if($_product->getTypeId() == 'bundle')
                     {
-                        /********************** Start for bundle product 12_02_2014 ********************************/
-                            $rowTotal = $_product->getPrice() * $product['qty'];
-                            $orderItem = Mage::getModel('sales/order_item')
+            $final_price = $_product->getPrice();        
+			if($_product->getSpecial_price() != '' ){
+				$final_price = $_product->getSpecial_price();
+				}
+			    
+			/********************** Start for bundle product 12_02_2014 ********************************/
+                  $rowTotal = $final_price * $product['qty'];
+				  
+                  $orderItem = Mage::getModel('sales/order_item')
                                         ->setStoreId($storeId)
                                         ->setQuoteItemId(0)
                                         ->setQuoteParentItemId(NULL)
@@ -2156,9 +2158,9 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                                         ->setQtyOrdered($product['qty'])
                                         ->setName($_product->getName())
                                         ->setSku($_product->getSku())
-                                        ->setPrice($_product->getPrice())
-                                        ->setBasePrice($_product->getPrice())
-                                        ->setOriginalPrice($_product->getPrice())
+                                        ->setPrice($final_price)
+                                        ->setBasePrice($final_price)
+                                        ->setOriginalPrice($final_price)
                                         ->setRowTotal($rowTotal)
                                         ->setBaseRowTotal($rowTotal);
                                         
@@ -2177,7 +2179,13 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                             foreach($chkItem as $bItem)
                             {
                                 $product_bundle = Mage::getModel('catalog/product')->load($bItem['product_id']);
-                                $rowTotal = $product_bundle->getPrice() * $product['qty'];
+                                
+			$final_price = $product_bundle->getPrice();        
+			if($product_bundle->getSpecial_price() != '' ){
+				$final_price = $product_bundle->getSpecial_price();
+				}	
+								
+								$rowTotal = $product_bundle->getPrice() * $product['qty'];
                                 $orderItem = Mage::getModel('sales/order_item')
                                         ->setStoreId($storeId)
                                         ->setQuoteItemId(0)
@@ -2190,9 +2198,9 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                                         ->setQtyOrdered($product['qty'])
                                         ->setName($product_bundle->getName())
                                         ->setSku($product_bundle->getSku())
-                                        ->setPrice($product_bundle->getPrice())
-                                        ->setBasePrice($product_bundle->getPrice())
-                                        ->setOriginalPrice($product_bundle->getPrice())
+                                        ->setPrice($product_bundle->getSpecial_price()?$product_bundle->getSpecial_price():$product_bundle->getPrice())
+                                        ->setBasePrice($product_bundle->getSpecial_price()?$product_bundle->getSpecial_price():$product_bundle->getPrice())
+                                        ->setOriginalPrice($product_bundle->getSpecial_price()?$product_bundle->getSpecial_price():$product_bundle->getPrice())
                                         ->setRowTotal($rowTotal)
                                         ->setBaseRowTotal($rowTotal);
                                 $order->addItem($orderItem);
@@ -2205,8 +2213,15 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                     }
                     else
                     {
-                        $rowTotal = $_product->getPrice() * $product['qty'];
-                        $orderItem = Mage::getModel('sales/order_item')
+                  
+                       
+					  $final_price = $_product->getPrice();        
+						if($_product->getSpecial_price() != '' ){
+							$final_price = $_product->getSpecial_price();
+						}
+						$rowTotal = $final_price * $product['qty'];
+					   
+					    $orderItem = Mage::getModel('sales/order_item')
                                     ->setStoreId($storeId)
                                     ->setQuoteItemId(0)
                                     ->setQuoteParentItemId(NULL)
@@ -2217,9 +2232,9 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                                     ->setQtyOrdered($product['qty'])
                                     ->setName($_product->getName())
                                     ->setSku($_product->getSku())
-                                    ->setPrice($_product->getPrice())
-                                    ->setBasePrice($_product->getPrice())
-                                    ->setOriginalPrice($_product->getPrice())
+                                    ->setPrice($final_price)
+                                    ->setBasePrice($final_price)
+                                    ->setOriginalPrice($final_price)
                                     ->setRowTotal($rowTotal)
                                     ->setBaseRowTotal($rowTotal);
                                     
@@ -2237,8 +2252,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                 ->setTaxAmount($quote->GetTaxAmount())
                 ->setBaseGrandTotal($quote->GetFinalPriceWithTaxes());
                 
-                
-                
+                       
                 $order->save;
                 
                 
