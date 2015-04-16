@@ -250,14 +250,17 @@ jQuery('.right_float').bxSlider({
     jQuery(".bx-viewport").css('height','481px !important');
   });
 </script> 
+
+
+
         <?php echo $this->getChildHtml('alert_urls') ?>
         <?php /*?>       <?php if ($_product->getDescription()):?>
         <?php endif;?><?php */?>
         <!---SKU Begins--->
             <div class="row-view" style="margin-top:10px;">
               <div style="margin: 0px; padding: 0px; height: 50px; float: left; width: 100%;">   
-              <h2 class="sku_new" itemprop="sku" content="<?php echo $_product->getSku(); ?>" style="float:left; width:300px;">
-              Model Number :<?php echo $_product->getSku(); ?></h2>
+              <h2 class="sku_new" itemprop="sku" content="<?php echo $_product->getSku(); ?>" style="float:left; width:360px;">
+              Model # :<?php echo $_product->getSku(); ?></h2>
                 <h3 class="in_stock" style="float:right; width:360px;">  <?php $shipping = $_product->getData('shipsindays'); ?>
             <?php echo $shipping ;?></h3>
               

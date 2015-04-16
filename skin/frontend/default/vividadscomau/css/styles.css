@@ -1633,7 +1633,33 @@ p.required {
 	font-family: "Raleway",sans-serif;
 	font-size: 12px;
 }
+.breadcrumbs li div{
+	display: inline;
+	font-family: "Raleway",sans-serif;
+	font-size: 12px;
+}
 .breadcrumbs li strong {
+	font-weight: bold;
+	position:relative;
+	z-index:100;
+	color: #ec761c;
+	font-family: "Raleway",sans-serif;
+}
+.breadcrumbs li strong div{
+	font-weight: bold;
+	position:relative;
+	z-index:100;
+	color: #ec761c;
+	font-family: "Raleway",sans-serif;
+}
+.breadcrumbs li strong div a{
+	font-weight: bold;
+	position:relative;
+	z-index:100;
+	color: #ec761c;
+	font-family: "Raleway",sans-serif;
+}
+.breadcrumbs li strong a{
 	font-weight: bold;
 	position:relative;
 	z-index:100;
@@ -8359,6 +8385,10 @@ th, td {
 	padding: 0;
 	float: left;
 	width:100%;
+	font-size:16px;
+	color:#888;
+	font-family: "Raleway",sans-serif;
+
 }
 .intro {
 	float: left;
