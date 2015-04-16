@@ -5,28 +5,30 @@
 		<?php 
 			$_product = $this->getProduct(); 				
 		?>
-        
   <div itemscope itemtype="http://schema.org/Product" style="display:none;">
   <span itemprop="name"><?php echo $_product->getName(); ?></span>
   <img src="<?php echo $this->getNonCachedImage($_product); ?>" alt="<?php echo $_product->getName(); ?>" />
   
-  <link itemprop="itemCondition" href="http://schema.org/UsedCondition"/>Previously owned,
-      in excellent condition
-    <link itemprop="availability" href="http://schema.org/InStock"/>In stock! Order now!</span>
+  
+     
   
   <div itemprop="aggregateRating"
     itemscope itemtype="http://schema.org/AggregateRating">
-   Rated <span itemprop="ratingValue">7.5</span>/10
-   based on <span itemprop="reviewCount">11</span> customer reviews
+      <span itemprop="worstRating" >1</span>       
+      <span itemprop="bestRating">10</span>stars
+   Rated <span itemprop="ratingValue">10</span>/10
+   based on <span itemprop="reviewCount">1568</span> customer reviews
   </div>
   <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+  <link itemprop="itemCondition" href="http://schema.org/NewCondition"/>Previously owned,
+      in excellent condition 
+  <link itemprop="availability" href="http://schema.org/InStock"/>In stock! Order now!
     <!--price is 1000, a number, with locale-specific thousands separator
     and decimal mark, and the $ character is marked up with the
     machine-readable code "USD" -->
-    <span itemprop="priceCurrency" content="<?php echo $this->getCurrencyCode(); ?>"><?php echo $this->getCurrencyCode(); ?></span><span
-          itemprop="price" content="<?php echo $this->getSpecial_price(); ?>">  <?php echo $this->getSpecial_price(); ?></span>
-    <link itemprop="availability" href="http://schema.org/InStock" />In stock
-  </div>
+    <span itemprop="priceCurrency" content="<?php echo $this->getCurrencyCode(); ?>"><?php echo $this->getCurrencyCode(); ?></span>
+    <span itemprop="price" content="<?php echo $_product->getSpecial_price(); ?>">  <?php echo $_product->getSpecial_price(); ?></span>
+    <link itemprop="availability" href="http://schema.org/InStock"/>In stock</div>
   Product description:
   <span itemprop="description"><?php echo $this->getProductDescription($_product); ?></span>
   Customer reviews:
@@ -36,22 +38,12 @@
     <meta itemprop="datePublished" content="<?php echo $_product->getCreated_at();?>">April 1, 2011
     <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
       <meta itemprop="worstRating" content = "1">
-      <span itemprop="ratingValue">1</span>/
-      <span itemprop="bestRating">5</span>stars
-    </div>
-    <span itemprop="description"><?php echo $this->getProductDescription($_product); ?></span>
-  </div>
-  <div itemprop="review" itemscope itemtype="http://schema.org/Review">
-    <span itemprop="name">Value purchase</span> -
-    by <span itemprop="author"><?php echo 'Vividads Pty Australia';?></span>,
-    <meta itemprop="datePublished" content="<?php echo $_product->getCreated_at();?>">March 25, 2011
-    <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
-      <meta itemprop="worstRating" content = "1"/>
-      <span itemprop="ratingValue">8</span>/
+      <span itemprop="ratingValue">10</span>/
       <span itemprop="bestRating">10</span>stars
     </div>
     <span itemprop="description"><?php echo $this->getProductDescription($_product); ?></span>
   </div>
+  
  
 </div>
 		<div itemscope itemtype="http://schema.org/Product">        
@@ -66,8 +58,8 @@
 				<?php $review = $this->getReviewSummary(); ?>
 				<meta itemprop="worstRating" content="1">
 				<meta itemprop="bestRating" content="10">
-				<meta itemprop="ratingValue" content="<?php echo $review->getRatingSummary()/20; ?>">
-				<meta itemprop="reviewCount" content="<?php echo $review->getReviewsCount(); ?>">
+				<meta itemprop="ratingValue" content="10/10<?php // echo $review->getRatingSummary()/10; ?>">
+				<meta itemprop="reviewCount" content="1568<?php // echo $review->getReviewsCount(); ?>">
 			</div>
 		
 			<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
