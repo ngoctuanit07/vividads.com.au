@@ -3842,8 +3842,8 @@ f/********** Product Prices > */
 }
 .product-view .product-img-box .product-image-zoom {
 	position: relative;
-	width: 300px;
-	height: 300px;
+	width: 1200px;
+	height: 481px;
 	overflow: hidden;
 	z-index: 9;
 }
@@ -4360,7 +4360,10 @@ ul.product-tabs {
     border: medium none;
     padding: 0;
 }
-.catalog-product-view .row_details {background-color: white; float: left; /*margin-bottom: -10px;*/ margin-left: 10px; padding: 10px; width: 910px; position:relative; top:0px;}
+.addon-sku{background-color: #818181; color: #F6F6F6; font-size: 13px; padding-left: 10px; position: relative; text-align: center;
+    font-weight: normal;}
+.addon-price{text-align: center; color: #fff;  text-decoration: none; height:26px; width:134px; float:left; line-height:26px;}
+.catalog-product-view .row_details {background-color: white; float: left; margin-bottom: 10px; margin-left: 10px; padding: 10px; width: 910px; position:relative; top:0px;}
 .catalog-product-view .row_details .span6{width:440px; float:left; margin-right:5px; padding:0px; background-color:white;}
 .catalog-product-view .row_details .span6 p{color: #888888; margin: 0 0 3px; font-size:16px;  float:left;
 font-family:"Raleway",sans-serif !important; text-align:justify;}
@@ -4387,7 +4390,28 @@ font-family:"Raleway",sans-serif !important; text-align:justify;}
 	font-size:1.5rem;
 	font-family:"Raleway",sans-serif ;
 
+
 }
+
+.catalog-product-view .row-view h2.sku_new{
+    color: #30343f;
+    margin: 0 0 3px;
+	font-size:1.5rem;
+	font-family:"Raleway",sans-serif ;
+
+}
+.catalog-product-view .row-view h3.in_stock {
+    color: #30343f;
+    font-family: "Raleway",sans-serif;
+    font-size: 1.5rem;
+	padding-right:55px;
+    margin: 0 0 3px;
+    position: relative;
+    text-align: right;
+    top: -36px;
+
+}
+
 .right {
     float: right;
 }
@@ -4488,18 +4512,15 @@ font-family:"Raleway",sans-serif !important; text-align:justify;}
 
 .row_details .downloads a.link{font-weight: bold;color: #5bbf21;font-size: 14px;background: url(../images/arrow_tab_link.png) no-repeat scroll 0 3px transparent;padding-left: 18px;margin-top: 21px;display: block;}
 
-
 .row_details .tabs-actions{border: 2px solid #f1f1f1;margin-top: 0;overflow: hidden;/*padding: 13px 15px;width: 100%;*/ padding:5px; width:97%;}
 .row_details .help{float:left;color:#000000; font-size:18px; text-transform:uppercase; font-weight:700;margin-top: 4px; line-height:30px;}
 .row_details .help span{ color:#000000; font-size:16px; text-transform:uppercase; font-weight:700;margin-top: 4px;}
-
-
 
 .row_details .tabs-actions span{float:left;color:#000000; font-size:18px; text-transform:uppercase; font-weight:700;margin-top: 4px;}
 .row_details .tabs-actions .btn-tabs{color:#000000; font-size:14px; text-transform:uppercase; line-height:1;font-weight:500; border:1px solid #5bbf21;padding:11px 9px;display:block; float:right;margin-left:6px}
 .row_details .tabs-actions .btn-tabs:first-child{margin-left:0}
 .product-box .tabs-actions .btn-tabs:hover{text-decoration:none; border:2px solid #5bbf21;padding: 10px 8px;}
-.catalog-product-view .row-view .review-container{width:100%; margin:0px; padding:0px;}
+.catalog-product-view .row-view .review-container{width:100%; margin:0px 0 0 0; padding:0px;}
 .catalog-product-view .row-view .review-container h3{
     color: #30343f;
     margin: 0 0 3px;
@@ -4507,7 +4528,6 @@ font-family:"Raleway",sans-serif !important; text-align:justify;}
 	width:100px;
 	float:left;
 }
-
 .catalog-product-view .row-view .review-container .ratings .rating-links .separator {
     margin: 0 2px;
 	width:auto !important;
@@ -7987,6 +8007,8 @@ th, td {
 	margin-bottom: 0px;
 }
 .left_nav {
+	width:239px;
+	float:left;
 	/*background: #42aeec;*/
 }
 .left_nav li span {
@@ -13602,6 +13624,8 @@ border-width: 1px; margin-bottom: 10px; padding: 4px 9px; width: 30px;}
     text-align: left;
     text-transform: uppercase;
 }
+.payment_strip{ width:1140px; height:115px; margin:10px auto 0px auto; padding:0px;}
+
 /**********Mozila Competebility Code**********/
 @-moz-document url-prefix() {
 .cms-home .super {
