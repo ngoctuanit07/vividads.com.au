@@ -34,7 +34,6 @@
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
   <?php 
-  
    //$_cr_product = $_product->getEntity_id();
   $_cr_product = Mage::registry('current_product')->getEntity_id();
    //var_dump($_cr_product);
@@ -256,15 +255,19 @@ jQuery('.right_float').bxSlider({
         <?php endif;?><?php */?>
         <!---SKU Begins--->
             <div class="row-view" style="margin-top:10px;">
-              <h2 class="sku_new" itemprop="sku" content="<?php echo $_product->getSku(); ?>">Model Number :<?php echo $_product->getSku(); ?></h2>
-                <h3 class="in_stock">  <?php $shipping = $_product->getData('shipsindays'); ?>
+              <div style="margin: 0px; padding: 0px; height: 50px; float: left; width: 100%;">   
+              <h2 class="sku_new" itemprop="sku" content="<?php echo $_product->getSku(); ?>" style="float:left; width:300px;">
+              Model Number :<?php echo $_product->getSku(); ?></h2>
+                <h3 class="in_stock" style="float:right; width:360px;">  <?php $shipping = $_product->getData('shipsindays'); ?>
             <?php echo $shipping ;?></h3>
               
-              
+              </div>
               <div class="review-container">
                 <?php #echo $this->getReviewsSummaryHtml($_product, false, true)?> 
                 <!-- Go to www.addthis.com/dashboard to customize your tools -->
     <!--            <div class="addthis_native_toolbox"></div>-->
+   <div style="width:100%; float:left;">
+   
     <div style="float:left;margin-bottom:10px;" class="socialaddthis">
      <?php echo $this->getLayout()->createBlock('sharingtool/share')->setBlockId('addthis_sharetool')->toHtml(); ?>
      </div>
@@ -299,7 +302,7 @@ jQuery('.right_float').bxSlider({
             
 
             </div>
-     
+     </div>
                 
                 <div class="head">
                   <h2><span>PRODUCT DETAILS</span></h2>
@@ -443,8 +446,6 @@ jQuery('.right_float').bxSlider({
               <div class="help">NEED HELP ?</div>
               
               <div class="tabs-actions">  
-               
-            
      <!-- <a href="javascript:void(0)" title="<?php echo $this->__('Add to Quote') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" id="quoteImage" data-url="<?php echo $this->getAddToCartUrl($_product); ?>" data-id="<?php echo $_product->getId(); ?>" style="margin-left:13px;">-->
               <a  title="<?php echo $this->__('Add to Quote') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" style="margin-left:13px;" href="<?php echo $this->getUrl('get_a_quote');?>" >   
                   <img src="<?php echo $this->getSkinUrl('images/addQuote.jpg');?>" alt="add Quote" title="add Quote Image" /> </a>
@@ -645,6 +646,7 @@ foreach($related_product_collection as $pdt)
             <ul class="products-grid">
               <div class="head">
                 <h2><span>PEOPLE WHO VIEWED THIS ALSO VIEWED...</span></h2>
+                               
               </div>
               <?php
 $i=1;

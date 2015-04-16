@@ -4512,18 +4512,15 @@ font-family:"Raleway",sans-serif !important; text-align:justify;}
 
 .row_details .downloads a.link{font-weight: bold;color: #5bbf21;font-size: 14px;background: url(../images/arrow_tab_link.png) no-repeat scroll 0 3px transparent;padding-left: 18px;margin-top: 21px;display: block;}
 
-
 .row_details .tabs-actions{border: 2px solid #f1f1f1;margin-top: 0;overflow: hidden;/*padding: 13px 15px;width: 100%;*/ padding:5px; width:97%;}
 .row_details .help{float:left;color:#000000; font-size:18px; text-transform:uppercase; font-weight:700;margin-top: 4px; line-height:30px;}
 .row_details .help span{ color:#000000; font-size:16px; text-transform:uppercase; font-weight:700;margin-top: 4px;}
-
-
 
 .row_details .tabs-actions span{float:left;color:#000000; font-size:18px; text-transform:uppercase; font-weight:700;margin-top: 4px;}
 .row_details .tabs-actions .btn-tabs{color:#000000; font-size:14px; text-transform:uppercase; line-height:1;font-weight:500; border:1px solid #5bbf21;padding:11px 9px;display:block; float:right;margin-left:6px}
 .row_details .tabs-actions .btn-tabs:first-child{margin-left:0}
 .product-box .tabs-actions .btn-tabs:hover{text-decoration:none; border:2px solid #5bbf21;padding: 10px 8px;}
-.catalog-product-view .row-view .review-container{width:100%; margin:-30px 0 0 0; padding:0px;}
+.catalog-product-view .row-view .review-container{width:100%; margin:0px 0 0 0; padding:0px;}
 .catalog-product-view .row-view .review-container h3{
     color: #30343f;
     margin: 0 0 3px;
@@ -4531,7 +4528,6 @@ font-family:"Raleway",sans-serif !important; text-align:justify;}
 	width:100px;
 	float:left;
 }
-
 .catalog-product-view .row-view .review-container .ratings .rating-links .separator {
     margin: 0 2px;
 	width:auto !important;
