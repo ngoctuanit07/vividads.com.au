@@ -371,7 +371,14 @@ abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_
 		//var_dump($valid_date);
 		//exit;
 		////right address		
-		$rightAddress='Quote Number:  	'.$quote['data']['increment_id'].'
+		
+		if($quoteInfo['quote_type']=='quote'){
+		 	 	$caption_title = 'Quote Number: ';
+			}else{
+		 	 	$caption_title = 'Invoice Number: ';
+			}
+		
+		  $rightAddress = $caption_title.'  	'.$quote['data']['increment_id'].'
 						Generate Date:  '.$_created_date.'
 						Valid Till:            '.$_valid_date.'';		
 		$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 11);
