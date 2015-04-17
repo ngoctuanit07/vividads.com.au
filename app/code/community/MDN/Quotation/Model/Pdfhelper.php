@@ -72,9 +72,9 @@ abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_
                 if (($y < $this->_BLOC_FOOTER_HAUTEUR)) {
                     $savedFont = $page->getFont();
                     $savedFontSize = $page->getFontSize();
-                    $this->drawFooter($page, $this->_settings['store_id']);
-                    $page = $this->NewPage($this->_settings);
-                    $this->drawTableHeader($page);
+                   // $this->drawFooter($page, $this->_settings['store_id']);
+                   // $page = $this->NewPage($this->_settings);
+                  //  $this->drawTableHeader($page);
                     $y = $this->y;
                     $retour = 0;
 
@@ -363,9 +363,13 @@ abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_
 		$_created_date = new DateTime($quote['data']['created_time']);		
 		$_created_date =$_created_date->format('Y-m-d');
 		
-		$_valid_date = new DateTime($quote['data']['valid_end_time']);		
-		$_valid_date =$_valid_date->format('Y-m-d');
+		$_valid_date = new DateTime($quote['data']['valid_end_time']);	
 		
+			
+		$created_date = date('Y-m-d', strtotime($_created_date));
+		$_valid_date = date('Y-m-d',strtotime($created_date.'+14 days'));
+		//var_dump($valid_date);
+		//exit;
 		////right address		
 		$rightAddress='Quote Number:  	'.$quote['data']['increment_id'].'
 						Generate Date:  '.$_created_date.'
