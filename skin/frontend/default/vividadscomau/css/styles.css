@@ -120,28 +120,6 @@ a:hover, a:active {
    Typography
    ========================================================================== */
 
-/*
- * Addresses font sizes and margins set differently in IE6/7
- * Addresses font sizes within 'section' and 'article' in FF4+, Chrome, S5
-
-h1 { font-size: 2em; margin: 0.67em 0; }
-
-h2 { font-size: 1.5em; margin: 0.83em 0;}
-
-h3 { font-size: 1.17em; margin: 1em 0;}
-
-h4 { font-size: 1em; margin: 1.33em 0;}
-
-h5 { font-size: 0.83em; margin: 1.67em 0; }
-
-h6 { font-size: 0.75em; margin: 2.33em 0; }
-
-*/
- 
-/*
- * Addresses styling not present in IE7/8/9, S5, Chrome
- */
-
 abbr[title] {
 	border-bottom: 1px dotted;
 }
@@ -684,6 +662,8 @@ px      40    100    160    220    280    340    400    460    520    580   640 
 	
 
 }
+
+
 .pro-desc h2 {
     color: #fff;
     font-family: "Arial";
@@ -1220,11 +1200,50 @@ float:right;
 	width: 940px;
 	background: url(../images/index_288.jpg) repeat-x center -25px #ef781e;
 }
+
+.catalog-category-view .col2-left-layout .col-main {
+	float: right;
+	width: 940px;
+	background:transparent none;
+	
+}
+.catalog-category-view .col2-left-layout .cate_listing{
+	border-top:4px solid #e4e4e4;
+	background: #dba780; /* Old browsers */
+	background: -moz-linear-gradient(top,  #dba780 0%, #ef781e 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dba780), color-stop(100%,#ef781e)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #dba780 0%,#ef781e 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #dba780 0%,#ef781e 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #dba780 0%,#ef781e 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #dba780 0%,#ef781e 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dba780', endColorstr='#ef781e',GradientType=0 ); /* IE6-9 */
+	float: left;
+    padding: 17px 0;
+    width: 940px !important;
+
+	}
 .checkout-cart-index .col2-left-layout .col-main {
 	float: right;
 	width: 960px;
 	padding:0px;
 	background:  #fff;
+}
+.catalog-category-view .col2-left-layout .products-grid {
+    background: none repeat scroll 0 0 #fff;
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 920px;
+}
+.catalog-category-view .error-msg, .success-msg, .note-msg, .notice-msg {
+    border-style: solid !important;
+    border-width: 1px !important;
+    line-height: 1.63636;
+    margin-bottom: 18px;
+    margin-left: 0px;
+    margin-top: 10px;
+    padding: 8px 10px;
+    width: 97%;
 }
 
 .category-marketing-pull-up-roll-up-banner-stands .col-main {
@@ -13410,8 +13429,6 @@ border-width: 1px; margin-bottom: 10px; padding: 4px 9px; width: 30px;}
 	background-color:#FFF;
 	border:1px solid #ccc;
 	}
-
-
 #checkout-step-billing #billing-new-address-form .fields .customer-name .field-label {
     display: block;
     margin-right: 10px;
@@ -13562,7 +13579,7 @@ border-width: 1px; margin-bottom: 10px; padding: 4px 9px; width: 30px;}
 }
 .checkout-cart-index .cart .page-title {
     background: none repeat scroll 0 0 white;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     padding-bottom: 10px;
 }
 .checkout-cart-index .page-title {
