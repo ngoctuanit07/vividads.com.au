@@ -274,7 +274,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 			$ship = 'Free Shipping';
 		}
         $page->setFillColor(Zend_Pdf_Color_Html::color('#666666'));
-        $this->drawTextInBlock($page, $ship, 15, $this->y-40, 269,$this->y,'l');
+      //  $this->drawTextInBlock($page, $ship, 15, $this->y-40, 269,$this->y,'l');
 		 
 		
 		
@@ -283,10 +283,10 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		$customer_comments =$quote->getMessage();		
 		$ycolumn -= 60 ;
 		$_block_text = array('text'=>$customer_comments,'bgcolor'=>'#dceff6', 'fcolor'=>'#000000','type'>='single');	 
-	 $this->addBlockTextComments($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-6, 300, 90, 10, 14, $_block_text['type'] );  
+	       $this->addBlockTextComments($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-6, 300, 90, 10, 14, $_block_text['type'] );  
 		}
 	 
-         $this->drawTotals($page, $quote, $quoteInfo);		
+        // $this->drawTotals($page, $quote, $quoteInfo);		
          $this->drawAgreement($page, $settings, $quoteInfo);
         
       //  $this->y -= 15;
@@ -619,9 +619,9 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
         $this->y -= 235;
 	   
 	    if($quoteInfo['quote_type']=='quote'){
-			 $this->drawListingProducts($page, $quote, $style, $settings, $quoteInfo);
+		 	 	$this->drawListingProducts($page, $quote, $style, $settings, $quoteInfo);
 			}else{
-		 $this->drawListingOrderProducts($page, $quote, $style, $settings, $quoteInfo);
+		 	 	$this->drawListingOrderProducts($page, $quote, $style, $settings, $quoteInfo);
 			}
         
 		
@@ -867,12 +867,16 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 	{
 
        // $this->drawTableHeader($page);
+	   
+	   
 		
 		$type = $quoteInfo['quote_type'];
 		if($type=='Quote'){
-		$collection = $quote->getItems();
-		}else{
-		$collection = $quote->getAllItems();	
+				$collection = $quote->getItems();
+				
+				}else{
+					
+				$collection = $quote->getAllItems();	
 			}
 		
         $needBundle = Mage::getModel('Quotation/Quotation_Bundle')->needBundleProduct($quote);
@@ -928,7 +932,8 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		
                 $this->drawTextInBlock($page, $quote->FormatPrice($item->GetUnitPriceWithoutTaxes($quote)), 480, $this->y, 60, 20, 'r');
                 //$this->drawTextInBlock($page, $item->getqty(), 310, $this->y, 40, 20, 'c');
-                
+                				 
+				
 			    $this->drawTextInBlock($page, $item->getqty(), 470, $this->y, 40, 20, 'l');
                 
 				if ($quote->getshow_detail_price() || ($item->getexclude() == 1)) {
@@ -989,7 +994,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 				
                 //new page if required
               //  if ($this->y < ($this->_BLOC_FOOTER_HAUTEUR + 120)) {
-					 if ($ycolmn < ($this->_BLOC_FOOTER_HAUTEUR + 150)) {
+					 if ($ycolmn < ($this->_BLOC_FOOTER_HAUTEUR + 180)) {
                    // $this->drawFooter($page, $settings['store_id']);
                      $page = $this->NewPage($settings, $quoteInfo);
 					 $this->y -=60;					
@@ -1111,9 +1116,9 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 				
 			   $offset = $this->DrawMultilineText($page, $caption, 15, $this->y, 10, 0.2, 11);		
                $this->drawTextInBlock($page, $quote->FormatPrice($item->getPrice()), 480, $this->y, 60, 20, 'r');
-                //$this->drawTextInBlock($page, $item->getqty(), 310, $this->y, 40, 20, 'c');
+               // $this->drawTextInBlock($page, $item->getQty(), 310, $this->y, 40, 20, 'c');
                
-			 //  $this->drawTextInBlock($page, round($item->getQty_ordered()), 470, $this->y, 40, 20, 'l');
+			  $this->drawTextInBlock($page, round($item->getQty_ordered()), 470, $this->y, 40, 20, 'l');
                  
 				 
 				if ($item->getPrice() ) {
@@ -1180,7 +1185,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
                 }				
            //new page if required
            //  if ($this->y < ($this->_BLOC_FOOTER_HAUTEUR + 120)) {
-		   if ($ycolmn < ($this->_BLOC_FOOTER_HAUTEUR + 150)) {
+		   if ($ycolmn < ($this->_BLOC_FOOTER_HAUTEUR + 180)) {
                    // $this->drawFooter($page, $settings['store_id']);
                      $page = $this->NewPage($settings, $quoteInfo);
 					 $this->y -=60;					
@@ -1196,7 +1201,9 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 	
 		
 		  //Add shipping fees
-        if ($quote->getfree_shipping() == 1) {
+        
+		/*
+		if ($quote->getfree_shipping() == 1) {
             $style->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 10);
             $this->DrawMultilineText($page, Mage::helper('quotation')->__('Free Shipping'), 10, $this->y, 10, 0.2, 11);
         } else {
@@ -1207,7 +1214,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
                $this->drawTextInBlock($page, $quote->FormatPrice($quote->getShippingCostWithTax()), 640, $this->y, 60, 20, 'r');
             }
         }
-		 
+		 */
    
         return true;
     }
@@ -1672,7 +1679,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 	
 	
 	 ////adding Direct deposit text body block
-	 $_text = 'Please direct deposit your payment to our account in the amount of \'AUD '.$total_amount.'\' with your reference ID /              quote ID:  \' '.$quote_id.' \'. 
+	 $_text = 'Please direct deposit your payment to our account in the amount of \'AUD '.$total_amount.'\' with your reference ID /              Job ID:  \' '.$quote_id.' \'. 
 	 
 	 Beneficiary:      Vivid Ads Pty Ltd    
 	 Bank Name:     Westpac     
@@ -1715,7 +1722,7 @@ Cash payment can be made at the facility for any purchased goods/services';
 	 
 	 $ycolumn -= 30;
 	   ////adding Cheque Payment / Cash Payment text body block
-	 $_text = 'Please direct deposit your payment to our account in the amount of \'AUD '.$total_amount.'\'  with your reference ID / quote ID:\' '.$quote_id.'\'.
+	 $_text = 'Please direct deposit your payment to our account in the amount of \'AUD '.round($total_amount,2).'\'  with your Reference ID / Job ID:\' '.$quote_id.'\'.
 
     Beneficiary:        Vivid Ads Pty Ltd    
     Bank Name:       Westpac    
@@ -1736,7 +1743,7 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	   
 	 $ycolumn -= 45;
 	   ////adding Cheque Payment / Cash Payment text body block
-	 $_text = 'Please fax your purchase orders to 03 8456 6234.Please ensure to include your quote ID:\' '.$quote_id.'\'.';
+	 $_text = 'Please fax your purchase orders to 03 8456 6234.Please ensure to include your Job ID:\' '.$quote_id.'\'.';
 	 $_block_text = array('text'=>$_text,'bgcolor'=>'#e2ecf0', 'fcolor'=>'#000000','type'>='multiple');	 	 
 	 
 	 $this->addBlockText($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-2, $this->_BLOC_ENTETE_LARGEUR, 35, 11, 14, $_block_text['type'] );
@@ -1749,7 +1756,7 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	   
 	 $ycolumn -= 35;
 	   ////adding Cheque Payment / Cash Payment text body block
-	 $_text = 'You can directly make your payment online.Click on the link at the end of this form to make your payment. quote id \''.$quote_id.'\' Total Due \'AUD '.$total_amount.'\'';
+	 $_text = 'You can directly make your payment online.Click on the link at the end of this form to make your payment. Job ID \''.$quote_id.'\' Total Due \'AUD '.round($total_amount,2).'\'';
 	 $_block_text = array('text'=>$_text,'bgcolor'=>'#e2ecf0', 'fcolor'=>'#000000','type'>='multiple');	 	 
 	 
 	 $this->addBlockText($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-2, $this->_BLOC_ENTETE_LARGEUR, 45, 11, 14, $_block_text['type'] );   
@@ -1766,7 +1773,7 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	   ////adding Cheque Payment / Cash Payment text body block
 	 $_text = 'Payment can be made over the phone using your Master / Visa / Amex cards (3% surcharge on Amex only). Call \''.$quoteInfo['store_phone'].'\' (choose option Accounts). 
 	 	 
-	 Invoice ID \''.$quote_id.'\' Total Due AUD \''.$total_amount.'\' .';
+	 Invoice ID \''.$quote_id.'\' Total Due AUD \''.round($total_amount,2).'\' .';
 	 $_block_text = array('text'=>$_text,'bgcolor'=>'#e2ecf0', 'fcolor'=>'#000000','type'>='multiple');	 	 
 	 
 	 $this->addBlockText($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-2, $this->_BLOC_ENTETE_LARGEUR, 75, 11, 14, $_block_text['type'] );  

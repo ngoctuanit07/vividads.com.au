@@ -138,9 +138,9 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
 			$respnose =$this->getResponse()
                 ->setHeader('Content-type', 'application/pdf', true)               
                 ->setBody($pdf->render());
-			//  echo $respnose; 
+			 //  echo $respnose; 
 			
-			// exit;			
+			//  exit;			
 			$this->_prepareDownloadResponseV2($name, $pdf->render(), 'application/pdf');
         } catch (Exception $ex) {
             Mage::getSingleton('checkout/session')->addError($ex->getMessage());
