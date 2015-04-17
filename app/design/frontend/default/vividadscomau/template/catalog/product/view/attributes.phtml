@@ -30,6 +30,27 @@
  * @see Mage_Catalog_Block_Product_View_Attributes
  */
 ?>
+<?php /*?><?php
+    $_helper = $this->helper('catalog/output');
+    $_product = $this->getProduct()
+?>
+<?php if($_additional = $this->getAdditionalData()): ?>
+    <h2><?php echo $this->__('Additional Information') ?></h2>
+    <table class="data-table" id="product-attribute-specs-table">
+        <col width="25%" />
+        <col />
+        <tbody>
+        <?php foreach ($_additional as $_data): ?>
+            <tr>
+                <th class="label"><?php echo $this->htmlEscape($this->__($_data['label'])) ?></th>
+                <td class="data"><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <script type="text/javascript">decorateTable('product-attribute-specs-table')</script>
+<?php endif;?>
+<?php */?>
 <?php
     $_helper = $this->helper('catalog/output');
     $_product = $this->getProduct()
@@ -46,6 +67,35 @@
                 <td class="data"><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></td>
             </tr>
         <?php endforeach; ?>
+		<?php if (Mage::getStoreConfig('grafischdirectrichsnippets/product/sku')) : ?>
+            <tr>
+                <th class="label"><?php echo $this->__('Sku') ?></th>
+                <td class="data"><span itemprop="sku"><?php echo $this->htmlEscape($_product->getSku()) ?></span></td>
+            </tr>
+		<?php endif;?>
+		<?php if (Mage::getStoreConfig('grafischdirectrichsnippets/product/url')) : ?>
+            <tr>
+                <th class="label"><?php echo $this->__('Url') ?></th>
+                <td class="data"><span itemprop="url"><?php echo $_product->getProductUrl() ?></span></td>
+            </tr>
+		<?php endif;?>
+		<?php if (Mage::getStoreConfig('grafischdirectrichsnippets/product/manufacturer')) : ?>
+            <tr>
+                <th class="label"><?php echo $this->__('Brand') ?></th>
+                <td class="data"><span itemprop="brand"><?php echo $this->escapeHtml($_product->getAttributeText('manufacturer')); ?></span></td>
+            </tr>
+		<?php endif;?>
+		<?php if (Mage::getStoreConfig('grafischdirectrichsnippets/product/color')) : ?>
+            <tr>
+                <th class="label"><?php echo $this->__('Color') ?></th>
+                <td class="data"><span itemprop="color"><?php echo $this->escapeHtml($_product->getAttributeText('color')); ?></span></td>
+            </tr>
+		<?php endif;?>
+		<?php if (Mage::getStoreConfig('grafischdirectrichsnippets/product/weight')) : ?>
+            <tr>
+                <th class="label"><?php echo $this->__('Weight') ?></th>
+                <td class="data"><span itemprop="weight"><?php echo $_product->getWeight() ?></span></td>
+		<?php endif;?>
         </tbody>
     </table>
     <script type="text/javascript">decorateTable('product-attribute-specs-table')</script>
