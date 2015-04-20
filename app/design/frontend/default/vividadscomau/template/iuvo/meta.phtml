@@ -11,7 +11,7 @@
     <span itemprop="model" ><?php echo $_product->getSku();?></span>
     <?php 	
         $reviews = Mage::getModel('review/review')->getResourceCollection();	       
- 		$review_data = array();
+ 		$review_data = array();		
 	 
 	  foreach($reviews as $review){		  
 		  $c_review = $review->getData();	
@@ -47,6 +47,7 @@
     
     <?php 
 			foreach($review_data as $_review){
+				
 	?>
     <div itemprop="review" itemscope itemtype="http://schema.org/Review"> 
     <span itemprop="name"><?php echo $_review['title'];?></span> - by 
