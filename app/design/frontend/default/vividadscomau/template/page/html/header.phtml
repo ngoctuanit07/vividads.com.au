@@ -18,9 +18,11 @@ $cart->save();
    	  $c_product = Mage::Registry('current_product')->getProduct_id();    
 		   foreach($_items as $_item){ 
 				$_product = Mage::getModel('catalog/product')->load($_item->getProduct_id());
+					/*
 					if($c_product == $_product->getProduct_id()){
-						echo '<script language="javascript"> window.location.href="'.Mage::getUrl('checkout/cart/').'"; </script>';
-						}
+					 	echo '<script language="javascript"> window.location.href="'.Mage::getUrl('checkout/cart/').'"; </script>';
+				}
+				*/
 		   }
 	}
 ?>
