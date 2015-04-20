@@ -28,16 +28,9 @@
   $i=0;
  
 ?>
-
-
-
-
-
-
-<?php if($crumbs && is_array($crumbs)){ ?><div class="breadcrumbs">
-
+<?php if($crumbs && is_array($crumbs)){ ?>
+<div class="breadcrumbs">
   <ul itemprop="breadcrumb">
-  
     <?php foreach($crumbs as $_crumbName=>$_crumbInfo){
 		 
 		 if($_crumbInfo['link']){
@@ -112,5 +105,6 @@
     <?php } ?>
   </ul>
 
-<?php } ?>
+
 </div>
+<?php } ?>

@@ -59,6 +59,8 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		$quoteInfo['grand_total'] = $quote->GetFinalPriceWithTaxes();
 		$quoteInfo['grand_total_f'] = $quote->FormatPrice($quote->GetFinalPriceWithTaxes());
 		$quoteInfo['grand_total_format']= $quote->FormatPrice($quote->GetFinalPriceWithTaxes());
+		$quoteInfo['total_saved'] = $quote->FormatPrice($quote->getGrand_total()*.22);
+		$quoteInfo['total_amount'] = str_replace('$','',$quote->FormatPrice($quote->GetFinalPriceWithTaxes()));
 		$quoteInfo['sub_total'] = $quote->FormatPrice($quote->GetFinalPriceWithoutTaxes());
 		$quoteInfo['shipping_total'] = $quote->FormatPrice($quote->GetTaxAmount());
 		$quoteInfo['tax_total'] = $quote->FormatPrice($quote->getShippingRate());
@@ -436,6 +438,8 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		$quoteInfo['grand_total'] = $quote->getGrand_total();		
 		$quoteInfo['grand_total_f'] = $quote->FormatPrice($quote->getGrand_total());
 		$quoteInfo['grand_total_format'] = $grand_total;
+		$quoteInfo['total_saved'] = $quote->FormatPrice($quote->getGrand_total()*.22);
+		$quoteInfo['total_amount'] = str_replace('$','',$quote->FormatPrice($quote->getGrand_total())); 
 		$quoteInfo['sub_total'] = $quote->FormatPrice($quote->getSubtotal());
 		$quoteInfo['shipping_total'] = $quote->FormatPrice($quote->getShippingRate());
 		$quoteInfo['tax_total'] = $quote->FormatPrice($quote->getTax_amount());
@@ -674,9 +678,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		 	$this->drawOrderTotals($page, $quote, $quoteInfo);
 		 }
 		 
-		
-		 
-		 	$this->drawAgreement($page, $settings, $quoteInfo);
+		$this->drawAgreement($page, $settings, $quoteInfo);
         
        
 	  
@@ -967,7 +969,12 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 				  
 				
 				$this->y += 10;
-				$offset = $this->DrawMultilineText($page, '('.round($bundle->getSelection_qty()).')   '.$bundle->getName(), 20, $this->y , 7, 0.2, 11);
+				
+				$order_qty = $item->getQty_ordered();
+				$bundle_qty = $bundle->getSelection_qty();
+				$f_bundled_qty = $order_qty * $bundle_qty;
+				
+				$offset = $this->DrawMultilineText($page, '('.round($f_bundled_qty).')   '.$bundle->getName(), 20, $this->y , 7, 0.2, 11);
 				$this->y -= $this->_ITEM_HEIGHT + $offset;
 		    }
 			 
@@ -1039,8 +1046,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
     protected function drawListingOrderProducts(&$page, $quote, $style, $settings, $quoteInfo='') 
 	{
 
-       // $this->drawTableHeader($page);
-		
+       // $this->drawTableHeader($page);		
 		$type = $quoteInfo['quote_type'];
 		if($type=='Quote'){
 		$collection = $quote->getItems();
@@ -1104,8 +1110,8 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 			 	$this->drawProductTableHeader($page, $caption, $y);				 
 				$this->y -= 80;        		 
 				$page->setFillColor(Zend_Pdf_Color_Html::color('#e2ecf0'));
-				$page->drawRectangle(10, $this->y-12, 590, $this->y+18, Zend_Pdf_Page::SHAPE_DRAW_FILL);
-				$this->y -= 3;				
+				$page->drawRectangle(10, $this->y-12, 590, $this->y+25, Zend_Pdf_Page::SHAPE_DRAW_FILL);
+				$this->y += 7;				
 				$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 10);
                 $page->drawText($this->TruncateTextToWidth($page, $item->getreference(), 60), 15, $this->y, 'UTF-8');
                 $caption = $this->WrapTextToWidth($page, $item->getName(), 200);
@@ -1118,7 +1124,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
                $this->drawTextInBlock($page, $quote->FormatPrice($item->getPrice()), 480, $this->y, 60, 20, 'r');
                // $this->drawTextInBlock($page, $item->getQty(), 310, $this->y, 40, 20, 'c');
                
-			  $this->drawTextInBlock($page, round($item->getQty_ordered()), 470, $this->y, 40, 20, 'l');
+			    $this->drawTextInBlock($page, round($item->getQty_ordered()), 470, $this->y, 40, 20, 'l');
                  
 				 
 				if ($item->getPrice() ) {
@@ -1129,6 +1135,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
                     //$this->drawTextInBlock($page, $quote->FormatPrice($item->GetTotalPriceWithTaxes($quote)), 640, $this->y, 60, 20, 'r');
                 }
                 $this->y -= $this->_ITEM_HEIGHT + $offset;
+				$this->y -=5;
 		
 		/***************** Start For bundle product 11_02_2014  *********************/
 	 
@@ -1138,7 +1145,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		
 		$_product = Mage::getModel('catalog/product')->load($item->getProduct_id());  			
 		$bundleCollections = $_product->getTypeInstance($_product)
-										    ->getChildrenIds($_product->getId(),false); 		
+									  ->getChildrenIds($_product->getId(),false); 		
 		
 		$bundle_products = array();
 		foreach($bundleCollections as $_bundle_products){
@@ -1156,8 +1163,13 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		    {
 				
 				$this->y += 10;				
+				
+				$order_qty = $item->getQty_ordered();
+				$bundle_qty = $bundle->getSelection_qty();
+				$f_bundled_qty = $order_qty * $bundle_qty;
+				
 				//$bundleCaption = round($item->getQty_ordered()).'  x  '.$bundle->getName();
-				$bundleCaption = round($bundle->getSelection_qty()).'  x  '.$bundle->getName();
+				$bundleCaption = round($f_bundled_qty).'  x  '.$bundle->getName();
 				//var_dump($bundle->getData());
 				//var_dump('<br/>'.$bundleCaption);
 				
@@ -1403,8 +1415,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 	
 	$this->drawTextInBlock($page, $quote->FormatPrice($quote->GetFinalPriceWithTaxes()), $this->_PAGE_WIDTH / 2 + 85, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');//11_02_2014
 
-        $this->y -= 20;
-		
+        $this->y -= 20;	
 		
 
         return true;
@@ -1462,13 +1473,52 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 16);
 		$page->setFillColor(Zend_Pdf_Color_Html::color('#ec4d53'));
         $page->drawText(Mage::helper('quotation')->__('Grand Total:'), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
-        //$this->drawTextInBlock($page, $quote->FormatPrice($quote->GetFinalPriceWithOutTaxes()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
+        $this->drawTextInBlock($page, $quote->FormatPrice($quote->getGrand_total()), $this->_PAGE_WIDTH / 2 + 85, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');//11_02_2014	
+       
+	   
+	   /////drawing paid stamp 
+	   
+	  	
+		
+	   
+	   ///adding if paid or partial paid ////
+	    $this->y -= 20;
+	    
+		$page->setFillColor(Zend_Pdf_Color_Html::color('#e2ecf0'));
+	    $page->drawRectangle((($this->_PAGE_WIDTH / 2)-10), $this->y, 590, $this->y-70, Zend_Pdf_Page::SHAPE_DRAW_FILL);
+		
+		$grandTotal = $quote->FormatPrice($quote->getGrand_total());
+		$totalDue = $quote->FormatPrice($quote->getTotal_due());
+		$totalPaid = $quote->FormatPrice($quote->getTotal_paid());
+		$totalBalance = $quote->getGrand_total()-$quote->getTotal_paid();
+		$totalBalance = $quote->FormatPrice($totalBalance);
+		
+		if( $quote->getTotal_due() <= 0){
+		 $_image = Mage::getBaseDir('media').'/stamped_invoice.png';
+		 $_image = Zend_Pdf_Image::imageWithPath($_image);
+         $page->drawImage($_image, 100, $this->y-80, 500, $this->y+171 );
+		}
+		$this->y -= 20;
+		$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 12);
+		$page->setFillColor(Zend_Pdf_Color_Html::color('#ec4d53'));
+        $page->drawText(Mage::helper('quotation')->__('Total Due:'), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
+        $this->drawTextInBlock($page, $totalDue, $this->_PAGE_WIDTH / 2 + 25, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');//11_02_2014	
+	    $this->y -= 18;
+		$page->setFillColor(Zend_Pdf_Color_Html::color('#1a910e'));
+		$page->drawText(Mage::helper('quotation')->__('Total Paid:'), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
+        $this->drawTextInBlock($page, $totalPaid, $this->_PAGE_WIDTH / 2 + 25, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');//11_02_2014	
+	    $this->y -= 18;		
+		
+		$page->setFillColor(Zend_Pdf_Color_Html::color('#666666'));
+		$page->drawText(Mage::helper('quotation')->__('Balance:'), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
+        $this->drawTextInBlock($page, $totalBalance, $this->_PAGE_WIDTH / 2 + 25, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');//11_02_2014	
+	    
+		
+		//$this->drawTextInBlock($page, $quote->FormatPrice($quote->GetFinalPriceWithOutTaxes()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
         
         //$this->drawTextInBlock($page, $quote->FormatPrice($quote->getPriceHt()+$quote->getShippingRate()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
 	
-	//$target = Zend_Pdf_Action_URI :: create( 'http://example.com' );
-		
-		
+	//$target = Zend_Pdf_Action_URI :: create( 'http://example.com' );	
 		
 		/*
 		$target = Zend_Pdf_Action_URI :: create( 'http://example.com' );
@@ -1477,9 +1527,9 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		$pdf->save( 'test.pdf' );
 		*/
 	
-	$this->drawTextInBlock($page, $quote->FormatPrice($quote->getGrand_total()), $this->_PAGE_WIDTH / 2 + 85, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');//11_02_2014
-
-        $this->y -= 20;
+		 $this->y -= 20;
+		
+		///adding payment info 
 		
 		
 
@@ -1542,7 +1592,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
     protected function drawAgreement(&$page, $settings, $quoteInfo='') {
 
         $page = $this->NewPage($settings, $quoteInfo);
-		$total_amount = $quoteInfo['grand_total'];
+		$total_amount = $quoteInfo['total_amount'];
 	    $quote_id = $quoteInfo['data']['increment_id'];
 		
 		
@@ -1722,7 +1772,7 @@ Cash payment can be made at the facility for any purchased goods/services';
 	 
 	 $ycolumn -= 30;
 	   ////adding Cheque Payment / Cash Payment text body block
-	 $_text = 'Please direct deposit your payment to our account in the amount of \'AUD '.round($total_amount,2).'\'  with your Reference ID / Job ID:\' '.$quote_id.'\'.
+	 $_text = 'Please direct deposit your payment to our account in the amount of \'AUD '.$total_amount.'\'  with your Reference ID / Job ID:\' '.$quote_id.'\'.
 
     Beneficiary:        Vivid Ads Pty Ltd    
     Bank Name:       Westpac    
@@ -1756,7 +1806,7 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	   
 	 $ycolumn -= 35;
 	   ////adding Cheque Payment / Cash Payment text body block
-	 $_text = 'You can directly make your payment online.Click on the link at the end of this form to make your payment. Job ID \''.$quote_id.'\' Total Due \'AUD '.round($total_amount,2).'\'';
+	 $_text = 'You can directly make your payment online.Click on the link at the end of this form to make your payment. Job ID \''.$quote_id.'\' Total Due \'AUD '.$total_amount.'\'';
 	 $_block_text = array('text'=>$_text,'bgcolor'=>'#e2ecf0', 'fcolor'=>'#000000','type'>='multiple');	 	 
 	 
 	 $this->addBlockText($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-2, $this->_BLOC_ENTETE_LARGEUR, 45, 11, 14, $_block_text['type'] );   
@@ -1773,7 +1823,7 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	   ////adding Cheque Payment / Cash Payment text body block
 	 $_text = 'Payment can be made over the phone using your Master / Visa / Amex cards (3% surcharge on Amex only). Call \''.$quoteInfo['store_phone'].'\' (choose option Accounts). 
 	 	 
-	 Invoice ID \''.$quote_id.'\' Total Due AUD \''.round($total_amount,2).'\' .';
+	 Invoice ID \''.$quote_id.'\' Total Due AUD \''.$total_amount.'\' .';
 	 $_block_text = array('text'=>$_text,'bgcolor'=>'#e2ecf0', 'fcolor'=>'#000000','type'>='multiple');	 	 
 	 
 	 $this->addBlockText($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-2, $this->_BLOC_ENTETE_LARGEUR, 75, 11, 14, $_block_text['type'] );  
