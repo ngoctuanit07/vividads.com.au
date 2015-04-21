@@ -426,16 +426,23 @@ class MD_Vividslider_Adminhtml_VividsliderController extends Mage_Adminhtml_Cont
         $realSize = stream_copy_to_stream($input, $temp);
         fclose($input);
         
-      	$file_directory = Mage::getBaseDir('media').'/sliderfiles/'.$category_id.'/';
-		if(!is_dir($file_directory))	{
-			mkdir($file_directory);
-			$file_directory = Mage::getBaseDir('media').'/sliderfiles/'.$category_id.'/';
+      	$file_directory = Mage::getBaseDir('media').'/sliderfiles';
+		if(!is_dir($file_directory.'/'.$category_id))	{
+			$old_umask = umask(0);			
+			if(@mkdir($file_directory.'/'.$category_id,0777)){
+				$file_directory = $file_directory.'/'.$category_id;
+				//var_dump($file_directory);
+				}			
+			umask($old_umask);	
+			 $file_directory = Mage::getBaseDir('media').'/sliderfiles/'.$category_id.'/';
 			}else{
 				$file_directory = Mage::getBaseDir('media').'/sliderfiles/'.$category_id.'/';
-				}	
-        $path = $file_directory.$_file_name;		
+				}
+				
+       
+	    $path = $file_directory.$_file_name;		
 		
-		//chmod($path,777);
+		// chmod($path,0777);
         $target = fopen($path, "w") ;        
         fseek($temp, 0, SEEK_SET);
         stream_copy_to_stream($temp, $target) ;

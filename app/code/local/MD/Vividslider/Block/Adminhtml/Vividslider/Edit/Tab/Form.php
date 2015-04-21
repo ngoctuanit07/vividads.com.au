@@ -83,6 +83,8 @@ class MD_Vividslider_Block_Adminhtml_Vividslider_Edit_Tab_Form extends Mage_Admi
 					});
 				});
 			}
+			
+			
 		</script>
 		
 		';
@@ -196,19 +198,25 @@ class MD_Vividslider_Block_Adminhtml_Vividslider_Edit_Tab_Form extends Mage_Admi
 	$fieldset->addField('note', 'note', array(
           'text'     => '<b>Slider Uploaded Images:</b> ',
 		  'after_element_html' => Mage::getModel('vividslider/vividslider')->showVividSliderImages($_slider_id),
-          'tabindex' => 1,
-		  
+          'tabindex' => 1,	  
 
         ));
-
+if(isset($_slider_id)){
+	
 	$fieldset->addField('file_attachments','multiupload',array(
 		'name'=>'file_attachments',
 		'label'=>Mage::helper('vividslider')->__('Vivid Slider Files(s)'),
 		'title'=>Mage::helper('vividslider')->__('Vivid Slider Files(s)'),
 		'multiple'=>true,
-		
+				
 		));
-	
+}else{
+	$fieldset->addField('file_note', 'note', array(
+          'text'     => '<b>Please click on \'Save &amp; Continue Edit\' button before upload files to this slider.</b> ',
+		  'tabindex' => 1,	  
+
+        ));
+	}
 
         if (Mage::getSingleton('adminhtml/session')->getVividsliderData()) {
             $form->setValues(Mage::getSingleton('adminhtml/session')->getVividsliderData());

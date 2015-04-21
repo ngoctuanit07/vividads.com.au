@@ -68,8 +68,8 @@ class Md_Vividslider_Block_Slider extends Mage_Core_Block_Template
 			$cat_sliders = Mage::getModel('vividslider/vividslider')
 		 						->getAllCatsVividSliders($current_page->getEntity_id());
 		 foreach($cat_sliders as $cat_slider){
-				 // var_dump($cat_slider);
-				  $sliderItems[$item]['image'] = $this->_mymedia. 'sliderfiles/'.$cat_slider['slider_file'];
+				  // var_dump($cat_slider);
+				  $sliderItems[$item]['image'] = $this->_mymedia. 'sliderfiles/'.$cat_slider['category_id'].'/'.$cat_slider['slider_file'];
                   $sliderItems[$item]['title'] = $cat_slider['slider_file_title'];
                   $sliderItems[$item]['link'] = $cat_slider['hlink'];				 
 				  $item++;	 
