@@ -2,6 +2,7 @@
 <style type="text/css">
 .product-view .product-img-box .more-views li {
 	/*  border: 1px solid #DDDDDD;*/
+
 	border-radius: 5px;
 	float: left;
 	margin: 0 0 0 27px !important;
@@ -12,21 +13,27 @@
 	margin: 0 0 8px;
 	text-transform: uppercase;
 }
-   
-   
 /*.product-img-box .more-views {
+
     border: 1px solid #ddd;
+
     border-radius: 5px;
 
     padding: 10px 0 4px;
+
     width: 580px;
+
     float: left;
+
     margin-top: 15px;
 
 }*/
+
 .product-img-box .more-views {
 	/* border: 1px solid #ddd;
+
     border-radius: 5px;*/
+
 	padding: 10px 0 4px;
 	width: 100%;
 	float: left;
@@ -40,6 +47,7 @@
 }
 #wrapper {
 /*border:1px solid #dddddd !important;*/
+
 }
 .caroufredsel_wrapper {
 	width: 98% !important;
@@ -81,6 +89,7 @@
 
 ?>
 <?php
+
      $_product = $this->getProduct();
 
 	//var_dump(count($_product->getMediaGalleryImages()));
@@ -310,7 +319,7 @@
 
                             <a class="fancybox ijaz" href="'.$this->helper('catalog/image')->init($_product, 'image').'" rel="zoomer" onclick="return false;" style="display: block; background-color: white; position: relative;">
 
-                                <img id="mainImage"  style="border: 1px solid #fff; z-index: 100; opacity: 1; filter: alpha(opacity = 100); max-width: '.$_previewWidth.'px; max-height: ' . $_previewHeight . 'px" src="'.$this->helper('catalog/image')->init($_product, 'image')->resize($_previewWidth, $_previewHeight) . '" alt="' . $this->htmlEscape($_product->getName()) . '" title="'.$this->htmlEscape($this->getImageLabel()).'"/>
+                                <img id="mainImage" style="border: 1px solid #fff; z-index: 100; opacity: 1; filter: alpha(opacity = 100); max-width: '.$_previewWidth.'px; max-height: ' . $_previewHeight . 'px" src="'.$this->helper('catalog/image')->init($_product, 'image')->resize($_previewWidth, $_previewHeight) . '" alt="' . $this->htmlEscape($_product->getName()) . '" title="'.$this->htmlEscape($this->getImageLabel()).'"/>
 
                             </a>
 
@@ -384,7 +393,7 @@
           <!--<img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize($_thumbSize); ?>" width="<?php echo $_thumbSize; ?>" height="<?php echo $_thumbSize; ?>" alt="<?php echo $this->htmlEscape($_image->getLabel()) ?>" />-->
           
           <?php                               $url =Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'catalog/product'.$_product['media_gallery']['images'][$i]['file'];?>
-          <img width="<?php echo $_thumbSize; ?>"  height="<?php echo $_thumbSize; ?>" src="<?php echo $url;?>" alt="<?php echo $_product->getName()?>" /> </a> </li>
+          <img width="<?php echo $_thumbSize; ?>" height="<?php echo $_thumbSize; ?>" src="<?php echo $url;?>" alt="<?php echo $_product->getName()?>" /> </a> </li>
         <?php endif; ?>
         <?php } } } // endforeach; ?>
       </ul>
