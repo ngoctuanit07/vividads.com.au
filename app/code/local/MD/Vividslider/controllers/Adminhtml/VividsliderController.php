@@ -220,9 +220,9 @@ class MD_Vividslider_Adminhtml_VividsliderController extends Mage_Adminhtml_Cont
                 $model = Mage::getModel('vividslider/vividslider');
 
                 $model->setId($this->getRequest()->getParam('id'))
-                        ->delete()
-						->deleteFiles($this->getRequest()->getParam('id'))
-						;
+                        ->delete()	;
+				
+				$model->deleteFiles($this->getRequest()->getParam('id'));		
 
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item was successfully deleted'));
                 $this->_redirect('*/*/');
@@ -395,22 +395,7 @@ class MD_Vividslider_Adminhtml_VividsliderController extends Mage_Adminhtml_Cont
 	
 	public function uploadAction(){
 		
-		$_file_obj = $this->getRequest()->getParams('qqfile');		
-		$_file_name = $_file_obj['qqfile'];		
 		
-		$input = fopen("php://input", "r");
-        $temp = tmpfile();
-        $realSize = stream_copy_to_stream($input, $temp);
-        fclose($input);
-        
-      	$file_directory = Mage::getBaseDir('media').'/sliderfiles/';		
-        $path = $file_directory.$_file_name;		
-		
-		//chmod($path,777);
-        $target = fopen($path, "w") ;        
-        fseek($temp, 0, SEEK_SET);
-        stream_copy_to_stream($temp, $target) ;
-        fclose($target);
 		//var_dump($stream);exit;
 		///writing files in database ////		
 		
@@ -427,6 +412,44 @@ class MD_Vividslider_Adminhtml_VividsliderController extends Mage_Adminhtml_Cont
 		
 		if($this->getRequest()->getParam('id')){
 			$_slider_id = $this->getRequest()->getParam('id');
+			
+			$category_id = Mage::getModel('vividslider/vividslider')
+									->load($_slider_id)
+									->getCategory_id();
+			
+		//var_dump($category_id);
+		$_file_obj = $this->getRequest()->getParams('qqfile');		
+		$_file_name = $_file_obj['qqfile'];		
+		
+		$input = fopen("php://input", "r");
+        $temp = tmpfile();
+        $realSize = stream_copy_to_stream($input, $temp);
+        fclose($input);
+        
+      	$file_directory = Mage::getBaseDir('media').'/sliderfiles';
+		if(!is_dir($file_directory.'/'.$category_id))	{
+			$old_umask = umask(0);			
+			if(@mkdir($file_directory.'/'.$category_id,0777)){
+				$file_directory = $file_directory.'/'.$category_id;
+				//var_dump($file_directory);
+				}			
+			umask($old_umask);	
+			 $file_directory = Mage::getBaseDir('media').'/sliderfiles/'.$category_id.'/';
+			}else{
+				$file_directory = Mage::getBaseDir('media').'/sliderfiles/'.$category_id.'/';
+				}
+				
+       
+	    $path = $file_directory.$_file_name;		
+		
+		// chmod($path,0777);
+        $target = fopen($path, "w") ;        
+        fseek($temp, 0, SEEK_SET);
+        stream_copy_to_stream($temp, $target) ;
+        fclose($target);
+			
+			
+			
 			}else{
 				
 		
