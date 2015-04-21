@@ -86,14 +86,8 @@ class MD_Vividslider_Model_Vividslider extends Mage_Core_Model_Abstract {
 						   ;
 		$_slider_files_list = $connectionRead->fetchAll($_slider_files_obj);
 		$connectionRead->commit();
-		
-		$category_id = Mage::getModel('vividslider/vividslider')
-									->load($slider_id)
-									->getCategory_id();
-		
-		
 		$media_dir = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
-		$slider_files_dir = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'sliderfiles/'.$category_id.'/';
+		$slider_files_dir = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'sliderfiles/';
 		$icons_dir = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'upload/fileicons/icons/';
 		
 		$html='';
@@ -209,11 +203,8 @@ class MD_Vividslider_Model_Vividslider extends Mage_Core_Model_Abstract {
 	
 	foreach($_slider_files_list as $_image){		
 			
-			 
 			$_exten = substr(basename($_image['slider_file']),strpos(basename($_image['slider_file']),'.')+1);
-		
 		$file_url = $slider_files_dir.$_image['slider_file'];
-		
 		$html .='<li id="slider_file_'.$_image['slider_file_id'].'" style="text-align:center; width:900px; clear:both; border-bottom:1px solid #ccc !important; height:85px; "> 
 		<ul><li style="float:left; width:200px;"><a href="'.$file_url.'" target="_blank">		
 		<img src="'.$file_url.'" height="55"  /></a>
@@ -314,20 +305,15 @@ class MD_Vividslider_Model_Vividslider extends Mage_Core_Model_Abstract {
 		$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
     	$slider_files_table=Mage::getSingleton('core/resource')->getTableName('vividslider_files');
 		
-		//$connectionWrite->beginTransaction();
+		$connectionWrite->beginTransaction();
 		$_condition = array($connectionWrite->quoteInto('vividslider_id=?', $slider_id));
 		
 		$deleted = $connectionWrite->delete($slider_files_table, $_condition);		
-		//var_dump($deleted);
-		//$connectionWrite->commit();
+		$connectionWrite->commit();
 		
 		/*delete file from hard disk*/
 		
-		$category_id = Mage::getModel('vividslider/vividslider')
-									->load($slider_id)
-									->getCategory_id();
-	
-		$slider_files_dir = Mage::getBaseDir('media').'\sliderfiles\''.$category_id.'\'';		
+		$slider_files_dir = Mage::getBaseDir('media').'\sliderfiles\\';		
 		$file_name = $slider_files_dir.$file_name;		
 		
 		  if (file_exists($file_name)) {

@@ -26,8 +26,6 @@
         <div id="slider" class="nivoSlider" style="<?php echo $design['height'] ?>" >
             <?php $_counter = 0 ?>
             <?php foreach ($this->getSliders() as $_slider) : ?>
-                
-                
                 <a href="<?php echo $_slider['link'] ?>">
                     <img style="width:1200px !important;"  src="<?php echo $_slider['image'] ?>" alt="<?php echo Mage::getStoreConfig('design/head/default_title'); ?>" <?php if ($design['texten'] == 1) : ?>title="#youama-elem<?php echo $_counter ?>"<?php endif; ?> />
                 </a> 
