@@ -34,30 +34,32 @@ class MD_Vividslider_IndexController extends Mage_Core_Controller_Front_Action {
 	
 	
 	/*delete deleteFileAction*/
-	public function deleteFileAction($_slider_file_id=0){
-		if($_slider_file_id==0){
-			$slider_file_id = $_slider_file_id;
-			}else{
-			$slider_file_id=$this->getRequest()->getPost('slider_file_id');	
-				}
-		$slider_id=$this->getRequest()->getPost('slider_id');
+	public function deleteFileAction(){
 		
-		$file_name=$this->getRequest()->getPost('file_name');
+		$slider_file_id = $this->getRequest()->getPost('slider_file_id');					
+		$slider_id 		= $this->getRequest()->getPost('slider_id');		
+		$file_name		= $this->getRequest()->getPost('file_name');
 		
 		/*getting db resource */
-		$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
-    	$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
-    	$slider_files_table=Mage::getSingleton('core/resource')->getTableName('vividslider_files');
+		$connectionRead 	= 	Mage::getSingleton('core/resource')->getConnection('core_read');
+    	$connectionWrite 	= 	Mage::getSingleton('core/resource')->getConnection('core_write');
+    	$slider_files_table	=	Mage::getSingleton('core/resource')->getTableName('vividslider_files');
 		
-		$connectionWrite->beginTransaction();
+		//var_dump($slider_file_id);
+		
+		//$connectionWrite->beginTransaction();
 		$__condition = array($connectionWrite->quoteInto('slider_file_id=?', $slider_file_id));
 		
 		$deleted = $connectionWrite->delete($slider_files_table, $__condition);		
-		$connectionWrite->commit();
-		
+		//$connectionWrite->commit();
+		//var_dump($deleted);
 		/*delete file from hard disk*/
 		
-		$slider_files_dir = Mage::getBaseDir('media').'/sliderfiles/';
+		$category_id = Mage::getModel('vividslider/vividslider')
+									->load($slider_id)
+									->getCategory_id();
+		
+		$slider_files_dir = Mage::getBaseDir('media').'/sliderfiles/'.$category_id.'/';
 		
 		
 		$file_name = $slider_files_dir.$file_name;
