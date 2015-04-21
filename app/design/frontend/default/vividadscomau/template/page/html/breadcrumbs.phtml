@@ -23,88 +23,24 @@
  * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
- 
- 
-  $i=0;
- 
 ?>
-<?php if($crumbs && is_array($crumbs)){ ?>
+ <?php if($crumbs && is_array($crumbs)): ?>
 <div class="breadcrumbs">
-  <ul itemprop="breadcrumb">
-    <?php foreach($crumbs as $_crumbName=>$_crumbInfo){
-		 
-		 if($_crumbInfo['link']){
-		   $link = $_crumbInfo['link'];
-		 }else{
-			 $link = Mage::helper('core/url')->getCurrentUrl();
-			 
-			 }
-			 $i++;
-		
-		?>
-    
-   
-
-    <li class="<?php echo $_crumbName ?>">
-      
-	  <?php if($_crumbInfo['link']){
-		  
-		  if($this->htmlEscape($_crumbInfo['title'])){ 			
-			$title = $this->htmlEscape($_crumbInfo['title']);			
-			}else{
-				$title =$this->htmlEscape($_crumbInfo['label']);
-			} 
-		   ?>
-          <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb" >
-          <a href="<?php echo $_crumbInfo['link'] ?>" 
-          title="<?php echo $title; ?>"  itemprop="url"> <?php echo $this->htmlEscape($_crumbInfo['label']) ?>
-          <span itemprop="title" style="display:none;"><?php echo $this->htmlEscape($_crumbInfo['label']) ?></span>
-          </a>
-          </div>
-         
-         
-      <?php }elseif($_crumbInfo['last']){ 
-	  
-	  	if($this->htmlEscape($_crumbInfo['title'])){ 			
-			$title = $this->htmlEscape($_crumbInfo['title']);			
-			}else{
-				$title =$this->htmlEscape($_crumbInfo['label']);
-			} 
-	  ?>
-            <strong>
-           <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb" >
-            <a href="<?php echo $_crumbInfo['link'] ?>" 
-          title="<?php echo $title; ?>"  itemprop="url"> <?php echo $this->htmlEscape($_crumbInfo['label']) ?>
-          <span itemprop="title" style="display:none;"><?php echo $this->htmlEscape($_crumbInfo['label']) ?></span>
-          </a>
-          </div>
-            
-            </strong>
-      
-	  <?php }else{ 
-	  
-	  if($this->htmlEscape($_crumbInfo['title'])){ 			
-			$title = $this->htmlEscape($_crumbInfo['title']);			
-			}else{
-				$title =$this->htmlEscape($_crumbInfo['label']);
-			} 
-	  
-	  ?>
-      <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb" >
-      <a href="<?php echo $_crumbInfo['link'] ?>" 
-          title="<?php echo $title; ?>"  itemprop="url"> <?php echo $this->htmlEscape($_crumbInfo['label']) ?>
-          <span itemprop="title" style="display:none;"><?php echo $this->htmlEscape($_crumbInfo['label']) ?></span>
-          </a>
-          </div>
-      	
-		<?php } ?>
-      <?php if(!$_crumbInfo['last']){ ?>
-      <span>/ </span>
-      <?php } ?>
-    </li>
-    <?php } ?>
-  </ul>
-
-
-</div>
-<?php } ?>
+    <ul> 
+     
+        <?php foreach($crumbs as $_crumbName=>$_crumbInfo): ?>
+            <li class="<?php echo $_crumbName ?>">
+            <?php if	($_crumbInfo['link']): ?>
+                <a href="<?php echo $_crumbInfo['link'] ?>" title="<?php echo $this->htmlEscape($_crumbInfo['title']) ?>"><?php echo $this->htmlEscape($_crumbInfo['label']) ?></a>
+            <?php elseif($_crumbInfo['last']): ?>
+                <strong><?php echo $this->htmlEscape($_crumbInfo['label']) ?></strong>
+            <?php else: ?>
+                <?php echo $this->htmlEscape($_crumbInfo['label']) ?>
+            <?php endif; ?>
+            <?php if(!$_crumbInfo['last']): ?>
+                <span>/ </span>
+            <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul></div>
+<?php endif; ?>

@@ -4,7 +4,7 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Academic Free License (AFL 3.0)co
+ * This source file is subject to the Academic Free License (AFL 3.0)
  * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
  * http://opensource.org/licenses/afl-3.0.php
@@ -50,9 +50,7 @@
 				}
 			*/				
        }
-	    
    ?>
- 
 <?php 
 $productCount = $_product->getProductCount();
 if(!$_product->getProductCount()){
@@ -215,10 +213,10 @@ $crtlPageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . '/outofst
                             ?>
           <div id="related_<?php echo $_upsell->getId()?>" class="mini-upsell-ite" > <a href="<?php echo $upsp->getProductUrl();?>">
             <div><img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($upsp->getSmallImage()); ?>" width="85" height="85" alt="" /></div>
-            <div content="<?php echo $upsp->getName(); ?>" itemprop="<?php echo $upsp->getName()?>"><?php echo $upsp->getName();?></div>
+            <div><?php echo $upsp->getName();?></div>
             </a> </div>
           <?php
-                        }
+                       }
                     ?>
         </div>
         <script src="<?php echo $this->getJsUrl();?>rcarousel/jquery.bxslider.js"></script>
@@ -245,6 +243,7 @@ jQuery('.right_float').bxSlider({
         if(jQuery(this).scrollTop() > 200 && jQuery(this).scrollTop() < 500)
         jQuery('.product-shop').css('top',jQuery(this).scrollTop()-220);
     }
+	
 });
   jQuery(".bx-wrapper").css('left','830px');
     jQuery(".bx-wrapper").css('top','-670px');
@@ -252,20 +251,16 @@ jQuery('.right_float').bxSlider({
     jQuery(".bx-viewport").css('height','481px !important');
   });
 </script> 
-
-
-
         <?php echo $this->getChildHtml('alert_urls') ?>
         <?php /*?>       <?php if ($_product->getDescription()):?>
         <?php endif;?><?php */?>
         <!---SKU Begins--->
             <div class="row-view" style="margin-top:10px;">
               <div style="margin: 0px; padding: 0px; height: 50px; float: left; width: 100%;">   
-              <h2 class="sku_new" itemprop="sku" content="<?php echo $_product->getSku(); ?>" style="float:left; width:360px;">
+              <h2 class="sku_new"  style="float:left; width:360px;">
               Model # :<?php echo $_product->getSku(); ?></h2>
                 <h3 class="in_stock" style="float:right; width:360px;">  <?php $shipping = $_product->getData('shipsindays'); ?>
             <?php echo $shipping ;?></h3>
-              
               </div>
               <div class="review-container">
                 <?php #echo $this->getReviewsSummaryHtml($_product, false, true)?> 
@@ -278,58 +273,29 @@ jQuery('.right_float').bxSlider({
      </div>   
            <div style="width:360px; float:right;">
            <?php if($_product->price==0):?>
-            
             <?php else:?>
             <div style="border-radius:3px; font-size:28px; font-weight:bold; font-family:'Raleway',sans-serif; color:#fff; text-align:center; background-color:#e81f25;">
             
             
             <?php echo $this->__('Reduced')?></div>
             <?php endif?>
-            
-            <?php if (Mage::getStoreConfig('grafischdirectrichsnippets/product/price')) : ?>
-					<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-						<meta itemprop="priceCurrency" content="<?php echo $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); ?>"/>
-				        
 			<?php 
-               
-			    $specialPrice = round($_product->getSpecialPrice(),2);
-                
+		    $specialPrice = round($_product->getSpecialPrice(),2);
 				if($specialPrice>0) { ?>                  
-            
-                  <div style="border-right: 1px solid rgb(232, 31, 37); width: 46%; padding: 5px; font-size: 13px; text-align:center; float:left" itemprop="price">
-                  From : <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST</div>
-                  
-                  <div style="width: 48%; padding: 5px; text-align:center; font-size: 13px; float:left;" itemprop="priceCurrency" content="<?php $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); echo $currency_code; ?>">
-                  To : <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?> + GST </div>
-                        <?php    } ?>
-					</div>
-				
-				<?php endif;?>
-                              
-            
-        <meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"/>New
-
-                        <link itemprop="availability" href="http://schema.org/InStock" />In Stock
+                <div style="border-right: 1px solid rgb(232, 31, 37); width: 46%; padding: 5px; font-size: 13px; text-align:center; float:left">
+                From : <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST</div>
+                <div style="width: 48%; padding: 5px; text-align:center; font-size: 13px; float:left;" >
+                To : <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?> + GST </div>
+                  <?php    } ?>
             </div>
-     </div>
-                
-                <div class="head">
+     </div>     <div class="head">
                   <h2><span>PRODUCT DETAILS</span></h2>
                 </div>
-                
-          <?php if (Mage::getStoreConfig('grafischdirectrichsnippets/product/description')) : ?>
 					<?php if ($_product->getShortDescription()):?>
-							<div class="std" itemprop="description" style="margin-top:5px;">
+							<div class="std"  style="margin-top:5px;">
 								<?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
 						</div>
 					<?php endif;?>
-				<?php else: ?>
-					<?php if ($_product->getShortDescription()):?>
-							<div class="std" itemprop="description">
-								<?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
-						</div>
-					<?php endif;?>
-				<?php endif;?>
               </div>
             </div>
         <!---SKU End--->
@@ -341,19 +307,14 @@ jQuery('.right_float').bxSlider({
             <p style="margin-bottom:21px; display:none;">SKU:&nbsp;<?php echo Mage::app()->getStore()->getId();?>-<?php echo $_product->getSku();?></p>
             <p>
              </p>
-              <?php if (Mage::getStoreConfig('grafischdirectrichsnippets/product/description')) : ?>
+    
 				<?php if ($_product->getDescription()):?>
-			<div class="std" itemprop="description" style="margin-top:5px;">
+			<div class="std"   style="margin-top:5px;">
 			<?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?>
 			</div>
 			<?php endif;?>
-			<?php else: ?>
-			<?php if ($_product->getDescription()):?>
-			<div class="std" itemprop="description">
-			<?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?>
-						</div>
-					<?php endif;?>
-				<?php endif;?>
+ 
+	 
             <div class="text-wrapper" style="border-top:1px solid #5bbf21; margin-top:20px;"> <img alt="" src="<?php echo $this->getSkinUrl()?>images/low-price.png" class="left">
               <div class="right"> <span class="title"><?php echo $this->__('Low-Price Guarantee')?></span>
                 <p class="content"><?php echo $this->__('We are indeed confident, and committed to ascertaining that you find the best 
@@ -451,9 +412,9 @@ jQuery('.right_float').bxSlider({
                    <?php 
                 $specialPrice = round($_product->getSpecialPrice(),2);
                 if($specialPrice>0) { ?>
-                  <h1 itemprop="priceCurrency" content="<?php echo $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); ?>"><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?> + GST </h1>
+                  <h1 ><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?> + GST </h1>
                   <?php	} else{ ?>
-                  <h1 itemprop="priceCurrency" content="<?php echo $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); ?>"><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST</h1>
+                  <h1><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST</h1>
                   <?php }?>
                   </div>
              	<?php endif;?>
@@ -627,9 +588,9 @@ foreach($related_product_collection as $pdt)
                 <?php 
 							$related = Mage::getModel('catalog/product')->load($_product_rel->getId());
 	   ?>
-                <div class="addon-sku" itemprop="sku" content="<?php echo $related->getSku(); ?>">Model # <?php echo $related->getSku() ?></div>
+                <div class="addon-sku">Model # <?php echo $related->getSku() ?></div>
                 <div class="btn-bg">
-                  <div class="pric-btn addon-price"  itemprop="price" content="<?php echo $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); ?>">
+                  <div class="pric-btn addon-price" >
                     <?php //echo $this->getPriceHtml($_product, true);
 					  echo Mage::helper('core')->currency($_product_rel->getSpecialPrice());
 					  ?>
@@ -727,14 +688,14 @@ foreach($crossselll_product_collection as $pdt)
                       <p class="product-detail-read-more"> <a href="<?php echo $_product_crosssell->getProductUrl() ?>">Read More</a> </p>
                     </div>
                   </div>
-                  <h2 class="product-name" content="<?php echo $_product_crosssell->getName(); ?>" itemprop="<?php echo $_product_crosssell->getName()?>"><a href="<?php echo $_product_crosssell->getProductUrl() ?>" title="<?php echo $this->stripTags($_product_crosssell->getName(), null, true) ?>"> <?php echo  ($_helper->productAttribute($_product_crosssell, $_product_crosssell->getName(), 'name')) ;?> </a></h2>
+                  <h2 class="product-name" ><a href="<?php echo $_product_crosssell->getProductUrl() ?>" title="<?php echo $this->stripTags($_product_crosssell->getName(), null, true) ?>"> <?php echo  ($_helper->productAttribute($_product_crosssell, $_product_crosssell->getName(), 'name')) ;?> </a></h2>
                 </div>
                 <?php 
 		$product_crosssell = Mage::getModel('catalog/product')->load($_product_crosssell->getId());
 	   ?>
-                <div class="addon-sku" itemprop="sku" content="<?php echo $_product->getSku(); ?>">Model # <?php echo $product_crosssell->getSku() ?></div>
+                <div class="addon-sku">Model # <?php echo $product_crosssell->getSku() ?></div>
                 <div class="btn-bg">
-                  <div class="pric-btn addon-price"  itemprop="price" content="<?php echo $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); ?>">
+                  <div class="pric-btn addon-price">
                         <?php 
 					$specialPrice = round($_product->getSpecialPrice(),2);
 					if($specialPrice>0) { ?>
