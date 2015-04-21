@@ -4,7 +4,7 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Academic Free License (AFL 3.0)
+ * This source file is subject to the Academic Free License (AFL 3.0)co
  * that is bundled with this package in the file LICENSE_AFL.txt.
  * It is also available through the world-wide-web at this URL:
  * http://opensource.org/licenses/afl-3.0.php
@@ -44,9 +44,11 @@
    
    	foreach($cartItems as $_item){ 			
 			$_product = Mage::getModel('catalog/product')->load($_item->getProduct_id());
+			/*
 			if($_item->getProduct_id()==$_cr_product){
 				echo '<script> window.location.href="'.Mage::getUrl('checkout/cart/').'"; </script>';
-				}			
+				}
+			*/				
        }
 	    
    ?>
@@ -273,29 +275,31 @@ jQuery('.right_float').bxSlider({
    
     <div style="float:left;margin-bottom:10px;" class="socialaddthis">
      <?php echo $this->getLayout()->createBlock('sharingtool/share')->setBlockId('addthis_sharetool')->toHtml(); ?>
-     </div>
-    
+     </div>   
            <div style="width:360px; float:right;">
-        
-           
+           <?php if($_product->price==0):?>
+            
+            <?php else:?>
             <div style="border-radius:3px; font-size:28px; font-weight:bold; font-family:'Raleway',sans-serif; color:#fff; text-align:center; background-color:#e81f25;">
             
             
             <?php echo $this->__('Reduced')?></div>
-            
+            <?php endif?>
             
             <?php if (Mage::getStoreConfig('grafischdirectrichsnippets/product/price')) : ?>
 					<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 						<meta itemprop="priceCurrency" content="<?php echo $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); ?>"/>
-						<?php 
-                $specialPrice = round($_product->getSpecialPrice(),2);
-                if($specialPrice>0) { ?>
-                  
+				        
+			<?php 
+               
+			    $specialPrice = round($_product->getSpecialPrice(),2);
+                
+				if($specialPrice>0) { ?>                  
             
-                  <div style="border-right: 1px solid rgb(232, 31, 37); width: 46%; padding: 5px; font-size: 13px; text-align:center; float:left" itemprop="priceCurrency">
+                  <div style="border-right: 1px solid rgb(232, 31, 37); width: 46%; padding: 5px; font-size: 13px; text-align:center; float:left" itemprop="price">
                   From : <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST</div>
                   
-                  <div style="width: 48%; padding: 5px; text-align:center; font-size: 13px; float:left;" itemprop="priceCurrency" content="<?php echo $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); ?>">
+                  <div style="width: 48%; padding: 5px; text-align:center; font-size: 13px; float:left;" itemprop="priceCurrency" content="<?php $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); echo $currency_code; ?>">
                   To : <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?> + GST </div>
                         <?php    } ?>
 					</div>
@@ -303,7 +307,9 @@ jQuery('.right_float').bxSlider({
 				<?php endif;?>
                               
             
+        <meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"/>New
 
+                        <link itemprop="availability" href="http://schema.org/InStock" />In Stock
             </div>
      </div>
                 
@@ -319,7 +325,7 @@ jQuery('.right_float').bxSlider({
 					<?php endif;?>
 				<?php else: ?>
 					<?php if ($_product->getShortDescription()):?>
-							<div class="std">
+							<div class="std" itemprop="description">
 								<?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
 						</div>
 					<?php endif;?>
@@ -343,7 +349,7 @@ jQuery('.right_float').bxSlider({
 			<?php endif;?>
 			<?php else: ?>
 			<?php if ($_product->getDescription()):?>
-			<div class="std">
+			<div class="std" itemprop="description">
 			<?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?>
 						</div>
 					<?php endif;?>
@@ -434,6 +440,13 @@ jQuery('.right_float').bxSlider({
                 
              	
 				<div class="add_cart_option">
+            
+                <?php if($_product->price==0):?>
+					<div class="price-section">
+                    <?php echo "<h1>Call To Enquire</h1>";?>
+                    </div>
+
+                    <?php else:?>
                 <div class="price-section">
                    <?php 
                 $specialPrice = round($_product->getSpecialPrice(),2);
@@ -443,7 +456,12 @@ jQuery('.right_float').bxSlider({
                   <h1 itemprop="priceCurrency" content="<?php echo $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); ?>"><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST</h1>
                   <?php }?>
                   </div>
+             	<?php endif;?>
+               <?php if($_product->price==0):?>
+               <?php //echo $this->getChildHtml('addtocart')?>
+               <?php else:?>
 				<?php echo $this->getChildHtml('addtocart')?>
+                <?php endif ;?>
               </div>
               
               <div class="help">NEED HELP ?</div>
@@ -616,6 +634,16 @@ foreach($related_product_collection as $pdt)
 					  echo Mage::helper('core')->currency($_product_rel->getSpecialPrice());
 					  ?>
                   </div>
+                  <div style="width:30px; float:left; margin-left:-10px;"> 
+        
+        <a href="<?php echo str_replace('icart','cart', $this->getAddToCartUrl($_product_rel) ); ?>"> 
+          <!--<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span>
+	 
+	 <?php // echo $this->__('Add to Cart') ?></span></span></button>--> 
+          
+           <img height="27" title="Click to Add to Cart '<?php echo $_product->getName();?>' "  src="<?php echo $this->getSkinUrl()?>images/minishoppingcart.png"/> 
+          </a>
+          </div>
                   <div class="browse-btn">
                    <a href="javascript:void(0)" title="<?php echo $this->__('Add to Cart') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" id="quoteImage"  data-url="<?php echo $this->getAddToCartUrl($_product_rel); ?>" data-id="<?php echo $_product_rel->getId(); ?>" style="margin-left:-15px;">
                     <span>Add to Quote</span> </a> 
@@ -721,6 +749,16 @@ foreach($crossselll_product_collection as $pdt)
                   
                   
                   </div>
+                  <div style="width:30px; float:left; margin-left:-10px;"> 
+        
+        <a href="<?php echo str_replace('icart','cart', $this->getAddToCartUrl($product_crosssell) ); ?>"> 
+          <!--<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span>
+	 
+	 <?php // echo $this->__('Add to Cart') ?></span></span></button>--> 
+          
+           <img height="27" title="Click to Add to Cart '<?php echo $product_crosssell->getName();?>' "  src="<?php echo $this->getSkinUrl()?>images/minishoppingcart.png"/> 
+          </a>
+          </div>
                   <div class="browse-btn"> <a class="category-browse" title="<?php echo $this->stripTags($product_crosssell->getName(), null, true) ?>" href="<?php echo $product_crosssell->getProductUrl() ?>"> <span>More Info</span> </a> </div>
                 </div>
                 <?php //echo $this->getPriceHtml($_product, true) ?>
@@ -782,6 +820,10 @@ foreach($crossselll_product_collection as $pdt)
             </div>
           </div><?php */?>
           <?php } ?>
+          <?php 
+		  		// echo $this->getReviewsSummaryHtml($_product, false, true);
+		  ?>
+          
           <!----End Download Section---> 
         </div>
       </div>
@@ -821,7 +863,7 @@ foreach($crossselll_product_collection as $pdt)
       </div>
     </form>
   </div>
-  <div class="products_faqs"> <?php echo $this->getChildHtml('product_faqs');?></div>
+  
 </div>
 <!--<div id="quoteLoader" style="float:left; clear:both"></div>--> 
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script> 
