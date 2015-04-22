@@ -1,17 +1,12 @@
+<?php // var_dump($this->getSkinUrl); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/artworkupload.css');?>" media="all" />
 <link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/popup.css');?>" media="all" />
-	<script src="<?php echo Mage::getBaseUrl('js').'upload/jquery-1.9.1.min.js';?>"></script>
-	<script src="<?php echo Mage::getBaseUrl('js').'upload/jquery.js';?>"></script> 
-    <script src="<?php echo Mage::getBaseUrl('js').'upload/jquery.form.js';?>"></script> 
-<style>
-<!--
-	#Container{left:0 !important;}
-	
--->
-</style>
-
+ <script src="<?php echo Mage::getBaseUrl('js').'upload/jquery-1.9.1.min.js';?>"></script>
+ <script src="<?php echo Mage::getBaseUrl('js').'upload/jquery.js';?>"></script> 
+ <script src="<?php echo Mage::getBaseUrl('js').'upload/jquery.form.js';?>"></script> 
 
 <?php
+
 /**
  * Magento
  *
@@ -47,20 +42,21 @@
  
  
  $_order = $order;
+ 
   
  
    if($_order['customer_name']){
 	$_customer_name =$_order['customer_name'];  
-  	}else{   	
-  	$_customer_name =$_order['customer_prefix'].' '. $_order['customer_firstname'].' '.$_order['customer_middlename'].' '.$_order['customer_lastname'];
+  }else{   	
+  $_customer_name =$_order['customer_prefix'].' '. $_order['customer_firstname'].' '.$_order['customer_middlename'].' '.$_order['customer_lastname'];
   }
  
   /*load customer if there is quote*/
   if($_order['customer_id']){
-	  $_customer = Mage::getModel('customer/customer')->load($_order['customer_id']);
-	  $_customer_email = $_customer->getEmail();
+  $_customer = Mage::getModel('customer/customer')->load($_order['customer_id']);
+  $_customer_email = $_customer->getEmail();
  	}else{
-		$_customer_email = $_order['customer_email'];  
+	$_customer_email = $_order['customer_email'];  
 	}
 	
   $_order_number = $_order['increment_id'];
@@ -89,13 +85,14 @@
 	$_user_type ='customer';
 	$_proof_type ='customer';
   } 
- 
+  
  $_customer_id = $_order_obj->getCustomer_id()?$_order_obj->getCustomer_id():$_order['customer_id'];  
  $_user_id = $_customer_id; 
  // $_customer_id = $_order['customer_id']; 
  $_order_type='order'; 	
  $_total_order_qty = $_order['total_item_count']?$_order['total_item_count']:count($items);
   
+ 
  
  /*get current loaded store from the order id*/
  
@@ -127,7 +124,9 @@
  /*get current loaded store from the order id*/
  
 ?>
-	
+<!--script src="<?php echo $this->getJsUrl('bannershop/jquery_min_17.js');?>"></script-->
+	<script src="<?php echo $this->getJsUrl('upload/jquery.js');?>"></script> 
+    <script src="<?php echo $this->getJsUrl('upload/jquery.form.js');?>"></script> 
 <script>
 
 function openFileOption(id)
@@ -138,13 +137,11 @@ function openFileOption(id)
 
 
 ///opening after changeing the file conetns
-function changeImg(id){
-	
+function changeImg(id){	
   
 	}
 				
-	/*	$(function() {
-			
+		$(function() {			
 			
 			//$('.header').hide();
 			//$('.footer-container,.col-left').hide();
@@ -168,38 +165,20 @@ function changeImg(id){
 		
 		
 		
-		});*/
-/*changing options*/
+		});
+		
+		
+ 
+	/*changing options*/
 $(function(){	
-
-/*expand chat button and extract as well*/	
 	
-	 var chat_flag = false;
-	
-	 $('.expand_btn').click(function(event){
-	 	 
-	 	
-		var chatBoxId = event.target.id;
-	 	var chatBoxWidth = $('#expand_btn_'+chatBoxId).width();		
-		// console.log(chatBoxWidth);
-		
-	 	
-		if(chat_flag == false){
-	 	$('#expand_btn_'+chatBoxId).attr({style:'width:310%;right:213%; position:relative;'});
-		chat_flag=true;
-	 		}else{
-		 	$('#expand_btn_'+chatBoxId).attr({style:'width:293px;right:0px; position:relative;'});
-			chat_flag=false;
-		 	}
-		
-	 	});
 	 $('.uploadFile').change(function(event){
-		 
-		// var confirmUpload = confirm('Do you really want to upload this file?');
-		// if(!confirmUpload){
-		//	 return false;
-		//	 }
-		 
+		 /*
+		   var confirmUpload = confirm('Please confirm you want to upload selected file?');
+		  if(!confirmUpload){
+		 	 return false;
+		 	 }
+		*/	 
 		 //console.log(event.target.id);
 		 var previewClass = event.target.id;
 		 var idStart = previewClass.indexOf('[');
@@ -217,16 +196,14 @@ $(function(){
 		
 		//$newCounter = parseInt($rowCounter.value);
 		
-		// $('#current_sel_artwork_'+currentId).hide();
-		// $('#preview_'+currentId).show();
+		
 		 
 		 var preview = $('#preview_'+currentId+' img');
-		 
-		 
-		 
 		 var input = $(event.currentTarget);
    		 var file = input[0].files[0];
    		 var reader = new FileReader();
+   		 var freader = 1;
+		 
 		 
 		 	 /*if file type is .exe, .sh*/
 		 var forbiddion_file_types = ['','js','html','htm','cmf','dir','exe','hit','mif','mni','mui','.sdb','prx','rp','temp','tmp','toc','cur','dll','ini','php','ps1','sh','sql','log'];
@@ -261,15 +238,15 @@ $(function(){
 				}
 				//console.log(forbiddion_file_types[fi]);
 			 }
-		$('#current_sel_artwork_'+currentId).hide();
-		$('#preview_'+currentId).show();	
-		$('#upload_proof_icon_'+currentId).hide();	 
-   		
+			$('#current_sel_artwork_'+currentId).hide();
+			$('#preview_'+currentId).show();	
+			$('#upload_proof_icon_'+currentId).hide();	 
+		 
 		 reader.onload = function(e){
        	 image_base64 = e.target.result;       	
 		 
 		 var fileType = file['type'];
-			
+		 
 			/*images loading for if not jpg or png*/
 		 var file_icons = {
 			              zip_icon:'<?php echo $this->getUrl();?>media/upload/fileicons/rar_icon.png',
@@ -313,9 +290,9 @@ $(function(){
 					 file_name = file['name'];					
 					 file_ext = file_name.split('.');					
 					 total_ext=file_ext.length;
-					 var file_extension = file_ext[total_ext-1];
+					var file_extension = file_ext[total_ext-1];
 					 					
-					 // console.log(file_extension);
+					   console.log(file_extension);
 					  
 					 if(file_extension == 'psd'){					
 						preview.attr("src", file_icons['psd_icon']);
@@ -335,11 +312,17 @@ $(function(){
 		}else{
 				preview.attr("src", image_base64);
 			} 
-		//	console.log(file);
+			//console.log(file);
+		//	console.log(file['name']);
+			//console.log(fileType);
 					
 		 };
-   		  reader.readAsDataURL(file);		
+		  
+		
+   		  reader.readAsDataURL(file);	
+		  
 		 //console.log(currentId);
+		  
 		
 		cFileSize = parseInt(file['size']);
 		kb = 1024;
@@ -388,7 +371,7 @@ $(function(){
    						 //console.log(xhr);
 						},
 				  success: function(data){
-					  	//console.log(data);
+					  //	console.log(data);
 					  },
 					  
 				 }
@@ -396,18 +379,19 @@ $(function(){
 		  
 		  // console.log($('submit_form_1011_10'));
 		 	////uplaoding files////
-			
+			var progbar = $('#file_info_progress_bar_'+item_id+'_'+file_id);
 			$('#submit_form_'+item_id+'_'+file_id).ajaxSubmit(
 			{
 				beforeSend:function(){
 					//console.log('uploading');
 					var pWidth=0;
 					$('#file_info_'+item_id+'_'+file_id).show();
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).show();
-					var image = '<div style="width:100%;text-align:center;"><img src="<?php echo $this->getUrl();?>media/loading6.gif" /></div>';
+					//$('#file_info_progress_bar_'+item_id+'_'+file_id).show();
+					progbar.show();
+					//var image = '<div style="width:100%;text-align:center;"><img src="<?php echo $this->getUrl();?>media/loading6.gif" /></div>';
 					 //setTimeout(pr,10);
 					//pWidth++;
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).html(image);
+					//$('#file_info_progress_bar_'+item_id+'_'+file_id).html(image);
 					$('#file_info_download_'+item_id+'_'+file_id).hide();
 					
 					//$('#file_info_progress_bar_'+item_id+'_'+file_id).width(''+pWidth+'%');
@@ -416,20 +400,26 @@ $(function(){
 					},
 				uploadProgress: function(event, position, total, percentComplete) {
 					 pWidth = percentComplete + '%';
-					//bar.width(percentVal)
-					//percent.html(percentVal);
-					// console.log(percentVal, position, total);
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).width('100%');
-					var image = '<div style="width:100%;text-align:center;"><img src="<?php echo $this->getUrl();?>media/loading6.gif" /></div>';
+					//progbar.width(percentVal)
+					// percent.html(percentVal);
+					//  console.log('total='+total);
+					//  console.log('percente='+percentComplete);
+					//$('#file_info_progress_bar_'+item_id+'_'+file_id).width('100%');
+					var progressinfo_lbl = '<div class="progress_txt">Uploaded '+pWidth+'</div>';
+					progbar.width(pWidth);
+					progbar.html(progressinfo_lbl);
+				//	var image = '<div style="width:100%;text-align:center;"><img src="<?php echo $this->getUrl();?>media/loading6.gif" /></div>';
 					 //setTimeout(pr,10);
 					//pWidth++;
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).html(image);
+				//	$('#file_info_progress_bar_'+item_id+'_'+file_id).html(image);
 					
 					//console.log('total='+total+' percent'+percentComplete);
 				},	
 				complete:function(e){
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).width('100%');
-					$('#file_info_progress_bar_'+item_id+'_'+file_id).html('<div class="progress_txt">Uploaded 100%</div>');
+					//$('#file_info_progress_bar_'+item_id+'_'+file_id).width('100%');
+					progbar.width('100%');
+					//$('#file_info_progress_bar_'+item_id+'_'+file_id).html('<div class="progress_txt">Uploaded 100%</div>');
+					progbar.html('<div class="progress_txt">Uploaded 100%</div>');
 					//$('#file_info_download_'+item_id+'_'+file_id).show('fade');
 				 //console.log(e);
 				
@@ -438,8 +428,6 @@ $(function(){
 		
 		var cDate ='<?php echo date('dM-Y h:i:s');?>';
 		var fSize = Math.round(cFileSize*1024);
-		var clientfilesUrl = $('#client_files_url').val();
-
 		
 		$('#file_info_name_'+item_id+'_'+file_id).html('<b>File:</b>'+file['name']);
 		$('#file_info_size_'+item_id+'_'+file_id).html('<b>Size:</b>'+cFileSize.toFixed(2)+'MB');
@@ -451,10 +439,8 @@ $(function(){
 		cl_indx = client_filesUrl.indexOf('media/stores');
 		client_files_url = '<?php echo Mage::getBaseUrl();?>'+client_filesUrl.substring(cl_indx); 
 		 
-			
-		//$('#submit_'+item_id+'_'+file_id).submit(); 
+		//console.log(client_files_url);
 		
-		 
 		 /*showing progress bar and file info*/
 		 
 		 $('#file_info_'+item_id+'_'+file_id).removeClass('not_uploaded');
@@ -467,7 +453,7 @@ $(function(){
 		 var event_id = event.target.parentNode.parentNode.parentNode.id;
 		 event_id = event_id.substring(13);
 		 var chat_text = '<b>Client has uploaded File(s) </b>';
-		 chat_text += '<br/>&nbsp;&nbsp;<b>File:</b> <a target="_blank" href="'+client_files_url+'/'+file['name']+'">'+file['name']+'</a>';
+		 chat_text+='<br/>&nbsp;&nbsp;<b>File:</b> <a target="_blank" href="'+client_files_url+'/'+file['name']+'">'+file['name']+'</a>';
 		 chat_text+='<br/>&nbsp;&nbsp;<b>Size:</b> '+cFileSize.toFixed(2)+'MB';
 		 chat_text+='<br/>&nbsp;&nbsp;<b>Upload Date:</b> '+cDate;
 		 
@@ -483,11 +469,12 @@ $(function(){
 		if(is_send_email==1){
 		 sendEmail(event_id, 'client_artwork_uploaded',chat_text);
 					}
-		 
+		
+		
 		}}
-			); ///end of complete
-		
-		
+			);
+					
+		 
 		 });
 	
 	/*adding a clone*/			 
@@ -592,13 +579,7 @@ $(function(){
 			});
 	$('.input_text').keypress(function(event){
 				
-				//console.log(event.ctrlKey);
-			//	$_obj = jQuery('#'+event.target.id);
-			  //  console.log(event.charCode);
-				
-				//return false;
-				
-				if(event.ctrlKey==false && event.keyCode==13){
+				if(event.keyCode==13){
 					
 					var event_id = event.target.id.substr(10);
 					var chat_text = '';
@@ -689,7 +670,7 @@ $(function(){
 				  data: $postVars,
 				  dataType:'HTML',
 				  success: function(data){
-					//  console.log(data);
+					   console.log(data);
 					  },
 					  
 				 }
@@ -771,14 +752,29 @@ $(function(){
 	
 	
 	
-	
+	/*expand chat button and extract as well*/	
+	$('.expand_btn').click(function(event){
+		
+		var chatBoxId = event.target.id;
+		var chatBoxWidth = $('#expand_btn_'+chatBoxId).width();
+		
+		
+		
+		//console.log(chatBoxId);
+		
+		if(chatBoxWidth == 293){
+		$('#expand_btn_'+chatBoxId).attr({style:'width:310%;right:213%; position:relative;'});
+		}else{
+			$('#expand_btn_'+chatBoxId).attr({style:'width:293px;right:0px; position:relative;'});
+			}
+		
+		});	
+	 
 	
 	/*uploading selected files*/	
 	function uploadFiles(upload_id){		
 		//console.log(upload_id);		
 		}
-	
-	
 	
 	///approving the design sent from the designer///
 	
@@ -814,25 +810,25 @@ $(function(){
 				}
 				*/	
 			
-		/*if value is 2 then the design is approved*/
+			/*if value is 2 then the design is approved*/
 			
-		if($selectedVal==2 || $selectedVal==1){
+			if($selectedVal==2 || $selectedVal==1){
 				
-			var current_selected_val = $selectedVal;
+				var current_selected_val = $selectedVal;
 				
-			$('#overlayPopup').show();
+				$('#overlayPopup').show();
 								
-			/*setting the values for the popup*/
+				/*setting the values for the popup*/
 				
-			c_current_id = event.target.id;
-			ids = c_current_id.split('_');
-			item_id = ids[2];
+				c_current_id = event.target.id;
+				ids = c_current_id.split('_');
+				item_id = ids[2];
 				
-			pName = $('#itemName_'+item_id).val();
-			pModel = $('#modelNo_'+item_id).val();
+				pName = $('#itemName_'+item_id).val();
+				pModel = $('#modelNo_'+item_id).val();
 				
-			productName = '<h2>'+pName+'</h2><div>( Model No. '+pModel+' )</div>';
-			//console.log(productName);
+				productName = '<h2>'+pName+'</h2><div>( Model No. '+pModel+' )</div>';
+				//console.log(productName);
 			
 			$('#product_heading').html(productName);
 			cFileName= $('#cfileName_'+ids[2]+'_'+ids[3]).val();
@@ -847,7 +843,9 @@ $(function(){
 			var download_file = '<a href ="'+cPath+cFileName+'" target="_blank" >Download</a>';
 			
 			$('.download_file_path').html(download_file);
-			$('#uploadedfileSize').html('File size: '+cFileSize);
+			
+			$('#uploadedfileSize').html('File size: '+cFileSize);				
+			
 			$('#input_quantity').attr({id:'input_quantity_'+ids[2]+'_'+ids[3],});			
 			
 			//update input quantity///			
@@ -871,7 +869,7 @@ $(function(){
 				}else{
 					
 				$('#quantity_'+ids[2]+'_'+ids[3]).val(event.target.value);
-				//  console.log(event.target.value);				
+				 // console.log(event.target.value);				
 				}//end of quantity box
 				});
 			////update signature////
@@ -880,7 +878,9 @@ $(function(){
 			//reseting the value of signatures
 			
 			$('#cSignature_'+ids[2]+'_'+ids[3]).val('');
+			
 			$('#signature_'+ids[2]+'_'+ids[3]).val($('#cSignature_'+ids[2]+'_'+ids[3]).val());
+			
 			
 			$('#cSignature_'+ids[2]+'_'+ids[3]).change(function(event){
 				
@@ -893,10 +893,10 @@ $(function(){
 		$('.approval-text').attr({id:'approval_text_'+ids[2]+'_'+ids[3],
 									 }									
 									);
-		
 		if(current_selected_val==1){
 			
-			//console.log('disapproved');			
+			//console.log('disapproved');
+			
 			$('#Print_Quantity').hide();
 			$('#agreePrintBtn').hide();
 			$('#disAgreeBtn').show();
@@ -960,8 +960,6 @@ $(function(){
 				
 				});	
 				
-			/*Clicking on the disagree button */
-			
 			$('#disAgreeBtn').click(function(){
 				
 				c_current_id = event.target.id;
@@ -1037,6 +1035,8 @@ $(function(){
 			$status='Approved';
 			
 		//console.log($quantity);	
+
+
 		//console.log(file_obj['file_id']);	
 		
 		///update chat auto /// when chatting////
@@ -1071,13 +1071,12 @@ $(function(){
 		  chat_text+=qty;
 		  chat_text+=signs;
 		  chat_text+=reason_text;
-		  
-		 
-		 
-			
-			//console.log(event_id);
+		
+		//	console.log(event_id);
 			
 			var fileDataVars = {
+									
+							
 							approved_status	:$approved_status,
 							quantity		:$quantity,
 							signature		:$signature,
@@ -1091,9 +1090,11 @@ $(function(){
 							file			:$file,
 							file_path		:$file_path+$file,
 							status			:$status,
-							proof_type		:'order',								
+							proof_type		:'order',
+							
+														
 						}
-			//console.log(fileDataVars);			
+		//	console.log(fileDataVars);			
 							
 		/*writing chat data to file via ajax*/
 			  
@@ -1111,12 +1112,14 @@ $(function(){
 				  success: function(data){
 					  		
 							/*chat add automatically text*/
-		 					chatNow(event_id, chat_text);
-							
+							 chatNow(event_id, chat_text);
+		 
 							$('#not_approved_'+$item_id+'_'+$entity_id).hide();
 							$('#approved_'+$item_id+'_'+$entity_id).hide();
 							$('#loadingGif').hide();
-						if(cVal==1){
+							$('#approve_dropdown_'+$item_id+'_'+$entity_id).hide();
+							
+				if(cVal==1){
 							
 						$('#not_approved_'+$item_id+'_'+$entity_id).show();
 						$('#approved_'+$item_id+'_'+$entity_id).hide();
@@ -1136,23 +1139,22 @@ $(function(){
 						$('#approved_'+$item_id+'_'+$entity_id).show();
 						$('#not_approved_'+$item_id+'_'+$entity_id).hide();
 						$('#pending_'+$item_id+'_'+$entity_id).hide();
-						$('#approve_dropdown_'+$item_id+'_'+$entity_id).hide();
 						///update approved quantity
 						
-		$('#approved_quantity_'+$item_id+'_'+$entity_id).html('Qty: '+$quantity);
+						$('#approved_quantity_'+$item_id+'_'+$entity_id).html('Qty: '+$quantity);
 						
-		/*assiginging the file name with print qty to the summary*/
+						/*assiginging the file name with print qty to the summary*/
 						
-		var newEntry = $('.approved_files_label li:first').clone();
-			newEntry.attr({style:'display:block'});
-			newHtml = '<div class="file_name_label">'+file_obj['file_name']+'</div><div class="qty_label">x&nbsp;&nbsp;'+$quantity+'</div>';
-			newEntry.html(newHtml);
+						var newEntry = $('.approved_files_label li:first').clone();
+						newEntry.attr({style:'display:block'});
+				newHtml = '<div class="file_name_label">'+file_obj['file_name']+'</div><div class="qty_label">x&nbsp;&nbsp;'+$quantity+'</div>';
+						newEntry.html(newHtml);
 						
-			//console.log($('#approved_files_label_'+$order_quote_id+'_'+$item_id));			
-			$('#approved_files_label_'+$order_quote_id+'_'+$item_id).append(newEntry);
 						
-			/*send email*/
-		     sendEmail(event_id, 'client_approved_proof',chat_text);
+						$('.approved_files_label').append(newEntry);
+						
+						/*send email*/
+		 				sendEmail(event_id, 'client_approved_proof',chat_text);
 						
 							//$('#loadingGif').hide();
 							//console.log(data);
@@ -1172,10 +1174,19 @@ $(function(){
 		
 		});
 		
- </script>
+	
+   
+    </script>
    
    <style>
     <!--
+	#Container {
+		left:0px !important;
+		margin: auto;
+		padding: 0;
+		position: relative;
+		width: 100%;
+	}
 	.firstRow{}
 	.alreadyUploaded{height:200px !important; text-align:left !important; font-size:10px;}
 	.not_uploaded{display:none;}
@@ -1251,6 +1262,9 @@ $(function(){
     margin-left: 2px;
     margin-top: 12px;
     width: 0%;
+	color:#FFF;
+	background-color:#FFF;
+	text-align:center;
 	display:none;
 	}
 	.progress_txt{background-color: #2C8AE7;
@@ -1266,7 +1280,9 @@ $(function(){
 	-->
     </style>
     
+</head>
 
+<body>
 <div id="Container">
    <div id="Wrapper">
       <div id="Header" style="display:none;">
@@ -1290,15 +1306,12 @@ $(function(){
       </div>
       <!--start of breadcrum-->
       <div style="clear:both;">
-         <!--<div class="orderId" style="text-align:left;">
+        <!--<div class="orderId" style="text-align:left;">
             <h2><?php echo __('Order Number :');?> <?php echo $_order_number;?></h2>
          </div>-->
-         <div id="breadCrumbs" class="breadCrumbs"> </div>
-      
-      <div class="productsIncluded">
-      
-            <h2 style="height:40px;"><?php echo __('Order Number :');?> <?php echo $_order_number;?></h2>
-        
+         <div id="breadCrumbs" class="breadCrumbs"> </div>      
+      <div class="productsIncluded">      
+      <h2 style="height:40px;"><?php echo __('Order Number :');?> <?php echo $_order_number;?></h2>        
        <?php echo __('Total Items <span style="color:#f00;">( '.$_total_order_qty.' )</span>');?> 
       </div>
       <div class="orderGrid">
@@ -1372,9 +1385,7 @@ $(function(){
 			}
 		 }else{	
 			$_order_number = '/'.$_current_order_id;	
-		}
-		
-				
+		}		
 		/*current year directory created*/
 		$_path.= $_order_number;
 			 		  
@@ -1382,18 +1393,30 @@ $(function(){
 		  $_total_items = count($items);	
 		  $i=0;
 		  $counter = 0;
-		  
-		//  echo $_total_items;exit;
-		  
+	
+	 
 	/*start listing of rows*/	  
-	 
-	 foreach($items as $_item ){			  
-	 
+	 foreach($items as $_item ){	
+	 $_product = Mage::getModel('catalog/product')->load($_item->getProduct_id());
+	 $_item->setSku($_product->getSku());
+	 $_item->setName($_product->getName());
+	// var_dump($_item);
+	  if($_order_type !='order'){
+	  $_item->setQty_ordered($_item->getSelection_qty());
+	 }
 	 /*further create folder contaiing item sku name*/
-	  $_current_sku = $_item->getSku();
+	  $_current_sku = $_product->getSku();
+	   
 	 // $_item_id = $_item->getProduct_id() ? $_item->getProduct_id():$_item->getId();
-	// $_item_id = $_item->getItem_id();
-	  $_item_id = $_item->getProduct_id();
+	   $_item_id = $_item->getProduct_id();
+	  
+	 $_is_printable = $_product->getIs_printable(); 	
+	  
+	if($_is_printable==165){
+	 // var_dump($_item);exit; 
+	 $i++;
+	  $counter++;
+	 
 	  /*if media/stores/storename/year/month/ordernumber/sku directory exists either create*/
 		if(!is_dir($_path.'/'.$_current_sku)){
 			if(@mkdir($_path.'/'.$_current_sku,0777)){
@@ -1428,6 +1451,7 @@ $(function(){
 		}			
 	/*if media/stores/storename/year/month/ordernumber/sku/client_sent_files directory exists either create*/
 		if(!is_dir($_path.$_sku.'/client_sent_files')){
+
 			if(@mkdir($_path.$_sku.'/client_sent_files',0777)){
 				$_sent_files = '/client_sent_files';
 			}
@@ -1470,24 +1494,12 @@ $(function(){
 	
 	/*further get products detail*/ 
 	
-	
-	 $_product = Mage::getModel('catalog/product')
-	 					->load($_item->getProductId())
-						;
-	
-	  $i++;
-	  $counter++;
 	  
-	   $_is_printable = $_product->getIs_printable();
-	  //echo $_product->getSku();
-	 // echo $_is_printable;
-	  // exit;
-	 // if($_is_printable==165){
-		  
 		$_item_name = $_item->getCaption()?$_item->getCaption():$_item->getName();  
 	  
 	 ?>
-     <li class="listingRow" >
+     
+            <li class="listingRow" >
                <?php 
 		 		$_heading_title = 'Design detail for ';
 				$_heading_title .= '" <span style="color:#4db6b2;">'.$_item_name.' </span> " Only ';
@@ -1498,14 +1510,11 @@ $(function(){
            <input type="hidden" id="modelNo_<?php echo $_item_id;?>" value="<?php echo $_item->getSku();?>" />
          
                <div class="orderedItemHeadings">
-               
 			<?php echo __('Ordered Item #'.$counter);?> 
                </div>
                <h1 class="itemHeadings"> <?php echo $_heading_title; ?> </h1>
                <!--thumbnail listing box start here-->
-               
                <div class="thumbListing" style="background-color:#3CC2DB; height:160px; margin-top:5px; padding:5px;">
-                  
                   <div class="thumbListingInner" style="height:160px; background-color:#3cc2db;">
                      <div class="smallThumb"> 
                      <a  href="<?php echo $this->getUrl($_product->getUrlPath());?>"  target="_blank" title="<?php echo 'Click to open detail of "'.$_item_name.' "';?>" > 
@@ -1541,12 +1550,11 @@ $(function(){
             </div>      
                   <div class="clr"></div>
                   <!--upload files box start here-->
-                  <div class="uploadFilesPanel">
-                     <div class="uploadFilesBox">
+                  <div class="uploadFilesPanel" style="width:1150px !important;">
+                     <div class="uploadFilesBox" style="width:780px !important;">
                      <!--thumbnailbox-->
-    <ul class="uploaded_thumbnails files_thumbnails_<?php echo $_item_id;?>_<?php echo $counter;?>" id="uploadedFiles<?php echo $_item_id;?>_<?php echo $counter;?>">    
-    
-     <input type="hidden" id="client_files_url_<?php echo $_item_id;?>" name="client_files_url" value="<?php echo $_path.$_sku.'/client_sent_files';?>" />                         
+    <ul class="uploaded_thumbnails files_thumbnails_<?php echo $_item_id;?>_<?php echo $counter;?>" id="uploadedFiles<?php echo $_item_id;?>_<?php echo $counter;?>"> 
+     <input type="hidden" id="client_files_url_<?php echo $_item_id;?>" name="client_files_url" value="<?php echo $_path.$_sku.'/client_sent_files';?>" />                           
 <?php 
 	/*first some 9 items*/
 	$_order_id = $_order['entity_id']? $_order['entity_id']:$_order['quotation_id'];
@@ -1555,12 +1563,15 @@ $(function(){
 	/*getting already uplaoded proof files from the designer side */	
 	$_customer_files = Mage::helper('upload')->getCustomer_files($_order_id, $_item_id, $_proof_type);
 	
-	//var_dump($_customer_files);
-		
+	
+	$_path_url = $target_path;	
+	
 	if(count($_customer_files)>0){
 		foreach($_customer_files as $_customer_file){
 			
 			$_id=$_customer_file['entity_id'];
+			
+			//var_dump($_item_id);
 		?>
         <li style="height:220px;" class="clone_row_<?php echo $_item_id;?>_<?php echo $_id;?> alreadyUploaded" id="<?php echo $_item_id;?>_<?php echo $_id;?>">
      
@@ -1569,14 +1580,24 @@ $(function(){
     
      <input type="hidden" id="client_files" name="client_files" value="<?php echo $_path.$_sku.'/client_sent_files';?>" />
      
+    
+     
      <input class="uploadFile" type="file" id="fileUpload[<?php echo $_item_id;?>_<?php echo $_id;?>]" name="fileUpload[<?php echo $_item_id;?>_<?php echo $_id;?>]"  style="display:none;"  />
                               
    <?php  /* on click open the filebox*/		  ?>
-        
-        <?php
-		   //	$base_path = $_SERVER['DOCUMENT_URI'].'/media/' ;
-		    $base_path = Mage::getBaseUrl('media');
-            $file_path = $_path.$_sku;
+        <div class="thumbnail_box" onClick="openFileOption('fileUpload[<?php echo $_item_id;?>_<?php echo $_id;?>]')"> 
+         <div id="preview_<?php echo $_item_id;?>_<?php echo $_id;?>" class="preview_thumb">
+           <img id="preview_image_<?php echo $_item_id;?>_<?php echo $_id;?>" class="preview_image_thumb" src="#"  alt="imagesource" width="140" height="95"/>
+        </div>
+         <div class="artwork_not_uploaded" id="current_sel_artwork_<?php echo $_item_id;?>_<?php echo $_id;?>" >                    
+  <div class="upload_artwork_icon" style="background:none;">                          
+    <?php
+		   	
+		//	$base_path = $_SERVER['DOCUMENT_URI'].'/media/' ;
+            
+			 $base_path = Mage::getBaseUrl('media');
+			
+			$file_path = $_path.$_sku;
 			$abs_target = strpos($file_path, 'stores');
 		 	$target_path = $base_path.substr($file_path,$abs_target).'/';
 			
@@ -1599,8 +1620,7 @@ $(function(){
 									 'psd'=>$this->getUrl().'media/upload/fileicons/psd_icon.png',
 									 'fla'=>$this->getUrl().'media/upload/fileicons/fla_icon.png',
 									 'eps'=>$this->getUrl().'media/upload/fileicons/eps_icon.png',
-									// 'jpg'=>$this->getUrl().'media/upload/fileicons/jpg_icon.png',
-									 //'jpeg'=>$this->getUrl().'media/upload/fileicons/jpg_icon.png',
+									
 									 
 									);
 				
@@ -1613,22 +1633,13 @@ $(function(){
 			
 						
 			?>
-            <!--<div class="thumbnail_box" onClick="openFileOption('fileUpload[<?php echo $_item_id;?>_<?php echo $_id;?>]')"> -->
-        <div class="thumbnail_box" > 
-         
-         <div class="artwork_not_uploaded" id="current_sel_artwork_<?php echo $_item_id;?>_<?php echo $_id;?>" >                    
-                    <div class="upload_artwork_icon" style="background:none;">                          
-                        
-           
-                           <a href="<?php echo $_file_src;?>" target="_blank" title="<?php echo $_file_src;?>">
-                            <img src="<?php echo $_file_src;?>" alt="<?php echo $_customer_file['file'];?>" id="preview_image_<?php echo $_item_id;?>_<?php echo $_id;?>" class="preview_image_thumb"  a" width="140" height="100"/> </a>      
+                           
+ <img src="<?php echo $_file_src;?>" alt="<?php echo $_customer_file['file'];?>" id="preview_image_<?php echo $_item_id;?>_<?php echo $_id;?>" class="preview_image_thumb"   width="140" height="100"/>       
                                </div>
                                </div>
                                </div> 
      <div class="file_info" style="display:block;" id="file_info_<?php echo $_item_id;?>_<?php echo $_id;?>">
-     <div class="file_info_progress_bar" id="file_info_progress_bar_<?php echo $_item_id;?>_<?php echo $_id;?>">
-     
-     </div>   
+     <div class="file_info_progress_bar" id="file_info_progress_bar_<?php echo $_item_id;?>_<?php echo $_id;?>">   </div>   
                                
                                <div  style="display:block;" class="file_info_name" id="file_info_name_<?php echo $_item_id;?>_<?php echo $_id;?>" ><b>File: </b> <?php echo $_customer_file['file'];?></div>
                                <div class="file_info_size" id="file_info_size_<?php echo $_item_id;?>_<?php echo $_id;?>"><b>Size: </b><?php 
@@ -1653,30 +1664,28 @@ $(function(){
      </li>
         
 		<?php
-		
-		
-		
 		}//end of first foreach
 	 }//end of else
-		
 		$_last_customer_id = $_customer_file['entity_id'];
 		if($_last_customer_id){			
 		$nCounter = $_last_customer_id+1;
 		}else{
 		$nCounter=1 ;
 		}
-		//echo $nCounter;
-			
-		$_path_url = Mage::getBaseUrl('media').'stores'.$_store_name.'/'.date('Y').'/'.strtolower(date('M-y')).$_order_number;
 		
- for($j=$nCounter; $j<$nCounter+1; $j++){
-	 ?>
+		for($j=$nCounter; $j<$nCounter+1; $j++){
+					   ?>
+                     
+                       
     <li style="height:220px;" class="clone_row_<?php echo $_item_id;?>_<?php echo $j;?> <?php if($j==$nCounter){echo 'firstRow';}?>" id="<?php echo $_item_id;?>_<?php echo $j;?>">
     
-    <form class="submit_form" id="submit_form_<?php echo $_item_id;?>_<?php echo $j;?>" action="<?php echo $this->getUrl('upload/index/uploadImages');?>" onsubmit="return false"  method="post" enctype="multipart/form-data">
+    <form class="submit_form" id="submit_form_<?php echo $_item_id;?>_<?php echo $j;?>" action="<?php echo $this->getUrl('upload/index/uploadImages');?>" onsubmit="return false"  method="post" enctype="multipart/form-data">  
+    
+    
+    
      <input class="uploadFile" type="file" id="fileUpload[<?php echo $_item_id;?>_<?php echo $j;?>]" name="fileUpload[<?php echo $_item_id;?>_<?php echo $j;?>]"  style="display:none;"  />
       
-     <input type="hidden" id="client_files_url"  value="<?php echo $_path_url.$_sku.'/client_sent_files';?>" />
+     
      <input type="hidden" id="client_files" name="client_files" value="<?php echo $_path.$_sku.'/client_sent_files';?>" />
                               
    <?php  /* on click open the filebox*/		  ?>
@@ -1684,20 +1693,28 @@ $(function(){
          <div id="preview_<?php echo $_item_id;?>_<?php echo $j;?>" class="preview_thumb">
            <img src="#" id="preview_image_<?php echo $_item_id;?>_<?php echo $j;?>" class="preview_image_thumb"  alt="imagesource" width="130" height="95"/>
         </div>
-         <div class="artwork_not_uploaded" id="current_sel_artwork_<?php echo $_item_id;?>_<?php echo $j;?>" >
-           <div class="upload_artwork_icon">                             
-             <div class="upload_artwork_icon_label" >
-           <?php 
-				echo __('Browse to upload your Print Ready file(s) OR Browse to upload your high resolution design files for us to design');?>
-             </div>
-           </div>
-         </div>
-       </div>
-       <div class="file_info not_uploaded" id="file_info_<?php echo $_item_id;?>_<?php echo $j;?>">
-         <div style="display:block;" class="file_info_progress_bar" id="file_info_progress_bar_<?php echo $_item_id;?>_<?php echo $j;?>">
-         </div>
-           <div class="file_info_name" id="file_info_name_<?php echo $_item_id;?>_<?php echo $j;?>" ><b>File: </b> <?php echo $_customer_file['file'];?></div>
-           <div class="file_info_size" id="file_info_size_<?php echo $_item_id;?>_<?php echo $j;?>"><b>Size: </b><?php 
+         <div class="artwork_not_uploaded" id="current_sel_artwork_<?php echo $_item_id;?>_<?php echo $j;?>" >                    
+                    <div class="upload_artwork_icon">                             
+                             <div class="upload_artwork_icon_label" >
+                       <?php 
+							echo __('Browse to upload your
+                                   Print Ready file(s)
+                                   OR
+                                   Browse to upload your
+                                   high resolution design files
+                                   for us to design');?>
+                        </div>
+                                   
+                               </div>
+                              </div>
+                               </div>
+                              <div class="file_info not_uploaded" id="file_info_<?php echo $_item_id;?>_<?php echo $j;?>">
+                              <div style="display:block;" class="file_info_progress_bar" id="file_info_progress_bar_<?php echo $_item_id;?>_<?php echo $j;?>">
+                              
+                              </div>
+                              
+                               <div class="file_info_name" id="file_info_name_<?php echo $_item_id;?>_<?php echo $j;?>" ><b>File: </b> <?php echo $_customer_file['file'];?></div>
+                               <div class="file_info_size" id="file_info_size_<?php echo $_item_id;?>_<?php echo $j;?>"><b>Size: </b><?php 
 							   $_fSize =  $_customer_file['file_size'];
 							   $_mb =1024*1024;
 							   $_fSize = round($_fSize/$_mb,2);
@@ -1707,9 +1724,13 @@ $(function(){
          <div>
           
          <a class="file_info_download" id="file_info_download_<?php echo $_item_id;?>_<?php echo $j;?>"  target="_blank" href="<?php echo $_path.$_sku.$_client_files_path.'/'.$_customer_file['file'];?>">&dArr; DOWNLOAD FILE</a>
-         </div> 
-         </div>
-          </form>
+                               </div>
+                   
+                              
+                             
+                              </div>
+                              
+                               </form>
      </li>
     
      <?php 
@@ -1817,11 +1838,8 @@ $(function(){
                      <!--chat box start here-->
                      <div class="chatBoxPanel">
                          <input type="hidden" id="chat_file_path_<?php echo $_item_id;?>_<?php echo $counter;?>" name="chat_file_path_<?php echo $_item_id;?>_<?php echo $counter;?>" value="<?php echo $_path.$_sku.$_chat.'/chat.txt';?>" />
-                         
                          <div class="chatBox" id="expand_btn_<?php echo $_item_id;?>_<?php echo $counter;?>">
-                         <div class="chat_panel_heading" ><?php echo __('Items\'s Message Box');?> 
-                         
-                         <div class="expand_btn"  id="<?php echo $_item_id;?>_<?php echo $counter;?>" title="Click to expand or contract chatbox..." ></div></div>
+                         <div class="chat_panel_heading" ><?php echo __('Items\'s Message Box');?> <div id="<?php echo $_item_id;?>_<?php echo $counter;?>" title="Click to expand or contract chatbox..." class="expand_btn"></div></div>
                          
                          <!--chat container-->
                          <div class="chat_container" id="chat_container_<?php echo $_item_id;?>_<?php echo $counter;?>" >                            
@@ -1850,8 +1868,9 @@ $(function(){
       <input class="input_text" id="msg_input_<?php echo $_item_id;?>_<?php echo $counter;?>" name="msg_input_<?php echo $_item_id;?>_<?php echo $counter;?>" type="text" placeholder="<?php echo __('Your message here...')?>" />
       <input class="sendButton" type="button"  id="<?php echo $_item_id;?>_<?php echo $counter;?>" name="<?php echo $_item_id;?>_<?php echo $counter;?>"  value="Send" title="Type your message and hit send button"  />
        </div> 
-       <div class="send_email" id="<?php echo $_item_id;?>_<?php echo $counter;?>"><label>
-       <input type="checkbox" name="send_email_<?php echo $_item_id;?>_<?php echo $counter;?>" id="send_email_<?php echo $_item_id;?>_<?php echo $counter;?>" value="1" checked /> 
+       <div class="send_email" id="<?php echo $_item_id;?>_<?php echo $counter;?>">
+       <label style="display:none;">
+       <input type="checkbox"  name="send_email_<?php echo $_item_id;?>_<?php echo $counter;?>" id="send_email_<?php echo $_item_id;?>_<?php echo $counter;?>" value="0"  /> 
        <?php echo __('I want to send Email');?></label> </div>         
            </div>
                      </div>
@@ -1862,14 +1881,14 @@ $(function(){
                  
                  <div class="clr"></div>
                   <!--upload files box start here-->
-                  <div class="artworkProofPanel">
+                  <div class="artworkProofPanel" style="width:850px !important;">
                   
         <?php 
 		 		/*proof tilte*/
 				$_proof_title = 'Artwork Proof approval for ';
 				$_proof_title .= '" <span style="color:#4db6b2;">'.$_item_name.' </span> " ';
 				$_proof_title .= '<br/><span style="font-size:17px; color:#ff6606;"> ( Model No: ';
-			    $_proof_title .= $_order['store_id'].'-'.$_item->getSku().')</span>';
+			    $_proof_title .= $_order['store_id'].'-'.$_current_sku.')</span>';
 		 ?>
                   
                    <h1 class="itemProofHeadings"> <?php echo $_proof_title; ?> </h1>
@@ -1881,10 +1900,11 @@ $(function(){
 							/*fetching the proof files*/
 					$_order_id = $_order['entity_id'];
 					$_item_id = $_item_id;
-										
+					
+					$_item_id = $_item->getId()	;				
 					/*getting already uplaoded proof files from the designer side */	
 					$_proof_files = Mage::helper('upload')->getProof_files($_order_id, $_item_id);
-					
+					//var_dump($_proof_files); exit;
 					if(count($_proof_files) >0){
 					
 					foreach($_proof_files as $_proof_file){
@@ -1896,9 +1916,10 @@ $(function(){
                             
                             
                              <?php
-		   //	$base_path = $_SERVER['DOCUMENT_URI'].'/media/' ;
-			$base_path = Mage::getBaseUrl('media') ;
-            $file_path = $_path.$_sku;
+		  // 	$base_path = $_SERVER['DOCUMENT_URI'].'/media/' ;
+            
+			$base_path = Mage::getBaseUrl('media');
+			$file_path = $_path.$_sku;
 			$abs_target = strpos($file_path, 'stores');
 		 	$target_path = $base_path.substr($file_path,$abs_target).'/';
 			
@@ -1921,8 +1942,7 @@ $(function(){
 									 'psd'=>$this->getUrl().'media/upload/fileicons/psd_icon.png',
 									 'fla'=>$this->getUrl().'media/upload/fileicons/fla_icon.png',
 									 'eps'=>$this->getUrl().'media/upload/fileicons/eps_icon.png',
-								//	 'jpg'=>$this->getUrl().'media/upload/fileicons/jpg_icon.png',
-								//	 'jpeg'=>$this->getUrl().'media/upload/fileicons/jpg_icon.png',
+									 
 									 
 									);
 				
@@ -1947,21 +1967,17 @@ $(function(){
 		    $_visibility = 'style="display:block;"';
 			 }
 		 ?> 
-              
-       <div <?php if($_proof_file['approved_status']==1){echo 'style="display:block"';}else{ echo 'style="display:none"';}	?> class="not_approved" id="not_approved_<?php echo $_item_id;?>_<?php echo $_id;?>"> <?php echo __('Not Approved'); ?> </div>
-              
-       <div <?php if($_proof_file['approved_status']==2){echo 'style="display:block"';}else{ echo 'style="display:none"';}	?> class="approved" id="approved_<?php echo $_item_id;?>_<?php echo $_id;?>"> <?php echo __('Approved'); ?><div class="approved_qunatity" id="approved_quantity_<?php echo $_item_id;?>_<?php echo $_id;?>"><?php echo 'Qty: '.$_proof_file['quantity']; ?></div>
-       
-       
-        </div>  
-        
-        <?php 
+         
+         
+          <?php 
 		
-		$vendor_assigned = Mage::getModel('upload/upload')->getVendorAssigned($_order_id, $_item_id);			
+		$vendor_assigned = Mage::getModel('upload/upload')->getVendorAssigned($_order_id, $_item_id);
+			
 		$quantities_approved = Mage::getModel('upload/upload')->getQantitiesApproved($_order_id, $_item_id);
 			// var_dump($quantities_approved);
 			
-		if(count($quantities_approved) >0 ){			 
+			 if(count($quantities_approved) >0 ){
+			 
 			 $total_approved_qty = $quantities_approved[0]['quantity'] ;
 			 $remain_qty = round($_item->getQty_ordered()-$total_approved_qty);			
 			 }else{
@@ -1969,24 +1985,34 @@ $(function(){
 				 }
 		
 		?>  
+              
+       <div <?php if($_proof_file['approved_status']==1){echo 'style="display:block"';}else{ echo 'style="display:none"';}	?> class="not_approved" id="not_approved_<?php echo $_item_id;?>_<?php echo $_id;?>"> <?php echo __('Not Approved'); ?> </div>
+              
+       <div <?php if($_proof_file['approved_status']==2){echo 'style="display:block"';}else{ echo 'style="display:none"';}	?> class="approved" id="approved_<?php echo $_item_id;?>_<?php echo $_id;?>"> <?php echo __('Approved'); ?><div class="approved_qunatity" id="approved_quantity_<?php echo $_item_id;?>_<?php echo $_id;?>"><?php echo 'Qty: '.$_proof_file['quantity']; ?></div>
+       
+       
+        </div>    
     
  <div <?php if($_visibility){echo $_visibility;}else{echo 'style="display:none;"';};?> class="pending" id="pending_<?php echo $_item_id;?>_<?php echo $_id;?>">  </div>  
-  <div class="thumbnail_box"> 
- <div class="upload_proof_icon" style="background:none;">
-     <a href="<?php echo $download_src; ?>" target="_blank">
-      <img style="border:0;" width="140" height="100" src="<?php echo $_file_src;?>" alt="<?php echo $_proof_file['file'];?>"/></a>
+           
+       
+                              <div class="thumbnail_box"> 
+                              <div class="upload_proof_icon" style="background:none;">
+                               	<a href="<?php echo $download_src; ?>" target="_blank">
+                                <img style="border:0;" width="140" height="100" src="<?php echo $_file_src;?>" alt="<?php echo $_proof_file['file'];?>"/></a>
                                </div>
                               </div>
-<!-- input type="button" onclick="window.open('<?php echo $download_src; ?>');" value="Download File" / -->
+<!-- input type="button" onclick="window.open('<?php echo $download_src; ?>');" value="Download RGB File" / -->
 
-<input type="button" style="border: 1px solid #888;cursor: pointer;  margin-bottom: 5px;" onclick="window.open('<?php echo 'upload/index/downloadfile?dfile='.urlencode($download_src); ?>');" value="Download File" tile="Click here to download file" />
+<input type="button" style="border: 1px solid #888;cursor: pointer;  margin-bottom: 5px;" onclick="window.open('<?php echo '/upload/index/downloadfile?dfile='.urlencode($download_src); ?>');" value="Download File" tile="Click here to download file" />
 
-   <div  class="upload_progress_info" id="upload_progress_info_<?php echo $_item_id;?>_<?php echo $i;?>" style="width:150px; text-align:left;">
+  <div  class="upload_progress_info" id="upload_progress_info_<?php echo $_item_id;?>_<?php echo $i;?>" style="width:150px; text-align:left;">
              <div class="progress_bar" id="progress_bar_<?php echo $_item_id;?>_<?php echo $_id;?>" style="width:150px; height:10px; background-color:#069; display:none;"></div>
                  <div class="filename" id="filename_<?php echo $_item_id;?>_<?php echo $_id;?>"><b>File: </b><span style="font-size:9px; color:#999;"> <?php echo $_proof_file['file'];?> </span></div>
                  <input type="hidden" id="cfileName_<?php echo $_item_id;?>_<?php echo $_id;?>" value="<?php echo $_proof_file['file'];?>" />    
                 
- <input type="hidden" id="ordered_qty_<?php echo $_item_id;?>_<?php echo $_id;?>" value="<?php echo $remain_qty;?>" />
+                         
+                 <input type="hidden" id="ordered_qty_<?php echo $_item_id;?>_<?php echo $_id;?>" value="<?php echo $_order['total_qty_ordered'];?>" />
                      
  <div class="updated" id="updated_<?php echo $_item_id;?>_<?php echo $_id;?>">
  <b>Updated:</b> <?php echo date('dM-Y h:i:s',strtotime($_proof_file['postdate']));?></div>
@@ -2000,50 +2026,49 @@ $(function(){
                                <input type="hidden" id="cfileSize_<?php echo $_item_id;?>_<?php echo $_id;?>" value="<?php echo $_fSize;?>" />                             
                    </div>
                               
-  <div id="fileapprove">
-	
-    <?php 
-	//check if vendor is assigned or not 
-			
-		//	echo 'remain='.$remain_qty;
-			/* select visible for quantity */
-			if($_proof_file['approved_status'] !=2 && $vendor_assigned==true && $remain_qty > 0){
-	?>
-    <select id="approve_dropdown_<?php echo $_item_id;?>_<?php echo $_id;?>" class="approve_dropdown">	
-   			<option value="0" <?php if($_proof_file['approved_status']==0)echo 'selected';?>><?php echo __('Please Approve');?></option>
-   			<option value="2" <?php if($_proof_file['approved_status']==2)echo 'selected';?>><?php echo __('I approve to get the above design printed');?></option>
-   			<option value="1" <?php if($_proof_file['approved_status']==1)echo 'selected';?>><?php echo __('I disapprove (Type your comments in the chatbox)');?></option>
-  </select>	
-  <?php 
-			} //end of visiblity
-  ?>
+<div>
+ <?php if($_proof_file['approved_status'] !=2 && $vendor_assigned==true && $remain_qty > 0){ ?>
+<select id="approve_dropdown_<?php echo $_item_id;?>_<?php echo $_id;?>" name="approve"  class="approve_dropdown"> 
+   <option value="0" <?php if($_proof_file['approved_status']==0)echo 'selected';?>><?php echo __('Please Approve/Disapprove');?></option> 
+   <option value="2" <?php if($_proof_file['approved_status']==2)echo 'selected';?>><?php echo __('I approve to get the above design printed');?></option>   
+   
+   <option value="1" <?php if($_proof_file['approved_status']==1)echo 'selected';?>><?php echo __('I disapprove (Type your comments in the chatbox)');?></option>
   
+  </select>
+  <?php 
+  }
+  ?>
   <input type="hidden" value="1" id="quantity_<?php echo $_item_id;?>_<?php echo $_id;?>" />
   <input type="hidden" value="none" id="signature_<?php echo $_item_id;?>_<?php echo $_id;?>" />
-  <input type="hidden" value="<?php echo $download_path;?>"  id="currFilePath" class="currFilePath" />  </div>
+  <input type="hidden" value="<?php echo $download_path;?>"  id="currFilePath" class="currFilePath" />     </div>
     </li>
-      <?php 
-	}//end of thumbnail
- }else{
-	echo '<li><div class="notuploadedMsg" style="margin-left:-52px;"><h1>Designer(s) have not uplaoded any files for approval yet.</h1></div></li>';			
-	}
- ?>
- </ul>
-  <!--end of thumbnailbox-->
+   <?php 
+		}//end of thumbnail
+	}else{
+	echo '<li><div class="notuploadedMsg" style="margin-left:-52px;"><h1>Designer(s) have not uploaded any files for approval yet.</h1></div></li>';
+			
+		}
+					  ?>
+    </ul>
+     <!--end of thumbnailbox-->
    </div>
- </div>
+                 
+   </div>
                   
- <!--start final approval summary --> 
-                              
+ 
+                 
+    <!--start final approval summary --> 
+                               
 <div class="proof_summary" id="proof_summary_<?php echo $_item_id;?>_<?php echo $_id;?>">
   <div class="proof_summary_heading">Proof Summary </div>
    <div class="proof_summary_model_title" ><b>Model: </b>
     <?php echo $_order['store_id'].'-'.$_item->getSku();?>
     </div>
     <div class="proof_summary_title" ><b>Total Ordered Qty: </b>
-    <div class="total_ordered_qty" id="total_ordered_qty_<?php echo $_item_id;?>_<?php echo $_id;?>" style="float:right;"><?php echo round($_item->getQty_ordered());?></div></div> 
+    <div class="total_ordered_qty" id="total_ordered_qty_<?php echo $_item_id;?>_<?php echo $_id;?>" style="float:right;">
+	<?php echo round($_item->getQty_ordered());?></div></div> 
     <div class="approved_files">
-    <div class="proof_summary_title" style="margin-top:10px;"><b>Approved files are as follow... </div>  
+    <div class="proof_summary_title" style="margin-top:10px;"><b>Approved files are as follow... </b></div>  
     <div class="proof_summary_approved_files_title" ><b>File: </b><div class="qty_heading" >Qty</div></div>  
     <!--files label for apprval files-->
       
@@ -2071,15 +2096,19 @@ $(function(){
                           
      </div> 
     </div>
-  <!--Uplod box files ends here-->
+  <!--Uplod box files ends here--> 
+  
   <div class="clr"></div>
-  <!--thumbnail listing box ends here--> 
-   </li>
- <?php 
-		   //} ///end of printble
+                 
+     <!--thumbnail listing box ends here--> 
+     </li>
+            
+		
+        
+        	<?php 
+		    } ///end of printble
 		 
 	 }
-	 
 	  ?>
          </ul>
          <!--end of Item Listings--> 
@@ -2091,10 +2120,11 @@ $(function(){
 </div>
 <div id="loadingGif">
 <div id="imgloading">
+
 <img src="<?php echo $this->getUrl('media');?>/loading11.gif" alt="Loading..."/>
 </div>
 </div>
- <div id="overlayPopup" class="overlayPopup">
+ <div id="overlayPopup" class="overlayPopup" >
  <div id="approval_popup" >
  <link rel="stylesheet" type="text/css" href=<?php echo $this->getSkinUrl('css/popup.css');?> media="all" />
 <!--Popup shows here-->
@@ -2169,4 +2199,4 @@ $(function(){
 </div>
 </div>
     <!--end of popup-->
-
+</body>
