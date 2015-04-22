@@ -24,8 +24,12 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+
+
 <div class="footer-container">
 <div class="footer clearfix">
+ 
+
 <div class="payment_strip">
 	<img src="<?php echo $this->getSkinUrl()?>images/payment_strip.png"  alt="<?php echo $this->__('Payment Method We Accept')?>" title="<?php echo $this->__('Payment Method We Accept')?>"/>
 </div>
@@ -131,3 +135,25 @@ __lc.license = 3920361;
 
 </script>
 
+<!-- BEGIN: Google Trusted Stores -->
+<script type="text/javascript">
+  var gts = gts || [];
+
+  gts.push(["id", "573323"]);
+  gts.push(["badge_position", "BOTTOM_LEFT"]);
+  gts.push(["locale", "en_AU"]);
+  gts.push(["google_base_offer_id", "ITEM_GOOGLE_SHOPPING_ID"]);
+  gts.push(["google_base_subaccount_id", "102692478"]);
+  gts.push(["google_base_country", "AU"]);
+  gts.push(["google_base_language", "en"]);
+
+  (function() {
+    var gts = document.createElement("script");
+    gts.type = "text/javascript";
+    gts.async = true;
+    gts.src = "https://www.googlecommerce.com/trustedstores/api/js";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(gts, s);
+  })();
+</script>
+<!-- END: Google Trusted Stores -->
