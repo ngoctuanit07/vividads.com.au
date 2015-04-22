@@ -16,40 +16,21 @@
  * @category   vividslider
  * @package    MD_Vividslider
  */
- $_category = Mage::registry('current_category'); 
- 
- if($_category){
- $_imgUrl = $_category->getImageUrl();
- $_slider_files[0] = array('link'=>$_category->getImageUrl(),
- 						'title'=>$_category->getName(),
-						'image'=>$_category->getImageUrl(),
- 						);
- }else{
-	 $_slider_files = $this->getSliders();
-	 }
-  
 ?>
-
-<?php // var_dump($_slider_files); ?>
 <div class="clearer"></div>
 <?php $design = $this->getDesign(); ?>
 <?php $animation = $this->getAnimation(); ?>
 <?php $event = $this->getEvent(); ?>
 <div class="youama-slider-block" style="float:left;">
     <div class="slider-wrapper" style=" <?php echo $design['width'] . $design['height'] ?>">
-        
-        <div id="slider" class="nivoSlider" style="<?php  echo $design['height']; ?>" >
+        <div id="slider" class="nivoSlider" style="<?php echo $design['height'] ?>" >
             <?php $_counter = 0 ?>
-            
-			<?php foreach ($_slider_files as $_slider) : ?>
-                
-                
+            <?php foreach ($this->getSliders() as $_slider) : ?>
                 <a href="<?php echo $_slider['link'] ?>">
-                    <!--<img style="width:1200px !important;"  src="<?php echo $_slider['image'] ?>" alt="<?php echo Mage::getStoreConfig('design/head/default_title'); ?>" <?php if ($design['texten'] == 1) : ?>title="#youama-elem<?php echo $_counter ?>"<?php endif; ?> />-->
-                     <img style="width:1200px !important;"  src="<?php echo $_slider['image'] ?>" alt="<?php echo Mage::getStoreConfig('design/head/default_title'); ?>" <?php if ($design['texten'] == 1) : ?>title="#youama-elem<?php echo $_counter ?>"<?php endif; ?> />
+                    <img style="width:1200px !important;"  src="<?php echo $_slider['image'] ?>" alt="<?php echo Mage::getStoreConfig('design/head/default_title'); ?>" <?php if ($design['texten'] == 1) : ?>title="#youama-elem<?php echo $_counter ?>"<?php endif; ?> />
                 </a> 
-                <?php  $_counter++ ?>
-            <?php  endforeach; ?>
+                <?php $_counter++ ?>
+            <?php endforeach; ?>
         </div>
     </div>
     <?php $_counter = 0 ?>
