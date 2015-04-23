@@ -63,26 +63,15 @@
 <div class="buttons-set">
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
 </div>
-<?php 
-			$orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-            $order = Mage::getModel('sales/order')->load($orderId);
-			
-		
-			
-?>
- 
+
+
 
 
 <?php 
 			$orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
             $order = Mage::getModel('sales/order')->load($orderId);
 			
-		
-			
 ?>
- 
-
-
  <?php 
 			$orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
             $order = Mage::getModel('sales/order')->load($orderId);
@@ -95,9 +84,8 @@
 			$discount = round($order['discount_amount'],2);
 			$shipping = round($order['shipping_amount'],2);
 			$tax = round($order['tax_amount'],2);
-
-
-
+			$storeLocaleCode = Mage::getStoreConfig('general/locale/code');
+			$languageCode = Mage::getStoreConfig('general/locale/timezone');
 			$time = $order->getCreated_at();
 			$number = strtotime($time);
 			$ntime = strtotime('+7 Days',$number);
@@ -107,18 +95,14 @@
 			$ship = strtotime($Shipping);
 			$shipday = strtotime('+10 Days',$ship);
 			$shipping_day = date('Y-m-d', $shipday);
-
-
-		//	echo "<pre style='background-color:white'>";
-//			Zend_debug::dump($order);
+//			echo "<pre style='background-color:white'>";
+//			Zend_debug::dump($storeLocaleCode);
+//			Zend_debug::dump($languageCode);
 //			echo"</pre>";
 //			exit
 		
 			
 ?>
- 
-
-
 <!-- START Google Trusted Stores Order -->
 <div id="gts-order" style="display:none;" translate="no">
 
@@ -140,36 +124,36 @@
   <span id="gts-o-discounts">-<?php echo strip_tags($discount)?></span>
   <span id="gts-o-shipping-total"><?php echo strip_tags($shipping)?></span>
   <span id="gts-o-tax-total"><?php echo strip_tags($tax)?></span>
-  <span id="gts-o-est-ship-date"><?php echo $ndate ?>(Provided Artwork And Proofs Are Approved)</span>
-  <span id="gts-o-est-delivery-date"><?php echo $shipping_day; ?>(Provided Artwork And Proofs Are Approved)
-  
-  <?php //echo $order->getDelivery_date()?></span>
+  <span id="gts-o-est-ship-date"><?php echo $ndate ?></span>
+  <span id="gts-o-est-delivery-date"><?php echo $shipping_day; ?><?php //echo $order->getDelivery_date()?></span>
   <span id="gts-o-has-preorder">N</span>
   <span id="gts-o-has-digital">N</span>
 
 
      <?php  
-	 $order_item = $order->getAllItems(); 
-	$storeLocaleCode = Mage::getStoreConfig('general/locale/code');
-	$languageCode = Mage::getStoreConfig('general/locale/timezone');
-	$store_id = Mage::app()->getStore()->getId();
-	 foreach ($order_item as $item) : 
-	 $Price = Mage::helper('core')->formatPrice($item['price'],true);
- 	 
+		$order_item = $order->getAllItems(); 
+		$storeLocaleCode = Mage::getStoreConfig('general/locale/code');
+		$languageCode = Mage::getStoreConfig('general/locale/timezone');
+		$store_id = Mage::app()->getStore()->getId();
+		 foreach ($order_item as $item) : 
+		//$Price = Mage::helper('core')->formatPrice($item['price'],true);
+		 $Price = round($item['price'],2);
+
+
 	 
 	 ?>
     <!-- start repeated item specific information -->
     <span class="gts-item">
         <span class="gts-i-name"><?php echo htmlentities($item->getName());
 ?> 	</span>
-        <span class="gts-i-price"><?php echo $Price ?></span>
+        <span class="gts-i-price"><?php echo strip_tags($Price) ?></span>
         <span class="gts-i-quantity"><?php echo (int)$item->getQtyOrdered();
 ?> </span>
-    <?php if (isset($item['gs'])) : ?>
-        <span class="gts-i-prodsearch-id"><?php echo $item->getSku() ?></span>
-        <span class="gts-i-prodsearch-store-id"><?php $store_id; ?></span>
-        <span class="gts-i-prodsearch-country"><?php echo ($storeLocaleCode);?></span>
-        <span class="gts-i-prodsearch-language"><?php  echo substr($languageCode,0,9); ?></span>
+     <?php if (isset($item['gs'])) : ?>
+        <span class="gts-i-prodsearch-id">SKU</span>
+        <span class="gts-i-prodsearch-store-id">102692478</span>
+        <span class="gts-i-prodsearch-country">Australia</span>
+        <span class="gts-i-prodsearch-language">en_AU</span>
     <?php endif; ?>
     </span>
     <!-- end repeated item specific information -->
