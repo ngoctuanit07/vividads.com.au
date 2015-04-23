@@ -73,40 +73,76 @@
  
 
 
+ <?php 
+			$orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+            $order = Mage::getModel('sales/order')->load($orderId);
+			$Url= Mage::getBaseUrl();
+			$total = Mage::helper('core')->formatPrice($order['grand_total'],true);
+			$discount = Mage::helper('core')->formatPrice($order['discount_amount'],true);
+			$shipping = Mage::helper('core')->formatPrice($order['shipping_amount'],true);
+			$tax = Mage::helper('core')->formatPrice($order['tax_amount'],true);
+			$time = $order->getCreated_at();
+			$number = strtotime($time);
+			$ntime = strtotime('+7 Days',$number);
+			$ndate = date('d-m-Y', $ntime);
+			/**New Shipping Date**/
+			$Shipping = $order->getCreated_at();
+			$ship = strtotime($Shipping);
+			$shipday = strtotime('+10 Days',$ship);
+			$shipping_day = date('d-m-Y', $shipday);
+
+
+//			echo "<pre style='background-color:white'>";
+//			Zend_debug::dump($order);
+//			echo"</pre>";
+//			exit
+		
+			
+?>
+ 
+
+
 <!-- START Google Trusted Stores Order -->
 <div id="gts-order" style="display:none;" translate="no">
 
   <!-- start order and merchant information -->
   <span id="gts-o-id"><?php echo $order->getIncrement_id()?></span>
-  <span id="gts-o-domain"><?php echo $order->getStore_name()?></span>
+  <span id="gts-o-domain"><?php echo $Url?></span>
   <span id="gts-o-email"><?php echo $order->getCustomer_email()?></span>
-  <span id="gts-o-country"><?php echo $order->getCountry()?></span>
+  <span id="gts-o-country">AU</span>
   <span id="gts-o-currency"><?php echo $order->getStore_currency_code()?></span>
-  <span id="gts-o-total"><?php echo $order->getGrand_total()?></span>
-  <span id="gts-o-discounts"><?php echo $order->getDiscount_amount()?></span>
-  <span id="gts-o-shipping-total"><?php echo $order->getShipping_tax_amount()?></span>
-  <span id="gts-o-tax-total"><?php echo $order->getTax_amount()?></span>
-  <span id="gts-o-est-ship-date"><?php echo $order->getEstimated_shipping_date() ?></span>
-  <span id="gts-o-est-delivery-date"><?php echo $order->getDelivery_date()?></span>
-  <span id="gts-o-has-preorder">HAS_BACKORDER_PREORDER</span>
-  <span id="gts-o-has-digital">HAS_DIGITAL_GOODS</span>
+  <span id="gts-o-total"><?php echo $total;?></span>
+  <span id="gts-o-discounts"><?php echo $discount?></span>
+  <span id="gts-o-shipping-total"><?php echo $shipping?></span>
+  <span id="gts-o-tax-total"><?php echo $tax?></span>
+  <span id="gts-o-est-ship-date">(Provided Artwork And Proofs Are Approved)<?php echo $ndate ?></span>
+  <span id="gts-o-est-delivery-date">(Provided Artwork And Proofs Are Approved)
+  <?php echo $shipping_day; ?>
+  <?php //echo $order->getDelivery_date()?></span>
+  <span id="gts-o-has-preorder">N</span>
+  <span id="gts-o-has-digital">N</span>
 
 
      <?php  
 	 $order_item = $order->getAllItems(); 
 	$storeLocaleCode = Mage::getStoreConfig('general/locale/code');
 	$languageCode = Mage::getStoreConfig('general/locale/timezone');
-	 foreach ($order_item as $item) : ?>
-
+	$store_id = Mage::app()->getStore()->getId();
+	 foreach ($order_item as $item) : 
+	 $Price = Mage::helper('core')->formatPrice($item['price'],true);
+ 	 
 	 
+	 ?>
     <!-- start repeated item specific information -->
     <span class="gts-item">
-        <span class="gts-i-name"><?php echo $item['name'] ?></span>
-        <span class="gts-i-price"><?php echo $item['price'] ?></span>
-        <span class="gts-i-quantity"><?php echo $item['qty'] ?></span>
+        <span class="gts-i-name"><?php echo htmlentities($item->getName());
+?> 	</span>
+        <span class="gts-i-price"><?php echo $Price ?></span>
+        <span class="gts-i-quantity"><?php echo (int)$item->getQtyOrdered();
+?> </span>
     <?php if (isset($item['gs'])) : ?>
-        <span class="gts-i-prodsearch-id"><?php echo $item['gs']['id'] ?></span>
-        <span class="gts-i-prodsearch-store-id"><?php echo $item->getAccountId() ?></span>
+        <span class="gts-i-prodsearch-id"><?php echo $item->getSku() ?></span>
+        <span class="gts-i-prodsearch-store-id"><?php $store_id; ?></span>
         <span class="gts-i-prodsearch-country"><?php echo ($storeLocaleCode);?></span>
         <span class="gts-i-prodsearch-language"><?php  echo substr($languageCode,0,9); ?></span>
     <?php endif; ?>
