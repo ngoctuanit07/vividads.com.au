@@ -4,12 +4,12 @@
 		 $cart = Mage::getSingleton('checkout/cart'); 
 $quoteItems = Mage::getSingleton('checkout/session')
                   ->getQuote()
-                  ->getItemsCollection();
+                  ->getItemsCollection(); 
  
 foreach( $quoteItems as $item ){
-    $cart->removeItem( $item->getId() );    
+    $cart->removeItem( $item->getId() );      
 }
-$cart->save();
+$cart->save(); 
 		 */
 		 $cart = Mage::getSingleton('checkout/session')->getQuote();
    		 $cartItems = $cart->getAllVisibleItems();

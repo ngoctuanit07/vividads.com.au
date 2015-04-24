@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var productGridUrl = '<?php echo $this->getUrl('Quotation/Admin/productSelectionGrid', array('quote_id' => $this->getQuote()->getquotation_id())); ?>';
     var deleteUrl = '<?php echo $this->getDeleteUrl(); ?>';
-</script>
+</script>  
 
 <input type="hidden" name="tab_to_display" id="tab_to_display" value="general" />
 <input id="form_key" name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
@@ -9,7 +9,7 @@
 <input type="hidden" name="myform[quotation_id]" value="<?php echo $this->getQuote()->getquotation_id(); ?>" />
 <?php /************************ Start of cistome billing and shipping 06_02_2014 ***************************************/
 
-$countryCode = Mage::getStoreConfig('general/country/default');
+$countryCode = Mage::getStoreConfig('general/country/default');  
 //echo "code :".$countryCode;
 $regionCollection = Mage::getModel('directory/region_api')->items($countryCode);
 
