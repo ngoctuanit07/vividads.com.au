@@ -138,6 +138,8 @@
 		 foreach ($order_item as $item) : 
 		//$Price = Mage::helper('core')->formatPrice($item['price'],true);
 		 $Price = round($item['price'],2);
+		 $Item_id = $item->getId();
+		 $sku = $item->getSku();
 
 
 	 
@@ -149,12 +151,13 @@
         <span class="gts-i-price"><?php echo strip_tags($Price) ?></span>
         <span class="gts-i-quantity"><?php echo (int)$item->getQtyOrdered();
 ?> </span>
-    <?php /*?> <?php if (isset($item['gs'])) : ?>
-        <span class="gts-i-prodsearch-id">SKU</span>
+     <?php //if (isset($item['gs'])) : ?>
+        <span class="gts-i-prodsearch-id"><?php if($sku ==''){echo $Item_id;}
+			else{echo $sku;}?></span>
         <span class="gts-i-prodsearch-store-id">102692478</span>
-        <span class="gts-i-prodsearch-country">Australia</span>
+        <span class="gts-i-prodsearch-country">AU</span>
         <span class="gts-i-prodsearch-language">en_AU</span>
-    <?php endif; ?><?php */?>
+    <?php //endif; ?>
     </span>
     <!-- end repeated item specific information -->
     <?php endforeach; ?>
