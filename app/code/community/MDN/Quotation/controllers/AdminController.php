@@ -2654,6 +2654,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
     
     $temptableHistory=Mage::getSingleton('core/resource')->getTableName('quotation_history');
 	$temptableQuotation=Mage::getSingleton('core/resource')->getTableName('quotation');
+   
     if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHistory))
     {
         
@@ -2689,13 +2690,21 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 	
 	foreach ($quote->getHistory()->setOrder('qh_id', 'desc') as $_item)
         {
-			 
-            $comments_history .= '<li>
+			   
+           /*
+		    $comments_history .= '<li>
                 <strong>'.Mage::helper('core')->formatDate($_item->getCreatedAtDate(), 'medium').'></strong>
                 '.Mage::helper('core')->formatTime($_item->getCreatedAtDate(), 'medium').'<span class="separator">|</span><strong>'.$_item->getStatusLabel() .'</strong><br/><small>'.$_item->getqh_user().'
                </small>
                 
-                    <br/>';
+                    <br/>';  
+			*/		
+			$comments_history .= '<li>
+                <strong>'.Mage::helper('core')->formatDate($_item->getQh_date(), 'medium').'></strong>
+                '.Mage::helper('core')->formatTime($_item->getQh_date(), 'medium').'<span class="separator">|</span><strong>'.$_item->getStatusLabel() .'</strong><br/><small>'.$_item->getqh_user().'
+               </small>
+                
+                    <br/>';		
 					$item_message = $_item->getqh_message();
            $comments_history .=  $item_message;   
           
