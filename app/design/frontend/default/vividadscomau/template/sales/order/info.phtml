@@ -23,7 +23,7 @@
  * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
- echo '<script type="text/javascript" src="http://magento-5476-12862-29604.cloudwaysapps.com/js/jquery/jquery-1.10.1.min.js"></script>';
+ //echo '<script type="text/javascript" src="http://magento-5476-12862-29604.cloudwaysapps.com/js/jquery/jquery-1.10.1.min.js"></script>';
 ?>
 <?php /** @var $this Mage_Sales_Block_Order_Info 
 <link href="<?php echo $this->getSkinUrl('css/invoices.css')?>" rel="stylesheet" type="text/css" />*/ ?>
@@ -86,7 +86,7 @@ if($msg){
     $sqlHistorySystem = $connectionRead->select()
 				->from($tableHistory, array('*'))
 				->where("parent_id = '".$_order->getId()."' AND comment != 'Created'")
-				->order('entity_id ASC');
+				->order('entity_id DESC');
     try {
     $chkSystem = $connectionRead->query($sqlHistorySystem);
     $fetchHistory = $chkSystem->fetchall();
@@ -97,8 +97,10 @@ if($msg){
    $i=1;
     foreach($fetchHistory as $history)
     {
+		    $storeTimezone = new DateTimeZone(Mage::getStoreConfig('general/locale/timezone'));
+			$storenewDateTime = new DateTime($history['qh_date'], $storeTimezone);
 //		var_dump($history);
-    ?> 			    			<li class="clearer <?php if($i%2==0)echo 'even';else echo 'odd';?>">
+    ?> 			<li class="clearer <?php if($i%2==0)echo 'even';else echo 'odd';?>">
     				<table width="100%">
     				<tbody>
     				<tr class="customer-comment">
@@ -118,12 +120,15 @@ if($msg){
 			    						    		</td>
  					<?php } else { ?>
 			    		<td class="comment-additional" width="35%" style="padding:10px 22px;">
-			    			<?php echo date_format(date_create($history['created_at']), 'm/d/Y H:i A');?></td>
+			    			<?php // echo date_format(date_create($history['created_at']), 'm/d/Y H:i A');
+							echo Mage::app()->getLocale()->date($history['created_at'])->toString($format);
+							
+							?></td>
 			    		
-			    		<td class="comment-content" style="padding:10px 22px">
-			    			<?php echo nl2br($history['comment']);?>
+			    		<td class="comment-content" style="padding:10px 22px">  
+			    			<?php echo nl2br($history['comment']);?>  
 			    						    		</td>
-
+ 
                     
                     <?php } ?>                                                   
 		    		</tr>
@@ -170,7 +175,7 @@ if($msg){
 				}
 			      }
 			      form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
-			    xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>/vividads_com_au/Quotation/Quote/addcommentorder/?id="+<?php echo $_order->getId();?>+"&comment="+comment+"&form_key="+form_key+"&isAjax=true",true);
+			    xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>Quotation/Quote/addcommentorder/?id="+<?php echo $_order->getId();?>+"&comment="+comment+"&form_key="+form_key+"&isAjax=true",true);
 			    xmlhttp.send();
 			}
 	    	</script>

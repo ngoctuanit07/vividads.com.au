@@ -81,7 +81,7 @@ externalform-index-index .col2-left-layout .col-main {
 	margin: 0;
 	position: relative;
 	top: 0;
-	display:block;
+	display: block;
 	width: 1200px;
 }
 .error_labels {
@@ -144,7 +144,6 @@ externalform-index-index .col2-left-layout .col-main {
 	background-color: #FFF;
 	padding: 5px;
 }
-
 .ds_box {
 	background-color: #FFF;
 	border: 1px solid #000;
@@ -184,7 +183,6 @@ externalform-index-index .col2-left-layout .col-main {
 .ds_cell:hover {
 	background-color: #F3F3F3;
 } /* This hover code won't work for IE */
-
 -->
 </style>
 <table class="ds_box" cellpadding="0" cellspacing="0" id="ds_conclass" style="display: none;">
@@ -192,7 +190,6 @@ externalform-index-index .col2-left-layout .col-main {
     <td id="ds_calclass"></td>
   </tr>
 </table>
-
 <div class="quote_details" id="quote_details">
 <div class="print-head" id="print-head" style="display:none;"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('quote_print_head')->toHtml() ?> </div>
 
@@ -233,7 +230,7 @@ externalform-index-index .col2-left-layout .col-main {
   <h1 style="font-size: 16px;font-weight: bold;color: black;margin-bottom: 8px;"><?php echo $this->__('Quote # %s', $quote->getincrement_id()); ?></h1>
 </div>
 <div class="quote-checkout-wrapper" style="text-align:right">
-  <button  type="button" onclick="document.location.href = '<?php echo $this->getUrl().'Quotation/Quote/createorder/quote_id/'.$quote->getId().'/'; ?>'" title="Accept Order" class="acceptorder"><?php echo __('Accept Order');?></button>
+  <button  type="button" onclick="convertoInvoice();" title="Accept Order" class="acceptorder"><?php echo __('Accept Order');?></button>
 </div>
 <div id="quote-comment-history" style="padding-bottom: 32px;">
   <h3 class="head" id="discuss"> Discussion About Your Quote <!--<a href="javascript:location.reload(true)" style="float:right"><img src="<?php echo $this->getSkinUrl()?>images/refresh-btn.png"></a>--> </h3>
@@ -245,9 +242,7 @@ externalform-index-index .col2-left-layout .col-main {
 
     $sqlHistorySystem = $connectionRead->select()
 				->from($tableHistory, array('*'))
-
 				->where("qh_quotation_id = '".$quote_id."' AND qh_message != 'Created'")
-
 				->order('qh_id ASC');
 
     try {
@@ -267,6 +262,9 @@ externalform-index-index .col2-left-layout .col-main {
     foreach($fetchHistory as $history)
 
     {
+		
+		 $storeTimezone = new DateTimeZone(Mage::getStoreConfig('general/locale/timezone'));
+			$storenewDateTime = new DateTime($history['qh_date'], $storeTimezone);
 
     ?>
     <li class="clearer odd">
@@ -289,7 +287,7 @@ externalform-index-index .col2-left-layout .col-main {
 					echo $history['qh_user'];
 
 			?>
-              <span class="separator">|</span> <?php echo date_format(date_create($history['qh_date']), 'm/d/Y H:i A');?></td>
+              <span class="separator">|</span> <?php echo Mage::app()->getLocale()->date($history['qh_date'])->toString($format);?></td>
             <td class="comment-content" style="padding:10px 22px;  letter-spacing:0px;"><?php echo nl2br($history['qh_message']);?></td>
           </tr>
         </tbody>
@@ -304,19 +302,31 @@ externalform-index-index .col2-left-layout .col-main {
     ?>
   </ul>
   <script type="text/javascript">decorateGeneric($$('ul.comment-list li'), ['odd','even'])</script>
-  <textarea rows="5" cols="20" style="width:99%;height:68px; resize:none;" class="required-entry" name="history[comment]" id="history"></textarea>
+  <textarea rows="5" cols="20" style="width:99%;height:68px; resize:none;" class="required-entry" name="history[comment]" id="history" onKeyPress="hideInfo();"></textarea>
+  <div id="messageInfo" style="display: none; width: 300px; float: left; margin-left: 3px;  margin-top: 2px;  color: #a0a03a; font-weight: bold;">Sending message please wait...</div>
+  <div id="messageSuccess" style="display: none; width: 300px; float: left; margin-left: 3px;  margin-top: 2px;  color: #a0a03a; font-weight: bold;">Success: your message has been sent.</div>
   <button type="submit" title="Submit Comment" class="submit button submit-comment" id="submit-comment-button" onclick="addcomment();"><span><span></span></span></button>
   <script type="text/javascript">
 
-	    		var commentHistoryFrom = new VarienForm('comment-form');
-
+	    var commentHistoryFrom = new VarienForm('comment-form');
+		
+		function hideInfo(){
+			        document.getElementById('messageInfo').style.display='none'; 
+					document.getElementById('messageSuccess').style.display='none'; 
+			}
+		
 			function addcomment()
 
 			{
-
-			    var comment = document.getElementById('history').value;
-
-			    var xmlhttp;
+				var comment = document.getElementById('history').value;
+				if(comment==''){
+					alert('Please enter your comments.');
+					document.getElementById('history').focus();
+					document.getElementById('history').select();
+					return false;
+					}
+			    
+				var xmlhttp;
 
 			    if (window.XMLHttpRequest)
 
@@ -337,6 +347,8 @@ externalform-index-index .col2-left-layout .col-main {
 			    xmlhttp.onreadystatechange=function()
 
 			      {
+					document.getElementById('messageInfo').style.display='block'; 
+					document.getElementById('messageSuccess').style.display='none'; 
 
 			      if (xmlhttp.readyState==4 && xmlhttp.status==200)
 
@@ -345,9 +357,9 @@ externalform-index-index .col2-left-layout .col-main {
 				   //alert(xmlhttp.responseText);
 
 				    document.getElementById('commentlist').innerHTML = xmlhttp.responseText;
-
-				     document.getElementById('history').value = '';
-
+				    document.getElementById('history').value = '';
+					document.getElementById('messageInfo').style.display='none'; 
+					document.getElementById('messageSuccess').style.display='block'; 
 				}
 
 			      }
@@ -400,16 +412,14 @@ externalform-index-index .col2-left-layout .col-main {
 
     		<td class="a-right"><?php //echo $quote->GetConfigFormatedPriceWithoutTaxes() ?></td>-->
         
-        <td class="a-right"><?php echo $quote->GetConfigFormatedPriceWithTaxes() ?></td>
+        <td class="a-right" style="width:90%;"><?php echo $quote->GetConfigFormatedPriceWithTaxes() ?></td>
       </tr>
       <?php endif ?>
       <?php foreach ($quote->getItems() as $item): ?>
       <?php if (($item->getexclude() == 1) || ($quote->getshow_detail_price() == 1)):
 
 		    $_product =Mage::getModel('catalog/product')->load($item->getproductId());
-
 		    $productOptions= $item->getOptions();
-
 		    $productOptions = Mage::helper('quotation/Serialization')->unserializeObject($productOptions);
 
 		?>
@@ -420,9 +430,9 @@ externalform-index-index .col2-left-layout .col-main {
         <td style="width:125px; "><!--<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />--> 
           
           <img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getThumbnail()); ?>" width="135" height="135" 
-          alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
-        </td>
-        <td style="width:230px;"><h2 class="product-name"><a style="font-size: 13px;font-weight: bold;" href="<?php echo $_product->getProductUrl();?>"><?php echo $item->getcaption() ?><br>
+          alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></td>
+        <td style="width:400px;">
+        <h2 class="product-name"><a style="font-size: 13px;font-weight: bold;" href="<?php echo $_product->getProductUrl();?>"><?php echo $item->getcaption() ?><br>
             <?php //echo $value = $item->getOptionsValuesAsText(true);?>
             </a></h2>
           <?php
@@ -434,13 +444,9 @@ externalform-index-index .col2-left-layout .col-main {
 			{
 
 			    $bundle_item = array();
-
 			    $bundled_product = Mage::getModel('catalog/product')->load($_product->getId());
-
 			    $selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
-
 				$bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
-
 			    );
 
 			    $optionCollection =  $bundled_product->getTypeInstance(true)->getOptions($bundled_product);
@@ -450,7 +456,6 @@ externalform-index-index .col2-left-layout .col-main {
 			    {
 
 				echo '<div  class="bundle_item" >
-
 				<div class="bundle_name"><strong>'.$val->getDefaultTitle().'</strong></div><div class="item_box"><table class="quote_view">';
 
 				foreach($selectionCollection as $option)
@@ -460,8 +465,9 @@ externalform-index-index .col2-left-layout .col-main {
 				    if($val->getId() == $option->getOptionId())
 
 				    {
+						$selected_qty = round(ceil($option->getData('selection_qty')) * $item->getqty());
 
-					 echo '<tr><td style="border:none 0px !important; padding:0px !important;"><td style="border:none 0px !important;  padding:0px !important;">'.'<strong>('.ceil($option->getData('selection_qty')).') </strong> '.$option->getName().'</td></tr>';
+					 echo '<tr><td style="border:none 0px !important; padding:0px !important;"><td style="border:none 0px !important;  padding:0px !important;">'.'<strong>'.$selected_qty.' </strong>  x '.$option->getName().'</td></tr>';
 
 				    }
 
@@ -548,7 +554,7 @@ externalform-index-index .col2-left-layout .col-main {
             </colgroup>
             <tbody>
               <tr>
-                <td style="" class="a-right" colspan="1"><?php echo $this->__('Subtotal'); ?></td>
+                <td style="width:90%" class="a-right" colspan="1"><?php echo $this->__('Subtotal'); ?></td>
                 <td style="" class="a-right"><span class="prices" style="color:#000;"><?php echo $quote->FormatPrice($total);?></span></td>
               </tr>
               <tr>
@@ -649,10 +655,10 @@ externalform-index-index .col2-left-layout .col-main {
   <table class="data-table two-column" width="100%">
     <thead>
       <tr>
-        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border: 0;font-weight: bold;text-transform: none;border-image: initial;" width="48%"> <div> Billing Information: <a class="change-link" href="javascript:void(0);" onclick="changeContent('billing_address');">Change</a> </div>
+        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border: 0;font-weight: bold;text-transform: none;border-image: initial;" width="48%"> <div> Billing Information: <a class="change-link" href="javascript:void(0);" onclick="changeContent('billing_address');">Change</a><input type="hidden" id="quote_billing_address_flag"  value="0" /> </div>
         </th>
         <th style="background-color:#fff;" width="10"></th>
-        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border: 0;font-weight: bold;text-transform: none;border-image: initial;" width="48%"> <div> Shipping Information: <a class="change-link" href="javascript:void(0);" onclick="changeContent('shipping_address');">Change</a> </div>
+        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border: 0;font-weight: bold;text-transform: none;border-image: initial;" width="48%"> <div> Shipping Information: <a class="change-link" href="javascript:void(0);" onclick="changeContent('shipping_address');">Change</a> <input type="hidden" id="quote_shipping_address_flag" value="0"/></div>
         </th>
       </tr>
     </thead>
@@ -757,6 +763,7 @@ if($fetchSystem['street1'] != '')
               <div class="field" id="">
               <label for="edit_billing:region" class="required"><em>*</em>State/Province</label>
               <div class="input-box" id="">
+             
               <select id="edit_billing:region_id" name="quote[billing_address][region_id]" title="State/Province" class="validate-select billing-region-id" style="" onchange="editQuote.setSameAsBilling(false);" defaultvalue="13">
                 <option value="">Please select region, state or province</option>
                 <?php
@@ -764,12 +771,11 @@ if($fetchSystem['street1'] != '')
                                 foreach($regionCollection as $region) {
 
                                 ?>
-                <option value="<?php echo $region['name'] ?>" <?php if($fetchSystem['region_id'] == $region['name']) echo 'selected';?> ><?php echo $region['name'] ?></option>
-                <?php
-
-                                }
-
-                                ?>
+                <option value="<?php echo $region['name'] ?>" <?php if($fetchSystem['region_id'] == $region['code']) echo 'selected';?> ><?php echo $region['name'] ?></option>
+                <?php } ?>
+               
+                </select>
+                
                 <input type="text" id="edit_billing:region" name="quote[billing_address][region]" value="" title="State/Province" class="input-text billing-region" style="display: none; ">
                 </div>
                 </div>
@@ -778,6 +784,7 @@ if($fetchSystem['street1'] != '')
                 <div class="field">
                 <label for="edit_billing:postcode" class="required" id="">
                 <em>*</em>Zip/Postal Code
+                
                 </label>
                 <div class="input-box">
                 <input type="text" title="Zip/Postal Code" name="quote[billing_address][postcode]" id="edit_billing:postcode" value="<?php echo $fetchSystem['postcode'];?>" class="input-text validate-zip-international required-entry zipcode" onchange="editQuote.setSameAsBilling(false);">
@@ -786,21 +793,19 @@ if($fetchSystem['street1'] != '')
                 <div class="field">
                 <label for="edit_billing:country_id" class="required">
                 <em>*</em>Country
+                
                 </label>
                 <div class="input-box">
                 <select name="billing[country_id]" id="edit_billing:country_id" class="validate-select billing-country" title="Country" onchange="updateEditBillingRegion()">
                 <option value=""> </option>
                 <?php
 
-                                        foreach($countryCollection as $country) {
-
+      foreach($countryCollection as $country) {
                                         ?>
                 <option value="<?php echo $country['country_id'] ?>" <?php if($fetchSystem['country_id'] == $country['country_id']) echo 'selected';?> ><?php echo $country['name'] ?></option>
                 <?php
-
-                                        }
-
-                                        ?>
+                 }
+			 ?>
               </select>
               </div>
               </div>
@@ -817,8 +822,8 @@ if($fetchSystem['street1'] != '')
                 <input type="hidden" name="quote[billing_address][save_in_address_book]" id="top_billing_save_in_address_book" value="0">
               </li>
               <div class="quote-edit-button" style="text-align:right; padding:0px; margin-right:20px;">
-    <button type="submit"  title="Update" class="button update" style="background:none; margin-top:10px; margin-right:-10px;"><span><span><?php echo $this->__('Update') ?></span></span></button>
-  </div>
+                <button type="submit"  title="Update" class="button update" style="background:none; margin-top:10px; margin-right:-10px;"><span><span><?php echo $this->__('Update') ?></span></span></button>
+              </div>
             </ul>
             <script type="text/javascript">
 
@@ -937,19 +942,19 @@ if($fetchSystem['street1'] != '')
               <div class="field" id="">
               <label for="edit_shipping:region" class="required"><em>*</em>State/Province</label>
               <div class="input-box" id="">
+              
+              
               <select id="edit_shipping:region_id" name="quote[shipping_address][region_id]" title="State/Province" class="validate-select shipping-region-id" style="" defaultvalue="15">
                 <option value="">Please select region, state or province</option>
                 <?php
-
-                                foreach($regionCollection as $region) {
-
-                                ?>
-                <option value="<?php echo $region['name'] ?>" <?php if($fetchSystem['region_id'] == $region['name']) echo 'selected';?> ><?php echo $region['name'] ?></option>
-                <?php
-
-                                }
-
-                                ?>
+				
+				
+				
+        foreach($regionCollection as $region) {  ?>
+                <option value="<?php echo $region['name'] ?>" <?php if($fetchSystem['region_id'] == $region['code']) echo 'selected';?> ><?php echo $region['name'] ?></option>
+                <?php  }  ?>
+                </select> 
+                               
                 <input type="text" id="edit_shipping:region" name="quote[shipping_address][region]" value="" title="State/Province" class="input-text shipping-region" style="display: none; " onchange="editQuote.checkSameAsBilling();">
                 </div>
                 </div>
@@ -958,6 +963,7 @@ if($fetchSystem['street1'] != '')
                 <div class="field">
                 <label for="edit_shipping:postcode" class="required" id="">
                 <em>*</em>Zip/Postal Code
+                
                 </label>
                 <div class="input-box">
                 <input type="text" title="Zip/Postal Code" name="quote[shipping_address][postcode]" id="edit_shipping:postcode" value="<?php echo $fetchSystem['postcode'];?>" class="input-text validate-zip-international required-entry zipcode" onchange="editQuote.checkSameAsBilling();">
@@ -966,20 +972,19 @@ if($fetchSystem['street1'] != '')
                 <div class="field">
                 <label for="edit_shipping:country_id" class="required">
                 <em>*</em>Country
+                
                 </label>
                 <div class="input-box">
+                
                 <select name="shipping[country_id]" id="edit_shipping:country_id" class="validate-select shipping-country" title="Country" onchange="updateEditShippingRegion()">
                 <?php
 
-                                        foreach($countryCollection as $country) {
-
-                                        ?>
+                  foreach($countryCollection as $country) {
+							 ?>
                 <option value="<?php echo $country['country_id'] ?>" <?php if($fetchSystem['country_id'] == $country['country_id']) echo 'selected';?> ><?php echo $country['name'] ?></option>
                 <?php
-
-                                        }
-
-                                        ?>
+					}
+				  ?>
               </select>
               </div>
               </div>
@@ -996,8 +1001,8 @@ if($fetchSystem['street1'] != '')
                 <input type="hidden" name="quote[shipping_address][save_in_address_book]" id="edit_shipping_save_in_address_book" value="0">
               </li>
               <div class="quote-edit-button" style="text-align:right; padding:0px; margin-right:20px;">
-    <button type="submit"  title="Update" class="button update" style="background:none; margin-top:10px; margin-right:-10px;"><span><span><?php echo $this->__('Update') ?></span></span></button>
-  </div>
+                <button type="submit"  title="Update" class="button update" style="background:none; margin-top:10px; margin-right:-10px;"><span><span><?php echo $this->__('Update') ?></span></span></button>
+              </div>
             </ul>
             <script type="text/javascript">
 
@@ -1030,9 +1035,9 @@ if($fetchSystem['street1'] != '')
         <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border: 0;font-weight: bold;text-transform: none;border-image: initial;" width="48%"> <div> Requested Delivery Date: <!--<a class="change-link" href="javascript:void(0);" onclick="changeContent('inhanddate');">Update</a>--> </div>
         </th>
         <th style="background-color:#fff;" width="10"  ></th>
-        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border: 0;font-weight: bold;text-transform: none;border-image: initial;" width="48%"> <div> Shipping Method:
-<!--        <a class="change-link" href="javascript:void(0);" onclick="changeContent('shipping_method');">Change</a> -->
-        </div>
+        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border: 0;font-weight: bold;text-transform: none;border-image: initial;" width="48%"> <div> Shipping Method: 
+            <!--        <a class="change-link" href="javascript:void(0);" onclick="changeContent('shipping_method');">Change</a> --> 
+          </div>
         </th>
       </tr>
     </thead>
@@ -1054,8 +1059,6 @@ if($fetchSystem['street1'] != '')
 
 			  ?>
           </div>
-          
-          
           <div id="quote-edit-inhanddate" class="edit-content" style="display:none">
             <div class="inhanddate-select">
               <div class="date-input">
@@ -1081,10 +1084,9 @@ if($fetchSystem['street1'] != '')
         //]]>
 
         </script> </div>
-        <div class="quote-edit-button" style="text-align:right; padding:0px; margin-right:0px;">
-<!--    <button type="submit"  title="Update" class="button update" style="background:none; margin-top:10px; margin-right:-10px;"><span><span><?php echo $this->__('Update') ?></span></span></button>-->
-  </div>
-        </td>
+          <div class="quote-edit-button" style="text-align:right; padding:0px; margin-right:0px;"> 
+            <!--    <button type="submit"  title="Update" class="button update" style="background:none; margin-top:10px; margin-right:-10px;"><span><span><?php echo $this->__('Update') ?></span></span></button>--> 
+          </div></td>
         <td width="10" style="border:none" class="no-bg"></td>
         <td valign="top" class=""><div id="quote-shipping_method">
             <?php
@@ -1093,25 +1095,37 @@ if($fetchSystem['street1'] != '')
 					$selectMethod = $connectionRead->select()
 							       ->from($tblMthod, array('*'))
 							       ->where('quotation_id=?', $quote->getId());
-					$method = $connectionRead->fetchRow($selectMethod);
+					 $method = $connectionRead->fetchRow($selectMethod);
 					 $carrierTitle =  end(explode('_',$quote->getShippingMethod()));
+					
+					//Zend_debug::dump($method);
+					//Zend_debug::dump($quote->getData());
 					 //echo $carrierTitle;
-//					 $title = $method['shipping_description'];
-					 $title = $method['shipping_method'];	
-					 if($title =='custom_price'){
+					//
+					 $title = $method['shipping_description'];					 
+					 $shippingmethod = $method['shipping_method'];	
+					
+					 if($shippingmethod =='custom_price'){
 						 $title = 'Courier Delivery ';
-						 }				 
+						 }	
+					if($shippingmethod==''	){
+						$title = 'None / Free Courier Delivery ';
+						}
+						//var_dump($method);
 /*					if($method['shipping_description']==''){
 						$title = 'None ';
 						}*/
 						
 					 //var_dump($method);shipping_method
+					
+					//Zend_debug::dump($method);
+					
 					echo $title.' - '.$quote->FormatPrice($method['shipping_rate']);?>
           </div>
-          <div class="quote-edit-button" style="text-align:right; padding:0px; margin-right:0px;">
-    <!--<button type="submit"  title="Update" class="button update" style="background:none; margin-top:10px; margin-right:-10px;"><span><span><?php echo $this->__('Update') ?></span></span></button>-->
-  </div>
-          <div id="quote-edit-shipping_method" class="edit-content" style="display:none">
+          <div class="quote-edit-button" style="text-align:right; padding:0px; margin-right:0px;"> 
+            <!--<button type="submit"  title="Update" class="button update" style="background:none; margin-top:10px; margin-right:-10px;"><span><span><?php echo $this->__('Update') ?></span></span></button>--> 
+          </div>
+          <div id="quote-edit-shipping_method" class="edit-content" style="display:none;">
             <div id="quote-edit-shipping-method-choose">
             <input type="hidden" name="hidden_input" id="hidden_input" value="1374120150" />
             
@@ -1175,8 +1189,8 @@ if($fetchSystem['street1'] != '')
 
 	<br/>-->
             
-            <dl class="shipment-methods" id="edit-shipment-methods-dl">            
-            <!--<dt><strong>FedEx</strong></dt>-->            
+            <dl class="shipment-methods" id="edit-shipment-methods-dl">
+            <!--<dt><strong>FedEx</strong></dt>-->
             <dd>
             <ul>
             <?php
@@ -1215,14 +1229,14 @@ if($fetchSystem['street1'] != '')
 
 		       // print_r($rate->getData());
 
-			$allData = $rate->getData();
-
+				$allData = $rate->getData();
 			?>
             <li>
-            <input type="radio" name="ship_method" id=<?php echo $allData['code']?> value="<?php echo $allData['code'].'***'.$allData['price'].'***'. $allData['carrier_title'].'/'.$allData['method_title'];?>" <?php if($method['shipping_method']==$allData['code']){ echo 'checked';} ?> />
+            
+            <input type="radio" name="ship_method" id=<?php echo $allData['code']?> value="<?php echo $allData['code'].'***'.$method['shipping_rate'].'***'. $allData['carrier_title'].'/'.$allData['method_title'];?>" <?php if($method['shipping_method']==$allData['code']){ echo 'checked';} ?> />
             <label class="normal" for="s_method_fedex_FEDEX_GROUND">
-            <?php echo $allData['carrier_title'].'/'.$allData['method_title']?> <strong><span class="prices" style="color:#000;"><?php echo $quote->FormatPrice($allData['price'])?></span></strong>
-            </lebel>
+            <?php echo $allData['carrier_title'].'/'.$allData['method_title']?> <strong><span class="prices" style="color:#000;"><?php echo $quote->FormatPrice($method['shipping_rate'])?></span></strong>
+            </label>
             </li>
             <?php 
 
@@ -1242,14 +1256,12 @@ if($fetchSystem['street1'] != '')
 	editQuote.overlay('address-shipping-overlay', true);
 
 </script> 
-          </div>
-          
-          </td>
+          </div></td>
       </tr>
     </tbody>
   </table>
-  <div class="quote-edit-button" style="text-align:right">
-    <!--<button type="submit"  title="Update" class="button update" style="background:none; margin-top:10px; margin-right:-10px;"><span><span><?php echo $this->__('Update') ?></span></span></button>-->
+  <div class="quote-edit-button" style="text-align:right"> 
+    <!--<button type="submit"  title="Update" class="button update" style="background:none; margin-top:10px; margin-right:-10px;"><span><span><?php echo $this->__('Update') ?></span></span></button>--> 
   </div>
 </form>
 <?php
@@ -1281,7 +1293,6 @@ $chkPlanning = $connectionRead->fetchALL($sqlPlanning);
 		foreach($chkPlanning as $planning)
 
 		{
-
 		    $Product = Mage::getModel('catalog/product')->load($planning['product_id']);
 
 	      ?>
@@ -1325,9 +1336,13 @@ $chkPlanning = $connectionRead->fetchALL($sqlPlanning);
 
     </div>
 
-    */ ?>
-<div class="quote-checkout-wrapper" style="text-align:right">
-  <button  type="button" onclick="document.location.href = '<?php echo $this->getUrl().'Quotation/Quote/createorder/quote_id/'.$quote->getId().'/'; ?>'" title="Accept Order" class="acceptorder"><?php echo __('Accept Order');?></button>
+    */ 
+	
+	$grandTotal = (int)$quote->GetFinalPriceWithoutTaxes();
+	
+	?>
+<div class="quote-checkout-wrapper" style="text-align:right" >
+  <button  type="button" onclick="convertoInvoice();" title="Accept Order" class="acceptorder"><?php echo __('Accept Order');?></button>
 </div>
 
 <!--<form id="form_request" name="form_request" method="POST" action="http://192.168.0.56/aceexhibits/Quotation/Quote/SendTextualRequest/">
@@ -1340,10 +1355,26 @@ $chkPlanning = $connectionRead->fetchALL($sqlPlanning);
 
 </div>
 <script type="text/javascript">
+
+ 		 
+
+function convertoInvoice(){
+	var grandTotal = <?php echo $grandTotal; ?>;
+	if(grandTotal <=0){
+		alert('Please contact sales team to add products to this Quote.');
+		return false;
+	}else{
+	document.location.href = '<?php echo $this->getUrl().'Quotation/Quote/createorder/quote_id/'.$quote->getId().'/'; ?>'
+	}
+	}
+
     function changeContent(type)
     {
 		
 		console.log(type);
+		var quote_billing_address_flag= document.getElementById('quote_billing_address_flag');
+		var quote_shipping_address_flag= document.getElementById('quote_shipping_address_flag');
+		
 		
 	if(type == 'inhanddate')
 	{
@@ -1352,22 +1383,40 @@ $chkPlanning = $connectionRead->fetchALL($sqlPlanning);
 	}
 	else if(type == 'shipping_method')
 	{
-	    document.getElementById('quote-edit-shipping_method').style.display = 'block';
-	    document.getElementById('quote-shipping_method').style.display = 'none';
+	    
+		document.getElementById('quote-edit-shipping_method').style.display = 'none';
+	    document.getElementById('quote-shipping_method').style.display = 'block';
 	}
 	else if(type == 'billing_address')
 	{
-	    document.getElementById('quote-edit-billing_address').style.display = 'block';
-	    document.getElementById('quote-billing_address').style.display = 'none';
-	    document.getElementById('is_bill').value = 1;
+	    if(quote_billing_address_flag.value==0){
+			document.getElementById('quote-edit-billing_address').style.display = 'block';
+			document.getElementById('quote-billing_address').style.display = 'none';
+			document.getElementById('is_bill').value = 1;
+			quote_billing_address_flag.value=1;
+		}else{
+			document.getElementById('quote-edit-billing_address').style.display = 'none';
+			document.getElementById('quote-billing_address').style.display = 'block';
+			document.getElementById('is_bill').value = 0;
+			quote_billing_address_flag.value=0;
+			}
 	}
 	else if(type == 'shipping_address')
 	{
-	    document.getElementById('quote-edit-shipping_address').style.display = 'block';
-	    document.getElementById('quote-shipping_address').style.display = 'none';
-	    document.getElementById('is_ship').value = 1;
+	    if(quote_shipping_address_flag.value==0){
+			document.getElementById('quote-edit-shipping_address').style.display = 'block';
+			document.getElementById('quote-shipping_address').style.display = 'none';
+			document.getElementById('is_ship').value = 1;
+			quote_shipping_address_flag.value=1;
+		}else{
+			document.getElementById('quote-edit-shipping_address').style.display = 'none';
+			document.getElementById('quote-shipping_address').style.display = 'block';
+			document.getElementById('is_ship').value = 0;
+			
+			quote_shipping_address_flag.value=0;   
+			}
 	}
-    }
+    } 
     
     function same_billing1(check)
     {
@@ -1988,9 +2037,6 @@ if($product)
 }
 
 ?>
-
-
-
 <script language="javascript" type="text/javascript">
 <!--
 
@@ -2264,5 +2310,4 @@ function getCookie(cname)
 }
 
 -->
-</script>
-
+</script> 

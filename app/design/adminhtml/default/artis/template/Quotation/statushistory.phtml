@@ -2,69 +2,97 @@
 
 <div id="order_history_block" style="width:48%">
 <div class="entry-edit">
-<div class="entry-edit-head">
+<div class="entry-edit-head">   
                                 <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('sales')->__('Add Quote Comments') ?></h4>
-                            </div>    <?php if ($this->canAddComment()):?>
+                            </div>    <?php if ($this->canAddComment()){?>
     <div id="history_form" class="order-history-form">
- <span class="field-row">
+ <span class="field-row"> 
 
 <input type="file" value="" name="send_file" id="send_file" style="float:right;display:none" />     </span>
    <span class="field-row">
             <label class="normal" for="history_comment"><?php echo Mage::helper('sales')->__('Comment') ?></label>
-            <textarea name="history[comment]" rows="3" cols="5" style="height:6em; width:99%;" id="history_comment"></textarea>
+            <textarea name="history[comment]" rows="3" cols="5" style="height:6em; width:99%;" id="history_comment"  onKeyPress="document.getElementById('chat_sent_info').style.display='none';"></textarea>
         </span>
         <div class="f-left">
-            <?php if ($this->canSendCommentEmail()): ?>
+            <?php if ($this->canSendCommentEmail()){ ?>
                 <input name="history[is_customer_notified]" type="checkbox" id="history_notify" value="1" /><label class="normal" for="history_notify"> <?php echo Mage::helper('sales')->__('Notify Customer by Email') ?></label><br />
-            <?php endif; ?>
+            <?php } ?>
             <?php/*?><input name="history[is_visible_on_front]" type="checkbox" id="history_visible" value="1" /><label class="normal" for="history_visible"> <?php echo Mage::helper('sales')->__('Visible on Frontend') ?></label><?php */?>
         </div>
         <div class="f-right">
         <div id="chat_sent_info" style="float:left; padding-right:150px; display:none; color:#360;"></div>
-           <button id="submit" title="Submit Comment" type="button" class="scalable save" onclick="submitcomment();" style=""><span><span><span>Submit Comment</span></span></span></button>
+        <div id="chat_progress_info" style="float:left; padding-right:150px; display:none; color:#360;">Sending...</div>
+           <button id="submit" title="Submit Comment" type="button" class="scalable save" onclick="submitcomment(this);" style=""><span><span><span>Submit Comment</span></span></span></button>
         </div>
         <div class="clear"></div>
     </div>
     <div class="divider"></div>
-    <?php endif;?>
+    <?php }?>
     <ul class="note-list" id="note-list">
     <?php
     $collection = $this->getQuote()->getHistory()->setOrder('qh_id', 'desc');
     
-    foreach ($collection as $_item): ?>
+   
+    foreach ($collection as $_item){ ?>
+        
         <li>
-            <strong><?php echo $this->helper('core')->formatDate($_item->getCreatedAtDate(), 'medium') ?></strong>
-            <?php echo $this->helper('core')->formatTime($_item->getCreatedAtDate(), 'medium') ?><span class="separator">|</span><strong><?php echo $_item->getStatusLabel() ?></strong><br/><small><?php echo $_item->getqh_user();//$this->helper('sales')->__('Customer') ?>
-            <?php/*?>
+            <strong><?php echo $this->helper('core')->formatDate($_item->getQh_date(), 'medium') ?></strong>
+            <?php 
+			//echo $this->helper('core')->formatTime($_item->getCreatedAtDate(), 'medium');
+			echo $this->helper('core')->formatTime($_item->getQh_date(), 'medium');
+			 ?>
+            <span class="separator">|</span>
+            <strong><?php echo $_item->getStatusLabel() ?></strong>
+            <br/>
+            <small><?php echo $_item->getqh_user();
+			
+			//$this->helper('sales')->__('Customer') ?>
+            <?php /*?>
             <strong class="subdue">
-                <?php if ($this->isCustomerNotificationNotApplicable($_item)): ?>
+                <?php if ($this->isCustomerNotificationNotApplicable($_item)){ ?>
                 <?php echo $this->helper('sales')->__('Notification Not Applicable') ?>
-                <?php elseif ($_item->getIsCustomerNotified()): ?>
+                <?php }elseif{ ($_item->getIsCustomerNotified()){ ?>
                 <?php echo $this->helper('sales')->__('Notified') ?>
                 <img src="<?php echo $this->getSkinUrl('images/ico_success.gif') ?>" width="16" height="16" alt="" />
-                <?php else: ?>
+                <?php }else{ ?>
                 <?php echo $this->helper('sales')->__('Not Notified') ?>
-                <?php endif; ?>
+                <?php } ?>
             </strong>
-            <?php */?></small>
-            <?php if ($_item->getqh_message()): ?>
+            <?php */ ?></small>
+            <?php if ($_item->getqh_message()){ ?>
                 <br/><?php echo $this->escapeHtml($_item->getqh_message(), array('b','br','strong','i','u')) ?>
-            <?php endif; ?>
+            <?php } ?>
         </li>
-    <?php endforeach; ?>
+    <?php } ?>
     </ul>
 </div>
 <script type="text/javascript">
 
  function submitcomment()
 {
-     var comment = document.getElementById('history_comment').value;
+	
+	///if history_comment is empty then it should not submit
+	
+	var history_comment = document.getElementById('history_comment');
+	
+	if(history_comment.value==''){
+		alert('Please enter a proper message');
+		history_comment.focus();
+		return false;
+		}
+	
+		
+    // document.getElementById('submit').innerHTML='<span><span><span>Submitting...</span></span></span>';
+	 document.getElementById('chat_progress_info').style.display = 'block';
+	// console.log(document.getElementById('submit').innerHTML);
+	 var comment = document.getElementById('history_comment').value;	 
+	 
      if(document.getElementById('history_notify').checked)
      var notify = 1;
      else
      var notify = '';
      
-    // document.getElementById('loading-mask').style.display='block';
+     // document.getElementById('loading-mask').style.display='block';
     var xmlhttp;
     if (window.XMLHttpRequest)
       {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -76,17 +104,23 @@
       }
     xmlhttp.onreadystatechange=function()
       {
-		 document.getElementById('chat_sent_info').style.display='none'; 
-      if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		document.getElementById('chat_sent_info').style.display='none'; 
+		document.getElementById('chat_progress_info').style.display = 'block';
+		
+		document.getElementById('submit').innerHTML='<span><span><span>Submitting...</span></span></span>';
+      
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
         {
            //alert(xmlhttp.responseText);
             //var str = xmlhttp.responseText.split('@');
             //var date = document.getElementById('nowdate').value.split('-');
             document.getElementById("note-list").innerHTML=xmlhttp.responseText;
+			document.getElementById('chat_progress_info').style.display = 'none';
 			document.getElementById('chat_sent_info').style.display='block';
 			document.getElementById('chat_sent_info').innerHTML ='Message sent successfully...'; 
-           //document.getElementById('loading-mask').style.display='none';
+           // document.getElementById('loading-mask').style.display='none';
            document.getElementById('history_comment').value = '';
+		   document.getElementById('submit').innerHTML='<span><span><span>Submit Comment</span></span></span>';
            // document.getElementById('extent_id').value = '';
             //document.getElementById('todohead').innerHTML = str[0];
             //document.getElementById('alltask').innerHTML = str[1];
