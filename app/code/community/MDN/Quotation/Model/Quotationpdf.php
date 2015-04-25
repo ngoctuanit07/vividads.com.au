@@ -59,7 +59,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		$quoteInfo['grand_total'] = $quote->GetFinalPriceWithTaxes();
 		$quoteInfo['grand_total_f'] = $quote->FormatPrice($quote->GetFinalPriceWithTaxes());
 		$quoteInfo['grand_total_format']= $quote->FormatPrice($quote->GetFinalPriceWithTaxes());
-		$quoteInfo['total_saved'] = $quote->FormatPrice($quote->getGrand_total()*.22);
+		$quoteInfo['total_saved'] = $quote->FormatPrice($quote->GetFinalPriceWithTaxes()*.22);
 		$quoteInfo['total_amount'] = str_replace('$','',$quote->FormatPrice($quote->GetFinalPriceWithTaxes()));
 		$quoteInfo['sub_total'] = $quote->FormatPrice($quote->GetFinalPriceWithoutTaxes());
 		$quoteInfo['shipping_total'] = $quote->FormatPrice($quote->GetTaxAmount());
@@ -273,10 +273,10 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 	    $carrierTitle =  end(explode('_',$quote->getShippingMethod()));
         $ship = Mage::getStoreConfig('carriers/'.$carrierTitle.'/title');
 		}else{
-			$ship = 'Free Shipping';
+			$ship = 'Free Courier Delivery';
 		}
         $page->setFillColor(Zend_Pdf_Color_Html::color('#666666'));
-      //  $this->drawTextInBlock($page, $ship, 15, $this->y-40, 269,$this->y,'l');
+         $this->drawTextInBlock($page, $ship, 15, $this->y-40, 269,$this->y,'l');
 		 
 		
 		
@@ -288,7 +288,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 	       $this->addBlockTextComments($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-6, 300, 90, 10, 14, $_block_text['type'] );  
 		}
 	 
-        // $this->drawTotals($page, $quote, $quoteInfo);		
+          $this->drawTotals($page, $quote, $quoteInfo);		
          $this->drawAgreement($page, $settings, $quoteInfo);
         
       //  $this->y -= 15;
@@ -890,8 +890,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
             
 			 
 			$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 10);
-            $page->drawText($this->TruncateTextToWidth($page, '', 60), 15, $this->y, 'UTF-8');
-           
+            $page->drawText($this->TruncateTextToWidth($page, '', 60), 15, $this->y, 'UTF-8');           
 		    $caption = $this->WrapTextToWidth($page, $quote->getcaption(), 200);
             $caption .= $this->getConfigContentAsText($quote);
             $caption = $this->WrapTextToWidth($page, $caption, 450);
@@ -915,10 +914,8 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 				$caption = $this->WrapTextToWidth($page, $item->getcaption(), 200);
 				
 				///inserting table headers
-			 	$this->drawProductTableHeader($page, $caption, $y);
-				 
-				$this->y -= 80;
-        		 
+			 	$this->drawProductTableHeader($page, $caption, $y);				 
+				$this->y -= 80;        		 
 				$page->setFillColor(Zend_Pdf_Color_Html::color('#e2ecf0'));
 				$page->drawRectangle(10, $this->y-12, 590, $this->y+18, Zend_Pdf_Page::SHAPE_DRAW_FILL);
 				$this->y -= 3;				
@@ -930,9 +927,8 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
                 $ycolmn = $this->y;
 				//$offset = $this->DrawMultilineText($page, $ycolmn, 15, $this->y, 10, 0.2, 11);
 				
-			  	$offset = $this->DrawMultilineText($page, $caption, 15, $this->y, 10, 0.2, 11);
-		
-                $this->drawTextInBlock($page, $quote->FormatPrice($item->GetUnitPriceWithoutTaxes($quote)), 480, $this->y, 60, 20, 'r');
+			  	$offset = $this->DrawMultilineText($page, $caption, 15, $this->y, 10, 0.2, 11);		
+                $this->drawTextInBlock($page, 'AUD '.str_replace('$','',$quote->FormatPrice($item->GetUnitPriceWithoutTaxes($quote))), 480, $this->y, 60, 20, 'r');
                 //$this->drawTextInBlock($page, $item->getqty(), 310, $this->y, 40, 20, 'c');
                 				 
 				
@@ -942,7 +938,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
                     //if ($item->getdiscount_purcent() > 0)
                        // $this->drawTextInBlock($page, $item->getdiscount_purcent() . '%', 330, $this->y, 20, 20, 'r');
                      //$this->drawTextInBlock($page, $quote->FormatPrice($item->GetUnitPriceWithoutTaxes($quote)), 370, $this->y, 60, 20, 'r');
-                    $this->drawTextInBlock($page, $quote->FormatPrice($item->GetTotalPriceWithoutTaxes($quote)), 640, $this->y, 60, 20, 'r');
+                    $this->drawTextInBlock($page, 'AUD '.str_replace('$','',$quote->FormatPrice($item->GetTotalPriceWithoutTaxes($quote))), 640, $this->y, 60, 20, 'r');
                     //$this->drawTextInBlock($page, $quote->FormatPrice($item->GetTotalPriceWithTaxes($quote)), 640, $this->y, 60, 20, 'r');
                 }
                 $this->y -= $this->_ITEM_HEIGHT + $offset;
@@ -962,19 +958,20 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 			///fetching bundle items
 			$bundled_product = Mage::getModel('catalog/product')->load($item->getProduct_id());			
 			$chkBundle = Mage::getModel('Quotation/Quotationitem')->getBundledChildrenProduct($bundled_product);			
-		    
+		    $this->y -= 10;
 					
 		    foreach($chkBundle as $bundle)
 		    {
 				  
 				
-				$this->y += 10;
+				$this->y += 12;
 				
-				$order_qty = $item->getQty_ordered();
-				$bundle_qty = $bundle->getSelection_qty();
+				$order_qty = $item->getqty();
+				$bundle_qty = $bundle->getSelection_qty();				
+				
 				$f_bundled_qty = $order_qty * $bundle_qty;
 				
-				$offset = $this->DrawMultilineText($page, '('.round($f_bundled_qty).')   '.$bundle->getName(), 20, $this->y , 7, 0.2, 11);
+				$offset = $this->DrawMultilineText($page, round($f_bundled_qty).'  x '.$bundle->getName(), 20, $this->y , 7, 0.2, 11);
 				$this->y -= $this->_ITEM_HEIGHT + $offset;
 		    }
 			 
@@ -1385,7 +1382,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
         //$this->drawTextInBlock($page, $quote->FormatPrice($quote->GetFinalPriceWithoutTaxes()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
         
         $page->drawText(Mage::helper('quotation')->__('Subtotal:'), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
-        $this->drawTextInBlock($page, $quote->FormatPrice($quote->GetFinalPriceWithoutTaxes()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
+        $this->drawTextInBlock($page, 'AUD '.str_replace('$','',$quote->FormatPrice($quote->GetFinalPriceWithoutTaxes())), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
         
         $this->y -= 25;
 
@@ -1394,14 +1391,14 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
        // $this->y -= 25;
        
         $page->drawText(Mage::helper('quotation')->__('Shipping & Handling: '), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
-        $this->drawTextInBlock($page, $quote->FormatPrice($quote->getShippingRate()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
+        $this->drawTextInBlock($page, 'AUD '.str_replace('$','',$quote->FormatPrice($quote->getShippingRate())), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
         $this->y -= 25;
 		
-	//start 11_02_2014
-	$page->drawText(Mage::helper('quotation')->__('Tax: '), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
-        $this->drawTextInBlock($page, $quote->FormatPrice($quote->GetTaxAmount()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
+	     //start 11_02_2014
+	    $page->drawText(Mage::helper('quotation')->__('Tax: '), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
+        $this->drawTextInBlock($page, 'AUD '.str_replace('$','',$quote->FormatPrice($quote->GetTaxAmount())), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
         $this->y -= 25;
-	//End 11_02_2014
+	    //End 11_02_2014
 
        // $page->drawText(Mage::helper('quotation')->__('Total (incl tax)'), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
         //$this->drawTextInBlock($page, $quote->FormatPrice($quote->GetFinalPriceWithTaxes()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
@@ -1413,7 +1410,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
         //$this->drawTextInBlock($page, $quote->FormatPrice($quote->getPriceHt()+$quote->getShippingRate()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
 	
 	
-	$this->drawTextInBlock($page, $quote->FormatPrice($quote->GetFinalPriceWithTaxes()), $this->_PAGE_WIDTH / 2 + 85, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');//11_02_2014
+    	$this->drawTextInBlock($page, 'AUD '.str_replace('$','',$quote->FormatPrice($quote->GetFinalPriceWithTaxes())), $this->_PAGE_WIDTH / 2 + 85, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');//11_02_2014
 
         $this->y -= 20;	
 		
@@ -1450,7 +1447,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
         //$this->drawTextInBlock($page, $quote->FormatPrice($quote->GetFinalPriceWithoutTaxes()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
         
         $page->drawText(Mage::helper('quotation')->__('Subtotal:'), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
-        $this->drawTextInBlock($page, $quote->FormatPrice($quote->getSubtotal()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
+        $this->drawTextInBlock($page, 'AUD '.str_replace('$','',$quote->FormatPrice($quote->getSubtotal())), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
         
         $this->y -= 20;
 
@@ -1459,12 +1456,12 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
        // $this->y -= 25;
        
         $page->drawText(Mage::helper('quotation')->__('Shipping & Handling: '), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
-        $this->drawTextInBlock($page, $quote->FormatPrice($quote->getShipping_amount()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
+        $this->drawTextInBlock($page, 'AUD '.str_replace('$','',$quote->FormatPrice($quote->getShipping_amount())), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
         $this->y -= 20;
 		
 	//start 11_02_2014
 	$page->drawText(Mage::helper('quotation')->__('Tax: '), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
-        $this->drawTextInBlock($page, $quote->FormatPrice($quote->getTax_amount()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
+        $this->drawTextInBlock($page, 'AUD '.str_replace('$','',$quote->FormatPrice($quote->getTax_amount())), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
         $this->y -= 20;
 	//End 11_02_2014
 
@@ -1473,7 +1470,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 16);
 		$page->setFillColor(Zend_Pdf_Color_Html::color('#ec4d53'));
         $page->drawText(Mage::helper('quotation')->__('Grand Total:'), $this->_PAGE_WIDTH / 2, $this->y, 'UTF-8');
-        $this->drawTextInBlock($page, $quote->FormatPrice($quote->getGrand_total()), $this->_PAGE_WIDTH / 2 + 85, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');//11_02_2014	
+        $this->drawTextInBlock($page, 'AUD '.str_replace('$','',$quote->FormatPrice($quote->getGrand_total())), $this->_PAGE_WIDTH / 2 + 85, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');//11_02_2014	
        
 	   
 	   /////drawing paid stamp 
@@ -1487,11 +1484,11 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		$page->setFillColor(Zend_Pdf_Color_Html::color('#e2ecf0'));
 	    $page->drawRectangle((($this->_PAGE_WIDTH / 2)-10), $this->y, 590, $this->y-70, Zend_Pdf_Page::SHAPE_DRAW_FILL);
 		
-		$grandTotal = $quote->FormatPrice($quote->getGrand_total());
-		$totalDue = $quote->FormatPrice($quote->getTotal_due());
-		$totalPaid = $quote->FormatPrice($quote->getTotal_paid());
+		$grandTotal = 'AUD '.str_replace('$','',$quote->FormatPrice($quote->getGrand_total()));
+		$totalDue = 'AUD '.str_replace('$','',$quote->FormatPrice($quote->getTotal_due()));
+		$totalPaid = 'AUD '.str_replace('$','',$quote->FormatPrice($quote->getTotal_paid()));
 		$totalBalance = $quote->getGrand_total()-$quote->getTotal_paid();
-		$totalBalance = $quote->FormatPrice($totalBalance);
+		$totalBalance = 'AUD '.str_replace('$','',$quote->FormatPrice($totalBalance));
 		
 		if( $quote->getTotal_due() <= 0){
 		 $_image = Mage::getBaseDir('media').'/stamped_invoice.png';
@@ -1594,7 +1591,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
         $page = $this->NewPage($settings, $quoteInfo);
 		$total_amount = $quoteInfo['total_amount'];
 	    $quote_id = $quoteInfo['data']['increment_id'];
-		
+		 $quote_type = $quoteInfo['quote_type'];
 		
 		//  $link = $quoteInfo['store_url'].'myauth/order_id/'.$quoteInfo['data']['increment_id'];
 		  $incrementId  = $quoteInfo['data']['increment_id'];
@@ -1663,7 +1660,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		//var_dump($quoteInfo); exit;
 		
 		$url = $quoteInfo['store_url'].'upload';	
-		$_text = 'Please go to \''.$url.'\' and enter your quote or invoice number \''.$quote_id.'\' to upload your artwork against relevant item. Once your arwork has been uploaded please ensure you have paid for the project for us to start printing job. You would receive proofs to approve before we print any job.';
+		$_text = 'Please go to \''.$url.'\' and enter your Reference ID:  \''.$quote_id.'\' to upload your artwork against relevant item. Once your arwork has been uploaded please ensure you have paid for the project for us to start printing job. You would receive proofs to approve before we print any job.';
 		
 		$_n_text = $this->WrapTextToWidth($page, $_text, $this->_BLOC_ENTETE_LARGEUR-20);		
 		$this->DrawMultilineText($page, $_n_text, 18, $ycolumn-18, 11, 0.2, 14);
@@ -1683,7 +1680,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		$page->attachAnnotation( $annot );
 	  
 	    $ycolumn -= 95;
-	   //drawing text How to place your order headings
+	   //drawing text How to place your order headings  
 	   
 	   $page->setFillColor(new Zend_Pdf_Color_GrayScale(0.1));
        $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 26);
@@ -1692,7 +1689,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 	
 	  $page->setFillColor(Zend_Pdf_Color_Html::color('#e2ecf0'));
 	  $page->drawRectangle(10, $ycolumn-10, $this->_BLOC_ENTETE_LARGEUR, $ycolumn-80, Zend_Pdf_Page::SHAPE_DRAW_FILL);
-	  $_pl_text = 'Once you are ready to place your order Click here to access your account and click on the convert to invoice button to convert your quote to an invoice automatically. Click on the invoice tab to view and make a payment. Alternatively you can use the following options to make your payment. We start to process your order as soon as payment has been confirmed.';
+	  $_pl_text = 'Once you are ready to place your order Click here to access your account and click on Accept Quote button to get an invoice automatically. Click on the invoice tab to view and make a payment. Alternatively you can use the following options to make your payment. We start to process your order as soon as payment has been confirmed.';
 	   
 	  $_n_pl_text = $this->WrapTextToWidth($page, $_pl_text, 1450);		
 	  $this->DrawMultilineText($page, $_n_pl_text, 18, $ycolumn-25, 11, 0.2, 14);
@@ -1729,7 +1726,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 	
 	
 	 ////adding Direct deposit text body block
-	 $_text = 'Please direct deposit your payment to our account in the amount of \'AUD '.$total_amount.'\' with your reference ID /              Job ID:  \' '.$quote_id.' \'. 
+	 $_text = 'Please direct deposit your payment to our account in the amount of \'AUD '.$total_amount.'\' with your Reference ID:  \' '.$quote_id.' \'. 
 	 
 	 Beneficiary:      Vivid Ads Pty Ltd    
 	 Bank Name:     Westpac     
@@ -1772,7 +1769,7 @@ Cash payment can be made at the facility for any purchased goods/services';
 	 
 	 $ycolumn -= 30;
 	   ////adding Cheque Payment / Cash Payment text body block
-	 $_text = 'Please direct deposit your payment to our account in the amount of \'AUD '.$total_amount.'\'  with your Reference ID / Job ID:\' '.$quote_id.'\'.
+	 $_text = 'Please direct deposit your payment to our account in the amount of \'AUD '.$total_amount.'\'  with your Reference ID: \' '.$quote_id.'\'.
 
     Beneficiary:        Vivid Ads Pty Ltd    
     Bank Name:       Westpac    
@@ -1793,7 +1790,7 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	   
 	 $ycolumn -= 45;
 	   ////adding Cheque Payment / Cash Payment text body block
-	 $_text = 'Please fax your purchase orders to 03 8456 6234.Please ensure to include your Job ID:\' '.$quote_id.'\'.';
+	 $_text = 'Please fax your purchase orders to 03 8456 6234. Please ensure to include your Reference ID: \' '.$quote_id.'\'.';
 	 $_block_text = array('text'=>$_text,'bgcolor'=>'#e2ecf0', 'fcolor'=>'#000000','type'>='multiple');	 	 
 	 
 	 $this->addBlockText($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-2, $this->_BLOC_ENTETE_LARGEUR, 35, 11, 14, $_block_text['type'] );
@@ -1806,12 +1803,24 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	   
 	 $ycolumn -= 35;
 	   ////adding Cheque Payment / Cash Payment text body block
-	 $_text = 'You can directly make your payment online.Click on the link at the end of this form to make your payment. Job ID \''.$quote_id.'\' Total Due \'AUD '.$total_amount.'\'';
+	 $_text = 'You can directly make your payment online. Click on the link at the end of this form to make your payment.';
+	 
+	 
+	 if($quote_type!='Quote'){	 
+		 $_text .=' Reference ID: \''.$quote_id.'\' Total Due AUD \''.$total_amount.'\' .';
+	 }
+	  //Reference ID: \''.$quote_id.'\' Total Due \'AUD '.$total_amount.'\'';
 	 $_block_text = array('text'=>$_text,'bgcolor'=>'#e2ecf0', 'fcolor'=>'#000000','type'>='multiple');	 	 
 	 
 	 $this->addBlockText($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-2, $this->_BLOC_ENTETE_LARGEUR, 45, 11, 14, $_block_text['type'] );   
 	   
-	   
+	  
+	 if($quote_type=='Quote'){
+		 $type = 'Quote';
+		 
+		 }else{
+		$type='Invoice';	 
+			}
 	   ////adding Online Payment block headings
 	
 	 $ycolumn -= 65;
@@ -1821,22 +1830,17 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	   
 	 $ycolumn -= 35;
 	   ////adding Cheque Payment / Cash Payment text body block
-	 $_text = 'Payment can be made over the phone using your Master / Visa / Amex cards (3% surcharge on Amex only). Call \''.$quoteInfo['store_phone'].'\' (choose option Accounts). 
-	 	 
-	 Invoice ID \''.$quote_id.'\' Total Due AUD \''.$total_amount.'\' .';
+	 $_text = 'Payment can be made over the phone using your Master / Visa / Amex cards (3% surcharge on Amex only). Call \''.$quoteInfo['store_phone'].'\' (choose option Accounts).'; 
+	 if($quote_type!='Quote'){	 
+		 $_text .='Reference ID: \''.$quote_id.'\' Total Due AUD \''.$total_amount.'\' .';
+	 }
 	 $_block_text = array('text'=>$_text,'bgcolor'=>'#e2ecf0', 'fcolor'=>'#000000','type'>='multiple');	 	 
 	 
 	 $this->addBlockText($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-2, $this->_BLOC_ENTETE_LARGEUR, 75, 11, 14, $_block_text['type'] );  
 	   
 	 $ycolumn -= 105;
 	 
-	 $quote_type = $quoteInfo['quote_type'];
-	 if($quote_type=='Quote'){
-		 $type = 'Quote';
-		 
-		 }else{
-		$type='Invoice';	 
-			}
+	 
 	 
 	 ////adding Cheque Payment / Cash Payment text body block
 	 $_text = 'To place your order online or request any changes to this '.$type.' please click here';

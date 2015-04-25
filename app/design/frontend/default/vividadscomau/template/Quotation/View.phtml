@@ -211,7 +211,7 @@ externalform-index-index .col2-left-layout .col-main {
       
       <!--<button type="button" onclick="document.location.href = '<?php echo $this->getCommitUrl() ?>'" title="Save" class="button"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>  &nbsp;-->
       
-      <button type="button" class="button" onClick="document.location.href='<?php echo $this->getPrintUrl()?>'"><span><span>Print Quote</span></span></button>
+      <button type="button" class="button" onClick="window.open('<?php echo str_replace('print','printquotation',$this->getPrintUrl());?>')"><span><span>Print Quote</span></span></button>
       
       <!--<p class="print-link"><a  class="" href="#" onclick="printDiv();">Print Quote</a></p>-->
       
@@ -230,7 +230,7 @@ externalform-index-index .col2-left-layout .col-main {
   <h1 style="font-size: 16px;font-weight: bold;color: black;margin-bottom: 8px;"><?php echo $this->__('Quote # %s', $quote->getincrement_id()); ?></h1>
 </div>
 <div class="quote-checkout-wrapper" style="text-align:right">
-  <button  type="button" onclick="convertoInvoice();" title="Accept Order" class="acceptorder"><?php echo __('Accept Order');?></button>
+  <button  type="button" onclick="convertoInvoice();" title="Convet to invoice" class="acceptorder"><?php echo __('Accept Order');?></button>
 </div>
 <div id="quote-comment-history" style="padding-bottom: 32px;">
   <h3 class="head" id="discuss"> Discussion About Your Quote <!--<a href="javascript:location.reload(true)" style="float:right"><img src="<?php echo $this->getSkinUrl()?>images/refresh-btn.png"></a>--> </h3>
@@ -1334,7 +1334,7 @@ $chkPlanning = $connectionRead->fetchALL($sqlPlanning);
 <div class="quote-checkout-wrapper" style="text-align:right">
     	<button type="button" onclick="document.location.href = '<?php echo $this->getCommitUrl() ?>'" title="Save" class="button"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
 
-    </div>
+    </div>  
 
     */ 
 	
@@ -1342,7 +1342,7 @@ $chkPlanning = $connectionRead->fetchALL($sqlPlanning);
 	
 	?>
 <div class="quote-checkout-wrapper" style="text-align:right" >
-  <button  type="button" onclick="convertoInvoice();" title="Accept Order" class="acceptorder"><?php echo __('Accept Order');?></button>
+  <button  type="button" onclick="convertoInvoice();" title="Convert to invoice" class="acceptorder"><?php echo __('Accept Order');?></button>
 </div>
 
 <!--<form id="form_request" name="form_request" method="POST" action="http://192.168.0.56/aceexhibits/Quotation/Quote/SendTextualRequest/">
