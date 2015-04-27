@@ -372,15 +372,16 @@ abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_
 		//exit;
 		////right address		
 		
-		if($quoteInfo['quote_type']=='quote'){
-		 	 	$caption_title = 'Quote Number: ';
+		if($quote['quote_type']=='Quote'){
+		 	 	$caption_title = 'Quote Number: ';  
 			}else{
 		 	 	$caption_title = 'Invoice Number: ';
 			}
 		
-		  $rightAddress = $caption_title.'  	'.$quote['data']['increment_id'].'
-						Generate Date:  '.$_created_date.'
-						Valid Till:            '.$_valid_date.'';		
+		  $caption_title = 'Reference ID : ';		
+		  $rightAddress = $caption_title.'    	'.$quote['data']['increment_id'].'
+						Generate Date:     '.$_created_date.'
+						Valid Till:               '.$_valid_date.'';		
 		$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 11);
 		$this->DrawMultilineText($page, $rightAddress, 335, $this->y-85, 12, 0.0, 18);
         
@@ -388,22 +389,22 @@ abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_
 		$grand_total = $quote['grand_total_format'];
 		
 		
-		$grand_total = '       AUD '.$grand_total;		
+		$grand_total = '       AUD '.str_replace('$','',$grand_total);		
 			
 		$page->setFillColor(Zend_Pdf_Color_Html::color('#ec4d53'));
         $page->drawRectangle(320, 540, 570, 560, Zend_Pdf_Page::SHAPE_DRAW_FILL);
 		$page->setFillColor(Zend_Pdf_Color_Html::color('#ffffff'));
         $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 12);
         $this->drawTextInBlock($page, 'Total:', 220, 545, 250,150,'c');
-		$this->drawTextInBlock($page, $grand_total, 330, 545, 410,150,'c');
+		$this->drawTextInBlock($page, $grand_total, 345, 545, 410,150,'c');
 		
 		//total saved
-		$saved_total = '       AUD '.round($quote['grand_total']*.22,2);
+		$saved_total = '       AUD '.str_replace('$','',$quote['total_saved']);
 		
 		$page->setFillColor(Zend_Pdf_Color_Html::color('#000000'));
 		$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 12);
 		$this->drawTextInBlock($page, 'Total Saved Today:', 227, 525, 303,150,'c');
-		$this->drawTextInBlock($page, $saved_total, 300, 525, 380,150,'c');
+		$this->drawTextInBlock($page, $saved_total, 365, 525, 410,150,'c');
 		
 		return $this;
 		

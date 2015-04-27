@@ -2654,6 +2654,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
     
     $temptableHistory=Mage::getSingleton('core/resource')->getTableName('quotation_history');
 	$temptableQuotation=Mage::getSingleton('core/resource')->getTableName('quotation');
+   
     if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHistory))
     {
         
@@ -2689,13 +2690,21 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 	
 	foreach ($quote->getHistory()->setOrder('qh_id', 'desc') as $_item)
         {
-			 
-            $comments_history .= '<li>
+			   
+           /*
+		    $comments_history .= '<li>
                 <strong>'.Mage::helper('core')->formatDate($_item->getCreatedAtDate(), 'medium').'></strong>
                 '.Mage::helper('core')->formatTime($_item->getCreatedAtDate(), 'medium').'<span class="separator">|</span><strong>'.$_item->getStatusLabel() .'</strong><br/><small>'.$_item->getqh_user().'
                </small>
                 
-                    <br/>';
+                    <br/>';  
+			*/		
+			$comments_history .= '<li>
+                <strong>'.Mage::helper('core')->formatDate($_item->getQh_date(), 'medium').'></strong>
+                '.Mage::helper('core')->formatTime($_item->getQh_date(), 'medium').'<span class="separator">|</span><strong>'.$_item->getStatusLabel() .'</strong><br/><small>'.$_item->getqh_user().'
+               </small>
+                
+                    <br/>';		
 					$item_message = $_item->getqh_message();
            $comments_history .=  $item_message;   
           
@@ -2776,6 +2785,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 			//var_dump($customer);
 			$email = $customer->getEmail();	   
 	        $data = array(
+			
 	   			'firstname'=>$_quote_data['quote[shipping_address][firstname]'],
 				'lastname'=>$_quote_data['quote[shipping_address][lastname]'],
 				'email'=>$email,
@@ -2789,55 +2799,86 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 				'postcode'=>$_quote_data['quote[shipping_address][postcode]'],
 				'country_id'=>$_quote_data['shipping[country_id]'],
 				'telephone'=>$_quote_data['quote[shipping_address][telephone]'],
+				'inhand1'=>$_quote_data['quote[shipping_address][delivery_date]'],
+				'inhand'=>$_quote_data['quote[shipping_address][delivery_date]'],
 		
-	   );	   
+	   );	
+	   
 	   
 	   if($connectionWrite->isTableExists($table_shipping))
            {                            
 				//  $connectionWrite->beginTransaction();
 				 ///reading if shipping address exists 
+				 
 				 $cAddress = 0;
 				 $address = $connectionRead->query('select * from '.$table_shipping.' where quotation_id='.$_quotation_id);
-				 foreach($address as $addr){
+				 
+				// Zend_debug::dump($address);
+		  foreach($address as $addr){
 					 $cAddress = $addr['entity_id'];
 					 $cAddress = 1;
+					 
+				//	 Zend_debug::dump($addr);
+					 
 					 }
+				 
+				 
 				 if($cAddress!=1){					 
 					 
 					 $data['quotation_id']=$_quotation_id;
 					 $data['repid']='';
 					 $data['hearabout']='';
-					 $data ['inhand1'] = date('Y-m-d h:m:s');
-					 $data['inhand'] = date('Y-m-d h:m:s'); 
+					
 					 
-					 $connectionWrite->beginTransaction();
+					// $connectionWrite->beginTransaction();
 					 $result = $connectionWrite->insert($table_shipping, $data);
 					 
-					 $connectionWrite->commit();
+					// $connectionWrite->commit();
 					  
 					 $customAddress = Mage::getModel('customer/address');
                 	//$customAddress = new Mage_Customer_Model_Address();
                 	$customAddress->setData($data)
                             	  ->setCustomerId($customer->getEntity_id())
-                            	 // ->setIsDefaultBilling('1')
+                            	   //->setIsDefaultBilling('1')
                             	    ->setIsDefaultShipping('1')
                             	   ->setSaveInAddressBook('1')
 								 ;
-             //  var_dump($customAddress);
+             $customAddress->save();
+			  // var_dump($customAddress);
+			  
+			  /*
 			    try {
 					
                      $customAddress->save();
 					 echo 1;
                 }
                 catch (Exception $ex) {
-                    //Zend_Debug::dump($ex->getMessage());
+                     Zend_Debug::dump($ex->getMessage());
 					echo 0;
                 }
-					 
+				*/	 
 					 
 					 
 			}else{
+				
+				     $data['quotation_id']=$_quotation_id;
+					 $data['repid']='';
+					 $data['hearabout']='';
+					
+				
 				  $where = $connectionWrite->quoteInto('quotation_id =?', $_quotation_id);
+				  
+				   $customAddress = Mage::getModel('customer/address');
+				  $customAddress->setData($data)
+                            	  ->setCustomerId($customer->getEntity_id())
+                            	   //->setIsDefaultBilling('1')
+                            	    ->setIsDefaultShipping('1')
+                            	    ->setSaveInAddressBook('1')
+								 ;
+				 $customAddress->save(); 
+				  
+				 // Zend_debug::dump($data);
+				  
 				  $result = $connectionWrite->update($table_shipping,$data, $where);
 				  if($result){
 					      echo 1;
@@ -2936,7 +2977,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                             	   // ->setIsDefaultShipping('1')
                             	   ->setSaveInAddressBook('1')
 								 ;
-             //  var_dump($customAddress);
+             //  var_dump($customAddress);   
 			    try {
 					
                      $customAddress->save();

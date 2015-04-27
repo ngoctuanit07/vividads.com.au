@@ -284,6 +284,7 @@ jQuery('.right_float').bxSlider({
          
           <?php 
 		    $specialPrice = round($_product->getSpecialPrice(),2);
+			$_price = round($_product->getPrice(),2);
 			$date_time = $_product->getSpecial_to_date();
 			
 				if($specialPrice>0)
@@ -291,12 +292,21 @@ jQuery('.right_float').bxSlider({
 				 { ?>
           <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
           <div style="border-right: 1px solid rgb(232, 31, 37); width: 46%; padding: 5px; font-size: 13px; text-align:center; float:left">
-           <span itemprop="price">From: <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?></span>
+           <span itemprop="price">
+             <?php echo ('From AUD : '.$_price.'') ?>
+           
+<?php /*?>           From: <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?><?php */?>
+           </span>
            
           </div>
           <meta itemprop="priceCurrency" content="AUD" />
           <div style="width: 48%; padding: 5px; text-align:center; font-size: 13px; float:left;" >
-          <span itemprop="price"> To :<?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?></span> </div>
+          <span itemprop="price"> 
+           <?php echo ('To AUD : '.$specialPrice.'') ?>
+<?php /*?>          To :<?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?>
+ <?php */?>         
+          
+          </span> </div>
           <br/>
           <meta itemprop="priceValidUntil" datetime="<?php echo  substr($date_time,0,10); ?>" />
         
@@ -433,10 +443,15 @@ jQuery('.right_float').bxSlider({
                   <div class="price-section">
                     <?php 
                 $specialPrice = round($_product->getSpecialPrice(),2);
+                $_price = round($_product->getPrice(),2);
                 if($specialPrice>0) { ?>
-                    <h1 ><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?> + GST </h1>
+                    <h1 >
+                    <?php echo ('AUD : '.$specialPrice.'');?>  + GST
+					<?php /*?><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?> + GST <?php */?></h1>
                     <?php	} else{ ?>
-                    <h1><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST</h1>
+                    <h1>
+					<?php echo ('AUD : '.$_price.'');?>+GST
+					<?php /*?><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST<?php */?></h1>
                     <?php }?>
                   </div>
                   <?php endif;?>

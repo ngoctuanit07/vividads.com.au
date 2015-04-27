@@ -83,13 +83,63 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
                 $name = Mage::helper('quotation')->__('quotation_') . $quote->getincrement_id() . '.pdf';
 				//header ('Content-Type:', 'application/pdf');
 				//header ('Content-Disposition:', 'inline;');
-				
 				/*
+				 
 				$respnose =$this->getResponse()
                 ->setHeader('Content-type', 'application/pdf', true)               
                 ->setBody($pdf->render());
-			echo $respnose;exit;
-				*/
+			    echo $respnose;exit;
+				*/ 
+				
+				// Output pdf
+				//echo $pdf->render();
+				//exit;						
+				$this->_prepareDownloadResponse($name, $pdf->render(), 'application/pdf');
+				
+            }
+            else
+                $this->_redirect('Quotation/Admin/edit', array('quote_id' => $quoteId));
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addError($ex->getMessage());
+            $this->_redirectReferer();
+        }
+    }
+	
+	/**
+     * Print quote
+     */
+    public function printquotationAction() {
+        try {   
+			  
+
+            $this->loadLayout();
+            $error = false;
+            $quoteId = $this->getRequest()->getParam('quote_id');
+            $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+
+            //create bundle product if not exists
+            if (($quote->getproduct_id() == null) || ($quote->getproduct_id() == 0)) {
+                if ($quote->getItems()->getSize() > 0)
+                    $quote->commit();
+                else {
+                    $error = true;
+                    Mage::getSingleton('adminhtml/session')->addError($this->__('Impossible to print an empty quotation.'));
+                }
+            }
+
+            //continue....
+            if (!$error) {
+                $pdf = Mage::getModel('Quotation/quotationpdf')->getPdf(array($quote));
+                $name = Mage::helper('quotation')->__('quotation_') . $quote->getincrement_id() . '.pdf';
+				//header ('Content-Type:', 'application/pdf');
+				//header ('Content-Disposition:', 'inline;');
+				 
+				 
+				$respnose =$this->getResponse()
+                ->setHeader('Content-type', 'application/pdf', true)               
+                ->setBody($pdf->render());
+			    echo $respnose;exit;
+				 
 				
 				// Output pdf
 				//echo $pdf->render();
@@ -1270,6 +1320,7 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
         
            $quote_id = $this->getRequest()->getParam('id');
            extract($_REQUEST);
+		  // Zend_debug::dump($_REQUEST);
            $quote1 = Mage::getModel('Quotation/Quotation')->load($quote_id);
           $update = '';
         
@@ -1280,16 +1331,22 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
         $tableQutation = Mage::getSingleton('core/resource')->getTableName('quotation');
         
         $ship = explode('***',$ship_method);
+		
+		//Zend_debug::dump($ship);    
+		
+		//exit;
+		
         $grand_price = 0;
         $quoteItems = $quote1->getItems();
-        foreach($quoteItems as $quoteItem)
+        
+		foreach($quoteItems as $quoteItem)
         {
             $_newProduct = Mage::getModel('catalog/product')->load($quoteItem->getProductId());
             $option_detail =0;
             $net_price = 0;
             
-            $productOptions= $quoteItem->getOptions();
-	    $productOptions = Mage::helper('quotation/Serialization')->unserializeObject($productOptions);
+         $productOptions= $quoteItem->getOptions();
+	     $productOptions = Mage::helper('quotation/Serialization')->unserializeObject($productOptions);
                     
              //print_r($_newProduct->getOptions());
              if($_newProduct->getOptions())
@@ -1297,21 +1354,18 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
                 foreach ($_newProduct->getOptions() as $o) {
                      
                     $values = $o->getValues();
-                    foreach ($values as $value){
-                       
+                   
+				    foreach ($values as $value){                       
                         if($options[$quoteItem->getProductId()][$o->getId()] == $value->getId())
                         {
                             $option_detail = $value->getPrice();
-                            if($option_detail != 0)
+                            
+							if($option_detail != 0)
                             {
-                                $net_price += $option_detail + $_newProduct->getPrice();
-                                
-                                
-                            }
+                                $net_price += $option_detail + $_newProduct->getPrice(); 
+                            }                            
                             
-                            
-                        }
-                        
+                        }                        
                        
                     }
                     //print_r($values[$options[$quoteItem->getProductId()][$o->getId()]]->getTitle()); exit;
@@ -1350,18 +1404,25 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
             
             $quoteItem->save();
         }
-        
+        $quotation_id = $quote_id;
         //$sqlQuotationSystem="SELECT * FROM ".$tableQutation."  WHERE quotation_id = '".$quote_id."'";
         $sqlQuotationSystem= $connectionRead->select()
                                         ->from($tableQutation,array('*'))
                                         ->where('quotation_id=?',$quotation_id);
-        $chkSystem = $connectionWrite->query($sqlQuotationSystem);
-       
-        $fetchQutation = $chkSystem->fetch(); 
+        $chkSystem = $connectionRead->query($sqlQuotationSystem);       
+        $fetchQutation = $chkSystem->fetch(); 		
+		$shippingTitle = $fetchQutation['shipping_description'];
+		
+		if($fetchQutation['shipping_method']=='custom_price'){
+				$shippingTitle = 'Courier Delivery';	
+			}	
         
         if($ship[0] != $fetchQutation['shipping_method'] and $ship[0] != '')
         {
-            $update .= 'Shipping Method: changed from <strong>'.$fetchQutation['shipping_method'].'</strong> to <strong>'.$ship[0].'</strong><br/>';
+			if($ship[0]==$fetchQutation['shipping_method']){
+				$shippingTitle2 = $fetchQutation['shipping_description'];
+				}
+            $update .= 'Shipping Method: changed from  &quot; <strong>'.$shippingTitle.'</strong>  &quot;  to  <strong>'.$shippingTitle2.'</strong><br/>';
         }
         
         //$sqlBillingSystem="SELECT * FROM ".$tableBilling."  WHERE quotation_id = '".$quote_id."'";
@@ -1848,7 +1909,11 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
         $quote_comments = '';
        
 	    foreach($fetchHistory as $history) {
-           $usertype ='';
+           
+		    $storeTimezone = new DateTimeZone(Mage::getStoreConfig('general/locale/timezone'));
+			$storenewDateTime = new DateTime($history['qh_date'], $storeTimezone);
+		   
+		   $usertype ='';
 		   
 		   if($history['qh_user'] == 'customer'){
 			   $usertype .='<td class="comment-additional" width="35%" style="background-color:#99BB1E; padding:10px 22px">';
@@ -1863,13 +1928,14 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
                                     <tbody>
                                     <tr class="customer-comment">
                                             ';
-           $quote_comments .=$usertype;  
-		   $quote_comments .= '<span class="separator">|</span>
-                                                    '. date_format(date_create($history['qh_date']), 'm/d/Y H:i A').'		    		</td>
-                                            
-                                            <td class="comment-content" style="padding:10px 22px">
+           $quote_comments .=$usertype; 
+			
+			$old_zone_time = $history['qh_date'];		
+		    $quote_comments .= '<span class="separator">|</span>
+                                                    '. Mage::app()->getLocale()->date($history['qh_date'])->toString($format).'</td>
+                              <td class="comment-content" style="padding:10px 22px">
                                                     '.nl2br($history['qh_message']).'
-                                                                                            </td>
+                                   </td>
                                     </tr>
                                     </tbody>
                                     </table>
@@ -2572,7 +2638,7 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
     }
         
      
-            public function createorderAction() {
+     public function createorderAction() {
             
         Mage::register('isSecureArea', 1);
         
@@ -2654,9 +2720,6 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
                 //$reservedOrderId = Mage::getSingleton('eav/config')->getEntityType('order')->fetchNewIncrementId($storeId);
                 
                 $reservedOrderId = $quote->getIncrementId();
-                
-                
-                
                 $currency_code = Mage::app()->getStore($storeId)->getCurrentCurrencyCode();
                 
                 $order = Mage::getModel('sales/order')
@@ -2717,9 +2780,9 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
                 
                 // set Billing Address
                 $billing = $customer->getDefaultBillingAddress();
-		//if($billing){
-		// exit('no billing address');
-                
+				
+				//if($billing){
+				// exit('no billing address');			
                 
                 //$billingAddress = Mage::getModel('sales/order_address')
                 //->setStoreId($storeId)
@@ -2879,14 +2942,8 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
                 $shipDes = $quote->getShippingMethod();
                }
                
-               
-               
-               
-               
-               
-               
-               ///$shipDes = $shipMethod[$quote->getShippingMethod()];
-               
+              
+               ///$shipDes = $shipMethod[$quote->getShippingMethod()];               
                /////14-2-2014 gc E 24-2-2014 E
                
                 $order->setShippingAddress($shippingAddress)
@@ -2909,10 +2966,8 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
                 
                 // let say, we have 2 products
                 $subTotal = 0;
-                $total_qty_ordered = 0;
-                
-                $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
-                
+                $total_qty_ordered = 0;                
+                $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');                
                 $temptableOrderItem = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
         
                 
@@ -3321,8 +3376,10 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
     public function addcommentorderAction() {
         
         extract($_REQUEST);
-        //$quote_id = $this->getRequest()->getParam('id');
-        $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+		
+      // $quote_id = $this->getRequest()->getParam('id');
+	   
+		$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
         $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
         
         $order_id = $id;
@@ -3388,8 +3445,13 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
                                     <tbody>
                                     <tr class="customer-comment">';
 									echo '<td class="comment-additional" width="35%" style="padding:10px 22px;background-color:#99BB1E;">';
-                                	echo ' '. date_format(date_create($history['created_at']), 'm/d/Y H:i A').'
-									  	 </td>   <td class="comment-content" style="padding:10px 22px;';				
+                          	
+								echo ' '. Mage::app()->getLocale()->date($history['created_at'])->toString($format).'</td>   <td class="comment-content" style="padding:10px 22px;';
+								/*
+									echo ' '. date_format(date_create($history['created_at']), 'm/d/Y H:i A').'
+									  	 </td>   <td class="comment-content" style="padding:10px 22px;';
+										 */				
+								
 								echo '">';
 								 				   
 								echo  nl2br($history['comment']).'
@@ -3404,7 +3466,7 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
                                     <tbody>
                                     <tr class="customer-comment">';
 									echo '<td class="comment-additional" width="35%" style="padding:10px 22px;">';
-                                	echo ' '. date_format(date_create($history['created_at']), 'm/d/Y H:i A').'
+                                	echo ' '. Mage::app()->getLocale()->date($history['created_at'])->toString($format).'
 									  	 </td>   <td class="comment-content" style="padding:10px 22px; ';
 								echo '">';
 								 				   
