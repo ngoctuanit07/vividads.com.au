@@ -104,6 +104,56 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
             $this->_redirectReferer();
         }
     }
+	
+	/**
+     * Print quote
+     */
+    public function printquotationAction() {
+        try {   
+			  
+
+            $this->loadLayout();
+            $error = false;
+            $quoteId = $this->getRequest()->getParam('quote_id');
+            $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+
+            //create bundle product if not exists
+            if (($quote->getproduct_id() == null) || ($quote->getproduct_id() == 0)) {
+                if ($quote->getItems()->getSize() > 0)
+                    $quote->commit();
+                else {
+                    $error = true;
+                    Mage::getSingleton('adminhtml/session')->addError($this->__('Impossible to print an empty quotation.'));
+                }
+            }
+
+            //continue....
+            if (!$error) {
+                $pdf = Mage::getModel('Quotation/quotationpdf')->getPdf(array($quote));
+                $name = Mage::helper('quotation')->__('quotation_') . $quote->getincrement_id() . '.pdf';
+				//header ('Content-Type:', 'application/pdf');
+				//header ('Content-Disposition:', 'inline;');
+				 
+				 
+				$respnose =$this->getResponse()
+                ->setHeader('Content-type', 'application/pdf', true)               
+                ->setBody($pdf->render());
+			    echo $respnose;exit;
+				 
+				
+				// Output pdf
+				//echo $pdf->render();
+				//exit;						
+				$this->_prepareDownloadResponse($name, $pdf->render(), 'application/pdf');
+				
+            }
+            else
+                $this->_redirect('Quotation/Admin/edit', array('quote_id' => $quoteId));
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addError($ex->getMessage());
+            $this->_redirectReferer();
+        }
+    }
 
 
  /**

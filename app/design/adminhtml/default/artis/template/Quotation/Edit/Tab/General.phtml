@@ -364,6 +364,8 @@ select {
   
   <div class="address-control"> &nbsp; </div>
   <!--  <input type="hidden" name="billing_address_id" value="" id="edit_billing_address_id" />-->
+  
+  
   <input type="hidden" name="quote[billing_address][address_id]" value="382911" id="edit_billing:address_id">
   <ul class="form-list">
     <li>
@@ -563,6 +565,8 @@ $sqlSystem = $connectionRead->select()
   	<label for="edit_billing:same_as_shipping">Same as Billing Address</label>
   </div>-->
   <input type="hidden" name="quote[shipping_address][address_id]" value="382910" id="edit_shipping:address_id" />
+ <input type="hidden" title="Delivery Date" name="quote[shipping_address][delivery_date]" id="edit_shipping:delivery_date" value="<?php echo $fetchSystem1['inhand']; ?>" class="input-text  street1" >
+ 
   <ul class="form-list">
     <li>
       <label for="edit_billing:firstname" class="required"><em>*</em>First Name</label>
@@ -608,7 +612,7 @@ $sqlSystem = $connectionRead->select()
       <?php
                                 foreach($regionCollection as $region) {
                                 ?>
-      <option value="<?php echo $region['code'] ?>" <?php if($fetchSystem['region_id'] == $region['name'] or $fetchSystem['region_id'] == $region['code']){ echo 'selected';$region1 = $region['name'];}?> ><?php echo $region['name'] ?></option>
+      <option value="<?php echo $region['code'] ?>" <?php if($fetchSystem['region_id'] == $region['name'] or $fetchSystem['region_id'] == $region['code']){ echo 'selected'; $region1 = $region['name'];}?> ><?php echo $region['name'] ?></option>
       <?php
                                 }
                                 ?>
@@ -635,7 +639,7 @@ $sqlSystem = $connectionRead->select()
       </li>
       <li class="fields">
       <div class="field">
-      <label for="edit_shipping:country_id" class="required">
+      <label for="edit_shipping:country_id" class="required">  
       <em>*</em>Country
       
       </label>
@@ -644,7 +648,7 @@ $sqlSystem = $connectionRead->select()
       <?php
                                         foreach($countryCollection as $country) {
                                         ?>
-      <option  value="<?php echo $country['country_id'] ?>" <?php // if($fetchSystem['country_id'] == $country['country_id']) echo 'selected';?> ><?php echo $country['name'] ?></option>
+      <option  value="<?php echo $country['country_id'] ?>" <?php   if($fetchSystem['country_id'] == $country['country_id']) echo 'selected';?> ><?php echo $country['name'] ?></option>
       <?php
                                         }
                                         ?>
@@ -767,7 +771,7 @@ foreach($result as $item)
 					if(count($child_items)>0){						
 						foreach($child_items as $child_item){	
 			?>
-            <div style="line-height: 30px;  margin-top: 5px;"> x   <?php echo round($child_item->getSelection_qty());?> </div>
+            <div style="line-height: 30px;  margin-top: 5px;"> x   <?php echo round($child_item->getSelection_qty() * $item['qty']);?> </div>
             <?php  }					
 				}
 			?>

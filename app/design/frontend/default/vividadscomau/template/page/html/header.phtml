@@ -9,7 +9,7 @@ $quoteItems = Mage::getSingleton('checkout/session')
 foreach( $quoteItems as $item ){
     $cart->removeItem( $item->getId() );      
 }
-$cart->save(); 
+$cart->save();   
 		 */
 		 $cart = Mage::getSingleton('checkout/session')->getQuote();
    		 $cartItems = $cart->getAllVisibleItems();
