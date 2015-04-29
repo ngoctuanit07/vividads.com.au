@@ -292,17 +292,18 @@ jQuery('.right_float').bxSlider({
 				 { ?>
           <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
           <div style="border-right: 1px solid rgb(232, 31, 37); width: 46%; padding: 5px; font-size: 13px; text-align:center; float:left">
+          From AUD :
            <span itemprop="price">
-             <?php echo ('From AUD : '.$_price.'') ?>
+             <?php echo $_price ?>
            
 <?php /*?>           From: <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?><?php */?>
            </span>
            
           </div>
           <meta itemprop="priceCurrency" content="AUD" />
-          <div style="width: 48%; padding: 5px; text-align:center; font-size: 13px; float:left;" >
+          <div style="width: 48%; padding: 5px; text-align:center; font-size: 13px; float:left;" >To AUD : 
           <span itemprop="price"> 
-           <?php echo ('To AUD : '.$specialPrice.'') ?>
+           <?php echo ($specialPrice) ?>
 <?php /*?>          To :<?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?>
  <?php */?>         
           
