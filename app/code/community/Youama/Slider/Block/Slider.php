@@ -37,13 +37,14 @@ class Youama_Slider_Block_Slider extends Mage_Core_Block_Template
     
     public function _construct()
     {
-        $this->addData(array(
+        /*
+		$this->addData(array(
             'cache_lifetime'    => 99999,
             'cache_tags'        => array('YOUAMASLIDER_CHACHE')
         ));
-    
-        parent::_construct();
-        
+		*/
+		//var_dump($this->getData());    
+        parent::_construct();        
         $this->_configs = Mage::getStoreConfig('youamaslider');
         $this->_media = Mage::getBaseUrl('media') . 'youama/slider/';
         
