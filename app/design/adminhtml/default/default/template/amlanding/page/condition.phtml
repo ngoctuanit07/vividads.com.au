@@ -4,6 +4,7 @@
 * @copyright Copyright (c) 2008-2012 Amasty (http://www.amasty.com)
 * @package Amasty_Feed
 */
+
 ?>
 <?php $code = 'Condition'; ?>
 <script type="text/javascript">
@@ -53,6 +54,8 @@
                 <tr>
         <td class="label"><label for="category"><?php echo $this->__('Category Is')?></label></td>
     <td class="value">
+   
+    
         <select id="category" name="category" class="select">
         <?php foreach ($this->getTree() as $_value => $_label): ?>
                     <option value="<?php echo $_label['value'] ?>" <?php echo $this->getSelectedHtml('category', $_label['value'])?>><?php echo $this->htmlEscape($_label['label']) ?></option>
