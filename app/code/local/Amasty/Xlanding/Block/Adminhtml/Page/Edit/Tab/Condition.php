@@ -44,14 +44,26 @@ class Amasty_Xlanding_Block_Adminhtml_Page_Edit_Tab_Condition extends Amasty_Xla
      */
     protected function getTree()
     {
-        $rootId = Mage::app()->getStore(0)->getRootCategoryId();         
+       
+		 //Zend_debug:dump($rootId);
+		  $cpage_id = $this->getRequest()->getParam('id');
+		  $cPage = Mage::getModel('amlanding/page')->load($cpage_id);
+		  $cStore_id = $cPage->getStore_id();
+		  $cStore_id = $cStore_id[0];
+		
+		if($cStore_id){
+			$rootId = Mage::app()->getStore($cStore_id)->getRootCategoryId();       
+		}else{
+			$rootId = Mage::app()->getStore(0)->getRootCategoryId();       
+			}
         $tree = array();
         
         $collection = Mage::getModel('catalog/category')
-            ->getCollection()->addNameToResult();
+            		->getCollection()->addNameToResult();
         
-        $pos = array();
-        foreach ($collection as $cat){
+       $pos = array();
+        
+		foreach ($collection as $cat){
             $path = explode('/', $cat->getPath());
             if ((!$rootId || in_array($rootId, $path)) && $cat->getLevel()){
                 $tree[$cat->getId()] = array(
