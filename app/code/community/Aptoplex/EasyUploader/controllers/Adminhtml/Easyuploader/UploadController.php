@@ -17,9 +17,9 @@ class Aptoplex_EasyUploader_Adminhtml_Easyuploader_UploadController extends Mage
         $this->_helper = Mage::helper('aptoplex_easyuploader');
     }
 
-    public function indexAction() {
-        $this->loadLayout();
-        $this->renderLayout();
+    public function indexAction() { 
+		   $this->loadLayout();
+		   $this->renderLayout();		 
     }
 
     /**
@@ -65,7 +65,8 @@ class Aptoplex_EasyUploader_Adminhtml_Easyuploader_UploadController extends Mage
 
     public function massDeleteAction() {
         $entityIds = $this->getRequest()->getParam('entity_ids');
-        foreach($entityIds as $entityId) {
+        
+		foreach($entityIds as $entityId) {
             $model = Mage::getModel('aptoplex_easyuploader/upload');
             $model->load($entityId);
             $filename = $model->getData('new_filename');

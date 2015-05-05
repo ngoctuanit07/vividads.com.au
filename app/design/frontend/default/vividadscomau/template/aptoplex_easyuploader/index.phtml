@@ -1,26 +1,8 @@
 <?php 
-		extract($_POST);
-		 $orderType =$_POST['orderType'];
-		 $order_id =$_POST['order_id'];
-		if($orderType == 'order_id'){
-			$my_order = Mage::getModel('sales/order')->loadByIncrementId($order_id);
-			$email = $my_order->getCustomerEmail();
-			}
-			
+		
        // $order_id = '32134293216';
 ?>
-<?php 
-	/*
-?>
-<script type="text/javascript" src="<?php echo $this->getSkinUrl('lib/aptoplex_easyuploader/jquery/jquery-1.11.0.min.js');?>"></script>
-<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/aptoplex_easyuploader/jquery-noconflict.js');?>"></script>
-<script type="text/javascript" src="<?php echo $this->getSkinUrl('lib/aptoplex_easyuploader/plupload/js/plupload.full.min.js');?>"></script>
-<script type="text/javascript" src="<?php echo $this->getSkinUrl('lib/aptoplex_easyuploader/plupload/js/jquery.plupload.queue/jquery.plupload.queue.min.js');?>"></script>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/aptoplex_easyuploader/styles.css');?>" media="all" />
-<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('lib/aptoplex_easyuploader/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css');?>" media="all" />
-<?php 
-*/
-?>
+
 
 <?php
 /**
@@ -31,13 +13,12 @@
  *
  * @var $this Aptoplex_EasyUploader_Block_Index
  */
-
-//$order_id = Mage::getSingleton('checkout/session')->getLastRealOrderId();
-$my_order = Mage::getModel('sales/order')->loadByIncrementId($order_id);
-$email = $my_order->getCustomerEmail();
-
-$flashRuntimeUrl = $this->getSkinUrl("lib/aptoplex_easyuploader/plupload/js/Moxie.swf");
-$silverlightRuntimeUrl = $this->getSkinUrl("lib/aptoplex_easyuploader/plupload/js/Moxie.xap");
+ 	$postvars = $this->getOrderVars();
+	$order_id = $postvars['order_id'];
+	$email    = $postvars['email'];
+	
+	$flashRuntimeUrl = $this->getSkinUrl("lib/aptoplex_easyuploader/plupload/js/Moxie.swf");
+	$silverlightRuntimeUrl = $this->getSkinUrl("lib/aptoplex_easyuploader/plupload/js/Moxie.xap");
 
 ?>
 <style>
@@ -61,7 +42,8 @@ h3{ color:#666 !important; }
             </div>
         <?php
         } ?>
-        <div class="proofs_link" style="float:right; border:1px solid ;"><a style="font-size:18px" href="<?php echo Mage::getBaseUrl().'upload/fetchOrder/ref_id/'.$order_id.'/SID/'.md5($order_id);?>">Click for Proofs against this order </a></div>
+        <?php $form_key =  Mage::getSingleton('core/session')->getFormKey(); ?>
+        <div class="proofs_link" style="float:right; border:1px solid ;"><a style="font-size:18px" href="<?php echo Mage::getBaseUrl().'upload/index/fetchOrder/ref_id/'.$order_id.'/form_key/'.$form_key;?>">&nbsp;&nbsp;Proofs against this order&nbsp;&nbsp; </a></div>
         <div class="alreadyuploaded">
         <h1  style="color:#888; font-weight:bold; color:#930">Already Uplaoded Files</h1>       
         <ul>
@@ -73,6 +55,7 @@ h3{ color:#666 !important; }
 											;				
 			//	Zend_debug::dump($this->getRequest());				
 				
+				if(count($uploaded_files) > 0){
 				foreach($uploaded_files as $file){		
 				   // var_dump($file->getData());
 				?>
@@ -82,9 +65,15 @@ h3{ color:#666 !important; }
                         <br/> 
                         <b><span style="color:#063"><?php echo $file->getData('new_filename');?></span></b>
                         <br/>Download File</a> 
-                     </li>     
-           <?php  } ?>
-           
+                     </li>  
+                     <?php 
+						}
+					 ?>   
+           <?php  }else{ ?>
+           			<li style="float:left; padding-right:5px; padding-left:5px;"> No Artwork uploaded yet.</li>
+           <?php 
+		   }
+		   ?>
            </ul>
         
         </div>

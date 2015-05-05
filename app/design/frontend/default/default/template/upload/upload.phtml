@@ -114,13 +114,13 @@
  
   <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" /> 
     <section id="Center">
-       <div id="Upload-Box">
+       <div id="Upload-Box" style="width:73% !important;">
          <div class="upload-heading"><?php echo __('Upload your own Print Ready file /  Let us design for You');?></div>
          <div class="Form-Column pull-left">
            <div class="invoice-id pull-left"><?php echo __('Your Reference Id:');?></div>
            <div class="Form-Field pull-left">
            <div class="Text-Box" style="margin-top:10px;" >
-               <input class="texfield" type="text" value="" id="order_id" name="order_id" style="margin-top:-5px;"/>
+               <input class="texfield" type="text" value="" id="order_id" name="order_id" style="margin-top:-5px; width:315px;"/>
              </div>
            
            
@@ -145,7 +145,7 @@
              
              <div class="Text-Box">
                <div > 
-                 <input class="Upload-Button" type="submit" id="submit" name="submit" value=""  /></div>
+                 <input style="width:327px !important;" class="Upload-Button" type="submit" id="submit" name="submit" value=""  /></div>
                  
                </div>
              </div>
@@ -156,7 +156,7 @@
          <div class="vividadlogo pull-left">
            <img src="<?php echo $this->getSkinUrl();?>images/upload-icon.png" width="87" height="103"  alt=""/></div>
          <h1><?php echo __('IMPORTANT NOTE');?></h1>
-         <p><?php echo __('* For us to attach your artwork with the right order and right account we need you to enter your Quote/Invoice/Order number. Your Quote / Invoice / Order number is located in the Quote / Invoice / Order email(s) sent to you. If you have not already requested a Quote or placed your order please do so to receive your number.Please goto our website and add product to the cart to place your order or request a quote / Invoice');?></p>
+         <p><?php echo __('* For us to attach your artwork with the right order and right account we need you to enter your Reference number. Your Reference number is located in the Quote / Invoice / Order email(s) sent to you. If you have not already requested a Quote or placed your order please do so to receive your Reference Number. Please goto our website and add product to the cart to place your order or request a quote.');?></p>
       </div>
        </section>
  </form>

@@ -34,7 +34,32 @@ class Aptoplex_EasyUploader_IndexController extends Mage_Core_Controller_Front_A
      * Index action
      */
     public function indexAction() {
-        $title = Mage::getStoreConfig(Aptoplex_EasyUploader_Helper_Data::XML_PATH_PAGE_TITLE, null);
+       
+	   ///redirecting if not proper order id ///
+		 
+		$_post_vars = $this->getRequest()->getParams();		
+		$order = Mage::getModel('sales/order')->loadByIncrementId($_post_vars['order_id']); 		
+		$auth_flag=0;
+	      
+		 
+		 if(count($order->getData()) > 0 ){
+			 $auth_flag=1;
+			 }else{
+				$order = Mage::getModel('Quotation/Quotation')->getCollection()
+									->addFieldTofilter('increment_id',$_post_vars['order_id'])
+								;
+				if(count($order->getData()) > 0){
+					$auth_flag = 1;
+					}					 
+			 }
+	   	
+		if($auth_flag==0){
+			 $_path = "upload/index" ;
+		 	 $this->_redirect($_path); 
+			 return ;
+			}
+		 
+	    $title = Mage::getStoreConfig(Aptoplex_EasyUploader_Helper_Data::XML_PATH_PAGE_TITLE, null);
 
         $this->loadLayout();
         $this->getLayout()->getBlock("head")->setTitle($this->__($title));
