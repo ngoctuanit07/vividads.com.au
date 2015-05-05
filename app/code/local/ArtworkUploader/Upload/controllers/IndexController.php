@@ -12,7 +12,7 @@
 class ArtworkUploader_Upload_IndexController extends Mage_Core_Controller_Front_Action
 		{
  /*following method is act as a default action*/			
-  public function indexAction(){			
+  public function indexAction(){ 			
    
 			/*load layout*/
 			// $this->loadLayout();			
@@ -20,15 +20,18 @@ class ArtworkUploader_Upload_IndexController extends Mage_Core_Controller_Front_
 			 
 			$_layout = $this->loadLayout();
 			 
+		 
 			$block = $this->getLayout()->createBlock(
 			'Mage_Core_Block_Template',
 			'upload',
 			array('template' => 'upload/upload.phtml')
 			);
-			
-			$this->getLayout()->getBlock('head')->setTitle($this->__('Artwork Upload'));
+			 
+		 	$this->getLayout()->getBlock('head')->setTitle($this->__('Artwork Upload'));
 			
 			$this->getLayout()->getBlock('content')->append($block) ;
+		 	//Zend_debug::dump(Mage::app()->getLayout()->getUpdate());
+			
 			    
 			  $this->renderLayout();
 			 //  Zend_Debug::dump($this->getLayout()->getUpdate()->getHandles());
@@ -79,16 +82,35 @@ class ArtworkUploader_Upload_IndexController extends Mage_Core_Controller_Front_
 		
 		/* load layout*/
 		$_layout = $this->loadLayout();
+		
+		
+		$_block = $this->getLayout()->createBlock(
+			'Aptoplex_EasyUploader_Block_Index',
+			'aptoplex_easyuploader.index',
+			array('template' => 'aptoplex_easyuploader/index.phtml')
+			);
+			
+			
+		$this->getLayout()->getBlock('content')->append($_block) ;
+		
+		
 		$_block = $this->getLayout()->createBlock(
 			'Mage_Core_Block_Template',
 			'uploadArtworkBlock',
 			array('template' => 'upload/order_upload.phtml')
 			);
+			
+			
 		$this->getLayout()->getBlock('content')->append($_block) ;
+		
+		
+		
+		
+		
 		//
 		$_block_data = $this->getLayout()->getBlock('uploadArtworkBlock');	
 		
-		//Zend_debug::dump($_order_id);
+		// Zend_debug::dump($this->getLayout()->getBlock('content')->getData());
 		
 		//echo $_order_id;
 		/*getting order detail*/

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Aptoplex_EasyUploader>
+            <version>1.0.2.2</version>
+        </Aptoplex_EasyUploader> 
+    </modules>
+
+    <global>
+        <models>
+            <aptoplex_easyuploader> <!-- Model alias name referred to in the install-1.0.0.0.php file. -->
+                <class>Aptoplex_EasyUploader_Model</class>
+                <resourceModel>aptoplex_easyuploader_resource</resourceModel> <!-- Location of the resources for this module. -->
+            </aptoplex_easyuploader>
+
+            <aptoplex_easyuploader_resource> <!-- Alias that needs to match the above resourceModel node. -->
+                <class>Aptoplex_EasyUploader_Model_Resource</class>
+                <entities>
+                    <upload>
+                        <table>aptoplex_easyuploader_upload</table>
+                    </upload>
+                </entities>
+            </aptoplex_easyuploader_resource>
+        </models>
+
+        <resources>
+            <aptoplex_easyuploader_setup> <!-- This needs to match our folder name inside the modules sql folder. -->
+                <setup>
+                    <module>Aptoplex_EasyUploader</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </aptoplex_easyuploader_setup>
+        </resources>
+
+        <blocks>
+            <aptoplex_easyuploader>
+                <class>Aptoplex_EasyUploader_Block</class>
+            </aptoplex_easyuploader>
+
+            <aptoplex_easyuploader_adminhtml>
+                <class>Aptoplex_EasyUploader_Block_Adminhtml</class>
+            </aptoplex_easyuploader_adminhtml>
+        </blocks>
+
+        <helpers>
+            <aptoplex_easyuploader>
+                <class>Aptoplex_EasyUploader_Helper</class>
+            </aptoplex_easyuploader>
+        </helpers>
+    </global>
+
+    <frontend>
+        <routers>
+            <aptoplex_easyuploader>
+                <use>standard</use>
+                <args>
+                    <module>Aptoplex_EasyUploader</module>
+                    <frontName>easyuploader</frontName>
+                </args>
+            </aptoplex_easyuploader>
+        </routers>
+
+        <layout>
+            <updates>
+                <aptoplex_easyuploader>
+                    <file>aptoplex_easyuploader.xml</file>
+                </aptoplex_easyuploader>
+            </updates>
+        </layout>
+
+        <translate>
+            <modules>
+                <Aptoplex_EasyUploader>
+                    <files>
+                        <default>Aptoplex_EasyUploader.csv</default>
+                    </files>
+                </Aptoplex_EasyUploader>
+            </modules>
+        </translate>
+
+        <events>
+            <page_block_html_topmenu_gethtml_before>
+                <observers>
+                    <add_link_to_topmenu>
+                        <type>singleton</type>
+                        <class>aptoplex_easyuploader/observer</class>
+                        <method>addEasyUploaderLinkToTopmenu</method>
+                    </add_link_to_topmenu>
+                </observers>
+            </page_block_html_topmenu_gethtml_before>
+        </events>
+    </frontend>
+
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <aptoplex_easyuploader before="Mage_Adminhtml">Aptoplex_EasyUploader_Adminhtml</aptoplex_easyuploader>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <aptoplex_easyuploader>
+                    <file>aptoplex_easyuploader.xml</file>
+                </aptoplex_easyuploader>
+            </updates>
+        </layout>
+
+        <events>
+            <admin_system_config_section_save_after>
+                <observers>
+                    <easyuploader_admin_config_save_observer>
+                        <type>singleton</type>
+                        <class>aptoplex_easyuploader/observer</class>
+                        <method>updateUploaderURL</method>
+                    </easyuploader_admin_config_save_observer>
+                </observers>
+            </admin_system_config_section_save_after>
+        </events>
+
+        <!--
+        <translate>
+            <modules>
+                <Aptoplex_EasyUploader>
+                    <files>
+                        <default>Aptoplex_EasyUploader.csv</default>
+                    </files>
+                </Aptoplex_EasyUploader>
+            </modules>
+        </translate>
+        -->
+    </adminhtml>
+
+    <default>
+        <aptoplex_easyuploader>
+            <general>
+                <add_link_to_menu>1</add_link_to_menu>
+                <menu_link_title><![CDATA[Upload Your Files]]></menu_link_title>
+                <runtime_fallback_order><![CDATA[html5,flash,silverlight,html4]]></runtime_fallback_order>
+                <uploading_depends_on_order_status>0</uploading_depends_on_order_status>
+                <frontend_uploader_url>easyuploader</frontend_uploader_url>
+            </general>
+
+            <file_settings>
+                <allowed_file_extensions><![CDATA[jpg,jpeg,png,gif,doc,xls,rtf,pdf,eps,tif,tiff,psd,ai]]></allowed_file_extensions>
+                <max_file_size>262144</max_file_size>
+                <file_chunk_size>16384</file_chunk_size>
+                <upload_path><![CDATA[media/aptoplex_easyuploader/uploads/customer]]></upload_path>
+            </file_settings>
+
+            <email_notification_settings>
+                <enable>0</enable>
+                <use_custom_smtp>0</use_custom_smtp>
+                <sender_name><![CDATA[Easy Uploader]]></sender_name>
+                <subject><![CDATA[File Upload Notification]]></subject>
+            </email_notification_settings>
+
+            <checkout_success_presentation>
+                <enable>1</enable>
+                <content_html><![CDATA[<h1>Ready to Upload Your Files?</h1><h2 class="sub-title">You'll need to upload your files to us before we can proceed with your order. Simply click the <strong>Upload Your Files</strong> button below to be taken to our uploader page.</h2><p>Alternatively, you can upload your files to us later by clicking the <strong>Upload Your Files</strong> link in the menu bar at the top of the page - just remember to have handy your <strong>Order Number</strong> and <strong>E-mail Address</strong> that you placed your order with as you will need these in order to proceed with uploading.</p>]]></content_html>
+                <upload_button_title><![CDATA[Upload My Files]]></upload_button_title>
+                <upload_button_css_class_name><![CDATA[btn-upload]]></upload_button_css_class_name>
+            </checkout_success_presentation>
+
+            <frontend_presentation>
+                <page_title><![CDATA[Welcome to the Easy Uploader]]></page_title>
+                <intro_html><![CDATA[<h3>Uploading your files to our website couldn't be easier - simply fill in the form below to get started!</h3>]]></intro_html>
+                <terms_and_conditions_acceptance>1</terms_and_conditions_acceptance>
+                <terms_and_conditions_html><![CDATA[<p><ul class="form-list"><li>You agree that you have read and fully understood our complete <a href="#">Terms and Conditions.</a></li><li>You agree that you have obtained where applicable the full consent of any copyright holders to supply the files being uploaded to us.</li><li>You agree that the files you are uploading contain no content of an illegal or defamatory nature.</li></ul></p>]]></terms_and_conditions_html>
+                <terms_and_conditions_acceptance_checkbox_label><![CDATA[I agree to the above]]></terms_and_conditions_acceptance_checkbox_label>
+                <file_upload_queue_header_html><![CDATA[<h2>Select Your Files</h2><p>Press the <strong>Add Files</strong> button or drag & drop some files on to the upload queue.</p>]]></file_upload_queue_header_html>
+                <uploader_init_failure_html><![CDATA[<h3><strong>ERROR:</strong> Upload Queue failed to load!</h3><p>This error could be because your browser doesn't have HTML5, Flash, or Silverlight support.</p>]]></uploader_init_failure_html>
+                <file_upload_queue_footer_html><![CDATA[<p><strong>NOTE:</strong> Uploaded file(s) must be in one of the following formats: <strong>jpg,jpeg,png,gif,doc,xls,rtf,pdf,eps,tif,tiff,psd,ai</strong></p>]]></file_upload_queue_footer_html>
+                <upload_button_title><![CDATA[Upload Files]]></upload_button_title>
+                <upload_button_css_class_name><![CDATA[btn-upload]]></upload_button_css_class_name>
+            </frontend_presentation>
+        </aptoplex_easyuploader>
+    </default>
+
+    <crontab>
+        <jobs>
+            <aptoplex_easyuploader_flush_uploads>
+                <schedule>
+                    <!-- Run every hour (only applies if we're running in demo mode and FLUSH_UPLOADS_IN_DEMO_MODE is true) -->
+                    <cron_expr>0 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>aptoplex_easyuploader/cron::flushUploads</model>
+                </run>
+            </aptoplex_easyuploader_flush_uploads>
+        </jobs>
+    </crontab>
+</config>

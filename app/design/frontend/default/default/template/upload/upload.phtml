@@ -37,22 +37,22 @@
 ?>
 <?php /*?><script src="<?php echo $this->getJsUrl('bannershop/jquery_min_17.js');?>"></script><?php */?>
 	<script>
-		$(function() {
+		jQuery(function() {
 			
 		//	$('.header').hide();
 		//	$('.footer-container,.col-left').hide();
 			
 			
-			var pull 		= $('#pull');
-				menu 		= $('nav ul');
+			var pull 		= jQuery('#pull');
+				menu 		= jQuery('nav ul');
 				menuHeight	= menu.height();
 
-			$(pull).on('click', function(e) {
+			jQuery(pull).on('click', function(e) {
 				e.preventDefault();
 				menu.slideToggle();
 			});
 
-			$(window).resize(function(){
+			jQuery(window).resize(function(){
         		var w = $(window).width();
         		if(w > 320 && menu.is(':hidden')) {
         			menu.removeAttr('style');
@@ -62,11 +62,11 @@
 		
 		
 		
-		$(function(){
+		jQuery(function(){
 			/*hiding the error message*/
 				
-				$('#order_id,#orderType').focus(function(e){
-					$('#errMessage').hide();
+				jQuery('#order_id').focus(function(e){
+					jQuery('#errMessage').hide();
 					});	
 			
 			});
@@ -74,24 +74,12 @@
 		
 		/*authenticating the order id*/
 		
-		function Authenticate(){
-		
-		var orderTypes =  document.getElementById('orderType').value;
+	function Authenticate(){
 		var order_id =document.getElementById('order_id').value;
-					
-					
-					if(orderTypes==0){
-						document.getElementById('errMessage').style.display='block';
-						return false;
-						
-						
-					}
-					
-					if(order_id==''){
-						document.getElementById('errMessage').style.display='block';
-						return false;
-						}
-				 
+			if(order_id==''){
+				document.getElementById('errMessage').style.display='block';
+				return false;
+			}
 			
 			return true;
 		}
@@ -118,18 +106,25 @@
  <!--start of breadcrum-->
  <div id="errMessage" class="errMessage">
     <?php echo __('Oops! place an order or request a quote to get your design started / upload your artwork');?>
- </div>
-     
+ </div>     
  <!--end of Error Bread crums-->
- <form name="notes" action="<?php echo Mage::getUrl("upload/index/fetchOrder");?>"  method="post" enctype="multipart/form-data" onSubmit="return Authenticate();">
+ <!--<form name="notes" action="<?php echo Mage::getUrl("upload/index/fetchOrder");?>"  method="post" enctype="multipart/form-data" onSubmit="return Authenticate();">-->
+  
+  <form name="notes" action="<?php echo Mage::getUrl("easyuploader");?>"  method="post" enctype="multipart/form-data" onSubmit="return Authenticate();">
+ 
   <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" /> 
     <section id="Center">
        <div id="Upload-Box">
          <div class="upload-heading"><?php echo __('Upload your own Print Ready file /  Let us design for You');?></div>
          <div class="Form-Column pull-left">
-           <div class="invoice-id pull-left"><?php echo __('Your Order / Invoice Id:');?></div>
+           <div class="invoice-id pull-left"><?php echo __('Your Reference Id:');?></div>
            <div class="Form-Field pull-left">
-             <div class="Text-Box">
+           <div class="Text-Box" style="margin-top:10px;" >
+               <input class="texfield" type="text" value="" id="order_id" name="order_id" style="margin-top:-5px;"/>
+             </div>
+           
+           
+             <div class="Text-Box" style="display:none;">
                <?php 
 					/*Loading the options for the order type*/
 					
@@ -147,11 +142,9 @@
 							   }?>                                  
                    </select>
                </label></div>
+             
              <div class="Text-Box">
-               <input class="texfield" type="text" value="" id="order_id" name="order_id"/>
-             </div>
-             <div class="Text-Box">
-               <div >
+               <div > 
                  <input class="Upload-Button" type="submit" id="submit" name="submit" value=""  /></div>
                  
                </div>

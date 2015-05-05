@@ -14,7 +14,7 @@ abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_
     protected $_PAGE_WIDTH = 700;
     protected $_ITEM_HEIGHT = 25;
     public $pdf;
-    protected $firstPageIndex = 0;
+    protected $firstPageIndex = 0; 
 
     /**
      * Draw logo
@@ -367,18 +367,18 @@ abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_
 		
 			
 		$created_date = date('Y-m-d', strtotime($_created_date));
-		$_valid_date = date('Y-m-d',strtotime($created_date.'+14 days'));
+		$_valid_date =  date('Y-m-d', strtotime($created_date.'+14 days'));
 		//var_dump($valid_date);
 		//exit;
 		////right address		
 		
 		if($quote['quote_type']=='Quote'){
-		 	 	$caption_title = 'Quote Number: ';  
+		 	 	$caption_title = 'Quote Number: ';   
 			}else{
 		 	 	$caption_title = 'Invoice Number: ';
 			}
 		
-		  $caption_title = 'Reference ID : ';		
+		  $caption_title = 'Reference ID : ';	 	
 		  $rightAddress = $caption_title.'    	'.$quote['data']['increment_id'].'
 						Generate Date:     '.$_created_date.'
 						Valid Till:               '.$_valid_date.'';		
