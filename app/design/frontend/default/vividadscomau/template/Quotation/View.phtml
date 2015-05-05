@@ -1,7 +1,7 @@
 <?php
 
 $countryCode = Mage::getStoreConfig('general/country/default');
-//echo "code :".$countryCode; 
+//echo "code :".$countryCode;
 
 $regionCollection = Mage::getModel('directory/region_api')->items($countryCode);
 $countryCollection = Mage::getModel('directory/country_api')->items();
@@ -243,11 +243,8 @@ externalform-index-index .col2-left-layout .col-main {
     $sqlHistorySystem = $connectionRead->select()
 				->from($tableHistory, array('*'))
 				->where("qh_quotation_id = '".$quote_id."' AND qh_message != 'Created'")
-				->where('is_visible_on_front!=?',0)
 				->order('qh_id ASC');
 
-  // Zend_debug::dump($sqlHistorySystem);
-   
     try {
 
     $chkSystem = $connectionRead->query($sqlHistorySystem);
@@ -1341,7 +1338,7 @@ $chkPlanning = $connectionRead->fetchALL($sqlPlanning);
 
     */ 
 	
-	$grandTotal = (int)$quote->GetFinalPriceWithoutTaxes(); 
+	$grandTotal = (int)$quote->GetFinalPriceWithoutTaxes();
 	
 	?>
 <div class="quote-checkout-wrapper" style="text-align:right" >

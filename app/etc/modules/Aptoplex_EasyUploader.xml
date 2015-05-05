@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<config>
-    <modules>
-        <Aptoplex_EasyUploader>
-            <active>true</active>
-            <codePool>community</codePool>
-        </Aptoplex_EasyUploader>
-    </modules>
-</config> 

@@ -7,7 +7,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
      */
     public function SelectOrCreateCustomerAction() {
         $this->loadLayout();
-        $this->renderLayout(); 
+        $this->renderLayout();
     }
 
 
@@ -1908,14 +1908,11 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                 $order = Mage::getModel('sales/order')
                 ->setIncrementId($reservedOrderId)
                 ->setStoreId($storeId)
-                ->setQuoteId($quote->getId())
+                ->setQuoteId(0)
                 ->setGlobal_currency_code($currency_code)
                 ->setBase_currency_code($currency_code)
                 ->setStore_currency_code($currency_code)
                 ->setOrder_currency_code($currency_code);
-				
-				
-				
                 
                 // set Customer data
                 $order->setCustomer_email($customer->getEmail())
@@ -1926,7 +1923,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                 ->setCustomer($customer);
                 
 				
-				
+				 
                 
                 /****************** Start to add billing and shipping to order 10_02_2014 **************************/
                 $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
@@ -2130,7 +2127,12 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                 $shipDes = $quote->getShippingMethod();
              }
                
-         
+               
+               
+               
+               
+               
+               
                ///$shipDes = $shipMethod[$quote->getShippingMethod()];
                
                /////14-2-2014 gc E 24-2-2014 E
@@ -2168,8 +2170,9 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                 ->order('item_id DESC')
                 ->limit(1);
                 //$row =$connectionRead->fetchRow($select);
-                $result = $connectionRead->fetchRow($select);                
-                $last_item_id = $result['item_id'];
+                $result = $connectionRead->fetchRow($select);
+                
+                 $last_item_id = $result['item_id'];
                
          //$products = array('1' => array('qty' => 1),'2' =>array('qty' => 1));
          foreach ($quote->getItems() as $productId=>$product) {
@@ -2326,7 +2329,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
                        
                        $sqlComment="INSERT INTO ".$temptableComment." SET parent_id = '".$order->getId()."', 
                                       comment = '".strtoupper($history['qh_user'])." - ".addslashes($history['qh_message'])."' ,
-                                      created_at ='".$history['qh_date']."', is_customer_notified='".$history['is_customer_notified']."', is_visible_on_front='".$history['is_visible_on_front']."', entity_name = 'order'";
+                                      created_at ='".$history['qh_date']."', entity_name = 'order'";
                                       
                        $chkComment = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlComment);
                    }
@@ -2648,27 +2651,15 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
      
     $user = Mage::getSingleton('admin/session');
     $userName = $user->getUser()->getUsername();
-	$notified_via_email = $notify;	
-	$visible_front = $visible; 
-	
-     
+    
     $temptableHistory=Mage::getSingleton('core/resource')->getTableName('quotation_history');
 	$temptableQuotation=Mage::getSingleton('core/resource')->getTableName('quotation');
    
     if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHistory))
     {
-         
-        $sqlHistory="INSERT INTO ".$temptableHistory." SET 
-					qh_quotation_id = '".$quote_id."', 
-					qh_message = '".$comment."', 
-					qh_date = NOW(), 
-					qh_user = '".$userName."', 
-					is_customer_notified = '".$notified_via_email."',
-					is_visible_on_front = '".$visible_front."',
-					status = 'sent',
-					entity_name = 'order'
-					";
-       //  Zend_debug::dump($sqlHistory);
+        
+        $sqlHistory="INSERT INTO ".$temptableHistory." SET qh_quotation_id = '".$quote_id."', qh_message = '".$comment."', qh_date = NOW(), qh_user = '".$userName."' ";
+        
 		//update the history of messages 
 		
 		$sqlmessages = 'update '.$temptableHistory.' set `qh_readstatus`=0 WHERE `qh_quotation_id`='.$quote_id;
@@ -2691,7 +2682,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
     
     $quote = Mage::getModel('Quotation/Quotation')->load($quote_id);
     
-    if($notify != '') 
+    if($notify != '')
    
     
     $comments_history = '';
@@ -2711,36 +2702,11 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 			$comments_history .= '<li>
                 <strong>'.Mage::helper('core')->formatDate($_item->getQh_date(), 'medium').'></strong>
                 '.Mage::helper('core')->formatTime($_item->getQh_date(), 'medium').'<span class="separator">|</span><strong>'.$_item->getStatusLabel() .'</strong><br/><small>'.$_item->getqh_user().'
-               </small>';
-			 $comments_history .='<small>'; 
-			  
-			 
-			 $_item->getqh_user();
-			 Mage::helper('sales')->__('Customer');
-			 
-			 $comments_history .='<strong class="subdue">';			 
-			
-			 if (Mage::getModel('Quotation/History')->isVisibleOnfront($_item)){  
-                       $comments_history .= Mage::helper('sales')->__('<br/>Visible on client side') ;
-					   $comments_history .='<img src="'.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'ico_success.gif" width="16" height="16" alt="" />';
-                  }else{
-					   $comments_history .= Mage::helper('sales')->__('<br/>Not visible on client side') ;
-					  }
-				
-				if(Mage::getModel('Quotation/History')->getIsCustomerNotified($_item)){  
-                        $comments_history .= Mage::helper('sales')->__('<br/>Customer Notified via email') ; 
-                		$comments_history .='<img src="'.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'ico_success.gif" width="16" height="16" alt="" />';
-                  }else{ 
-                  	    $comments_history .= Mage::helper('sales')->__('<br/>Customer Not Notified via email');  
-                  } 
-			 
-			 $comments_history .='</strong>';
-			  
-			 $comments_history .='</small>';  
-             $comments_history .='<br/>';		
-			$comments_history .='<a style="float:right;" class="orderspro-delete" title="Delete Comment" onclick="deleteHistory('.$quote_id.','.$_item->getQh_id().'); return false;" href="javascript:void(0);">x</a>';
-			$item_message = $_item->getqh_message();
-            $comments_history .=  $item_message;   
+               </small>
+                
+                    <br/>';		
+					$item_message = $_item->getqh_message();
+           $comments_history .=  $item_message;   
           
 		   $comments_history .= '</li>';
 			
@@ -2765,96 +2731,6 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 		 //end comments history to the client 
 		  Mage::getModel('Quotation/Quotation_Notification')->chatNotify($comment_email,$quote_id);
 		}
-   }
-   
-    public function deleteCommentAction()
-   {
-     //print_r($_REQUEST);
-     
-     extract($_REQUEST);    
-    // Zend_debug::dump($_REQUEST);
-	
-    $user = Mage::getSingleton('admin/session');
-    $userName = $user->getUser()->getUsername();
-    
-    $temptableHistory=Mage::getSingleton('core/resource')->getTableName('quotation_history');	
-    if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHistory))
-    {	
-		$sqlmessages = 'delete from '.$temptableHistory.'  WHERE `qh_id`='.$comment_id.' and `qh_quotation_id`='.$quote_id;
-		$result = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlmessages);	
-		//Zend_debug::dump($result);
-		
-    $quote = Mage::getModel('Quotation/Quotation')->load($quote_id);
-	$comments_history = '';
-	$counter = 0;
-	
-	foreach ($quote->getHistory()->setOrder('qh_id', 'desc') as $_item)
-        {
-			   
-           /*
-		    $comments_history .= '<li>
-                <strong>'.Mage::helper('core')->formatDate($_item->getCreatedAtDate(), 'medium').'></strong>
-                '.Mage::helper('core')->formatTime($_item->getCreatedAtDate(), 'medium').'<span class="separator">|</span><strong>'.$_item->getStatusLabel() .'</strong><br/><small>'.$_item->getqh_user().'
-               </small>
-                
-                    <br/>';  
-			*/		
-			$comments_history .= '<li>
-                <strong>'.Mage::helper('core')->formatDate($_item->getQh_date(), 'medium').'></strong>
-                '.Mage::helper('core')->formatTime($_item->getQh_date(), 'medium').'<span class="separator">|</span><strong>'.$_item->getStatusLabel() .'</strong><br/><small>'.$_item->getqh_user().'
-               </small>';
-			 $comments_history .='<small>'; 
-			  
-			 
-			 $_item->getqh_user();
-			 Mage::helper('sales')->__('Customer');
-			 
-			 $comments_history .='<strong class="subdue">';			 
-			
-			 if (Mage::getModel('Quotation/History')->isVisibleOnfront($_item)){  
-                       $comments_history .= Mage::helper('sales')->__('<br/>Visible on client side') ;
-					   $comments_history .='<img src="'.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'ico_success.gif" width="16" height="16" alt="" />';
-                  }else{
-					   $comments_history .= Mage::helper('sales')->__('<br/>Not visible on client side') ;
-					  }
-				
-				if(Mage::getModel('Quotation/History')->getIsCustomerNotified($_item)){  
-                        $comments_history .= Mage::helper('sales')->__('<br/>Customer Notified via email') ; 
-                		$comments_history .='<img src="'.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'ico_success.gif" width="16" height="16" alt="" />';
-                  }else{ 
-                  	    $comments_history .= Mage::helper('sales')->__('<br/>Customer Not Notified via email');  
-                  } 
-			 
-			 $comments_history .='</strong>';
-			  
-			 $comments_history .='</small>';  
-             $comments_history .='<br/>';		
-			$comments_history .='<a style="float:right;" class="orderspro-delete" title="Delete Comment" onclick="deleteHistory('.$quote_id.','.$_item->getQh_id().'); return false;" href="javascript:void(0);">x</a>';
-			$item_message = $_item->getqh_message();
-            $comments_history .=  $item_message;   
-          
-		   $comments_history .= '</li>';
-			
-			
-			if($counter<1){
-			
-			$comment_email ='<ul><li>
-                <strong>'.Mage::helper('core')->formatDate($_item->getCreatedAtDate(), 'medium').'></strong>
-                '.Mage::helper('core')->formatTime($_item->getCreatedAtDate(), 'medium').'<span class="separator">|</span><strong>'.$_item->getStatusLabel() .'</strong><br/><small>'.$_item->getqh_user().'
-               </small>
-                
-                    <br/>';
-              $comment_email .=$item_message;  
-            $comment_email .='</li></ul>';
-			}
-			$counter++;
-			
-        }
-		 echo $comments_history;	//echo $comment_email;
-		
-		
-    }
-    
    }
    
    public function pricechangeAction()
@@ -2936,17 +2812,12 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 				 
 				 $cAddress = 0;
 				 $address = $connectionRead->query('select * from '.$table_shipping.' where quotation_id='.$_quotation_id);
-				  $default_shipping =  $cquote->getCustomer()->getDefault_shipping();	
-				  $customAddress = Mage::getModel('customer/address')->load($default_shipping);			 
 				 
 				// Zend_debug::dump($address);
 		  foreach($address as $addr){
 					 $cAddress = $addr['entity_id'];
-					 if($customAddress){
-						 $cAddress = 1;
-					 }else{
-						 $cAddress = 0; 
-						 }
+					 $cAddress = 1;
+					 
 				//	 Zend_debug::dump($addr);
 					 
 					 }
@@ -2966,9 +2837,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 					  
 					 $customAddress = Mage::getModel('customer/address');
                 	//$customAddress = new Mage_Customer_Model_Address();
-                	
-					$data['street'] = $data['street1'].' '.$data['street2'];
-					$customAddress->setData($data)
+                	$customAddress->setData($data)
                             	  ->setCustomerId($customer->getEntity_id())
                             	   //->setIsDefaultBilling('1')
                             	    ->setIsDefaultShipping('1')
@@ -2998,21 +2867,19 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 					
 				
 				  $where = $connectionWrite->quoteInto('quotation_id =?', $_quotation_id);
-				  $result = $connectionWrite->update($table_shipping,$data, $where);
-				 //  $customAddress = Mage::getModel('customer/address')->get;
-				    $default_shipping =  $cquote->getCustomer()->getDefault_shipping();	
-				   $data['street'] = $data['street1'].' '.$data['street2'];
-				   $customAddress->setData($data)
+				  
+				   $customAddress = Mage::getModel('customer/address');
+				  $customAddress->setData($data)
                             	  ->setCustomerId($customer->getEntity_id())
                             	   //->setIsDefaultBilling('1')
-                            	    ->setIsDefaultShipping('1');
-                            	  //  ->setSaveInAddressBook('1')
-								// ;
-				  $customAddress->save(); 
+                            	    ->setIsDefaultShipping('1')
+                            	    ->setSaveInAddressBook('1')
+								 ;
+				 $customAddress->save(); 
 				  
 				 // Zend_debug::dump($data);
 				  
-				  
+				  $result = $connectionWrite->update($table_shipping,$data, $where);
 				  if($result){
 					      echo 1;
 					  }else{
@@ -3086,31 +2953,24 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 				 ///reading if shipping address exists 
 				 $cAddress = 0;
 				 $address = $connectionRead->query('select * from '.$table_billing.' where quotation_id='.$_quotation_id);
-				  
-				 $default_billing =  $cquote->getCustomer()->getDefault_billing();	
-				 $customAddress = Mage::getModel('customer/address')->load($default_billing);			 
-				 
-				 
 				 foreach($address as $addr){
 					 $cAddress = $addr['entity_id'];
-					  if($customAddress){
 					 $cAddress = 1;
-					  }else{
-						   $cAddress = 0;
-						  }
 					 }
 				 if($cAddress!=1){					 
 					 
 					 $data['quotation_id']=$_quotation_id;
 					 $data['repid']='';
-					 $data['hearabout']='';	
+					 $data['hearabout']='';
+					 
+					 
 					 $connectionWrite->beginTransaction();
-					 $result = $connectionWrite->insert($table_billing, $data);					 
+					 $result = $connectionWrite->insert($table_billing, $data);
+					 
 					 $connectionWrite->commit();
 					  
-					 
+					 $customAddress = Mage::getModel('customer/address');
                 	//$customAddress = new Mage_Customer_Model_Address();
-					$data['street'] = $data['street1'].' '.$data['street2'];
                 	$customAddress->setData($data)
                             	  ->setCustomerId($customer->getEntity_id())
                             	  ->setIsDefaultBilling('1')
@@ -3132,26 +2992,8 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 					 
 			}else{
 				 
-				 $where = $connectionWrite->quoteInto('quotation_id =?', $_quotation_id);				 
-				 $data['hearabout'] = '';
-				 $data['repid'] = '';	
-				 $result = $connectionWrite->update($table_billing,$data, $where);
-				// Zend_debug::dump($result);
-				 
-				 $default_billing =  $cquote->getCustomer()->getDefault_billing();	
-				 $customAddress = Mage::getModel('customer/address')->load($default_billing);
-                //$customAddress = new Mage_Customer_Model_Address();
-                
-				$data['street'] = $data['street1'].' '.$data['street2'];
-				$customAddress->setData($data)
-                            	   ->setCustomerId($customer->getEntity_id())
-                            	  ->setIsDefaultBilling('1');
-                            	   // ->setIsDefaultShipping('1')
-                            	 //  ->setSaveInAddressBook('1')
-								 //  ;
-								  
-				  $customAddress->save();
-				   
+				  $where = $connectionWrite->quoteInto('quotation_id =?', $_quotation_id);
+				  $result = $connectionWrite->update($table_billing,$data, $where);
 				 
 				  if($result){
 					      echo 1;
