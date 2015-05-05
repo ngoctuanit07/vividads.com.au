@@ -2,7 +2,7 @@
 /**
  * MageWorx
  *
- * NOTICE OF LICENSE 
+ * NOTICE OF LICENSE
  *
  * This source file is subject to the MageWorx EULA that is bundled with
  * this package in the file LICENSE.txt.
@@ -53,18 +53,19 @@ class MageWorx_OrdersPro_Model_Observer
         $helper = Mage::helper('orderspro');
         if (!$helper->isEnabled() ) return $this;
                 
-        $orderItem = $observer->getEvent()->getOrderItem();
-		$observer->getEvent()->setQuoteItem($orderItem);		
-		$quoteItem = $observer->getEvent()->getQuoteItem();        
-               
-	    // fix for magento 1620-1700:
-        $shippingAddress = $quoteItem->getOrder()->getShippingAddress();        
-		if ($shippingAddress) $shippingAddress->setSameAsBilling(0);                
+        $quoteItem = $observer->getEvent()->getQuoteItem();
+        
+        // fix for magento 1620-1700:
+        $shippingAddress = $quoteItem->getQuote()->getShippingAddress();
+        if ($shippingAddress) $shippingAddress->setSameAsBilling(0);
+                
         
         if (!$helper->isKeepPurchasePrice()) return $this;
-			$orderItem = $observer->getEvent()->getOrderItem();
-			$storeId = $quoteItem->getOrder()->getStoreId();        
-			$store = Mage::app()->getStore($storeId);
+        $orderItem = $observer->getEvent()->getOrderItem();
+        $storeId = $orderItem->getOrder()->getStoreId();        
+        $store = Mage::app()->getStore($storeId);
+        
+        
         
         
         $oldQuoteItemId = $orderItem->getQuoteItemId();
@@ -97,8 +98,7 @@ class MageWorx_OrdersPro_Model_Observer
             $itemPrice = $quoteItem->getParentItem()->getProduct()->getPriceModel()->getFinalPrice(1, $quoteItem->getParentItem()->getProduct());
             //$quoteItem->getQuote()->collectTotals();
             $items = $quoteItem->getQuote()->getItemsCollection();
-            
-			foreach($items as $item) {
+            foreach($items as $item) {
                 if ($item->getProduct()->getId()==$productId && !$item->getApplyPriceFlag()) {
                     if ($oldPrice!=$itemPrice) {
                         $item->setCustomPrice($oldPrice)->setOriginalCustomPrice($oldPrice);
