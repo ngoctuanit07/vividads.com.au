@@ -5,7 +5,7 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
     /**
      * Check if quote belong to current customer
      * @param <type> $quoteId
-     * @return <type>
+     * @return <type> 
      */
     protected function checkQuoteOwner($quote) {
         $customerId = Mage::Helper('customer')->getCustomer()->getId();
@@ -106,7 +106,7 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
     }
 	
 	/**
-     * Print quote
+     * Print quote 
      */
     public function printquotationAction() {
         try {   
@@ -1877,6 +1877,10 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
         $data['qh_date']= NOW();
         $data['qh_user']= 'customer';
 		$data['qh_readstatus']= 1;
+		$data['is_customer_notified']=0;
+		$data['is_visible_on_front'] = '1';
+		$data['status']='sent';
+		$data['entity_name'] = 'quote';
         $connectionWrite->insert($tableHistory, $data);
         
 		$connectionWrite->commit();
@@ -1892,6 +1896,8 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
         ->from($tableHistory, array('*'))
         ->where('qh_quotation_id=?',$quote_id)
         ->where('qh_message!=?','Created')
+		//->where('is_customer_notified=?',0)
+		->where('is_visible_on_front!=?',0)
         //->order('qh_id DESC')
 		->order('qh_id ASC')
 		;

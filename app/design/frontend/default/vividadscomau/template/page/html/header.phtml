@@ -7,7 +7,7 @@ $quoteItems = Mage::getSingleton('checkout/session')
                   ->getItemsCollection(); 
  
 foreach( $quoteItems as $item ){
-    $cart->removeItem( $item->getId() );      
+    $cart->removeItem( $item->getId() );       
 }
 $cart->save();   
 		 */
@@ -327,8 +327,10 @@ if($customer_pages==1)
 					  ->setBlockId('top_menu_slider')
 					  ->toHtml();
 			*/
-			echo $this->getChildHtml('youamaslider');?>  
-
+			echo $this->getChildHtml('youamaslider');	
+			 
+			?>  
+			
   
 <div class="order_process">
 <img src="<?php echo $this->getSkinUrl('images/order_process.png')?>" />

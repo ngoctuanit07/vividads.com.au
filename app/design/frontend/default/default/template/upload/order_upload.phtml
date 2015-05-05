@@ -1,10 +1,16 @@
+
+<?php 
+	//	echo $this->getLayout()->createBlock('aptoplex_easyuploader/index')->setBlockId('aptoplex_easyuploader.index')->toHtml();  
+?>
+
 <?php // var_dump($this->getSkinUrl); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/artworkupload.css');?>" media="all" />
 <link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/popup.css');?>" media="all" />
  <script src="<?php echo Mage::getBaseUrl('js').'upload/jquery-1.9.1.min.js';?>"></script>
  <script src="<?php echo Mage::getBaseUrl('js').'upload/jquery.js';?>"></script> 
  <script src="<?php echo Mage::getBaseUrl('js').'upload/jquery.form.js';?>"></script> 
-
+ 
+ 
 <?php
 
 /**
@@ -41,7 +47,7 @@
  /*showing data of order*/
  
  
- $_order = $order;
+ $_order = $order; 
  
   
  
@@ -1273,9 +1279,15 @@ $(function(){
 	-->
     </style>
     
+    
+    
+    
 </head>
 
 <body>
+
+
+
 <div id="Container">
    <div id="Wrapper">
       <div id="Header" style="display:none;">
@@ -1307,6 +1319,12 @@ $(function(){
       <h2 style="height:40px;"><?php echo __('Order Number :');?> <?php echo $_order_number;?></h2>        
        <?php echo __('Total Items <span style="color:#f00;">( '.$_total_order_qty.' )</span>');?> 
       </div>
+      
+      <div style="border:1px solid red; clear:both;">
+      
+     
+      </div>
+      
       <div class="orderGrid">
          <ul id="productGrid">
       <?php
@@ -1543,7 +1561,7 @@ $(function(){
             </div>      
                   <div class="clr"></div>
                   <!--upload files box start here-->
-                  <div class="uploadFilesPanel" style="width:1150px !important;">
+                  <div class="uploadFilesPanel" style="width:1150px !important; display:none;">
                      <div class="uploadFilesBox" style="width:780px !important;">
                      <!--thumbnailbox-->
     <ul class="uploaded_thumbnails files_thumbnails_<?php echo $_item_id;?>_<?php echo $counter;?>" id="uploadedFiles<?php echo $_item_id;?>_<?php echo $counter;?>"> 

@@ -20,7 +20,7 @@
         <ArtworkUploader_Upload>
             <!-- Current version of module -->
             <version>0.1.0</version>
-        </ArtworkUploader_Upload>
+        </ArtworkUploader_Upload> 
     </modules>
     <frontend>
         <!-- Module aliases are located in this block -->
@@ -40,17 +40,25 @@
             </upload>
         </routers>
  <!-- This node contains module layout configuration -->
-        
-	   <layout>
+     
+		 <layout>
             <updates>
-                <!-- module alias -->
-                <Upload>
-                    <!-- File for loading -->
+                <artworkuploader_upload>
                     <file>upload.xml</file>
-					
-                </Upload>
+                </artworkuploader_upload>
             </updates>
         </layout>
+
+        <translate>
+            <modules>
+                <Artworkuploader_Upload>
+                    <files>
+                        <default>upload.csv</default>
+                    </files>
+                </Artworkuploader_Upload>
+            </modules>
+        </translate>
+		
 	
     </frontend>
 	
@@ -61,10 +69,17 @@
             </upload>
         </helpers>
 		
+		
 		<blocks>
-			<upload>
+            <aptoplex_easyuploader>
+                <class>Aptoplex_EasyUploader_Block</class>
+            </aptoplex_easyuploader>
+		</blocks>	
+		
+		<blocks>
+			<artworkUploader_upload>
                 <class>ArtworkUploader_Upload_Block</class>
-            </upload>
+            </artworkUploader_upload>
 		</blocks>
 		
 		<models>
