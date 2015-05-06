@@ -12,7 +12,7 @@
 class ArtworkUploader_Upload_IndexController extends Mage_Core_Controller_Front_Action
 		{
  /*following method is act as a default action*/			
-  public function indexAction(){			
+  public function indexAction(){ 			
    
 			/*load layout*/
 			// $this->loadLayout();			
@@ -20,15 +20,18 @@ class ArtworkUploader_Upload_IndexController extends Mage_Core_Controller_Front_
 			 
 			$_layout = $this->loadLayout();
 			 
+		 
 			$block = $this->getLayout()->createBlock(
 			'Mage_Core_Block_Template',
 			'upload',
 			array('template' => 'upload/upload.phtml')
 			);
-			
-			$this->getLayout()->getBlock('head')->setTitle($this->__('Artwork Upload'));
+			 
+		 	$this->getLayout()->getBlock('head')->setTitle($this->__('Artwork Upload'));
 			
 			$this->getLayout()->getBlock('content')->append($block) ;
+		 	//Zend_debug::dump(Mage::app()->getLayout()->getUpdate());
+			
 			    
 			  $this->renderLayout();
 			 //  Zend_Debug::dump($this->getLayout()->getUpdate()->getHandles());
@@ -53,117 +56,60 @@ class ArtworkUploader_Upload_IndexController extends Mage_Core_Controller_Front_
 		
 	public function fetchOrderAction(){
 		
-		/*fetching Order detail from the user*/	
+		/*fetching Order detail from the user*/			
+		$_post_vars = $this->getRequest()->getParams();	
 		
-		$_post_vars = $this->getRequest()->getPost();		
-		
-		if(isset($_post_vars) && isset($_post_vars['form_key'])){
-			
-				$_order_id = $_post_vars['order_id'];		
-				$_order_type = $_post_vars['orderType'];			
+		if(isset($_post_vars) && isset($_post_vars['form_key'])){			
+				$_order_id = $_post_vars['ref_id'];	
 			}else{
-				$_order_id = $_REQUEST['order_id'];		
-				$_order_type = $_REQUEST['orderType'];	
-				
+				$_order_id = $_REQUEST['ref_id'];
 			}
-		
-		/*re-direct to the login URL*/
-		
-		if(!isset($_order_id) or $_order_id==''){
-			
+		/*re-direct to the login URL*/		
+		if(!isset($_order_id) or $_order_id==''){			
 			$_path =  "upload/index" ;
 			$this->_redirect($_path); 
 			
 		}else{
-		
-		
+				
 		/* load layout*/
-		$_layout = $this->loadLayout();
+		$_layout = $this->loadLayout();	
 		$_block = $this->getLayout()->createBlock(
 			'Mage_Core_Block_Template',
 			'uploadArtworkBlock',
 			array('template' => 'upload/order_upload.phtml')
 			);
-		$this->getLayout()->getBlock('content')->append($_block) ;
-		//
-		$_block_data = $this->getLayout()->getBlock('uploadArtworkBlock');	
-		
-		//Zend_debug::dump($_order_id);
-		
-		//echo $_order_id;
-		/*getting order detail*/
-		
-		if($_order_type=='order_id' || $_order_type=='order'){
-		
-		    $_orderObj = Mage::getModel('sales/order')->loadByIncrementId($_order_id);
-		}
-		if($_order_type=='invoice_id'){
-		
-		    $_orderObj = Mage::getModel('sales/order')->loadByIncrementId($_order_id);
-		}
-		
-		if($_order_type=='quote_id'){		
-		   
-		   	$_connection = Mage::getSingleton('core/resource')->getConnection('core_read');
-			$_sql = "SELECT `quotation_id`  from `quotation` WHERE  `increment_id`= '".$_order_id."'";
-			$_quote = $_connection->fetchRow($_sql); //fetchRow($sql), fetchOne($sql),...
 			
-			$_quote_id = $_quote['quotation_id'];
-				
-		 //  $_orderObj = Mage::getModel('sales/quote')->loadByIdWithoutStore($_quote_id); 
-		    $_orderObj = Mage::getModel('Quotation/Quotation')->load($_quote_id); 
-		  
-		 // $_items_in_quote = $_orderObj->getItems();
-		   
-		   	
-		}
-		
-		/*if that is a quote id*/
-		
-	 if($_order_type=='quote_id'){
-			
-		
-		$_items_obj = $_orderObj->getItems();
-		
-		$_block_data->assign('order',$_orderObj->getData());
-		$_block_data->assign('items',$_items_obj);
-		
-		
-		/*validating, if order id exists*/
-		 // print_r(count($_orderObj->getData()));
-		}else{
-		
-		if(count($_orderObj->getData())!=0 ){
-			
-			//showing the extracted data at the front panel
-			
-			$_items_in_order = Mage::getModel('sales/order')->loadByIncrementId($_order_id);			 
-			$_items_obj = $_items_in_order->getAllVisibleItems();
-			$_block_data->assign('order',$_orderObj->getData());
-			$_block_data->assign('items',$_items_obj);
-			
-			}else{
-				
-			 $_path = "upload/index" ;
-			$this->_redirect($_path);  
+		 $this->getLayout()->getBlock('content')->append($_block) ;		//
+		 $_block_data = $this->getLayout()->getBlock('uploadArtworkBlock');			
+		 // Zend_debug::dump($this->getLayout()->getBlock('content')->getData());		
+		 /*getting order detail*/
+		 $_orderObj = Mage::getModel('sales/order')->loadByIncrementId($_order_id);
+		 
+		// Zend_debug::dump($_orderObj);
+		 
+		 if($_orderObj){			 
+			 $_items_obj = $_orderObj->getAllVisibleItems();
+			 $_block_data->assign('order',$_orderObj->getData());
+			 $_block_data->assign('items',$_items_obj);
+			 
+		 }else{
+			 //  $_orderObj = Mage::getModel('sales/quote')->loadByIdWithoutStore($_quote_id); 
+		 	 $_orderObj = Mage::getModel('Quotation/Quotation')
+			 					->getCollection()
+								->addAttributeToFilder('increment_id',$_order_id); 
+			 $_items_obj = $_orderObj->getItems();		
+			 $_block_data->assign('order',$_orderObj->getData());
+			 $_block_data->assign('items',$_items_obj);
 			}
-	
-	   try {
-            if (empty($_order_id)) {
-            Mage::getSingleton('adminhtml/session')->addError("Invalid form data.");
-                Mage::throwException($this->__('Invalid form data.'));
-            		}
-	   					}catch(Exception $e){
-		  			 echo $e;
-		  		 }
-
+		 // $_items_in_quote = $_orderObj->getItems();		
 		}
-			/*showing block*/
-			
-			$this->renderLayout();
-		
-		}	
-		
+		if(!count($_orderObj)){
+			 $_path = "upload/index" ;
+		 	 $this->_redirect($_path);       
+		}
+	    /*showing block*/
+		$this->renderLayout();
+	
 	} ///end of isset data
 	
 	

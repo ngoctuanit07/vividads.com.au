@@ -11,6 +11,6 @@
 
 $installer = $this;
 
-$installer->startSetup();
+$installer->startSetup();  
 
-$installer->endSetup();
+$installer->endSetup(); 
