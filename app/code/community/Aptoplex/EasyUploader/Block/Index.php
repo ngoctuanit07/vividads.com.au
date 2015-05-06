@@ -1,6 +1,8 @@
 <?php
 
 class Aptoplex_EasyUploader_Block_Index extends Mage_Core_Block_Template {
+<<<<<<< HEAD
+=======
 	
 	///fetching the file type by its extension   
 	
@@ -60,5 +62,6 @@ class Aptoplex_EasyUploader_Block_Index extends Mage_Core_Block_Template {
 				
 				return $order_vars;
 		}	
+>>>>>>> 79414a1e0140bb7216fe5654e72ac385836dcede
 
 }
