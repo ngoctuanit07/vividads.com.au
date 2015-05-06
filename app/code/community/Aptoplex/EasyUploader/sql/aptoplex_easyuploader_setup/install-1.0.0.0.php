@@ -60,7 +60,7 @@ $table->setOption('type', 'InnoDB');
 $table->setOption('charset', 'utf8');
 
 if (!$installer->tableExists('aptoplex_easyuploader/upload')) {
-    $installer->getConnection()->createTable($table);
+    $installer->getConnection()->createTable($table);   
 }
 
 $installer->endSetup();

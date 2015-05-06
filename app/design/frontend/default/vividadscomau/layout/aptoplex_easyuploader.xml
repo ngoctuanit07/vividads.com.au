@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <aptoplex_easyuploader_index_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+<<<<<<< HEAD
+        </reference>
+=======
+        </reference>     
+>>>>>>> 79414a1e0140bb7216fe5654e72ac385836dcede
+
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/aptoplex_easyuploader/styles.css</name></action>
+            <action method="addItem"><type>skin_js</type><name>lib/aptoplex_easyuploader/jquery/jquery-1.11.0.min.js</name></action>
+            <!--<action method="addItem"><type>skin_js</type><name>js/aptoplex_easyuploader/jquery.easing.1.3.js</name></action>-->
+            <action method="addItem"><type>skin_js</type><name>js/aptoplex_easyuploader/jquery-noconflict.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>lib/aptoplex_easyuploader/plupload/js/plupload.full.min.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>lib/aptoplex_easyuploader/plupload/js/jquery.plupload.queue/jquery.plupload.queue.min.js</name></action>
+            <action method="addItem"><type>skin_css</type><name>lib/aptoplex_easyuploader/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css</name></action>
+        </reference>
+        <reference name="content">
+		
+            <block type="aptoplex_easyuploader/index" name="aptoplex_easyuploader.index" template="aptoplex_easyuploader/index.phtml"/>
+        </reference>
+		
+    </aptoplex_easyuploader_index_index>
+
+    <checkout_onepage_success translate="label">
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/aptoplex_easyuploader/styles.css</name></action>
+        </reference>
+
+        <reference name="content">
+            <remove name="checkout.success" /> <!-- Remove the default block -->
+            <block type="checkout/onepage_success" name="checkout.success.uploader.link" template="aptoplex_easyuploader/checkout/success.phtml" />
+        </reference>
+    </checkout_onepage_success>
+
+    <checkout_multishipping_success translate="label">
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/aptoplex_easyuploader/styles.css</name></action>
+        </reference>
+
+        <reference name="content">
+            <remove name="checkout_success" /> <!-- Remove the default block -->
+            <block type="checkout/multishipping_success" name="checkout.success.uploader.link" template="aptoplex_easyuploader/checkout/multishipping/success.phtml"/>
+        </reference>
+    </checkout_multishipping_success>
+<<<<<<< HEAD
+=======
+	
+	<upload_index_fetchOrder translate="label">
+	 <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/aptoplex_easyuploader/styles.css</name></action>
+            <action method="addItem"><type>skin_js</type><name>lib/aptoplex_easyuploader/jquery/jquery-1.11.0.min.js</name></action>
+            <!--<action method="addItem"><type>skin_js</type><name>js/aptoplex_easyuploader/jquery.easing.1.3.js</name></action>-->
+            <action method="addItem"><type>skin_js</type><name>js/aptoplex_easyuploader/jquery-noconflict.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>lib/aptoplex_easyuploader/plupload/js/plupload.full.min.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>lib/aptoplex_easyuploader/plupload/js/jquery.plupload.queue/jquery.plupload.queue.min.js</name></action>
+            <action method="addItem"><type>skin_css</type><name>lib/aptoplex_easyuploader/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css</name></action>
+        </reference>
+        
+	</upload_index_fetchOrder>
+	
+>>>>>>> 79414a1e0140bb7216fe5654e72ac385836dcede
+</layout>

@@ -2,8 +2,8 @@
 /**
 * @author Amasty Team
 * @copyright Copyright (c) 2008-2012 Amasty (http://www.amasty.com)
-* @package Amasty_Label
-*/ 
+* @package Amasty_Label  
+*/   
 class Amasty_Xlanding_Block_Adminhtml_Page_Edit_Tab_Condition extends Amasty_Xlanding_Block_Adminhtml_Widget_Edit_Tab_Dynamic
 {
  	public function __construct()

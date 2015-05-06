@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Magento
+ * Magento  
  *
  * NOTICE OF LICENSE    
  *
@@ -172,6 +172,7 @@ Default layout, loads most of the pages
 				<action method="addCss"><stylesheet>ajaxcontacts/css/styles.css</stylesheet></action>
 				<action method="addCss"><stylesheet>css/youama/slider/slider.css</stylesheet></action>
 				<action method="addCss"><stylesheet>ajaxcontacts/css/styles.css</stylesheet></action>
+				 <action method="addCss"><stylesheet>css/nav.css</stylesheet></action>
 		        <!--Featured Products Carousel-->   
 	<!--			<action method="addCss"><stylesheet>slider/css/style.css</stylesheet></action>
 				<action method="addItem"><type>skin_js</type><name>js/slider/js/jquery.easing.1.3.js</name></action>
@@ -193,6 +194,7 @@ Default layout, loads most of the pages
 				</block>
 				</reference>
         </reference>
+		 
     </page_two_columns_right>
     <page_three_columns translate="label">
         <label>All Three-Column Layout Pages</label>
