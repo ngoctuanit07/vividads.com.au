@@ -1,0 +1,26 @@
+<?php
+/**
+ * Template intro.phtml
+ *
+ * @author Aptoplex
+ * @copyright 2015 Aptoplex
+ *
+ * @var $this Aptoplex_EasyUploader_Block_Adminhtml_System_Config_Fieldset_Intro
+ */
+
+$helper = Mage::helper('aptoplex_easyuploader');
+
+?>
+<div class="box">
+    <div>
+        <h4><?php echo $this->helper('aptoplex_easyuploader')->__('Easy Uploader from Aptoplex is a module that allows your customers to quickly and efficiently upload their files to your store.'); ?></h4>
+        <p style="margin-bottom:4px;"><?php echo $this->helper('aptoplex_easyuploader')->__('For more information and to download the latest User Guide '); ?> <a href="<?php echo $this->escapeHtml($this->helper('aptoplex_easyuploader')->__('https://www.aptoplex.com/store/easy-uploader.html/')); ?>" target="_blank" rel="noreferrer"><?php echo $this->helper('aptoplex_easyuploader')->__('click here.'); ?></a></p>
+        <?php
+        if (Aptoplex_EasyUploader_Helper_Data::RUN_IN_DEMO_MODE) { ?>
+            <h4 style="color:red; margin-top:10px;">Easy Uploader is running in DEMO mode:</h4>
+            <p><strong>Note:</strong> In order to provide a consistent experience for all users of this demo store, any changes that you make to the settings below will <strong>NOT</strong> be saved. Please contact us to arrange to see an unrestricted demo.</p>
+        <?php
+        } ?>
+        <p><small>Module version: <?php echo Mage::getConfig()->getModuleConfig("Aptoplex_EasyUploader")->version; ?></small></p>
+    </div>
+</div>
