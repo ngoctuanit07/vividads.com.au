@@ -5,7 +5,7 @@
  <script src="<?php echo Mage::getBaseUrl('js').'upload/jquery.js';?>"></script> 
  <script src="<?php echo Mage::getBaseUrl('js').'upload/jquery.form.js';?>"></script> 
 
-<?php    
+<?php      
 
 /**
  * Magento
@@ -1310,6 +1310,9 @@ $(function(){
        <?php echo __('Total Items <span style="color:#f00;">( '.$_total_order_qty.' )</span>');?> 
       </div>
       <div class="orderGrid">
+         
+          
+         
          <ul id="productGrid">
       <?php
 			
@@ -1546,7 +1549,7 @@ $(function(){
             </div>      
                   <div class="clr"></div>
                   <!--upload files box start here-->
-                  <div class="uploadFilesPanel" style="width:1150px !important;">
+                  <div class="uploadFilesPanel" style="width:1150px !important; display:none;">
                      <div class="uploadFilesBox" style="width:780px !important;">
                      <!--thumbnailbox-->
     <ul class="uploaded_thumbnails files_thumbnails_<?php echo $_item_id;?>_<?php echo $counter;?>" id="uploadedFiles<?php echo $_item_id;?>_<?php echo $counter;?>"> 
@@ -1921,7 +1924,7 @@ $(function(){
 			
 			//$n_file_path = str_replace('\\','/',$file_path);
 			
-			/*finding file extension*/
+			/*finding file extension*/  
 			$_file_src = $target_path.'/print_ready_approved_files/'.$_proof_file['file'];
 			$_file = explode('.',$_proof_file['file']);
 			$_file_ext = $_file[count($_file)-1];
