@@ -1,11 +1,9 @@
 <?php
 
-class Aptoplex_EasyUploader_Block_Index extends Mage_Core_Block_Template {
-<<<<<<< HEAD
-=======
+class Aptoplex_EasyUploader_Block_Index extends Mage_Core_Block_Template { 
 	
 	///fetching the file type by its extension   
-	
+	  
 	
 	public function getFileType($filename=''){
 		
@@ -56,12 +54,11 @@ class Aptoplex_EasyUploader_Block_Index extends Mage_Core_Block_Template {
 					}else{
 						$email = $my_order->getCustomerEmail();		
 						}
-				 
+				   
 						
 				$order_vars = array('order'=>$my_order,'email'=>$email,'order_id'=>$order_id );
 				
 				return $order_vars;
 		}	
->>>>>>> 79414a1e0140bb7216fe5654e72ac385836dcede
 
 }
