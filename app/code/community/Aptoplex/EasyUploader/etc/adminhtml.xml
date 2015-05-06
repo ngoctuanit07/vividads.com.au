@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <aptoplex_easyuploader translate="title" module="aptoplex_easyuploader">
+            <title>Easy Uploader</title>
+            <sort_order>100</sort_order>
+            <depends>
+                <module>Aptoplex_EasyUploader</module>
+            </depends>
+            <children>
+                <upload translate="title" module="aptoplex_easyuploader">
+                    <title>Uploads</title>
+                    <action>adminhtml/easyuploader_upload</action>
+                    <sort_order>0</sort_order>
+                </upload>
+            </children>
+        </aptoplex_easyuploader>
+    </menu>
+
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <aptoplex_easyuploader translate="title" module="aptoplex_easyuploader">
+                        <title>Easy Uploader</title>
+                        <sort_order>0</sort_order>
+                        <children>
+                            <upload translate="title">
+                                <title>Uploads</title>
+                                <sort_order>0</sort_order>
+                                <children>
+                                    <delete translate="title">
+                                        <title>Delete</title>
+                                        <sort_order>0</sort_order>
+                                    </delete>
+                                    <download translate="title">
+                                        <title>Download</title>
+                                        <sort_order>1</sort_order>
+                                    </download>
+                                </children>
+                            </upload>
+                        </children>
+                    </aptoplex_easyuploader>
+
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <aptoplex_easyuploader translate="title" module="aptoplex_easyuploader">
+                                        <title><![CDATA[Aptoplex Easy Uploader: Easy Uploader]]></title>
+                                        <sort_order>-2</sort_order>
+                                    </aptoplex_easyuploader>
+
+                                    <aptoplex_help translate="title" module="aptoplex_easyuploader">
+                                        <title><![CDATA[Aptoplex Easy Uploader: Help and Support]]></title>
+                                        <sort_order>-1</sort_order>
+                                    </aptoplex_help>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
