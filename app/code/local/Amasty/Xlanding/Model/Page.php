@@ -1,10 +1,10 @@
 <?php
 
 class Amasty_Xlanding_Model_Page extends Mage_Core_Model_Abstract
-{
+{  
     /**
      * Page's Statuses
-     */
+     */  
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;
 
@@ -61,6 +61,7 @@ class Amasty_Xlanding_Model_Page extends Mage_Core_Model_Abstract
 	   if ($category) {
               $collection = $category->getProductCollection();
               $layer->prepareProductCollection($collection);
+			  
           }
    	}
 
@@ -69,7 +70,8 @@ class Amasty_Xlanding_Model_Page extends Mage_Core_Model_Abstract
        }
 
     	$collection->addStoreFilter();
-
+		 
+		
     	/*
     	 * Attributes
     	 */
