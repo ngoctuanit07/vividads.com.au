@@ -1460,7 +1460,48 @@ jQuery('.approve_dropdown').change(function(event){
 	  <?php echo __('Items Included in this order <span style="color:#f00;">( '.$_order->getTotal_item_count().' )</span>');?> 
       </div>
         
+         <?php /*   adding easy upload files */?>
+                  
+                  <div class="alreadyuploaded" style="margin-left:40px; margin-top:30px;">
+        <h1  style="color:#888; font-weight:bold; color:#930">Already Uplaoded Files</h1>       
+        <ul>
+		<?php 
+			
+			$uploaded_files = Mage::getModel('aptoplex_easyuploader/upload')
+											->getCollection()
+											->addFieldToFilter('order_id',$_order_number)
+											;				
+			//	Zend_debug::dump($this->getRequest());				
+				
+				if(count($uploaded_files) > 0){
+				foreach($uploaded_files as $file){	 	
+				   // var_dump($file->getData());
+				?>
+          			 <li style="float:left; padding-right:5px; padding-left:5px;">
+                      <a href="<?php echo Mage::getBaseUrl().'easyuploader/index/download/entity_id/'.$file->getEntity_id();?>" title="click to download this file <?php echo $file->getNew_filename();?>">
+                      <img src="<?php echo $this->getFileType($file->getNew_filename()); ?>" height="70" alt="<?php echo $file->getNew_filename();?>"   title="<?php echo $file->getNew_filename();?>" />
+                        <br/> 
+                        <b><span style="color:#063"><?php echo $file->getData('new_filename');?></span></b>
+                        <br/>Download File</a> 
+                     </li>  
+                     <?php 
+						} 
+						 
+					 ?>   
+           <?php  }else{ ?>
+           			<li style="float:left; padding-right:5px; padding-left:5px;"> No Artwork uploaded yet.</li>
+           <?php 
+		   }
+		   ?>
+           </ul>
+        
+        </div>
+                  
+                  <?php /*  end of easy upload files */?>
+        <div style="clear:both"></div>
+        
         <div class="orderGrid" style="width:97.2%;">
+         
          <ul id="productGrid">
         <?php
 			
@@ -1675,7 +1716,10 @@ jQuery('.approve_dropdown').change(function(event){
 	
 	      //End 13_03_2014
 	
-	 ?>
+	 		?>
+            
+           
+            
             <li class="listingRow" >
 			
 			<?php 
@@ -1732,7 +1776,7 @@ jQuery('.approve_dropdown').change(function(event){
 	       ?>
 	      </h1>
               <!--thumbnail listing box start here-->
-               <div class="thumbListing" style="background-color:#b3b3b3; height:160px; margin-top:5px; padding:5px;">
+               <!--<div class="thumbListing" style="background-color:#b3b3b3; height:160px; margin-top:5px; padding:5px;">
                   <div class="thumbListingInner" style="height:160px; background-color:#b3b3b3;">
                      <div class="smallThumb"> 
                      <a  href="<?php echo $this->getUrl($_product->getUrlPath());?>"  target="_blank" title="<?php echo 'Click to open detail of "'.$_item->getName().' "';?>" > 
@@ -1764,12 +1808,15 @@ jQuery('.approve_dropdown').change(function(event){
                      </div>
                      
                   </div>
-                  </div>
+                  </div>-->
                   
       <div class="clr"></div>                  
                   
+                  
+                  
+                  
                   <!--upload files box start here-->
-                  <div class="uploadFilesPanel">
+                  <div class="uploadFilesPanel" style="display:none;">
                      <div class="uploadFilesBox">
                      <!--thumbnailbox-->
     <ul class="uploaded_thumbnails ">                            
@@ -1835,7 +1882,7 @@ jQuery('.approve_dropdown').change(function(event){
            <img width="140" height="100" src="<?php echo $_file_src;?>" alt="<?php echo $_customer_file['file'];?>"/>     
                                </div>
                                <div class="file_info">
-                               <!--<div><b>File Name: </b> <?php echo $_customer_file['file'];?></div>-->
+                              <?php /*?> <div><b>File Name: </b> <?php echo $_customer_file['file'];?></div><?php */?>
                                <div><b>Size: </b><?php 
 							   $_fSize =  $_customer_file['file_size'];
 							   $_mb =1024*1024;
