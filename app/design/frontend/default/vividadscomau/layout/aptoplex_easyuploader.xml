@@ -3,7 +3,11 @@
     <aptoplex_easyuploader_index_index>
         <reference name="root">
             <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+<<<<<<< HEAD
+        </reference>
+=======
         </reference>     
+>>>>>>> 79414a1e0140bb7216fe5654e72ac385836dcede
 
         <reference name="head">
             <action method="addItem"><type>skin_css</type><name>css/aptoplex_easyuploader/styles.css</name></action>
@@ -42,6 +46,8 @@
             <block type="checkout/multishipping_success" name="checkout.success.uploader.link" template="aptoplex_easyuploader/checkout/multishipping/success.phtml"/>
         </reference>
     </checkout_multishipping_success>
+<<<<<<< HEAD
+=======
 	
 	<upload_index_fetchOrder translate="label">
 	 <reference name="head">
@@ -56,4 +62,5 @@
         
 	</upload_index_fetchOrder>
 	
+>>>>>>> 79414a1e0140bb7216fe5654e72ac385836dcede
 </layout>
