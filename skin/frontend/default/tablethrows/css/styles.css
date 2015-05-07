@@ -928,7 +928,7 @@ p.required {
 	float: left;
 	width: 19px;
 	height: 19px;
-	background: url(../images/grid.png) no-repeat left top;
+	/*background: url(../images/grid.png) no-repeat left top;*/
 }
 .sorter .view-mode a.grid {
 	background-position: 0 bottom;
@@ -941,11 +941,11 @@ p.required {
 	float: left;
 	width: 19px;
 	height: 19px;
-	background: url(../images/list.png) no-repeat left bottom;
+/*	background: url(../images/list.png) no-repeat left bottom;*/
 	margin-left: 12px;
 }
 .sorter a.list {
-	background: url(../images/list.png) no-repeat left top;
+/*	background: url(../images/list.png) no-repeat left top;*/
 }
 .sorter a.list:hover {
 	background-position: 0 bottom;
@@ -6079,7 +6079,7 @@ ul.content li {
 .product-tabs {
 	margin-bottom: 12px;
 /*	border-bottom: 1px solid #666;
-*/	background: #fff url(../images/bkg_tabs.gif) 0 100% repeat-x;
+*/	background: #fff /*url(../images/bkg_tabs.gif) 0 100% repeat-x*/;
 	height: 25px;
 }
 .product-tabs li {
