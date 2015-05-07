@@ -1478,7 +1478,7 @@ jQuery('.approve_dropdown').change(function(event){
 				   // var_dump($file->getData());
 				?>
           			 <li style="float:left; padding-right:5px; padding-left:5px;">
-                      <a href="<?php echo Mage::getBaseUrl().'easyuploader/index/download/entity_id/'.$file->getEntity_id();?>" title="click to download this file <?php echo $file->getNew_filename();?>">
+                      <a href="<?php echo Mage::getBaseUrl().'zulfe/easyuploader/download/entity_id/'.$file->getEntity_id();?>" title="click to download this file <?php echo $file->getNew_filename();?>">
                       <img src="<?php echo $this->getFileType($file->getNew_filename()); ?>" height="70" alt="<?php echo $file->getNew_filename();?>"   title="<?php echo $file->getNew_filename();?>" />
                         <br/> 
                         <b><span style="color:#063"><?php echo $file->getData('new_filename');?></span></b>
