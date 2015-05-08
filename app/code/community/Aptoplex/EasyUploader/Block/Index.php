@@ -4,7 +4,7 @@ class Aptoplex_EasyUploader_Block_Index extends Mage_Core_Block_Template {
 	
 	///fetching the file type by its extension   
 	  
-	
+	 
 	public function getFileType($filename=''){
 		
 		/*finding file extension*/			
