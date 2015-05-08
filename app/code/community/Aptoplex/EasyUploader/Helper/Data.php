@@ -13,19 +13,19 @@ class Aptoplex_EasyUploader_Helper_Data extends Mage_Core_Helper_Data {
      *
      * @var array
      */
-    protected $_allowedFileExtensions                           = array('pdf', 'eps', 'tif', 'tiff', 'psd', 'ai');
+    protected $_allowedFileExtensions  = array('pdf', 'eps', 'tif', 'tiff', 'psd', 'ai');
 
     /**
      * Default file upload path if node not found in admin config
      *
      * @var string
      */
-    const DEFAULT_UPLOAD_PATH                                   = 'aptoplex_easyuploader/uploads/customer';
+    const DEFAULT_UPLOAD_PATH  = 'aptoplex_easyuploader/uploads/customer';
 
     /**
      * Whether the module should run in demo mode (config options on the backend will not be saved etc).
      */
-    const RUN_IN_DEMO_MODE                                      = false;
+    const RUN_IN_DEMO_MODE  = false;
 
     /**
      * Careful with this one...
@@ -37,7 +37,7 @@ class Aptoplex_EasyUploader_Helper_Data extends Mage_Core_Helper_Data {
      *
      * @var bool
      */
-    const FLUSH_UPLOADS_IN_DEMO_MODE                            = false;
+    const FLUSH_UPLOADS_IN_DEMO_MODE  = false;
 
     /**
      * Utility helper class
@@ -56,42 +56,42 @@ class Aptoplex_EasyUploader_Helper_Data extends Mage_Core_Helper_Data {
      *
      * @var integer
      */
-    const OK                                                    = 0;
+    const OK   = 0;
 
     /**
      * Order not found
      *
      * @var integer
      */
-    const ORDER_NOT_FOUND                                       = 10;
+    const ORDER_NOT_FOUND   = 10;
 
     /**
      * File not saved
      *
      * @var integer
      */
-    const FILE_SAVE_FAILED                                      = 20;
+    const FILE_SAVE_FAILED  = 20;
 
     /**
      * File integrity check failed
      *
      * @var integer
      */
-    const FILE_INTEGRITY_CHECK_FAILED                           = 30;
+    const FILE_INTEGRITY_CHECK_FAILED  = 30;
 
     /**
      * Upload not permitted
      *
      * @var integer
      */
-    const UPLOAD_NOT_PERMITTED                                  = 40;
+    const UPLOAD_NOT_PERMITTED   = 40;
 
     /**
      * Unknown error
      *
      * @var integer
      */
-    const UNKNOWN_ERROR                                         = 100;
+    const UNKNOWN_ERROR  = 100;
 
 
     /*******************
@@ -570,9 +570,11 @@ class Aptoplex_EasyUploader_Helper_Data extends Mage_Core_Helper_Data {
                 'ip_address' => Mage::helper('core/http')->getRemoteAddr(),
                 'uploaded_at' => Mage::app()->getLocale()->storeTimeStamp()
             );
-            $this->commitToDatabase($dbData);
-
-            return true;
+            $this->commitToDatabase($dbData);			
+			$addmessages = Mage::getModel('aptoplex_easyuploader/upload')->addMessages($dbData);
+			// $addtosystem = Mage::getModel('aptoplex_easyuploader/upload')->addFiletoSystem($dbData);			 		
+            			
+			return true;  
         }
         catch (Exception $e) {
             Mage::log('Exception:' . $e);

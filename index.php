@@ -137,8 +137,8 @@ $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 's
 	
 	case 'vividads.com.sg':
     case 'www.vividads.com.sg':
-        $mageRunCode = 'vividads_com_au';
-        $mageRunType = 'website';
+        $mageRunCode = 'vividads_com_au'; 
+        $mageRunType = 'website'; 
     break;
 	 
 	 
