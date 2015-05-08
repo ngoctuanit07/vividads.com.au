@@ -7,7 +7,7 @@
  */
 class Aptoplex_EasyUploader_Adminhtml_Easyuploader_UploadController extends Mage_Adminhtml_Controller_Action {
 
-    protected $_helper;
+    protected $_helper;  
 
     /**
      * Internal constructor

@@ -5,7 +5,7 @@ class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
     /**
      * Check if quote belong to current customer
      * @param <type> $quoteId
-     * @return <type>    
+     * @return <type>      
      */
     protected function checkQuoteOwner($quote) {
         $customerId = Mage::Helper('customer')->getCustomer()->getId();
