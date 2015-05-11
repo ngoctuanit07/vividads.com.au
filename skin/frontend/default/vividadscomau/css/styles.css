@@ -7,9 +7,9 @@ html, button, input, select, textarea{font-family:sans-serif}
 body{margin:0;background:url(../images/bgs.jpg) repeat scroll center top #fff!important}
 a:focus{outline:thin dotted}
 a:hover, a:active{outline:0}
-abbr[title]{border-bottom:1px dotted}  
+abbr[title]{border-bottom:1px dotted}
 b, strong{font-weight:700}
-blockquote{margin:1em 40px}
+blockquote{margin:1em 40px} 
 dfn{font-style:italic}
 mark{background:#ff0;color:#000}
 p, pre{margin:1em 0}
@@ -184,7 +184,7 @@ ul, ol, dl, dt, dd{list-style:none;margin:0;padding:0}
 #order_process .step8 a{left:58.3%;top:78px}
 #order_process .step_number{display:block;color:#ee7f15;text-transform:uppercase;font-family:"Raleway", sans-serif;font-size:28px}
 #order_process .step_title{color:#ee7f15;display:block;font-family:"Arial";font-size:22px;margin:0 0 16px;padding:18px 0;background:url(../images/dots.png) no-repeat center bottom;font-weight:400}
-#order_process .step_text{color:#212121;font-size:12px;line-height:24px;min-height:80px;display:block;font-family:'Arial'}
+#order_process .step_text{color:#212121;font-size:12px;line-height:24px;min-height:80px;display:block; font-family:"Raleway", sans-serif; }
 .related_prod{float:left;margin:0;padding:0;width:100%}
 .related_prod .related-heading{float:left;margin:0;padding:0;width:100%}
 .products-grid .product-image{border:3px solid #d8d8d8;box-sizing:border-box;display:block;height:256px;margin:0 auto;padding:0;text-align:center;width:274px}
@@ -224,7 +224,6 @@ ul, ol, dl, dt, dd{list-style:none;margin:0;padding:0}
 .checkout-cart-index .col2-left-layout .col-main{float:right;width:960px;padding:0;background:#fff}
 .catalog-category-view .col2-left-layout .products-grid{background:none repeat scroll 0 0 #fff;float:left;margin-left:10px;margin-top:10px;width:920px}
 .catalog-category-view .error-msg, .success-msg, .note-msg, .notice-msg{border-style:solid!important;border-width:1px!important;line-height:1.63636;margin-bottom:18px;margin-left:0;margin-top:10px;padding:8px 10px;width:97%}
-.category-marketing-pull-up-roll-up-banner-stands .col-main{float:right;width:940px;background:url(../images/index_288.jpg) repeat-x center -5px #ef781e}
 .gallery-index-index .col-main{float:right;width:940px;background:#ef781e}
 .gallery-view-album .col-main{float:right;width:940px;background:#ef781e}
 .gallery-p-index .col-main{float:right;width:940px;background:#ef781e}
@@ -263,7 +262,7 @@ textarea{width:96%;height:108px;background:#F7F7F7;border:none;padding:9px 10px;
 .form-list li .input-range span.separator{float:left}
 .form-list li .input-box input.range{overflow:hidden}
 .form-list li.control label{margin:0 10px}
-.form-list li label{font-family:Arial;font-size:12px;line-height:30px}
+.form-list li label{font-family:"Raleway", sans-serif; font-size:12px;line-height:30px}
 #checkoutSteps .form-list li label{margin-bottom:10px;display:inline-block;line-height:normal;float:none}
 .checkout-onepage-index #checkoutSteps .form-list li label{margin-bottom:10px;line-height:normal;float:none;display:block}
 .checkout-onepage-index #checkoutSteps .form-list li.wide .input-box input.input-text{background:none repeat scroll 0 0 #fff;border:1px solid #ccc;border-radius:0;margin-bottom:10px;padding:4px 9px;width:350px}
@@ -842,7 +841,7 @@ ul.product-tabs{border-bottom:1px solid #DDD;display:block;margin:0 0 18px;paddi
 .product-view .box-tags .form-add button.button{clear:both}
 .product-view .box-tags .note{margin:2px 0 0;font-size:10px}
 .review-title h2{display:none}
-.catalog-product-view .box-reviews{padding:10px;background-color:#fff;float:left;width:900px;margin-left:10px;margin-bottom:10px;margin-top:-30px!important}
+.catalog-product-view .box-reviews{padding:10px;background-color:#fff;float:left;width:910px;margin-left:10px;margin-bottom:10px;margin-top:-30px!important}
 .catalog-product-view .box-reviews h2{font-size:1.16em;font-weight:400;line-height:1.44em;color:#222;margin-bottom:1em;text-transform:uppercase}
 .catalog-product-view .rating-title h2{float:left;margin:0 20px 1em}
 .catalog-product-view .box-reviews .box{border:none;padding:0}
@@ -967,7 +966,7 @@ body.catalog-product-view .box-reviews .review{width:70%}
 .catalog-product-view .box-reviews h2{color:#222;font-size:1.16em;font-weight:400;line-height:1.44em;margin-bottom:1em;text-transform:uppercase}
 .ratings-table{float:left;margin:.5em 1.5em 1.5em 0;width:15%}
 .product-view .short-description ul, .product-view .short-description ol, .product-view .box-collateral ul, .product-view .box-collateral ol{list-style:outside none none;padding:2em 0 .75em}
-.catalog-product-view .lpc{float:right;width:920px;margin-top:35px}
+.catalog-product-view .lpc{float:right;width:900px;margin-top:35px}
 .catalog-product-view .box-reviews .box{border:medium none;padding:0}
 .catalog-product-view .box-reviews .full-review i{line-height:8px;font-size:7px}
 .catalog-product-view .box-reviews .full-review i.fa-sort-asc{line-height:13px}
@@ -1140,6 +1139,106 @@ ul.crosssell-products-list{margin:10px auto}
 .info-set .data-table .product-name a{font-weight:700!important}
 .info-set .data-table .item-options{margin:5px 0 0}
 .checkout-onepage-success .col2-left-layout .col-main{background:#fff;border:10px solid #ef781e;float:right;padding:10px;width:920px}
+.aptoplex-easyuploader-index-index .col2-left-layout .col-main{background:#fff;border:10px solid #ef781e;float:right;padding:10px;width:920px}
+.upload-index-index .col2-left-layout .col-main {
+    background: none repeat scroll 0 0 #fff;
+    border: 10px solid #ef781e;
+    float: right;
+    padding: 10px;
+	width: 920px;
+	
+}
+.upload-index-index .col2-left-layout .Bread-Crumbs {
+	display:none;
+	
+}
+
+.aptoplex-easyuploader-index-index .Bread-Crumbs {
+    background: none repeat scroll 0 0 #f9f9f9;
+    border-bottom: 1px solid #f6d6be; 
+  /*  float: left;*/
+    margin: 0;
+    width: 920px; 
+}
+.aptoplex-easyuploader-index-index #intro h3{
+    margin-bottom: 20px; color:#333; 
+}
+.aptoplex-easyuploader-index-index .alreadyuploaded h2{
+    margin-bottom: 20px; color:#333; font-size:16px;
+}
+
+.aptoplex-easyuploader-index-index .col2-set .col-1 {
+
+    padding: 0;
+    width: 100%;
+}
+.aptoplex-easyuploader-index-index .col2-set .col-2{
+    width: 100%;
+
+    padding: 0;
+}
+.aptoplex-easyuploader-index-index .form-list {
+    width: 99%;
+    margin: 0 0 0 -5px;
+	float:left;
+}
+.aptoplex-easyuploader-index-index .col1-layout .content #terms-and-conditions .form-list{
+	width: 99%;
+    margin: 0 0 0 0px;
+	float:left;
+}
+.aptoplex-easyuploader-index-index .input-box input.input-text {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #ccc;
+    border-radius: none ;
+    margin-bottom: 10px;
+    padding: 4px 9px;
+    width: 100%;
+	height:30px;
+	line-height:30px;
+}
+.plupload_filelist li {
+    background: url("../img/backgrounds.gif") repeat-x scroll 0 -156px #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 8px;
+    width: 98%;
+}
+.aptoplex-easyuploader-index-index #file-chooser {
+    border-color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 5px;
+    padding: 0px;
+	width:100%;
+}
+.aptoplex-easyuploader-index-index .uploader-field-desc {
+    color: #333;
+    font-size: 11px !important;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+.aptoplex-easyuploader-index-index .uploader-field-desc a{
+    color: #ec761c;
+    font-size: 12px !important;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+.aptoplex-easyuploader-index-index .plupload_container {
+    padding: 0px;
+}
+.aptoplex-easyuploader-index-index .form-list label {
+    color: #333;
+    font-size: 12px;
+    font-weight: 700;
+    position: relative;
+    text-align: left;
+    width: 350px;
+    z-index: 0;
+	float:left; display:inline-block;
+}
+.aptoplex-easyuploader-index-index #uploader {margin-top: 10px; float:left;
+}
+.aptoplex-easyuploader-index-index #uploader .page-title h1 {color:#333; float:left;   font-size: 20px; font-weight: 400;}
 .checkout-onepage-success .col2-left-layout .col-main .page-title h1{color:#333;margin:0}
 .checkout-cart-index .col1-layout .col-main{background:none repeat scroll 0 0 #fff;border:10px solid #ef781e;float:none;width:1180px;background:none repeat scroll 0 0 #fff;border:10px solid #ef781e;float:none;width:1160px;padding:10px}
 .checkout-cart-index .col1-layout .col-main .page-title h1{color:#2f2f2f}
@@ -1226,8 +1325,6 @@ ul.crosssell-products-list{margin:10px auto}
 .multiple-checkout .place-order .grand-total div{float:left}
 #multiship-addresses-table td{padding:10px}
 #multiship-addresses-table tfoot td{padding:5px 10px}
-
-
 .multiple-checkout .gift-messages-form .item .details .form-list{width:100%;overflow:hidden}
 .multiple-checkout .gift-messages-form .item .details .form-list li{margin-right:-15px}
 .multiple-checkout .gift-messages-form .item .details .form-list .field{width:230px}
@@ -1285,96 +1382,6 @@ ul.crosssell-products-list{margin:10px auto}
 .addresses-list .separator{margin:0 3px}
 .addresses-list li.item{padding:0 10px;margin:0 0 12px}
 .addresses-list li.empty p{font-weight:700}
-
-.aptoplex-easyuploader-index-index .col2-left-layout .col-main{background:#fff;border:10px solid #ef781e;float:right;padding:10px;width:920px}
-.aptoplex-easyuploader-index-index .Bread-Crumbs {
-    background: none repeat scroll 0 0 #f9f9f9;
-    border-bottom: 1px solid #f6d6be;
-  /*  float: left;*/
-    margin: 0;
-    width: 920px;
-}
-.aptoplex-easyuploader-index-index #intro h3{
-    margin-bottom: 20px; color:#333; 
-}
-.aptoplex-easyuploader-index-index .alreadyuploaded h2{
-    margin-bottom: 20px; color:#333; font-size:16px;
-}
-
-.aptoplex-easyuploader-index-index .col2-set .col-1 {
-
-    padding: 0;
-    width: 100%;
-}
-.aptoplex-easyuploader-index-index .col2-set .col-2{
-    width: 100%;
-
-    padding: 0;
-}
-.aptoplex-easyuploader-index-index .form-list {
-    width: 99%;
-    margin: 0 0 0 -5px;
-	float:left;
-}
-.aptoplex-easyuploader-index-index .col1-layout .content #terms-and-conditions .form-list{
-	width: 99%;
-    margin: 0 0 0 0px;
-	float:left;
-}
-.aptoplex-easyuploader-index-index .input-box input.input-text {
-    background: none repeat scroll 0 0 #fff;
-    border: 1px solid #ccc;
-    border-radius: none ;
-    margin-bottom: 10px;
-    padding: 4px 9px;
-    width: 100%;
-	height:30px;
-	line-height:30px;
-}
-.plupload_filelist li {
-    background: url("../img/backgrounds.gif") repeat-x scroll 0 -156px #f5f5f5;
-    border-bottom: 1px solid #ddd;
-    padding: 10px 8px;
-    width: 98%;
-}
-.aptoplex-easyuploader-index-index #file-chooser {
-    border-color: #fff;
-    border-style: solid;
-    border-width: 1px;
-    margin-bottom: 5px;
-    padding: 0px;
-	width:100%;
-}
-.aptoplex-easyuploader-index-index .uploader-field-desc {
-    color: #333;
-    font-size: 11px !important;
-    font-weight: normal;
-    margin-bottom: 10px;
-}
-.aptoplex-easyuploader-index-index .uploader-field-desc a{
-    color: #ec761c;
-    font-size: 12px !important;
-    font-weight: bold;
-    margin-bottom: 0px;
-}
-.aptoplex-easyuploader-index-index .plupload_container {
-    padding: 0px;
-}
-.aptoplex-easyuploader-index-index .form-list label {
-    color: #333;
-    font-size: 12px;
-    font-weight: 700;
-    position: relative;
-    text-align: left;
-    width: 350px;
-    z-index: 0;
-	float:left; display:inline-block;
-}
-.aptoplex-easyuploader-index-index #uploader {margin-top: 10px; float:left;
-}
-.aptoplex-easyuploader-index-index #uploader .page-title h1 {color:#333; float:left;   font-size: 20px; font-weight: 400;}
-
-
 .order-info ul{float:left}
 .order-info li{float:left}
 .order-info li.first{border-left:0}
@@ -1831,7 +1838,7 @@ th, td{color:#2f2f2f!important;border-color:#ccc!important}
 .catalog-category-view .pro_left h2{color:#ff0;float:left;font-size:15px!important;font-weight:700;font-family:"Raleway", sans-serif}
 .catalog-category-view .pro_left{float:left;padding-left:10px;width:98%;font-family:"Raleway", sans-serif}
 .catalog-category-view .p_detail{float:left;padding:0;text-align:left;width:650px}
-.catalog-category-view.pro_left h4, h3{color:#fff;margin:0!important;font-family:Arial;font-size:13px}
+.catalog-category-view.pro_left h4, h3{color:#fff;margin:0!important;font-size:13px}
 .mylinks{background:none repeat scroll 0 0 #ef781e;clear:both;display:inline-block;float:left;list-style-type:none;padding:0 10px;text-align:center;width:920px;font-family:"Raleway", sans-serif;font-size:12px}
 .mylinks p{text-align:center;color:#fff;font-family:"Raleway", sans-serif;font-size:12px}
 .product_listing{float:left;padding:15px 0;width:940px}
@@ -2343,7 +2350,7 @@ product-fabric-banner-stand-curve-top-frame-kit .pro_right img{margin-top:-167px
 .sales-order-invoice .col2-left-layout .col-main{background:none repeat scroll 0 0 #fff;float:right;margin-left:10px;width:950px}
 .sales-order-view .col2-left-layout .col-main{background:none repeat scroll 0 0 #fff;float:right;margin-left:10px;width:950px}
 .banner .auto-style25{padding:0 20px}
-.catalog-product-view .col2-left-layout .col-main{float:right;background:none;width:950px}
+.catalog-product-view .col2-left-layout .col-main{float:right; width:950px}
 .externalform-index-thankyou .col2-left-layout .col-main{background:#ef781e;float:right;padding:0;width:940px}
 .externalform-index-thankyou h1{color:#000;font-family:Arial;font-size:18px;padding-top:10px;padding-left:10px}
 .image-sketch img{width:400px!important}
@@ -2507,10 +2514,7 @@ product-fabric-banner-stand-curve-top-frame-kit .pro_right img{margin-top:-167px
 .catalog-seo-sitemap-category .col-main .page-sitemap .page-title h1{color:#2f2f2f;font-family:"Raleway", sans-serif;font-size:26px;font-weight:400;letter-spacing:1px}
 .catalog-seo-sitemap-category .col-main .pager{background:url(../images/bkg_pager.gif) repeat-x scroll 0 0 #f5f5f5;border:1px solid #ddd;color:#333;float:left;font-size:11px;padding:3px 10px;position:relative;width:96%}
 .quote_items_qty{background-color:#fd0402;border:2px solid red;color:#fff;font-size:20px;font-weight:700;height:50px;line-height:50px;padding-right:10px;position:relative;text-align:right;top:-55px;border-radius:5px;width:68px}
-.catalog-seo-sitemap-category #clients_banner{display:none!important}
-.cms-our-clients #phone_left, #clients_banner{display:block!important}
 .quantity_box{width:200px;margin:10px 0 0;padding:0}
-
 .quantity_box span{font-size:13px;color:#333}
 .quantity_box input{border:1px solid #ccc;color:#000;width:50px;margin:0;text-align:center}
 .map_links{font-size:14px;color:#333!important;transition:width 2s linear 0;margin:0 0 0 20px;display:inline-block;width:100%}
