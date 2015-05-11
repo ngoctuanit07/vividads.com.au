@@ -1285,6 +1285,18 @@ ul.crosssell-products-list{margin:10px auto}
 .addresses-list .separator{margin:0 3px}
 .addresses-list li.item{padding:0 10px;margin:0 0 12px}
 .addresses-list li.empty p{font-weight:700}
+.upload-index-index .col2-left-layout .col-main {
+    background: none repeat scroll 0 0 #fff;
+    border: 10px solid #ef781e;
+    float: right;
+    padding: 10px;
+	width: 920px;
+	
+}
+.upload-index-index .col2-left-layout .Bread-Crumbs {
+	display:none;
+	
+}
 
 .aptoplex-easyuploader-index-index .col2-left-layout .col-main{background:#fff;border:10px solid #ef781e;float:right;padding:10px;width:920px}
 .aptoplex-easyuploader-index-index .Bread-Crumbs {
@@ -2343,7 +2355,7 @@ product-fabric-banner-stand-curve-top-frame-kit .pro_right img{margin-top:-167px
 .sales-order-invoice .col2-left-layout .col-main{background:none repeat scroll 0 0 #fff;float:right;margin-left:10px;width:950px}
 .sales-order-view .col2-left-layout .col-main{background:none repeat scroll 0 0 #fff;float:right;margin-left:10px;width:950px}
 .banner .auto-style25{padding:0 20px}
-.catalog-product-view .col2-left-layout .col-main{float:right;background:none;width:950px}
+.catalog-product-view .col2-left-layout .col-main{float:right; width:950px; background:none !important;}
 .externalform-index-thankyou .col2-left-layout .col-main{background:#ef781e;float:right;padding:0;width:940px}
 .externalform-index-thankyou h1{color:#000;font-family:Arial;font-size:18px;padding-top:10px;padding-left:10px}
 .image-sketch img{width:400px!important}
