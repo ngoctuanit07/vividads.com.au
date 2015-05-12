@@ -136,12 +136,11 @@ New customer registration
     <customer_account_forgotpassword translate="label">
         <label>Customer Forgot Password Form</label>
         <remove name="right"/>
-        <remove name="left"/>
         <reference name="head">
             <action method="setTitle" translate="title" module="customer"><title>Forgot Your Password</title></action>
         </reference>
         <reference name="root">
-            <action method="setTemplate"><template>page/1column.phtml</template></action>
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
             <action method="setHeaderTitle" translate="title" module="customer"><title>Password forgotten</title></action>
         </reference>
         <reference name="content">
@@ -152,7 +151,6 @@ New customer registration
     <customer_account_resetpassword translate="label">
         <label>Reset a Password</label>
         <remove name="right"/>
-        <remove name="left"/>
         <reference name="head">
             <action method="setTitle" translate="title" module="customer">
                 <title>Reset a Password</title>
@@ -160,7 +158,7 @@ New customer registration
         </reference>
         <reference name="root">
             <action method="setTemplate">
-                <template>page/1column.phtml</template>
+                <template>page/2columns-left.phtml</template>
             </action>
             <action method="setHeaderTitle" translate="title" module="customer">
                 <title>Reset a Password</title>
@@ -172,9 +170,8 @@ New customer registration
     </customer_account_resetpassword>
     <customer_account_confirmation>
         <remove name="right"/>
-        <remove name="left"/>
         <reference name="root">
-            <action method="setTemplate"><template>page/1column.phtml</template></action>
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
             <action method="setHeaderTitle" translate="title" module="customer"><title>Send confirmation link</title></action>
         </reference>
         <reference name="content">

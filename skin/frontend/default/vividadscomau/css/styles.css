@@ -1168,7 +1168,21 @@ ul.crosssell-products-list{margin:10px auto}
 .opc .step-title{padding:9px 8px;text-align:right;border-bottom:1px solid #ccc}
 .opc .step-title .number{background-color:#5bbf21;color:#fff;display:block;height:26px;left:10px;line-height:26px;margin-top:-13px;position:absolute;text-align:center;top:50%;width:26px}
 .opc .step-title h2{color:#999;float:left;font-family:"Raleway", sans-serif;font-size:24px;letter-spacing:.1em;line-height:1.5;margin:0;text-transform:uppercase;margin-left:50px}
-.checkout-onepage-index .buttons-set{float:left;margin-left:0;padding:9px 0}
+.checkout-onepage-index .buttons-set{float:right;margin-left:0;padding:9px 0; width:938px;}
+.checkout-onepage-index .buttons-set .button {
+    background: -moz-linear-gradient(center top , #4f4f4f 5%, #4f4f4f 100%) repeat scroll 0 0 #4f4f4f;
+    border: medium none;
+    border-radius: 3px;
+    color: #fff;
+    display: inline-block;
+    font-family: arial;
+    font-size: 18px;
+    font-weight: 700;
+	height:35px;
+	float:right;
+    text-decoration: none;
+    text-transform: lowercase;
+}{float:right;margin-left:0;padding:9px 0; width:938px;}
 #checkout-payment-method-load .input-box input.input-text{background:none repeat scroll 0 0 #fff;border:2px solid #bdc3c7;border-radius:0;height:42px;margin-bottom:10px;padding:4px 9px;width:800px}
 #opc-review .step{padding:0;width:100%}
 .checkout-onepage-index .data-table tbody th, .data-table tbody td{border-bottom:1px solid #d9dde3;border-left:1px solid #d9dde3;border-right:1px solid #d9dde3;font-family:Arial, serif, sans-serif;font-size:12px}
@@ -1296,6 +1310,84 @@ ul.crosssell-products-list{margin:10px auto}
 .upload-index-index .col2-left-layout .Bread-Crumbs {
 	display:none;
 	
+}
+.customer-account-forgotpassword .col2-left-layout .col-main {
+    background: none repeat scroll 0 0 #fff;
+    border: 10px solid #ef781e;
+    float: right;
+    padding: 10px;
+	width: 920px;
+	
+}
+.customer-account-resetpassword .col2-left-layout .col-main {
+    background: none repeat scroll 0 0 #fff;
+    border: 10px solid #ef781e;
+    float: right;
+    padding: 10px;
+	width: 920px;
+	
+}
+.customer-account-resetpassword .col2-left-layout .col-main .page-title h1 {
+   color: #606060;
+    font-family: "Raleway",sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+	
+}
+.customer-account-resetpassword .col2-left-layout .Bread-Crumbs {
+	display:none;
+	
+}
+.customer-account-resetpassword .col2-left-layout .page-title, .legend {
+    color: #222;
+    float: left;
+    margin: 0 !important;
+    padding:0px !important;
+    width: 95%;
+}
+.customer-account-resetpassword .col2-left-layout .fieldset {
+    float: left;
+    margin: 0px;
+    padding:0;
+    width: 96%;
+}
+.customer-account-resetpassword .col2-left-layout .fieldset p{
+    float: left;
+    margin: 0px 0px 20px 0px;
+    padding:0;
+    width: 96%;
+}
+.customer-account-forgotpassword .col2-left-layout .col-main .page-title h1 {
+   color: #606060;
+    font-family: "Raleway",sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+	
+}
+.customer-account-forgotpassword .col2-left-layout .Bread-Crumbs {
+	display:none;
+	
+}
+.customer-account-forgotpassword .col2-left-layout .page-title, .legend {
+    color: #222;
+    float: left;
+    margin: 0 !important;
+    padding:0px !important;
+    width: 95%;
+}
+.customer-account-forgotpassword .col2-left-layout .fieldset {
+    float: left;
+    margin: 0px;
+    padding:0;
+    width: 96%;
+}
+.customer-account-forgotpassword .col2-left-layout .fieldset p{
+    float: left;
+    margin: 0px 0px 20px 0px;
+    padding:0;
+    width: 96%;
 }
 .aptoplex-easyuploader-index-index .col2-left-layout .col-main{background:#fff;border:10px solid #ef781e;float:right;padding:10px;width:920px}
 .aptoplex-easyuploader-index-index .Bread-Crumbs {
@@ -2688,7 +2780,7 @@ product-fabric-banner-stand-curve-top-frame-kit .pro_right img{margin-top:-167px
 .footer .submit{background:none repeat scroll 0 0 transparent;border:1px solid #5bbf21;color:#222;display:inline-block;font-family:"Raleway-Medium", "Helvetica Neue", Verdana, Arial, sans-serif;font-size:14px;font-weight:400;line-height:17px;padding:7px 26px;text-align:center;text-transform:uppercase;vertical-align:middle;white-space:nowrap}
 .footer .block-subscribe .actions .submit{color:#000;font-size:15px;line-height:17px}
 .footer .block-subscribe .actions .submit{color:#000;font-size:15px;line-height:17px}
-.submit, .cart-table .product-cart-actions .submit, #co-shipping-method-form .buttons-set .button, .footer .submit{color:#fff;font-family:Arial;font-size:12px;font-weight:700;line-height:17px;text-align:center;white-space:nowrap}
+.submit, .cart-table .product-cart-actions .submit, #co-shipping-method-form .buttons-set .button, .footer .submit{color:#fff;font-family:Arial;font-size:18px;font-weight:700;line-height:17px;text-align:center;white-space:nowrap}
 .footer, .footer button{font-family:"Raleway-Medium", "Helvetica Neue", Verdana, Arial, sans-serif}
 .footer .block-subscribe .actions .submit:hover{background-color:#5bbf21;border-color:#5bbf21;color:#fff}
 .footer .footer_social{float:right;margin-bottom:0;width:26.65%}

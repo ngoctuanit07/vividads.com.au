@@ -3,4 +3,8 @@
 <file name="billing.phtml" server="107.167.179.252//" local="130717517353995481" remote="130717519610000000" Dst="0" />
 <file name="shipping_method.phtml" server="107.167.179.252//" local="130717301580000000" remote="130717301580000000" Dst="0" />
 <file name="shipping.phtml" server="107.167.179.252//" local="130717301580000000" remote="130717301580000000" Dst="0" />
+<file name="billing.phtml" server="104.154.78.245//public_html/" local="130758861229170768" remote="130758861250000000" Dst="0" />
+<file name="shipping.phtml" server="104.154.78.245//public_html/" local="130758861491885795" remote="130758861510000000" Dst="0" />
+<file name="shipping_method.phtml" server="104.154.78.245//public_html/" local="130758861810954044" remote="130758861830000000" Dst="0" />
+<file name="review.phtml" server="104.154.78.245//public_html/" local="7019728908320769" remote="130758865730000000" Dst="0" />
 </dwsync>
