@@ -145,8 +145,19 @@ if ($currentUrl=='account' || $currentUrl=='List' || $currentUrl=='history' || $
 	  ?>
         <div class="account_links" style="margin:0px; ">
           <ul style="width:218px;">
+	  <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+	            
             <li><a href="<?php echo $this->getUrl(); ?>customer/account/"> <img src="<?php echo $this->getSkinUrl()?>images/my_accont.jpg" title="<?php echo $this->__('My Account')?>" alt="<?php echo $this->__('My Account')?>"  /> </a> </li>
+            <?php else:?>
+                        
+            <li><a href="<?php echo $this->getUrl(); ?>customer/account/create/"> <img src="<?php echo $this->getSkinUrl()?>images/register.jpg" title="<?php echo $this->__('Register Your Account')?>" alt="<?php echo $this->__('Register Your Account ')?>"  /> </a> </li>
+<?php endif ;?>
+            
+            
             <?php if (! Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+            
+            
+            
             <li> <a href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>"> <img src="<?php echo $this->getSkinUrl()?>images/login.jpg" title="<?php echo $this->__('Login')?>" alt="<?php echo $this->__('Login')?>"  /> </a> </li>
             <?php else:?>
             <li><a href="<?php echo Mage::helper('customer')->getLogoutUrl(); ?>"> <img src="<?php echo $this->getSkinUrl()?>images/logout.jpg" title="<?php echo $this->__('Logout')?>" alt="<?php echo $this->__('Logout')?>"  /> </a></li>
@@ -295,15 +306,17 @@ if ($currentUrl=='account' || $currentUrl=='List' || $currentUrl=='history' || $
     <div class="menuText"> <?php echo('Education')?> </div>
     <br />
     <span class="navi-description"> <?php echo('We Guide')?> </span> </a> </div>
-  <div id="menuBall9" class="menuBall"> <a href="<?php echo $this->getUrl('get_a_quote')?>" class="nav customer_btn" >
-    <div class="menuText"> <?php echo('Free Quote')?> </div>
-    <br />
-    <span class="navi-description"> <?php echo('Its Free')?> </span> </a> </div>
-  <div id="menuBall10" class="menuBall"> <a href="<?php echo $this->getUrl('contact-us')?>" class="nav upload_btn" >
+  
+  <div id="menuBall9" class="menuBall"> <a href="<?php echo $this->getUrl('contact-us')?>" class="nav upload_btn" >
     <div class="menuText"> <?php echo('Contact Us')?> </div>
     <br />
     <span class="navi-description"> <?php echo('Get In Touch')?> </span> </a> </div>
+<div id="menuBall10" class="menuBall"> <a href="<?php echo $this->getUrl('get_a_quote')?>" class="nav customer_btn" >
+    <div class="menuText"> <?php echo('Free Quote')?> </div>
+    <br />
+    <span class="navi-description"> <?php echo('Its Free')?> </span> </a> </div>
 </div>
+
 <?php 	//} ?>
 <?php //if ($this->getIsHomePage()):?>
 <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('top_menu_slider')->toHtml() ?>
