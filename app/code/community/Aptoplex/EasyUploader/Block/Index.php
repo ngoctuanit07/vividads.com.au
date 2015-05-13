@@ -55,10 +55,10 @@ class Aptoplex_EasyUploader_Block_Index extends Mage_Core_Block_Template {
 						$email = $my_order->getCustomerEmail();		
 						}
 				   
-						
+						 
 				$order_vars = array('order'=>$my_order,'email'=>$email,'order_id'=>$order_id );
 				
-				return $order_vars;
+				return $order_vars; 
 		}	
 
 }

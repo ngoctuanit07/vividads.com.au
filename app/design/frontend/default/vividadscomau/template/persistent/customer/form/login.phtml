@@ -36,6 +36,7 @@
 <div class="account-login" style="float:left;">
 
 <div class="smart-wrap" style="padding:0px;">
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <div class="col-2 new-users" style="float: right; width: 48%; margin: 0px">
                 <div class="content">
                     <h2><?php echo $this->__('New Customers') ?></h2>
@@ -50,7 +51,7 @@
     <div class="form-header header-yellow">
             	<h4><i class="fa fa-sign-in"></i>Login</h4>
           </div>
-		  <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+		  
             <form method="post" action="<?php echo $this->getPostActionUrl() ?>" id="login-form" >
             
     <div class="form-body theme-yellow">
@@ -69,7 +70,11 @@
                         	<input type="password" placeholder="Enter password" class="gui-input required-entry validate-password" id="password" name="login[password]">
                             <label class="field-icon" for="password"><i class="fa fa-lock"></i></label>  
                         </label>
-                    </div><!-- end section -->  
+                    </div>
+                   <div class="section">
+                        <a href="<?php echo $this->getForgotPasswordUrl() ?>" ><?php echo $this->__('Forgot Your Password?') ?></a>
+                    </div>
+                    <!-- end section -->  
                     
                        
                     <div class="result">

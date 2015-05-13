@@ -56,21 +56,13 @@
                     	 <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
                     </div><!-- end section -->
                      <div class="section">
-                    <label for="email_address" class="required field prepend-icon">
+                     <label class="required field prepend-icon" for="email_address"><em>*&nbsp;</em>Your Email Address
+ 
                      <input type="email" name="email" id="email_address" value="<?php echo $this->escapeHtml($this->getFormData()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="gui-input validate-email required-entry" placeholder="Enter Email..." />
-					<label class="field-icon"><i class="fa fa-envelope"></i></label>  
-                        </label>
+					<label class="field-icon"><i style="margin-top: 30px;" class="fa fa-envelope"></i></label></label> 
+                        
                     </div>
-                    <?php if($this->isNewsletterEnabled()):?>
-                    
-					<div class="section">
-		<label class="option option-yellow">
-		  <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
-		  <span class="checkbox"></span> <label for="is_subscribed"><?php echo $this->__('Sign Up for Newsletter') ?></label>                   
-			</label>
-
-                   </div>
-                    <?php endif; ?>
+                 
             <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
             <?php if ($_dob->isEnabled()): ?>
 
@@ -92,7 +84,7 @@
                 <?php echo $_gender->setGender($this->getFormData()->getGender())->toHtml() ?>
             <?php endif ?>
                     </div>
-                     <h2 class="legends"><?php echo $this->__('Login Information') ?></h2>             
+                     <h2 class="legends" style="color:#34495e;"><?php echo $this->__('Login Information') ?></h2>             
                 	<div class="section">
                     	<label for="password" class="field-label">Create a password</label>
                     	<label for="password" class="field prepend-icon">
@@ -139,8 +131,17 @@
             <span class="refresh-captcha" onClick="updateCaptcha();"> <i class="fa fa-refresh"></i> </span> </label>
         </div>
         <!-- end .smart-widget section --> 
-      </div>-->
+      </div>
+   <?php if($this->isNewsletterEnabled()):?>
+                    
+					<div class="section">
+		<label class="option option-yellow">
+		  <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
+		  <span class="checkbox"></span> <label for="is_subscribed"><?php echo $this->__('Sign Up for Newsletter') ?></label>                   
+			</label>
 
+                   </div>
+                    <?php endif; ?>
 
 <div class="section" style="clear:both">
                     	<label   class="field-label">
