@@ -37,7 +37,7 @@ class Artis_Checkout_Block_Onepage_Review extends Mage_Checkout_Block_Onepage_Ab
     protected function _construct()
     {
         $this->getCheckout()->setStepData('review', array(
-            'label'     => Mage::helper('checkout')->__('Order Review'),
+            'label'     => Mage::helper('checkout')->__('Review and Submit'),
             'is_show'   => $this->isShow()
         ));
         parent::_construct();
