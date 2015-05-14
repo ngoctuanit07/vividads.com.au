@@ -83,11 +83,11 @@
       </catalog>
       
       <!--28-3-2014 S-->
-      <sales>
+      <!--<sales>
         <rewrite>
           <quote>BS_Carpet_Model_Sales_Quote</quote>
         </rewrite>
-      </sales>
+      </sales>-->
       <!--28-3-2014 S-->
       
     </models>
