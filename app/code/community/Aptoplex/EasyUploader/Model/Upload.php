@@ -105,7 +105,9 @@ class Aptoplex_EasyUploader_Model_Upload extends Mage_Core_Model_Abstract {
 			///if this is order then add item to order ///
 			
 				$tableHistory = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_status_history');
-				$order_id = $orderobj->getOrder_id();
+				
+				//Zend_debug::dump($orderobj);
+				$order_id = $orderobj->getEntity_id();
 				$data = array();
 				$data['parent_id']= $order_id;
 				$data['comment']='CUSTOMER -'.$comment;
@@ -113,7 +115,7 @@ class Aptoplex_EasyUploader_Model_Upload extends Mage_Core_Model_Abstract {
 				$data['entity_name']= 'order';
 				$data['readstatus']= 1;
 				
-				Zend_debug::dump($data);				
+				//Zend_debug::dump($data);				
 				$result = $connectionWrite->insert($tableHistory, $data);
         
 			return true;
