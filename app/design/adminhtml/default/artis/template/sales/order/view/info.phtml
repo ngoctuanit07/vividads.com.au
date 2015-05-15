@@ -40,7 +40,7 @@ if($this->getRequest()->getParam('shipment_id')){
     
 }else{
     
-    $_order = $this->getOrder();
+    $_order = $this->getOrder();   
 	
 	//fetching order items//
 	$_current_order = Mage::getModel('sales/order')->load($this->getRequest()->getParam('order_id'));
@@ -57,6 +57,18 @@ if($this->getRequest()->getParam('shipment_id')){
 <?php
     $orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
     $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+	
+	
+	if($_current_order->getValidUntil()){
+		$valid_date = formatDate($_current_order->getValidUntil(),'medium',true) ;
+	}else{
+		$created_date = date('Y-m-d', strtotime($_order->getCreated_at()));
+		$valid_date = date('Y-m-d',strtotime($created_date.'+14 days'));
+		$valid_date = $this->formatDate($valid_date,'medium',true);
+	}
+		
+	
+	//$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
 
     //$date_post = strtotime($_order->getCreatedAtDate()); 
     //$Ordtime=date('Y-m-d H:i:s',$date_post );
@@ -99,12 +111,20 @@ if($this->getRequest()->getParam('shipment_id')){
                 <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date') ?></label></td>
                 <td class="value"><strong><?php echo $orderAdminDate ?></strong></td>
             </tr>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Valid Until') ?></label></td>
+                <td class="value"><strong><?php echo $valid_date ?></strong></td>
+            </tr>
+            
             <?php if ($orderAdminDate != $orderStoreDate):?>
             <tr>
                 <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date (%s)', $_order->getCreatedAtStoreDate()->getTimezone()) ?></label></td>
                 <td class="value"><strong><?php echo $orderStoreDate ?></strong></td>
             </tr>
             <?php endif;?>
+            
+           
+            
             <tr>
                 <td class="label"><label><?php echo Mage::helper('sales')->__('Order Status') ?></label></td>
                 <td class="value"><strong><span id="order_status">
@@ -334,8 +354,8 @@ if($roleName != 'Warehouse'){
 
                 <?php 
 						/*  check Artworkfiles*/
-						$artworkFiles = Mage::getModel('vendor/vendor')
-										->getArtworkFiles($_order->getId(), $_item->getId(), 'admin');
+					 	$artworkFiles = Mage::getModel('vendor/vendor')
+							 		->getArtworkFiles($_order->getIncrementId(), $_item->getId(), 'admin');
 				?>
                 <td class="a-center">
                     <span class="price-excl-tax">
