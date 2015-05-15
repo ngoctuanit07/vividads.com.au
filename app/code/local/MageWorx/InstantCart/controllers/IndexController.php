@@ -26,7 +26,7 @@
  *
  * @category   MageWorx
  * @package    MageWorx_InstantCart
- * @author     MageWorx Dev Team
+ * @author     MageWorx Dev Team 
  */
 
 require_once('Mage/Checkout/controllers/CartController.php');

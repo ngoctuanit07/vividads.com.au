@@ -5,7 +5,7 @@ class IWD_OrderManager_Model_Order_Edit extends Mage_Sales_Model_Order_Item
     const XML_PATH_RETURN_TO_STOCK = 'iwd_ordermanager/edit/return_to_stock';
     const XML_PATH_RECALCULATE_SHIPPING = 'iwd_ordermanager/edit/recalculate_shipping';
 
-    private $added_items = false;
+    private $added_items = false; 
     private $refund_qty = array();
     private $edit_items = array();
     protected $base_currency_code = "USD";

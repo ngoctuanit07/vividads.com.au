@@ -13,7 +13,7 @@ class IWD_OrderManager_Block_Adminhtml_Sales_Order_Items_Form extends Mage_Admin
             $item->getProductOptions($options);
             return $options;
         } else {
-            $options = $item->getOrderItem()->getProductOptions();
+            $options = $item->getOrderItem()->getProductOptions(); 
         }
 
         if (isset($options['bundle_selection_attributes'])) {

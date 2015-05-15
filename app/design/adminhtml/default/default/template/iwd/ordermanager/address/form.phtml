@@ -1,0 +1,62 @@
+<?php
+    $helper = Mage::helper("iwd_ordermanager");
+?>
+
+<form id="address_edit_form_<?php echo $this->getAddressId(); ?>" method="post" class="address_edit_form">
+    <div>
+        <ul class="messages">
+            <li class="notice-msg">
+                <?php echo $helper->__("These changes will apply only to this order address (not customer)."); ?>
+                <br/>
+                <?php echo $helper->__("Taxes will not be recalculated."); ?>
+            </li>
+        </ul>
+    </div>
+
+    <?php echo $this->getForm()->toHtml(); ?>
+
+    <input type="hidden" id="group_id" value="<?php echo $this->getCustomerGroupId()?>"/>
+
+    <div style="margin-top:20px">
+        <input type="hidden" value="<?php echo $this->getAddressId(); ?>" name="address_id"
+               id="address_id_<?php echo $this->getAddressId(); ?>">
+        <button id="iwd_edit_address_form_cancel" type="button"
+                onclick="IWD.OrderManager.Address.editAddressCancel(<?php echo $this->getAddressId() ?>);"
+                class="scalable" title="<?php echo $helper->__('Cancel'); ?>">
+            <?php echo $helper->__('Cancel'); ?>
+        </button>
+        <button id="iwd_edit_address_form_submit" type="button"
+                onclick="IWD.OrderManager.Address.editAddressSubmit(<?php echo $this->getAddressId() ?>);"
+                class="scalable right" title="<?php echo $helper->__('Update'); ?>">
+            <?php echo $helper->__('Update'); ?>
+        </button>
+        <label style="float:right; margin-right:10px">
+            <input type="checkbox" name="confirm_edit" <?php echo $helper->isConfirmEditChecked(); ?>/>
+            <?php echo $helper->__('Confirm Update'); ?>
+        </label>
+
+        <?php if($this->isShippingAddress()): ?>
+            <label style="float:right; margin-right:20px">
+                <input type="checkbox" name="recalculate_amount" <?php echo $helper->isRecalculateOrderAmountChecked(); ?>/>
+                <?php echo $helper->__('Recalculate order amount'); ?>
+            </label>
+        <?php endif;  ?>
+    </div>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        var order = new AdminOrder(<?php echo $this->getOrderDataJson($this->order_id) ?>);
+        order.setLoadBaseUrl('<?php echo $this->getLoadBlockUrl() ?>');
+        var addressFormValidation_<?php echo $this->getAddressId();?> = new varienForm('address_edit_form_<?php echo $this->getAddressId();?>');
+        //]]>
+    </script>
+
+    <style type="text/css">
+        .address_edit_form .form-list td.value input, .address_edit_form .form-list td.value select {width:95% !important;}
+        .address_edit_form .validate-vat {text-align:right; padding:10px 0 0; width:96%;}
+        .address_edit_form table td.value {width:100% !important;}
+        @media only screen and (max-width: 1200px){
+            .address_edit_form .form-list td.label label{width:100px !important;}
+        }
+    </style>
+</form>

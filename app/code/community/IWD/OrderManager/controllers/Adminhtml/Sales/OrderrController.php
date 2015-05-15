@@ -163,7 +163,7 @@ class IWD_OrderManager_Adminhtml_Sales_OrderrController extends Mage_Adminhtml_C
                 ->setData('items', $quote_items)
                 ->setData('order_id', $order_id)
                 ->toHtml();
-			
+			 
 
             $result['status'] = 1;
         } catch (Exception $e) {
