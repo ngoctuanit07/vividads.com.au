@@ -9,7 +9,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
         $this->loadLayout();
         $this->renderLayout();    
     }
-
+ 
 
 
     /**
@@ -102,8 +102,9 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 		$order_id = $this->getRequest()->getParam('order_id');
         
 		//$quote = Mage::getModel('Quotation/Quotation')->load($QuoteId);
-		 $order = Mage::getModel('sales/order')->load($order_id);
-         $this->checkQuoteOwner($order);
+		 $order = Mage::getModel('sales/order')->load($order_id);      
+		 
+		 $this->checkQuoteOwner($order);
 		 
 		    $orderModel=Mage::getModel('sales/order')->load($order->getIncrement_id(), 'increment_id');
             $order_id=$orderModel->getEntityId();
@@ -112,7 +113,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
 		    $session = $this->_getSession();
 			//var_dump($session);
 			//exit;
-		 
+		  
 		 
 		try {
             $layout = $this->loadLayout();
