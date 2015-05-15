@@ -11,7 +11,7 @@ class IWD_OrderManager_Model_Order_Edit extends Mage_Sales_Model_Order_Item
     protected $base_currency_code = "USD";
     protected $order_currency_code = "USD";
     protected $delta = 0.06;
-    protected $fact_grand_totals = array();
+    protected $fact_grand_totals = array(); 
 
     public function getOrderStatusesForUpdateIds()
     {

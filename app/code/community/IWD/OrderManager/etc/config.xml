@@ -6,7 +6,7 @@
         </IWD_OrderManager>
     </modules>
 
-    <global>  
+    <global>   
         <blocks>
             <iwd_ordermanager>
                 <class>IWD_OrderManager_Block</class>

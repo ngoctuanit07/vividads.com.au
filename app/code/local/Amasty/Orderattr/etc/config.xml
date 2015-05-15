@@ -9,8 +9,8 @@
 <config>
     <modules>
         <Amasty_Orderattr>
-            <version>3.1.4</version> 
-        </Amasty_Orderattr>
+            <version>3.1.4</version>  
+        </Amasty_Orderattr> 
     </modules>
     
     <admin>

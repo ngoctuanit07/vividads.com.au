@@ -40,7 +40,7 @@ if($this->getRequest()->getParam('shipment_id')){
     
 }else{
     
-    $_order = $this->getOrder(); 
+    $_order = $this->getOrder();   
 	
 	//fetching order items//
 	$_current_order = Mage::getModel('sales/order')->load($this->getRequest()->getParam('order_id'));

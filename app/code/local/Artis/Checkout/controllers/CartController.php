@@ -253,7 +253,7 @@ class Artis_Checkout_CartController extends Mage_Core_Controller_Front_Action
 		}
 		 	 //  Zend_debug::dump($cart->getItems());
 			 //  Zend_debug::dump($product);			 
-            // exit; 
+            // exit;  
 		   
 		 foreach($cart->getQuote()->getAllItems() as $_item) {             
 				    $_product_id = $_item->getProductId();
