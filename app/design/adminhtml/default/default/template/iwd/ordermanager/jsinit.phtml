@@ -1,0 +1,62 @@
+<?php
+$tax_config = Mage::getModel("tax/config");
+$tax_calculation = Mage::getModel("tax/calculation");
+?>
+<script type="text/javascript">
+    if(typeof(jQueryIWD) == "undefined"){if(typeof(jQuery) != "undefined") {jQueryIWD = jQuery;}} $ji = jQueryIWD;
+    $ji(document).ready(function () {
+        IWD.OrderManager.init(ORDER_ID);
+
+        IWD.OrderManager.OrderedItems.urlEditOrderedItemsForm = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_orderr/editOrderedItemsForm') ?>?isAjax=true";
+        IWD.OrderManager.OrderedItems.urlEditOrderedItems = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_orderr/editOrderedItems') ?>?isAjax=true";
+        IWD.OrderManager.OrderedItems.urlAddOrderedItemsForm = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_orderr/addOrderedItemsForm') ?>?isAjax=true";
+        IWD.OrderManager.OrderedItems.urlAddOrderedItems = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_orderr/addOrderedItems') ?>?isAjax=true";
+        IWD.OrderManager.OrderedItems.initProductConfigure = function () {
+            productConfigure = new ProductConfigure();
+            if (window.productConfigure) {
+                productConfigure.addListType('product_to_add', {
+                    urlFetch: '<?php echo $this->getUrl('*/sales_order_create/configureProductToAdd') ?>'
+                });
+                productConfigure.addListType('quote_items', {
+                    urlFetch: '<?php echo $this->getUrl('*/sales_order_create/configureQuoteItems') ?>'
+                });
+            }
+        };
+        IWD.OrderManager.OrderedItems.init();
+
+        IWD.OrderManager.TaxCalculation.taxCalculationMethodBasedOn = "<?php echo $tax_config->getAlgorithm(); ?>";
+        IWD.OrderManager.TaxCalculation.taxCalculationBasedOn = <?php echo Mage::helper("tax")->getTaxBasedOn() ? 1 : 0; ?>;
+        IWD.OrderManager.TaxCalculation.catalogPrices = <?php echo $tax_config->priceIncludesTax() ? 1 : 0; ?>;
+        IWD.OrderManager.TaxCalculation.shippingPrices = <?php echo $tax_config->shippingPriceIncludesTax() ? 1 : 0; ?>;
+        IWD.OrderManager.TaxCalculation.applyTaxAfterDiscount = <?php echo $tax_config->applyTaxAfterDiscount() ? 1 : 0; ?>;
+        IWD.OrderManager.TaxCalculation.discountTax = <?php echo $tax_config->discountTax() ? 1 : 0; ?>;
+        IWD.OrderManager.TaxCalculation.applyTaxOnCustomPrice = <?php echo Mage::helper("tax")->applyTaxOnCustomPrice() ? 1 : 0; ?>;
+        IWD.OrderManager.TaxCalculation.applyTaxOnOriginalPrice = <?php echo Mage::helper("tax")->applyTaxOnOriginalPrice() ? 1 : 0; ?>;
+        IWD.OrderManager.TaxCalculation.init();
+
+        IWD.OrderManager.Address.urlEditAddressForm = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_address/getEditAddressForm') ?>?isAjax=true";
+        IWD.OrderManager.Address.urlEditAddressSubmit = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_address/editAddress')?>?isAjax=true";
+        IWD.OrderManager.Address.init();
+
+        IWD.OrderManager.Shipping.urlEditShippingForm = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_shipping/getEditShippingForm') ?>?isAjax=true";
+        IWD.OrderManager.Shipping.urlEditShippingSubmit = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_shipping/editShipping')?>?isAjax=true";
+        IWD.OrderManager.Shipping.init();
+
+        IWD.OrderManager.Payment.urlEditPaymentForm = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_payment/getEditPaymentForm') ?>?isAjax=true";
+        IWD.OrderManager.Payment.urlEditPaymentSubmit = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_payment/editPayment')?>?isAjax=true";
+        IWD.OrderManager.Payment.init();
+
+        IWD.OrderManager.AccountInfo.urlEditAccountForm = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_customer/getEditAccountForm') ?>?isAjax=true";
+        IWD.OrderManager.AccountInfo.urlEditAccountSubmit = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_customer/editAccount') ?>?isAjax=true";
+        IWD.OrderManager.AccountInfo.init();
+
+        IWD.OrderManager.OrderInfo.urlEditOrderInfoForm = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_orderinfo/getEditInfoForm') ?>?isAjax=true";
+        IWD.OrderManager.OrderInfo.urlEditOrderInfoSubmit = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_orderinfo/editInfo') ?>?isAjax=true";
+        IWD.OrderManager.OrderInfo.init();
+
+        IWD.OrderManager.Comments.urlDeleteCommentSubmit = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_comment/delete');?>?isAjax=true";
+        IWD.OrderManager.Comments.urlEditCommentSubmit = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_comment/update');?>?isAjax=true";
+        IWD.OrderManager.Comments.urlEditCommentForm = "<?php echo Mage::helper('adminhtml')->getUrl('*/sales_comment/getComment');?>?isAjax=true";
+        IWD.OrderManager.Comments.confirmText = "<?php echo Mage::helper('adminhtml')->__('Are you sure?'); ?>";
+    });
+</script>

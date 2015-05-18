@@ -188,7 +188,7 @@ class IWD_OrderManager_Model_Order_Converter extends Mage_Core_Model_Abstract
 					}
 			
 			$quote_item = $quote->addProduct($product, $params);
-			//$quote->save();
+			//$quote->save();   
             return $quote_item;
         } catch (Exception $e) {
             Mage::log($e->getMessage(), null, 'iwd_order_manager.log');
