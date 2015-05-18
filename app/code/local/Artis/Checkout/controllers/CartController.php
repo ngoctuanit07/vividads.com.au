@@ -177,6 +177,7 @@ class Artis_Checkout_CartController extends Mage_Core_Controller_Front_Action
         $params = $this->getRequest()->getParams();
         
 		
+		
 		try {
             
 			
@@ -188,6 +189,10 @@ class Artis_Checkout_CartController extends Mage_Core_Controller_Front_Action
                 $params['qty'] = $filter->filter($params['qty']);
             }
             $product = $this->_initProduct();
+			
+		//	Zend_debug::dump($cart);
+		//	exit;
+			
             $related = $this->getRequest()->getParam('related_product');
             /**
              * Check product availability
@@ -201,9 +206,9 @@ class Artis_Checkout_CartController extends Mage_Core_Controller_Front_Action
 				}
 				
 				$cart->addProduct($product, $params);            
-			if (!empty($related)) {
-                $cart->addProductsByIds(explode(',', $related));
-            }
+					if (!empty($related)) {
+						$cart->addProductsByIds(explode(',', $related));
+					}
 				
 			}else{
 				
@@ -246,22 +251,30 @@ class Artis_Checkout_CartController extends Mage_Core_Controller_Front_Action
 			
 			$cart->addProduct($product, $params);
 		}
-			
-						 
-			   // Zend_debug::dump($params);
-			 //   Zend_debug::dump($cart);
-			 //  exit;
 		 	 //  Zend_debug::dump($cart->getItems());
 			 //  Zend_debug::dump($product);			 
-            // exit;
+            // exit;  
 		   
+		 foreach($cart->getQuote()->getAllItems() as $_item) {             
+				    $_product_id = $_item->getProductId();
+				    $_product = Mage::getModel('catalog/product')->load($_product_id);				   
+					
+					if($_product->getSpecialPrice()){					
+						$_price = $_product->getSpecialPrice();					
+						$_item->setCustomPrice($_price);					 
+						$_item->setOriginalCustomPrice($_price);
+					}
+           
+    		} 
 		    $cart->save();
             $this->_getSession()->setCartWasUpdated(true);			
 			
             /**
              * @todo remove wishlist observer processAddToCart
              */
-            Mage::dispatchEvent('checkout_cart_add_product_complete',
+          
+		   
+		    Mage::dispatchEvent('checkout_cart_add_product_complete',
                 array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
             );
 

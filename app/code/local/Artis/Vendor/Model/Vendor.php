@@ -5,7 +5,7 @@ class Artis_Vendor_Model_Vendor extends Mage_Core_Model_Abstract
     public function _construct()
     {
         parent::_construct();
-        $this->_init('vendor/vendor');
+        $this->_init('vendor/vendor');   
     }
 	
 	/*getting vendor assigned items*/
@@ -104,22 +104,21 @@ class Artis_Vendor_Model_Vendor extends Mage_Core_Model_Abstract
 			
 			$_connection = Mage::getSingleton('core/resource');
 			$_read = $_connection->getConnection('core_read');
-			$_taskdesignerTable = $_read->getTableName('task_designer');
+			$_taskdesignerTable = $_read->getTableName('aptoplex_easyuploader_upload');
 			
 		    //fetching the product assigned
 		 	$_pr_sql = $_read->select()
-						  ->from($_taskdesignerTable,array('quantity'))
-						  ->where('order_quote_id=?',$_order_id)
-						  ->where('item_id=?',$_item_id)
-						  ->where('proof_type=?','customer')
-						  ;								
-			 // var_dump($_pr_sql->__toString());		  
+						  ->from($_taskdesignerTable, array('order_id'))
+						  ->where('order_id=?',$_order_id);
+						 // ->where('item_id=?',$_item_id)
+						// ->where('proof_type=?','customer')						  ;								
+			  // var_dump($_pr_sql->__toString());
 			
 		 try{
-			 $_artworkFiles = $_read->fetchAll($_pr_sql);			
+			  $_artworkFiles = $_read->fetchAll($_pr_sql);			
 			 	
 			if($_artworkFiles){				
-					return count($_artworkFiles);			
+				 	return count($_artworkFiles);			
 			}else{
 				return 0;
 				}

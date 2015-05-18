@@ -26,13 +26,17 @@
  *
  * @category   MageWorx
  * @package    MageWorx_InstantCart
- * @author     MageWorx Dev Team
+ * @author     MageWorx Dev Team  
  */
 
 require_once('Mage/Checkout/controllers/CartController.php');
 class MageWorx_InstantCart_IndexController extends Mage_Checkout_CartController
 {
-    public function preDispatch() {
+    public function indexAction(){
+		
+		}
+	
+	public function preDispatch() {
         $checkCookie = in_array($this->getRequest()->getActionName(), $this->_cookieCheckActions);
         $checkCookie = $checkCookie && !$this->getRequest()->getParam('nocookie', false);
         $cookies = Mage::getSingleton('core/cookie')->get();
@@ -54,7 +58,7 @@ class MageWorx_InstantCart_IndexController extends Mage_Checkout_CartController
     public function addAction() {
         $cart   = $this->_getCart();
         $params = $this->getRequest()->getParams();        
-        
+		
         try {
             if (isset($params['qty'])) {
                 $filter = new Zend_Filter_LocalizedToNormalized(
@@ -65,7 +69,7 @@ class MageWorx_InstantCart_IndexController extends Mage_Checkout_CartController
             $product = $this->_initProduct();           
             Mage::register('product', $product);
             
-            if ('POST' != $this->getRequest()->getMethod()) {
+         /*   if ('POST' != $this->getRequest()->getMethod()) {
                 Mage::register('current_product', $product);
                 if ($product->isGrouped() || $product->isConfigurable() || $product->getTypeInstance(true)->hasRequiredOptions($product) || (Mage::helper('icart')->isExtensionEnabled('MageWorx_CustomPrice') && Mage::helper('customprice')->isCustomPriceAllowed($product))){
                     
@@ -90,9 +94,9 @@ class MageWorx_InstantCart_IndexController extends Mage_Checkout_CartController
                             ->applyTemplate($product->getPageLayout());
                     }
                     //echo $this->getLayout()->getOutput();
-                    $this->renderLayout();
-                    return;
-                    exit;
+                  //  $this->renderLayout();
+                 //   return;
+                   // exit;
                 }
             }            
             
@@ -103,8 +107,9 @@ class MageWorx_InstantCart_IndexController extends Mage_Checkout_CartController
                 $this->_getSession()->addError(Mage::helper('checkout')->__('Product is not available.'));
                 $this->_forward('added');
             }
-            
-            Mage::dispatchEvent('checkout_icart_add_before', array('controller_action' => $this));
+          //  var_dump($product);
+			//exit;
+           // Mage::dispatchEvent('checkout_icart_add_before', array('controller_action' => $this));
                         
             $cart->addProduct($product, $params);                        
             
