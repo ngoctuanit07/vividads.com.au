@@ -144,10 +144,13 @@
            <?php foreach ($_slider_files as $_slider) : ?>
                 
                  
-                <a href="<?php echo $_slider['link'] ?>">
+             <?php /*?>   <a href="<?php echo $_slider['link'] ?>">
                     <!--<img style="width:1200px !important;"  src="<?php echo $_slider['image'] ?>" alt="<?php echo Mage::getStoreConfig('design/head/default_title'); ?>" <?php if ($design['texten'] == 1) : ?>title="#youama-elem<?php echo $_counter ?>"<?php endif; ?> />-->
                      <img style="width:1200px !important;"  src="<?php echo $_slider['image'] ?>" alt="<?php echo Mage::getStoreConfig('design/head/default_title'); ?>" <?php if ($design['texten'] == 1) : ?>title="#youama-elem<?php echo $_counter ?>"<?php endif; ?> />
-                </a> 
+                </a> <?php */?>
+              <!--<img style="width:1200px !important;"  src="<?php echo $_slider['image'] ?>" alt="<?php echo Mage::getStoreConfig('design/head/default_title'); ?>" <?php if ($design['texten'] == 1) : ?>title="#youama-elem<?php echo $_counter ?>"<?php endif; ?> />-->
+               <img style="width:1200px !important;"  src="<?php echo $_slider['image'] ?>" alt="<?php echo Mage::getStoreConfig('design/head/default_title'); ?>" <?php if ($design['texten'] == 1) : ?>title="#youama-elem<?php echo $_counter ?>"<?php endif; ?> />
+           
                 <?php  $_counter++ ?>
             <?php  endforeach; ?>
 
