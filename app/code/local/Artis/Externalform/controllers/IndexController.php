@@ -2,7 +2,7 @@
 
 class Artis_Externalform_IndexController extends Mage_Core_Controller_Front_Action
 {
-    public function indexAction()
+    public function indexAction() 
     {
     	
     	/*
@@ -1819,8 +1819,8 @@ var_dump($fetchHistory);
 			if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHistory))
 			{
 			    
-			    $sqlHistory="INSERT INTO ".$temptableHistory." SET qh_quotation_id = '".$NewQuotation->getId()."', qh_message = '".$_POST['comment']."', qh_date = NOW(), qh_user = '".$fname_bill.' '.$lname_bill."' ";
-			    $chkHistory = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlHistory);
+			    $sqlHistory="INSERT INTO ".$temptableHistory." SET qh_quotation_id = '".$NewQuotation->getId()."', qh_message = '".$_POST['comment']."', qh_date = '".date('Y-m-d h:i:s a')."', qh_user = '".$fname_bill.' '.$lname_bill."' ";
+			    $chkHistory = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlHistory);
 			}
 			
 			
