@@ -3,6 +3,7 @@ $helper = Mage::helper('iwd_ordermanager');
 $tax_config = Mage::getModel("tax/config");
 $i = 0;
 $order = $this->getOrder();
+
 $is_iwd_downloadable = Mage::getConfig()->getModuleConfig('IWD_Downloadable')->is('active', 'true');
 ?>
 <div id="ordered_items_edit_form">
@@ -47,30 +48,16 @@ $is_iwd_downloadable = Mage::getConfig()->getModuleConfig('IWD_Downloadable')->i
 </tr>
 </thead>
 
-<?php foreach ($this->ordered as $item): ?>
-    
-	<?php  $product_id = $item->getProduct_id();
-			$_product = Mage::getModel('catalog/product')->load($product_id);
-			
-			if($_product->getSpecial_price()){
-				
-				$price_excl = $item->getBasePrice();
-			    $price_incl = $item->getBasePriceInclTax();
-				$tax = (float)$price_incl-(float)$price_excl;
-				
-				$price_excl = $_product->getSpecial_price();
-			    $price_incl = $price_excl+$tax;
-				
-				
-			}else{
-			 $price_excl = $item->getgetBasePrice();
-			 $price_incl = $item->getBasePriceInclTax();
-			}
-			
-			
-			
-		?>
-	<?php if ($item->getParentItem()) continue; ?>
+<?php 
+  
+
+ 
+foreach ($this->ordered as $item): 
+
+Zend_debug::dump($item->getData());
+
+?>
+    <?php if ($item->getParentItem()) continue; ?>
     <tbody class="<?php echo ($i++) % 2 ? 'even' : 'odd' ?>">
     <?php if ($item->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE): ?>
         <?php $_prevOptionId = false; ?>
@@ -107,23 +94,17 @@ $is_iwd_downloadable = Mage::getConfig()->getModuleConfig('IWD_Downloadable')->i
             </td>
 
             <?php /* bundle product: PRICE */ ?>
-            <td><?php echo $helper->__("Excl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($price_excl); ?></b><br>
-                
-                
+            <td><?php echo $helper->__("Excl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($item->getBasePrice()); ?></b><br>
                 <input
                     type="text" <?php if($canShowPriceInfo || $item->getQtyRefunded() > 0): ?>readonly="readonly"<?php endif; ?>
                     class="edit_order_item required-entry validate-number"
-                    value="<?php 
-					
-					echo number_format($price_excl, 2, '.', '');
-					
-					 ?>"
+                    value="<?php echo number_format($item->getBasePrice(), 2, '.', ''); ?>"
                     name="items[<?php echo $item->getId(); ?>][price]"/>
 
-                </br><?php echo $helper->__("Incl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($price_incl); ?></b><br>
+                </br><?php echo $helper->__("Incl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($item->getBasePriceInclTax()); ?></b><br>
                 <input type="text" <?php if($canShowPriceInfo || $item->getQtyRefunded() > 0): ?>readonly="readonly"<?php endif; ?>
                        class="edit_order_item required-entry validate-number"
-                       value="<?php echo number_format($price_incl, 2, '.', ''); ?>"
+                       value="<?php echo number_format($item->getBasePriceInclTax(), 2, '.', ''); ?>"
                        name="items[<?php echo $item->getId(); ?>][price_incl_tax]"/>
             </td>
 
@@ -369,18 +350,17 @@ $is_iwd_downloadable = Mage::getConfig()->getModuleConfig('IWD_Downloadable')->i
 
             <?php /*bundle item: PRICE */ ?>
             <td>
-            
                 <?php if ($canShowPriceInfo): ?>
-                    <?php echo $helper->__("Excl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($price_excl); ?></b><br>
+                    <?php echo $helper->__("Excl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($_item->getBasePrice()); ?></b><br>
                     <input type="text" <?php if($_item->getQtyRefunded() > 0): ?>readonly="readonly"<?php endif; ?>
                            class="edit_order_item required-entry validate-number"
-                           value="<?php echo number_format($price_excl, 2, '.', ''); ?>"
+                           value="<?php echo number_format($_item->getBasePrice(), 2, '.', ''); ?>"
                            name="items[<?php echo $_item->getId(); ?>][price]"/></br>
 
-                    <?php echo $helper->__("Incl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($price_incl); ?></b><br>
+                    <?php echo $helper->__("Incl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($_item->getBasePriceInclTax()); ?></b><br>
                     <input type="text" <?php if($_item->getQtyRefunded() > 0): ?>readonly="readonly"<?php endif; ?>
                            class="edit_order_item required-entry validate-number"
-                           value="<?php echo number_format($price_incl, 2, '.', ''); ?>"
+                           value="<?php echo number_format($_item->getBasePriceInclTax(), 2, '.', ''); ?>"
                            name="items[<?php echo $_item->getId(); ?>][price_incl_tax]"/>
                 <?php else: ?>
                     &nbsp;
@@ -632,16 +612,16 @@ $is_iwd_downloadable = Mage::getConfig()->getModuleConfig('IWD_Downloadable')->i
             </td>
 
             <?php /* simple product: PRICE */ ?>
-            <td><?php echo $helper->__("Excl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($price_excl); ?></b><br>
+            <td><?php echo $helper->__("Excl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($item->getBasePrice()); ?></b><br>
                 <input type="text" class="edit_order_item required-entry validate-number"
                        <?php if($item->getQtyRefunded() > 0): ?>readonly="readonly"<?php endif; ?>
-                       value="<?php echo number_format($price_excl, 2, '.', ''); ?>"
+                       value="<?php echo number_format($item->getBasePrice(), 2, '.', ''); ?>"
                        name="items[<?php echo $item->getId(); ?>][price]"/>
 
-                </br><?php echo $helper->__("Incl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($price_incl); ?></b><br>
+                </br><?php echo $helper->__("Incl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($item->getBasePriceInclTax()); ?></b><br>
                 <input type="text" class="edit_order_item required-entry validate-number"
                        <?php if($item->getQtyRefunded() > 0): ?>readonly="readonly"<?php endif; ?>
-                       value="<?php echo number_format($price_incl, 2, '.', ''); ?>"
+                       value="<?php echo number_format($item->getBasePriceInclTax(), 2, '.', ''); ?>"
                        name="items[<?php echo $item->getId(); ?>][price_incl_tax]"/>
             </td>
 
