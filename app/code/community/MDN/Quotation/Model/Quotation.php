@@ -1413,6 +1413,10 @@ class MDN_Quotation_Model_Quotation extends Mage_Core_Model_Abstract {
 		 
 		 return 1;
 		 }
+		 
+	public function getStatusLabel(){
+		 return $this->getStatus();
+		}	 
 	
     		
 	

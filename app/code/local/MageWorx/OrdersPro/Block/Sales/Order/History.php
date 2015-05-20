@@ -52,6 +52,7 @@ class MageWorx_OrdersPro_Block_Sales_Order_History extends Artis_Partialpayment_
 	/*pubilc function get both quotes and Orders*/
 	
 	public function getQuotesAndOrders($customer_id = ''){
+		
 		$_quotes = Mage::getModel('Quotation/Quotation')
 						->getCollection()						
 						 ->addFieldToFilter('customer_id',$customer_id)
@@ -69,6 +70,14 @@ class MageWorx_OrdersPro_Block_Sales_Order_History extends Artis_Partialpayment_
 		//$url = $order->getUrl();
 		$url = 'Quotation/Quote/View/quote_id/'.$order->getQuotation_id();
 		return Mage::getUrl($url);
+		
+		}
+	/*public function getQuote()*/	
+	
+	public function getQuote($order=null){
+		
+		$quote = Mage::getModel('Quotation/Quotation')->load($order->getQuotation_id());		
+		return $quote; 
 		
 		}
 	
@@ -102,7 +111,7 @@ class MageWorx_OrdersPro_Block_Sales_Order_History extends Artis_Partialpayment_
    	 					 ->join( array('options'=>'sales_flat_order'),'`main_table`.`customer_id` = `options`.`customer_id`','`options`.*');
 		
 		
-		 var_dump($join_sql->__toString());
+		// var_dump($join_sql->__toString());
 		  
 		$pager = new Mage_Page_Block_Html_Pager();
 		$pager->setLimitVarName($this->getLimitVarName())
@@ -119,6 +128,15 @@ class MageWorx_OrdersPro_Block_Sales_Order_History extends Artis_Partialpayment_
 		//$pagerBlock = $this->getChild('MageWorx_SeoSuite_Block_Page_Html_Pager');
 		 return $pager->toHtml();
        
-    }	 	       
+    }	 
+	
+	//public function number_format($this->GetFinalPriceWithTaxes(), 2, '.', '');
+	
+	public function getTotalwithTax($order=null){
+		
+		$quote = Mage::getModel('Quotation/Quotation')->load($order->getQuotation_id());
+		return $quote->number_format($quote->GetFinalPriceWithTaxes(), 2, '.', '');
+		
+		}	       
     
 }
