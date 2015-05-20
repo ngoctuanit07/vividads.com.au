@@ -203,7 +203,6 @@ if (Mage::helper('checkout/cart')->getSummaryCount() == "") {
     <?php // echo $this->getChildHtml('topSearch') ?>
     <div class="form-search"> <img src="<?php echo $this->getSkinUrl('images/sales_number.png')?>"> </div>
     <div class="header-right">
-      
       <div id="boxes">
         <div style="display: none;" id="dialog" class="window">
           <div style="font:normal 14px/20px Arial, Helvetica, sans-serif; padding:8px;"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('getquote')->toHtml() ?> </div>
@@ -244,7 +243,7 @@ if (Mage::helper('checkout/cart')->getSummaryCount() == "") {
       <ul>
         <li ><a title="Home" href="<?php echo Mage::getBaseUrl();?>" class="<?php if($currentUrl == "tablethrows.com.au" || $currentUrl == "index.php"){echo "actives";} ?>"><?php echo __('Home');?></a></li>
         <li ><a title="Send Artwork" href="<?php echo $this->getUrl('upload');?>" class="<?php if($currentUrl == "upload"){echo "actives";} ?>"><?php echo __('Send Artwork');?></a></li>
-        <li > <a title="Gallery" href="<?php echo $this->getUrl('gallery');?>" class="<?php if($currentUrl == "gallery"){echo "actives";} ?>"> <?php echo __('Gallery');?></a></li>
+        <li > <a title="Gallery" href="<?php echo $this->getUrl('photo-gallery');?>" class="<?php if($currentUrl == "gallery"){echo "actives";} ?>"> <?php echo __('Gallery');?></a></li>
         <li > <a title="Our Clients" href="<?php echo $this->getUrl('our-clients');?>" class="<?php if($currentUrl == "list"){echo "actives";} ?>"> <?php echo __('Our Clients');?></a></li>
         <li > <a href="<?php echo $this->getUrl('services'); ?>" class="<?php if($currentUrl == "services"){echo "actives";} ?>"><?php echo __('Services');?></a></li>
         <?php /*?><li class="<?php if($currentUrl == "offers.html"){echo "quick-access_selected";} ?> offer"><a title="Vendor Section" href="<?php echo Mage::getBaseUrl();?>offers.html/">Offers</a></li><?php */?>
