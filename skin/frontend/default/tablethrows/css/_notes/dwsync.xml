@@ -8,4 +8,6 @@
 <file name="print.css" server="192.168.0.100/web/" local="130203089078702297" remote="130203284400000000" Dst="2" />
 <file name="styles-ie.css" server="192.168.0.100/web/" local="130203089078712297" remote="130203284400000000" Dst="2" />
 <file name="widgets.css" server="192.168.0.100/web/" local="130203089078732298" remote="130203284400000000" Dst="2" />
+<file name="quote.css" server="104.154.78.245//public_html/" local="130765626484729532" remote="130765627360000000" Dst="0" />
+<file name="styles.css" server="104.154.78.245//public_html/" local="130765639732097238" remote="130765639760000000" Dst="0" />
 </dwsync>

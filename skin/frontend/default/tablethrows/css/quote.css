@@ -20,7 +20,9 @@
 .quote-_details th, .quote_details th a, .quote_details th a:hover {color: #fff;}
 
 #my-quotations-table thead{font-size: 11px;background: none;}
-.quote_details  thead th, .quote_details #my-quotations-table  thead th{background-color: #2B2B2B; padding: 5px 12px; white-space: nowrap; height: 26px;  color: #9BBC21;  border:0; font-weight:bold; text-transform:none;}
+/*.quote_details  thead th, .quote_details #my-quotations-table  thead th{background-color: #2B2B2B; padding: 5px 12px; white-space: nowrap; height: 26px;  color: #9BBC21;  border:0; font-weight:bold; text-transform:none;}*/
+.quote_details thead th, .quote_details #my-quotations-table thead th {background-color: #2b2b2b; border: 0 none;
+color: #fff !important; font-size: 12px !important; font-weight: bold; height: 26px; padding: 5px 12px;    text-transform: none; white-space: nowrap;}
 .quote_details .form-list li input.input-text{width:370px;}
 .quote_details .form-list li input.street1{width:370px;}
 .quote_details .form-list li input.street2{float:right; }
@@ -57,7 +59,9 @@
 /*quote-comment-history*/
 .quote_details #quote-comment-history{margin-top:25px}
 .quote_details #quote-comment-history .head,#quote-comment-history li{border:1px solid #E2E2E2;}
-.quote_details #quote-comment-history .head{background-color:#EEEEEE;padding:8px 15px;}
+/*.quote_details #quote-comment-history .head{background-color:#EEEEEE;padding:8px 15px;}*/
+.quotation-quote-view #quote-comment-history h3.head {background-color: #eeeeee; border: 1px solid #d7d7d7;
+color: #000; margin: 0; padding: 10px; width: 100% !important; font-family:Arial; font-size:12px; font-weight:bold;}
 .quote_details #quote-comment-history li{border-top:none}
 
 .quote_details#quote-comment-history .comment-additional{background-color:#9FC01A}
@@ -84,7 +88,7 @@ button.downpdf span span:hover{text-decoration:none;}
 
 /**/
 #my-quotations-table tr{background:white url(../images/data_table_tr_bg.png) repeat-x 0 bottom; border:1px solid #999b9a;}
-#my-quotations-table  thead th{background-color: #999b9a; padding: 5px 12px; white-space: nowrap; height: 26px;  color: #fff;  border:0; font-weight:normal; text-transform:uppercase; border-right:1px solid #7e807f;}
+#my-quotations-table  thead th{background-color: #999b9a; padding: 5px 12px; white-space: nowrap; height: 26px;  color: #fff;  border:0; font-weight:bold; text-transform:uppercase; border-right:1px solid #7e807f;}
 #my-quotations-table tbody td{font-size:11px; padding:15px 12px; border:0; border:1px solid #d9dde3;}
 #my-quotations-table .view-link {color: #9EBF19;}
 
@@ -127,4 +131,11 @@ button.downpdf span span:hover{text-decoration:none;}
 .sales-order-invoice tr.customer-comment td.comment-additional {
     background-color: #747474;
     color: #fff;
+}
+
+.quote_details #quote-comment-history button {
+    background: url("../images/send_comments.jpg") no-repeat scroll center top rgba(0, 0, 0, 0);
+    float: right;
+    height: 30px;
+    width: 135px;
 }
