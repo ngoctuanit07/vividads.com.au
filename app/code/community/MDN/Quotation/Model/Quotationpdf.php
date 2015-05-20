@@ -3,7 +3,7 @@
 class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 
     protected $_settings;
-
+ 
     /**
      * Create PDF
      */
@@ -1831,6 +1831,8 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	 $ycolumn -= 35;
 	   ////adding Cheque Payment / Cash Payment text body block
 	 $_text = 'Payment can be made over the phone using your Master / Visa / Amex cards (3% surcharge on Amex only). Call \''.$quoteInfo['store_phone'].'\' (choose option Accounts).'; 
+	 $total_amount = strip_tags($total_amount);
+	 
 	 if($quote_type!='Quote'){	 
 		 $_text .='Reference ID: \''.$quote_id.'\' Total Due AUD \''.$total_amount.'\' .';
 	 }
@@ -1838,7 +1840,7 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	 
 	 $this->addBlockText($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-2, $this->_BLOC_ENTETE_LARGEUR, 75, 11, 14, $_block_text['type'] );  
 	   
-	 $ycolumn -= 105;
+	 $ycolumn -= 105; 
 	 
 	 
 	 

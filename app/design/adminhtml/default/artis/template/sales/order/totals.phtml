@@ -2,7 +2,7 @@
 /**
  * Magento
  *
- * NOTICE OF LICENSE
+ * NOTICE OF LICENSE  
  *
  * This source file is subject to the Academic Free License (AFL 3.0)
  * that is bundled with this package in the file LICENSE_AFL.txt.
@@ -234,9 +234,12 @@ if(strpos(Mage::helper('core/url')->getCurrentUrl(),'invoice'))
             <?php */?>     
                  <td colspan="50" ><?php echo $this->getChildHtml('billing_method') ?></td>
                </tr>
-          <tr>
+          <tr> 
                  
-                 <td colspan="50" style="text-align:center;"><button type="submit" name="submit" id="submit"  >Submit</button></td>
+                 <td colspan="50" style="text-align:center;">
+                 <!--<button type="button" onClick="validatePayment()" name="submit" id="submit"  >Submit</button>-->
+                 <button type="submit"  name="submit" id="submit"  >Submit</button>
+                 </td>
                </tr>
 
         </table>
@@ -332,6 +335,52 @@ function all_save(){
     xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/set_payment.php?amount="+amount+"&payment_type="+payment_type+"&date="+date+"&order_id="+order_id,true);
     xmlhttp.send(null);
 }
+
+
+/*****************************validate payment*********************************/
+
+
+function validatePayment(){
+	
+	var orderid = '<?php echo $this->getRequest()->getParam('order_id')?>';
+	var paymentvalidated = 1;
+	var formkey = '<?php echo Mage::getModel('core/session')->getFormKey();?>';
+	
+	var form_data = {
+					order_id:orderid,
+					payment_validated:paymentvalidated,
+					form_key:formkey,
+		};
+	
+	flag = 0;
+	
+	jQuery.ajax({
+		url:'<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/AdvancedStock/Misc/Savepayment/',
+		data:form_data,
+		type:'POST',		
+		beforeSend: function(data){
+			
+			},
+		success: function (resp){
+			 console.log(resp);
+			flag=1;	
+			//submitform(flag);
+			}	
+		
+		});
+					
+		return false;
+		
+	}
+	
+	function submitform(flag){
+		if(flag==1){
+			document.getElementById('edit_form').action = '<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/partialpayment/adminhtml_partialpayment/payment/';	
+			jQuery('form#edit_form').submit();			
+			}
+		}
+	
+
 /**************End Ajax**************/
 </script>
 

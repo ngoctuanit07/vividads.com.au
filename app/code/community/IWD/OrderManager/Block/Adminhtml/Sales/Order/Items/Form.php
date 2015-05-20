@@ -1,7 +1,7 @@
 <?php
 class IWD_OrderManager_Block_Adminhtml_Sales_Order_Items_Form extends Mage_Adminhtml_Block_Widget
 {
-    public function getSelectionAttributes($item)
+    public function getSelectionAttributes($item) 
     {
         if ($item instanceof Mage_Sales_Model_Order_Item) {
             $options = $item->getProductOptions();
@@ -9,7 +9,7 @@ class IWD_OrderManager_Block_Adminhtml_Sales_Order_Items_Form extends Mage_Admin
             $optionCollection = Mage::getModel('sales/quote_item_option')->getCollection()
                 ->addItemFilter(array($item->getId()))->addFieldToFilter('code', 'bundle_selection_attributes');
 
-            $options = unserialize($optionCollection->getFirstItem()->getValue());
+            $options = unserialize($optionCollection->getFirstItem()->getValue()); 
             $item->getProductOptions($options);
             return $options;
         } else {

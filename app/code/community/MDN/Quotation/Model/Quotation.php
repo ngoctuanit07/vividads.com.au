@@ -278,7 +278,7 @@ class MDN_Quotation_Model_Quotation extends Mage_Core_Model_Abstract {
                         ->addFieldToFilter('increment_id', array('like' => $prefix . '%'))
                         ->setOrder('increment_id', 'desc')
                         ->getFirstItem()
-        ;
+        			;
 
         $sequence = 1;
         if ($previous->getincrement_id()) {
@@ -288,10 +288,14 @@ class MDN_Quotation_Model_Quotation extends Mage_Core_Model_Abstract {
 
         $prefix .= sprintf('%04d', $sequence);
         
-        $prefix = mt_rand(200000000,100000000000);// 06_01_2014
-        $prefix = $this->checkid($prefix);
-       
-
+		$store_id = Mage::App()->getStore()->getStore_id();		
+		
+	    $strlen = strlen($store_id);		
+		$prefix = mt_rand(200000000,100000000000);// 06_01_2014
+		$prefix = substr($prefix, $strlen);		
+		$prefix = $store_id.$prefix;
+        $prefix = $this->checkid($prefix); 
+       	
         return $prefix;
     }
 

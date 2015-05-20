@@ -8,8 +8,8 @@ $orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true)
 $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
 ?>  
   
-<?php
-///5-12-2013 SOC
+<?php 
+///5-12-2013 SOC 
 if($this->getRequest()->getParam('shipment_id')){
     $partShipID=$this->getRequest()->getParam('shipment_id');
     $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');

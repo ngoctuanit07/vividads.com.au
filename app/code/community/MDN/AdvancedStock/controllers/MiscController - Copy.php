@@ -5,7 +5,7 @@ class MDN_AdvancedStock_MiscController extends Mage_Adminhtml_Controller_Action 
     /**
      * Display mass stock editor grid
      *
-     */  
+     */
     public function MassStockEditorAction() {
         $this->loadLayout();
         $this->renderLayout();
@@ -20,7 +20,7 @@ class MDN_AdvancedStock_MiscController extends Mage_Adminhtml_Controller_Action 
         $block = $this->getLayout()->createBlock('AdvancedStock/MassStockEditor_Grid');
         $this->getResponse()->setBody($block->toHtml());
     }
-
+ 
     /**
      * apply mass stock editor changes
      *
@@ -119,23 +119,20 @@ class MDN_AdvancedStock_MiscController extends Mage_Adminhtml_Controller_Action 
         //recupere les infos
         $orderId = $this->getRequest()->getParam('order_id');
         $value = $this->getRequest()->getParam('payment_validated');
-		
-		$data = array('orderid'=>$orderId, 'value'=>$value);
-		
+
         //Charge la commande et modifie
         $order = mage::getModel('sales/order')->load($orderId);
-		$order_validated = $order->getpayment_validated();
-		
+        $order->setpayment_validated($value)->save();
+        
         /********************* Start for update all module for order 12_03_2014 *******************************/
-        if($value == '1' && $order_validated !=1 )
+        if($value == '1')
         {
            // echo $value;
             $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
             $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
-      		
-			$order->setpayment_validated($value)->save();      
+            
             //Start 03_03_2014
-	        $invoice = $order->prepareInvoice();
+	    $invoice = $order->prepareInvoice();
             
             $invoice->register();
             Mage::getModel('core/resource_transaction')
