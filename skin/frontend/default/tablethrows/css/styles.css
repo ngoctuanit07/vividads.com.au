@@ -276,13 +276,14 @@ ul, ol {
 .main-container {
 	width: 1100px;
 	margin: 0px auto;
+	background-color:#f0f2f3;
 }
 .main {
 	margin: 18px auto 0px auto;
 
 }
 /* Base Columns */
-.col-left {
+.col-left {	
 	float: left;
 	width: 222px;
 }
