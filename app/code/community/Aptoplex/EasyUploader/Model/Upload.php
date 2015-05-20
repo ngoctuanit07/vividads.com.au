@@ -11,7 +11,7 @@ class Aptoplex_EasyUploader_Model_Upload extends Mage_Core_Model_Abstract {
         $this->_init('aptoplex_easyuploader/upload');
     }
 
-    protected function _beforeSave() {  
+    protected function _beforeSave() {    
         parent::_beforeSave();
         return $this; 
     }

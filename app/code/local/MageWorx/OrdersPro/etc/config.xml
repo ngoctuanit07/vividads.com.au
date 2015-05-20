@@ -10,7 +10,7 @@
  * It is also available through the world-wide-web at this URL:
  * http://www.mageworx.com/LICENSE-1.0.html
  *
- * DISCLAIMER
+ * DISCLAIMER 
  *
  * Do not edit or add to this file if you wish to upgrade the extension
  * to newer versions in the future. If you wish to customize the extension
@@ -119,7 +119,7 @@
             </orderspro>
             <adminhtml>
                 <rewrite>
-                    <sales_order_grid>MageWorx_Adminhtml_Block_Orderspro_Sales_Order_Grid</sales_order_grid>
+                    <!--<sales_order_grid>MageWorx_Adminhtml_Block_Orderspro_Sales_Order_Grid</sales_order_grid>-->
                     <sales_order_view>MageWorx_Adminhtml_Block_Orderspro_Sales_Order_View</sales_order_view>
                     <sales_order_view_history>MageWorx_Adminhtml_Block_Orderspro_Sales_Order_View_History</sales_order_view_history>
                     <customer_edit_tab_orders>MageWorx_Adminhtml_Block_Orderspro_Customer_Edit_Tab_Orders</customer_edit_tab_orders>

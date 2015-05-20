@@ -1,7 +1,7 @@
 <?php
 class IWD_OrderManager_Model_Order_Converter extends Mage_Core_Model_Abstract
 {
-    private $quote;
+    private $quote; 
 
     public function convertOrderToQuote($order_id)
     {
@@ -11,7 +11,7 @@ class IWD_OrderManager_Model_Order_Converter extends Mage_Core_Model_Abstract
         $this->assignCustomerToQuote($order);
         $this->assignStoreToQuote($order);
 
-        $this->quote->save();
+        $this->quote->save(); 
 
         $this->assignAddressesToQuote($order);
         $this->quote->setIsActive(0);

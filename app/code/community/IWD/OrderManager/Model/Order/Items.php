@@ -1,10 +1,10 @@
 <?php
 class IWD_OrderManager_Model_Order_Items extends Mage_Sales_Model_Order_Item
 {
-    protected $params;
+    protected $params; 
 	
 	
-
+ 
     public function updateOrderItems($params)  
     {
         $this->init($params);

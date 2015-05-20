@@ -16,7 +16,7 @@ abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_
     public $pdf;
     protected $firstPageIndex = 0;  
 	 
-
+ 
     /**
      * Draw logo
      *
