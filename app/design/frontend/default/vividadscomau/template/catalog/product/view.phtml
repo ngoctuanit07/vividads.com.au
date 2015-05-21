@@ -357,6 +357,131 @@ jQuery('.right_float').bxSlider({
               <?php if ($_product->getDescription()):?>
               <div class="std"   style="margin-top:5px;"> <?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?> </div>
               <?php endif;?>
+				 
+            <?php $flag =0;
+			
+			$attributes_array =array( 'economic_heading',
+									  'economic_desc',
+									  'quick_heading',
+									  'quick_desc',
+									  'light_heading',
+									  'light_desc',
+									  'env_heading',
+									  'env_desc',
+									  'warranty_heading',
+									  'warranty_desc');
+				foreach ($attributes_array as $attrib){
+					$attr = $_product->getData($attrib);
+					if($attr){
+						$flag =1;
+						}
+					} 
+
+			
+			?>
+            <?php if ($flag ==1){?>
+            <div class="attribute-section">
+           	
+            <div class="attrib-eco">
+             <div class="attrib-heading"><h1><span>
+			 <?php $economic_heading = $_product->getData('economic_heading'); ?>
+                <?php if ($economic_heading==0){
+					echo "Economic & affordable ";
+					}else{
+						echo $economic_heading;
+					}
+					?>
+				
+                </span></h1></div>
+             <div class="attrib_des"><p>
+             <?php $economic_desc = $_product->getData('economic_desc')?>
+             <?php if ($economic_desc !=null){
+				 echo $economic_desc;
+				 }else{
+				 echo "Economic & affordable";
+					 }?>
+				 
+             
+             
+             </p></div>
+            </div>
+            
+            <div class="attrib-q">
+             <div class="attrib-heading"><h1><span>
+             			 <?php $quick_heading = $_product->getData('quick_heading'); ?>
+                <?php if ($quick_heading !=null){
+					echo $quick_heading;
+					}else{
+						echo "Quick & convenient ";
+					}
+					?>
+
+             </span></h1></div>
+             <div class="attrib_des"><p>
+              <?php $quick_desc = $_product->getData('quick_desc')?>
+             <?php if ($quick_desc !=null){
+				 echo $quick_desc;
+				 }else{
+				 echo "Quick & convenient";
+					 }?>
+				 
+             </p></div>
+            </div>
+        	  <div class="attrib-w">
+             <div class="attrib-heading"><h1><span>
+             <?php $light_heading = $_product->getData('light_heading')?>
+             <?php if ($light_heading !=null){
+				 echo $light_heading;
+				 }else{echo ('Light Weight & Mobile');}?>
+				 
+             
+             
+             </span></h1></div>
+             <div class="attrib_des"><p>
+             <?php $light_desc = $_product->getData('light_desc')?>
+             <?php if($light_desc !=null){
+				 echo $light_desc ;
+				 }else {echo "Light Weight & Mobile";}?>
+             
+             </p></div>
+            </div>
+            <div class="attrib-e">
+             <div class="attrib-heading"><h1><span>
+             <?php 
+			 $env_heading = $_product->getData('env_heading')?>
+             <?php if ($env_heading != null)
+			 {echo $env_heading;}
+			 else{echo "Enviroment Friendly";}
+			 ?>
+             
+             </span></h1></div>
+             <div class="attrib_des"><p>  <?php 
+			 $env_desc = $_product->getData('env_desc')?>
+             <?php if ($env_desc != null)
+			 {echo $env_desc;}
+			 else{echo "Enviroment Friendly";}
+			 ?></p></div>
+            </div>
+            <div class="attrib-war">
+             <div class="attrib-heading"><h1><span><?php 
+			 $warranty_heading = $_product->getData('warranty_heading');
+			 if ($warranty_heading !=null){
+				 echo $warranty_heading;
+				 }
+				 else {echo "Warranty & LIfetime";}
+			 
+			 ?></span></h1></div>
+             <div class="attrib_des"><p><?php 
+			 $warranty_desc = $_product->getData('warranty_desc')?>
+             <?php if ($warranty_desc != null)
+			 {echo $warranty_desc;}
+			 else{echo "Warranty & LIfetime";}
+			 ?></p></div>
+            </div>
+           </div>
+           <?php }?>
+    
+           
               <div class="text-wrapper" style="border-top:1px solid #5bbf21; margin-top:20px;"> <img alt="" src="<?php echo $this->getSkinUrl()?>images/low-price.png" class="left">
                 <div class="right"> <span class="title"><?php echo $this->__('Low-Price Guarantee')?></span>
                   <p class="content"><?php echo $this->__('We are indeed confident, and committed to ascertaining that you find the best 
