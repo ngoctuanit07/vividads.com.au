@@ -381,103 +381,98 @@ jQuery('.right_float').bxSlider({
 			?>
             <?php if ($flag ==1){?>
             <div class="attribute-section">
-           	
+		<?php $economic_heading = $_product->getData('economic_heading'); ?>
+        <?php if ($economic_heading !=null){?>
             <div class="attrib-eco">
              <div class="attrib-heading"><h1><span>
-			 <?php $economic_heading = $_product->getData('economic_heading'); ?>
-                <?php if ($economic_heading==0){
-					echo "Economic & affordable ";
-					}else{
-						echo $economic_heading;
-					}
+                <?php  
+					echo $economic_heading	;
+				 
 					?>
 				
                 </span></h1></div>
              <div class="attrib_des"><p>
              <?php $economic_desc = $_product->getData('economic_desc')?>
-             <?php if ($economic_desc !=null){
+             <?php 
 				 echo $economic_desc;
-				 }else{
-				 echo "Economic & affordable";
-					 }?>
+				   ?>
 				 
              
              
              </p></div>
             </div>
-            
+      <?php }?>
+      <?php $quick_heading = $_product->getData('quick_heading'); ?>
+            <?php if ($quick_heading !=null){?>
             <div class="attrib-q">
              <div class="attrib-heading"><h1><span>
-             			 <?php $quick_heading = $_product->getData('quick_heading'); ?>
-                <?php if ($quick_heading !=null){
+             			 
+                <?php 
 					echo $quick_heading;
-					}else{
-						echo "Quick & convenient ";
-					}
+					 
 					?>
 
              </span></h1></div>
              <div class="attrib_des"><p>
               <?php $quick_desc = $_product->getData('quick_desc')?>
-             <?php if ($quick_desc !=null){
-				 echo $quick_desc;
-				 }else{
-				 echo "Quick & convenient";
-					 }?>
+             <?php  				 echo $quick_desc;
+				   ?>
 				 
              </p></div>
             </div>
+            <?php }?>
+            
+             <?php $light_heading = $_product->getData('light_heading')?>
+             <?php if($light_heading !=null){?>
         	  <div class="attrib-w">
              <div class="attrib-heading"><h1><span>
-             <?php $light_heading = $_product->getData('light_heading')?>
-             <?php if ($light_heading !=null){
+            
+             <?php  
 				 echo $light_heading;
-				 }else{echo ('Light Weight & Mobile');}?>
+				  ?>
 				 
              
              
              </span></h1></div>
              <div class="attrib_des"><p>
              <?php $light_desc = $_product->getData('light_desc')?>
-             <?php if($light_desc !=null){
+             <?php  
 				 echo $light_desc ;
-				 }else {echo "Light Weight & Mobile";}?>
+				  ?>
              
              </p></div>
             </div>
-            <div class="attrib-e">
-             <div class="attrib-heading"><h1><span>
+            <?php }?>
              <?php 
 			 $env_heading = $_product->getData('env_heading')?>
-             <?php if ($env_heading != null)
-			 {echo $env_heading;}
-			 else{echo "Enviroment Friendly";}
+             <?php if($env_heading !=null){?>
+            <div class="attrib-e">
+             <div class="attrib-heading"><h1><span>
+            
+             <?php 
+			  echo $env_heading 
 			 ?>
              
              </span></h1></div>
              <div class="attrib_des"><p>  <?php 
 			 $env_desc = $_product->getData('env_desc')?>
-             <?php if ($env_desc != null)
-			 {echo $env_desc;}
-			 else{echo "Enviroment Friendly";}
-			 ?></p></div>
+             <?php echo $env_desc;?></p></div>
             </div>
+            <?php }?>
+            <?php  $warranty_heading = $_product->getData('warranty_heading');
+			if($warranty_heading !=null){
+			?>
             <div class="attrib-war">
              <div class="attrib-heading"><h1><span><?php 
-			 $warranty_heading = $_product->getData('warranty_heading');
-			 if ($warranty_heading !=null){
+						 
 				 echo $warranty_heading;
-				 }
-				 else {echo "Warranty & LIfetime";}
-			 
 			 ?></span></h1></div>
              <div class="attrib_des"><p><?php 
 			 $warranty_desc = $_product->getData('warranty_desc')?>
-             <?php if ($warranty_desc != null)
-			 {echo $warranty_desc;}
-			 else{echo "Warranty & LIfetime";}
-			 ?></p></div>
+             <?php  echo $warranty_desc	 ?>
+             </p></div>
             </div>
+            <?php }?>
            </div>
            <?php }?>
     
