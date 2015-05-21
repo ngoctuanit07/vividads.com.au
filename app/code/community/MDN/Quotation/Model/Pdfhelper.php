@@ -57,7 +57,7 @@ abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_
         return $retour;
     }
 
-    /**
+    /** 
      * Draw multiline text and return total height
      */
     protected function DrawMultilineText($page, $Text, $x, $y, $Size, $GrayScale, $LineHeight) {

@@ -294,7 +294,7 @@ class MDN_Quotation_Model_Quotation extends Mage_Core_Model_Abstract {
 		$prefix = mt_rand(200000000,100000000000);// 06_01_2014
 		$prefix = substr($prefix, $strlen);		
 		$prefix = $store_id.$prefix;
-        $prefix = $this->checkid($prefix); 
+        $prefix = $this->checkid($prefix);  
        	
         return $prefix;
     }

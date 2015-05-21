@@ -128,7 +128,7 @@ class MDN_AdvancedStock_Model_Sales_Order extends Mage_Sales_Model_Order {
     }
 
     /**
-     * 
+     *  
      *
      */
     protected function _beforeSave() {
