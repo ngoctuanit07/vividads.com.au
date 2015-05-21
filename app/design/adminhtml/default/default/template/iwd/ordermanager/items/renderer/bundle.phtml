@@ -3,7 +3,10 @@
  * @see Mage_Bundle_Block_Adminhtml_Sales_Order_View_Items_Renderer
  */
 ?>
-<?php $_item = $this->getItem() ?>
+<?php $_item = $this->getItem();
+?>
+
+
 <?php $items = array_merge(array($_item), $_item->getChildrenItems()); ?>
 <?php $_count = count($items) ?>
 <?php $_index = 0 ?>
@@ -17,6 +20,10 @@
 <?php endif; ?>
 
 <?php foreach ($items as $_item): ?>
+<?php 
+		//Zend_debug::dump($_item->getData());
+?>
+
     <?php $this->setPriceDataObject($_item) ?>
     <?php $attributes = $this->getSelectionAttributes($_item) ?>
     <?php if ($_item->getParentItem()): ?>

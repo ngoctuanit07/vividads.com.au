@@ -3,7 +3,7 @@ class IWD_OrderManager_Adminhtml_Sales_OrderrController extends Mage_Adminhtml_C
 {
     /* delete order */
     public function deleteAction() 
-    { 
+    {  
         $redirect = $this->getRequest()->getParam('redirect');
         $redirect = (empty($redirect)) ? "*/sales_order/index" : "*/{$redirect}/index";
 

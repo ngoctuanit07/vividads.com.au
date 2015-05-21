@@ -371,7 +371,7 @@
     </adminhtml>
     
     <default>
-        <mageworx_sales>
+        <mageworx_sales> 
             <orderspro>
                 <enabled>1</enabled>
                 <enable_orders_edition>1</enable_orders_edition>                

@@ -12,7 +12,7 @@ class IWD_OrderManager_Block_Adminhtml_Sales_Order_Items_Form extends Mage_Admin
             $options = unserialize($optionCollection->getFirstItem()->getValue()); 
             $item->getProductOptions($options);
             return $options;
-        } else {
+        } else { 
             $options = $item->getOrderItem()->getProductOptions();  
         }
 
