@@ -10,7 +10,7 @@ class IWD_OrderManager_Model_Order_Grid extends Mage_Adminhtml_Block_Widget_Grid
     const XML_PATH_ORDER_GRID_FIX_HEADER = 'iwd_ordermanager/grid_order/fix_table_header';
     const XML_PATH_ORDER_GRID_STATUS_COLOR = 'iwd_ordermanager/grid_order/status_color';
 
-
+ 
     private $collection;
 
     public function isLimitPeriod()
@@ -270,6 +270,9 @@ class IWD_OrderManager_Model_Order_Grid extends Mage_Adminhtml_Block_Widget_Grid
             'shipping_street' => $helper->__('Ship - Street'),
             'shipping_postcode' => $helper->__('Ship - Postcode'),
             'shipping_telephone' => $helper->__('Ship - Phone'),
+			
+			/*Messages to add */
+			'order_messages'=>$helper->__('Messages'),
 
             /*** actions ***/
             'action' => $helper->__('Action'),
@@ -282,14 +285,19 @@ class IWD_OrderManager_Model_Order_Grid extends Mage_Adminhtml_Block_Widget_Grid
         if ($selected_columns === null) {
             $selected_columns = $this->getSelectedColumnsArray(self::XML_PATH_ORDER_GRID_COLUMN);
         }
+		
 
         $order_columns = $this->prepareGridColumns();
 
         foreach ($selected_columns as $column) {
-            if (isset($order_columns[$column])) {
+            
+			
+			if (isset($order_columns[$column])) {
                 $grid->addColumn($column, $order_columns[$column]);
             }
         }
+		
+		  
 
         return $grid;
     }
@@ -523,6 +531,7 @@ class IWD_OrderManager_Model_Order_Grid extends Mage_Adminhtml_Block_Widget_Grid
             ),
 
             'billing_street' => array(
+
                 'header' => $helper->__('Bill Street'),
                 'index' => 'billing_street',
                 'filter_index' => 'bill.street',
@@ -639,7 +648,21 @@ class IWD_OrderManager_Model_Order_Grid extends Mage_Adminhtml_Block_Widget_Grid
                 'width' => '300px',
                 'renderer' => new IWD_OrderManager_Block_Adminhtml_Sales_Order_Grid_Renderer_Removetags('order_comment'),
             ),
+			
+			 'order_messages'=> array(
+                        'header'=> Mage::helper('sales')->__('Messages'),
+                        'width' => '80px',
+                        'type'  => 'options',
+						'options'=> array( 1=>'New Messages'),                      
+					    'index'=>'entity_id',
+						'width'=>'200',
+						'align' => 'center',
+						'renderer'  => 'mageworx/orderspro_sales_order_grid_renderer_Messages',
+                    ),
+			
         );
+		
+		
 
         if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
             $columns['action'] = array(

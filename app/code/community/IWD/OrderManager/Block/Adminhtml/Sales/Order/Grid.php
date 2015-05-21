@@ -15,16 +15,19 @@ class IWD_OrderManager_Block_Adminhtml_Sales_Order_Grid extends Mage_Adminhtml_B
         Mage_Adminhtml_Block_Widget_Grid::_prepareCollection();
         return $this;
     }
-
+ 
     protected function _prepareColumns()
     {
+		
+		//Zend_debug::dump($this->getTotals());
+		//exit;
         if (!Mage::helper("iwd_ordermanager")->enableCustomGrid()) {
             return parent::_prepareColumns();
         } else {
             $helper = Mage::helper('iwd_ordermanager');
             $grid = Mage::getModel('iwd_ordermanager/order_grid')->prepareColumns($this);
             $grid = Mage::getModel('iwd_ordermanager/order_grid')->addHiddenColumnWithStatus($grid);
-
+			
             $grid->addRssList('rss/order/new', $helper->__('New Order RSS'));
             $grid->addExportType('*/*/exportCsv', $helper->__('CSV'));
             $grid->addExportType('*/*/exportExcel', $helper->__('Excel XML'));

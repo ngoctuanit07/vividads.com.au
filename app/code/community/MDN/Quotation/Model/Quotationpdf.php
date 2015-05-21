@@ -3,7 +3,7 @@
 class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 
     protected $_settings;
-
+ 
     /**
      * Create PDF
      */
@@ -450,7 +450,6 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
         if ($quote->hasBusinessProposal()) {
 
             $page = $this->NewPage($settings, $quoteInfo);
-
             // main page
             $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 32);
             $this->drawTextInBlock($page, $title, 0, $this->_PAGE_WIDTH / 2 + 50, $this->_PAGE_WIDTH - 80, 50, 'c');
@@ -639,6 +638,11 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
            //  $this->drawProductTableHeader($page, $quoteInfo);
        // }
 		
+		 if ($ycolmn < ($this->_BLOC_FOOTER_HAUTEUR + 180)) {                   
+                     $page = $this->NewPage($settings, $quoteInfo);
+					 $this->y -=60;	
+                }
+		
 		 $this->y -= 15;
 	
 		$page->setFillColor(Zend_Pdf_Color_Html::color('#e2ecf0'));
@@ -651,7 +655,10 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
        // $page->setLineColor(Zend_Pdf_Color_Html::color('#DCDCDC'));
         // $page->drawRectangle(21, $this->y-25, 269, $this->y);
         
-        if($quote->getFree_shipping() !=1){
+        
+		
+		
+		if($quote->getFree_shipping() !=1){
 			$carrierTitle =  end(explode('_',$quote->getShippingMethod()));
 			$ship = Mage::getStoreConfig('carriers/'.$carrierTitle.'/title');
 		}else{
@@ -664,12 +671,13 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		
 		if($quote->getMessage() !=''){
 			$ycolumn = $this->y;		
-		$customer_comments =$quote->getMessage();		
-		$ycolumn -= 60 ;
-		$_block_text = array('text'=>$customer_comments,'bgcolor'=>'#dceff6', 'fcolor'=>'#000000','type'>='single');	 
-	 	$this->addBlockTextComments($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-6, 300, 90, 10, 14, $_block_text['type'] );  
+			$customer_comments =$quote->getMessage();		
+			$ycolumn -= 60 ;
+			$_block_text = array('text'=>$customer_comments,'bgcolor'=>'#dceff6', 'fcolor'=>'#000000','type'>='single');	 
+			$this->addBlockTextComments($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-6, 300, 90, 10, 14, $_block_text['type'] );  
 		}
-	 
+	
+	 ///end of shipping
 	
 	 if($quoteInfo['quote_type']=='quote'){
          
@@ -1427,7 +1435,13 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
      */
     protected function drawOrderTotals($page, $quote, $quoteInfo='') {
 
-         
+        /*
+		 if ($ycolmn < ($this->_BLOC_FOOTER_HAUTEUR + 180)) {                   
+                     $page = $this->NewPage($settings, $quoteInfo);
+					 $this->y -=40;	
+                }
+				*/
+		 
 		$ycolumn = $this->y+25;
 		
 		
@@ -1515,7 +1529,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
         
         //$this->drawTextInBlock($page, $quote->FormatPrice($quote->getPriceHt()+$quote->getShippingRate()), $this->_PAGE_WIDTH / 2 + 40, $this->y, $this->_PAGE_WIDTH / 2, 40, 'r');
 	
-	//$target = Zend_Pdf_Action_URI :: create( 'http://example.com' );	
+	    //$target = Zend_Pdf_Action_URI :: create( 'http://example.com' );	
 		
 		/*
 		$target = Zend_Pdf_Action_URI :: create( 'http://example.com' );
@@ -1831,6 +1845,8 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	 $ycolumn -= 35;
 	   ////adding Cheque Payment / Cash Payment text body block
 	 $_text = 'Payment can be made over the phone using your Master / Visa / Amex cards (3% surcharge on Amex only). Call \''.$quoteInfo['store_phone'].'\' (choose option Accounts).'; 
+	 $total_amount = strip_tags($total_amount);
+	 
 	 if($quote_type!='Quote'){	 
 		 $_text .='Reference ID: \''.$quote_id.'\' Total Due AUD \''.$total_amount.'\' .';
 	 }
@@ -1838,7 +1854,7 @@ Bank Address :  156 Bay Street,Port Melbourne,Victoria Australia.
 	 
 	 $this->addBlockText($page, $_block_text['text'], $_block_text['bgcolor'], $_block_text['fcolor'], 10, $ycolumn-2, $this->_BLOC_ENTETE_LARGEUR, 75, 11, 14, $_block_text['type'] );  
 	   
-	 $ycolumn -= 105;
+	 $ycolumn -= 105; 
 	 
 	 
 	 

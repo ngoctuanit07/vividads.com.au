@@ -5,7 +5,7 @@ class MDN_AdvancedStock_MiscController extends Mage_Adminhtml_Controller_Action 
     /**
      * Display mass stock editor grid
      *
-     */
+     */  
     public function MassStockEditorAction() {
         $this->loadLayout();
         $this->renderLayout();
@@ -119,20 +119,23 @@ class MDN_AdvancedStock_MiscController extends Mage_Adminhtml_Controller_Action 
         //recupere les infos
         $orderId = $this->getRequest()->getParam('order_id');
         $value = $this->getRequest()->getParam('payment_validated');
-
+		
+		$data = array('orderid'=>$orderId, 'value'=>$value);
+		
         //Charge la commande et modifie
         $order = mage::getModel('sales/order')->load($orderId);
-        $order->setpayment_validated($value)->save();
-        
+		$order_validated = $order->getpayment_validated();
+		
         /********************* Start for update all module for order 12_03_2014 *******************************/
-        if($value == '1')
+        if($value == '1' && $order_validated !=1 )
         {
            // echo $value;
             $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
             $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
-            
+      		
+			$order->setpayment_validated($value)->save();      
             //Start 03_03_2014
-	    $invoice = $order->prepareInvoice();
+	        $invoice = $order->prepareInvoice();
             
             $invoice->register();
             Mage::getModel('core/resource_transaction')
@@ -540,9 +543,11 @@ class MDN_AdvancedStock_MiscController extends Mage_Adminhtml_Controller_Action 
 
         //Confirme
         Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Payment state updated'));
-
+		$output = 1;
+		echo $output;			   
+		return $output;
         //redirige
-        $this->_redirect('adminhtml/sales_order/view', array('order_id' => $orderId));
+       // $this->_redirect('adminhtml/sales_order/view', array('order_id' => $orderId));
     }
     
       /***************************** Add custom function ***********************************/

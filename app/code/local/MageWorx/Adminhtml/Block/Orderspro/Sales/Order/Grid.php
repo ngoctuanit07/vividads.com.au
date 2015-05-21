@@ -14,7 +14,7 @@
  * Do not edit or add to this file if you wish to upgrade the extension
  * to newer versions in the future. If you wish to customize the extension
  * for your needs please refer to http://www.mageworx.com/ for more information
- *
+ * 
  * @category   MageWorx
  * @package    MageWorx_OrdersPro
  * @copyright  Copyright (c) 2013 MageWorx (http://www.mageworx.com/)

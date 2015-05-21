@@ -4,7 +4,7 @@ class IWD_OrderManager_Block_Adminhtml_Sales_Order_Total_Tax extends Mage_Adminh
     public function getFullTaxInfo()
     {
         /** @var $source Mage_Sales_Model_Order */
-        $source = $this->getOrder();  
+        $source = $this->getOrder();   
 
         $taxClassAmount = array();
         if ($source instanceof Mage_Sales_Model_Order) {
@@ -17,6 +17,6 @@ class IWD_OrderManager_Block_Adminhtml_Sales_Order_Total_Tax extends Mage_Adminh
                 $taxClassAmount = array_merge($shippingTax, $taxClassAmount);
             }
         }
-        return $taxClassAmount;
+        return $taxClassAmount; 
     }
 }
