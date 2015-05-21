@@ -2,7 +2,7 @@
 /**
  * Magento
  *
- * NOTICE OF LICENSE
+ * NOTICE OF LICENSE    
  *
  * This source file is subject to the Academic Free License (AFL 3.0)
  * that is bundled with this package in the file LICENSE_AFL.txt.
@@ -19,10 +19,11 @@
  * needs please refer to http://www.magentocommerce.com for more information.
  *
  * @category    design
- * @package     base_default
+ * @package     base_default 
  * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
+  
 ?>
 <?php /** @var $this Mage_Sales_Block_Order_Info 
 <link href="<?php echo $this->getSkinUrl('css/invoices.css')?>" rel="stylesheet" type="text/css" />*/ ?>
@@ -53,7 +54,7 @@
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 <div class="page-title title-buttons" >
 
-    <h1 style="padding:0px; text-align:left; width:100%;">
+    <h1 style="padding:0px; text-align:left; width:88%;">
     <?php echo $orderLabel.$this->__(' %s - %s ', $_order->getRealOrderId(), $_order->getStatusLabel()) ?></h1>    
 	<?php echo $this->getChildHtml('buttons') ?>
 </div>
@@ -72,8 +73,9 @@ if($msg){
 ////28-4-2014 E
 ?>
 <div id="quote-comment-history" style="padding-bottom: 32px;">
-    	<h3 class="head" id="discuss">
-    	<?php echo $this->__('Discussion About Your Order')?>    	<!--<a href="javascript:location.reload(true)" style="float:right"><img src="<?php echo $this->getSkinUrl()?>images/refresh-btn.png"></a>-->
+    	<h3 class="head" id="discuss" style="font-size:16px; font-stretch:condensed; font-family:Arial;">
+    	<?php echo $this->__('Discussion About Your Order')?>    	
+        <!--<a href="javascript:location.reload(true)" style="float:right"><img src="<?php echo $this->getSkinUrl()?>images/refresh-btn.png"></a>-->
     	</h3>
     	    	<ul class="comment-list" id="commentlist">
     		    		   
@@ -85,7 +87,7 @@ if($msg){
     $sqlHistorySystem = $connectionRead->select()
 				->from($tableHistory, array('*'))
 				->where("parent_id = '".$_order->getId()."' AND comment != 'Created'")
-				->order('entity_id ASC');
+				->order('entity_id DESC');
     try {
     $chkSystem = $connectionRead->query($sqlHistorySystem);
     $fetchHistory = $chkSystem->fetchall();
@@ -96,8 +98,10 @@ if($msg){
    $i=1;
     foreach($fetchHistory as $history)
     {
+		    $storeTimezone = new DateTimeZone(Mage::getStoreConfig('general/locale/timezone'));
+			$storenewDateTime = new DateTime($history['qh_date'], $storeTimezone);
 //		var_dump($history);
-    ?> 			    			<li class="clearer <?php if($i%2==0)echo 'even';else echo 'odd';?>">
+    ?> 			<li class="clearer <?php if($i%2==0)echo 'even';else echo 'odd';?>">
     				<table width="100%">
     				<tbody>
     				<tr class="customer-comment">
@@ -117,12 +121,15 @@ if($msg){
 			    						    		</td>
  					<?php } else { ?>
 			    		<td class="comment-additional" width="35%" style="padding:10px 22px;">
-			    			<?php echo date_format(date_create($history['created_at']), 'm/d/Y H:i A');?></td>
+			    			<?php // echo date_format(date_create($history['created_at']), 'm/d/Y H:i A');
+							echo Mage::app()->getLocale()->date($history['created_at'])->toString($format);
+							
+							?></td>
 			    		
-			    		<td class="comment-content" style="padding:10px 22px">
-			    			<?php echo nl2br($history['comment']);?>
+			    		<td class="comment-content" style="padding:10px 22px">  
+			    			<?php echo nl2br($history['comment']);?>    
 			    						    		</td>
-
+ 
                     
                     <?php } ?>                                                   
 		    		</tr>
@@ -138,9 +145,9 @@ if($msg){
     	<script type="text/javascript">decorateGeneric($$('ul.comment-list li'), ['odd','even'])</script>
     	    	
     		
-	    	<textarea rows="5" cols="20" style="width:98%;height:68px; resize:none; margin-bottom:5px; margin-top:5px; background-color:white;" class="required-entry" name="history[comment]" id="history"></textarea>
-	    	
-	    	<button type="submit" title="Submit Comment" class="submit button submit-comment" id="submit-comment-button" value="Submit Comment" onclick="addcomment();"><span><span style="color:#fff;">Submit Comment</span></span></button>
+	    	<textarea rows="5" cols="20" style="width:100%;height:68px; resize:none; margin-bottom:5px; margin-top:5px; background-color:white;" class="required-entry" name="history[comment]" id="history"></textarea>
+	    	<div style="margin:10px; float:right; margin-right:0px;">
+	    	<button type="submit" title="Submit Comment" class="submit button submit-comment" id="submit-comment-button" value="Submit Comment" onclick="addcomment();"><span><span style="color:#fff;">Send Comments</span></span></button></div>
 	    	<script type="text/javascript">
 	    		var commentHistoryFrom = new VarienForm('comment-form');
 			

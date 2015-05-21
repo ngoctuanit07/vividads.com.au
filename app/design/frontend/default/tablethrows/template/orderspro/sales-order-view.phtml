@@ -101,3 +101,140 @@
         <p class="back-link"><a href="<?php echo $this->getBackUrl() ?>"><small>&laquo; </small><?php echo $this->__('Back to My Orders') ?></a></p>
     </div>
 </div>
+<script type="text/javascript">
+
+    function changeContent(type)
+
+    {
+
+	if(type == 'inhanddate')
+
+	{
+
+	    document.getElementById('quote-edit-inhanddate').style.display = 'block';
+
+	    document.getElementById('quote-inhanddate').style.display = 'none';
+
+	}
+
+	else if(type == 'shipping_method')
+
+	{
+
+	    document.getElementById('quote-edit-shipping_method').style.display = 'block';
+
+	    document.getElementById('quote-shipping_method').style.display = 'none';
+
+	}
+
+	else if(type == 'billing_address')
+
+	{
+
+	    document.getElementById('quote-edit-billing_address').style.display = 'block';
+
+	    document.getElementById('quote-billing_address').style.display = 'none';
+
+	    document.getElementById('is_bill').value = 1;
+
+	}
+
+	else if(type == 'shipping_address')
+
+	{
+
+	    document.getElementById('quote-edit-shipping_address').style.display = 'block';
+
+	    document.getElementById('quote-shipping_address').style.display = 'none';
+
+	    document.getElementById('is_ship').value = 1;
+
+	}
+
+    }
+
+    function same_billing1(check)
+
+    {
+
+	if(check)
+
+	{
+
+	   document.getElementById('edit_shipping:telephone').value = document.getElementById('edit_billing:telephone').value;
+
+	   document.getElementById('edit_shipping:postcode').value = document.getElementById('edit_billing:postcode').value;
+
+	   document.getElementById('edit_shipping:city').value = document.getElementById('edit_billing:city').value;
+
+	   document.getElementById('edit_shipping:street1').value = document.getElementById('edit_billing:street1').value;
+
+	   document.getElementById('edit_shipping:street2').value = document.getElementById('edit_billing:street2').value;
+
+	   var idx1= document.getElementById('edit_billing:country_id').selectedIndex;
+
+	   var idx2= document.getElementById('edit_billing:region_id').selectedIndex;
+
+	   document.getElementById('edit_shipping:region_id').options[idx2].selected = true;
+
+	   document.getElementById('edit_shipping:country_id').options[idx1].selected = true;
+
+	}
+
+     }
+
+    function printDiv()
+
+    {
+
+	    document.getElementById('comment-form').style.display = 'none';
+
+	    document.getElementById('print-head').style.display = 'block';
+
+	    var elements = document.getElementsByTagName('button');
+
+	    for(var i = 0, length = elements.length; i < length; i++) {
+
+	    elements[i].style.display = 'none';
+
+	    }
+
+	    var elements1 = document.getElementsByClassName('col2-set generic-box');
+
+	    for(var i = 0, length = elements1.length; i < length; i++) {
+
+	    elements1[i].style.display = 'none';
+
+	    }
+
+	    var divToPrint=document.getElementById('quote_details');
+
+	    //var divToPrint2=document.getElementById('details');
+
+	    newWin= window.open("");
+
+	    newWin.document.write(divToPrint.outerHTML);
+
+	    newWin.print();
+
+	    newWin.close();
+
+	    document.getElementById('comment-form').style.display = 'block';
+
+	    for(var i = 0, length = elements.length; i < length; i++) {
+
+	    elements[i].style.display = '';
+
+	    }
+
+	    for(var i = 0, length = elements1.length; i < length; i++) {
+
+	    elements1[i].style.display = '';
+
+	    }
+
+	    document.getElementById('print-head').style.display = 'none';
+
+    } 
+
+</script>

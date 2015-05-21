@@ -71,8 +71,8 @@
             <?php if($type == '') {?>
             <td><span class="nobr"><?php echo $this->formatDate($_order->getCreatedAtStoreDate()) ?></span></td>
             <td><?php echo $_order->getShippingAddress() ? $this->htmlEscape($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
-            <?php/*?><td><?php echo $_order->formatPrice($_order->getGrandTotal()) ?></td><?php */?>
-            <?php/*?><td><em><?php echo $_order->getStatusLabel() ?></em></td><?php*/?>
+            <?php /*?><td><?php echo $_order->formatPrice($_order->getGrandTotal()) ?></td><?php */?>
+            <?php /*?><td><em><?php echo $_order->getStatusLabel() ?></em></td><?php*/?>
             <?php }?>
             <td class="a-center">
                 <span class="nobr"><a href="<?php echo $this->getViewUrl($_order).'roottype/invoice'; ?>"><?php echo $this->__('View Invoice') ?></a>

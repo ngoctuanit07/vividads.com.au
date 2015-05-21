@@ -57,7 +57,7 @@ color: #fff !important; font-size: 12px !important; font-weight: bold; height: 2
 #timeline-table-wrapper{margin-top:10px;}
 
 /*quote-comment-history*/
-.quote_details #quote-comment-history{margin-top:25px}
+.quote_details #quote-comment-history{margin-top:25px; margin-bottom:60px;}
 .quote_details #quote-comment-history .head,#quote-comment-history li{border:1px solid #E2E2E2;}
 /*.quote_details #quote-comment-history .head{background-color:#EEEEEE;padding:8px 15px;}*/
 .quotation-quote-view #quote-comment-history h3.head {background-color: #eeeeee; border: 1px solid #d7d7d7;
@@ -136,6 +136,7 @@ button.downpdf span span:hover{text-decoration:none;}
 .quote_details #quote-comment-history button {
     background: url("../images/send_comments.jpg") no-repeat scroll center top rgba(0, 0, 0, 0);
     float: right;
+	margin:10px 0px 10px 0px;
     height: 30px;
     width: 135px;
 }
