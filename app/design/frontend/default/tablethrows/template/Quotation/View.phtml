@@ -325,7 +325,7 @@ externalform-index-index .col2-left-layout .col-main {
   <textarea rows="5" cols="20" style="width:100%;height:68px; resize:none; margin-top:10px;" class="required-entry" name="history[comment]" id="history" onKeyPress="hideInfo();"></textarea>
   <div id="messageInfo" style="display: none; width: 300px; float: left; margin-left: 3px;  margin-top: 2px;  color: #a0a03a; font-weight: bold;">Sending message please wait...</div>
   <div id="messageSuccess" style="display: none; width: 300px; float: left; margin-left: 3px;  margin-top: 2px;  color: #a0a03a; font-weight: bold;">Success: your message has been sent.</div>
-  <button type="submit" title="Submit Comment" class="submit button submit-comment" id="submit-comment-button" onclick="addcomment();"><span><span></span></span></button>
+  <button type="submit" title="Submit Comment" class="submit button submit-comment" id="submit-comment-button" onclick="addcomment();"><?php /*?><span><span></span></span><?php */?></button>
   <script type="text/javascript">
 
 	    var commentHistoryFrom = new VarienForm('comment-form');
@@ -401,10 +401,10 @@ externalform-index-index .col2-left-layout .col-main {
         
         <!-- <th><?php //echo $this->__('Reference') ?></th>-->
         
-        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border-right:1px solid #5a5a5a; font-weight: bold;text-transform: none;border-image: initial;"><?php echo $this->__('Name') ?></th>
-        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border-right:1px solid #5a5a5a;font-weight: bold;text-transform: none;border-image: initial;"></th>
-        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21; border-right:1px solid #5a5a5a;font-weight: bold;text-transform: none;border-image: initial;"><?php echo $this->__('Sku') ?></th>
-        <th  style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border-right:1px solid #5a5a5a;font-weight: bold;text-transform: none;border-image: initial;"><?php echo $this->__('Qty') ?></th>
+        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 40px;color: #9BBC21;border-right:1px solid #5a5a5a; font-weight: bold;text-transform: none;border-image: initial;"><?php echo $this->__('Name') ?></th>
+        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 40px;color: #9BBC21;border-right:1px solid #5a5a5a;font-weight: bold;text-transform: none;border-image: initial;"></th>
+        <th style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 40px;color: #9BBC21; border-right:1px solid #5a5a5a;font-weight: bold;text-transform: none;border-image: initial;"><?php echo $this->__('Sku') ?></th>
+        <th  style="background-color: #747474;padding: 5px 12px;white-space: nowrap;height: 40px;color: #9BBC21;border-right:1px solid #5a5a5a;font-weight: bold;text-transform: none;border-image: initial;"><?php echo $this->__('Qty') ?></th>
         
         <!--<th><?php //echo $this->__('Discount') ?></th>
 

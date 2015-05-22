@@ -203,6 +203,7 @@ if (Mage::helper('checkout/cart')->getSummaryCount() == "") {
     <?php // echo $this->getChildHtml('topSearch') ?>
     <div class="form-search"> <img src="<?php echo $this->getSkinUrl('images/sales_number.png')?>"> </div>
     <div class="header-right">
+      
       <div id="boxes">
         <div style="display: none;" id="dialog" class="window">
           <div style="font:normal 14px/20px Arial, Helvetica, sans-serif; padding:8px;"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('getquote')->toHtml() ?> </div>
