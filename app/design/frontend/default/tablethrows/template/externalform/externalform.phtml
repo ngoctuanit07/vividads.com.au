@@ -10,7 +10,7 @@
 	display: none;
 }
 .main-container {
-	background: none repeat scroll 0 0 #ef781e;
+
 }
 .externalform-index-index .page {
 	background: transparent !important;
@@ -92,7 +92,6 @@ externalform-index-index .col2-left-layout .col-main {
 	display: none;
 }
 #quoteLoader .main-container .col-main {
-	background: none repeat scroll 0 0 #ef781e !important;
 	width: 900px;
 	margin: 0px 17px 0px 17px
 }
@@ -150,6 +149,24 @@ externalform-index-index .col2-left-layout .col-main {
 .ds_tbl {
 	background-color: #FFF;
 }
+.cms-quotation .smart-forms .header-primary {
+    background-color: #ef781e;
+    border-bottom: 5px solid #ef781e;
+    border-top: 1px solid #ef781e;
+    width: 100%;
+}
+.cms-quotation .smart-forms .frm-row .colm6 {
+    width: 49.77%;
+}
+.cms-quotation .smart-forms .frm-row .colm11 {
+    width: 99.66%;
+}
+.cms-quotation .smart-forms .form-footer {
+    overflow: hidden;
+    padding: 25px 25px 0;
+    text-align: right;
+    width: 100%;
+}
 .ds_head {
 	background-color: #333;
 	color: #FFF;
@@ -191,8 +208,9 @@ externalform-index-index .col2-left-layout .col-main {
 </table>
 <?php
   ///getting store and store id
-	 $_store_id = $this->getRequest()->getParam('store_id');		 
-	 $_store = Mage::getSingleton('core/store')->load($_store_id);	 
+
+	 $_store_id = Mage::app()->getStore()->getId();
+	 $_store = Mage::getSingleton('core/store')->load($_store_id); 
 	 $_store_group = $_store->getGroup()->getData();
 	 $_root_category = $_store_group['root_category_id'];
 	 $_category = Mage::getModel('catalog/category')->load($_root_category);
