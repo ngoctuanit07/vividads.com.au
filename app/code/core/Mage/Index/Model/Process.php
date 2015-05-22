@@ -230,17 +230,20 @@ class Mage_Index_Model_Process extends Mage_Core_Model_Abstract
      *
      * @return Mage_Index_Model_Process
      */
-    public function reindexEverything()
+    public function reindexEverything() 
     {
         if ($this->getData('runed_reindexall')) {
             return $this;
         }
-
+		
+		
         /** @var $eventResource Mage_Index_Model_Resource_Event */
         $eventResource = Mage::getResourceSingleton('index/event');
         $unprocessedEvents = $eventResource->getUnprocessedEvents($this);
-        $this->setForcePartialReindex(count($unprocessedEvents) > 0 && $this->getStatus() == self::STATUS_PENDING);
-
+        
+		
+	    $this->setForcePartialReindex(count($unprocessedEvents) > 0 && $this->getStatus() == self::STATUS_PENDING);
+		
         if ($this->getDepends()) {
             $indexer = Mage::getSingleton('index/indexer');
             foreach ($this->getDepends() as $code) {

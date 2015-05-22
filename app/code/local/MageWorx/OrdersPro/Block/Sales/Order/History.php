@@ -1,6 +1,6 @@
 <?php
 /**
- * MageWorx
+ * MageWorx 
  *
  * NOTICE OF LICENSE
  *
@@ -33,7 +33,7 @@
 class MageWorx_OrdersPro_Block_Sales_Order_History extends Artis_Partialpayment_Block_Sales_Order_History
 {
 
-    public function __construct()
+    public function __construct() 
     {        
         parent::__construct();
         if (Mage::helper('orderspro')->isHideDeletedOrdersForCustomers()) {           
@@ -133,14 +133,10 @@ class MageWorx_OrdersPro_Block_Sales_Order_History extends Artis_Partialpayment_
 	//public function number_format($this->GetFinalPriceWithTaxes(), 2, '.', '');
 	
 	public function getTotalwithTax($order=null){
-		$order = Mage::getModel('sales/order')->load($order->getId());
-		if($order){
-		return Mage::helper('checkout')->formatPrice($order->getGrand_total());
-		//Zend_debug::dump($order->getData());
-		}else{
+		
 		$quote = Mage::getModel('Quotation/Quotation')->load($order->getQuotation_id());
-		return Mage::helper('checkout')->formatPrice($quote->GetFinalPriceWithTaxes());
-		}
-	}	       
+		return $quote->number_format($quote->GetFinalPriceWithTaxes(), 2, '.', '');
+		
+		}	       
     
 }

@@ -2,7 +2,7 @@
 /**
  * Magento
  *
- * NOTICE OF LICENSE
+ * NOTICE OF LICENSE 
  *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
@@ -1074,7 +1074,7 @@ class Artis_Checkout_OnepageController extends Mage_Checkout_OnepageController
         //Confirme
         Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Payment state updated'));
 		$output = 1;
-		//echo $output;			   
+		echo $output;			   
 		return $output;
         //redirige
        // $this->_redirect('adminhtml/sales_order/view', array('order_id' => $orderId));

@@ -115,6 +115,8 @@ class Artis_Partialpayment_Adminhtml_PartialpaymentController extends Mage_Admin
 			$data = array();
 			$data['orderid']= $order_id;
 			$data['amount']=$amount;
+			$payment_type = $payemnt_type ;
+			
 			if($payment_type != ""){
 			  $data['payment_type']=$payment_type;   
 			}
@@ -678,6 +680,7 @@ class Artis_Partialpayment_Adminhtml_PartialpaymentController extends Mage_Admin
                     $data['increment_id']=$order->getIncrementId();;
                     $data['order_increment_id']=$order->getIncrementId();
                     $data['created_at']=$time;
+					
                     $data['order_created_at']=$order->getCreatedAt(); ///12-3-2014
                     $data['shipping_name']=$Name;
                     $data['payment_status']=$order->getStatusLabel();

@@ -2,7 +2,7 @@
 /**
  * MageWorx
  *
- * NOTICE OF LICENSE
+ * NOTICE OF LICENSE 
  *
  * This source file is subject to the MageWorx EULA that is bundled with
  * this package in the file LICENSE.txt.
@@ -28,7 +28,7 @@
  * @package    MageWorx_OrdersPro
  * @author     MageWorx Dev Team
  */
-
+ 
 include_once('Mage/Sales/controllers/OrderController.php');
 
 class MageWorx_OrdersPro_OrderController extends Mage_Sales_OrderController
@@ -42,7 +42,9 @@ class MageWorx_OrdersPro_OrderController extends Mage_Sales_OrderController
         }        
         
         return parent::_canViewOrder($order);
-    }   
+    } 
+	
+	  
 	
 	
 }

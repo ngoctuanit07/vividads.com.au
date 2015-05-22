@@ -2,7 +2,7 @@
 
 abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_Abstract {
 
-    protected $_BLOC_ENTETE_HAUTEUR = 50;
+    protected $_BLOC_ENTETE_HAUTEUR = 50; 
     protected $_BLOC_ENTETE_LARGEUR = 585;
     protected $_BLOC_FOOTER_HAUTEUR = 40;
     protected $_BLOC_FOOTER_LARGEUR = 585;	
@@ -57,7 +57,7 @@ abstract class MDN_Quotation_Model_Pdfhelper extends Mage_Sales_Model_Order_Pdf_
         return $retour;
     }
 
-    /**
+    /** 
      * Draw multiline text and return total height
      */
     protected function DrawMultilineText($page, $Text, $x, $y, $Size, $GrayScale, $LineHeight) {

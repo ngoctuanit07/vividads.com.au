@@ -11,7 +11,7 @@ $is_iwd_downloadable = Mage::getConfig()->getModuleConfig('IWD_Downloadable')->i
 <div class="hor-scroll">
 <table cellspacing="0" class="data order-tables" id="ordered_items_edit_table">
 <col/>
-<col width="1"/>
+<col width="1"/> 
 <col width="1"/>
 <col width="1"/>
 <col width="1"/>
@@ -104,7 +104,7 @@ $is_iwd_downloadable = Mage::getConfig()->getModuleConfig('IWD_Downloadable')->i
                 <input type="hidden" class="edit_order_item required-entry validate-number"
                        value="<?php echo number_format($item->getBaseOriginalPrice(), 2, '.', ''); ?>"
                        name="items[<?php echo $item->getId(); ?>][original_price]"/>
-            </td>
+            </td> 
 
             <?php /* bundle product: PRICE */ ?>
             <td><?php echo $helper->__("Excl.Tax") ?>:&nbsp;<b><?php echo $order->formatBasePrice($price_excl); ?></b><br>
