@@ -1313,7 +1313,7 @@ class MDN_Quotation_Model_Quotation extends Mage_Core_Model_Abstract {
 	
 	public function showEmailFiles($quote_id=0){
 		
-		/*getting db resources*/
+		/*getting db resources*/ 
 		
 		$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
     	$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');

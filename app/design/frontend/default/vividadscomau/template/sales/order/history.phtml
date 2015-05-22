@@ -2,7 +2,7 @@
 /**
  * Magento 
  *
- * NOTICE OF LICENSE
+ * NOTICE OF LICENSE 
  *
  * This source file is subject to the Academic Free License (AFL 3.0)
  * that is bundled with this package in the file LICENSE_AFL.txt.
@@ -28,9 +28,7 @@ $type =  $this->getRequest()->getParam('type');
 ?>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 
-<?php $_orders = $this->getOrders();
-
- ?>
+<?php $_orders = $this->getOrders(); ?>
 	<?php 
             if(!isset($type)){
     ?>
@@ -58,12 +56,9 @@ $type =  $this->getRequest()->getParam('type');
         </thead>
         <tbody>
             <?php $_odd = ''; ?>
-            <?php foreach ($_orders as $_order):
-			//Zend_debug::dump($_order);
-			//exit
-			 ?>
+            <?php foreach ($_orders as $_order): ?>
             <tr>
-                <td><?php  echo $_order->getRealOrderId() ?></td>
+                <td><?php echo $_order->getRealOrderId() ?></td>
                 <td><span class="nobr"><?php echo $this->formatDate($_order->getCreatedAtStoreDate()) ?></span></td>
                 <td><?php echo $_order->getShippingAddress() ? $this->htmlEscape($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
                 <td><?php echo $this->getTotalwithTax($_order); ?></td>

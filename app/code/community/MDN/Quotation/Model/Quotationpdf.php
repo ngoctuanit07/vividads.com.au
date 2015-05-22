@@ -1493,7 +1493,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		
 	   
 	   ///adding if paid or partial paid ////
-	    $this->y -= 20;
+	    $this->y -= 20; 
 	    
 		$page->setFillColor(Zend_Pdf_Color_Html::color('#e2ecf0'));
 	    $page->drawRectangle((($this->_PAGE_WIDTH / 2)-10), $this->y, 590, $this->y-70, Zend_Pdf_Page::SHAPE_DRAW_FILL);

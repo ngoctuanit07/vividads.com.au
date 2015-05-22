@@ -117,10 +117,13 @@ class Mage_Index_Adminhtml_ProcessController extends Mage_Adminhtml_Controller_A
     public function reindexProcessAction()
     {
         $process = $this->_initProcess();
+		
+		$current_process = $this->getRequest()->getParam('process');
+		$this->core_url_rewrite_update($current_process);
         if ($process) {
             try {
                 Varien_Profiler::start('__INDEX_PROCESS_REINDEX_ALL__');
-
+						
                 $process->reindexEverything();
                 Varien_Profiler::stop('__INDEX_PROCESS_REINDEX_ALL__');
                 $this->_getSession()->addSuccess(
@@ -167,6 +170,9 @@ class Mage_Index_Adminhtml_ProcessController extends Mage_Adminhtml_Controller_A
         /* @var $indexer Mage_Index_Model_Indexer */
         $indexer    = Mage::getSingleton('index/indexer');
         $processIds = $this->getRequest()->getParam('process');
+		
+		$this->core_url_rewrite_update($processIds);
+		
         if (empty($processIds) || !is_array($processIds)) {
             $this->_getSession()->addError(Mage::helper('index')->__('Please select Indexes'));
         } else {
@@ -199,7 +205,10 @@ class Mage_Index_Adminhtml_ProcessController extends Mage_Adminhtml_Controller_A
     public function massChangeModeAction()
     {
         $processIds = $this->getRequest()->getParam('process');
-        if (empty($processIds) || !is_array($processIds)) {
+        
+		
+		
+		if (empty($processIds) || !is_array($processIds)) {
             $this->_getSession()->addError(Mage::helper('index')->__('Please select Index(es)'));
         } else {
             try {
@@ -235,4 +244,22 @@ class Mage_Index_Adminhtml_ProcessController extends Mage_Adminhtml_Controller_A
     {
         return Mage::getSingleton('admin/session')->isAllowed('system/index');
     }
+	
+	/**
+	 * Check core Url rewrites
+	 * return core_url_rewrite table truncated 
+	 *
+	*/
+	public function core_url_rewrite_update($process_ids=null){
+		
+		$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+    	$url_rewrite_table=Mage::getSingleton('core/resource')->getTableName('core_url_rewrite');
+    	//$connectionWrite->query('truncate table '.$url_rewrite_table);
+		 
+		foreach($process_ids as $process_id){
+			if($process_id==3){
+				 $connectionWrite->query('truncate table '.$url_rewrite_table);
+				}
+			}
+		}
 }

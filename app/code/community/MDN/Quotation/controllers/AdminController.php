@@ -8,7 +8,7 @@ class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
      */
     public function SelectOrCreateCustomerAction() {
         $this->loadLayout();
-        $this->renderLayout();     
+        $this->renderLayout();      
     }
  
  
