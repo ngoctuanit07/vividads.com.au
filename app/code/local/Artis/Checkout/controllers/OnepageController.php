@@ -1075,7 +1075,11 @@ class Artis_Checkout_OnepageController extends Mage_Checkout_OnepageController
         Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Payment state updated'));
 		$output = 1;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		//echo $output;			   
+=======
+		echo $output;			   
+>>>>>>> cc38cda73b9c48c553a60557cdc77660f71f1e30
 =======
 		echo $output;			   
 >>>>>>> cc38cda73b9c48c553a60557cdc77660f71f1e30
