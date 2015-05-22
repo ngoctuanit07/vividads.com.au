@@ -288,13 +288,25 @@ class MDN_Quotation_Model_Quotation extends Mage_Core_Model_Abstract {
 
         $prefix .= sprintf('%04d', $sequence);
         
-		$store_id = Mage::App()->getStore()->getStore_id();		
+		$ref = Mage::helper('core/http')->getHttpReferer();
+		$url_params = explode('/',$ref);
+		
+		foreach($url_params as $key=>$param){
+			  if($param == 'customer_id'){
+				  $url_key=$key+1;				  
+				  $customer['customer_id'] = $url_params[$url_key];
+				  }
+			}
+		$customer_id = $customer['customer_id'];		
+		$cr_customer = Mage::getModel('customer/customer')->load($customer_id);			
+		$store_id = $cr_customer->getStore_id();
+		//$store_id = Mage::App()->getStore()->getStore_id();		
 		
 	    $strlen = strlen($store_id);		
 		$prefix = mt_rand(200000000,100000000000);// 06_01_2014
 		$prefix = substr($prefix, $strlen);		
 		$prefix = $store_id.$prefix;
-        $prefix = $this->checkid($prefix); 
+        $prefix = $this->checkid($prefix);  
        	
         return $prefix;
     }

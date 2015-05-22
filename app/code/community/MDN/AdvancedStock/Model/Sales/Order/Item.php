@@ -178,7 +178,8 @@ class MDN_AdvancedStock_Model_Sales_Order_Item extends Mage_Sales_Model_Order_It
 			return $bundle_products;
 		
 		}
-	
+		
+		
 
     /**
      * Lazy loading for erp order item datas

@@ -1074,7 +1074,11 @@ class Artis_Checkout_OnepageController extends Mage_Checkout_OnepageController
         //Confirme
         Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Payment state updated'));
 		$output = 1;
+<<<<<<< HEAD
 		//echo $output;			   
+=======
+		echo $output;			   
+>>>>>>> cc38cda73b9c48c553a60557cdc77660f71f1e30
 		return $output;
         //redirige
        // $this->_redirect('adminhtml/sales_order/view', array('order_id' => $orderId));
