@@ -283,7 +283,7 @@ ul, ol {
 
 }
 /* Base Columns */
-.col-left {	
+.col-left {
 	float: left;
 	width: 222px;
 }
@@ -408,7 +408,7 @@ input.input-text, select, textarea {
     border: 1px solid #8d8d8d ;
     border-radius: 0 ;
     color: #343434;
-    font-size: 12px ;
+    font-size: 12px !important;
     font-weight: normal ;
     line-height: 25px;
     margin: 0 !important;
@@ -554,6 +554,8 @@ p.control input.checkbox, p.control input.radio {
 	height: 10em;
 }
 .form-list select {
+	-moz-appearance:caret;
+	font-weight:normal;
     color: #000;
     font-size: 14px;
     height: 28px !important;
@@ -870,6 +872,31 @@ p.required {
 	margin: 5px 0;
 	text-align: center;
 }*/
+#artwork-upload-section h2.sub-title {
+    color: #222;
+    font-family: "swis721_cn_btroman";
+    font-size: 16px;
+    font-weight: normal;
+    padding: 0;
+    font-stretch: condensed;
+}
+.sales-order-invhistory select {
+    -moz-appearance: caret;
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid #ccc !important;
+    border-radius: 0 ;
+    color: #7c7c7c;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    height: 20px;
+    line-height: 20px;
+    margin: 0;
+    outline: medium none;
+    padding: 0px;
+    width: 50px;
+}
 .pager {
     background: url("../images/bkg_toolbar.gif") repeat-x scroll 0 0 white;
     border: 1px solid #ddd;

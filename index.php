@@ -96,39 +96,39 @@ $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 's
  switch($_SERVER['HTTP_HOST']) {
     
 		
-	
+	/*
 	case 'tablethrows.co.nz':
     case 'www.tablethrows.co.nz':
         $mageRunCode = 'tablethrows_com_au';
         $mageRunType = 'website';
     break;
-
+*/
 
 	case 'tablethrows.com.au':
     case 'www.tablethrows.com.au':
         $mageRunCode = 'tablethrows_com_au';
         $mageRunType = 'website';
     break;	
-	
+	/*
     case '13expo.com.au':
     case 'www.13expo.com.au':
         $mageRunCode = 'vividads_com_au';
         $mageRunType = 'website';
     break; 
-	
+	*/
 	/*  case 'outdoorbannershop.com.au':
     case 'www.outdoorbannershop.com.au':
         $mageRunCode = 'outdoorbannershop_com_au';
         $mageRunType = 'website';
     break;
-	*/
+	 
 	case 'meshbannersprinting.com.au':
     case 'www.meshbannersprinting.com.au':
         $mageRunCode = 'vividads_com_au';
         $mageRunType = 'website';
     break;
 	
-	
+	/*
 	case '13expo.com.au/m':
     case 'www.13expo.com.au/m':
         $mageRunCode = 'vividadscomau_mobile';
@@ -140,7 +140,7 @@ $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 's
         $mageRunCode = 'vividads_com_au'; 
         $mageRunType = 'website'; 
     break;
-	 
+	  
 	 
 	 
 	case 'shop.vividads.com.sg':
@@ -155,12 +155,13 @@ $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 's
         $mageRunType = 'website';
     break;	
 	
+	
 	case 'vividads.co.nz':
     case 'www.vividads.co.nz':
         $mageRunCode = 'vividads_com_au';
         $mageRunType = 'website';
     break;	  
-	
+	/*
 	case 'shop.vividads.com':
     case 'www.shop.vividads.com':
         $mageRunCode = 'vividads_com_au';
@@ -206,14 +207,14 @@ $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 's
         $mageRunCode = 'vividads_com_au';
         $mageRunType = 'website';
     break;		
-	
+	*/
 	case 'custombooths.com.au':
     case 'www.custombooths.com.au':
         $mageRunCode = 'custombooths_com_au';
         $mageRunType = 'website';
     break; 
 	
-	
+	/*
 	case 'printedtablecloths.com.au':
     case 'www.printedtablecloths.com.au':
         $mageRunCode = 'vividads_com_au';
@@ -232,7 +233,7 @@ $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 's
         $mageRunCode = 'vividads_com_au';
         $mageRunType = 'website';
     break;	 
-	
+	 
 	
 	case 'usedbooths.com.au/m':
     case 'www.usedbooths.com.au/m':
@@ -274,7 +275,7 @@ $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 's
         $mageRunCode = 'outdoorbannershop_com';
         $mageRunType = 'website';
     break;
-*/
+ 
 
 case 'outdoorbannershop.com.au':
     case 'www.outdoorbannershop.com.au':

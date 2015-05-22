@@ -27,6 +27,7 @@
 <?php  
 
 $_order = $this->getOrder();
+ 
 //var_dump($_order);
 // echo get_class($_order); 
  $incrementId = $_order->getIncrementId();
@@ -69,14 +70,22 @@ $_order = $this->getOrder();
     <col width="1" />
     <col width="1" />
     <thead>
-        <tr align="center" style="height:30px; vertical-align:middle;">
+        <!--<tr align="center" style="height:30px; vertical-align:middle;">
             <th align="left"><?php echo $this->__('Item') ?></th>
             <th  ><?php echo $this->__('Product Name') ?></th>
             <th style="text-align:center;"><?php echo $this->__('SKU') ?></th>
             <th style="text-align:center;"><?php echo $this->__('Price') ?></th>
             <th style="text-align:center;"><?php echo $this->__('Qty') ?></th>
             <th style="text-align:center;"><?php echo $this->__('Subtotal') ?></th>
-        </tr>
+        </tr>-->
+        <tr>
+      <th class="pro-name1" colspan="0"><?php echo $this->__('Image') ?></th>
+      <th class="sku-pro1" colspan="0"><?php echo $this->__('Product Name') ?></th>
+      <th class="sku-pro1"><?php echo $this->__('SKU') ?></th>
+      <!--<th class="pro-price1" ><?php echo $this->__('Price') ?></th>-->
+      <th class="pro-qty1"><?php echo $this->__('Qty') ?></th>
+      <th class="pro-sub1"><?php echo $this->__('Subtotal') ?></th>
+    </tr>
     </thead>
     <tfoot>
         <?php echo $this->getChildHtml('order_totals') ?>
@@ -88,7 +97,7 @@ $_order = $this->getOrder();
         <?php if ($_item->getParentItem()) continue; ?>
         <tbody >
      
-        <tr><td style=" background-color:white !important; border-bottom:1px solid #d9dbd9;" colspan="6"></td></tr>
+        <tr><td style=" background-color:white !important; border-bottom:1px solid #d9dbd9;" colspan="5"></td></tr>
             <?php echo $this->getItemHtml($_item) ?>
             <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $_item) && $_item->getGiftMessageId()): ?>
             <tr class="border<?php echo ($_index++ > $_count ?' last':'') ?>" id="order-item-gift-message-<?php echo $_item->getId() ?>" style="display:none;">
@@ -146,9 +155,9 @@ $_order = $this->getOrder();
 	
 	.offline_payment{ 
 		float: right;
-		width: 290px;
+		width: 297px;
 		background-color: #e8e8e8;
-		box-shadow: 0px 5px 2px #abaaab;
+		/*box-shadow: 0px 5px 2px #abaaab;*/
 		}
 	
 	.block_div{
@@ -301,7 +310,7 @@ $_order = $this->getOrder();
 			<input type="hidden" class="required-entry" id="date" value="<?php echo date('Y-m-d');?>" name="date" disabled="true"; />
 			
 	  <label for="anz_egate_cc_type">Credit Card Type <span class="required">*</span></label><br>
-	  <select class="required-entry validate-cc-type-select" name="payment[cc_type]" id="anz_egate_cc_type">
+	  <select class="required-entry validate-cc-type-select" name="payment[cc_type]" id="anz_egate_cc_type" style="-moz-appearance:caret">
 		  <option value=""></option>
 		   <option value="AE">American Express</option>
 		   <option value="VI">Visa</option>
@@ -332,7 +341,7 @@ $_order = $this->getOrder();
 			</div>
 			<div class="input-box" class="ccexpdate">
 				<label for="anz_egate_expiration">Expiration Date <span class="required">*</span></label><br>
-				<select class="validate-cc-exp required-entry" name="payment[cc_exp_month]" style="width:58px;" id="anz_egate_expiration">
+				<select class="validate-cc-exp required-entry" name="payment[cc_exp_month]" style="width:58px; -moz-appearance:caret;" id="anz_egate_expiration">
 							  <option selected="selected" value="0">MM</option>
 								<option value="1">01</option>
 								<option value="2">02</option>
@@ -347,7 +356,7 @@ $_order = $this->getOrder();
 								<option value="11">11</option>
 								<option value="12">12</option>
 							</select>
-							<select class="required-entry" name="payment[cc_exp_year]" style="width:58px;" id="anz_egate_expiration_yr">
+							<select class="required-entry" name="payment[cc_exp_year]" style="width:58px; -moz-appearance:caret;" id="anz_egate_expiration_yr">
 								<option selected="selected" value="">YY</option>
 								<option value="2014">14</option>
 								<option value="2015">15</option>
@@ -1587,69 +1596,3 @@ echo $_order->getStatusLabel();*/
 
 </script>
 
-<?php 
-/*
-$eId = 546;
-
-		
-
-      $state_bill = 'Victoria';
-      $country_bill  = 'AU';
-      $fname_bill ='ijaz';
-	  $lname_bill = 'ali';
-      $street =  'house no 239 g model town, lahore';
-	  $city_bill = 'lahore'; 
-	  
-    $resource = Mage::getSingleton('core/resource');
-    $writeConnection = $resource->getConnection('core_write');
-    $table = 'sales_flat_order_address';
-     
-    $query = "UPDATE {$table} SET 
-					 street 	= '{$street}',
-					 city   	= '{$city_bill}',
-					 region_id  = '491',
-					 region  	= 'Victoria',
-					 postcode  	= '54000',
-					 country_id = 'AU',
-					 telephone	= '03244321371'
-			WHERE parent_id = 546 AND  address_type = 'shipping' ";
-     
-    $writeConnection->query($query);
-    $query = "UPDATE {$table} SET 
-					 street 	= '{$street}',
-					 city   	= '{$city_bill}',
-					 region_id  = '491',
-					 region  	= 'Victoria',
-					 postcode  	= '54000',
-					 country_id = 'AU',
-					 telephone	= '03244321371'
-			WHERE parent_id = 546 AND  address_type = 'billing' ";
-     
-    $writeConnection->query($query);
-
-    $tableHistory = Mage::getSingleton('core/resource')->getTableName('quotation_history');
-
-
-echo    $sqlHistorySystem = "select * from sales_flat_order_address where parent_id = '".$eId."'";
-	
-
-    try {
-
-    $chkSystem = $connectionRead->query($sqlHistorySystem);
-
-    $fetchHistory = $chkSystem->fetchall();
-
-    } catch (Exception $e){
-
-    echo $e->getMessage();
-
-    }
-
-   $i=0;
-
-var_dump($fetchHistory);
-
-
-*/
-
-?>

@@ -173,9 +173,18 @@ if (Mage::helper('checkout/cart')->getSummaryCount() == "") {
   	<div class="row-account">
     <?php echo '<h1>Trade Show Table Covers, Tablecloths &amp; Runners - Factory Direct</h1>'?>
     		<ul>
+             <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
             <li>
             <span><img src="<?php echo $this->getSkinUrl()?>images/account-img.jpg" alt="My Account" /></span><a href="<?php echo $this->getUrl('customer/account/')?>">My Account</a>
             </li>
+            <?php else:?>
+            
+              <li>
+            <span><img src="<?php echo $this->getSkinUrl()?>images/account-img.jpg" alt="My Account" /></span><a href="<?php echo $this->getUrl('customer/account/create/')?>">Register</a>
+            </li>
+            
+            <?php endif?>
+            
             <li>
             <span><img src="<?php echo $this->getSkinUrl()?>images/wishlist_img.jpg" alt="My Wishlist" /></span><a href="#">My Wishlist</a>
             </li>
@@ -203,6 +212,7 @@ if (Mage::helper('checkout/cart')->getSummaryCount() == "") {
     <?php // echo $this->getChildHtml('topSearch') ?>
     <div class="form-search"> <img src="<?php echo $this->getSkinUrl('images/sales_number.png')?>"> </div>
     <div class="header-right">
+      
       <div id="boxes">
         <div style="display: none;" id="dialog" class="window">
           <div style="font:normal 14px/20px Arial, Helvetica, sans-serif; padding:8px;"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('getquote')->toHtml() ?> </div>
