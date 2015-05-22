@@ -1,6 +1,6 @@
 <?php
 /**
- * Magento
+ * Magento 
  *
  * NOTICE OF LICENSE
  *
@@ -28,7 +28,9 @@ $type =  $this->getRequest()->getParam('type');
 ?>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 
-<?php $_orders = $this->getOrders(); ?>
+<?php $_orders = $this->getOrders();
+
+ ?>
 	<?php 
             if(!isset($type)){
     ?>
@@ -56,9 +58,12 @@ $type =  $this->getRequest()->getParam('type');
         </thead>
         <tbody>
             <?php $_odd = ''; ?>
-            <?php foreach ($_orders as $_order): ?>
+            <?php foreach ($_orders as $_order):
+			//Zend_debug::dump($_order);
+			//exit
+			 ?>
             <tr>
-                <td><?php echo $_order->getRealOrderId() ?></td>
+                <td><?php  echo $_order->getRealOrderId() ?></td>
                 <td><span class="nobr"><?php echo $this->formatDate($_order->getCreatedAtStoreDate()) ?></span></td>
                 <td><?php echo $_order->getShippingAddress() ? $this->htmlEscape($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
                 <td><?php echo $this->getTotalwithTax($_order); ?></td>
