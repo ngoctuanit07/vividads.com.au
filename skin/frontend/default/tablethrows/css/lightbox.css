@@ -250,7 +250,7 @@ width: 100px;
 text-align: left;
 font-size: 12px;
 }
-.form-list .input-box {float: left; width:auto !important; clear:none !important;}
+.form-list .input-box {float: left; width:auto !important;  }
 .required em {color: #F15C22; margin-right: 4px; }
 #customerquote-info-wrapper .form-list li input.street1 {width: 425px; }
 #top-customerquote .customer-infomation .form-list li, #top-customerquote .form-list li .field {float: left; width: 50%; clear: none; }

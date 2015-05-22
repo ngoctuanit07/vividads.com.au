@@ -80,7 +80,7 @@ if($customerid){
 <div class="page-title">
     <h1 style="color:#666"><?php echo $this->__('My Quotations'); ?></h1>
 </div>
-<button class="button" style="float:right; margin-bottom:10px;" onclick="setLocation('<?php echo $this->getUrl('get_a_quote');?>')"><span><span>Create New Quotation</span></span></button>
+<button class="button" style="float:right; margin-bottom:10px;" onclick="setLocation('<?php  echo $this->getUrl('quotation');?>')"><span><span>Create New Quotation</span></span></button>
 <?php
 $magentoCurrentUrl = Mage::helper('core/url')->getCurrentUrl();
 
