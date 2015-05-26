@@ -482,7 +482,7 @@ jQuery('.right_float').bxSlider({
            <div class="attribute-section" style="margin-top:10px; margin-bottom:30px;">
               <div class="text-wrapper"> 
                 <div class="right"> <span class="artwork-heading"><?php echo $this->__('General Artwork Guide:')?></span>
-                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px;"> <?php echo $this->__('All files must be supplied as Press Ready PDF with trim marks included and 5mm bleed on all edges. CMYK color; Minimum of 150dpi resolution; Fonts – embedded / curves;')?>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; color:#4b4a4a; font-size:12px;"> <?php echo $this->__('All files must be supplied as Press Ready PDF with trim marks included and 5mm bleed on all edges. CMYK color; Minimum of 150dpi resolution; Fonts – embedded / curves;')?>
 
 <?php echo $this->__("If you don't have print-ready artwork... no problem! We will create print-ready design for you (Charges 
 Apply*). ")?></p>
@@ -490,18 +490,18 @@ Apply*). ")?></p>
               </div>
               <div class="text-wrapper" > 
                 <div class="right"> <span class="design-heading"><?php echo $this->__('Free Graphic Design Check:')?></span>
-                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px;"> <?php echo $this->__('Unsure how your artwork will print? We offer a FREE artwork checking service where we will check,Resolution, Bleed, Size, Legibility (thin text) & Alignment on your design file/s.')?>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px; color:#4b4a4a;"> <?php echo $this->__('Unsure how your artwork will print? We offer a FREE artwork checking service where we will check,Resolution, Bleed, Size, Legibility (thin text) & Alignment on your design file/s.')?>
  </p>
                 </div>
               </div>  
               <div class="text-wrapper" > 
                 <div class="right"> <span class="digital-heading"><?php echo $this->__('Free Digital Graphic Proof:')?></span>
-                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px;"> <?php echo $this->__('Before we place your order into production, you will receive a FREE e-mail proof of your imprint for final approval. This step in our ordering process ensures that your order will be produced accurately.')?> </p>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px; color:#4b4a4a;"> <?php echo $this->__('Before we place your order into production, you will receive a FREE e-mail proof of your imprint for final approval. This step in our ordering process ensures that your order will be produced accurately.')?> </p>
                 </div>
               </div>
               <div class="text-wrapper" > 
                 <div class="right"> <span class="send-art-heading"><?php echo $this->__('Sending Artwork File:')?></span>
-                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px;"> <?php echo $this->__('When placing an order you will have the opportunity to upload your artwork online before making payment.If your artwork is not quite ready but you would like to place an order, it is possible to upload your artwork at a later date.')?> </p>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px; color:#4b4a4a;"> <?php echo $this->__('When placing an order you will have the opportunity to upload your artwork online before making payment.If your artwork is not quite ready but you would like to place an order, it is possible to upload your artwork at a later date.')?> </p>
                 </div>
               </div>
               
@@ -778,6 +778,7 @@ foreach($related_product_collection as $pdt)
               </div>
             </div>
             <?php } ?>
+            <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('contactform')->toHtml() ?>
             <!---End Video Section---> 
             <!---Related Products Start--->
             <?php $crossselll_product_collection = $_product->getCrossSellProducts(); ?>
@@ -960,11 +961,13 @@ foreach($crossselll_product_collection as $pdt)
           <?php //echo $this->getChildChildHtml('container1', '', true, true) ?>
           <?php //echo $this->getChildChildHtml('container2', '', true, true) ?>
           <?php endif;?>
-        </div>
+        </div>  
       </form>
+                  <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('contactform')->toHtml() ?>
+
     </div>
   </div>
-</div>
+</div>   
 <!--<div id="quoteLoader" style="float:left; clear:both"></div>--> 
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script> 
 <!-- <iframe src='http://usedbooths.com.au/index.php/externalform/?store_id=166' height='1450' width='930'></iframe>-->
