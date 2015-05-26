@@ -28,7 +28,39 @@
 
 <div class="footer-container">
 <div class="footer clearfix">
- 
+<?php /*?><?php 
+			$orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+            $order = Mage::getModel('sales/order')->load($orderId);
+	
+?>
+		<?php 
+		$order_item = $order->getAllItems();
+		 foreach ($order_item as $item) : 
+		//$Price = Mage::helper('core')->formatPrice($item['price'],true);
+		 $Price = round($item['price'],2);
+	
+		 
+		 ?>
+		<p>Id:<?php 
+		if($sku ==''){
+			echo $Item_id;
+			}
+			else{
+		
+		echo $sku;
+			}
+		?> </p>
+		<p>Price:<?php echo strip_tags($Price) ?> </p>
+		<p>Quantity<?php echo (int)$item->getQtyOrdered();?> </p>
+		<p>Sku<?php echo htmlentities($item->getName());?> </p>
+        <span class="gts-i-prodsearch-id"><?php echo $Item_id;?></span>
+        <span class="gts-i-prodsearch-store-id">102692478</span>
+        <span class="gts-i-prodsearch-country">AU</span>
+        <span class="gts-i-prodsearch-language">en_AU</span>
+
+
+<?php endforeach ;?>
+<?php */?>
 
 <div class="payment_strip">
 	<img src="<?php echo $this->getSkinUrl()?>images/payment_strip.png"  alt="<?php echo $this->__('Payment Method We Accept')?>" title="<?php echo $this->__('Payment Method We Accept')?>"/>
@@ -83,12 +115,7 @@
 </div>	    
 <div  class="socialaddthis">
  <?php echo $this->getLayout()->createBlock('sharingtool/share')->setBlockId('addthis_sharetool')->toHtml(); ?>
- <table width="135" border="0" cellpadding="2" cellspacing="0" title="Click to Verify - This site chose Symantec SSL for secure e-commerce and confidential communications." style="float: right; width: 322px; margin: -25px 0 0 0px ; padding: 0px;">
-<tr>
-<td width="135" align="center" valign="top"><script type="text/javascript" src="https://seal.websecurity.norton.com/getseal?host_name=www.vividads.com.au&amp;size=L&amp;use_flash=YES&amp;use_transparent=YES&amp;lang=en"></script><br />
-<a href="http://www.symantec.com/ssl-certificates" target="_blank"  style="color:#000000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing:.5px; text-align:center; margin:0px; padding:0px;">ABOUT SSL CERTIFICATES</a></td>
-</tr>
-</table>
+ 
 </div>
 <div class="contact-container">
                 
@@ -97,8 +124,17 @@
 <p style="font-size: 12px; float: left; margin: 0px; line-height: normal;">1/2 Phillip Court, Port Melbourne<br>
 Victoria 3207 Australia </p>
 </div>
-<div class="footer_item" style="font-size: 12px; float: left; margin: 0px;"> Ph: 1300 72 16 14<br>
-  Fax: +613 8456 6234 </div>
+<div class="footer_item" style="font-size: 12px; float: left; margin: 0px;"> 
+<?php /*?>Ph: 1300 72 16 14<br>
+  Fax: +613 8456 6234
+<?php */?>
+<table width="135" border="0" cellpadding="2" cellspacing="0" title="Click to Verify - This site chose Symantec SSL for secure e-commerce and confidential communications." style="float: left; width: 250px; margin: 0px 0 0 0px ; padding: 0px; text-align:right;">
+<tr>
+<td width="135" align="center" valign="top" style="text-align:center;"><script type="text/javascript" src="https://seal.websecurity.norton.com/getseal?host_name=www.vividads.com.au&amp;size=L&amp;use_flash=YES&amp;use_transparent=YES&amp;lang=en"></script><br />
+<a href="http://www.symantec.com/ssl-certificates" target="_blank"  style="color:#000000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing:.5px; text-align:center; margin:0px; padding:0px;">ABOUT SSL CERTIFICATES</a></td>
+</tr>
+</table>  
+   </div>
 </div>
 </div>
  <div style="float: left; width: 100%; text-align: center; padding: 0px 0px 20px; font-size:12px;" class="item">
