@@ -954,8 +954,8 @@ box-shadow:        0 1px 1px 0 rgba(84, 84, 84, 0.50);}
 .video-player h2{color:#888!important;display:block;font-family:"Raleway", sans-serif;font-size:15px;text-align:center}
 .row_details .tabs-wrapper{width:445px;margin-top:0}
 .row_details .tabs-wrapper.floated{margin-top:52px}
-.row_details .box-container{border:2px solid #f1f1f1;margin-bottom:10px;padding:10px}
-.row_details .box-container .box-heading{background-color:#859e02;line-height:38px;font-size:14px;color:#fff;font-weight:400}
+.row_details .box-container{border:2px solid #f1f1f1;margin-bottom:10px;padding:10px; float:left; width:425px;}
+.row_details .box-container .box-heading{background-color:#5bbf21;line-height:38px;font-size:14px;color:#fff;font-weight:400; float:left; width:100%; height:38px; margin-bottom:10px;}
 .row_details .box-container .box-heading h1{font-size:14px;color:#fff;font-weight:400;font-family:"Raleway", sans-serif!important;text-transform:uppercase;padding-left:10px}
 .row_details .tabs{border:2px solid #f1f1f1;padding:10px;margin-bottom:0}
 .row_details .tab-menu{border-bottom:1px solid #5bbf21;padding-bottom:15px;margin-bottom:15px;padding-top:15px}

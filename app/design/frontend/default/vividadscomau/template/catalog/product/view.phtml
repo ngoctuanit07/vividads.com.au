@@ -337,7 +337,8 @@ jQuery('.right_float').bxSlider({
               </div>
               <div style="margin: 0px; padding: 0px; float: left; width: 100%;">
                 <h2 class="sku_new"  style="float:left; width:100%; font-weight:500; text-transform:uppercase;"> <span itemprop="name"><?php echo $productName?></span><br />
-                  <span itemprop="brand">Vivid Displays</span> </h2>
+                <meta itemprop="brand" content="Vivid Displays" />
+                  <!--<span itemprop="brand">Vivid Displays</span>--> </h2>
               </div>
               <div class="head">
                 <h2><span>PRODUCT DETAILS</span></h2>
@@ -507,57 +508,8 @@ Apply*). ")?></p>
               </div>
             </div>  
             <div class="right tabs-wrapper">
-              <?php   
-		  $product = Mage::registry('current_product');
-            if($product->getTypeID() == 'bundle')
-            {
-            $bundle_item = array();
-            $bundled_product = Mage::getModel('catalog/product')->load($product->getId());
-            $selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
-                $bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
-            );
-		$check = count ($bundled_product);
-		if($check >=1){
-		?>
-              <div class="box-container">
-                <div class="box-heading">
-                  <h1><?php echo ("Package Includes")?></h1>
-                </div>
-                <?php  $optionCollection =  $bundled_product
-			  							->getTypeInstance(true)
-										->getOptions($bundled_product);
-			foreach($optionCollection as $val)
-            {
-				?>
-                <div  class="tabs-items" >
-                  <div class="packages tab-item-block">
-                    <ul>
-                      <?php foreach($selectionCollection as $option)
-                                {
-                                if($val->getId() == $option->getOptionId())
-                                    {
-                                     echo '<li>'.round($option->getSelectionQty()).' - '.$option->getName().'</li>';
-                                    }
-                                }?>
-                    </ul>
-                  </div>
-                </div>
-                <?php }?>
-                <?php  }      ?>
-              </div>
-              <?php } ?>
-              <div class="box-container"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
-                <div class="pro-options">
-                  <?php 
-                  if($_product->getOptions()){
-					  
-					
-                     // echo '<h2>Product Options</h2>';
-                        echo getProductOptions($_product) ; 
-                  }
-                  ?>
-                </div>
-                <div class="add_cart_option">
+            <div class="box-container">
+            <div class="add_cart_option">
                   <?php if($_product->price==0):?>
                   <div class="price-section"> <?php echo "<h1>Call To Enquire</h1>";?> </div>
                   <?php else:?>
@@ -582,6 +534,9 @@ Apply*). ")?></p>
                   <?php echo $this->getChildHtml('addtocart')?>
                   <?php endif ;?>
                 </div>
+            </div>
+            <div class="box-container">
+               
                 <div class="help">NEED HELP ?</div>
                 <div class="tabs-actions"> 
                   <!-- <a href="javascript:void(0)" title="<?php echo $this->__('Add to Quote') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" id="quoteImage" data-url="<?php echo $this->getAddToCartUrl($_product); ?>" data-id="<?php echo $_product->getId(); ?>" style="margin-left:13px;">--> 
@@ -625,6 +580,60 @@ Apply*). ")?></p>
                   </div>
                 </div>
               </div>
+              <?php   
+		  $product = Mage::registry('current_product');
+            if($product->getTypeID() == 'bundle')
+            {
+            $bundle_item = array();
+            $bundled_product = Mage::getModel('catalog/product')->load($product->getId());
+            $selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
+                $bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
+            );
+		$check = count ($bundled_product);
+		if($check >=1){
+		?>
+              <div class="box-container">
+                <div class="box-heading">
+                  <h1><?php echo ("Package Includes")?></h1>
+                </div>
+                <?php  $optionCollection =  $bundled_product
+			  							->getTypeInstance(true)
+										->getOptions($bundled_product);
+			foreach($optionCollection as $val)
+            {
+				?>
+                <div  class="tabs-items" >
+                  <div class="packages tab-item-block">
+                    <ul>
+                      <?php foreach($selectionCollection as $option)
+                                {
+                                if($val->getId() == $option->getOptionId())
+                                    {
+                                     echo '<li>'.round($option->getSelectionQty()).' - '.$option->getName().'</li>';
+                                    }
+                                }?>
+                    </ul>
+                  </div>
+                </div>
+                <?php }?>
+                <?php  }      ?>
+              </div>
+              <?php } ?>
+              
+              <div class="box-container"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
+                <div class="pro-options">
+                  <?php 
+                  if($_product->getOptions()){
+					  
+					
+                     // echo '<h2>Product Options</h2>';
+                        echo getProductOptions($_product) ; 
+                  }
+                  ?>
+                </div>
+               
+              </div>
+              
               <div>
                 <?php
             $gallery1 =    $_product->getGalleryOne();
@@ -635,7 +644,7 @@ Apply*). ")?></p>
             echo  $gallery[0],  $gallery[1],  $gallery[2]  ;
                 ?>
               </div>
-              <div class="pro-img-right" style="position:relative; right:25px;">
+              <div class="pro-img-right" style="position:relative; right:25px; float:left;">
                 <?php if($_product->getPackage_image() !='')
 		{
 			$filePaths=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getPackage_image()
