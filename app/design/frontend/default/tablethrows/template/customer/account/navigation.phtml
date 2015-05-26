@@ -40,17 +40,21 @@
 			/*echo '<pre>';
 			 print_r($_links);
 			echo '</pre>';*/			 
-                unset($_links['recurring_profiles']);
-                unset($_links['reviews']);
-                unset($_links['OAuth Customer Tokens']);
-                unset($_links['billing_agreements']);
+           	unset($_links['recurring_profiles']);
+			unset($_links['reviews']);
+			unset($_links['proofs']);
+			unset($_links['downloadable_products']);
+			unset($_links['wishlist']); 
+			unset($_links['OAuth Customer Tokens']);
+			unset($_links['billing_agreements']);
+			unset($_links['quotations']);	
             ?>
 			<?php /*?>            <?php $_links = $this->getLinks(); ?><?php */?>
             <?php $_index = 1; ?>
             <?php $_count = count($_links); ?>
             
 			<?php foreach ($_links as $_link):
-            
+     
                     if($type == '')
                     {
                         

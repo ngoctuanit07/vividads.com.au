@@ -2,7 +2,7 @@
 /**
  * MageWorx
  *
- * NOTICE OF LICENSE
+ * NOTICE OF LICENSE 
  *
  * This source file is subject to the MageWorx EULA that is bundled with
  * this package in the file LICENSE.txt.
@@ -26,7 +26,7 @@
  *
  * @category   MageWorx
  * @package    MageWorx_OrdersPro
- * @author     MageWorx Dev Team
+ * @author     MageWorx Dev Team 
  */
 
 class MageWorx_OrdersPro_Model_Order extends Mage_Sales_Model_Order
@@ -173,6 +173,18 @@ class MageWorx_OrdersPro_Model_Order extends Mage_Sales_Model_Order
         Mage::getDesign()->setAllGetOld($currentDesign);
 
         return $this;
-    }        
+    }  
+	
+	 /**
+     * Save order related objects
+     *
+     * @return Mage_Sales_Model_Order
+     */
+    protected function _afterSave()
+    {
+		//Zend_debug::dump($this);
+		//exit;	
+	}
+	      
     
 }

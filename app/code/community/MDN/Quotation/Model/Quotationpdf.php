@@ -638,12 +638,12 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
            //  $this->drawProductTableHeader($page, $quoteInfo);
        // }
 		
-		 if ($ycolmn < ($this->_BLOC_FOOTER_HAUTEUR + 180)) {                   
+		 if ($this->y < ($this->_BLOC_FOOTER_HAUTEUR + 180)) {                   
                      $page = $this->NewPage($settings, $quoteInfo);
 					 $this->y -=60;	
                 }
 		
-		 $this->y -= 15;
+		 $this->y -= 15; 
 	
 		$page->setFillColor(Zend_Pdf_Color_Html::color('#e2ecf0'));
         $page->drawRectangle(10, $this->y-25, 270, $this->y, Zend_Pdf_Page::SHAPE_DRAW_FILL);
@@ -1493,7 +1493,7 @@ class MDN_Quotation_Model_QuotationPdf extends MDN_Quotation_Model_Pdfhelper {
 		
 	   
 	   ///adding if paid or partial paid ////
-	    $this->y -= 20;
+	    $this->y -= 20; 
 	    
 		$page->setFillColor(Zend_Pdf_Color_Html::color('#e2ecf0'));
 	    $page->drawRectangle((($this->_PAGE_WIDTH / 2)-10), $this->y, 590, $this->y-70, Zend_Pdf_Page::SHAPE_DRAW_FILL);

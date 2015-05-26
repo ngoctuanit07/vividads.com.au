@@ -1,6 +1,6 @@
 <?php
 /**
- * MageWorx
+ * MageWorx 
  *
  * NOTICE OF LICENSE
  *
@@ -33,7 +33,7 @@
 class MageWorx_OrdersPro_Block_Sales_Order_History extends Artis_Partialpayment_Block_Sales_Order_History
 {
 
-    public function __construct()
+    public function __construct() 
     {        
         parent::__construct();
         if (Mage::helper('orderspro')->isHideDeletedOrdersForCustomers()) {           

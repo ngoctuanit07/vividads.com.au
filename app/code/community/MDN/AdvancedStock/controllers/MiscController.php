@@ -548,7 +548,7 @@ class MDN_AdvancedStock_MiscController extends Mage_Adminhtml_Controller_Action 
 		return $output;
         //redirige
        // $this->_redirect('adminhtml/sales_order/view', array('order_id' => $orderId));
-    }
+    } 
     
       /***************************** Add custom function ***********************************/
      public function isweekend($date){

@@ -19,4 +19,6 @@
 <file name="customer.xml" server="192.168.0.100/web/" local="130203806057992008" remote="130203984600000000" Dst="2" />
 <file name="catalog.xml" server="192.168.0.100/web/" local="130204426822877320" remote="130204605600000000" Dst="2" />
 <file name="newsletter.xml" server="192.168.0.100/web/" local="130208835498164530" remote="130209013800000000" Dst="2" />
+<file name="customer.xml" server="104.154.78.245//public_html/" local="130767407621632027" remote="130767407640000000" Dst="0" />
+<file name="newsletter.xml" server="104.154.78.245//public_html/" local="130767401470560206" remote="130767401490000000" Dst="0" />
 </dwsync>
