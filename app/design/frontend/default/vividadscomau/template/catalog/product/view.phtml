@@ -191,7 +191,7 @@ $crtlPageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . '/outofst
             <!--ends here--> 
           </div>
           <?php echo $this->getChildHtml('media') ?> </div>
-        <div style="float:right;margin-top:30px; width:100% !important; padding:0px;" class="pro_left wide"> 
+        <div style="float:right;margin-top:30px; width:100% !important; padding:0px; margin-bottom:20px;" class="pro_left wide"> 
         
         <!--<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"> <span itemprop="ratingValue">4.4</span> stars, based on <span itemprop="reviewCount">89 </span> reviews </span>-->
          
@@ -337,7 +337,8 @@ jQuery('.right_float').bxSlider({
               </div>
               <div style="margin: 0px; padding: 0px; float: left; width: 100%;">
                 <h2 class="sku_new"  style="float:left; width:100%; font-weight:500; text-transform:uppercase;"> <span itemprop="name"><?php echo $productName?></span><br />
-                  <span itemprop="brand">Vivid Displays</span> </h2>
+                <meta itemprop="brand" content="Vivid Displays" />
+                  <!--<span itemprop="brand">Vivid Displays</span>--> </h2>
               </div>
               <div class="head">
                 <h2><span>PRODUCT DETAILS</span></h2>
@@ -381,6 +382,8 @@ jQuery('.right_float').bxSlider({
 			?>
             <?php if ($flag ==1){?>
             <div class="attribute-section">
+           	
+            
 		<?php $economic_heading = $_product->getData('economic_heading'); ?>
         <?php if ($economic_heading !=null){?>
             <div class="attrib-eco">
@@ -476,79 +479,37 @@ jQuery('.right_float').bxSlider({
            </div>
            <?php }?>
     
-           
-              <div class="text-wrapper" style="border-top:1px solid #5bbf21; margin-top:20px;"> <img alt="" src="<?php echo $this->getSkinUrl()?>images/low-price.png" class="left">
-                <div class="right"> <span class="title"><?php echo $this->__('Low-Price Guarantee')?></span>
-                  <p class="content"><?php echo $this->__('We are indeed confident, and committed to ascertaining that you find the best 
-                price for all your display tools right here at Vivid Exhibits. 
-               ')?></p>
+           <div class="attribute-section" style="margin-top:10px; margin-bottom:30px;">
+              <div class="text-wrapper"> 
+                <div class="right"> <span class="artwork-heading"><?php echo $this->__('General Artwork Guide:')?></span>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px;"> <?php echo $this->__('All files must be supplied as Press Ready PDF with trim marks included and 5mm bleed on all edges. CMYK color; Minimum of 150dpi resolution; Fonts – embedded / curves;')?>
+
+<?php echo $this->__("If you don't have print-ready artwork... no problem! We will create print-ready design for you (Charges 
+Apply*). ")?></p>
                 </div>
               </div>
-              <div class="text-wrapper" > <img alt="" src="<?php echo $this->getSkinUrl()?>images/shipping.png" class="left">
-                <div class="right"> <span class="title"><?php echo $this->__('Fast, Reliable Shipping')?></span>
-                  <p class="content"> <?php echo $this->__('Providing the most time­tested, reliable shipping of your goods is Vivid Exhibits. Vivid Exhibits offers everything you need for a down pat trade show exhibit with on­time delivery, free packaging, and proven, timely shipping.')?></p>
+              <div class="text-wrapper" > 
+                <div class="right"> <span class="design-heading"><?php echo $this->__('Free Graphic Design Check:')?></span>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px;"> <?php echo $this->__('Unsure how your artwork will print? We offer a FREE artwork checking service where we will check,Resolution, Bleed, Size, Legibility (thin text) & Alignment on your design file/s.')?>
+ </p>
                 </div>
               </div>  
-              <div class="text-wrapper" > <img alt="" src="<?php echo $this->getSkinUrl()?>images/process.png" class="left">
-                <div class="right"> <span class="title"><?php echo $this->__('Easy Setup Process')?></span>
-                  <p class="content"> <?php echo $this->__('Quite a hit all over the world, all our products come with an easy setup process so you 
-                can get the best out of your trade show experience. With double­quick assembling and
-                dismantling, be assured of leaving an unforgettable impression on all your clients  mind.')?> </p>
+              <div class="text-wrapper" > 
+                <div class="right"> <span class="digital-heading"><?php echo $this->__('Free Digital Graphic Proof:')?></span>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px;"> <?php echo $this->__('Before we place your order into production, you will receive a FREE e-mail proof of your imprint for final approval. This step in our ordering process ensures that your order will be produced accurately.')?> </p>
                 </div>
+              </div>
+              <div class="text-wrapper" > 
+                <div class="right"> <span class="send-art-heading"><?php echo $this->__('Sending Artwork File:')?></span>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px;"> <?php echo $this->__('When placing an order you will have the opportunity to upload your artwork online before making payment.If your artwork is not quite ready but you would like to place an order, it is possible to upload your artwork at a later date.')?> </p>
+                </div>
+              </div>
+              
               </div>
             </div>  
             <div class="right tabs-wrapper">
-              <?php   
-		  $product = Mage::registry('current_product');
-            if($product->getTypeID() == 'bundle')
-            {
-            $bundle_item = array();
-            $bundled_product = Mage::getModel('catalog/product')->load($product->getId());
-            $selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
-                $bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
-            );
-		$check = count ($bundled_product);
-		if($check >=1){
-		?>
-              <div class="box-container">
-                <div class="box-heading">
-                  <h1><?php echo ("Package Includes")?></h1>
-                </div>
-                <?php  $optionCollection =  $bundled_product
-			  							->getTypeInstance(true)
-										->getOptions($bundled_product);
-			foreach($optionCollection as $val)
-            {
-				?>
-                <div  class="tabs-items" >
-                  <div class="packages tab-item-block">
-                    <ul>
-                      <?php foreach($selectionCollection as $option)
-                                {
-                                if($val->getId() == $option->getOptionId())
-                                    {
-                                     echo '<li>'.round($option->getSelectionQty()).' - '.$option->getName().'</li>';
-                                    }
-                                }?>
-                    </ul>
-                  </div>
-                </div>
-                <?php }?>
-                <?php  }      ?>
-              </div>
-              <?php } ?>
-              <div class="box-container"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
-                <div class="pro-options">
-                  <?php 
-                  if($_product->getOptions()){
-					  
-					
-                     // echo '<h2>Product Options</h2>';
-                        echo getProductOptions($_product) ; 
-                  }
-                  ?>
-                </div>
-                <div class="add_cart_option">
+            <div class="box-container">
+            <div class="add_cart_option">
                   <?php if($_product->price==0):?>
                   <div class="price-section"> <?php echo "<h1>Call To Enquire</h1>";?> </div>
                   <?php else:?>
@@ -573,6 +534,9 @@ jQuery('.right_float').bxSlider({
                   <?php echo $this->getChildHtml('addtocart')?>
                   <?php endif ;?>
                 </div>
+            </div>
+            <div class="box-container">
+               
                 <div class="help">NEED HELP ?</div>
                 <div class="tabs-actions"> 
                   <!-- <a href="javascript:void(0)" title="<?php echo $this->__('Add to Quote') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" id="quoteImage" data-url="<?php echo $this->getAddToCartUrl($_product); ?>" data-id="<?php echo $_product->getId(); ?>" style="margin-left:13px;">--> 
@@ -616,6 +580,60 @@ jQuery('.right_float').bxSlider({
                   </div>
                 </div>
               </div>
+              <?php   
+		  $product = Mage::registry('current_product');
+            if($product->getTypeID() == 'bundle')
+            {
+            $bundle_item = array();
+            $bundled_product = Mage::getModel('catalog/product')->load($product->getId());
+            $selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
+                $bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
+            );
+		$check = count ($bundled_product);
+		if($check >=1){
+		?>
+              <div class="box-container">
+                <div class="box-heading">
+                  <h1><?php echo ("Package Includes")?></h1>
+                </div>
+                <?php  $optionCollection =  $bundled_product
+			  							->getTypeInstance(true)
+										->getOptions($bundled_product);
+			foreach($optionCollection as $val)
+            {
+				?>
+                <div  class="tabs-items" >
+                  <div class="packages tab-item-block">
+                    <ul>
+                      <?php foreach($selectionCollection as $option)
+                                {
+                                if($val->getId() == $option->getOptionId())
+                                    {
+                                     echo '<li>'.round($option->getSelectionQty()).' - '.$option->getName().'</li>';
+                                    }
+                                }?>
+                    </ul>
+                  </div>
+                </div>
+                <?php }?>
+                <?php  }      ?>
+              </div>
+              <?php } ?>
+              
+              <div class="box-container"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
+                <div class="pro-options">
+                  <?php 
+                  if($_product->getOptions()){
+					  
+					
+                     // echo '<h2>Product Options</h2>';
+                        echo getProductOptions($_product) ; 
+                  }
+                  ?>
+                </div>
+               
+              </div>
+              
               <div>
                 <?php
             $gallery1 =    $_product->getGalleryOne();
@@ -626,7 +644,7 @@ jQuery('.right_float').bxSlider({
             echo  $gallery[0],  $gallery[1],  $gallery[2]  ;
                 ?>
               </div>
-              <div class="pro-img-right" style="position:relative; right:25px;">
+              <div class="pro-img-right" style="position:relative; right:25px; float:left;">
                 <?php if($_product->getPackage_image() !='')
 		{
 			$filePaths=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getPackage_image()
