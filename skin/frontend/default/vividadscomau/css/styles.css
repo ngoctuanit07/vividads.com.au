@@ -2815,7 +2815,7 @@ product-fabric-banner-stand-curve-top-frame-kit .pro_right img{margin-top:-167px
 .footer .links{float:left;margin-bottom:8px;padding:10px 25px;width:20.05%}
 .footer .block-title{color:#000;text-align:left;font-size:20px;margin:0 0 9px;padding:0 0 18px}
 .footer .links, .footer .block-subscribe{font-size:12px;text-transform:uppercase}
-.footer .block-subscribe{float:left;width:285px!important;padding:10px;border:none}
+.footer .block-subscribe{float:left;width:285px!important;padding:10px 0px 0px 0px;border:none; margin:0px;}
 .footer .block-subscribe .block-title{border:medium none;margin:0;background:none}
 .block-title h2, .block-title h3, .block-title strong{color:#5bbf21;font-family:"Raleway-Medium", "Helvetica Neue", Verdana, Arial, sans-serif;font-size:14px;font-style:normal;font-weight:600;line-height:1.4;text-rendering:optimizespeed;text-transform:uppercase}
 .footer .block-title{-moz-border-bottom-colors:none;-moz-border-left-colors:none;-moz-border-right-colors:none;-moz-border-top-colors:none;border-color:-moz-use-text-color -moz-use-text-color #dfdfdf;border-image:none;border-style:none none solid;border-width:medium medium 1px;color:#000;padding:3px 0;text-transform:uppercase}
@@ -2823,11 +2823,11 @@ product-fabric-banner-stand-curve-top-frame-kit .pro_right img{margin-top:-167px
 .footer .block-title strong, .footer .block-title strong span{color:#000;font-size:20px;font-weight:400}
 .footer .links li{line-height:1.415;padding:4px 0;text-align:left;word-break:break-all;width:100%;float:left}
 .footer .links a{color:#555!important;font-size:14px;transition:all .3s ease-in-out;-webkit-transition:all .3s ease-in-out;-moz-transition:all .3s ease-in-out;text-transform:capitalize;text-align:left}
-.footer .links:hover{color:#000!important;text-decoration:none}
-.footer .block-subscribe form{border:1px solid #dfdfdf;float:left;width:260px}
-.footer .block-subscribe .block-content{padding:9px 0 13px 4px;background:none!important}
+.footer .links:hover{color:#000!important;text-decoration:none} 
+.footer .block-subscribe form{border:2px solid #cdcdcd;float:left;width:260px; background-color:white;}
+.footer .block-subscribe .block-content{/*padding:9px 0 13px 4px;*/ padding:5px; background:none!important}
 .footer .block-subscribe .input-box{float:left;max-width:76%;padding-top:0}
-.footer .block-subscribe .input-box input{background-color:transparent;border:medium none;color:#555;font-size:14px}
+.footer .block-subscribe .input-box input{background-color:transparent;border:medium none;color:#555;font-size:12px; width:166px; margin:0px;}
 .footer .block-subscribe .input-text{border-radius:0;border-right:0 none;width:90%}
 .footer .block-subscribe .actions{float:right;margin:0 5% 0 0;width:34.374%}
 .footer .block-subscribe .actions .submit{border:1px solid #c5c5c5;color:#000;font-size:15px;line-height:17px;padding:7px 17px}
