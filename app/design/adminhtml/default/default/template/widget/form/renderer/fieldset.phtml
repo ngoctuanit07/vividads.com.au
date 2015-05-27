@@ -1,0 +1,166 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_element = $this->getElement() ?>
+<?php if ($_element->getFieldsetContainerId()): ?>
+
+<div id="<?php echo $_element->getFieldsetContainerId(); ?>">
+  <?php endif; ?>
+  <?php if ($_element->getLegend()): ?>
+  <div class="entry-edit-head">
+    <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $_element->getLegend() ?></h4>
+    <div class="form-buttons"><?php echo $_element->getHeaderBar() ?></div>
+  </div>
+  <?php endif; ?>
+  <?php if (!$_element->getNoContainer()): ?>
+  <div class="fieldset <?php echo $_element->getClass() ?>" id="<?php echo $_element->getHtmlId() ?>">
+    <?php endif; ?>
+    <div class="hor-scroll">
+      <?php if ($_element->getComment()): ?>
+      <p class="comment"><?php echo $this->escapeHtml($_element->getComment()) ?></p>
+      <?php endif; ?>
+      <?php if ($_element->hasHtmlContent()): ?>
+      <?php echo $_element->getHtmlContent(); ?>
+      <?php else: ?>
+      <table cellspacing="0" class="<?php echo $_element->hasTableClass() ? $_element->getTableClass() : 'form-list'?>">
+        <tbody>
+          <?php echo $_element->getChildrenHtml(); ?>
+        </tbody>
+      </table>
+      <?php endif; ?>
+    </div>
+    <?php if ($_element->getHtmlId() == 'sticker_main_base_fieldset'): ?>
+    <?php 
+             $get_url_id= $_SERVER['REQUEST_URI'];
+             $get_url_array=explode('id/',$get_url_id);
+             
+             $get_url_array=explode('/',$get_url_array[1]);
+     
+		$home_url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
+		$medi_url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); ?>
+    <img  style="border:2px solid; margin:-170px 0 0px 670px;" src="<?php echo $home_url."xj-logo.jpg";?>" />
+    <?  $db = Mage::getSingleton('core/resource')->getConnection('core_read');
+        
+		$query = "SELECT image FROM  xj_sticker_sticker where sticker_id='".$get_url_array[0]."'";
+		$results = $db->fetchAll($query);
+		
+		$query1 = "SELECT image FROM  xj_sticker_sticker";
+		$results1 = $db->fetchAll($query1);
+		
+		$num_rows = count($results);
+		$imgw = $results[0]['image'];
+		$imgw1 = $results1[0]['image'];
+ ?>
+    <img width="128" style="margin:-274px 0 160px 670px;display: none;" id="blah" src="<?php if($num_rows == 0){ ?><?php echo $medi_url."xj/sticker".$imgw1;?><?php } else { ?><?php echo $medi_url."xj/sticker".$imgw;  }?>" alt="Please upload an image" />
+    <?php endif; ?>
+    <?php echo $_element->getSubFieldsetHtml() ?>
+    <?php if (!$_element->getNoContainer()): ?>
+  </div>
+  <?php endif; ?>
+  <?php if ($_element->getFieldsetContainerId()): ?>
+</div>
+<?php endif; ?>
+<?php if ($_element->getHtmlId() == 'sticker_main_base_fieldset'): ?>
+<style>
+#sticker_main_base_fieldset
+{
+	min-height:330px;
+}
+</style>
+<script>
+	function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+				var rut = jQuery.noConflict();
+                reader.onload = function (e) {
+                    rut('#blah')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+	function rut_postion(value)
+	{
+		if(value == 'top-left')
+		{
+			document.getElementById("blah").style.display="block";
+			document.getElementById("blah").style.margin="-274px 0 160px 670px";
+		}
+		else if(value == 'top-right')
+		{
+			document.getElementById("blah").style.display="block";
+			document.getElementById("blah").style.margin="-274px 0 160px 810px";
+		}
+		else if(value == 'bottom-left')
+		{
+			document.getElementById("blah").style.display="block";
+			document.getElementById("blah").style.margin="-135px 0 20px 672px";
+		}
+		else if(value == 'bottom-right')
+		{
+			document.getElementById("blah").style.display="block";
+			document.getElementById("blah").style.margin="-135px 0 20px 810px";
+		}
+		else if(value == 'bottom-center')
+		{
+			document.getElementById("blah").style.display="block";
+			document.getElementById("blah").style.margin="-135px 0 20px 740px";
+		}
+		else if(value == 'top-center')
+		{
+			document.getElementById("blah").style.display="block";
+			document.getElementById("blah").style.margin="-274px 0 160px 740px";
+		}
+		else if(value == 'left-center')
+		{
+			document.getElementById("blah").style.display="block";
+			document.getElementById("blah").style.margin="-200px 0 110px 672px";
+		}
+		else if(value == 'right-center')
+		{
+			document.getElementById("blah").style.display="block";
+			document.getElementById("blah").style.margin="-200px 0 110px 810px";
+		}
+		else if(value == 'center')
+		{
+			document.getElementById("blah").style.display="block";
+			document.getElementById("blah").style.margin="-200px 0 70px 745px";
+		}
+		else
+		{
+			document.getElementById("blah").style.display="none";
+		}
+	}
+	
+	var car = jQuery.noConflict();
+	car(document).ready(function() 
+	{
+		test = car("#sticker_main_position").val();
+		rut_postion(test);
+	});
+	</script>
+<?php endif; ?>

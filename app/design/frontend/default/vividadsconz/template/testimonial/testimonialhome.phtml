@@ -1,0 +1,37 @@
+<?php $testimonials = $this->getRecents(); ?>
+<?php $allow_media = (Mage::getStoreConfig('hm_testimonial/general/allow_media')) ? Mage::getStoreConfig('hm_testimonial/general/allow_media'):0; ?>
+<?php $allow_media_popup = (Mage::getStoreConfig('hm_testimonial/general/allow_media_popup')) ? Mage::getStoreConfig('hm_testimonial/general/allow_media_popup'):0; ?>
+<?php $height_slide = ((int)Mage::getStoreConfig('hm_testimonial/general/heightslide')) ? Mage::getStoreConfig('hm_testimonial/general/heightslide'):400; ?>
+
+
+<?php if($testimonials->count() < 1): ?>
+	  <div>
+	    <?php echo Mage::helper('testimonial')->__('No Testimonials'); ?>
+      </div>
+  <?php else: ?>
+  <ul>
+  <?php foreach ($testimonials as $testimonial): ?>
+	<li>
+    <div class="col-md-6">
+    <div class="media">
+    <div class="pull_left">
+    <small>   <?php echo $testimonial->getCompany();?></small>
+    <strong> <?php echo $testimonial->getClientName();?></strong>
+    </div>
+    <div class="media-body">
+    <blockquote><p>
+	<?php $data = $testimonial->getPostContent(); ?>
+	<?php  echo substr($data,0,150)."..."; ?>
+    
+    </p></blockquote>
+    </div>
+    
+    </div>
+    </div>
+               
+             
+	
+   </li>
+  <?php endforeach; ?>
+</ul>
+  <?php endif; ?>

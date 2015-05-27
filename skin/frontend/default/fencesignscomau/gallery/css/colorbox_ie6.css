@@ -1,0 +1,11 @@
+/*
+    Fix style ie6    
+*/
+
+		#cboxClose{	background:url(../images/colorbox/close1.gif) no-repeat;}
+		#cboxClose.hover{background:url(../images/colorbox/close2.gif) no-repeat;}
+		#cboxNext{	background:url(../images/colorbox/next1.gif) no-repeat;}
+		#cboxNext.hover{background:url(../images/colorbox/next2.gif) no-repeat;}
+		#cboxPrevious{	background:url(../images/colorbox/previous1.gif) no-repeat;}
+		#cboxPrevious.hover{background:url(../images/colorbox/previous2.gif) no-repeat;}
+		

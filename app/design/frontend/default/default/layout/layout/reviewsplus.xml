@@ -1,0 +1,58 @@
+<?xml version="1.0"?>   
+<layout version="0.1.0">   
+	<default>
+    <reference name="root">
+        <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+    </reference>
+     <reference name="head">
+       <action method="addCss" ifconfig="reviewsplus_sec/plus_config/status"><stylesheet>css/reviewsplus/reviewsplus.css</stylesheet></action>
+        <action method="addCss" ifconfig="reviewsplus_sec/plus_config/status"><stylesheet>css/reviewsplus/jquery.fancybox.css</stylesheet></action>
+        <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status"><script>reviewsplus/jquery-1.10.1.min.js</script></action> 
+        <script>jQuery.noConflict();</script>
+       
+        <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status"><script>reviewsplus/reviewsplus.js</script></action> 
+        <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status"><script>reviewsplus/jquery.fancybox.pack.js</script></action>
+        <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status"><script>reviewsplus/jquery.fancybox.js</script></action> 
+        
+          
+
+     
+    </reference>
+		<reference name="right">
+        <block type="reviewsplus/sidebar" name="reviewsplus_sidebar" before="-"
+			       template="reviewsplus/sidebar.phtml"/>
+    </reference>
+	</default>
+  <adminhtml_system_config_edit>
+    <update handle="editor"/>
+    <reference name="head">
+      <action method="setCanLoadTinyMce">
+        <load>1</load>
+      </action>
+    </reference>
+  </adminhtml_system_config_edit>
+  <review_product_list translate="label">
+   
+    <reference name="content">
+       <reference name="product.info">
+         <reference name="product.info.product_additional_data">
+            <action method="setTemplate" ifconfig="reviewsplus_sec/plus_config/status" ><template>reviewsplus/product/view/list.phtml</template></action>
+              <block type="review/form" name="product.review.form" as="review_form">
+                <block type="page/html_wrapper" name="product.review.form.fields.before" as="form_fields_before" translate="label">
+                  <label>Review Form Fields Before</label>
+                    <action method="setMayBeInvisible"><value>1</value></action>
+                </block>
+              </block>
+          </reference>
+        </reference>
+    </reference>
+
+  </review_product_list>
+  <review_product_view>
+   
+    <reference name="content">
+      <reference name="review_view">
+      <action method="setTemplate" ifconfig="reviewsplus_sec/plus_config/status" ><template>reviewsplus/view.phtml</template></action></reference>
+     </reference>
+  </review_product_view>
+</layout>   

@@ -1,0 +1,67 @@
+<?php echo $this->getGridParentHtml(); ?>
+
+<script type="text/javascript">
+<?php
+//call js functions to display "standard price" considering options and final price
+foreach ($this->getCollection() as $item) {
+    if ($item->getProduct()->gethas_options() == 1) {
+        echo "updatePriceForCustomOptions_" . $item->getId() . "();\n";
+    }
+    echo "DisplayFinalPrice(" . $item->getId() . ");";
+}
+?>
+
+function close_bundle(id)
+{
+  document.getElementById('main_bundle_'+id).style.display = 'none';
+  document.getElementById('layout1').style.display = 'none';
+}
+
+function bundle_open(id)
+{
+    document.getElementById('main_bundle_'+id).style.display = 'block';
+    document.getElementById('layout1').style.display = 'block';
+}
+</script>
+
+
+<style>
+.bundle_main{
+    position: absolute;
+left: 355px;
+top: 54px;
+width: 657px;
+background-color: white;
+box-shadow: 0 0 10px #000000;
+z-index: 9999;
+}
+.close_bundle{
+float: right;
+margin-right: 10px;
+margin-top: 10px;
+font-size: 25px;
+}
+.bundle_item{
+width: 478px;
+margin-left: 50px;
+margin-top: 12px;
+margin-bottom: 12px;
+}
+
+.item_box table td{
+    width: 150px;
+}
+
+.layout1{
+	background-color: black;
+width: 100%;
+height: 100%;
+position: fixed;
+top: 0px;
+left: 0px;
+z-index: 999;
+opacity: 0.5;
+}
+
+</style>
+<div class="layout1" id="layout1" style="display:none;"></div>

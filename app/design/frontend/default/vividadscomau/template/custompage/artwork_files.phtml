@@ -1,0 +1,154 @@
+<?php
+	$temptable = Mage::getSingleton('core/resource')->getTableName('downloads_categories');
+	$temptable1 = Mage::getSingleton('core/resource')->getTableName('downloads_files');
+	$sql = "select * from ".$temptable." where is_active=1";
+	$chkcat = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sql);
+	$subCatId = array();
+	$i = $j = $k = 1;
+	foreach ($chkcat as $_category) {
+		$subCatId[$k][$i][$j] = $_category['title'];
+		$temptable = Mage::getSingleton('core/resource')->getTableName('downloads_files');
+		$sql1 = "select * from ".$temptable1." WHERE category_id='".$_category['category_id']."'";
+		$chkFile = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sql1);
+		foreach($chkFile as $res_objects){
+			$i++;
+			$subCatId[$k][$i][$j] = $res_objects["file_id"]."##".$res_objects["filename"]."##".$res_objects["name"];
+		}
+		if($j%4==0){
+			$k++;
+			$j=1;
+		}else{
+			$j++;	
+		}
+		$i=1;
+	}?>
+	<h2 style="margin-left:10px; padding-top:10px;"><strong>Graphic Design Templates:</strong></h2>
+	<?php
+	foreach ($subCatId as $k=>$v ) {
+		//echo $k;
+		//echo "<pre>";
+		//print_r($v);
+		echo '<table border="0" cellpadding="0" width="100%" class="artworktable">';
+		foreach($v as $k1=>$s)
+		{
+			//$n++;
+			$style ='';
+			$style1 ='';
+			if($k1==1)
+			{
+				$style = 'style="background-color: #f0f0f0; line-height:30px"';
+				$style1 = 'style="text-align: center; font-family: Arial, Helvetica, sans-serif; color: #000; font-size: 12px; font-weight:bold;"';
+			}
+			//else 
+			?>
+			<tr <?php echo $style ?>>
+			<?php
+			{
+				for($m=1;$m<=4;$m++)
+				{
+					if($subCatId[$k][$k1][$m] != '')
+					{
+					if($k1==1){ ?>
+					<td <?php echo $style1 ?> >
+						<?php echo $subCatId[$k][$k1][$m] ?>
+					</td>
+					<?php	
+					}else{							
+					$ar = explode("##",$subCatId[$k][$k1][$m]);
+					?>
+					<td <?php echo $style1 ?>  class="art_work">
+					<a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$ar[0].'/'.$ar[1]; ?>" title="<?php echo $ar[2]; ?>" target="_blank">
+					<?php echo $ar[2]?>
+					</a></td>
+					<?
+					}
+					}
+					else
+					{echo '<td></td>';}
+					//if($m ==3) $n=0;
+				}
+			}
+			echo '</tr>';
+		}
+		echo '</table>';
+	}
+
+?>
+<div class="cate_listing">
+<div class="cate_listing" style="margin-top:20px;padding:0px !important;">
+  <?php $_helper = $this->helper('catalog/category') ?>
+  <?php $j=1;?>
+  <ul class="products-grid">
+    <?php foreach ($_helper->getStoreCategories() as $_category) { ?>
+    <?php 
+$catId = $_category->getId();
+$category = Mage::getModel('catalog/category')->load($catId); 
+$catUrl = $category->getUrl();
+$catThumb = $category->getThumbnail();
+$catName =  $category->getName();
+$catDes = $category->getDescription();
+			$_img_path = Mage::getBaseUrl('media').'catalog/category/'; 
+			$mypath = $_img_path.'' .$catThumb;
+      		$minPrice=Mage::getSingleton('catalog/layer')
+			->setCurrentCategory($catId)
+			->getProductCollection()
+			->getMinPrice();
+			$collection = Mage::getSingleton('catalog/category')->load($catId)
+            ->getProductCollection()
+            ->addAttributeToSelect('*');
+//var_dump($collection);
+if(count($collection)>=1){$minimumPrice = 5000000; 
+foreach ($collection as $_product){
+//	echo $_product->getName();
+	 $specialPrice =  $_product->getSpecialPrice();
+	if($specialPrice){
+	 if($minimumPrice > $specialPrice){
+		$minimumPrice = $specialPrice;
+		}
+	  }
+	 $price = $_product->getPrice();
+	 if($minimumPrice > $price){
+		$minimumPrice = $price;
+		}
+}
+} else{$minimumPrice = 250; }
+?>
+    <li class="hover_pro item<?php if($j%3==0){ ?> last<?php } ?>">
+      <div class="sale-label sale-top-left"></div>
+      <div class="mask-product">
+        <div class="pro-det-con"> <a href="<?php echo $catUrl; ?>" title="<?php echo $catName; ?>" class="product-image"> <img src="<?php echo $mypath; ?>" width="220" height="252" alt="<?php echo $catName; ?>" /> </a>
+          <div style="top:0;" class="product-detail-content">
+            <div class="product-detail-description"> <?php echo  substr($catDes,0,150)."..."; ?> </div>
+            <p class="product-detail-read-more"> <a href="<?php echo $catUrl; ?>">Read More</a> </p>
+          </div>
+        </div>
+        <h2 class="product-name"><a href="<?php echo $catUrl; ?>" title="<?php echo $catName; ?>"> <?php echo $catName;// substr($catName,0,35)."...";?> </a></h2>
+      </div>
+      <div class="btn-bg">
+        <div class="pric-btn" style=" text-align: center; color: #fff; font: 12px 'Raleway'; text-decoration: none; height:26px; width:134px; float:left; line-height:26px;"> <?php echo 'From AUD '.ceil($minimumPrice).".00";
+		//			  echo Mage::helper('core')->currency($_product->getPrice());
+					  ?> </div>
+        <div class="browse-btn"> <a class="category-browse" title="<?php echo $catName; ?>" href="<?php echo $catUrl; ?>"> <span>More Info</span> </a> </div>
+      </div>
+      <?php //echo $this->getPriceHtml($_product, true) ?>
+    </li>
+    <? $j++;?>
+    <?php } ?>
+  </ul>
+  <div class="banner">
+    <p style="font-size:14px; color:#fff; line-height:25px; text-align:justify; width:97%; float:left; margin:10px;">
+      <?php //echo $catDes; ?>
+      When it comes to trade shows & media backdrop banner walls, it’s all about catching the eye. The impact of your display can make or break your success at the show. Banner stands very popular because they’re portable, flexible, and not too expensive. One drawback is that everybody uses them. So how do you make sure your banner stand draws attention—and doesn’t make you blend in? Here are a few tips for using a banner stand effectively. </p>
+  </div>
+  <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('external-block')->toHtml() ?>
+ <?php /*?> <div id="quoteLoader"></div><?php */?>
+  <!-- <iframe src='http://usedbooths.com.au/index.php/externalform/?store_id=166' height='1450' width='930'></iframe>--> 
+</div>
+<div class="banner">
+<p style="font-size:14px;><font face=""Raleway",sans-serif" color="#fff" >We offer Portable 
+				Banner Display &amp; Trade Show Displays, Banner Stands, PopUp / Pop 
+				Up Wall Displays, Brochure Stands, Sign Holders, Promotional 
+				Banners, Pull Up / Roll Up Banners, Crowd Control Barriers, 
+				Display Boards.</font></p>
+</div>
+</div>

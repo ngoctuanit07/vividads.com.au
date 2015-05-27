@@ -1,0 +1,74 @@
+<?php /*?><?php if(Mage::getStoreConfig('catalog/schema/enable')): ?>
+<?php if(Mage::getStoreConfig('catalog/schema/wrap')): ?>
+
+<div class="hide-rich-snippets" style="display:none;">
+  <?php endif ?>
+  <?php 	$_product = $this->getProduct(); ?>
+  <div itemscope itemtype="http://schema.org/Product"> 
+  <span itemprop="name"><?php echo $_product->getName(); ?></span> 
+  	<img src="<?php echo $this->getNonCachedImage($_product); ?>" alt='<?php echo $_product->getName(); ?>' />
+    <span itemprop="sku" ><?php echo $_product->getSku();?></span>
+    <span itemprop="model" ><?php echo $_product->getSku();?></span>
+    <?php 	
+        $reviews = Mage::getModel('review/review')->getResourceCollection();	       
+ 		$review_data = array();		
+	 
+	  foreach($reviews as $review){		  
+		  $c_review = $review->getData();	
+		 if($c_review['entity_pk_value']==$_product->getId()){		  		
+		    	$customer = Mage::getModel('customer/customer')->load($c_review['customer_id']);
+				$customer_data = $customer->getData();
+				$nreview = array_merge($c_review, $customer_data);
+				$review_data[] = $nreview;
+			}		  
+		  } 	
+	?>
+    
+    
+    <div itemprop="aggregateRating"
+    itemscope itemtype="http://schema.org/AggregateRating"> Rated 
+    <span itemprop="ratingValue">5</span>/10
+      based on <span itemprop="reviewCount"><?php echo count($review_data);?></span> customer reviews 
+      </div>
+    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"> 
+      <!--price is 1000, a number, with locale-specific thousands separator
+    and decimal mark, and the $ character is marked up with the
+    machine-readable code "USD" --> 
+     <meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"/>New
+   
+          <span itemprop="priceCurrency" content="<?php echo $this->getCurrencyCode(); ?>">$</span>
+      <span
+          itemprop="price" content="<?php echo round($_product->getSpecial_price(),2); ?>">
+		  <?php echo round($_product->getSpecial_price(),2); ?></span>
+      <link itemprop="availability" href="http://schema.org/InStock" />
+      In stock 
+      </div>
+    Product description: <span itemprop="description"><?php echo $this->getProductDescription($_product); ?></span> Customer reviews:
+    
+    <?php 
+			foreach($review_data as $_review){
+				
+	?>
+    <div itemprop="review" itemscope itemtype="http://schema.org/Review"> 
+    <span itemprop="name"><?php echo $_review['title'];?></span> - by 
+      <span itemprop="author"><?php echo $_review['firstname'].' '.$_review['lastname']; ?></span>,
+      <meta itemprop="datePublished" content="<?php echo $_product->getCreated_at();?>">
+      <?php echo $_product->getCreated_at();?>
+      <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+        <meta itemprop="worstRating" content = "1">
+        <span itemprop="ratingValue">8</span>/ <span itemprop="bestRating">10</span> stars </div>
+      <span itemprop="description"><?php echo $_review['detail'];?> </span> 
+      
+      </div>   
+    <?php } ?>
+    
+     </div>
+  <?php if(Mage::getStoreConfig('catalog/schema/wrap')): ?>
+</div>
+<style>
+			.hide-rich-snippets {display:block;}
+		</style>
+<?php endif ?>
+<?php endif ?>
+
+<?php */?>

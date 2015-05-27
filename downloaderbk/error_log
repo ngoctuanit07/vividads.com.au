@@ -1,0 +1,9 @@
+[28-Nov-2014 12:09:28 Australia/Melbourne] PHP Fatal error:  Class 'Maged_Controller' not found in /home/tablethr/public_html/downloader/index.php on line 36
+[28-Nov-2014 12:09:37 Australia/Melbourne] PHP Fatal error:  Class 'Maged_Controller' not found in /home/tablethr/public_html/downloader/index.php on line 36
+[28-Nov-2014 12:10:54 Australia/Melbourne] PHP Fatal error:  Class 'Maged_Controller' not found in /home/tablethr/public_html/downloader/index.php on line 36
+[28-Nov-2014 12:10:55 Australia/Melbourne] PHP Fatal error:  Class 'Maged_Controller' not found in /home/tablethr/public_html/downloader/index.php on line 36
+[28-Nov-2014 12:10:55 Australia/Melbourne] PHP Fatal error:  Class 'Maged_Controller' not found in /home/tablethr/public_html/downloader/index.php on line 36
+[28-Nov-2014 12:10:56 Australia/Melbourne] PHP Fatal error:  Class 'Maged_Controller' not found in /home/tablethr/public_html/downloader/index.php on line 36
+[28-Nov-2014 12:11:11 Australia/Melbourne] PHP Fatal error:  Class 'Maged_Controller' not found in /home/tablethr/public_html/downloader/index.php on line 36
+[28-Nov-2014 12:11:12 Australia/Melbourne] PHP Fatal error:  Class 'Maged_Controller' not found in /home/tablethr/public_html/downloader/index.php on line 36
+[28-Nov-2014 01:11:43 UTC] PHP Fatal error:  Class 'Maged_Model_Session' not found in /home/tablethr/public_html/downloader/Maged/Controller.php on line 605

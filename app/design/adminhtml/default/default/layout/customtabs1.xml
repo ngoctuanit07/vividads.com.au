@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_sales_order_view>
+        <reference name="sales_order_tabs">
+            <action method="addTab">
+                <name>custom_tab</name>
+                <block>customtabs1/adminhtml_catalog_product_tab1</block>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+</layout>

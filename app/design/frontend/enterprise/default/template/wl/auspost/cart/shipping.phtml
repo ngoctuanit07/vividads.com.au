@@ -1,0 +1,270 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<?php
+/**
+ * @see Mage_Checkout_Block_Cart_Shipping
+ */
+?>
+<?php
+$postcodeCapability = array();
+$helper = Mage::helper('auspost/delivery');
+if ($postcode = $this->getEstimatePostcode()) {
+    $postcodeCapability = $helper->getPostcodeCapability($postcode);
+}
+?>
+<div class="shipping">
+    <h2><?php echo $this->__('Estimate Shipping and Tax') ?></h2>
+
+    <form action="<?php echo $this->getUrl('checkout/cart/estimatePost') ?>" method="post" id="shipping-zip-form">
+        <fieldset>
+            <p><?php echo $this->__('Enter your destination to get a shipping estimate.') ?></p>
+            <input type="hidden" name="country_id" value="AU" id="country"/>
+            <ul class="form-list">
+                <li>
+                    <label
+                        for="postcode"<?php if ($this->isZipCodeRequired()) echo ' class="required"' ?>><?php if ($this->isZipCodeRequired()) echo '<em>*</em>' ?><?php echo $this->__('Zip/Postal Code') ?></label>
+                    <input
+                        class="input-text validate-postcode<?php if ($this->isZipCodeRequired()): ?> required-entry<?php endif;?>"
+                        type="text" id="postcode" name="estimate_postcode"
+                        value="<?php echo $this->htmlEscape($this->getEstimatePostcode()) ?>"/>
+                </li>
+            </ul>
+            <div class="buttons-set">
+                <button type="button" onclick="coShippingMethodForm.submit()" class="button">
+                    <span><span><?php echo $this->__('Get a Quote') ?></span></span></button>
+            </div>
+        </fieldset>
+    </form>
+    <script type="text/javascript">
+        //<![CDATA[
+        new RegionUpdater('country', 'region', 'region_id', <?php echo $this->helper('directory')->getRegionJson() ?>);
+        //]]>
+    </script>
+
+    <?php if (($_shippingRateGroups = $this->getEstimateRates($postcode))): ?>
+    <form id="co-shipping-method-form" action="<?php echo $this->getUrl('checkout/cart/estimateUpdatePost') ?>">
+        <fieldset>
+            <dl class="sp-methods">
+                <ul class="texttip"><li>
+                    Nominate Shipping Speed
+                </li></ul>
+                <dd>
+                    <select id="auspost_delivery_network">
+                        <option selected="selected" value="1"><?php echo $this->__('Standard Delivery') ?></option>
+                        <option value="101"><?php echo $this->__('Express Delivery') ?></option>
+                    </select>
+                </dd>
+                <br clear="all"/>
+                <?php
+                foreach ($_shippingRateGroups as $code => $_rates):
+                    if ($code != 'auspost') continue;
+                    if (isset($postcodeCapability[$code])) {
+                        if (!$postcodeCapability[$code] && !$postcodeCapability['error']) continue;
+                    }
+                    ?>
+                    <!--<dt><?php /*echo $this->getCarrierName($code) */?></dt>-->
+                    <dd>
+                        <ul>
+                            <?php if (isset($postcodeCapability[$code]) && $postcodeCapability['error']) : ?>
+                            <li class="error-msg"
+                                style="color: red"><?php echo $postcodeCapability['description']?></li>
+                            <?php else: ?>
+                            <?php
+                            $last_rate = null;
+                            foreach ($_rates as $_rate):
+                                if ($code == 'auspost')
+                                    ob_start();
+                                ?>
+                                <li<?php if ($_rate->getErrorMessage()) echo ' class="error-msg"';?>>
+                                    <?php if ($_rate->getErrorMessage()): ?>
+                                    <?php echo $_rate->getErrorMessage() ?>
+                                    <?php else:
+                                    ?>
+                                    <input name="estimate_method" type="radio"
+                                           value="<?php echo $this->htmlEscape($_rate->getCode()) ?>"
+                                           id="s_method_<?php echo $_rate->getCode() ?>"<?php if ($_rate->getCode() === $this->getAddressShippingMethod()) echo ' checked="checked"' ?>
+                                           class="radio"/>
+                                    <label
+                                        for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
+                                        <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                                        <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+                                        <?php echo $_excl; ?>
+                                        <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                            (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                            <?php endif; ?>
+                                    </label>
+                                    <?php endif ?>
+                                </li>
+                                <?php
+
+                                if ($code == 'auspost') {
+                                    $render_methods[ltrim($_rate->getCode(), 'auspost_')] = ob_get_contents();
+                                    ob_end_clean();
+                                }
+                            endforeach;
+
+                            if(isset($render_methods['1']) || $render_methods['101'])
+                                $render_methods_2[] = $render_methods['1'] . $render_methods['101'] . '</ul></dd><dd><hr noshade="noshade" size="1" style="border-color: #DEDEDE;"><br>';
+
+                            if(isset($render_methods['2']) || $render_methods['102'] ||
+                                isset($render_methods['3']) || $render_methods['103']||
+                                isset($render_methods['4']) || $render_methods['104'])
+                            {
+                                $render_methods_2[] = '<p>You can choose from a range of Australia Post delivery schedule options by <strong>Date</strong>, <strong>Day</strong> or <strong>Time</strong></p>
+                                    </dd><ul class="texttip"><li>
+                                                            Nominate delivery date&nbsp;<button class="infotip" id="date_tt" onclick="return false;"></button>
+                                                        </li></ul><dd><ul>' . $render_methods['2'] . $render_methods['102']
+                                . $render_methods['3'] . $render_methods['103']
+                                . $render_methods['4'] . $render_methods['104'];
+                            }
+
+                            if(isset($render_methods['5']) || $render_methods['105'] ||
+                                isset($render_methods['6']) || $render_methods['106']||
+                                isset($render_methods['7']) || $render_methods['107'])
+                            {
+                                $render_methods_2[] = '</ul></dd><ul class="texttip"><li>
+                                                        Nominate delivery day/s &nbsp; <button class="infotip" id="day_tt" onclick="return false;"></button>
+                                                    </li></ul><dd><ul>' . $render_methods['5'] . $render_methods['105']
+                                . $render_methods['6'] . $render_methods['106']
+                                . $render_methods['7'] . $render_methods['107'];
+                            }
+
+                            if(isset($render_methods['8']) || $render_methods['108'] ||
+                                isset($render_methods['9']) || $render_methods['109'])
+                            {
+                                $render_methods_2[] = '</ul></dd><ul class="texttip"><li>
+                                                        Nominate delivery window &nbsp; <button class="infotip" id="time_tt" onclick="return false;"></button>
+                                                    </li></ul><dd><ul>' . $render_methods['8'] . $render_methods['108']
+                                . $render_methods['9'] . $render_methods['109'];
+                            }
+
+                            $render_methods_2[] = $render_methods['cp'];
+
+                            if ($code == 'auspost') {
+                                echo implode('', $render_methods_2);
+                            }
+                            ?>
+                            <?php endif ?>
+                        </ul>
+                    </dd>
+                    <?php endforeach; ?>
+            </dl>
+            <div class="buttons-set">
+                <button type="submit" class="button" name="do" value="<?php echo $this->__('Update Total') ?>">
+                    <span><span><?php echo $this->__('Update Total') ?></span></span></button>
+            </div>
+        </fieldset>
+    </form>
+    <?php endif; ?>
+    <div class="tooltip" style="display:none;right:435px" id="date_tt_tooltip" >
+        <span>Provides the option to choose a specific delivery date or date and time for the delivery of your goods</span>
+    </div>
+    <div class="tooltip" style="display:none;right:423px" id="day_tt_tooltip" >
+        <span>Provides the option to choose a range of delivery days (Mon-Fri) or days and time for the delivery of your goods.</span>
+    </div>
+    <div class="tooltip" style="display:none;right:410px" id="time_tt_tooltip" >
+        <span>Provides the option to choose a specified timed window for the delivery of your goods.<br/>
+                AM = 7am - 12pm <br/> PM = 12pm - 5pm
+    </span>
+    </div>
+    <script type="text/javascript">
+        //<![CDATA[
+        var coShippingMethodForm = new VarienForm('shipping-zip-form');
+        //var countriesWithOptionalZip = <?php echo $this->helper('directory')->getCountriesWithOptionalZip(true) ?>;
+
+        coShippingMethodForm.submit = function () {
+            /*var country = $F('country');
+           var optionalZip = false;
+
+           for (i=0; i < countriesWithOptionalZip.length; i++) {
+               if (countriesWithOptionalZip[i] == country) {
+                   optionalZip = true;
+               }
+           }
+           if (optionalZip) {
+               $('postcode').removeClassName('required-entry');
+           }
+           else {*/
+            $('postcode').addClassName('required-entry');
+            //}
+            return VarienForm.prototype.submit.bind(coShippingMethodForm)();
+        }
+        function standardShippingMethods() {
+            jQuery('input[name=estimate_method]').each(function () {
+                var id = jQuery(this).attr('id').split('_').pop();
+                var li = jQuery(this).parent('li');
+                if (id > 100) {
+                    jQuery(li).hide();
+                }
+                else
+                    jQuery(li).show();
+            });
+        }
+
+        function expressShippingMethods() {
+            jQuery('input[name=estimate_method]').each(function () {
+                var id = jQuery(this).attr('id').split('_').pop();
+                var li = jQuery(this).parent('li');
+                if (id < 100) {
+                    jQuery(li).hide();
+                }
+                else
+                    jQuery(li).show();
+            });
+        }
+        standardShippingMethods();
+        $$('input[type="radio"][name="estimate_method"]').each(function (el) {
+            if (el.checked) {
+                var type = el.id.split('_').pop();
+                if (type > 100) {
+                    jQuery('#auspost_delivery_network').val(101);
+                    expressShippingMethods();
+                }
+            }
+        });
+        jQuery('#auspost_delivery_network').change(function () {
+            var cmd = jQuery(this).val();
+            if (cmd == 101)
+                expressShippingMethods();
+            else
+                standardShippingMethods();
+        });
+        jQuery(':button.infotip').mouseover(function(event){
+                var tt = jQuery('#' + this.id + '_tooltip');
+                var t = event.pageY-20;
+                tt.css({'top': t});
+                tt.fadeIn(500)
+            }
+        )
+        jQuery(':button.infotip').mouseout(function(event){
+                var tt = jQuery('#' + this.id + '_tooltip').fadeOut(500);
+            }
+
+        )
+        //]]>
+    </script>
+</div>

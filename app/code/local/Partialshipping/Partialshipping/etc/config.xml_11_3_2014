@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Partialshipping_Partialshipping>
+            <version>0.1.0</version>
+        </Partialshipping_Partialshipping>
+    </modules>
+          <stores>
+        <admin>
+            <!-- override default admin design package and theme -->
+            <design>
+                <package>
+                    <name>default</name>
+                </package>
+                <theme>
+                    <!-- this is the theme name -->
+                    <default>artis</default>
+                </theme>
+            </design>
+        </admin>
+    </stores>
+<!--  <admin>
+    <routers>
+      <adminhtml>
+        <args>
+          <modules>
+            <Partialshipping_Partialshipping before="Mage_Adminhtml">Partialshipping_Partialshipping_Adminhtml</Partialshipping_Partialshipping>
+        </modules>
+        </args>
+      </adminhtml>
+    </routers>
+  </admin>-->
+
+    <admin>
+        <routers>
+			<partialshipping>
+				<use>admin</use>
+				<args>
+					<module>Partialshipping_Partialshipping</module>
+					<frontName>partialshipping</frontName>
+				</args>
+			</partialshipping>
+		    <adminhtml>
+                    <args>
+                        <modules>
+                            <Partialshipping_Partialshipping before="Artis_Partialpayment_Adminhtml">Partialshipping_Partialshipping_Adminhtml</Partialshipping_Partialshipping>
+                        </modules>
+                    </args>
+		    </adminhtml>
+        </routers>
+    </admin>
+
+    <!--14-11-2013 SOC-->
+    <frontend>
+        <routers>
+            <checkout>
+                <args>
+                    <modules>
+                         <Partialshipping_Partialshipping before="Artis_Systemalert_Checkout">Partialshipping_Partialshipping_Checkout</Partialshipping_Partialshipping>
+                    </modules>
+                </args>
+            </checkout>
+            
+        </routers>
+    </frontend>
+    <!--14-11-2013 EOC-->
+    
+    
+    
+    
+    
+    
+    <adminhtml>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<Partialshipping_Partialshipping>
+							<title>Partialshipping Module</title>
+							<sort_order>10</sort_order>
+						</Partialshipping_Partialshipping>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<partialshipping>
+					<file>partialshipping.xml</file>
+				</partialshipping>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <partialshipping>
+                <class>Partialshipping_Partialshipping_Model</class>
+                <resourceModel>partialshipping_mysql4</resourceModel>
+            </partialshipping>
+            <partialshipping_mysql4>
+                <class>Partialshipping_Partialshipping_Model_Mysql4</class>
+                <entities>
+                    <partialshipping>
+                        <table>partialshipping</table>
+                    </partialshipping>
+                </entities>
+            </partialshipping_mysql4>
+	    
+	    <!--/////15-1-2014 S -->
+	    <eav>
+		<rewrite>
+		    <entity_increment_numeric>Partialshipping_Partialshipping_Model_Entity_Increment_Numeric</entity_increment_numeric>
+		</rewrite>
+	    </eav>
+	    <!--/////15-1-2014 E -->
+	    
+	     <!--/////18_02_2014 S -->
+	    <shipping>
+		<rewrite>
+		    <carrier_flatrate>Partialshipping_Partialshipping_Model_Carrier_Flatrate</carrier_flatrate>
+		</rewrite>
+	    </shipping>
+	    
+	     <adminhtml>
+		<rewrite>
+		    <system_config_source_shipping_flatrate>Partialshipping_Partialshipping_Model_System_Config_Source_Shipping_Flatrate</system_config_source_shipping_flatrate>
+		</rewrite>
+	    </adminhtml>
+	    <!--/////18_02_2014 E -->
+	    
+        </models>
+        <resources>
+            <partialshipping_setup>
+                <setup>
+                    <module>Partialshipping_Partialshipping</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </partialshipping_setup>
+            <partialshipping_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </partialshipping_write>
+            <partialshipping_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </partialshipping_read>
+        </resources>
+        <blocks>
+            <partialshipping>
+                <class>Partialshipping_Partialshipping_Block</class>
+            </partialshipping>
+	    
+	    <!--14-11-2013   SOC-->
+	    <adminhtml>
+	     <rewrite>
+    	       <sales_shipment_grid>Partialshipping_Partialshipping_Block_Adminhtml_Sales_Shipment_Grid</sales_shipment_grid>
+               <sales_order_shipment_view>Partialshipping_Partialshipping_Block_Adminhtml_Sales_Order_Shipment_View</sales_order_shipment_view> <!--2-12-2013-->
+	     </rewrite>
+	    </adminhtml>
+	    <!--14-11-2013   EOC-->
+	    
+	    
+        </blocks>
+        <helpers>
+            <partialshipping>
+                <class>Partialshipping_Partialshipping_Helper</class>
+            </partialshipping>
+        </helpers>
+    </global>
+</config>

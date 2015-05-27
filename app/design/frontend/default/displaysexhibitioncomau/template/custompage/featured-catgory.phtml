@@ -1,0 +1,95 @@
+<div class="display-list">
+<h2>Our Collection</h2>
+  <div class="display-list-content">
+    <div class="left_products" style="width:102%;float:left;">
+      <?php
+				
+				$store = Mage::app()->getStore()->getId();
+				$rootId     = Mage::app()->getStore($store)->getRootCategoryId();
+				$collection = Mage::getModel('catalog/category')->getCollection()
+                ->addFieldToFilter('path', array('like'=> "1/$rootId/%"))
+                ->addAttributeToSelect('name')
+                ->addAttributeToSelect('is_active')
+                ->addAttributeToSelect('thumbnail')
+                ->addAttributeToSelect('url')
+                ->addAttributeToSelect('description')
+                ->addAttributeToFilter('is_active', 1)
+                ->addAttributeToFilter('is_featured', 148)
+                ->setPage(0, 15)
+                ->load();
+
+                //echo "Count :".$collection->count();
+
+                $counteri = 0;
+                foreach ($collection as $_childCategory){
+                    $counteri++;
+                    $_img= $_childCategory->getThumbnail();
+                    $catName=$_childCategory->getName();
+                    $getCatUrl=$_childCategory->getUrl();
+                    $cur_category=Mage::getModel('catalog/category')->load($_childCategory->getId());
+                    // echo $getCatUrl;
+					// exit;
+            ?>
+      <div class="ls_cat"> 
+          <a  title="<?php echo $catName; ?>" href="<?php echo $getCatUrl; ?>"> <img width="240" height="240" onmousemove="onHover(this);" src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$cur_category->getThumbnail()  ?>" alt="<?php echo $catName; ?>"> </a>
+        <div class="ls_cat_detail">
+        <div style="float: left; text-align: center; padding-left: 30%; width: 73%;">
+          <a href="<?php echo $getCatUrl; ?>">View Details</a> 
+          </div>
+          <h3> <?php echo $catName; ?> </h3>
+        </div>
+
+          <!--<p>
+            <?php
+			//$string = strip_tags($cur_category->getDescription());
+//
+//			  if (strlen($string) > 100) {
+//			  
+//				  // truncate string
+//				  $stringCut = substr($string, 0, 100);
+//			  
+//				  // make sure it ends in a word so assassinate doesn't become ass...
+//				  $string = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+//			  }
+//			  echo $string;
+			
+//			 echo $cur_category->getDescription(); ?>
+          </p>-->
+
+      </div>    
+        <?php } ?>
+      
+    </div>
+    
+    <div class="product_right">
+	    <h2>About Us</h2>
+        <div class="about_detail">
+         <p>
+         High impact, professional presentation: With only a fleeting moment to attract the attention of a trade show attendee, your exhibit must appeal to your target audience's interests. Your display must effectively communicate who you are, what you do and how your company can help them. We can help you with our promotion, advertising and marketing displays & equipments. We sell cheap and affordable high quality products directly to consumers.
+         </p>
+       
+         <p>
+         Exhibitions and conventions are the perfect opportunity to introduce your company to the public & we want to help you with your image design. We have a huge selection of Tradeshow Exhibits, Media Wall, Tradeshow Banner Stands, Accessories, Pop Up Booths, Portable Exhibits & presentation boards. Here is everything you need to get noticed, creating successful sales opportunities. Make an impression with an interchangeable graphic board or banner poles.
+         </p>
+       
+         <p>
+         Vivid Ads (Creative Advertising & Display Solutions) is Australia's choice to buy In-Stock exhibit stands, fabric mural media backdrop walls, expo booth displays, road show displays, trade fair booths (exhibit / expo) equipments and interactive / interactivity display screens. We also have a established banner graphic and design department to compliment your display banner stands.
+         </p>
+        
+         <p>
+         Vivid Ads (Creative Advertising & Display Solutions) is Australia's choice to buy In-Stock exhibit stands, fabric mural media backdrop walls, expo booth displays, road show displays, trade fair booths (exhibit / expo) equipments and interactive / interactivity display screens.
+         </p>
+         <div class="btn_readmore">
+          <a href="<?php echo $this->getUrl('');?>about-us">
+          Read More
+          </a>
+         </div>
+        </div>
+    
+    </div>
+    
+    
+    
+	 
+</div>
+</div>

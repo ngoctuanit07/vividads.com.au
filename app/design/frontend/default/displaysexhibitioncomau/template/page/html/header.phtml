@@ -1,0 +1,273 @@
+<?php
+/**
+ * Magento
+ * NOTICE OF LICENSE
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+
+$getItemCount=Mage::helper("checkout/cart")->getItemsCount();
+
+if(Mage::helper('checkout/cart')->getSummaryCount() == "")
+{
+    $cartCount = "0";
+}else{
+    $cartCount = Mage::helper('checkout/cart')->getSummaryCount();
+}
+$quote = Mage::getSingleton('checkout/cart')->getQuote();
+if(Mage::helper('checkout/cart')->getSummaryCount() == "")
+{
+    $subTotal = Mage::helper('core')->currency(0.00);
+}else{
+    $subTotal = Mage::helper('core')->currency($quote->getSubtotal());
+}
+//$customerData = Mage::getSingleton('customer/session')->getCustomer();
+?>
+
+<div class="header-container">
+  <div class="top_bar_container">
+    <div class="top_bar">
+     <div class="top_bar_left">
+       <a class="left_account" href="<?php echo $this->getUrl(); ?>customer/account/"><?php echo $this->__('My Account')?></a>
+            <?php if (! Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+            <a class="left_login" href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>"><?php echo $this->__('Login') ?></a>
+            <?php else: ?>
+            <a class="left_login" href="<?php echo Mage::helper('customer')->getLogoutUrl(); ?>"><?php echo $this->__('Log Out') ?></a>
+            <?php endif; ?>
+
+    </div>
+	<div class="top_bar_center">
+           <img class="top_cell" src="<?php echo $this->getSkinUrl();?>images/top_phone.png" alt="Sales & Support: 1300721614" style="border:0;"/>
+    </div>
+	<div class="top_bar_right">
+           <span>
+            <img src="<?php echo $this->getSkinUrl();?>images/welcome.png" alt="Sales & Support: 1300721614" style="margin-top:3px;float:left;margin-right:5px;" />
+           Welcome
+           </span>
+           
+           <span>
+           <img src="<?php echo $this->getSkinUrl();?>images/sep.png" alt="|" style="margin-top:11px;float:left;" />
+           </span>
+           <?php if (Mage::getSingleton('customer/session')->isLoggedIn()) { ?>
+           <span style="padding-right:0px;">
+           <?php echo Mage::getSingleton('customer/session')->getCustomer()->getFirstname();?>
+           </span>
+           <?php }	 else{	?>
+           <span style="padding-right:0px;">Guest</span>
+           <?php }   ?>
+    </div>
+  </div>
+ </div>
+  <div class="header">
+    <?php if ($this->getIsHomePage()):?>
+    <h1 class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+    <?php else:?>
+    <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+    <?php endif?>
+    <div class="excptlogowrap">
+      <div class="quick-access">
+          
+          <div class="linkswrapper">
+            <div class="quick_main">
+              <div class="quick-link2">
+                <div class="block block-cart" id="topBlockCart" onclick="cartHide()">
+                  <div class="summary">
+                    <p class="amount"><a href="Javascript:void(0);"><span>
+                      <?php //echo $this->__('Shopping Cart') ?>
+                      <span style="font-size:14px;"><?php echo $cartCount; ?></span>&nbsp;<?php echo $this->__('Item(s)')?>&nbsp;<span style="font-size:14px;"><?php echo $subTotal; ?></span></span></a></p>
+                    
+                    <!--<p class="subtotal">
+  
+                              <span class="price"><?php //echo $subTotal; ?></span>	</p>	--> 
+                    
+                  </div>
+                </div>
+                
+                <!-- Mini cart page   -->
+                
+                <div class="block-content" style="display:none;" id="topCartContent"> <?php echo $this->getChildHtml('topcart'); ?> </div>
+                
+                <!--   End Mini Cart  -->
+              </div>
+            </div>
+          </div>
+          
+          <div class="promotional_banner">
+            <h1>Displays Exhibition</h1>
+          </div>
+                    
+          <div class="top-links">
+
+	<ul style="text-align: right; float: right;">
+
+          <li>
+          <a href="<?php echo $this->getUrl('upload')?>" title="<?php echo $this->__('Artwork Uploader')?>">
+           Artwork Uploader
+           </a>
+           </li>
+          <li class="sep"><img src="<?php echo $this->getSkinUrl();?>images/top_sep.png" style="margin-top:15px;" alt="Factory Direct" /></li>
+          
+          <li>
+          <a href="<?php echo $this->getUrl('artwork')?>" title="<?php echo $this->__('Artwork Guides')?>"> 
+          Artwork Guides
+          </a>
+          </li>
+          <li class="sep"><img src="<?php echo $this->getSkinUrl();?>images/top_sep.png" style="margin-top:15px;" alt="Factory Direct" /></li>
+          <li>
+          <a href="<?php echo $this->getUrl('gallery')?>" title="<?php echo $this->__('Gallery')?>"> 
+          Gallery
+          </a>
+          </li>
+          <li class="sep"><img src="<?php echo $this->getSkinUrl();?>images/top_sep.png" style="margin-top:15px;" alt="Factory Direct" /></li>
+          <li>
+          <a href="<?php echo $this->getUrl('').'news/news-1.html' ?>" title="<?php echo $this->__('Our Clients')?>"> 
+          Our Clients
+		  </a>
+          </li>
+          <li class="sep"><img src="<?php echo $this->getSkinUrl();?>images/top_sep.png" style="margin-top:15px;" alt="Factory Direct" /></li>
+          <li>
+          <a class="contacts_button" id="contacts_button" style="cursor:pointer;" href="<?php echo $this->getUrl('');?>contact-us" title="<?php echo $this->__('Get Free Quote')?>">
+          Get Free Quote
+          </a>
+          </li>
+          <li class="sep"><img src="<?php echo $this->getSkinUrl();?>images/top_sep.png" style="margin-top:15px;" alt="Factory Direct" /></li>
+          <li>
+          <a class="contacts_button" id="contacts_button" style="cursor:pointer;" title="<?php echo $this->__('Contact Us')?>" href="<?php echo $this->getUrl('');?>contact-us">
+          Contact Us
+          </a>
+          </li>
+
+        </ul>
+
+      </div>
+          
+        </div>
+      
+      
+    </div>
+    <?php echo $this->getChildHtml('topContainer'); ?> </div>
+</div>
+<?php   echo $this->getLayout()->createBlock('cms/block')->setBlockId('topmenu')->toHtml() ; ?>
+<div class="factory-container">
+ <div class="testimonial" style="display:none;"> 
+ <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial')->toHtml() ; ?> 
+ </div>
+  
+</div>
+<script type="text/javascript"> 
+
+
+
+
+
+
+
+//function cartHide(){
+
+
+
+
+
+
+
+//    jQuery("#topCartContent").css("display","block");
+
+
+
+
+
+
+
+//
+
+
+
+
+
+
+
+//}
+
+
+
+
+
+
+
+</script> 
+<script type="text/javascript">
+
+
+
+
+
+
+
+  var __lc_buttons = __lc_buttons || [];
+
+
+
+
+
+
+
+  __lc_buttons.push({
+
+
+
+
+
+
+
+    elementId: 'LiveChat_1392881178',
+
+
+
+
+
+
+
+    language: 'en',
+
+
+
+
+
+
+
+    skill: '0'
+
+
+
+
+
+
+
+  });
+
+
+
+
+
+
+
+</script>

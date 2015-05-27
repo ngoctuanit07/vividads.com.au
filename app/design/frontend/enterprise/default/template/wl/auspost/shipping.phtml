@@ -1,0 +1,282 @@
+<?php
+
+/**
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   2012 White Labelled
+ * @description Override the shipping step in checkout process.
+ */
+ 
+?>
+<?php $isCollectionPoint = $this->helper('auspost')->getEnableCollectionPoint(); ?>
+<?php $is_show_collection_point = true; ?>
+<form action="" id="co-shipping-form">
+<fieldset>
+    <ul class="form-list">
+    <?php if ($this->customerHasAddresses()): ?>
+       <?php $is_show_collection_point = false; ?>
+       <li class="form-alt">
+           <label for="shipping-address-select"><?php echo $this->__('Select a shipping address from your address book or enter a new address.') ?></label>
+           <div class="input-box"><?php echo $this->getAddressesHtmlSelect('shipping') ?></div>
+       </li>
+    <?php endif ?>
+        <li id="shipping-collection-point-form" style="display: none;">
+            <div class="fieldset">
+                <ul>
+                    <?php if ($is_show_collection_point) : ?>
+                        <li class="control">
+                            <div class="input-box">&nbsp;&nbsp;</div>
+                            <label for="shipping:new_address" style="float: right;">
+                                <a href="javascript:void(0)" id="new_address">
+                                    <?php echo $this->__('Show New address form') ?>
+                                </a>
+                            </label>
+                        </li>
+                    <?php endif; ?>
+                    <li class="control ausp-hide" id="container-cp-postcode">
+                        <div class="input-box">
+                            <input type="text" name="shipping[cp_postcode]" id="cp_postcode" class="input-text" style="width: 200px;" />
+                            <button type="button" onclick="loadCollectionPoint('<?php echo $this->getUrl("auspost/data/getCollectionPointsAjax")?>')" class="button"><span><span><?php echo $this->__('Load') ?></span></span></button>
+                        </div>
+                        <label for="shipping:collection_point"><?php echo $this->__('Enter your postcode') ?></label>
+                    </li>
+                    <li class="control ausp-hide" id="container-collection-point" style="display: none;">
+                        <div class="input-box" id="container-collection-point-select">&nbsp;</div>
+                        <label for="collection_point_select"><?php echo $this->__('Choose collection point') ?></label>
+                    </li>
+                    <li class="control" id="customer_access_summary" style="display: none;">
+                        <div class="input-box" id="collection_point_instruction">&nbsp;</div>
+                        <label><?php echo $this->__('Customer Access Summary')?></label>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li id="shipping-new-address-form"<?php if ($this->customerHasAddresses()): ?> style="display:none;"<?php endif ?>>
+            <?php $isFetchAuspostAddress = $this->helper('auspost')->getEnableFetchAUSPOSTAddress(); ?>
+            <?php if ($isFetchAuspostAddress) : ?>
+                <div align="right" style="margin-right: 90px;"><button class="auspost-address-popup" id="auspost-shipping-popup"></button><span><span>&nbsp;</span></span></button></a><br clear="all" /><br clear="all" /></div>
+            <?php endif; ?>
+            <div class="fieldset">
+                <input type="hidden" name="shipping[address_id]" value="<?php echo $this->getAddress()->getId() ?>" id="shipping:address_id" />
+                <ul>
+                    <li class="fields"><?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getAddress())
+                            ->setFieldIdFormat('shipping:%s')->setFieldNameFormat('shipping[%s]')->setFieldParams('onchange="shipping.setSameAsBilling(false)"')->toHtml() ?>
+                    </li>
+                    <li>
+                        <label for="shipping:company"><?php echo $this->__('Company') ?></label>
+                        <div class="input-box">
+                            <input type="text" id="shipping:company" name="shipping[company]" value="<?php echo $this->htmlEscape($this->getAddress()->getCompany()) ?>" title="<?php echo $this->__('Company') ?>" class="input-text" onchange="shipping.setSameAsBilling(false);" />
+                        </div>
+                    </li>
+            <?php if(false): ?>
+                    <li>
+                        <label for="shipping:email" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="shipping[email]" id="shipping:email" value="<?php echo $this->htmlEscape($this->getAddress()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text validate-email required-entry" />
+                        </div>
+                    </li>
+            <?php endif ?>
+                    <li>
+                        <label for="shipping:street1" class="required"><em>*</em><?php echo $this->__('Address') ?></label>
+                        <div class="input-box">
+                            <input type="text" title="<?php echo $this->__('Street Address') ?>" name="shipping[street][]" id="shipping:street1" value="<?php echo $this->htmlEscape($this->getAddress()->getStreet(1)) ?>" class="input-text required-entry" onchange="shipping.setSameAsBilling(false);" />
+                        </div>
+                    </li>
+            <?php for ($_i=2, $_n=$this->helper('customer/address')->getStreetLines(); $_i<=$_n; $_i++): ?>
+                    <li class="add-field">
+                        <div class="input-box">
+                            <input type="text" title="<?php echo $this->__('Street Address %s', $_i) ?>" name="shipping[street][]" id="shipping:street<?php echo $_i?>" value="<?php echo $this->htmlEscape($this->getAddress()->getStreet($_i)) ?>" class="input-text" onchange="shipping.setSameAsBilling(false);" />
+                        </div>
+                    </li>
+            <?php endfor ?>
+                    <li class="fields">
+                        <div class="field">
+                            <label for="shipping:city" class="required"><em>*</em><?php echo $this->__('Suburb') ?></label>
+                            <div class="input-box">
+                                <input type="text" title="<?php echo $this->__('Suburb') ?>" name="shipping[city]" value="<?php echo $this->htmlEscape($this->getAddress()->getCity()) ?>" class="input-text required-entry" id="shipping:city" onchange="shipping.setSameAsBilling(false);" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="shipping:region" class="required"><em>*</em><?php echo $this->__('State/Province') ?></label>
+                            <div class="input-box">
+                                <select id="shipping:region_id" name="shipping[region_id]" title="<?php echo $this->__('State/Province') ?>" class="validate-select shipping_region_id" style="display:none;">
+                                <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                            </select>
+                            <script type="text/javascript">
+                                $('shipping:region_id').setAttribute('defaultValue', "<?php echo $this->getAddress()->getRegionId() ?>");
+                            </script>
+                            <input type="text" id="shipping:region" name="shipping[region]" value="<?php echo $this->htmlEscape($this->getAddress()->getRegion()) ?>" title="<?php echo $this->__('State/Province') ?>" class="input-text region" style="display:none;" />
+                        </div>
+                        </div>
+                    </li>
+                    <li class="fields">
+                        <div class="field">
+                            <label for="shipping:postcode" class="required"><em>*</em><?php echo $this->__('Zip/Postal Code') ?></label>
+                            <div class="input-box">
+                                <input type="text" title="<?php echo $this->__('Zip/Postal Code') ?>" name="shipping[postcode]" id="shipping:postcode" value="<?php echo $this->htmlEscape($this->getAddress()->getPostcode()) ?>" class="input-text validate-zip-international required-entry" onchange="shipping.setSameAsBilling(false);" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="shipping:country_id" class="required"><em>*</em><?php echo $this->__('Country') ?></label>
+                            <div class="input-box">
+                                <?php echo $this->getCountryHtmlSelect('shipping') ?>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="fields">
+                        <div class="field">
+                            <label for="shipping:telephone" class="required"><em>*</em><?php echo $this->__('Telephone') ?></label>
+                            <div class="input-box">
+                                <input type="text" name="shipping[telephone]" value="<?php echo $this->htmlEscape($this->getAddress()->getTelephone()) ?>" title="<?php echo $this->__('Telephone') ?>" class="input-text required-entry" id="shipping:telephone" onchange="shipping.setSameAsBilling(false);" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="shipping:fax"><?php echo $this->__('Fax') ?></label>
+                            <div class="input-box">
+                                <input type="text" name="shipping[fax]" value="<?php echo $this->htmlEscape($this->getAddress()->getFax()) ?>" title="<?php echo $this->__('Fax') ?>" class="input-text" id="shipping:fax" onchange="shipping.setSameAsBilling(false);" />
+                            </div>
+                        </div>
+                    </li>
+                    <?php $addressAttributes = $this->getChild('customer_form_shipping_address_user_defined_attributes');?>
+                    <?php if ($addressAttributes): ?>
+                        <?php $addressAttributes->setEntity($this->getAddress())->setEntityType('customer_address');?>
+                        <?php $addressAttributes->setFieldIdFormat('shipping:%1$s')->setFieldNameFormat('shipping[%1$s]');?>
+                        <?php echo $addressAttributes->setExcludeFileAttributes(true)->setShowContainer(false)->toHtml()?>
+                    <?php endif;?>
+                    <?php if ($this->isCustomerLoggedIn() && $this->customerHasAddresses()):?>
+                        <li class="control">
+                            <div class="input-box">
+                                <input type="checkbox" name="shipping[save_in_address_book]" value="1" title="<?php echo $this->__('Save in address book') ?>" id="shipping:save_in_address_book" onchange="shipping.setSameAsBilling(false);"<?php if ($this->getAddress()->getSaveInAddressBook()):?> checked="checked"<?php endif;?> class="checkbox" />
+                            </div>
+                            <label for="shipping:save_in_address_book"><?php echo $this->__('Save in address book') ?></label>
+                        </li>
+                    <?php else:?>
+                        <li class="no-display"><input type="hidden" name="shipping[save_in_address_book]" value="1" /></li>
+                    <?php endif;?>
+                    <li class="control">
+                        <div class="input-box">
+                            <input type="radio" name="shipping[same_as_billing]" id="shipping:same_as_billing" value="1"<?php if($this->getAddress()->getSameAsBilling()): ?> checked="checked"<?php endif; ?> onclick="shipping.setSameAsBilling(this.checked)" class="radio" />
+                        </div>
+                        <label for="shipping:same_as_billing"><?php echo $this->__('Use Billing Address') ?></label>
+                    </li>
+                    <?php if ($isCollectionPoint && $is_show_collection_point) : ?>
+                        <li class="control">
+                            <div class="input-box">
+                                <input type="radio" name="shipping[collection_point]" id="collection_point" value="2" class="radio" />
+                            </div>
+                            <label for="shipping:collection_point"><?php echo $this->__('Pick up at a collection point') ?></label>
+                            <script>
+                                jQuery(document).ready(function () {
+                                    jQuery('#collection_point').click(function(){
+                                        jQuery(this).attr('checked', false);
+                                        jQuery('#colection-point-select-box').val('');
+                                        jQuery('#shipping-new-address-form').hide();
+                                        jQuery('#shipping-collection-point-form').show();
+                                        jQuery('#cp_postcode').focus();
+                                        jQuery('#shipping_continue_button').attr('disabled', 'disabled');
+                                    });
+                                });
+                            </script>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</fieldset>
+<div class="buttons-set form-buttons" id="shipping-buttons-container">
+    <p class="back-link"><a href="#" onclick="checkout.back(); return false;"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+    <button type="button" class="button" id="shipping_continue_button"><span><span><?php echo $this->__('Continue') ?></span></span></button>
+    <span id="shipping-please-wait" class="please-wait" style="display:none;"><img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="" class="v-middle" /> <?php echo $this->__('Loading next step...') ?></span>
+</div>
+<p class="required"><?php echo $this->__('* Required Fields') ?></p>
+</form>
+<span id="shippinginfo-please-wait" class="please-wait" style="display:none; z-index: 20000;"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'/frontend/enterprise/wl/images/opc-ajax-loader.gif';  ?>" alt="Loading ..." title="Loading ..." class="v-middle" /> Loading ...</span>
+<?php $billing_data = Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData(); ?>
+<script type="text/javascript">
+//<![CDATA[
+    var billing_data = <?php echo json_encode($billing_data) ?>;
+    var shipping = new Shipping('co-shipping-form', '<?php echo $this->getUrl('checkout/onepage/getAddress') ?>address/', '<?php echo $this->getUrl('checkout/onepage/saveShipping') ?>',
+        '<?php echo $this->getUrl('checkout/onepage/shippingMethod') ?>');
+    var shippingForm = new VarienForm('co-shipping-form');
+    // shippingForm.extraChildParams = ' onchange="shipping.setSameAsBilling(false);"';
+    // shippingForm.setElementsRelation('shipping:country_id', 'shipping:region', '<?php echo $this->getUrl('directory/json/childRegion') ?>', '<?php echo $this->__('Select State/Province...') ?>');
+    $('shipping-address-select') && shipping.newAddress(!$('shipping-address-select').value);
+
+    var shippingRegionUpdater = new RegionUpdater('shipping:country_id', 'shipping:region', 'shipping:region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'shipping:postcode');
+    
+    // AUSPOST code
+    jQuery(document).ready(function () {
+        // Fancybox
+        jQuery('#auspost-shipping-popup').fancybox({ 'width'	: '85%', 'height' : '95%', 'titleShow' : false, 'type' : 'iframe',
+            'href': '<?php echo $this->getUrl('auspost/data/getCustomerAddress/', array ('is_shipping' => 1)) ?>'
+        });
+        <?php if ($isCollectionPoint) : ?>
+            // collection point
+            jQuery('#new_address').click(function() {
+                jQuery('#shipping-collection-point-form').hide();
+                jQuery('#shipping_continue_button').attr('disabled', false);            
+                emptyAddress();
+                jQuery('#shipping-new-address-form').show();
+            });
+            jQuery('#shipping-address-select').append('<option value="cp"><?php echo $this->__('Pickup at a collection point'); ?></option>');
+            jQuery('#shipping-address-select').change(function() {
+                jQuery('#shipping-collection-point-form').hide();
+                jQuery('#shipping_continue_button').attr('disabled', false);            
+                if(jQuery(this).val() == 'cp') {
+                    jQuery('#shipping-collection-point-form').show();
+                    jQuery('#colection-point-select-box').val('');
+                    jQuery('#collection_point_instruction').html('');
+                    jQuery('#cp_postcode').focus();
+                    jQuery('#continue_button').attr('disabled', 'disabled');
+                } else if(jQuery(this).val() == '') {
+                    emptyAddress();
+                    jQuery('#shipping-new-address-form').show();
+                } else {
+                    jQuery('#shipping-collection-point-form').hide();
+                    jQuery('#continue_button').attr('disabled', false);
+                }
+            });
+        <?php endif; ?>
+        // submit form
+        jQuery('#shipping_continue_button').click(function() {
+            <?php $isValidateAddress = $this->helper('auspost')->getEnableValidateAddress(); ?>
+            <?php if ($isValidateAddress) : ?>
+                var country_id = document.getElementById('shipping:country_id').value;
+                var validate_result = shippingForm.validator.validate();
+                var new_shipping = (jQuery('#shipping-address-select').val() == '') || (jQuery('#shipping-address-select').val() == null);
+                var collection_point_value = $('shipping:street1').getValue().substr(0,19);
+                var is_collection_point = new_shipping && collection_point_value=='[Collection Point #';
+                if (validate_result && country_id == 'AU' && new_shipping && !is_collection_point) {
+                    jQuery('select.shipping_region_id option').each(function () {
+                        if (jQuery(this).val() == jQuery('select.shipping_region_id').val()) {
+                            jQuery('input.region').val(jQuery(this).html());
+                        }
+                    });
+                    jQuery.fancybox({'width':'55%','height':'50%','titleShow': false,
+                        'href':'<?php echo $this->getUrl('auspost/data/getAddressValidate/') ?>'+'?'+jQuery('#co-shipping-form').serialize()
+                    });
+                }
+                else if (jQuery('#shipping-address-select').val()=='cp' && jQuery('#colection-point-select-box').val()!='')
+                {
+                    jQuery('#shipping-address-select').val('');
+                    shipping_form_submit();
+                    jQuery('#shipping-address-select').val('cp');
+                }
+                else {
+                    shipping_form_submit();
+                }
+            <?php else : ?>
+                if (shippingForm.validator.validate())
+                    shipping_form_submit();
+            <?php endif; ?>
+        });
+        // postcode on key down
+        jQuery('body').keydown(function(event) {
+            if (event.which == 13) return false
+        });
+    });
+    function shipping_form_submit () { shipping.save(); }
+//]]>
+</script>
+

@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @copyright  Copyright (c) 2011 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Social Booster extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @author     MageWorx Dev Team
+ */
+-->
+<config>
+    <sections>              
+        <mageworx_social_tools translate="label" module="mageworx">
+            <label>Social Tools</label>
+            <tab>mageworx</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>200</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+                <groups>
+                    <socialbooster translate="label" module="socialbooster">
+                    <label><![CDATA[Social Booster]]></label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                        <fields>
+                            <enabled translate="label">
+                                <label>Enabled</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                <sort_order>10</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </enabled>
+                            <bookmarks translate="label">
+                                <label>All Social Bookmarks</label>
+                                <frontend_type>multiselect</frontend_type>
+                                <source_model>socialbooster/bookmark</source_model>
+                                <sort_order>20</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </bookmarks>
+                            <featured_bookmarks translate="label">
+                                <label>Featured Social Bookmarks</label>
+                                <frontend_type>multiselect</frontend_type>
+                                <source_model>socialbooster/bookmark</source_model>
+                                <sort_order>30</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </featured_bookmarks>
+                            <additional_buttons translate="label">
+                                <label>Additional Buttons</label>
+                                <frontend_type>multiselect</frontend_type>
+                                <source_model>socialbooster/addbuttons</source_model>
+                                <sort_order>35</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </additional_buttons>
+                            <default_position translate="label">
+                                <label>Default Block Position</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>socialbooster/position_default</source_model>
+                                <sort_order>40</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </default_position>
+                            <product_position translate="label">
+                                <label>Product Page Block Position</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>socialbooster/position_product</source_model>
+                                <sort_order>50</sort_order>
+                                <comment><![CDATA[Use the following code to insert block in custom design of product page:<br/>&lt;?php<br/>echo $this-&gt;getLayout()<br/>-&gt;createBlock('socialbooster/bookmarks')-&gt;toHtml();<br/>?&gt;]]></comment>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </product_position>
+                            <category_pages_enabled translate="label">
+                                <label>Show on Category Pages</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                <sort_order>60</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </category_pages_enabled>
+                            <cms_pages_enabled translate="label">
+                                <label>Show on CMS Pages</label>
+                                <comment><![CDATA[Alternatively you can use the following code in CMS Pages and Static Blocks:<br/>{{block type="socialbooster/bookmarks"}}]]></comment>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                <sort_order>70</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </cms_pages_enabled>
+                            <ignore_cms_pages>
+                            	<label>Ignore CMS Pages</label>
+                                <frontend_type>multiselect</frontend_type>
+                                <source_model>adminhtml/system_config_source_cms_page</source_model>
+                                <sort_order>80</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                        	</ignore_cms_pages>
+                        </fields>
+                    </socialbooster>
+                </groups>
+        </mageworx_social_tools>
+    </sections>
+</config>

@@ -1,0 +1,11 @@
+.block-calculator {border: 1px solid #C4C1BC; height: auto;}
+.block-calculator .block-content {padding: 10px;}
+.calculator-wrapper {padding: 10px;clear: both;}
+.inputi {clear: both;}
+.inputi .inputi-f {float: left; width: 33%; text-align: center;}
+.inputi .inputi-f-s {float: left; width: 33%; text-align: center;}
+.buttoni {clear: both; text-align: center; padding-top: 10px;}
+.texti {clear: both; padding-top: 10px;}
+.inneri {float: left; width: 185px;text-align: center;}
+.tierRow {background-color: #FDFCDC !important; border-color: #F4F4F4;font-weight: bold;}
+.total-pricei {text-align: center;}

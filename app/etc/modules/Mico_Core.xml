@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Mico_Core>
+			<codePool>local</codePool>
+			<active>true</active>   
+		</Mico_Core>
+	</modules>
+</config> 

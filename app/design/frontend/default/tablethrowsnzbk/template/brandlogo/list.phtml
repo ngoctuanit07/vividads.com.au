@@ -1,0 +1,231 @@
+<?php
+
+        $Media = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+
+        $objLogos = new Mconnect_Brandlogo_Model_Brandlogo(); 
+
+		$logos = $objLogos->getAllLogos();
+
+		
+
+		$total_items = count($logos);
+
+		$total_pages = ceil($total_items/20);
+
+ ?>
+
+		
+
+		
+
+<style>
+
+  <!--
+
+   #brand_logos{ width:980px; height:600px;  }
+
+   .pagination_clients{background-color: #e9e9e9;
+
+    padding: 2px 9px 2px 5px;
+
+    text-align: right;}
+
+   -->	
+
+</style>		
+
+
+
+<script>
+
+<!--
+
+	jQuery(document).ready(function(e) {
+
+		
+
+		/*loading page*/
+
+		loadPagination(1,20);
+
+		
+
+		var totalPages= <?php echo $total_pages;?>;
+
+		
+
+		for(i=0; i<totalPages; i++){
+
+			
+
+			jQuery('#page_'+i).click(function(e){
+
+				
+
+				for(j=1; j<totalPages; j++){
+
+					
+
+					document.getElementById('page_'+j).style.backgroundColor='transparent';
+
+					
+
+					}
+
+				document.getElementById(e.target.id).style.backgroundColor='#ccc';	
+
+	
+
+				
+
+				});
+
+			
+
+			}
+
+		
+
+	});
+
+	
+
+	function loadPagination(page, limit){
+
+		
+
+		
+
+		var values = { pLimit:limit,
+
+						cPage:page,	
+
+						};
+
+		
+
+		/*jquery ajax request*/
+
+		
+
+		jQuery.ajax({
+
+        url: "<?php echo $this->getUrl('brandlogo/index/getStoreLogos');?>",
+
+        type: "post",
+
+        data: values,
+
+		beforeSend: function(){
+
+			var loader='<img src="<?php echo $Media.'loading.gif';?>" style="position:relative; top:150px; left:350px;" />';
+
+			
+
+			jQuery('#brand_logos').html(loader);
+
+			},		
+
+        success: function(data){
+
+            jQuery('#brand_logos').html(data);
+
+			//trace(data);
+
+        },
+
+        error:function(){
+
+            
+
+       				 }
+
+    		});
+
+		}
+
+		
+
+		
+
+-->
+
+</script>
+
+
+
+<div class="brandlogo">
+
+    <h1><?php echo __('Our Clients');?></h1>
+
+	<h3><?php echo __('Following are our clients ...');?></h3>
+
+    <!--<hr/>-->
+
+   <!--<div style="float:right;width:160px; position:relative; top:10px;">
+
+   <select style="width:160px;">
+
+   		<option>--Logo per Page--</option>
+
+		<option value="12">12</option>
+
+		<option selected value="21">21</option>
+
+		<option value="30">30</option>
+
+		<option value="42">42</option>
+
+		<option value="60">60</option>
+
+		<option value="90">90</option>
+
+		<option value="120">120</option>
+
+   </select>
+
+   </div> -->
+
+   <div class="pagination_clients"><?php 
+
+				for($i=1; $i<$total_pages; $i++){
+
+						$str='<span';
+
+						$str.=' id="page_'.$i.'"';
+
+						$str.=' class="pagenumbers" ';
+
+						$str.=' style="cursor:pointer; font-size:12px;"';
+
+						$str.=' title=" Page # '.$i.'"';
+
+						$str.='  onclick="loadPagination('.$i.',20); "> &nbsp;'.$i.'&nbsp; </span>  ';
+
+						if($i<$total_pages-1){
+
+							//$str.=' | ';
+
+							}
+
+						echo $str;
+
+					}
+
+		?></div>
+
+   
+
+    <ul id="brand_logos" class="products-grid first odd">
+
+	     
+
+    </ul>
+
+	
+
+	
+
+	    
+
+</div>

@@ -1,0 +1,403 @@
+<div class="formInfo">
+
+  <form action="http://outdoorbannershop.com.au/ajaxcontacts/index/calculatorPost/" id="contactForm" method="post">
+
+    <div class="no-display">
+
+      <input type="hidden" name="related_product" id="related-products-field" value="" />
+
+    </div>
+
+    <input type="hidden" name="sessid" id="sessid" value="" />
+
+    <div id="instantBox" class="clearfix">
+
+      <div class="lable"></div>
+
+      <div class="lable lable2"></div>
+
+      
+
+      <!--<div class="topbg"></div>-->
+
+      
+
+      <div class="instantBox-body clearfix">
+
+        <div class="instantPrice float-L">
+ 
+
+           <p>
+            Outdoor Banner Shop is Australia's choice for factory direct mesh banners. We provide high quality mesh banners that are used on outdoor fences, construction sites, building sites or at outdoor events. With hundreds of meters in production every month we can produce these banners at amazingly low prices. Our team of graphic experts can produce graphics for you at no additional cost. We can also produce custom mesh banners as per your requirement at almost any size.
+
+So call us today, or fill out the inquiry form towards your right as we will get back to you with a quote in no time. With Outdoor Banner Shop no job is too small.
+
+           </p>
+
+           
+
+          
+ 
+          
+
+           
+
+           
+
+        </div>
+
+        <input type="hidden" id="accessories" name="accessories" class="textfield" value="" style="width:60px;" />
+
+        <input type="hidden" id="shipping" name="shipping" class="textfield" value="" style="width:60px;" />
+
+        <input type="hidden" name="qty_dicount" id="qty_discount" class="textfield" style="width:60px;" />
+
+        <input type="hidden" name="getpriceclick" value="1" />
+
+        <div class="instant-separator float-L">
+
+          <div class="ortext"></div>
+
+        </div>
+
+        
+
+        <!--start of 3 Easy Ways to order-->
+
+        
+
+        <?php
+
+
+
+
+
+
+
+            			/*fetching categories */
+
+
+
+
+
+
+
+			?>
+
+        <div class="quickStart-Order float-L">
+
+          <div class="title blue-clr">3 Easy ways to order</div>
+
+          <?php 
+
+
+  $is_homepage = Mage::getBlockSingleton('page/html_header')->getIsHomePage();
+
+
+
+
+		    		if($is_homepage){
+
+
+
+
+
+
+
+		    ?>
+
+          <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+
+          <div class="fieldset">
+
+            <ul class="form-list">
+
+              <li class="fields">
+
+                <div class="field" style="float: left; margin-bottom: 25px;">
+
+                  <label for="name" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Name') ?></label>
+
+                  <div class="input-box">
+
+                    <input name="name" id="name" title="<?php echo Mage::helper('contacts')->__('Name') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserName()) ?>" class="input-text required-entry" type="text" />
+
+                  </div>
+
+                </div>
+
+                <div class="field" style="float: left; margin-bottom: 25px;">
+
+                  <label for="email" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Email') ?></label>
+
+                  <div class="input-box">
+
+                    <input name="email" id="email" title="<?php echo Mage::helper('contacts')->__('Email') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserEmail()) ?>" class="input-text required-entry validate-email" type="text" />
+
+                  </div>
+
+                </div>
+
+              </li>
+
+              <li>
+
+                <div class="field" style="float: left; margin-bottom: 25px;">
+
+                  <label for="telephone"><?php echo Mage::helper('contacts')->__('Telephone') ?></label>
+
+                  <div class="input-box">
+
+                    <input name="telephone" id="telephone" title="<?php echo Mage::helper('contacts')->__('Telephone') ?>" value="" class="input-text" type="text" />
+
+                  </div>
+
+                </div>
+
+              </li>
+
+              <li class="wide">
+
+                <div class="field" style="float: left; margin-bottom: 25px;">
+
+                  <label for="comment" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Comment') ?></label>
+
+                  <div class="input-box">
+
+                    <textarea name="comment" id="comment" title="<?php echo Mage::helper('contacts')->__('Comment') ?>"
+
+
+
+                    style="height: 74px; width: 254px; resize: none;" class="required-entry input-text" cols="5" rows="3"></textarea>
+
+                  </div>
+
+                </div>
+
+              </li>
+
+            </ul>
+
+          </div>
+
+          <div style="float: right; width: 100%;" class="buttons-set">
+
+            <p class="required"><?php echo Mage::helper('contacts')->__('* Required Fields') ?></p>
+
+            <input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+
+            <button type="submit" title="<?php echo Mage::helper('contacts')->__('Submit') ?>" class="button"><span><span><?php echo Mage::helper('contacts')->__('Submit') ?></span></span></button>
+
+          </div>
+
+          
+
+          <!--<div class="align-C">Category:
+
+
+
+            <select name="3wayproduct" class="textfield dropdown" style="width:215px;" id="3wayproduct" onchange="javascript:loadProduct2(this.value),threeasywayorder(0);">
+
+
+
+              <option value="0">--Please select--</option>
+
+
+
+              <?php
+
+
+
+
+
+
+
+				  //fetching all categories////
+
+
+
+
+
+
+
+                  		
+
+
+
+//
+
+
+
+//					if(count($_categories)>0){	
+
+
+
+//
+
+
+
+//						foreach($_categories as $_category){
+
+
+
+//
+
+
+
+//				  ?>
+
+
+
+//              <option value="<?php //echo $_category->getId();?>" title="<?php echo basename($_category->getUrl());?>" >&nbsp;&nbsp;<b><?php echo $_category->getName();?></b></option>
+
+
+
+//              <?php
+
+
+
+//
+
+
+
+//						} //end of maincategoires foreach loop		
+
+
+
+//
+
+
+
+//					}//end of main if
+
+
+
+
+
+
+
+				?>
+
+
+
+            </select>
+
+
+
+          </div>--> 
+
+          
+
+          <!--<div id="mainProduct2"> Product:
+
+
+
+            <select class="textfield" name="porduct_sel" id="product_sel" style="width:215px; margin-left:8px;">
+
+
+
+              <option value="0">--Please select--</option>
+
+
+
+            </select>
+
+
+
+          </div>-->
+
+          
+
+          <div id="loaderp2" style="display:none; margin-left:100px;"> <img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/> </div>
+
+          <?php 
+
+
+
+
+
+
+
+				}else{
+
+
+
+
+
+
+
+				?>
+
+          <input type="hidden" name="product2" class="textfield" id="product2" value="<?php echo $_category->getId().':'.$_product->getId();?>" />
+
+          <?php	
+
+
+
+
+
+
+
+					}
+
+
+
+
+
+
+
+			  
+
+
+
+
+
+
+
+			  ?>
+
+          
+
+          <!--<div class="StartorderButtons">
+
+
+
+            <input name="submit-prt-ready" type="button" value="print ready" title="Submit Print Ready Design" class="buttons" id="printreadybtn" onclick="loadWindow()" style="color:transparent;" />
+
+
+
+            <input name="order-form" value="design tool" type="button" title="Design Your Own Banner" class="buttons designYour-banner" id="prdbtn" onclick="return threeasywayorder(2);" style="color:transparent;" />
+
+
+
+            <input name="product-details" type="button" value="letusdesign" title="Let us Design Your Banner" class="buttons letus-design-banner" id="letusbtn" onclick="return threeasywayorder(3);" style="color:transparent;" />
+
+
+
+          </div>--> 
+
+          
+
+        </div>
+
+      </div>
+
+      
+
+      <!--<div class="bottombg"></div>
+
+
+
+
+
+
+
+          <div class="shadowSprite shadow720"></div>--> 
+
+      
+
+    </div>
+
+  </form>
+
+</div>

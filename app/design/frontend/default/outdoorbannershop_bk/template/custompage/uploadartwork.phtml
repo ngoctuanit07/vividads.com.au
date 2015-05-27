@@ -1,0 +1,1047 @@
+<?php
+	$sess = Mage::getSingleton("core/session",  array("name"=>"frontend"));
+	$output = $sess->getData("prodet");
+	$_Product = Mage::getModel('catalog/product')->load($output['product']);
+	$category = Mage::getModel('catalog/category')->load($output['catid']);
+	$img = Mage::helper('catalog/image')->init($_Product, 'image')->resize(250);
+	$msg = $this->getRequest()->getParams();
+	$pid = $output['catid'].':'.$output['product'];
+	$optArr = $_Product->getOptions();
+	
+	$dim = $output['room_width']."".$output['major']."W X ".$output['room_length']."".$output['major']."H";   
+	
+?>
+<input type="hidden" id="pidart" value="<?php echo $pid ?>">
+<input type="hidden" name="cnvunit" id="cnvunit" value="<?php echo $output['cnvunit']; ?>"/>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+	pid = jQuery("#pidart").val();
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/loadproductdetails';
+	flg = 'ua';
+	if(pid != ''){
+		jQuery('#loader').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, pId: pid,flg: flg },  
+			success:function(result){
+				ret = result.split('##');
+				jQuery('#cusopt').html(ret[1]);
+				
+			}
+		});
+		
+	}
+	
+	jQuery('#MB_close').click(function () {
+		jQuery('#success-cart').hide('fade');
+		jQuery('#MB_window').hide('fade');
+	
+	});
+	jQuery('#continueshop').click(function(){
+		jQuery('#MB_close').trigger('click');
+		
+	});
+	
+	selArr = <?php echo json_encode($output['options']); ?>;
+	jQuery.each( selArr, function(i,val) {
+		jQuery("#opt__"+i).css("display","block");
+		jQuery( "#select_"+i+" option[value='"+val+"']").attr("selected", "selected");
+		
+	});
+	jQuery("#major option[value='<?php echo $output['major'] ?>']").attr("selected", "selected");
+	jQuery('#room_width').val(<?php echo $output['room_width'] ?>);
+	jQuery('#room_length').val(<?php echo $output['room_length'] ?>);
+	
+	
+	jQuery("#nextBtn").click(function(){
+		
+		if((jQuery('#uploadimage').is(':checked') && jQuery("#artworkfile").val()!='') || jQuery('#artworklater').is(':checked')) {
+			
+			if(jQuery('#uploadimage').is(':checked') && jQuery("#artworkfile").val()!=''){
+				url= '<?php echo Mage::getBaseUrl();?>carpet/index/addartwork';
+				var form = new FormData(jQuery('#product_addtocart_form')[0]);
+				jQuery.ajax({
+				    type:'POST',
+				    xhrFields: {
+					withCredentials: true
+				    },
+				    async: true,
+				    cache: true,
+				    contentType: false,
+				    processData: false,
+				    url:url,
+				    data:form ,
+				    success:function(result){
+					if(result == 2){
+						alert("Please Upload a valid file");
+					}else if(result == 3){
+						alert("File size is too large or invalid file format");
+					}else{
+						jQuery("#artajximage").attr('src', result);
+						jQuery("#innerLeft-tabing").slideToggle();
+						jQuery("#step2tab").slideToggle();
+						
+					}
+					
+					
+				    }
+				});
+			}else if(jQuery('#artworklater').is(':checked')){
+				
+				jQuery("#innerLeft-tabing").slideToggle();
+				jQuery("#step2tab").slideToggle();
+			}
+			
+		}else{
+			alert("Please select an upload option");
+		}
+		
+		
+	});
+	
+	jQuery('#cusopt select').live('change',function () {
+		select_id=jQuery(this).attr('id');
+		select_id_arr=select_id.split('_');
+		opt_id=select_id_arr[1];
+		select_val=jQuery("#"+select_id+" option:selected").text();
+		n = select_val.indexOf("+");
+		if(n > 0){
+			select_val_arr=select_val.split('+');
+			priceStr=select_val_arr[1];
+			price=priceStr.replace("$","");
+			price=parseFloat(price);
+			prc = jQuery("#price_get").val();
+			nPrice = parseFloat(prc)+parseFloat(price);
+			prcN=cent(nPrice);
+			jQuery("#price_get").val(prcN);
+			jQuery("#price-to-change").html("AU$"+prcN);
+			jQuery("#total_price").html(prcN);
+		}
+		
+		
+	});
+	
+	
+	jQuery("#qty").keyup(function(){
+		qty = this.value;
+		prc = jQuery("#price_get").val();
+		nPrice = prc*qty;
+		neprice = cent(nPrice);
+		jQuery("#price_get").val(neprice);
+		jQuery("#price-to-change").html("AU$"+neprice);
+		jQuery("#total_price").html(neprice);
+		jQuery("#stabqty").html(qty);
+		
+	});
+	
+	jQuery(".qty-link").click(function(){
+		jQuery("#innerLeft-tabing").slideToggle();
+		jQuery("#step2tab").slideToggle();
+	
+	});
+	
+	jQuery("#projectname").keyup(function(){
+		pName = this.value;
+		jQuery("#project_name").html(pName);
+		
+	});
+	
+	jQuery("#cartBtn").click(function(){
+		
+		var selArray = new Array();
+		var optArray = new Array();
+		var selStr = '';
+		var optStr = '';
+		jQuery('#optarea .option select').each(function() {
+			selid = this.id.split('_');
+			optVal = jQuery( "#"+this.id+" option:selected" ).val();
+			
+			if(selid[1] != "" && optVal !=""){
+			    selArray.push(selid[1]);
+			    optArray.push(optVal);
+			    
+			    selStr +=selid[1]+"##";
+			    optStr +=optVal+"##";
+			    
+			}
+		});  
+		seloptstr = selStr+"**"+optStr;
+		jQuery('#optarr').val(seloptstr);
+		
+		vloparr = jQuery('#optarr').val();
+		if(vloparr != ''){
+			///8-5-2014
+			//jQuery('#product_addtocart_form').submit();
+			
+			frm = jQuery('#product_addtocart_form');
+			formData = new FormData(jQuery('#product_addtocart_form')[0]);
+			
+			jQuery.ajax({
+				type: frm.attr('method'),
+				url: frm.attr('action'),
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					resArr = data.split('__');
+					jQuery('#success-cart').html(resArr[0]);
+					jQuery('#cart-la').html(resArr[1]);
+					jQuery('#cartul').html(resArr[2]);
+					jQuery('#tolsec').html(resArr[3]);
+					jQuery('#success-cart').show('fade');
+					jQuery('#MB_window').show('fade');
+				} 
+			});
+			
+			
+		}else{
+			alert("Select Option");
+		}
+		
+	
+	
+	
+	});
+	
+	jQuery(document).tooltip();
+	
+	
+	
+	
+});
+
+function getchildren(optid,optval){
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/getchildopt';
+	flg ='flg';
+	if(optval != 0){
+		
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, optId: optid, optvalId :optval, flg:flg },  
+			success:function(result){
+				
+				if(result !=''){
+					reArr = result.split('##');
+					jQuery('#optarea .option dl').each(function() {
+						cls = jQuery(this).attr('class');
+						n = cls.indexOf("parent");
+						id = this.id;
+						iArr = id.split('__');
+						if(iArr[1] != optid){
+							jQuery("#"+id).css("display","none");	
+						}
+						
+					});
+					
+					jQuery.each( reArr, function(i,val) {
+						jQuery("#opt__"+val).css("display","block");
+						
+					});
+				}
+			}
+		});
+		
+		
+		
+	}else{
+		alert('Please select a valid product');
+	}
+}
+function changLimit(valu){
+    lgth = valu.length;
+    allgth = 255-lgth;
+    jQuery("#tWords").html(allgth);
+    
+}
+
+function yousendit1(){
+	jQuery('#form-validate').css('display','block');
+	
+}
+function yousendit(){
+	jQuery('#form-validate').css('display','none');
+}
+function cent(amount) {
+       amount -= 0;
+       amount = (Math.round(amount*100))/100;
+       return (amount == Math.floor(amount)) ? amount + '.00' : (  (amount*10 == Math.floor(amount*10)) ? amount + '0' : amount);
+}
+function getconversion(unit){
+	
+	var prev_unit=jQuery('#cnvunit').val();
+	var cur_unit=unit;
+	if(prev_unit=='m' && cur_unit=="cm"){
+		var room_width=jQuery('#room_width').val()*100;
+		var room_length=jQuery('#room_length').val()*100;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	if(prev_unit=='m' && cur_unit=="mm"){
+		var room_width=jQuery('#room_width').val()*1000;
+		var room_length=jQuery('#room_length').val()*1000;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	if(prev_unit=='cm' && cur_unit=="m"){
+		var room_width=jQuery('#room_width').val()/100;
+		var room_length=jQuery('#room_length').val()/100;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	if(prev_unit=='cm' && cur_unit=="mm"){
+		var room_width=jQuery('#room_width').val()*10;
+		var room_length=jQuery('#room_length').val()*10;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	if(prev_unit=='mm' && cur_unit=="m"){
+		var room_width=jQuery('#room_width').val()/1000;
+		var room_length=jQuery('#room_length').val()/1000;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	if(prev_unit=='mm' && cur_unit=="cm"){
+		var room_width=jQuery('#room_width').val()/10;
+		var room_length=jQuery('#room_length').val()/10;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	
+}
+
+function getSizevalkeyHome(){
+	
+	var prid = jQuery("#pidart").val();
+	var proid_arr=prid.split(':');
+	var pid=proid_arr[1];
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/gettireunitprice';
+	var qty1=parseFloat(jQuery('#room_width').val());
+	var qty2=parseFloat(jQuery('#room_length').val());
+	var curUnit=jQuery('#cnvunit').val();
+	if(curUnit=="cm"){
+		if(qty1>=100 && qty2>=100){
+		var qty1=Math.floor(qty1/100);
+		var qty2=Math.floor(qty2/100);
+		}
+		else{
+			qty1=1;
+			qty2=1;
+		}					
+		
+	}
+	if(curUnit=="mm"){
+			if(qty1>=1000 && qty2>=1000){
+				var qty1=Math.floor(qty1/1000);
+				var qty2=Math.floor(qty2/1000);
+			}
+			else{
+			qty1=1;
+			qty2=1;
+		}
+	}
+	qty=qty1*qty2;
+	var cur_price=jQuery('#price_get').val();
+	
+	var opt_price=1;
+	
+	var param="pId="+pid+"&qty="+qty+"&old_price="+cur_price+"&opt_price="+opt_price;
+	if(pid != ''){
+		jQuery('#loader').css('display','block');
+		jQuery.ajax({
+		url:url,
+		data: param,  
+		success:function(result){
+			
+			jQuery("#price_get").val(result);
+			jQuery("#price-to-change").html("AU$"+result);
+			jQuery("#total_price").html(result);
+				
+		}
+		});
+	}	
+}
+
+function getSizeValHome(size,classtype){
+	var curUnit=jQuery('#cnvunit').val();
+	var sizeid=size;
+	var Sizearr=size.split('_');
+	var name=Sizearr[1];
+	var size=jQuery("#"+size).val();	
+	var proid=jQuery("#pidart").val();
+	var proid_arr=proid.split(':');
+	var pid=proid_arr[1];
+	if(classtype=="arrowTop"){
+		size++;
+		jQuery('#'+sizeid).val(size);
+		url= '<?php echo Mage::getBaseUrl();?>carpet/index/gettireunitprice';
+		var qty1=parseFloat(jQuery('#room_width').val());
+		var qty2=parseFloat(jQuery('#room_length').val());
+		if(curUnit=="cm"){
+			if(qty1>=100 && qty2>=100){
+				var qty1=Math.floor(qty1/100);
+				var qty2=Math.floor(qty2/100);
+			}
+			else{
+				qty1=1;
+				qty2=1;
+			}					
+			
+		}
+		if(curUnit=="mm"){
+				if(qty1>=1000 && qty2>=1000){
+					var qty1=Math.floor(qty1/1000);
+					var qty2=Math.floor(qty2/1000);
+				}
+				else{
+					qty1=1;
+					qty2=1;
+				}	
+			
+		}
+		qty=qty1*qty2;
+		var cur_price=jQuery('#price_get').val();
+		var opt_price=jQuery('#opt_price_home').val();
+		var param="pId="+pid+"&qty="+qty+"&old_price="+cur_price+"&opt_price="+opt_price;
+		if(pid != ''){
+			jQuery.ajax({
+				url:url,
+				data: param,  
+				success:function(result){
+					jQuery("#price_get").val(result);
+					jQuery("#price-to-change").html("AU$"+result);
+					jQuery("#total_price").html(result);
+				}
+			});
+			
+		}
+	}
+	if(classtype=="arrowbtm"){
+		if(size > 1){	
+			size--;
+			jQuery('#'+sizeid).val(size);
+			url= '<?php echo Mage::getBaseUrl();?>carpet/index/gettireunitprice';
+			var qty1=parseFloat(jQuery('#room_width').val());
+			var qty2=parseFloat(jQuery('#room_length').val());
+			if(curUnit=="cm"){
+				if(qty1>=100 && qty2>=100){
+					var qty1=Math.floor(qty1/100);
+					var qty2=Math.floor(qty2/100);
+				}
+				else{
+					qty1=1;
+					qty2=1;
+				}					
+				
+			}
+			if(curUnit=="mm"){
+					if(qty1>=1000 && qty2>=1000){
+						var qty1=Math.floor(qty1/1000);
+						var qty2=Math.floor(qty2/1000);
+					}
+					else{
+					qty1=1;
+					qty2=1;
+				}
+			}
+			qty=qty1*qty2;
+			if(qty < 1){
+				qty=1;
+			}
+			var cur_price=jQuery('#price_get').val();
+			var opt_price=jQuery('#opt_price_home').val();
+			var param="pId="+pid+"&qty="+qty+"&old_price="+cur_price+"&opt_price="+opt_price;
+			if(pid != ''){
+				jQuery.ajax({
+					url:url,
+					data: param,  
+					success:function(result){
+						jQuery("#price_get").val(result);
+						jQuery("#price-to-change").html("AU$"+result);
+						jQuery("#total_price").html(result);
+					}
+				});
+				
+			}
+		}
+	}
+	
+	
+	
+}
+</script>
+
+
+
+<!-- add to cart success pop up starts-->
+<div id="MB_window" style="width: 500px; height: auto; left: 504.5px; display:none;" >
+	<div id="MB_frame">
+		<div id="MB_header">
+			<div id="MB_caption">Add to Cart</div>
+			<a id="MB_close" title="Close window" href="javascript:void(0);" ><span>×</span></a>
+		</div>
+		<div id="MB_content" style="">
+			<div style="">
+				<ul class="messages">
+					<li class="success-msg">
+					<ul>
+					<li><span id="success-cart" style="display: none;"></span></li>
+					</ul>
+					</li>
+				</ul>
+				<div style="text-align: center;">
+					<button type="button" title="Continue Shopping" class="button MB_focusable" id="continueshop"><span><span>Continue Shopping</span></span></button>
+					&nbsp;&nbsp;
+					<button type="button" title="Go to Shopping Cart" class="button MB_focusable" onclick="location.href='<?php echo $this->getBaseUrl();?>checkout/cart/'"><span><span>Go to Shopping Cart</span></span></button>
+				</div>
+				
+				<div class="icart-collaterals">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- add to cart success pop up ends-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form action="<?php echo Mage::getBaseUrl();?>carpet/index/addcartnew" method="post" id="product_addtocart_form" enctype="multipart/form-data">
+<input type="hidden" id="optarr" value="" name="optArr" />
+<div id="uploadArtWork">
+        
+	<div class="txtHeading"></div>
+	<div id="liveFormData">
+	    <div class="liveFormData_1">
+	    <div id="artworkreturn_1">
+		
+		<div class="clearfix"></div>
+		<div class="title">Submit Your Artwork Details </div>
+		<div class="float-L clearfix" id="innerLeft-tabing">
+		  <div id="uploadYourArtworkData" class="innerLeft-tabing">
+		  
+		  
+		  <div id="subret" style="display:none"></div>
+		  <div style="overflow: auto; width: 625px;" id="printreadytab1" class="detailtab">
+			<!--7-5-2014 S-->
+			<dl class="clearfix">
+			  <dt>Product Selected</dt>
+			  <dd>
+			    <?php echo $_Product->getName(); ?><?php if($dim) echo " ".$dim; ?>
+			  </dd>
+			</dl>
+			<!--7-5-2014 E-->
+			
+			
+			
+			
+			
+			<dl class="clearfix">
+			  <dt>Project Name</dt>
+			  <dd>
+			    <input type="text" value="" maxlength="70" class="textfield" id="projectname" name="projectname">
+			  </dd>
+			</dl>
+			<dl class="clearfix">
+			  <dt>Category</dt>
+			  <dd>
+				<?php echo $category->getName()?>	
+				<input type="hidden" value="<?php echo $category->getName()?>" id="categoryName" name="categoryName">
+			</dd>
+			</dl>
+			
+	    </div>
+	    
+	    <div id="artworkreturn">
+		
+		
+		
+		<!--		size width starts-->
+		<div class="calculator-wrapper" id="cal-wrap">
+		<div class="block block-calculator">
+			<div class="block-content">
+			
+			<dl style="" id="sizeBox" class="clearfix">
+				<dt>Size (m)</dt>
+				
+				<dd id="main_size">
+				<div class="sizes-block">
+					<input type="text" size="5" value="1" name="room_width" id="room_width" onkeyup="getSizevalkeyHome();" >
+					<div class="float-L">
+						<a onclick="getSizeValHome('room_width','arrowTop');" class="arrowTop" href="javascript:void(0);">I</a>
+						<a onclick="getSizeValHome('room_width','arrowbtm');" class="arrowbtm" href="javascript:void(0);">D</a>
+					</div>
+					<span>width</span>
+				</div>	
+				<div class="sizes-block">
+					<input type="text" size="5" value="1" name="room_length" id="room_length" onkeyup="getSizevalkeyHome();" >
+					<div class="float-L">
+						<a onclick=" getSizeValHome('room_length','arrowTop');" class="arrowTop" href="javascript:void(0);">I</a>
+						<a onclick=" getSizeValHome('room_length','arrowbtm');"  class="arrowbtm" href="javascript:void(0);">D</a>
+					</div>
+					<span>height</span> 
+				</div>
+				
+				<div class="sizes-block last">
+					<span>Unit</span>
+					<input type="hidden" name="cnvunit" id="cnvunit" value="m"/>
+					<select class="textfield dropdown-s" id="major" name="major" onchange="getconversion(this.value);">
+						<option value="m">m.</option>
+						<option value="cm">cm.</option>
+						<option value="mm">mm.</option>
+					</select>
+				</div>
+				</dd>
+			</dl>
+			</div>
+				
+		</div>
+		
+		
+		</div>
+		<!--		size width ends-->
+		
+		
+		
+	    </div>
+	    <div id="artworkreturn_2">
+		
+			<dl class="clearfix">
+			    <dt>Price</dt>
+			    
+			    <dd id="total_display_pr">
+				<div class="price-box">
+				
+				<span itemprop="price" id="price-to-change" class="price">AU$<?php echo $output['price']?></span></span>
+				<input type="hidden" name="price" id="price_get" value="<?php echo $output['price']?>" />
+				<input type="hidden" id="opt_price" value="0" />
+				
+				</div>
+			    </dd>
+		        </dl>
+			
+			<dl class="clearfix">
+			    <dt>Quantity</dt>
+			    
+			    <dd id="disply_qty">
+				<div class="qty-box">
+				<input type="text" name="qty" id="qty" value="<?php echo $output['qty']?>" />
+				
+				
+				</div>
+			    </dd>
+		        </dl>
+			
+			
+			
+			
+			
+			
+			<dl class="float-L">
+			    <dd class="text float-L">Include any notes or requests to our production team before they process your file...Type here...</dd>
+			    <dd class="float-L textarea">
+			    <textarea class="textfield w587" id="description_pr" name="description_pr" onkeyup="changLimit(this.value)" maxlength="255"></textarea>
+			    <div class="shadowSprite shadow590"></div>
+			    <dd class="text float-L">
+			    <div class="allowedWords">Allowed Words (<span id="tWords">255</span>)</div>
+			    </dd>
+			    </dd>
+			    
+			</dl>
+			<dl class="float-L upload">
+			    <dd class="text float-L">Select Upload Options</dd>
+			    <dd class="text">
+			    <div class="upload-module clear">
+			    <div class="Options1">
+				
+			    <label class="browse_btn" style="cursor:pointer;">
+				<input type="radio" value="uploadimage" name="artwork" id="uploadimage" onclick="yousendit1();">Upload files up to 2 GB
+			    </label>
+			    <div id="form-validate" style="display: none">
+			    <!--<form action="" method="post" id="form-validate" enctype="multipart/form-data" style="display: none">-->
+				<input type="file" name="artworkfile" id="artworkfile" />
+				<input type="hidden" name="prodId" id="prodId" value="<?php echo $_Product->getId() ?>" />
+				<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+				<!--<input type="hidden" name="optarr" id="optarr" value="" />
+				<input type="hidden" name="cusprice" id="cusprice" value="" />
+				<input type="hidden" name="cusnote" id="cusnote" value="" />
+				<input type="hidden" id="width" />
+				<input type="hidden" id="length" />
+				<input type="hidden" name="dimension" id="dimension"/> -->
+				
+			    <!--</form>-->
+			    </div>
+			    </div>
+			    
+			    <div class="Options2">
+				<label style="cursor:pointer;">
+					<input type="radio" value="artworklater" id="artworklater" name="artwork" onclick="yousendit();">I’ll send my artwork file later. Please send me the link to upload my file.
+				</label>
+			    
+			    </div>
+			    
+			    </div>
+			    </dd>
+			    <div class="shadowSprite shadow590"></div>
+			</dl>
+			<dl class="clearfix float-R">
+			    
+			    <input type="button" name="nextBtn" id="nextBtn" value="Next" class="cart-button add-to-cart">
+			</dl>
+			<dl style="height:20px;">
+			</dl>
+	
+		  </div>
+		</div>
+		
+    	</div>
+		
+	<!--//////////////////////////////////////Second tab starts ////////////////////////////////////////////-->
+		
+	<div style="display: none" id="step2tab">
+	<div class="innerLeft-tabing" style="">
+		<div class="title">
+			Select Your Printing Options
+		</div>
+		<div class="detailtab">
+			<dl class="clearfix">
+				<dt>Project Name</dt>
+				<dd class="text1"><span id="project_name"></span>
+				<div class="float-R">
+					<span class="qty-link" title="edit">edit</span>
+				</div>
+				</dd>
+			</dl>
+			<div class="bdr-emboss">
+			</div>
+			<dl class="clearfix">
+				<dt>Product Image</dt>
+				<ul id="_displayImage">
+					<li id="_dis_image1">
+					<img width="100px" height="100px" alt=""  id="artajximage" src="<?php echo str_replace('outdoorbannershop','',Mage::getBaseUrl())?>media/sendartworklater.png"></li>
+				</ul>
+			</dl>
+			<div class="bdr-emboss">
+			</div>
+			<dl class="clearfix">
+				<dt>Size</dt>
+				<dd class="text1"><span id="product_size"><?php echo $output['room_width']; ?>(w)x<?php echo $output['room_length']; ?>(h) in <?php echo $output['major']; ?></span>
+				<div class="float-R">
+					<span  class="qty-link" title="edit" id="sizeEdit">edit</span>
+				</div>
+				</dd>
+			</dl>
+			<dl class="clearfix">
+				<dt>Quantity</dt>
+				<dd id="dl_qty">
+				<span id="stabqty"><?php echo $output['qty']?></span>
+				
+				<div class="float-R">
+					<span  class="qty-link" title="edit" id="sizeEdit">edit</span>
+				</div>
+				</dd>
+			</dl>
+			
+			<!-- two sided-->
+			<?php
+			foreach($optArr as $optionKey => $optionVal) {
+			if($optionVal->getType()=="checkbox" && $optionVal->getTitle()=="Two sided banner"){
+			foreach($optionVal->getValues() as $valuesKey => $valuesVal){
+			?>
+			<div class="bdr-emboss">
+			</div>
+			<div id="dl_twoside_opt">
+				<dl class="clearfix">
+					<dt><?php echo $valuesVal->getTitle() ?></dt>
+					<dd>
+					<input type="checkbox" value="<?php echo $valuesVal->getId() ?>__<?php echo $optionKey ?>__<?php echo $valuesVal->getPrice() ?>" id="options_<?php echo $valuesKey ?>" name="_two_sided_price" class="checkbox  product-custom-option">
+					
+					<label for="_two_sided"></label>
+					
+					</dd>
+				</dl>
+			</div>
+			<?php } } } ?>
+			<!-- end two sided-->
+			<div class="bdr-emboss">
+			</div>
+			
+			<div class="bdr-emboss">
+			</div>
+			<?php
+			foreach($optArr as $optionKey => $optionVal) {
+			if($optionVal->getType()=="checkbox" && $optionVal->getTitle()=="Proof Request"){
+			foreach($optionVal->getValues() as $valuesKey => $valuesVal){
+			?>
+			
+			
+			<dl class="clearfix">
+				<dt><?php echo $valuesVal->getTitle() ?></dt>
+				<dd>
+				<input type="checkbox" value="<?php echo $valuesVal->getId() ?>__<?php echo $optionKey ?>__<?php echo $valuesVal->getPrice() ?>" id="options_<?php echo $valuesKey ?>" name="_proof_request" class="checkbox  product-custom-option">
+				
+				<label for="_proof_request"></label>
+				<ul id="css3menu" class="global_tooltip">
+					<li class="toproot">
+					<div class="float-R" style="margin-left: 2px;">
+						<a href="#" rel="tooltip" title="<?php echo $optionVal->getDescription() ?> ">
+						<img width="18" height="19" src="<?php echo $this->getskinUrl('images/tooltip-icon-small.png')?>" alt="">
+						</a>
+					</div>
+					</li>
+				</ul>
+				<p>
+					Design Proof will be send via email from sales@bannerbuzz.com.au within 24 hours after completing checkout. Please make sure to check "SPAM" folder in your email. If you do not receive the proof in 24 hours, please send an email to sales@bannerbuzz.com.au with your order number.
+				</p>
+				</dd>
+			</dl>
+			<?php } } } ?>
+			
+			
+			
+			
+			<div class="bdr-emboss">
+			</div>
+			<!-- upgrad banner option-->
+			<dl class="clearfix">
+				
+				
+				<?php
+				foreach($optArr as $optionKey => $optionVal) {
+				if($optionVal->getType()=="radio" && $optionVal->getTitle()=="Upgrade Banner"){?>
+				<div style="" id="dd_upgraded_banner_440gsm">
+					<dt><?php echo $optionVal->getTitle() ?></dt>
+					<dd>
+					</dd>
+				</div>
+				<?php
+					
+				foreach($optionVal->getValues() as $valuesKey => $valuesVal){
+				?>
+				
+				<div id="dd_upgraded_banner">
+					<dt>&nbsp;</dt>
+					<dd>
+					<input type="radio" value="<?php echo $valuesVal->getId() ?>__<?php echo $optionKey ?>__<?php echo $valuesVal->getPrice() ?>" name="_upgraded_banner" id="upgraded_banner" style="float:left;margin-top:6px;">
+					
+					<span style="margin:0 7px;float:left;"><span class="mrg-none">$</span><span id="upgraded_banner_340gsm_price"><?php echo number_format($valuesVal->getPrice(),2) ?></span>&nbsp;(<?php echo $valuesVal->getTitle() ?>)</span>
+					
+					<div class="float-R">
+					</div>
+					</dd>
+				</div>
+				<?php } } } ?>
+			</dl>
+			<!-- End upgrad banner option-->
+			<!-- Wind Flaps-->
+			<div class="bdr-emboss">
+			</div>
+			<?php
+			foreach($optArr as $optionKey => $optionVal) {
+			if($optionVal->getType()=="checkbox" && $optionVal->getTitle()=="Wind Flaps"){
+			foreach($optionVal->getValues() as $valuesKey => $valuesVal){
+			?>
+			<div id="dl_windfl_opt">
+				<dl class="clearfix">
+					<dt><?php echo $optionVal->getTitle() ?></dt>
+					<dd>
+					<input type="checkbox" id="_wind_flaps" name="_wind_flaps" class="regular-checkbox" value="<?php echo $valuesVal->getId() ?>__<?php echo $optionKey ?>__<?php echo $valuesVal->getPrice() ?>">
+					<label for="_wind_flaps"></label>
+					
+					</dd>
+				</dl>
+			</div>
+			<?php } } } ?>
+			<!-- end Wind Flaps-->
+			<!-- Material  Options -->
+			<!-- End Material  Options  -->
+			<!-- Grommet option-->
+			<div class="bdr-emboss">
+			</div>
+			
+			<div id="optarea">
+				<div class="option" id="cusopt"></div>
+				<div class="option" id="cusopt_1"></div>
+			</div>
+			
+			
+			
+			
+			<!-- Lamination Options-->
+			<div class="bdr-emboss">
+			</div>
+			<dl class="clearfix">
+				<?php
+				foreach($optArr as $optionKey => $optionVal) {
+				if($optionVal->getType()=="radio" && $optionVal->getTitle()=="Laminations"){ ?>
+				<dt><?php echo $optionVal->getTitle() ?></dt><dd>
+				<?php
+				foreach($optionVal->getValues() as $valuesKey => $valuesVal){
+				?>
+				
+				
+				<input type="radio" name="_lamination_option" value="<?php echo $valuesVal->getId() ?>__<?php echo $optionKey ?>__<?php echo $valuesVal->getPrice() ?>"><span class="font12"><?php echo $valuesVal->getTitle() ?></span><br>
+				
+				
+				<?php } } ?>
+				
+				</dd>
+				<?php } ?>
+				<p>
+					For maximum protection we use liquid lamination. Our laminates are specifically formulated to protect colors, provide additional abrasion resistance, chemical resistance and increased durability of up to 2 years, without impairing the substrate's flexibility.
+				</p>
+			</dl>
+			
+			<!-- end Lamination Options-->
+			
+			<!-- Velcro Options-->
+			<div class="bdr-emboss">
+			</div>
+			<div id="dd_velcro_opt">
+				<dl class="clearfix">
+					<?php
+					foreach($optArr as $optionKey => $optionVal) {
+					if($optionVal->getType()=="radio" && $optionVal->getTitle()=="Velcro"){ ?>
+					<dt><?php echo $optionVal->getTitle() ?></dt>
+					
+					<dd>
+					<?php
+					foreach($optionVal->getValues() as $valuesKey => $valuesVal){
+					?>
+					<div class="velcro_option">
+						<input type="radio" name="_velcro_bool" id="velcro_bool_meterial" value="<?php echo $valuesVal->getId() ?>__<?php echo $optionKey ?>__<?php echo $valuesVal->getPrice() ?>">
+						<span class="font12"><?php echo $valuesVal->getTitle() ?></span>
+					</div>
+					<?php }?>
+					<ul id="css3menu" class="global_tooltip">
+						<li class="toproot">
+						<div class="float-R" style="margin-left: 2px;">
+							<a href="#" rel="tooltip" title="<?php echo $optionVal->getDescription() ?> ">
+							<img width="18" height="19" src="<?php echo $this->getskinUrl('images/tooltip-icon-small.png')?>" alt="">
+							</a>
+						</div>
+						
+						</li>
+					</ul>
+					<?php
+					
+					} } ?>
+					
+					
+					
+					
+					
+					</dd>
+					
+				</dl>
+			</div>
+			<!-- end Velcro Options-->
+			<div class="bdr-emboss">
+			</div>
+			<dl class="totalprice blue-clr font30">
+				<div class="pricetopbg">
+				</div>
+				Total Price: $<span id="total_price"><?php echo $output['price']?></span>
+				<div class="pricebtmbg">
+				</div>
+			</dl>
+			<dl>
+				<input type="button" class="cart-button add-to-cart" value="" id="cartBtn">
+			</dl>
+		</div>
+		
+	</div>
+</div>
+	
+</form>		
+	<!--////////////////////////////////////////Second tab ends/////////////////////////////////////////////-->	
+	    </div>
+	    </div>
+	</div>
+	<div id="artworkreturn_3">
+		
+		<div class="float-R clearfix" id="innerRight-specifications">
+		<div  class="recomndspec">
+			<p>Recommended Artwork Specification</p>
+		<p class="product-image" style="display: none">
+			<img title="Custom Mesh Banner" alt="Custom Mesh Banner" src="<?php echo $img ?>" id="mainImage">
+		</p>
+		</div>
+		<div style="margin-top:30px;">
+		<div class="mrg-B10">
+		  <dl class="clearfix">
+		    <dt>File Type</dt>
+		    <dd> JPEG, PDF, DOC, JPG, DOCX,
+		      EPS, CDR, AI, GIF, PSD, TIF,
+		      TIFF, PPT, PNG, BMP </dd>
+		  </dl>
+		  <dl class="clearfix">
+		    <dt>Resolution</dt>
+		    <dd>150 DPI to 600 DPI</dd>
+		  </dl>
+		  <dl class="clearfix">
+		    <dt>Color Mode</dt>
+		    <dd>CMYK</dd>
+		  </dl>
+		  <dl class="clearfix">
+		    <dt>Text</dt>
+		    <dd>Convert to Outlines</dd>
+		  </dl>
+		  <dl class="clearfix">
+		    <dt>Layers</dt>
+		    <dd>Flatten to a Background Layer</dd>
+		  </dl>
+		  <dl class="clearfix">
+		    <dt>Compression</dt>
+		    <dd>Zip files if necessary</dd>
+		  </dl>
+		</div>
+		
+		<div class="clear">
+		  <p>&nbsp;</p>
+		</div>
+		<div class="supportModule float-R">
+		  <div class="supportIcon"></div>
+		  <div class="smalltext">Need Help or questions?</div>
+		  <div class="box grey-gredient-bg">
+		    <div class="float-L">
+		      <div class="calltext">(03) 8400-4345</div>
+		      <a href="mailto:Array" class="emailink" title="send us email" rel="nofollow">send us email</a>&nbsp; » </div>
+		    <div class="float-L livesupport"> 
+		    <a rel="nofollow" href="#" >
+		    <img align="bottom" alt="Live Support" title="Live Support" src="<?php echo $this->getskinUrl('images/current.png')?>"></a> </div>
+		  </div>
+		  
+		</div>
+	      </div>
+		
+		
+	</div>
+</div>
+

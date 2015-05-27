@@ -1,0 +1,935 @@
+<?php
+$countryCode = Mage::getStoreConfig('general/country/default');
+echo "code :".$countryCode;
+$regionCollection = Mage::getModel('directory/region_api')->items($countryCode);
+//$countryCollection = Mage::getModel('directory/country_api')->items();
+$countryCollection = Mage::getResourceModel('directory/country_collection')->loadByStore()->toOptionArray();
+$session = Mage::getSingleton('customer/session');
+ 
+if($session->isLoggedIn()) {
+   $customer = $session->getCustomer();
+   //echo $customer->getName();
+   $customerText="Your Information";
+   $Fname=$customer->getfirstname();
+   $Lname=$customer->getlastname();
+   $Email=$customer->getEmail();
+   
+   $customerAddressId = Mage::getSingleton('customer/session')->getCustomer()->getDefaultBilling();
+   if ($customerAddressId){
+          $address = Mage::getModel('customer/address')->load($customerAddressId);
+         $address_data = $address->getData();
+         $street1 = $address_data['street'];
+         $telephone = $address_data['telephone'];
+         $country_id = $address_data['country_id'];
+         $postcode = $address_data['postcode'];
+         $region = $address_data['region'];
+         $city = $address_data['city'];
+   }
+   
+}else{
+    $customerText="New Customer";
+    $Fname="";
+    $Lname="";
+    $Email="";
+}
+
+?>
+<script src="<?php echo Mage::getBaseUrl('js')."calendar/calendar.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Mage::getBaseUrl('js')."calendar/calendar-setup.js" ?>" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo Mage::getBaseUrl('js') ?>calendar/calendar-win2k-1.css"  />
+<script type="text/javascript">var Translator = new Translate([]);</script> 
+<script type="text/javascript">
+//<![CDATA[
+enUS = {"m":{"wide":["January","February","March","April","May","June","July","August","September","October","November","December"],"abbr":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]}}; // en_US locale reference
+Calendar._DN = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]; // full day names
+Calendar._SDN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]; // short day names
+Calendar._FD = 0; // First day of the week. "0" means display Sunday first, "1" means display Monday first, etc.
+Calendar._MN = ["January","February","March","April","May","June","July","August","September","October","November","December"]; // full month names
+Calendar._SMN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; // short month names
+Calendar._am = "AM"; // am/pm
+Calendar._pm = "PM";
+ 
+// tooltips
+Calendar._TT = {};
+Calendar._TT["INFO"] = "About the calendar";
+ 
+Calendar._TT["ABOUT"] =
+"DHTML Date/Time Selector\n" +
+"(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" +
+"For latest version visit: http://www.dynarch.com/projects/calendar/\n" +
+"Distributed under GNU LGPL. See http://gnu.org/licenses/lgpl.html for details." +
+"\n\n" +
+"Date selection:\n" +
+"- Use the \xab, \xbb buttons to select year\n" +
+"- Use the " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " buttons to select month\n" +
+"- Hold mouse button on any of the above buttons for faster selection.";
+Calendar._TT["ABOUT_TIME"] = "\n\n" +
+"Time selection:\n" +
+"- Click on any of the time parts to increase it\n" +
+"- or Shift-click to decrease it\n" +
+"- or click and drag for faster selection.";
+ 
+Calendar._TT["PREV_YEAR"] = "Prev. year (hold for menu)";
+Calendar._TT["PREV_MONTH"] = "Prev. month (hold for menu)";
+Calendar._TT["GO_TODAY"] = "Go Today";
+Calendar._TT["NEXT_MONTH"] = "Next month (hold for menu)";
+Calendar._TT["NEXT_YEAR"] = "Next year (hold for menu)";
+Calendar._TT["SEL_DATE"] = "Select date";
+Calendar._TT["DRAG_TO_MOVE"] = "Drag to move";
+Calendar._TT["PART_TODAY"] = ' (' + "Today" + ')';
+ 
+// the following is to inform that "%s" is to be the first day of week
+Calendar._TT["DAY_FIRST"] = "Display %s first";
+ 
+// This may be locale-dependent. It specifies the week-end days, as an array
+// of comma-separated numbers. The numbers are from 0 to 6: 0 means Sunday, 1
+// means Monday, etc.
+Calendar._TT["WEEKEND"] = "0,6";
+ 
+Calendar._TT["CLOSE"] = "Close";
+Calendar._TT["TODAY"] = "Today";
+Calendar._TT["TIME_PART"] = "(Shift-)Click or drag to change value";
+ 
+// date formats
+Calendar._TT["DEF_DATE_FORMAT"] = "%b %e, %Y";
+Calendar._TT["TT_DATE_FORMAT"] = "%B %e, %Y";
+ 
+Calendar._TT["WK"] = "Week";
+Calendar._TT["TIME"] = "Time:";
+ 
+CalendarDateObject._LOCAL_TIMZEONE_OFFSET_SECONDS = -28800;
+
+//]]>
+</script>
+<script type="text/javascript">
+   
+   function quote_login()
+   {
+      flag = 1;
+      if(document.getElementById('email').value == '')
+      {
+         document.getElementById('email').className = document.getElementById('email').className + " validation-failed";
+         flag = 0;
+      }
+      
+      if(document.getElementById('pass').value == '')
+      {
+         document.getElementById('pass').className = document.getElementById('pass').className + " validation-failed";
+         flag = 0;
+      }
+      
+      if(flag == 0)
+      return false;
+      else
+      quote_ajax_login();
+   }
+   
+   
+   function quote_ajax_login(){
+   
+      document.getElementById('login-please-wait').value = 'block';
+        var pass = document.getElementById('pass').value;
+        var email = document.getElementById('email').value;
+        var redirect_url = document.getElementById('redirect_url').value;
+	
+      //alert(type);
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+		//alert(xmlhttp.responseText);
+            
+		data= xmlhttp.responseText;
+                if(data == 'wrong')
+                {
+                  alert("The login details are wrong");
+                }
+                else{
+		document.getElementById('top-customerquote-content').innerHTML = data;
+                Calendar.setup({
+                     inputField : 'inhanddate',
+                     ifFormat: "%Y-%m-%d",
+                      showsTime: false,
+                     button : 'inhanddate_trig',
+                     //align : 'Bl',
+                     singleClick : true
+                 });
+                }
+                
+                document.getElementById('login-please-wait').value = 'none';
+		//alert(data);
+		
+           
+            // alert(xmlhttp.responseText);
+            // clock(); 
+        }
+    }
+    //alert(str);
+    xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/quote_login.php?pass="+pass+"&email="+email+"&redirect_url="+redirect_url,true);
+    xmlhttp.send(null);
+}
+
+
+function SubmitCreateForm()
+{
+  
+   email_open();
+   
+   var radios = document.getElementsByName("ship_method");
+   i = 0;
+   flag1 = 0;
+   
+   while (flag1 == 0 && i < radios.length) {
+        if (radios[i].checked)
+        {
+         flag1 = 1;
+         
+         document.getElementById('ship_message').style.display = 'none';
+         break;
+         }
+         else{
+            
+         document.getElementById('ship_message').style.display = 'block';
+         }
+        i++;        
+    }
+   
+	//check if msg is filled
+   if(flag1 == 0)
+   return false;
+   else
+   {
+     <?php if(!$session->isLoggedIn()) {?>
+      document.getElementById('email-please-wait').value = 'block';
+      
+       //alert(document.getElementById('customer_id').value);
+      if(document.getElementById('customer_id').value == '')
+      {
+       var email = document.getElementById('billing_email').value;
+	
+            //alert(type);
+          if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+              xmlhttp=new XMLHttpRequest();
+          }
+          else
+          {// code for IE6, IE5
+              xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          xmlhttp.onreadystatechange=function()
+          {
+              if (xmlhttp.readyState==4 && xmlhttp.status==200)
+              {
+                      data1 = xmlhttp.responseText;
+                      document.getElementById('email-please-wait').value = 'none';
+                      if(data1 == 'This email is already exist.')
+                      {
+                        document.getElementById('ship_message').innerHTML = data1;
+                        document.getElementById('ship_message').style.display = 'block';
+                        return false;
+                      }
+                     else
+                     {
+                        
+                        document.getElementById('customerquote-customer-form').submit();
+                        document.getElementById('top-customerquote-content').innerHTML = 'Your quote has been sent!';
+                     }
+                      //alert(data);
+                      
+                 
+                  // alert(xmlhttp.responseText);
+                  // clock(); 
+              }
+          }
+          //alert(str);
+          xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/registered.php?email="+email,true);
+          xmlhttp.send(null);
+      }
+      else{
+         document.getElementById('customerquote-customer-form').submit();
+         document.getElementById('top-customerquote-content').innerHTML = 'Your quote has been sent!';
+      }
+      
+          <?php }else{?>
+          
+      document.getElementById('customerquote-customer-form').submit();
+      document.getElementById('top-customerquote-content').innerHTML = 'Your quote has been sent!';
+      <?php }?>
+   }
+}
+
+
+</script>
+
+<div id="top_quote_window" class="dialog popup-window">
+<div onclick="Windows.close(&quot;top_quote_window&quot;, event)" class="magento_close"></div>
+<table class="top table_window" id="top_quote_window_row1">
+    <tbody>
+        <tr>
+            <td class="magento_nw top_draggable"></td>
+            <td class="magento_n">
+                <div class="magento_title title_window top_draggable" id="top_quote_window_top">Top Quote Window</div>
+            </td>
+            <td class="magento_ne top_draggable"></td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="mid table_window" id="top_quote_window_row2">
+    <tbody>
+        <tr>
+            <td class="magento_w"></td>
+            <td valign="top" class="magento_content" id="top_quote_window_table_content">
+                <div class="magento_content" id="top_quote_window_content">
+                    <div class="magento_message" id="modal_dialog_message">
+                        <div class="logged-in" id="top-customerquote">
+                           <span style="display: none; " class="please-wait" id="login-please-wait">
+	    	<img class="v-middle" title="Generating Quote" alt="Generating Quote" src="<?php echo $this->getSkinUrl()?>images/opc-ajax-loader.gif">  Customer login... 
+	     
+	    </span>
+                           <span style="display: none; " class="please-wait" id="save-quote-please-wait">
+	    	<img class="v-middle" title="Generating Quote" alt="Generating Quote" src="<?php echo $this->getSkinUrl()?>images/opc-ajax-loader.gif"> Generating Quote 
+	    </span>
+                           <span style="display: none; " class="please-wait" id="email-please-wait">
+	    	<img class="v-middle" title="Generating Quote" alt="Generating Quote" src="<?php echo $this->getSkinUrl()?>images/opc-ajax-loader.gif">  Emailing Quote 
+	     
+	    </span>
+                            <div id="top-customerquote-content">
+                                <form method="post" id="customerquote-customer-form" action="<?php echo $this->getUrl()?>Quotation/Quote/SendRequestFromCart/">
+                                <h2>Get a Quote</h2>
+                                <?php if($session->isLoggedIn()) { ?>
+                                <div id="customerquote-welcome">
+                                <?php echo $customer->getName(); ?>
+                                </div>
+                                <?php } ?>
+                                <div id="customerquote-info-wrapper">
+                                   <div style="display:none;">
+                                    <input name="customer_id" id="customer_id" value="<?php echo $send_data["customer_id"]?>"/>
+                                    <?php
+                                        $checkoutSession = Mage::getSingleton('checkout/session');
+                                        
+                                        ?>
+                                       <table cellspacing="0" class="data-table" id="quotation-request-products">
+<thead>
+        <tr>
+            <th><?php echo 'Product'; ?></th>
+            <th width="100"><?php echo 'Qty'; ?></th>
+        </tr>
+</thead>
+<tbody>
+	<?php foreach($checkoutSession->getQuote()->getAllItems() as $item): ?>
+		<?php if (($item->getProduct()->gettype_id() == 'simple') || ($item->getProduct()->gettype_id() == 'virtual') || ($item->getProduct()->gettype_id() == 'downloadable')): ?>
+            <tr>
+                <td>
+                	<a href="<?php echo $item->getProduct()->getProductUrl(); ?>"><?php echo $item->getName(); ?></a>
+                	<?php //echo $this->getProductOptions($item); ?>
+                </td>
+                <td width="100"><input size="5" type="text" name="qty_<?php echo $item->getProduct()->getId(); ?>" id="qty_<?php echo $item->getProduct()->getId(); ?>" value="<?php echo $item->getQty(); ?>"></td>
+            </tr>
+        <?php endif; ?>
+	<?php endforeach; ?>
+</tbody>
+</table>
+                                        <textarea cols="110" rows="10" id="description" name="description">test</textarea>
+                                    </div>
+                                   <?php
+                                    $CurrentUrl = Mage::helper('core/url')->getCurrentUrl();
+                                   $url = end(explode(Mage::getBaseUrl(),$CurrentUrl));
+                                   ?>
+                                   <input type="hidden" name="redirect_url" id="redirect_url" value="<?php echo $url?>">
+                                <div class="new-customer">
+                                </div>
+                                
+                                <div class="returning-customer">
+                                <h3><?php echo $customerText; ?></h3>
+                                <!--<form id="customerquote-return-customer-form">-->
+                                <fieldset>
+                                
+                                
+                                <div class="customer-infomation">
+                                <ul class="form-list">
+                                <li><label class="required" for="firstname"><em>*</em>First Name</label>
+                                <div class="input-box validation-passed" id="">
+                                <input type="text" class="input-text required-entry validate-length minimum-length-1 maximum-length-255 validation-passed" value="<?php echo $Fname; ?>" name="firstname" id="firstname">
+                                </div>
+                                </li>
+                                <li><label class="required" for="lastname"><em>*</em>Last Name</label>
+                                <div class="input-box validation-passed" id="">
+                                <input type="text" class="input-text required-entry validate-length minimum-length-1 maximum-length-255 validation-passed" value="<?php echo $Lname; ?>" name="lastname" id="lastname">
+                                </div>
+                                </li>
+                                <li><label class="required" for="email"><em>*</em>Email</label>
+                                <div class="input-box validation-passed" id="">
+                                <input type="text" class="input-text required-entry validate-email validation-passed" value="<?php echo $Email; ?>" name="billing_email" id="billing_email">
+                                </div>
+                                </li>
+                                <li><label for="company_name">Company</label>
+                                <div class="input-box" id="">
+                                <input type="text" class="input-text validation-passed" value="" name="company_name" id="company_name">
+                                </div>
+                                </li>
+                                <li><label for="personal_phone">Phone Number</label>
+                                <div class="input-box" id="">
+                                <input type="text" class="input-text validation-passed" value="" name="personal_phone" id="personal_phone">
+                                </div>
+                                </li>
+                                <li><label class="required" for="acee_how_did_you_hear_about_us"><em>*</em>How did you hear about us?</label>
+                                <div class="input-box validation-passed" id="">
+                                <select class="required-entry validation-passed" name="acee_how_did_you_hear_about_us" id="acee_how_did_you_hear_about_us">
+                                <option value=""></option>
+                                <option selected="selected" value="Banner Advertisement">Banner Advertisement</option>
+                                <option value="Business.com">Business.com</option>
+                                <option value="eBay">eBay</option>
+                                <option value="Email">Email</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Google">Google</option>
+                                <option value="LinkedIn">LinkedIn</option>
+                                <option value="MSN">MSN</option>
+                                <option value="Other">Other</option>
+                                <option value="Prior Customer">Prior Customer</option>
+                                <option value="RedZee.com">RedZee.com</option>
+                                <option value="Referral">Referral</option>
+                                <option value="Review Sites / Online Directories">Review Sites / Online Directories</option>
+                                <option value="Telemarketing">Telemarketing</option>
+                                <option value="Twitter">Twitter</option>
+                                <option value="Yahoo!">Yahoo!</option>
+                                </select>
+                                </div>
+                                </li>
+                                <li><label for="salesrep">Service Rep ID</label><input type="text" id="salesrep" name="salesrep" value="" class="salesrep input-text validate-length validation-passed"></li>
+                                
+                                </ul>
+                                </div>
+                                
+                                </fieldset>
+                                
+                                
+                                <h3>Shipping Address</h3>
+                                <fieldset class="">
+                                <input type="hidden" id="top_shipping_address_id" value="" name="shipping_address_id">	
+                                <input type="hidden" id="top_shipping:address_id" value="" name="shipping[address_id]">
+                                <ul class="form-list">
+                                <li>
+                                <label class="required" for="top_shipping:street1"><em>*</em>Address</label>
+                                <div class="input-box validation-error" id="">
+                                <input type="text" onchange="customerQuote.checkSameAsBilling();" class="input-text required-entry street1" value="" id="top_shipping:street1" name="shipping[street][]" title="Street Address">
+                                </div>
+                                
+                                
+                                <label> </label>
+                                <div class="input-box" id="">
+                                <input type="text" onchange="customerQuote.checkSameAsBilling();" class="input-text validation-passed" value="" id="top_shipping:street2" name="shipping[street][]" title="Street Address 2">
+                                </div>
+                                
+                                </li>
+                                
+                                <li class="fields">
+                                <div class="field">
+                                <label class="required" for="top_shipping:city"><em>*</em>City</label>
+                                <div class="input-box validation-error" id="">
+                                <input type="text" onchange="customerQuote.checkSameAsBilling();" id="top_shipping:city" class="input-text required-entry shipping-city" value="" name="shipping[city]" title="City">
+                                </div>
+                                </div>
+                                <div class="field" id="">
+                                <label class="required" for="top_shipping:region"><em>*</em>State/Province</label>
+                                <div class="input-box validation-error" id="">
+
+                                
+<!--                                   <input style="" class="validate-select shipping-region-id" title="State/Province" name="shipping[region_id]" id="top_shipping:region_id" />-->  
+                             <select style="" class="validate-select shipping-region-id" title="State/Province" name="shipping[region_id]" id="top_shipping:region_id" defaultvalue="">
+                                <option value="">Please select region, state or province</option>
+                                <?php
+                                foreach($regionCollection as $region) {
+                                ?>
+                                <option value="<?php echo $region['name'] ?>" ><?php echo $region['name'] ?></option>
+                                <?php
+                                }
+                                ?>
+                                </select>
+                              
+                                
+                                
+                                <input type="text" onchange="customerQuote.checkSameAsBilling();" style="display:none;" class="input-text shipping-region validation-passed" title="State/Province" value="" name="shipping[region]" id="top_shipping:region">
+                                </div>
+                                </div>
+                                </li>
+                                <li class="fields">
+                                <div class="field">
+                                <label class="required" for="top_shipping:postcode" id=""><em>*</em>Zip/Postal Code</label>
+                                <div class="input-box validation-error" id="">
+                                <input type="text" onchange="customerQuote.checkSameAsBilling();" class="input-text validate-zip-international required-entry " value="" id="top_shipping:postcode" name="shipping[postcode]" title="Zip/Postal Code">
+                                </div>
+                                </div>
+                                <div class="field">
+                                <label class="required" for="top_shipping:country_id"><em>*</em>Country</label>
+                                <div class="input-box validation-passed" id="">
+                                <select onchange="updateTopShippingRegion()" title="Country" class="validate-select shipping-country" id="top_shipping:country_id" name="shipping[country_id]">
+                                    <option value=""> </option>
+                                        <?php
+                                        foreach($countryCollection as $country) {
+if(trim($country['label']) == "") continue;
+                                        ?>
+                                        <option value="<?php echo $country['value'] ?>" ><?php echo $country['label'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                </select>
+                                </div>
+                                </div>
+                                </li>
+                                <li class="fields">
+                                <div class="field">
+                                <label class="required" for="shipping:telephone"><em>*</em>Telephone</label>
+                                <div class="input-box validation-error" id="">
+                                <input type="text" onchange="customerQuote.checkSameAsBilling();" id="top_shipping:telephone" class="input-text required-entry telephone " title="Telephone" value="" name="shipping[telephone]">
+                                </div>
+                                </div>
+                                <div class="field">
+                                <div class="inhanddate-select"><label for="inhanddate">In Hand Date &nbsp;&nbsp; </label><input type="text" style="margin-right:5px;" class="input-text validate-date validation-passed" value="" id="inhanddate" name="in_hand_date"> <img id="inhanddate_trig" title="Select Date" class="v-middle" alt="Select Date" src="<?php echo $this->getSkinUrl();?>images/grid-cal.gif"></div>                    </div>
+                                </li>     
+                                <li class="no-display"><input type="hidden" value="0" id="top_shipping_save_in_address_book" name="shipping[save_in_address_book]"></li>
+                                
+                                </ul>     
+                                
+                                </fieldset>					    <h3 class="billing-h3">Billing Address</h3>
+                                <span class="control">
+                                <input type="checkbox" class="checkbox validation-passed" onclick="same_billing(this.checked)" title="Same as Shipping Address" value="1" id="top_billing:same_as_shipping" name="billing[same_as_shipping]"><label for="top_billing:same_as_shipping">Same as Shipping Address</label>
+                                </span>
+                                <fieldset>
+                                <input type="hidden" id="top_billing_address_id" value="" name="billing_address_id">	
+                                <input type="hidden" id="top_billing:address_id" value="28649" name="billing[address_id]">
+                                <ul class="form-list">
+                                <li>
+                                <label class="required" for="top_billing:street1"><em>*</em>Address</label>
+                                <div class="input-box validation-passed" id="">
+                                <input type="text" onchange="customerQuote.setSameAsBilling(false);" class="input-text required-entry street1 validation-passed" value="<?php echo $street1;?>" id="top_billing:street1" name="billing[street][]" title="Street Address">
+                                </div>
+                                
+                                
+                                <label> </label>
+                                <div class="input-box" id="">
+                                <input type="text" onchange="customerQuote.setSameAsBilling(false);" class="input-text validation-passed" value="" id="top_billing:street2" name="billing[street][]" title="Street Address 2">
+                                </div>
+                                
+                                </li>
+                                
+                                <li class="fields">
+                                <div class="field">
+                                <label class="required" for="top_billing:city"><em>*</em>City</label>
+                                <div class="input-box validation-passed" id="">
+                                <input type="text" onchange="customerQuote.setSameAsBilling(false);" id="top_billing:city" class="input-text required-entry billing-city validation-passed" value="<?php echo $city;?>" name="billing[city]" title="City">
+                                </div>
+                                </div>
+                                <div class="field" id="">
+                                <label class="required" for="top_billing:region"><em>*</em>State/Province</label>
+                                <div class="input-box validation-passed" id="">
+<!--  <input onchange="customerQuote.setSameAsBilling(false);" style="" class="validate-select billing-region-id validation-passed" title="State/Province" name="billing[region_id]" id="top_billing:region_id" value="<?=$region?>">-->
+ 
+                               <select onchange="customerQuote.setSameAsBilling(false);" style="" class="validate-select billing-region-id validation-passed" title="State/Province" name="billing[region_id]" id="top_billing:region_id" defaultvalue="23">
+                                <option value="">Please select region, state or province</option>
+                                
+                                <?php
+                                foreach($regionCollection as $region) {
+                                ?>
+                                <option value="<?php echo $region['name'] ?>" <?php if($region == $region['name'])echo 'selected'?> ><?php echo $region['name'] ?></option>
+                                <?php
+                                }
+                                ?>
+                                
+                                </select>
+                                
+                                <input type="text" style="display:none;" class="input-text billing-region validation-passed" title="State/Province" value="" name="billing[region]" id="top_billing:region">
+                                </div>
+                                </div>
+                                </li>
+                                <li class="fields">
+                                <div class="field">
+                                <label class="required" for="top_billing:postcode" id=""><em>*</em>Zip/Postal Code</label>
+                                <div class="input-box validation-passed" id="">
+                                <input type="text" onchange="customerQuote.setSameAsBilling(false);" class="input-text validate-zip-international required-entry validation-passed" value="<?php echo $postcode;?>" id="top_billing:postcode" name="billing[postcode]" title="Zip/Postal Code">
+                                </div>
+                                </div>
+                                <div class="field">
+                                <label class="required" for="top_billing:country_id"><em>*</em>Country</label>
+                                <div class="input-box validation-passed" id="">
+                                <select onchange="updateTopBillingRegion()" title="Country" class="validate-select billing-country validation-passed" id="top_billing:country_id" name="billing[country_id]"><option value=""> </option>
+                                    <?php
+                                    foreach($countryCollection as $country) {
+if(trim($country['label']) == "") continue;
+                                        ?>
+                                        <option value="<?php echo $country['value'] ?>" <?php if($country_id == $country['country_code'])echo 'selected'?> ><?php echo $country['label'] ?></option>
+                                    
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                                </div>
+                                </div>
+                                </li>
+                                <li class="fields">
+                                <div class="field">
+                                <label class="required" for="billing:telephone"><em>*</em>Telephone</label>
+                                <div class="input-box validation-passed" id="">
+                                <input type="text" onchange="customerQuote.setSameAsBilling(false);" id="top_billing:telephone" class="input-text required-entry telephone validation-passed" title="Telephone" value="<?php echo $telephone;?>" name="billing[telephone]">
+                                </div>
+                                </div>
+                                </li>     
+                                <li class="no-display">
+                                <input type="hidden" value="0" id="top_billing_save_in_address_book" name="billing[save_in_address_book]"></li>
+                                
+                                </ul>     
+                                
+                                </fieldset>					    					    	<!--			    </form>-->
+                                </div>
+                                 <div style="display:none;"  id="ship">
+                                 
+                                
+                               </div>
+                                 <div id='ship_message' style="display:none; color:red;">Please select a option</div>
+                                </div>
+                                </form> 
+	
+		
+	 
+          
+         
+
+
+	<div id="save_button" class="button-wrapper">
+		<button onclick="email_open();" type="button" title="Save &amp; Generate Quote" class="submit button save-quote" id="customerquote-save-button" value="Save &amp; GSubmitCreateForm1()enerate Quote"><span><span>Save &amp; Generate Quote</span></span></button>
+	</div>
+	
+	<div id='email_button' style="display: none" class="button-wrapper">
+		<button onclick="SubmitCreateForm();" type="button" title="Email Quote" class="submit button email-quote" id="customerquote-email-button" value="Email Quote">
+			<span><span>Email Quote</span></span>
+		</button>
+	</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+<td class="magento_e"></td>
+</tr>
+</tbody>
+</table>
+
+<table class="bot table_window" id="top_quote_window_row3">        <tbody><tr>          <td class="magento_sw bottom_draggable"></td>            <td class="magento_s bottom_draggable"><div class="status_bar" id="top_quote_window_bottom"><span style="float:left; width:1px; height:1px"></span></div></td>            <td class="magento_se bottom_draggable"></td>        </tr>      </tbody></table> 
+
+</div>
+<script type="text/javascript">// <![CDATA[
+    Calendar.setup({
+        inputField : 'inhanddate',
+        ifFormat: "%Y-%m-%d",
+         showsTime: false,
+        button : 'inhanddate_trig',
+        //align : 'Bl',
+        singleClick : true
+    });
+// ]]>
+function email_open()
+{
+    var flag = 0;
+   
+   if(document.getElementById('firstname').value == '')
+   {
+      document.getElementById('firstname').className = document.getElementById('firstname').className + " validation-failed";
+      flag++;
+   }
+   else
+   {
+      document.getElementById('firstname').className = document.getElementById('firstname').className.replace("validation-failed","");
+   }
+   
+   if(document.getElementById('lastname').value == '')
+   {
+      document.getElementById('lastname').className = document.getElementById('lastname').className + " validation-failed";
+      flag++;
+   }
+   else
+   {
+      document.getElementById('lastname').className = document.getElementById('lastname').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('billing_email').value == '')
+   {
+      document.getElementById('billing_email').className = document.getElementById('billing_email').className + " validation-failed";
+      flag++;
+   }
+   else
+   {
+      document.getElementById('billing_email').className = document.getElementById('billing_email').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('acee_how_did_you_hear_about_us').value == '')
+   {
+      document.getElementById('acee_how_did_you_hear_about_us').className = document.getElementById('acee_how_did_you_hear_about_us').className + " validation-failed";
+      flag++;
+   }
+   else
+   {
+      document.getElementById('acee_how_did_you_hear_about_us').className = document.getElementById('acee_how_did_you_hear_about_us').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_shipping:street1').value == '')
+   {
+      document.getElementById('top_shipping:street1').className = document.getElementById('top_shipping:street1').className + " validation-failed";
+      flag++;
+   }
+    else
+   {
+      document.getElementById('top_shipping:street1').className = document.getElementById('top_shipping:street1').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_shipping:city').value == '')
+   {
+      document.getElementById('top_shipping:city').className = document.getElementById('top_shipping:city').className + " validation-failed";
+      flag++;
+   }
+    else
+   {
+      document.getElementById('top_shipping:city').className = document.getElementById('top_shipping:city').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_shipping:region_id').value == '')
+   {
+      document.getElementById('top_shipping:region_id').className = document.getElementById('top_shipping:region_id').className + " validation-failed";
+      flag++;
+   }
+    else
+   {
+      document.getElementById('top_shipping:region_id').className = document.getElementById('top_shipping:region_id').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_shipping:postcode').value == '')
+   {
+      document.getElementById('top_shipping:postcode').className = document.getElementById('top_shipping:postcode').className + " validation-failed";
+      flag++;
+   }
+   else
+   {
+      document.getElementById('top_shipping:postcode').className = document.getElementById('top_shipping:postcode').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_shipping:country_id').value == '')
+   {
+      document.getElementById('top_shipping:country_id').className = document.getElementById('top_shipping:country_id').className + " validation-failed";
+      flag++;
+   }
+    else
+   {
+      document.getElementById('top_shipping:country_id').className = document.getElementById('top_shipping:country_id').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_shipping:telephone').value == '')
+   {
+      document.getElementById('top_shipping:telephone').className = document.getElementById('top_shipping:telephone').className + " validation-failed";
+      flag++;
+   }
+    else
+   {
+      document.getElementById('top_shipping:telephone').className = document.getElementById('top_shipping:telephone').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_billing:street1').value == '')
+   {
+      document.getElementById('top_billing:street1').className = document.getElementById('top_billing:street1').className + " validation-failed";
+     flag++;
+   }
+    else
+   {
+      document.getElementById('top_billing:street1').className = document.getElementById('top_billing:street1').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_billing:city').value == '')
+   {
+      document.getElementById('top_billing:city').className = document.getElementById('top_billing:city').className + " validation-failed";
+      flag++;
+   }
+    else
+   {
+      document.getElementById('top_billing:city').className = document.getElementById('top_billing:city').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_billing:region_id').value == '')
+   {
+      document.getElementById('top_billing:region_id').className = document.getElementById('top_billing:region_id').className + " validation-failed";
+      flag++;
+   }
+    else
+   {
+      document.getElementById('top_billing:region_id').className = document.getElementById('top_billing:region_id').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_billing:postcode').value == '')
+   {
+      document.getElementById('top_billing:postcode').className = document.getElementById('top_billing:postcode').className + " validation-failed";
+      flag++;
+   }
+    else
+   {
+      document.getElementById('top_billing:postcode').className = document.getElementById('top_billing:postcode').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_billing:country_id').value == '')
+   {
+      document.getElementById('top_billing:country_id').className = document.getElementById('top_billing:country_id').className + " validation-failed";
+      flag++;
+   }
+    else
+   {
+      document.getElementById('top_billing:country_id').className = document.getElementById('top_billing:country_id').className.replace("validation-failed","");
+      
+   }
+   
+   if(document.getElementById('top_billing:telephone').value == '')
+   {
+      document.getElementById('top_billing:telephone').className = document.getElementById('top_billing:telephone').className + " validation-failed";
+      flag++;
+   }
+    else
+   {
+      document.getElementById('top_billing:telephone').className = document.getElementById('top_billing:telephone').className.replace("validation-failed","");
+      
+   }
+   
+   if(flag == 0)
+   {
+      document.getElementById('save-quote-please-wait').value = 'block';
+      if(document.getElementById('ship').style.display == 'none')
+      {
+      
+               document.getElementById('ship').style.display = 'block';
+               document.getElementById('email_button').style.display = 'block';
+               document.getElementById('save_button').style.display = 'none';
+               
+               var country = document.getElementById('top_shipping:country_id').value;
+               var postcode = document.getElementById('top_shipping:postcode').value;
+                 
+               //alert(type);
+             if (window.XMLHttpRequest)
+             {// code for IE7+, Firefox, Chrome, Opera, Safari
+                 xmlhttp=new XMLHttpRequest();
+             }
+             else
+             {// code for IE6, IE5
+                 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+             }
+             xmlhttp.onreadystatechange=function()
+             {
+                 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                 {
+                         //alert(xmlhttp.responseText);
+                     
+                         data= xmlhttp.responseText;
+                         document.getElementById('ship').innerHTML = data;
+                         document.getElementById('save-quote-please-wait').value = 'none';
+                         //alert(data);
+                         
+                    
+                     // alert(xmlhttp.responseText);
+                     // clock(); 
+                 }
+             }
+             //alert(str);
+             xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/shipping.php?country="+country+"&zipcode="+postcode,true);
+             xmlhttp.send(null);
+            }
+      }
+   }
+
+function same_billing(check)
+{
+   if(check)
+   {
+      document.getElementById('top_billing:telephone').value = document.getElementById('top_shipping:telephone').value;
+      document.getElementById('top_billing:postcode').value = document.getElementById('top_shipping:postcode').value;
+      document.getElementById('top_billing:city').value = document.getElementById('top_shipping:city').value;
+      document.getElementById('top_billing:street1').value = document.getElementById('top_shipping:street1').value;
+      document.getElementById('top_billing:street2').value = document.getElementById('top_shipping:street2').value;
+      
+      var idx1= document.getElementById('top_shipping:country_id').selectedIndex;
+      var idx2= document.getElementById('top_shipping:region_id').selectedIndex;
+      
+      document.getElementById('top_billing:region_id').options[idx2].selected = true;
+      document.getElementById('top_billing:country_id').options[idx1].selected = true;
+   }
+   else{
+      
+      document.getElementById('top_billing:telephone').value = '';
+      document.getElementById('top_billing:postcode').value = '';
+      document.getElementById('top_billing:city').value = '';
+      document.getElementById('top_billing:street1').value = '';
+      document.getElementById('top_billing:street2').value = '';
+      
+      document.getElementById('top_billing:region_id').options[0].selected = true;
+      document.getElementById('top_billing:country_id').options[0].selected = true;
+   }
+   
+}
+
+function chk_registerd()
+{
+   alert(document.getElementById('customer_id').value);
+   if(document.getElementById('customer_id').value == '')
+   {
+      var email = document.getElementById('billing_email').value;
+           
+         //alert(type);
+       if (window.XMLHttpRequest)
+       {// code for IE7+, Firefox, Chrome, Opera, Safari
+           xmlhttp=new XMLHttpRequest();
+       }
+       else
+       {// code for IE6, IE5
+           xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+       }
+       xmlhttp.onreadystatechange=function()
+       {
+           if (xmlhttp.readyState==4 && xmlhttp.status==200)
+           {
+                   data1 = xmlhttp.responseText;
+                   if(data1 == 'This email is already exist.')
+                   return false;
+                  else
+                  return true;
+                   //alert(data);
+                   
+              
+               // alert(xmlhttp.responseText);
+               // clock(); 
+           }
+       }
+       //alert(str);
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/registered.php?email="+email,true);
+       xmlhttp.send(null);
+    }
+    else{
+                  return true;
+    }
+    
+}
+
+</script>    
+

@@ -1,0 +1,169 @@
+<div><!--<h4></h4>-->
+                        
+            <div class="test-image"><img title="" alt="" src="http://mesh-banners.com.au/skin/frontend/default/meshbanners/images/tab2.jpg"></div>
+            
+            <div class="photogallery">
+                
+                <?php
+
+			    $collection = Mage::getModel('factoryphotos/factoryphotos')->getCollection();/*echo count($collection);*/?>
+                            <?php
+                            //include('connect.php');	
+                            
+                            
+                            $targetpage = "http://mesh-banners.com.au/factoryphoto"; 	
+                            $limit = 1; 
+                            
+                            
+                            $total_pages = count($collection);
+                            
+                            $stages = 3;
+                            $page = mysql_escape_string($_GET['page']);
+                            if($page){
+                            $start = ($page - 1) * $limit; 
+                            }else{
+                            $start = 0;	
+                            }	
+                            
+                            // Get page data
+                            //$query1 = "SELECT * FROM $tableName LIMIT $start, $limit";
+                            //$result = mysql_query($query1);
+                            
+                            // Initial page num setup
+                            if ($page == 0){$page = 1;}
+                            $prev = $page - 1;	
+                            $next = $page + 1;							
+                            $lastpage = ceil($total_pages/$limit);		
+                            $LastPagem1 = $lastpage - 1;					
+                            
+                            
+                            $paginate = '';
+                            if($lastpage > 1)
+                            {	
+                            
+                            
+                            
+                            
+                            $paginate .= "<div class='paginate'>";
+                            // Previous
+                            if ($page > 1){
+                            $paginate.= "<a href='$targetpage?page=$prev' class='prev'>previous</a><div class='indoor'>
+                                <img border='0' width='63' height='19' src='http://mesh-banners.com.au/skin/frontend/default/meshbanners/images/logo-small-banners.png'>
+                                <img border='0' width='63' height='19' src='http://mesh-banners.com.au/skin/frontend/default/meshbanners/images/logo-small-fence.png'>
+                                <img border='0' width='63' height='19' src='http://mesh-banners.com.au/skin/frontend/default/meshbanners/images/logo-small-sports.png'><br>
+                                Indoor and Outdoor Signage Supplies
+                            </div>";
+                            }else{
+                            $paginate.= "<span class='disabled prev'>previous</span><div class='indoor'>
+                                <img border='0' width='63' height='19' src='http://mesh-banners.com.au/skin/frontend/default/meshbanners/images/logo-small-banners.png'>
+                                <img border='0' width='63' height='19' src='http://mesh-banners.com.au/skin/frontend/default/meshbanners/images/logo-small-fence.png'>
+                                <img border='0' width='63' height='19' src='http://mesh-banners.com.au/skin/frontend/default/meshbanners/images/logo-small-sports.png'><br>
+                                Indoor and Outdoor Signage Supplies
+                            </div>";	}
+                            
+                            
+                            
+                            // Pages	
+                            if ($lastpage < 7 + ($stages * 2))	// Not enough pages to breaking it up
+                            {	
+                            for ($counter = 1; $counter <= $lastpage; $counter++)
+                            {
+                            if ($counter == $page){
+                                    $paginate.= "<span class='current'></span>";
+                            }else{
+                                    $paginate.= "<a href='$targetpage?page=$counter'></a>";}					
+                            }
+                            }
+                            elseif($lastpage > 5 + ($stages * 2))	// Enough pages to hide a few?
+                            {
+                            // Beginning only hide later pages
+                            if($page < 1 + ($stages * 2))		
+                            {
+                            for ($counter = 1; $counter < 4 + ($stages * 2); $counter++)
+                            {
+                                    if ($counter == $page){
+                                            $paginate.= "<span class='current'></span>";
+                                    }else{
+                                            $paginate.= "<a href='$targetpage?page=$counter'></a>";}					
+                            }
+                            $paginate.= "...";
+                            $paginate.= "<a href='$targetpage?page=$LastPagem1'>$LastPagem1</a>";
+                            $paginate.= "<a href='$targetpage?page=$lastpage'>$lastpage</a>";		
+                            }
+                            // Middle hide some front and some back
+                            elseif($lastpage - ($stages * 2) > $page && $page > ($stages * 2))
+                            {
+                            $paginate.= "<a href='$targetpage?page=1'></a>";
+                            $paginate.= "<a href='$targetpage?page=2'></a>";
+                            $paginate.= "...";
+                            for ($counter = $page - $stages; $counter <= $page + $stages; $counter++)
+                            {
+                                    if ($counter == $page){
+                                            $paginate.= "<span class='current'></span>";
+                                    }else{
+                                            $paginate.= "<a href='$targetpage?page=$counter'></a>";}					
+                            }
+                            $paginate.= "...";
+                            $paginate.= "<a href='$targetpage?page=$LastPagem1'></a>";
+                            $paginate.= "<a href='$targetpage?page=$lastpage'></a>";		
+                            }
+                            // End only hide early pages
+                            else
+                            {
+                            $paginate.= "<a href='$targetpage?page=1'></a>";
+                            $paginate.= "<a href='$targetpage?page=2'></a>";
+                            $paginate.= "...";
+                            for ($counter = $lastpage - (2 + ($stages * 2)); $counter <= $lastpage; $counter++)
+                            {
+                                    if ($counter == $page){
+                                            $paginate.= "<span class='current'></span>";
+                                    }else{
+                                            $paginate.= "<a href='$targetpage?page=$counter'></a>";}					
+                            }
+                            }
+                            }
+                                    
+                            // Next
+                            if ($page < $counter - 1){ 
+                            $paginate.= "<a href='$targetpage?page=$next' class='next'>next</a>";
+                            }else{
+                            $paginate.= "<span class='disabled next'>next</span>";
+                            }
+                            
+                            $paginate.= "</div>";		
+                            
+                            
+                            }
+                            
+                            // pagination
+                            
+                            ?>
+			    <?php
+                                                        $resource = Mage::getSingleton('core/resource');
+                            $Readconn = $resource->getConnection('core_write');                     
+                            $tableName = Mage::getSingleton('core/resource')->getTableName('factoryphotos');
+                            $SelectSubscriptioId= "SELECT * FROM `".$tableName."`  LIMIT $start, $limit";//echo $SelectSubscriptioId;
+                            $rows = $Readconn->query($SelectSubscriptioId);foreach ($rows as $item) { //echo $item['title'];//print_r($item);	
+			    //if($item->getstatus()==1){
+				?>
+			    
+				
+				
+            			    <h1 class="title <?php if($item['factoryphotos_id']==1) { echo 'factorys1';}?>"><?php echo $item['title']; ?></h1>
+                                    <?php echo $paginate;?>
+                            
+				        <div class="photocontent<?php echo $item['factoryphotos_id'];?>">
+                                            <?php echo $item['contents']; ?>
+                                        </div>
+                                        
+            
+            <?php } ?>
+	<?php echo $paginate;?>
+            
+            </div>
+            
+	</div>
+        
+
+
+

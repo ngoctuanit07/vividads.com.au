@@ -1,0 +1,19 @@
+/* ====================== 07_11_2013 ====================== */
+
+.adminhtml-catalog-product-edit .order-totals{background:none;}
+.adminhtml-catalog-product-edit .total_proof{width:97%;}
+.adminhtml-catalog-product-edit .total_proof1{width: 100%;}
+.adminhtml-catalog-product-edit .total_proof1 .tabclass{width: 100%;border: 1px solid #cddddd;padding: 1em;background: #e7efef;margin: 1.5em 0;}
+.adminhtml-catalog-product-edit .total_proof1 .tabclass .removeitem{float: right;}
+.adminhtml-catalog-product-edit .order-totals table td {font-weight: bold; text-align:left;padding: 0px !important;margin: 0;vertical-align: middle;}
+.adminhtml-catalog-product-edit table td input[type="text"]{border-width: 1px;border-style: solid;border-color: #aaa #c8c8c8 #c8c8c8 #aaa;
+background: #fff;font: 12px arial, helvetica, sans-serif;}
+.adminhtml-catalog-product-edit table{margin:0; padding:0;}
+.adminhtml-catalog-product-edit table tr.headings {background: url(images/sort_row_bg.gif) 0 50% repeat-x;}
+.adminhtml-catalog-product-edit table tr.headings td{ background:none !important;}
+.adminhtml-catalog-product-edit table tr.headings td.tabtitle{width:160px;}
+.adminhtml-catalog-product-edit table tr.headings td.tabfile{width:225px;}
+.adminhtml-catalog-product-edit table tr.headings td.tablink{width:50px;}
+.adminhtml-catalog-product-edit table.border input{width: 95%;padding: 2px;}
+.adminhtml-catalog-product-edit .caption{width:250px; padding: 2px;margin-bottom: 10px;}
+.adminhtml-catalog-product-edit table.border tr td{padding: 2px 5px !important;}

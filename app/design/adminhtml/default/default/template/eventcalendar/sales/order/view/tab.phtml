@@ -1,0 +1,129 @@
+<?php
+/******************* Start Holiday parse ***********************/
+$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+$temptableHoliday=Mage::getSingleton('core/resource')->getTableName('holiday');
+//$sqlHoliday="SELECT * FROM ".$temptableHoliday." WHERE country_name = '".Mage::getSingleton('admin/session')->getCountryholiday()."'";
+$sqlHoliday= $connectionRead->select()
+		  ->from($temptableHoliday,array('*'))
+		  ->where('country_name=?',Mage::getSingleton('admin/session')->getCountryholiday());
+$chkHoliday = $connectionRead->fetchall($sqlHoliday);
+
+//$path1 = str_replace('/index.php/','/',Mage::getBaseUrl()).'calender_xml/'.$chkHoliday[0]['file'];
+
+//$holidays = simplexml_load_file($path1);
+$country = Mage::getSingleton('admin/session')->getCountryholiday();
+foreach($chkHoliday as $holidays)
+{
+    if($holyday[$holidays['h_date']] != '')
+   $holyday[$holidays['h_date']] .= ', '.$holidays['country_name'].' :: '.$holidays['event'];
+    else
+    $holyday[$holidays['h_date']] = $holidays['country_name'].' :: '.$holidays['event'];
+}
+/******************* End Holiday parse ***********************/
+
+
+$temptableHoliday=Mage::getSingleton('core/resource')->getTableName('holiday');
+//$sqlHoliday="SELECT * FROM ".$temptableHoliday." GROUP BY country_name";
+
+$sqlHoliday= $connectionRead->select()
+		  ->from($temptableHoliday,array('*'))
+                  ->group('country_name');
+$chkHoliday = $connectionRead->fetchAll($sqlHoliday);
+
+$current_m = date('m');
+$current_y = date('Y');
+
+?>
+<div class="search_date">
+    <table style="width:30%">
+        <tr>
+            <td>
+                <select name="holiday_country" id="holiday_country" >
+                    <option value="">Select Country</option>
+                    <?php
+                        $m=1;
+                        foreach($chkHoliday as $key=>$Holiday)
+                        {
+                            if($m == 1)
+                            echo '<option value="'.$Holiday['country_name'].'" selected>'.$Holiday['country_name'].'</option>';
+                            else
+                            echo '<option value="'.$Holiday['country_name'].'" >'.$Holiday['country_name'].'</option>';
+                            $m++;
+                        }
+                    ?>
+                </select>
+            </td>
+            <td>
+                <select name="holiday_month" id="holiday_month" >
+                    <option value="">Select Month</option>
+                    <?php
+                        for($k=1;$k<=12;$k++)
+                        {
+                            $selected = '';
+                            if($k < 10)
+                            $value = '0'.$k;
+                            else
+                            $value = $k;
+                            
+                            if($current_m == $value)
+                            $selected = 'selected';
+                            
+                            echo '<option value="'.$value.'" '.$selected.'>'.date("F", mktime(0, 0, 0, $k, 10)).'</option>';
+                        }
+                    ?>
+                </select>
+            </td>
+            <td>
+                <select name="holiday_year" id="holiday_year" >
+                    <option value="">Select Year</option>
+                    <?php
+                        for($k=2012;$k<=2014;$k++)
+                        {
+                            $selected = '';
+                            if($current_y == $k)
+                            $selected = 'selected';
+                            echo '<option value="'.$k.'" '.$selected.'>'.$k.'</option>';
+                        }
+                    ?>
+                </select>
+            </td>
+            <td><button type="button" id="submit" class="button" onclick="sc_loadXMLDoc1();">Submit</button></td>
+        </tr>
+    </table>
+</div>
+<div id="holiday_list">
+    
+</div>
+
+<script type="text/javascript">
+    function sc_loadXMLDoc1()
+    {
+        var m = document.getElementById('holiday_month').value;
+        var y = document.getElementById('holiday_year').value;
+        var country = document.getElementById('holiday_country').value;
+        
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+        xmlhttp.onreadystatechange=function()
+          {
+           
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+                document.getElementById("holiday_list").innerHTML=xmlhttp.responseText;
+            }
+          }
+        xmlhttp.open("GET","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/sc_sale_calendar.php?m="+m+"&y="+y+"&country="+country,true);
+        xmlhttp.send();
+    }
+    
+    sc_loadXMLDoc1();
+</script>

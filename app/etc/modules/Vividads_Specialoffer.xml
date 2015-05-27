@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+         <Vividads_Specialoffer>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Vividads_Specialoffer>
+    </modules>
+</config>

@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<IcebergCommerce_AdminNotes>
+			<version>1.1.0</version>
+		</IcebergCommerce_AdminNotes>
+	</modules>
+	<global>
+		<models>
+			<adminnotes>
+				<class>IcebergCommerce_AdminNotes_Model</class>
+				<resourceModel>adminnotes_mysql4</resourceModel>
+			</adminnotes>
+			<adminnotes_mysql4>
+				<class>IcebergCommerce_AdminNotes_Model_Mysql4</class>
+				<entities>
+					<note>
+						<table>admin_note</table>
+					</note>
+					<note_user_relation>
+						<table>admin_note_user_relation</table>
+					</note_user_relation>
+				</entities>
+			</adminnotes_mysql4>
+		</models>
+		<blocks>
+        	<adminnotes>
+        		<class>IcebergCommerce_AdminNotes_Block</class>
+        	</adminnotes>
+        </blocks>
+        <helpers>
+        	<adminnotes>
+        		<class>IcebergCommerce_AdminNotes_Helper</class>
+        	</adminnotes>
+        </helpers>
+		<resources>
+			<adminnotes_setup>
+				<setup>
+					<module>IcebergCommerce_AdminNotes</module>
+					<class>Mage_Core_Model_Resource_Setup</class>
+				</setup>
+				<connection><use>core_setup</use></connection>
+			</adminnotes_setup>
+			<adminnotes_write>
+				<connection><use>core_write</use></connection>
+			</adminnotes_write>
+			<adminnotes_read>
+				<connection><use>core_read</use></connection>
+			</adminnotes_read>
+		</resources>	
+	</global>
+    <admin>
+        <routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<icebergcommerce_adminnotes before="Mage_Adminhtml">IcebergCommerce_AdminNotes_Adminhtml</icebergcommerce_adminnotes>
+					</modules>
+				</args>
+			</adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <adminnotes>
+                    <file>adminnotes.xml</file>
+                </adminnotes>
+            </updates>
+        </layout>
+        <menu>
+	        <system>
+	            <children>
+	                <adminnotes translate="title" module="adminnotes">
+	                    <title>Page Notes</title>
+	                    <action>adminhtml/adminnotes_index</action>
+	                    <sort_order>10</sort_order>
+	                </adminnotes>
+	            </children>
+	         </system>
+	    </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <adminnotes translate="title" module="adminnotes">
+                            <title>Page Notes</title>
+                            <sort_order>50</sort_order>
+                        	<children>
+								<write translate="title" module="adminnotes">
+									<title>Create Page Notes</title>
+									<sort_order>0</sort_order>
+								</write>
+								<edit translate="title" module="adminnotes">
+									<title>Global Note Moderator - Edit Any Note</title>
+									<sort_order>0</sort_order>
+								</edit>
+								<manage translate="title" module="adminnotes">
+									<title>Global Note Moderator - Delete Any Note</title>
+									<sort_order>10</sort_order>
+								</manage>
+                        	</children>
+                        </adminnotes>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <global_search>
+            <adminnotes>
+                <class>adminnotes/adminhtml_search_note</class>
+            </adminnotes>
+        </global_search>
+    </adminhtml>
+</config>
+

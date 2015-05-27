@@ -1,0 +1,21 @@
+<div class="onepagecheckout_block">
+	<div class="op_block_title">
+		<?php	echo $this->__('Please Select How You Would Like Your Payment Processed');	?>
+    </div>
+	<ul class="form-list">
+		<li id="installment-form">
+			<fieldset>
+				<ul>
+					<li class="wide">
+						<div class="input-box">
+							<select class="required-entry" name="installment[method]" id="installment_type" style="width: 90%;" onchange="checkout.update({'review': 1});">
+								<option value='<?php echo Itweb_Installments_Helper_Data::PAY_ALL ?>' <?php if($this->getQuote()->getData('installment') == Itweb_Installments_Helper_Data::PAY_ALL){echo 'selected="selected"';} ?>><?php echo $this->__(Itweb_Installments_Helper_Data::PAY_ALL_TEXT);?></option>
+								<option value='<?php echo Itweb_Installments_Helper_Data::PAY_INSTALLMENT ?>' <?php if($this->getQuote()->getData('installment') == Itweb_Installments_Helper_Data::PAY_INSTALLMENT){echo 'selected="selected"';} ?>><?php echo $this->__(Itweb_Installments_Helper_Data::PAY_INSTALLMENT_TEXT);?> (<?php echo Itweb_Installments_Helper_Data::getMaxInstallments() ?> Installments)</option>
+							</select>
+						</div>
+					</li>
+				</ul>
+			</fieldset>
+		</li>
+	</ul>
+</div>

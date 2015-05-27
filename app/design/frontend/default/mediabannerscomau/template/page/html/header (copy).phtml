@@ -1,0 +1,164 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+
+$getItemCount=Mage::helper("checkout/cart")->getItemsCount();
+
+$customerData = Mage::getSingleton('customer/session')->getCustomer();
+      echo $customerData->getId();
+?>
+
+
+<script type="text/javascript">
+
+function getQutefunc()
+{
+
+                var id = '#dialog';
+	
+		//Get the screen height and width
+		var maskHeight = jQuery(document).height();
+		var maskWidth = jQuery(window).width();
+	
+		//Set heigth and width to mask to fill up the whole screen
+		jQuery('#mask').css({'width':maskWidth,'height':maskHeight});
+		
+		//transition effect		
+		jQuery('#mask').fadeIn(1000);	
+		jQuery('#mask').fadeTo("slow",0.8);	
+	
+		//Get the window height and width
+		var winH = jQuery(window).height();
+		var winW = jQuery(window).width();
+              
+		//Set the popup window to center
+		jQuery(id).css('top',  winH/2-jQuery(id).height()/2);
+		jQuery(id).css('left', winW/2-jQuery(id).width()/2);
+	
+		//transition effect
+		jQuery(id).fadeIn(2000);
+        
+	
+			
+	
+	//if mask is clicked
+	jQuery('#mask').click(function () {
+		//$(this).hide();
+		//$('.window').hide();
+	});		
+
+}
+jQuery(document).ready(function() {
+//if close button is clicked
+	jQuery('.window .magento_close').click(function (e) {
+		//Cancel the link behavior
+		e.preventDefault();
+		//jQuery('#mask').hide();
+		//jQuery('.window').hide(); 
+                jQuery('#mask').fadeOut(1000);
+		jQuery('.window').fadeOut(1000);
+                
+	});
+});
+</script>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl(); ?>css/lightbox.css" media="all" />
+
+<script type="text/javascript">
+    function getQuote(qty)
+    {
+        if(qty == 0)
+        {
+            alert("Please add items in your shopping cart first.")
+        }else{
+            getQutefunc();
+        }
+    }
+</script>
+<div class="header-container">
+    <div class="header">
+        <?php if ($this->getIsHomePage()):?>
+        <h1 class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php else:?>
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+        <?php endif?>
+	 <div class="top-links">
+		<ul>
+			<li class="fast"><a href="#">LIVE CHAT</a></li>
+			<li><a href="#">UPLOAD ARTWORK</a></li>
+			<li><a href="#">NEWS</a></li>
+			<li><div class="get-quote-link">
+                <a id="getqute" onclick="getQuote(<?php echo $getItemCount; ?>)" href="javascript:void(0)">Get a Quote</a>
+            </div></li>
+		</ul>
+	</div>
+        <div class="quick-access">
+            <?php echo $this->getChildHtml('topSearch') ?>
+            <!--    Code by ART      -->
+            
+            <div class="quick-link2">
+								<div class="block block-cart">				
+										<div class="summary">
+														<p class="amount"><a href="#"><span>0</span> item(s)</a></p>
+														<p class="subtotal">
+														<span class="price">$99.99</span>														
+										</div>
+								</div>
+								<div class="checkout-link">
+												<ul class="links">
+															<li><a href="#">Checkout</a></li>
+												</ul>
+								</div>
+				    </div>
+            
+            <div id="boxes">
+                <div style="display: none;" id="dialog" class="window">
+                    <div style="font:normal 14px/20px Arial, Helvetica, sans-serif; padding:8px;">
+                    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('getquote')->toHtml() ?>
+                    </div>
+                    
+                </div>
+                <!-- Mask to cover the whole screen -->
+                <div style="width: 1478px; height: 602px; display: none; opacity: 0.8;" id="mask"></div>
+            </div>
+
+           
+            <!--   End Code by ART      -->
+            <?php /* ?><p class="welcome-msg"><?php echo $this->getWelcome() ?> <?php echo $this->getAdditionalHtml() ?></p><?php */ ?>
+            <?php echo $this->getChildHtml('topLinks') ?>
+            <?php echo $this->getChildHtml('store_language') ?>
+        </div>
+	<div class="top-contact-info phone-number">
+		<span class="customer-support"><span class="top-phone-number">888.777.0223</span></span>
+        </div>
+	
+        <?php echo $this->getChildHtml('topContainer'); ?>
+	
+    </div>
+</div>
+<?php echo $this->getChildHtml('topMenu') ?>

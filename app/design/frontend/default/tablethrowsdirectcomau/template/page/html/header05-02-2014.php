@@ -1,0 +1,348 @@
+<?php
+
+$currentUrl = "";
+
+if (!in_array(Mage::app()->getFrontController()->getAction()->getFullActionName(), array('cms_index_noRoute', 'cms_index_defaultNoRoute'))) {
+
+    $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+
+    $currentUrl = basename($currentUrl);
+
+}
+
+//echo $currentUrl;.
+
+
+
+
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     default_modern
+
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+/**
+
+ * @var Mage_Page_Block_Html_Header $this
+
+ */
+
+$getItemCount = Mage::helper("checkout/cart")->getItemsCount();
+
+if (Mage::helper('checkout/cart')->getSummaryCount() == "") {
+
+    $cartCount = "0";
+
+} else {
+
+    $cartCount = Mage::helper('checkout/cart')->getSummaryCount();
+
+}
+
+$quote = Mage::getSingleton('checkout/cart')->getQuote();
+
+if (Mage::helper('checkout/cart')->getSummaryCount() == "") {
+
+    $subTotal = Mage::helper('core')->currency(0.00);
+
+} else {
+
+    $subTotal = Mage::helper('core')->currency(number_format($quote->getSubtotal(), 2));
+
+}
+
+$customerData = Mage::getSingleton('customer/session')->getCustomer();
+
+?>
+
+<link rel="stylesheet" type="text/css"   href="<?php echo $this->getSkinUrl() ?>css/quote.css" />
+
+<script type="text/javascript">
+
+    var itemsincart =<?= $getItemCount ?>;
+
+    function getQutefunc()
+
+    {
+
+        var id = '#dialog';
+
+        //Get the screen height and width
+
+        var maskHeight = jQuery(document).height();
+
+        var maskWidth = jQuery(window).width();
+
+        //Set heigth and width to mask to fill up the whole screen
+
+        jQuery('#mask').css({'width': maskWidth, 'height': maskHeight});
+
+        //transition effect
+
+        jQuery('#mask').fadeIn(1000);
+
+        jQuery('#mask').fadeTo("slow", 0.8);
+
+        //Get the window height and width
+
+        var winH = jQuery(window).height();
+
+        var winW = jQuery(window).width();
+
+        //Set the popup window to center
+
+        jQuery(id).css('top', winH / 2 - jQuery(id).height() / 2);
+
+        jQuery(id).css('left', winW / 2 - jQuery(id).width() / 2);
+
+        //transition effect
+
+        jQuery(id).fadeIn(2000);
+
+        //if mask is clicked
+
+        jQuery('#mask').click(function() {
+
+            //$(this).hide();
+
+            //$('.window').hide();
+
+        });
+
+    }
+
+    jQuery(document).ready(function() {
+
+        //if close button is clicked
+
+        jQuery('.window .magento_close').click(function(e) {
+
+            //Cancel the link behavior
+
+            e.preventDefault();
+
+            //jQuery('#mask').hide();
+
+            //jQuery('.window').hide();
+
+            jQuery('#mask').fadeOut(1000);
+
+            jQuery('.window').fadeOut(1000);
+
+
+
+        });
+
+    });
+
+</script>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl(); ?>css/lightbox.css" media="all" />
+
+<script type="text/javascript">
+
+    function getQuote()
+
+    {
+
+        if (itemsincart == 0)
+
+        {
+
+            alert("Please add items in your shopping cart first.")
+
+        } else {
+
+            getQutefunc();
+
+        }
+
+    }
+
+</script>
+
+<div class="header-container">
+
+    <div class="header">
+
+        <?php if ($this->getIsHomePage()): ?>
+
+            <div class=""><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></div>
+
+        <?php else: ?>
+
+            <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+
+        <?php endif ?>
+
+        <?php //echo $this->getChildHtml('topSearch') ?>
+
+            <div class="form-search"><img src="<?php echo $this->getSkinUrl('images/sales_number.png')?>"></div>
+
+        <div class="header-right">
+
+            <div class="top-link">
+
+                <ul>										
+
+                    <li>
+
+                        <?php if (!Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+
+                            <a href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>"><?php echo $this->__('Login') ?></a>
+
+                        <?php else: ?>
+
+                            <a href="<?php echo Mage::helper('customer')->getLogoutUrl(); ?>"><?php echo $this->__('Logout') ?></a>
+
+                        <?php endif; ?>
+
+                    </li>
+
+                    <li><a  href="<?php echo $this->getUrl('customer/account/')?>">My  Account</a></li>
+
+                </ul>
+
+            </div>
+
+            <div id="boxes">
+
+                <div style="display: none;" id="dialog" class="window">
+
+                    <div style="font:normal 14px/20px Arial, Helvetica, sans-serif; padding:8px;">
+
+                        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('getquote')->toHtml() ?>
+
+                    </div>
+
+                </div>
+
+                <!-- Mask to cover the whole screen -->
+
+                <div style="width: 1478px; height: 602px; display: none; opacity: 0.8;" id="mask"></div>
+
+            </div>
+
+                <!--<div class="phone"><p align="right"><img src="<?php // echo $this->getSkinUrl();  ?>images/icon-phone.png" /><b> 1300 72 14 16 </b> </p> </div>-->
+
+            <div class="cart1" >
+
+                <p align="left">
+
+                    <a href="<?php echo Mage::getBaseUrl();?>checkout/cart/">
+
+                        <img src="<?php echo $this->getSkinUrl(); ?>images/icon-cart.png" />
+
+                    </a>                    
+
+                    <?php $totalItems = Mage::getModel('checkout/cart')->getQuote()->getItemsQty();;?> 
+
+                    <a href="<?php echo Mage::getBaseUrl();?>checkout/cart" class="top-link-cart">                        
+
+                        My Cart (<?php if(!empty($totalItems)){echo (int)$totalItems." Items";}else{echo "0 Items";}?>)
+
+                    </a>                                      
+
+                <br/><a  href="<?php echo Mage::getBaseUrl();?>onepagecheckout/">Checkout</a>    
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="quick-access">
+
+            <?php echo $this->getChildHtml('store_language') ?>
+
+            <?php // echo $this->getChildHtml('topMenu')  ?>             
+
+            <?php //echo $this->getChildHtml('topLinks')  ?>
+
+            <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('topmenu')->toHtml(); ?>
+
+            <div class="quick-access">
+
+                <ul>
+
+                    <li class="<?php if($currentUrl == "tablethrows.com.au" || $currentUrl == "index.php"){echo "quick-access_selected";} ?>"><a title="Home" href="<?php echo Mage::getBaseUrl();?>">Home</a></li>
+
+                    <li class="<?php if($currentUrl == "upload"){echo "quick-access_selected";} ?>"><a title="Send Artwork" href="<?php echo Mage::getBaseUrl();?>upload">Send Artwork</a></li>
+
+                    <li class="<?php if($currentUrl == "gallery"){echo "quick-access_selected";} ?>"><a title="Gallery" href="<?php echo Mage::getBaseUrl();?>gallery">Gallery</a></li>
+
+                    <li class="<?php if($currentUrl == "our-clients.html"){echo "quick-access_selected";} ?>"><a title="Our Clients" href="<?php echo Mage::getBaseUrl();?>our-clients.html">Our Clients</a></li>
+
+                    <li class="<?php if($currentUrl == "services"){echo "quick-access_selected";} ?>"><a href="<?php echo Mage::getBaseUrl();?>services">Services</a></li>
+
+                    <?php /*?><li class="<?php if($currentUrl == "offers.html"){echo "quick-access_selected";} ?> offer"><a title="Vendor Section" href="<?php echo Mage::getBaseUrl();?>offers.html/">Offers</a></li><?php */?>
+
+                    <li class="<?php if($currentUrl == "contact-us"){echo "quick-access_selected";} ?>"><a title="Log In" href="http://tablethrows.com.au/contact-us">Contact Us</a></li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+            <div class="clear"></div>
+
+        <?php echo $this->getChildHtml('topBar') ?>
+
+        <!--<div class="ad1"><img src="<?php echo $this->getSkinUrl(); ?>images/ribbon.jpg" /></div>-->
+
+        <?php echo $this->getChildHtml('topContainer'); ?>
+
+        <?php //echo $this->getChildHtml('youamaslider');//if($currentUrl == "tablethrows.com.au" || $currentUrl == "index.php"){echo $this->getChildHtml('youamaslider');} ?>
+
+        </div>
+
+</div>
+

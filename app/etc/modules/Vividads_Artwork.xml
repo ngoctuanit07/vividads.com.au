@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Vividads_Artwork>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Vividads_Artwork>
+    </modules>
+</config> 

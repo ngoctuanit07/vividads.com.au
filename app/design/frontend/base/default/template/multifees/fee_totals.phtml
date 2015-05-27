@@ -1,0 +1,69 @@
+<?php
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @copyright  Copyright (c) 2012 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Multi Fees extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @author     MageWorx Dev Team
+ */
+
+$inclTax = $this->isInclTax();
+$_value = $this->getTotal()->getValue();
+$_style = $this->getTotal()->getStyle();
+
+$fullInfo = $this->getTotal()->getFullInfo();
+if ($fullInfo) $fullInfo = unserialize ($fullInfo); else array();
+?>
+<?php foreach ($fullInfo as $fee) { ?>
+    <tr class="multifees-details<?php if ($inclTax) echo '-inc-tax'; ?>-view summary-details" style="display:none;">
+        <td class="a-right" style="<?php echo $_style ?>" colspan="<?php echo $this->getColspan(); ?>">
+            <b><?php echo $fee['title']; ?></b>
+        </td>        
+        <td style="<?php echo $_style ?>" class="a-right">
+            <b><?php echo $this->helper('checkout')->formatPrice($inclTax?$fee['price']:$fee['price']-$fee['tax']); ?></b>
+        </td>
+    </tr>
+
+    <?php foreach ($fee['options'] as $option) { ?>
+    <tr class="multifees-details<?php if ($inclTax) echo '-inc-tax'; ?>-view summary-details" style="display:none;">
+        <td class="a-right" style="<?php echo $_style ?>" colspan="<?php echo $this->getColspan(); ?>">
+            <?php echo $option['title']; ?>
+            <?php if (isset($option['percent'])) { ?>
+                (<?php echo (float)$option['percent']; ?>%)
+            <?php } ?>
+            <br />
+        </td>        
+        <td style="<?php echo $_style ?>" class="a-right">
+            <?php echo $this->helper('checkout')->formatPrice($inclTax?$option['price']:$option['price']-$option['tax']); ?>
+        </td>
+    </tr>
+    <?php } //endforeach ?>
+<?php } //endforeach ?>
+<tr class="summary-total" onclick="expandDetails(this, '.multifees-details<?php if ($inclTax) echo '-inc-tax'; ?>-view')">
+    <td style="<?php echo $_style ?>" class="a-right" colspan="<?php echo $this->getColspan(); ?>">
+        <div class="summary-collapse"><?php echo $this->getTotal()->getTitle() ?></div>        
+    </td>
+    <td style="<?php echo $_style ?>" class="a-right"><?php echo $this->helper('checkout')->formatPrice($_value) ?></td>
+</tr>

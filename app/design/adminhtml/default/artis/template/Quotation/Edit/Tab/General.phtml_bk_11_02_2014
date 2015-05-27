@@ -1,0 +1,762 @@
+<script type="text/javascript">
+    var productGridUrl = '<?php echo $this->getUrl('Quotation/Admin/productSelectionGrid', array('quote_id' => $this->getQuote()->getquotation_id())); ?>';
+    var deleteUrl = '<?php echo $this->getDeleteUrl(); ?>';
+</script>
+
+<input type="hidden" name="tab_to_display" id="tab_to_display" value="general" />
+<input id="form_key" name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+<input type="hidden" name="product_id" id="product_id" />
+<input type="hidden" name="myform[quotation_id]" value="<?php echo $this->getQuote()->getquotation_id(); ?>" />
+
+<?php /************************ Start of cistome billing and shipping 06_02_2014 ***************************************/
+
+$countryCode = Mage::getStoreConfig('general/country/default');
+//echo "code :".$countryCode;
+$regionCollection = Mage::getModel('directory/region_api')->items($countryCode);
+
+$countryCollection = Mage::getModel('directory/country_api')->items();
+
+$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+
+$tableBilling = Mage::getSingleton('core/resource')->getTableName('quotation_billing');
+$sqlSystem = $connectionRead->select()
+                            ->from($tableBilling, array('*'))
+                            ->where('quotation_id=?',$this->getQuote()->getquotation_id());
+                            
+ try {
+         $chkSystem = $connectionRead->query($sqlSystem);
+         $fetchSystem = $chkSystem->fetch();
+ } catch (Exception $e){
+ echo $e->getMessage();
+ }                            
+
+?>
+<style>
+    label{
+        float:left;
+    }
+    input.input-text{
+        float:left;
+    }
+
+select {
+    max-width: 200px;
+}
+</style>
+<br/>
+<div class="clear"></div>
+
+<div class="box-left">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Billing Address') ?></h4>
+            <div class="tools"><?php //echo $this->getAddressEditLink($_order->getBillingAddress())?><a class="change-link" href="javascript:void(0);" onclick="changeContent('billing_address');">Edit</a></div>
+        </div>
+        <fieldset>
+            <address id="quote-billing_address"><?php //echo $_order->getBillingAddress()->getFormated(true)
+            
+           
+            echo $fetchSystem['firstname'].' '.$fetchSystem['lastname']."<br/>";
+            if($fetchSystem['street1'] != '')
+                    echo $fetchSystem['street1']."<br/>";
+                    
+                    if($fetchSystem['street2'] != '')
+                    echo $fetchSystem['street2']."<br/>";
+                    
+                    if($fetchSystem['city'] != '')
+                    echo $fetchSystem['city'].",";
+                    
+                    if($fetchSystem['region_id'] != '')
+                    echo $fetchSystem['region_id'].",";
+                    
+                    if($fetchSystem['postcode'] != '')
+                    echo $fetchSystem['postcode']."<br/>";
+                    
+                    if($fetchSystem['country_id'] != '')
+                    echo $fetchSystem['country_id']."<br/>";
+                    
+                    if($fetchSystem['telephone'] != '')
+                    echo 'T:'.$fetchSystem['telephone'];
+	
+	
+            
+            
+            ?></address>
+            
+ <div id="quote-edit-billing_address" class="edit-content" style="display: none; ">
+	                   	<!--  <span class="control">
+<input type="checkbox" name="quote[billing_address][same_as_shipping]" id="edit_billing:same_as_shipping" value="1" title="Same as Shipping Address" onclick="editQuote.setSameAsBilling(this.checked)" class="checkbox" /><label for="edit_billing:same_as_shipping">Same as Shipping Address</label>
+</span>-->
+
+  <div class="address-control">
+  &nbsp;
+  </div>	
+  <!--  <input type="hidden" name="billing_address_id" value="" id="edit_billing_address_id" />-->	
+  <input type="hidden" name="quote[billing_address][address_id]" value="382911" id="edit_billing:address_id">
+  		<ul class="form-list">
+  	 			<li>
+                        <label for="edit_billing:street1" class="required"><em>*</em>Address</label>
+                        <div class="input-box">
+                            <input type="text" title="Street Address" name="quote[billing_address][street][0]" id="edit_billing:street1" value="<?php echo $fetchSystem['street1'];?>" class="input-text  street1" onchange="editQuote.setSameAsBilling(false);">
+                        </div>
+                        
+                                           
+                    	<label> </label>
+                        <div class="input-box">
+                            <input type="text" title="Street Address 2" name="quote[billing_address][street][1]" id="edit_billing:street2" value="<?php echo $fetchSystem['street2'];?>" class="input-text street2" onchange="editQuote.setSameAsBilling(false);">
+                        </div>
+                    
+                            </li>
+            
+               	<li class="fields">
+                        <div class="field">
+                            <label for="edit_billing:city" class="required"><em>*</em>City</label>
+                            <div class="input-box">
+                                <input type="text" title="City" name="quote[billing_address][city]" value="<?php echo $fetchSystem['city'];?>" class="input-text  billing-city" id="edit_billing:city" onchange="editQuote.setSameAsBilling(false);">
+                            </div>
+                        </div>
+                        <div class="field" id="">
+                            <label for="edit_billing:region" class="required"><em>*</em>State/Province</label>
+                            <div class="input-box" id="">
+                                <select id="edit_billing:region_id" name="quote[billing_address][region_id]" title="State/Province" class="billing-region-id" style="" onchange="editQuote.setSameAsBilling(false);" defaultvalue="13">
+                                    <option value="">Please select region, state or province</option>
+                                <?php
+                                foreach($regionCollection as $region) {
+                                ?>
+                                <option value="<?php echo $region['name'] ?>" <?php if($fetchSystem['region_id'] == $region['name']) echo 'selected';?> ><?php echo $region['name'] ?></option>
+                                <?php
+                                }
+                                ?>
+                                <script type="text/javascript">
+                                //<![CDATA[
+                                    //$('edit_billing:region_id').setAttribute('defaultValue',  "13");
+                                //]]>
+                                </script>
+                                <input type="text" id="edit_billing:region" name="quote[billing_address][region]" value="Colorado" title="State/Province" class="input-text billing-region" style="display: none; ">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="fields">
+                        <div class="field">
+                            <label for="edit_billing:postcode" class="required" id=""><em>*</em>Zip/Postal Code</label>
+                            <div class="input-box">
+                                <input type="text" title="Zip/Postal Code" name="quote[billing_address][postcode]" id="edit_billing:postcode" value="<?php echo $fetchSystem['postcode'];?>" class="input-text validate-zip-international  zipcode" onchange="editQuote.setSameAsBilling(false);">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="edit_billing:country_id" class="required"><em>*</em>Country</label>
+                            <div class="input-box">
+                                <select name="billing[country_id]" id="edit_billing:country_id" class="billing-country" title="Country" onchange="updateEditBillingRegion()">
+				     <option value=""> </option>
+				     <?php
+                                        foreach($countryCollection as $country) {
+                                        ?>
+                                        <option value="<?php echo $country['country_id'] ?>" <?php if($fetchSystem['country_id'] == $country['country_id']) echo 'selected';?> ><?php echo $country['name'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
+				</select>                            </div>
+                        </div>
+                    </li>
+                    <li class="fields">
+                        <div class="field">
+                            <label for="billing:telephone" class="required"><em>*</em>Telephone</label>
+                            <div class="input-box">
+                                <input type="text" name="quote[billing_address][telephone]" value="<?php echo $fetchSystem['telephone'];?>" title="Telephone" class="input-text  telephone" id="edit_billing:telephone" onchange="editQuote.setSameAsBilling(false);">
+                            </div>
+                        </div>
+                    </li>     
+  	 <li class="no-display">
+  	 <input type="hidden" name="quote[billing_address][save_in_address_book]" id="top_billing_save_in_address_book" value="0"></li>
+                   
+  </ul>     
+
+	                   </div>
+        </fieldset>
+    </div>
+</div>
+<?php //if (!$this->getOrder()->getIsVirtual()):
+
+
+$tableBilling = Mage::getSingleton('core/resource')->getTableName('quotation_shipping');
+	//$sqlSystem="SELECT * FROM ".$tableBilling." WHERE quotation_id = '".$quote->getId()."' ";
+$sqlSystem = $connectionRead->select()
+                        ->from($tableBilling, array('*'))
+                        ->where('quotation_id=?',$this->getQuote()->getquotation_id()); 
+ try {
+         $chkSystem = $connectionRead->query($sqlSystem);
+         $fetchSystem = $chkSystem->fetch();
+ } catch (Exception $e){
+ echo $e->getMessage();
+ }
+?>
+<div class="box-right">
+    <!--Shipping Address-->
+   
+     
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-shipping-address"><?php echo Mage::helper('sales')->__('Shipping Address') ?></h4>
+            <div class="tools"><?php //echo $this->getAddressEditLink($_order->getShippingAddress())?><a class="change-link" href="javascript:void(0);" onclick="changeContent('shipping_address');">Edit</a></div>
+            <?php /*<a  if($pos1!==false){?> style="display: block"<?php }else{?> style="display: none" <?php } ?>href="javascript:void(0);" id="shpstatusId" onclick="statusPopup('show_address');" title="<?php echo $this->__('Choose Address') ?>"><?php echo $this->__('Choose Address')*/ ?></a>
+        </div>
+        <fieldset>
+            <?php /*if($pos1!==false){?>
+            <input type="radio" name="shipAddress" value="<?php echo $_order->getShippingAddress()->getData('entity_id'); ?>"/>
+            <?php }*/ ?>
+            <address id="quote-shipping_address"><?php //echo $_order->getShippingAddress()->getFormated(true)
+            
+            echo $fetchSystem['firstname'].' '.$fetchSystem['lastname']."<br/>";
+            if($fetchSystem['street1'] != '')
+                    echo $fetchSystem['street1']."<br/>";
+                    
+                    if($fetchSystem['street2'] != '')
+                    echo $fetchSystem['street2']."<br/>";
+                    
+                    if($fetchSystem['city'] != '')
+                    echo $fetchSystem['city'].",";
+                    
+                   
+                
+                    if($fetchSystem['region_id'] != '')
+                    echo $fetchSystem['region_id'].",";
+                    
+                    if($fetchSystem['postcode'] != '')
+                    echo $fetchSystem['postcode']."<br/>";
+                    
+                    if($fetchSystem['country_id'] != '')
+                    echo $fetchSystem['country_id']."<br/>";
+                    
+                    if($fetchSystem['telephone'] != '')
+                    echo 'T:'.$fetchSystem['telephone'];
+            
+            
+            ?></address>
+             <div id="quote-edit-shipping_address" class="edit-content" style="display:none">
+	                   	<fieldset>
+  <!--  <input type="hidden" name="shipping_address_id" value="" id="edit_shipping_address_id" />-->
+ <!-- <div class="address-control">
+  	<input type="checkbox" onclick="same_billing1(this.checked)" name="shipping_same_as_billing" id="quote-edit-shipping_same_as_billing">
+  	<label for="edit_billing:same_as_shipping">Same as Billing Address</label>
+  </div>-->
+  <input type="hidden" name="quote[shipping_address][address_id]" value="382910" id="edit_shipping:address_id">
+  		<ul class="form-list">
+  	 			<li>
+                        <label for="edit_shipping:street1" class="required"><em>*</em>Address</label>
+                        <div class="input-box">
+                            <input type="text" title="Street Address" name="quote[shipping_address][street][0]" id="edit_shipping:street1" value="<?php echo $fetchSystem['street1'];?>" class="input-text  street1" onchange="editQuote.checkSameAsBilling();">
+                        </div>
+                        
+                                           
+                    	<label> </label>
+                        <div class="input-box">
+                            <input type="text" title="Street Address 2" name="quote[shipping_address][street][1]" id="edit_shipping:street2" value="<?php echo $fetchSystem['street2'];?>" class="input-text street2" onchange="editQuote.checkSameAsBilling();">
+                        </div>
+                    
+                            </li>
+            
+               	<li class="fields">
+                        <div class="field">
+                            <label for="edit_shipping:city" class="required"><em>*</em>City</label>
+                            <div class="input-box">
+                                <input type="text" title="City" name="quote[shipping_address][city]" value="<?php echo $fetchSystem['city'];?>" class="input-text  shipping-city" id="edit_shipping:city" onchange="editQuote.checkSameAsBilling();">
+                            </div>
+                        </div>
+                        <div class="field" id="">
+                            <label for="edit_shipping:region" class="required"><em>*</em>State/Province</label>
+                            <div class="input-box" id="">
+                                <select id="edit_shipping:region_id" name="quote[shipping_address][region_id]" title="State/Province" class=" shipping-region-id" style="" defaultvalue="15">
+                                    <option value="">Please select region, state or province</option>
+                                <?php
+                                foreach($regionCollection as $region) {
+                                ?>
+                                <option value="<?php echo $region['name'] ?>" <?php if($fetchSystem['region_id'] == $region['name']) echo 'selected';?> ><?php echo $region['name'] ?></option>
+                                <?php
+                                }
+                                ?>
+                                <script type="text/javascript">
+                                //<![CDATA[
+                                    $('edit_shipping:region_id').setAttribute('defaultValue',  "15");
+                                //]]>
+                                </script>
+                                <input type="text" id="edit_shipping:region" name="quote[shipping_address][region]" value="Delaware" title="State/Province" class="input-text shipping-region" style="display: none; " onchange="editQuote.checkSameAsBilling();">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="fields">
+                        <div class="field">
+                            <label for="edit_shipping:postcode" class="required" id=""><em>*</em>Zip/Postal Code</label>
+                            <div class="input-box">
+                                <input type="text" title="Zip/Postal Code" name="quote[shipping_address][postcode]" id="edit_shipping:postcode" value="<?php echo $fetchSystem['postcode'];?>" class="input-text validate-zip-international  zipcode" onchange="editQuote.checkSameAsBilling();">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="edit_shipping:country_id" class="required"><em>*</em>Country</label>
+                            <div class="input-box">
+                                <select name="shipping[country_id]" id="edit_shipping:country_id" class="shipping-country" title="Country" onchange="updateEditShippingRegion()">
+				    
+				     <?php
+                                        foreach($countryCollection as $country) {
+                                        ?>
+                                        <option value="<?php echo $country['country_id'] ?>" <?php if($fetchSystem['country_id'] == $country['country_id']) echo 'selected';?> ><?php echo $country['name'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
+				</select>                            </div>
+                        </div>
+                    </li>
+                    <li class="fields">
+                        <div class="field">
+                            <label for="shipping:telephone" class="required"><em>*</em>Telephone</label>
+                            <div class="input-box">
+                                <input type="text" name="quote[shipping_address][telephone]" value="<?php echo $fetchSystem['telephone'];?>" title="Telephone" class="input-text  telephone" id="edit_shipping:telephone" onchange="editQuote.checkSameAsBilling();">
+                            </div>
+                        </div>
+                    </li>     
+  	 <li class="no-display"><input type="hidden" name="quote[shipping_address][save_in_address_book]" id="edit_shipping_save_in_address_book" value="0"></li>
+                   
+  </ul>     
+
+	                   </div>
+            
+        </fieldset>
+    </div>
+</div>
+
+<?php
+/********************* Start to bring the item in the Quote general page 10_02_2014 **********************************/
+?>
+<br/>
+<div class="clear"></div>
+
+<div class="entry-edit">
+
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Quotation Items'); ?></h4>
+    </div>
+
+
+
+<div class="grid np">
+  <div class="hor-scroll">
+    <table cellspacing="0" class="data order-tables">
+        <colgroup><col>
+        <col width="1">
+        <col width="1">
+        <col width="1">
+        <col width="1">
+        <col width="1">
+        <col width="1">
+        <col width="1">
+        <col width="1">
+        <col width="1">
+        </colgroup><thead>
+            <tr class="headings">
+                <th>Product</th>
+                <th>Price</th>
+                <th class="a-center">Qty</th>
+                <th>Subtotal</th>
+                <th><span class="nobr">Tax Amount</span></th>
+                <th><span class="nobr">Tax Percent</span></th>
+                <th class="last"><span class="nobr">Row Total</span></th>
+            </tr>
+        </thead>
+                                        <tbody class="even">
+                
+
+
+<?php
+$quote = $this->getQuote();
+
+$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+$temptableItems = Mage::getSingleton('core/resource')->getTableName('quotation_items');
+                
+$select = $connectionRead->select()
+->from($temptableItems, array('*'))
+->where('quotation_id=?',$quote->getId());
+//$row =$connectionRead->fetchRow($select);
+$result = $connectionRead->fetchAll($select);
+foreach($result as $item)
+{
+     $_product = Mage::getModel('catalog/product')->load($item['product_id']);
+?>
+    
+                <tr class="border">
+		    <td>
+			<h5 class="title">
+			    <span id="order_item_1885_title"> <?php echo $item['caption']?></span>
+			</h5>
+			<div>
+			    <strong>SKU:</strong>
+			    <?php echo $_product->getAku();?>
+			</div>
+		    </td>
+		    <td class="a-right">
+                            <span class="price"><?php echo Mage::helper('core')->currency($item['price_ht'], true, false);?></span>
+		    </td>
+        
+		    <td>
+                            <?php echo $item['qty']?>
+                    </td>
+		    <td class="a-right">
+                        <span class="price-excl-tax">
+                        
+                        <span class="price"><?php echo Mage::helper('core')->currency($item['price_ht']*$item['qty'], true, false);?></span>                        
+
+                        </span>
+			<br>
+                    </td>
+		    <td class="a-right">
+                        <span class="price"><?php echo Mage::helper('core')->currency(($item['price_ht']*$item['qty']*(($item['eco_tax'])/100)), true, false);?></span>
+		    </td>
+
+		    <td class="a-right">
+                            <?php echo $item['eco_tax']?>%
+		    </td>
+        
+		    <td class="a-right last">
+                        <span class="price"><?php echo Mage::helper('core')->currency($item['price_ht']*$item['qty'], true, false);?></span>
+		    </td>
+		</tr>
+<?php
+}
+?>
+                
+            </tbody>
+                                <tbody class="odd">
+                
+
+
+    
+               
+                
+            </tbody>
+            </table>
+  </div>
+</div>
+</div>
+
+<br/>
+<div class="clear"></div>
+
+<?php
+/********************* End to bring the item in the Quote general page 10_02_2014 **********************************/
+?>
+
+
+<script type="text/javascript">
+    function changeContent(type)
+    {
+	 if(type == 'billing_address')
+	{
+            if(document.getElementById('quote-edit-billing_address').style.display == 'none')
+            {
+                document.getElementById('quote-edit-billing_address').style.display = 'block';
+                document.getElementById('quote-billing_address').style.display = 'none';
+                //document.getElementById('is_bill').value = 1;
+            }
+            else
+            {
+                document.getElementById('quote-edit-billing_address').style.display = 'none';
+                document.getElementById('quote-billing_address').style.display = 'block';
+            }
+	}
+	else if(type == 'shipping_address')
+	{
+            if(document.getElementById('quote-edit-shipping_address').style.display == 'none')
+            {
+                document.getElementById('quote-edit-shipping_address').style.display = 'block';
+                document.getElementById('quote-shipping_address').style.display = 'none';
+                //document.getElementById('is_ship').value = 1;
+            }
+            else{
+                document.getElementById('quote-edit-shipping_address').style.display = 'none';
+                document.getElementById('quote-shipping_address').style.display = 'block';
+            }
+	}
+    }
+</script>
+<div class="clear"></div>
+<?php //endif;
+
+/************************ End of cistome billing and shipping 06_02_2014 ***************************************/
+?>
+
+
+
+<div class="entry-edit">
+
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('General'); ?></h4>
+    </div>
+    <fieldset>
+        <table cellspacing="0"class="form-list">
+            <tr>
+                <td class="label" width="20%"><label for="myform[manager]"><?php echo $this->__('Manager') ?></label></td>
+                <td class="input-ele" width="25%"><?php echo $this->getUsersAsCombo('myform[manager]', $this->getQuote()->getmanager()); ?></td>
+                <td width="50" rowspan="11">&nbsp;</td>
+                <td class="label" width="20%"><?php echo $this->__('Scope') ?></td>
+                <td class="input-ele" width="25%"><?php echo $this->getScopeInformation(); ?></td>
+            </tr>
+            <tr>
+                <td class="label" width="20%"><?php echo $this->__('Customer') ?></td>
+                <td class="input-ele" width="25%"><?php echo $this->GetCustomerInfo(); ?></td>
+                <td class="label" width="20%"><label for="myform[status]"><?php echo $this->__('Status') ?></label></td>
+                <td class="input-ele" width="25%"><?php echo $this->getStatusesAsCombo('myform[status]', $this->getQuote()->getstatus()); ?></td>
+            </tr>
+            <tr>
+                <td class="label"><?php echo $this->__('Created at') ?></td>
+                <td class="input-ele"><?php echo $this->formatDate($this->getQuote()->getcreated_time(), 'medium', true); ?></td>
+                <td class="label" width="25%"><?php echo $this->__('Last Notification Date'); ?></td>
+                <td>
+                    <?php if ($this->getQuote()->getnotification_date()): ?>
+                        <?php echo $this->formatDate($this->getQuote()->getnotification_date(), 'medium', true); ?>
+                    <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->__('Updated at') ?> </td>
+                    <td class="input-ele"><?php echo $this->formatDate($this->getQuote()->getupdate_time(), 'medium', true); ?></td>
+                    <td class="label" width="20%"><?php echo $this->__('Commercial status') ?> </td>
+                    <td class="input-ele" width="25%"><?php echo $this->getQuoteStatusAsCombo(); ?></td>
+
+                </tr>
+                <tr>
+                    <td class="label"><label for="myform[caption]"><?php echo $this->__('Caption') ?> <span class="required">*</span></label></td>
+                    <td class="input-ele"> Your requested Quote<!--<input style="width:400px;" class="input-text required-entry" id="myform[caption]" name="myform[caption]" value="<?php //echo $this->getQuote()->getcaption(); ?>" />--></td>
+                    <td class="label" width="25%"><?php echo $this->__('Associated Promotion'); ?></td>
+                    <td>
+                    <?php
+                        $promo = $this->getQuote()->GetPromo();
+                        if ($promo == null)
+                            echo $this->__('No promotion associated');
+                        else
+                            echo $promo->getname();
+                    ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label for="myform[valid_end_time]"><?php echo $this->__('Valid until') ?></label></td>
+                    <td class="input-ele">
+                        <input type="text" id="myform[valid_end_time]" name="myform[valid_end_time]" value="<?php echo $this->getQuote()->getvalid_end_time(); ?>" class="input-text " />
+                        &nbsp; <img src="<?php echo $this->getSkinUrl('images/grid-cal.gif'); ?>" class="v-middle" id="img_calendar" />
+                        <script type="text/javascript">
+                            Calendar.setup({
+                                inputField : 'myform[valid_end_time]',
+                                ifFormat : '%Y-%m-%e',
+                                button : 'img_calendar',
+                                align : 'Bl',
+                                singleClick : true
+                            });
+                        </script>
+                    </td>
+                    <td class="label" width="25%"><?php echo $this->__('Associated product'); ?></td>
+                    <td>
+                    <?php
+                        $product = $this->GetProduct();
+                        if ($product == null)
+                            echo $this->__('Quotation not transformed into product.');
+                        else
+                            echo '<a href="' . $this->geturl('adminhtml/catalog_product/edit', array('id' => $product->getid())) . '">' . $product->getname() . '</a>';
+                    ?>
+                    </td>
+                </tr>
+                <?php/*?>
+                <tr>
+                    <td rowspan="2" class="label"><label for="myform[message]"><?php echo $this->__('Comments') ?></label></td>
+                    <td rowspan="2" class="input-ele"><textarea style="width: 400px; height: 90px;" id="myform[message]" name="myform[message]"><?php echo $this->getQuote()->getmessage(); ?></textarea></td>
+                </tr>
+                <?php */?>
+                <tr>
+                    <td class="label" width="25%"><label for="myform[weight]"><?php echo $this->__('Weight') ?></label></td>
+                    <td>
+                        <?php echo $this->__('Calculate from subitems : ') ?><?php echo $this->getYesNoCombo('myform[auto_calculate_weight]', $this->getQuote()->getauto_calculate_weight(), 'ToggleQuoteWeightFieldVisibility();'); ?>
+                        <br><input type="text" id="myform[weight]"  id="myform[weight]" name="myform[weight]" value="<?php echo $this->getQuote()->getweight() ?>" />
+                    </td>
+                </tr>
+                <?php if ($this->getQuote()->getcustomer_msg()): ?>
+                <tr>
+                    <td class="label" width="25%"><?php echo $this->__('Customer request') ?></td>
+                    <td colspan="4" class="input-ele"><?php echo $this->getQuote()->getcustomer_msg(); ?></td>
+                </tr>
+
+                <?php endif; ?>
+            </table>
+        </fieldset>
+    </div>
+
+
+<div style="clear:both"></div>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Totals'); ?></h4>
+    </div>
+    <div class="order-totals">
+        <!--<fieldset id="my-fieldset">-->
+
+        <table border="0" width="100%">
+            <tr>
+                <td width="10%" align="right"><b><?php echo $this->__('Total (excl tax) : '); ?></b></td>
+                <td width="10%" align="left"><b><?php echo $this->getQuote()->GetFinalPriceWithoutTaxes(); ?></b></td>
+                <td width="10%" align="right"><b><?php echo $this->__('Tax : '); ?></b></td>
+                <td width="10%" align="left"><b><?php echo $this->getQuote()->GetTaxAmount(); ?></b></td>
+                <td width="10%" align="right"><b><?php echo $this->__('Total (incl tax) : '); ?></b></td>
+                <td width="10%" align="left"><b><?php echo $this->getQuote()->GetFinalPriceWithTaxes(); ?></b></td>
+                <td width="10%" align="right"><b><?php echo $this->__('Margin : '); ?></b></td>
+                <td width="10%" align="left"><b><?php echo $this->getQuote()->getMargin().' ('.round($this->getQuote()->getMarginPercent(),2).' %)'; ?></b></td>
+            </tr>
+        </table>
+
+        <!--</fieldset>-->
+    </div>
+</div>
+<p>&nbsp;</p>
+<div style="clear:both"></div>
+
+
+    <div class="entry-edit box-right" style="display:none;">
+
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Price'); ?></h4>
+        </div>
+        <fieldset>
+            <table>
+                <tr>
+                    <td class="label" width="25%"><?php echo $this->__('Show sub products prices') ?> </td>
+                    <td class="input-ele" width="25%">
+                    <?php echo $this->getYesNoCombo('myform[show_detail_price]', $this->getQuote()->getshow_detail_price()); ?></td>
+                </tr>
+                <tr>
+                    <td class="label" width="25%">
+                    <?php
+                        if (Mage::getStoreConfig('tax/calculation/price_includes_tax') == 1)
+                            echo $this->__('Price (incl tax)');
+                        else
+                            echo $this->__('Price (excl tax)');
+                    ?>
+                    </td>
+                    <td class="input-ele" width="25%">
+                        <?php echo $this->__('Calculate from subitems : ') ?><?php echo $this->getYesNoCombo('myform[auto_calculate_price]', $this->getQuote()->getauto_calculate_price(), 'ToggleQuotePriceFieldVisibility();'); ?>
+                        <br><input type="text" name="myform[price_ht]" id="myform[price_ht]" value="<?php echo $this->getQuote()->getprice_ht() ?>" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label" width="20%"><?php echo $this->__('Discount'); ?></td>
+                    <td class="input-ele" width="25%">
+                        <input type="text" name="myform[reduction]" value="<?php echo $this->getQuote()->getreduction(); ?>" />%
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+
+<?php /*?>
+
+    <div class="entry-edit box-left">
+
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Attached file'); ?></h4>
+        </div>
+        <fieldset>
+            <table>
+                <tr>
+                    <td class="label" width="25%">
+                    <?php echo $this->__('PDF name'); ?>
+                    </td>
+                    <td class="input-ele" width="25%">
+                        <input type="text" name="myform[additional_pdf]" id="myform[additional_pdf]" value="<?php echo $this->getQuote()->getadditional_pdf(); ?>"/>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="label" width="25%"><?php echo $this->__('Attachment') ?></td>
+                                <td width="25%">
+                                    <?php if ($this->hasAttachment()): ?>
+                                            (<a href="<?php echo $this->getViewAttachmentUrl(); ?>"><?php echo $this->__('View'); ?></a>, <input type="checkbox" name="delete_attachment" id="delete_attachment" value="1"><?php echo $this->__('Delete'); ?>)
+                                    <?php else: ?>
+                                            <input type="file" name="upload_pdf" id="upload_pdf"/>
+                                    <?php endif; ?>
+                                </td>       
+                            </tr>
+                                </table>
+                            </fieldset>
+                        </div>
+                        <?php */?>
+
+                        <div style="clear:both"></div>
+
+                        <div class="entry-edit box-left">
+
+                            <div class="entry-edit-head">
+                                <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Shipping'); ?></h4>
+                            </div>
+                            <fieldset>
+                                <table>
+                                    <tr>
+                                        <td class="label" width="25%"><?php echo $this->__('Free Shipping') ?> </td>
+                                        <td width="25%"><?php echo $this->getYesNoCombo('myform[free_shipping]', $this->getQuote()->getfree_shipping()); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label" width="25%">
+                    <?php
+                                    if (Mage::getStoreConfig('tax/calculation/price_includes_tax') == 1)
+                                        echo $this->__('Shipping Rates (incl tax)');
+                                    else
+                                        echo $this->__('Shipping Rates (excl tax)');
+                    ?>
+                                </td>
+                                <td width="25%">
+                    <?php
+                                    $results = Mage::helper('quotation/ShippingRates')->collectRates($this->getQuote(), $this->getQuote()->GetCustomerAddress());
+                                    $currentMethod = $this->getQuote()->getshipping_method();
+                    ?>
+                                    <p><input type="radio" value="" id="myform[shipping_method]" name="myform[shipping_method]" <?php
+                                    if ($currentMethod == '') {
+                                        echo ' checked ';
+                                    } ?>> <?php echo $this->__('None'); ?>
+                              <?php foreach ($results->getAllRates() as $result): ?>
+                              <p>
+                                  <input type="radio" value="<?php echo $result['carrier'] . '_' . $result['method']; ?>" id="myform[shipping_method]" name="myform[shipping_method]"
+                        <?php
+                                        if ($currentMethod == $result['carrier'] . '_' . $result['method']) {
+                                            echo ' checked ';
+                                        }
+                        ?>>
+                        <?php echo $result['carrier_title'] . '/' . $result['method_title']; ?> : <?php echo number_format($result['price'], 2); ?>
+                                    </p>
+                    <?php endforeach; ?>
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+
+                    </div>
+
+<?php/* if ($this->getQuote()->getcustomer_request() == 1): ?>
+                                            <div class="entry-edit box-right">
+                                                <div class="entry-edit-head">
+                                                    <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Customer Message'); ?></h4>
+                                                </div>
+                                                <fieldset id="my-fieldset">
+                                                    <table cellspacing="0"class="form-list">
+                                                        <tr>
+                                                            <td class="label" width="25%"><b><?php echo $this->__('Message from customer') ?></b></td>
+                                                            <td width="25%"><?php echo $this->getQuote()->getcustomer_msg(); ?></td>
+                                                        </tr>
+                                                    </table>
+                                                </fieldset>
+
+                                            </div>
+<?php endif; ?>
+
+<div class="entry-edit box-right">
+    <div class="entry-edit-head">
+        <div style="float: right;"></div>
+        <h4 class="fieldset-legend head-payment-method icon-head">Convert To Invoice</h4>
+    </div>
+    <div class="fieldset">
+		<div style="text-decoration: underline;cursor: pointer;" ><a  href="<?php echo $this->getUrl('Quotation/Admin/createorder', array('quote_id' => $this->getQuote()->getId()))?>"><span class="paynowcss">Convert To Invoice</span></a></div>
+	</div>
+</div>
+
+<?php */?>

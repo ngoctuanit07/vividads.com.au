@@ -1,0 +1,37 @@
+<h3><?php echo $this->__('Track my order') ?></h3>
+<hr style="border-color: #DEDEDE;" noshade="noshade" size="1" /> <br />
+<form id="form-validate">
+    <div class="fieldset">
+        <ul>
+            <li class="fields" style="width: 300px;">
+                <label for="tracking_code"><?php echo $this->__('Enter Australia Post tracking number') ?></label>
+                <div class="input-box">
+                    <input type="text" name="tracking_code" id="tracking_code" class="input-text required-entry"  style="width: 260px;" />
+                </div><br />
+                <p align="right"><button type="button" onclick="loadTracking()" class="button" style="margin-right: 38px;"><span><span><?php echo $this->__('Load') ?></span></span></button></p>
+            </li>
+            <li>
+                <br />
+                <div id="tracking_result">&nbsp;</div>
+            </li>
+        </ul>
+    </div>
+</form>
+<span id="tracking-please-wait" class="please-wait" style="display:none;"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'/frontend/enterprise/wl/images/opc-ajax-loader.gif';  ?>" alt="Loading ..." title="Loading ..." class="v-middle" /> Loading ...</span>
+<script>
+    var dataForm = new VarienForm('form-validate', true);
+    function loadTracking () 
+    {
+        if (dataForm.validator.validate())
+        {
+            jQuery('#tracking-please-wait').show();
+            jQuery.get('<?php echo $this->getUrl("auspost/data/getTrackingAjax/") ?>'+'?code='+jQuery('#tracking_code').val(),
+                function (data) {
+                    jQuery('#tracking-please-wait').hide();
+                    jQuery('div#tracking_result').html(data);
+                }
+            );
+        }
+    }
+    
+</script>

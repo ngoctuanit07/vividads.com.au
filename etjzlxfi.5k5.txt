@@ -1,0 +1,13 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch Development
+# Changes to be committed:
+#	modified:   app/design/frontend/default/vividadscomau/template/catalog/product/view.phtml
+#	deleted:    downloader/skin/config.php
+#
+#
+# It took 8.24 seconds to enumerate untracked files. 'status -uno'
+# may speed it up, but you have to be careful not to forget to add
+# new files yourself (see 'git help status').
+

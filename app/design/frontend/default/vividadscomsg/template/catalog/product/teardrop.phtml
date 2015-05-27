@@ -1,0 +1,243 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('top_menu_slider')->toHtml() ?>
+<!--<div class="contact_info"><img src="<?php //echo $this->getSkinUrl('images/phone_info.png');?>" alt="contact info"/></div>-->
+<?php  $catName = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getName(); ?>
+<?php  $curCatId = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId(); ?>
+<?php
+$full= $catName;
+$full1=explode(' ', $full);
+$first=$full1[0];
+$rest=ltrim($full, $first.' ');
+//echo "$first + $rest";
+?>
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+?>
+<div class="intro"><h2><?php echo $first; ?> <span style="color:#ec761c;"><?php echo $rest;?> </span></h2>
+ <?php $catDes = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getDescription();?>
+  <?php
+$full_des= $catDes;
+$full_des=explode(' ', $full_des);
+$first_des=$full_des[0].' '.$full_des[1].' '.$full_des[2].' '.$full_des[3].' '.$full_des[4].' '.$full_des[5].' '.$full_des[6].' '.$full_des[7].' '.$full_des[8].' '.$full_des[9];
+ $start = strlen($first_des);
+ $end = strlen($catDes);
+ //$rest_des=ltrim($full_des, $first_des.' ');
+//echo "$first + $rest";
+?>
+  <p style="width:98%;"><span style="color:#f37d4b;"><?php //echo $first_des; ?></span>
+  <?php //echo substr($catDes,$start,$end);?>
+  <?php echo substr($catDes,0,655).".." ?>
+   </p>
+</div>
+<?php  $imageUrl = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getImageUrl();?>
+<?php if(!$_productCollection->count()): ?>
+<div class="cate_listing">
+    <div class="pro_left">
+         <?php if($curCatId==4074) { ?>
+         <h3>Exhibition Stand By Booth Size</h3>
+         <p style="font-family:Arial, serif, sans-serif; font-size:12px; color:white;">
+                   Exhibitions and marketing camaigns are the perfect opportunity to introduce your company to the public &amp; we want to help you with your company's image. We have a huge selection of tradeshow exhibits, press media wall, tradeshow fabric banner stands, pop up booths,  portable exhibits &amp; presentation boards. Make an impression with our advertising &amp; promotional marketing display products. Vivid Ads (Advertising &amp; Display Solutions) is Australia's choice to buy in-stock exhibit stands, fabric mural media backdrop walls, expo booth displays, road show displays, trade fair booths (exhibit / expo) equipments and outdoor advertsing mesh signs and banners. 
+                </p>
+         <?php } ?>
+<?php
+$root_cat= $curCatId;
+$_category = Mage::getModel('catalog/category')->load($root_cat);
+$_subcategories = $_category->getChildrenCategories();
+        //gets all sub categories of parent category 'Brands'
+        $cats = Mage::getModel('catalog/category')->load($root_cat)->getChildren();
+        $catIds = explode(',',$cats);
+        $categories = array();
+        foreach($catIds as $catId) {
+            $category = Mage::getModel('catalog/category')->load($catId); 
+//	echo	$thumbnail=Mage::getModel('catalog/category')->load($catId)->getThumbnail();
+            $categories[$category->getName()] = array(
+                'url' => $category->getUrl(),
+                'img' => $category->getThumbnail()
+            );
+        }
+        ksort($categories, SORT_STRING);
+		/*echo '<pre>';
+		print_r($categories);
+		echo '</pre>';*/
+    ?>
+       <?php if($categories){ ?>
+            <?php foreach($categories as $name => $data):  ?>
+	  <div class="cate_detail">  
+      <?php $_img_path = Mage::getBaseUrl('media').'catalog/category/'; ?>
+      <?php  $mypath = $_img_path.'' .$data['img']; ?>        
+                    <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_a">
+                    <?php if($data['img']){ ?>
+                        <img width="188" height="241" class="cat-image" src="<?php echo $mypath; ?>" alt="category image"/>
+                        <?php } else { ?>
+			 <img width="188" height="241" class="cat-image" src="<?php echo $this->getSkinUrl('images/noimage.png'); ?>" alt="category image"/>
+						<?php	} ?>
+                    </a>
+                    <a href="<?php echo $data['url']; ?>" class="cate_detail_h">
+                    <h3><?php echo $name; //substr($name,0,15).".." ?> </h3>
+                    </a>
+                    <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_i">
+                        <img class="cat-image" src="<?php echo $this->getSkinUrl('images/btn_detail.png');?>" alt="category image"/>
+                    </a>
+      </div>  
+            <?php endforeach; ?>
+         <?php } ?>
+        </div>
+        <!--<div class="pro_right">
+        <img width="308" height="331" src="<?php //echo $imageUrl;?>" alt="<?php echo $name?>" id="<?php echo $curCatId ?>" />
+        <div class="gallery">
+            <img width="258" height="64" src="<?php //echo $this->getSkinUrl('images/Gallery.jpg');?>" alt="Category Image" />
+         </div>
+        </div>-->
+</div>
+<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('external-block')->toHtml() ?>
+<!--<p class="note-msg"><?php //echo $this->__('There are no products matching the selection.') ?></p>-->
+<?php else: ?>
+<div class="cate_listing">
+    <?php // List mode ?>
+    <?php $_iterator = 0; ?>
+    <!--<div class="pro_right" id="pro-id-<?php //echo $curCatId ?>">
+        <img width="308" height="331" src="<?php //echo $imageUrl;?>" alt="<?php echo $name?>"  />
+        </div>-->
+    <div class="pro_left wide child">
+        </div>
+  <?php      $_collectionSize = $_productCollection->count();        //echo "<br>P Count : ".$_collectionSize;    ?>
+  <?php $_columnCount = 3; ?>
+  <ul class="products-grid">
+  <?php $i=-1; foreach ($_productCollection as $_product): ?>
+  <?php
+    $obj = Mage::getModel('catalog/product');
+    $_productnew = $obj->load($_product->getId());
+    $productDescription=$_productnew->getShortDescription();
+    ?>
+  <?php $i++; if ($i%$_columnCount==0): ?>
+    <?php endif ?>
+    <li class="hover_pro item<?php if($i%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==2): ?> last<?php endif; ?>">
+      <div class="sale-label sale-top-left"></div>
+      <div class="mask-product">
+        <div class="pro-det-con"> <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image">
+<!--<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(220); ?>" width="220" height="252" alt="<?php  echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />-->
+        <img src="        <?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getThumbnail()); ?>" width="220" height="252" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+        </a>
+          <?php
+                /**************For assign to promotion product************************/
+                if($_product->getPromotionicon() !='')
+                {
+                    $filePath=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getPromotionicon()
+                ?>
+          <div class="promoicon-image"> <img width="75" height="75.5" style="position:absolute;  right:0;  top:0; " src="<?php echo $filePath; ?>" /> </div>
+          <?php
+                }
+                /**************End assign to promotion product************************/
+                ?>
+          <?php if($_product->isSaleable()): ?>
+          <?php else: ?>
+          <div style="height: 110px; width: 110px; margin-top: 50px; margin-left: 75px;" class="out-of-stock"><img style="position: absolute; left: 75px; opacity:.75;" src="<?php echo $this->getSkinUrl(); ?>images/sold.png" class="promoicon-image"></div>
+          <?php endif; ?>
+          <div style="top:0;" class="product-detail-content">
+            <div class="product-detail-description"> <?php echo  substr($productDescription,0,150)."..."; ?> </div>
+            <p class="product-detail-read-more"> <a href="<?php echo $_product->getProductUrl() ?>">Read More</a> </p>
+          </div>
+        </div>
+        <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"> <?php echo substr(($_helper->productAttribute($_product, $_product->getName(), 'name')),0,35)."...";?> </a></h2>
+      </div>
+      <?php 
+							$_product = Mage::getModel('catalog/product')->load($_product->getId());
+							$store_id = $this->helper('core')->getStoreId(); ?>
+      <div style="background-color: #818181;
+    color: #F6F6F6;
+    font-size: 12px;
+    padding-left: 10px;
+    position: relative;
+    text-align: center;
+    text-shadow: 0px 1px 1px #4F4F4F;
+    top: 0;
+    font-weight: bold;">Model # <?php echo $store_id."-".$_product->getSku() ?></div>
+      <div class="btn-bg">
+        <div class="pric-btn" style=" text-align: center; color: #fff; font: 12px 'gotham_mediumregular'; text-decoration: none; height:26px; width:134px; float:left; line-height:26px;">
+          <?php //echo $this->getPriceHtml($_product, true);
+					  echo Mage::helper('core')->currency($_product->getPrice());
+					  ?>
+        </div>
+        <div class="browse-btn"> <a class="category-browse" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>" href="<?php echo $_product->getProductUrl() ?>"> <span>Browse</span> </a> </div>
+      </div>
+      <?php //echo $this->getPriceHtml($_product, true) ?>
+    </li>
+  <?php endforeach ?>
+ </ul>
+  <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script> 
+  <!--  End product code  -->
+<?php  $iframe = $this->getUrl('').'index.php/externalform/?store_id=166';?>
+<div class="bottom_form homePage" style="width:100%;margin:0; padding:10px 0;">
+<iframe src='<?php echo $iframe;?>' ></iframe>
+</div> 
+  <div class="banner">
+<p style="font-size:12px; color:#fff; line-height:25px; text-align:justify; width:97%; float:left; margin:10px;">  <?php echo $catDes; ?></p>
+</div>
+</div>
+<?php endif; ?>
+  <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('popup_displays')->toHtml() ?>
+</div>
+<script language="javascript">
+<!--
+ //Loading external quotatoin form
+	$(document).ready(function(e) {
+		 var quoteUrl = '<?php echo $this->getUrl();?>index.php/externalform/?store_id=166';
+		 var formVars = { quoteUrl:'<?php echo $this->getUrl();?>index.php/externalform/?store_id=166',
+		 				  form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey();?>',
+							};
+		 console.log(formVars);
+		 $.ajax({
+			 url:quoteUrl,
+			 dataType:"html",
+			 data:formVars,
+			 type:'POST',
+			 beforeSend: function(xError){
+				 //console.log(xError);
+				 html = 'Please wait form is loading...';
+				  $('#quoteLoader').html();
+				 },
+			 success: function(response){
+				  //console.log(response);
+				 // $('#quoteLoader').html(html);
+				  // $('#quoteLoader').html(response);
+				 },
+			 error: function(error){
+				  console.log(error);
+				 },
+			 });
+    });
+-->
+</script>

@@ -1,0 +1,44 @@
+﻿"Add New Row","Neue Reihe hinzufuegen"
+"Upload Files","Dateien herunterladen"
+"All Files","Alle Dateien"
+Attachments,Anhang
+"Edit Custom Template","Kundenmuster bearbeiten"
+"Create Custom Template","Kundenmuster schaffen"
+"No Templates Found","Keine Muster sind gefunden"
+"Default Template Name",Standardmustername
+"Default Template File",Standardmusterfile
+"Custom Template Name",Kundenmustername
+Subject,Thema
+Sender,Sender
+Action,Aktion
+Back,Zurueck
+"Generate Templates","Muster generieren"
+"Replace In Custom Templates","Nach Kundenmuster verschieben"
+"Default Config",Standardkonfiguration
+"E-mail Templates Manager","Manager der Emailmuster"
+"Please choose Stores, which the Module`s functionality will be enabled for in System/Configuration/AITOC MODULES SETTINGS/Aitoc Module Manager/""Enable/Disable Modules Functionality""","Bitte waehlen Sie Geschaefte, wofuer Modulfunktionalitaet eingeschaltet sein wird in System/Configuration/AITOC MODULES SETTINGS/Aitoc Module Manager/""Enable/Disable Modules Functionality"""
+"The selected scope is not available for the current license configuration. Available scope is selected automatically.","Gewaehlte Grenzen sind fuer die aktuelle Lizenzkonfiguration nicht zugaenglich. Zugaengliche Grenzen sind automatisch gewaehlt."
+"Store Transactional Emails","Transaktionenemail der Geschaefte"
+"Templates generated. Total %s entries replaced.","Muster sind generiert. Insgesamt %s Eingabedaten sind verschiebt."
+"Replace complete. Total %s entries replaced.","Verschiebung ist gemacht. Insgesamt %s Eingabedaten sind verschiebt."
+"Transactional Emails",Transaktionenemail
+"Aitemails Module","Modul Aitemails"
+"Allow Everything","Alles erlauben"
+"Email template manager","Manager der Emailmuster"
+"Custom template saved successfully","Kundenmuster war erfolgreich gespeichert"
+"Replace In Templates","Nach Muster verschieben"
+"Are you sure you want to overwrite existing custom templates?","Sind Sie sicher, dass Sie die existierenden Kundenmuster umschreiben?"
+"Replace default entries","Standardeingangsdaten verschieben"
+"Note that leading and trailing spaces (if any)  will not be trimmed","Nehmen Sie zur Kenntnis, dass Anfangspaces nicht gekuerzt werden"
+"Delete existing custom templates for this store view","Existierende Kundenmuster fuer diese Geschaeftsicht loeschen"
+Find,Gefunden
+"Replace with","Verschieben mit"
+"Replace in custom templates","Nach Kundenmuster verschieben"
+"Add one more row","Mehr Reihen hinzufuegen"
+"Current Configuration Scope:","Aktuelle Konfigurationsrahmen"
+"Locale: ",Lokal:
+"(all symbols except letters and digits will be removed)","(alle Symbole ausser Buchstaben und Ziffern werden geloescht sein)"
+"Attachment Name",Anhangname
+File,Datei
+"Sort Order",Sortierungart
+"This content requires last version of Adobe Flash Player. <a href=""%s"">Get Flash</a>","Diese Daten benoetigen die letzte Version des Adobe Flash Players. <a href=""%s"">Flash bekommen</a>"

@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+<config>
+	<tabs>
+        <mageworld translate="label">
+            <label>Mage World</label>
+            <sort_order>300</sort_order>
+        </mageworld>
+    </tabs>
+    <sections>
+        <gallery translate="label" module="gallery">
+            <label>Gallery Pro</label>
+            <tab>mageworld</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>                
+                <info translate="label">
+                    <label>General Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>						
+						<enabled translate="label">
+                            <label>Enable Photo Gallery Pro</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        
+						<menu_enabled translate="label">
+                            <label>Enable Gallery Menu</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </menu_enabled>
+                         
+                         <review_enabled translate="label">
+                            <label>Enable Photo Review</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </review_enabled>
+                        
+                        <upload_photos translate="label">
+                            <label>Enable Customer Upload Photos</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>gallery/customer_upload</source_model>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </upload_photos>
+                        
+						<album_suffix translate="label">
+                            <label>Album Suffix (ex. html,… etc)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </album_suffix>
+						<photo_suffix translate="label">
+                            <label>Photo Suffix (ex. html,… etc)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>27</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </photo_suffix>
+                        
+						<photo_background_color translate="label">
+                            <label>Detail View Thumbnail Fill Color</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Scroll over vertical bar, move circle to desired color in left hand box, save setting with ball in lower right corner, then 'save config'. Example 192,192,192 -> rgb(192,192,192). Null if not fill</comment>
+                        </photo_background_color>
+                        
+                        <simple_photo_background_color translate="label">
+                            <label>Simple View Thumbnail Fill Color</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>29</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Scroll over vertical bar, move circle to desired color in left hand box, save setting with ball in lower right corner, then 'save config'. Example 192,192,192 -> rgb(192,192,192). Null if not fill</comment>
+                        </simple_photo_background_color>
+                        
+						<album_thumbnail_size translate="label">
+                            <label>Album Thumbnail Size (w-h)px</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </album_thumbnail_size>
+                        
+						<backend_thumbnail_size translate="label">
+                            <label>Admin Thumbnail Size (w-h)px</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </backend_thumbnail_size>
+                        
+						<photo_per_page_allowed translate="label">
+                            <label>Allowed Photos Per Page</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>32</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>(example 5,10,15,...)</comment>
+                        </photo_per_page_allowed>
+                        
+						<photo_per_page_default_value translate="label">
+                            <label>Photo Per Page Default Value</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>33</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </photo_per_page_default_value>
+                        
+						<show_album_update_date translate="label">
+                            <label>Show Album Updated Date</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>34</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_album_update_date>
+                        
+						<show_total_photos_of_album translate="label">
+                            <label>Show Total Photos of Album On Page</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_total_photos_of_album>
+                        
+                        <enabledsearch translate="label">
+                            <label>Enable 'Search Gallery' Function</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>36</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabledsearch>
+                    </fields>
+                </info>
+                
+                <default_config translate="label">
+                    <label>Album Default Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>11</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                    
+						<photo_thumbnail_size translate="label">
+                            <label>Detail View Photo Thumbnail Size (w-h)px</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>36</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </photo_thumbnail_size>
+                        
+						<simple_photo_thumbnail_size translate="label">
+                            <label>Simple View Photo Thumbnail Size (w-h)px</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>37</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </simple_photo_thumbnail_size>
+                        
+						<slide_show_size translate="label">
+                            <label>Slideshow Size (w-h)px</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>38</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </slide_show_size>
+                        
+                        <slide_show_delay translate="label">
+                            <label>Slideshow Delay Time</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>39</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>1000 = 1s</comment>
+                        </slide_show_delay>
+                        
+                        <slide_show_photos translate="label">
+                            <label>Slideshow Photos</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>gallery/slideshow</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </slide_show_photos>
+                        
+						<show_photo_title translate="label">
+                            <label>Show Photo Title</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_photo_title>
+                        
+						<show_photo_des translate="label">
+                            <label>Show Photo Description</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>42</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_photo_des>
+                        <!--
+						<show_photo_link translate="label">
+                            <label>Enable Photo Link</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>43</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_photo_link>
+                        -->
+						<show_photo_update_date translate="label">
+                            <label>Show Photo Updated Date</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>44</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_photo_update_date>
+                    </fields>
+                </default_config>
+                <author_information translate="label">
+                    <label>Author Information</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>12</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment>The GalleryPro is developed and supported by &lt;a href="http://www.mage-world.com/"&gt;www.Mage-World.com&lt;/a&gt;.
+If you need any support or have any question please contact us at &lt;a href="mailto:support@mage-world.com"&gt;support@mage-world.com.&lt;/a&gt;
+                    </comment>
+                </author_information>
+            </groups>
+            
+        </gallery>
+    </sections>
+</config>

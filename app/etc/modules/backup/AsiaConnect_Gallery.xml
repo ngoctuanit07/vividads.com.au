@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <AsiaConnect_Gallery>
+            <active>true</active>
+            <codePool>local</codePool>
+			 <depends>
+				<MW_Mwcore/>
+			</depends>  
+        </AsiaConnect_Gallery>
+    </modules>
+</config> 

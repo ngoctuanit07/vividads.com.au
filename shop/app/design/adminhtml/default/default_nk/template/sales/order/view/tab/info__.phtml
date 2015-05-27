@@ -1,0 +1,927 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<script type="text/javascript">
+//<!--12-2-2014 SOC gc-->
+function newaddress1(id) {
+    var SelId = document.getElementById("customer_form_content1");
+    var FormId = document.getElementById("customshipping_address__"+id);
+    var selectedValue = FormId.options[FormId.selectedIndex].value;
+    if (selectedValue == 'new') {
+        
+        if(SelId.style.display == 'block')
+            SelId.style.display = 'none';
+        else
+            SelId.style.display = 'block';
+               
+    }
+    else{
+         SelId.style.display = 'none';
+    }
+}
+
+function closePopupForm1(id) {
+	var e = document.getElementById(id);
+	e.style.display = 'none';
+}
+
+function saveAdr(){
+    form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+    url1= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/newformPost"); ?>';
+    
+    customerid = jQuery('#customerid').val();
+    ordid = jQuery('#oid').val();
+    firstname = jQuery('#firstname').val();
+    lastname = jQuery('#lastname').val();
+    company = jQuery('#company').val();
+    street = jQuery('#street').val();
+    city = jQuery('#city').val();
+    country_id = jQuery('#country_id').val();
+    region = jQuery('#region').val();
+    postcode = jQuery('#postcode').val();
+    telephone = jQuery('#telephone').val();
+    
+    FinalUrl = 'zulfe/sales_order/view/order_id/'+ordid;
+    if (firstname!='' && lastname!='' && street!='' && city!='' && country_id!='' && region!='' && postcode!='' && telephone!='') {
+        jQuery.ajax({
+                url:url1,
+                data: { form_key: form_key, customerid: customerid,oid: ordid, firstname: firstname,lastname: lastname,company: company,street: street,city:city,country_id:country_id,region:region,postcode:postcode,telephone:telephone },  
+                success:function(result){
+                    //alert(result);
+                    window.location = FinalUrl;
+                
+        }});
+    
+    }else{
+        alert("Fill up all required fields");
+  }
+}
+
+//<!--12-2-2014 EOC gc--->
+//<!--13-2-2014 SOC gc-->
+function loadbox(id){
+    	jQuery("#loadercnf").css("display","block");
+	
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url1= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/getconfirmbox"); ?>';
+	
+	jQuery.ajax({
+		url:url1,
+		data: { form_key: form_key, sId: id },  
+		success:function(result){
+			jQuery("#loadercnf").css("display","none");
+			jQuery("#confirmbox").css("display","block");
+			jQuery("#confirmbox1").html(result);
+		
+	}});
+}
+
+
+function selMethod1(id){
+    v = jQuery( "#order_customshipping_method__"+id+" option:selected" ).val();
+    s = jQuery("#customshipping_address__"+id+" option:selected").val();
+    shipId = id;
+    ordId = jQuery( "#orderIdP" ).val();
+    if(s == ''){
+        alert('Please select an address');
+    }else{
+        if(v != ''){
+            vlu=v.split("__");
+            
+            if(vlu[0]=='australiapost'){
+                jQuery("#loadercnf").css("display","block"); 
+                form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+		url= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/getauspostmethodol"); ?>';
+                jQuery.ajax({
+                url:url,
+                data: { form_key: form_key, addrsid:s,ordId:ordId, shipId:shipId },  
+                success:function(result){
+                    //alert(result);
+                    jQuery("#loadercnf").css("display","none");
+                    jQuery("#metRet__"+id).css("display","block"); 
+                    jQuery("#semt__"+id).html(result);
+                    
+                
+                }});
+                
+            }else if(vlu[0]=='vividadstnt'){
+                jQuery("#loadercnf").css("display","block"); 
+                form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+		url= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/gettntlocal"); ?>';
+                jQuery.ajax({
+                url:url,
+                data: { form_key: form_key, addrsid:s,ordId:ordId, shipId:shipId },  
+                success:function(result){
+                    //alert(result);
+                    jQuery("#loadercnf").css("display","none");
+                    jQuery("#metRet__"+id).css("display","block"); 
+                    jQuery("#semt__"+id).html(result);
+                    
+                
+                }});
+            }else if(vlu[0]=='vividadsint'){
+                jQuery("#loadercnf").css("display","block"); 
+                form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+		url= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/gettntintl"); ?>';
+                jQuery.ajax({
+                url:url,
+                data: { form_key: form_key, addrsid:s,ordId:ordId, shipId:shipId },  
+                success:function(result){
+                    //alert(result);
+                    jQuery("#loadercnf").css("display","none");
+                    jQuery("#metRet__"+id).css("display","block"); 
+                    jQuery("#semt__"+id).html(result);
+                    
+                
+                }});
+                
+                
+            }else if(vlu[0]=='eparcel'){ ///added 21-2-2014
+                //alert('EPARCEL');
+                jQuery("#loadercnf").css("display","block"); 
+                form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+		url= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/getauseparcel"); ?>';
+                jQuery.ajax({
+                url:url,
+                data: { form_key: form_key, addrsid:s,ordId:ordId, shipId:shipId },  
+                success:function(result){
+                    //alert(result);
+                    jQuery("#loadercnf").css("display","none");
+                    jQuery("#metRet__"+id).css("display","block"); 
+                    jQuery("#semt__"+id).html(result);
+                    
+                
+                }});
+                
+            }else{
+                jQuery("#selc_meth__"+id).val(v);
+		
+            }
+            
+            
+        }
+        
+    }
+   
+}
+
+function selMethod(id){
+        jQuery("#cnfrm").submit(function(e){
+        var postData = jQuery(this).serializeArray();
+	var formURL = jQuery(this).attr("action");
+        jQuery("#loading-mask").css("display","block");
+        
+	
+        jQuery.ajax(
+            {
+	    
+		url : formURL,
+		type: "POST",
+		data : postData,
+		success:function(data, textStatus, jqXHR)
+		{
+		    //jQuery("#loading-mask").css("display","none");
+                    if(data ==  "numerror"){
+			alert( "Please enter proper numeric value" );
+			jQuery("#loading-mask").css("display","none");
+		    }else if(data ==  "charerror"){
+			alert( "Please enter text value for title" );
+			jQuery("#loading-mask").css("display","none");
+		    }else if( data ==  "qtyerror"){
+			
+			alert( "Total quantity is larger than total quantity ordered" );
+			jQuery("#loading-mask").css("display","none");
+			
+		    }else{
+			
+			////////////////////////////////////////////////
+                        
+			v = jQuery( "#order_customshipping_method__"+id+" option:selected" ).val();
+                        strAddr = jQuery("#customshipping_address__"+id+" option:selected").val();
+                        ordId=jQuery("#orderIdP").val();
+                        datasplit = data.split('####');
+			ret = datasplit[0];
+                        
+                        
+			jQuery("#boxstr__"+id).val(datasplit[1]);
+                        jQuery("#headconfrm").html(datasplit[2]);
+                        //jQuery("#loading-mask").css("display","none");
+                        
+                        if(strAddr == '' || v == ''){
+                          alert("Please Select Address and Shipping Method");
+                          jQuery("#loading-mask").css("display","none");
+                        }else{
+			var vlu=v.split("__");
+			var mth=vlu[0];
+			var act='';
+			
+			if(mth=='australiapost' || mth=='vividadstnt' || mth=='vividadsint'){
+			
+                            if(mth=='australiapost'){
+                                    url= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/getauspostmethod"); ?>';
+                                    ret = datasplit[0];
+                            }
+                            else if(mth=='vividadstnt'){
+                                    url= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/gettntlocalmethod"); ?>';
+                                    ret = datasplit[1];
+                            }
+                            else if(mth=='vividadsint'){
+                                    url= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/gettntintlmethod"); ?>';
+                                    ret = datasplit[1];
+                            }
+                            form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+//                            alert(url);
+//			    return;
+                            jQuery.ajax({
+                            url:url,
+                            data: { form_key: form_key, addrsid:strAddr,ordId:ordId,unit:ret, shipId:id },  
+                            success:function(result){
+                                
+                                jQuery("#loading-mask").css("display","none");
+                                jQuery("#metRet__"+id).css("display","block"); 
+                                jQuery("#semt__"+id).html(result);
+                                
+                            
+                            }});
+		    	
+			}
+		    
+                        //////////////////////////////////////////////////////////
+                        }
+		    }
+		    
+		    
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+		    //if fails
+		    alert("Fail");
+		}
+	});
+	e.preventDefault();
+        
+        
+    });
+    
+    jQuery("#cnfrm").submit();
+    
+}
+function remove_r(id){
+	jQuery("#row_"+id).remove();
+	
+}
+//<!--13-2-2014 EOC gc-->
+
+//<!--18-2-2014 SOC gc-->
+function postpartship(id){
+    
+    v = jQuery( "#order_customshipping_method__"+id+" option:selected" ).val();
+    s = jQuery("#customshipping_address__"+id+" option:selected").val();
+    box = jQuery("#boxstr__"+id).val();
+    method = jQuery("#selc_meth__"+id).val();
+    shipId = id;
+    ordId = jQuery( "#orderIdP" ).val();
+    FinalUrl= "adminhtml/sales_order/view/order_id/"+ordId;
+    
+    
+    if(s == '' || v== ''){
+        alert('Please select address and shipping method');
+    }else{
+        jQuery("#loadercnf").css("display","block");
+        form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+        url= '<?php echo Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/partshipform"); ?>';
+        jQuery.ajax({
+        url:url,
+        data: { form_key: form_key, addrsid:s,ordId:ordId, shipId:shipId, box:box, method:method  },  
+        success:function(result){
+            //alert(result);
+            jQuery("#loadercnf").css("display","none");
+            if(result ){
+                window.location = FinalUrl;
+            }
+            //jQuery("#metRet__"+id).css("display","block"); 
+            //jQuery("#semt__"+id).html(result);
+            
+        
+        }}); 
+    }
+    
+}
+
+function slmthd(str,id){
+	
+    jQuery("#selc_meth__"+id).val(str);
+	
+}
+//<!--18-2-2014 EOC gc-->
+
+
+
+</script>
+
+
+<?php /** @var $this Mage_Adminhtml_Block_Sales_Order_View_Tab_Info */ ?>
+<?php $_order = $this->getOrder() ?>
+<div>
+    <div id="order-messages">
+        <?php echo $this->getChildHtml('order_messages') ?>
+    </div>
+    <?php echo $this->getChildHtml('order_info') ?>
+    <input type="hidden" name="order_id" value="<?php echo $_order->getId() ?>"/>
+    
+    <?php /*  commented on 14-2-2014
+    <?php if ($_order->getIsVirtual()): ?>
+    <div class="box-right">
+    <?php else: ?>
+    <div class="box-left">
+    <?php endif; ?>
+    */ ?>
+        <!--Payment Method-->
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-payment-method"><?php echo Mage::helper('sales')->__('Payment Information') ?></h4>
+            </div>
+            <fieldset>
+                <?php echo $this->getPaymentHtml() ?>
+                <div><?php echo Mage::helper('sales')->__('Order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
+            </fieldset>
+        </div>
+    <?php /*  commented on 14-2-2014 </div> */ ?>
+    <?php if (!$_order->getIsVirtual()): ?>
+    <!--<div class="box-right"> commented on 14-2-2014-->
+        <!--Shipping Method-->
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-shipping-method"><?php echo Mage::helper('sales')->__('Shipping &amp; Handling Information') ?></h4>
+            </div>
+            
+            <fieldset>
+            <!----------------------------------------12-2-2014 GC S------------------------------------->
+            <input type="hidden" name="orderIdP" id="orderIdP" value="<?php echo $_order->getId();?>" />   
+            
+            <div  id="loadercnf" style="display: none;z-index: 100; position: absolute;background-color: #ffffff;top:800px;
+            left:520px;width: 150px; border: 1px solid black;">
+            <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); ?>ajax_loader.gif" height="50px" width="50px"/>
+            </div>
+            
+            <!--13-2-2014 S-->
+            <div class="confirmbox" id="confirmbox" style="display: none;z-index: 100; position: absolute;background-color: #ffffff;top:475px;
+                left:350px;width: 700px; border: 1px solid black;">
+		<div class="headconfrm" id="headconfrm" style="text-align: left; color: green;font-size: 14px;font-weight: bold;margin-left: 250px;">Please Confirm Boxes</div>
+		<a href="javascript:void(0);" class="cross-custom-form" onclick="closePopupForm1('confirmbox');" style="float:right">Close Window</a>
+		<br/>
+		<div id="confirmbox1">
+		</div>
+	    </div>
+            <!--13-2-2014 E-->
+            
+            <?php
+            $ordId = $_order->getId();
+            $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+	    $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+            $tableName = Mage::getSingleton('core/resource')->getTableName('partialshipping_shipment_grid');
+	    $tableName1 = Mage::getSingleton('core/resource')->getTableName('partialshipping_shipment_item');
+            $tableName2 = Mage::getSingleton('core/resource')->getTableName('partialshipping_shipment');
+            
+            $select = $connectionRead->select()->from($tableName, array('*'))->where('order_id=?',$ordId)->order('entity_id ASC')->limit(0,1);
+            $row = $connectionRead->fetchAll($select);
+            if(count($row) > 0){?>
+                
+                <table width="978px" class="split-ship-table">
+                <?php foreach($row as $res){?>
+                
+                <tr>
+                    <td>
+                        <table width="975px" class="split-ship-table">
+                            <input type="hidden" name="sel_metd" value="" id="selc_meth__<?php echo $res['entity_id'];?>" />  
+                            <tr><td><?php echo $res['increment_id'];?></td>
+                                
+                                <td>
+                                <?php
+                                $select12 = $connectionRead->select()->from($tableName2, array('*'))->where("order_id = '".$ordId."' AND increment_id = '".$res['increment_id']."'");
+                                $row12 = $connectionRead->fetchRow($select12);
+                                
+                                $meth= $row12['shippingmethod'];
+                                if($row12['shippingrate']) $meth= $meth." ($".$row12['shippingrate'].")";
+                                echo $meth;
+                                
+                                
+                                ?>
+                                
+                                
+                                </td>
+                                
+                                <td >
+                                <?php
+                                $path = Mage::getBaseDir('media') . DS ."shiplabel" . DS .$res['increment_id'].".pdf";
+                                $url2 = Mage::helper('adminhtml')->getUrl('partialshipping/adminhtml_partialshipping/download');
+                                if (file_exists($path)) {                                
+                                ?>
+                    
+                                <span><a href="<?php echo str_replace('//s','/admin/s',$url2).'file/'.$res['increment_id'].'.pdf/';?>" >Download</a></span><br/>                            <?php } ?>
+                                
+                                
+                                
+                                </td>
+                            
+                            </tr>
+                            
+                            <?php if (!file_exists($path)) { ////21-2-2014 added  ?>                               
+                                
+                            
+                            <tr>
+                            
+                            <input type="hidden" name="boxstr" id="boxstr__<?php echo $res['entity_id'] ?>" />
+                            
+                            <!--select address starts here-->
+                            <td class="ship-address">
+                            <?php
+                            
+                            $_shippingAddress = $_order->getShippingAddress();
+                            $customer_id = $_order->getCustomerId();
+                            $customer = Mage::getModel('customer/customer')->load($customer_id);
+                            $customerAddressCollection = Mage::getResourceModel('customer/address_collection')->addAttributeToFilter('parent_id',$customer_id)->getItems();
+                            $sName = $_shippingAddress->getFirstname().' '.$_shippingAddress->getLastname();
+                            $scountry_name=Mage::app()->getLocale()->getCountryTranslation($_shippingAddress->getCountry_id());
+                            $sAdrInfo = $_shippingAddress->getStreetFull().', '.$_shippingAddress->getCity().', '.$scountry_name.', '.$_shippingAddress->getPostcode().', '.$_shippingAddress->getRegion();
+                            ?>
+                            <span style="float: left"> Select Address : </span>
+                            <select onchange="newaddress1(<?php echo $res['entity_id'];?>);" name="sel_adr" id="customshipping_address__<?php echo $res['entity_id'];?>">
+                            <option value="">Select</option>
+                            <option value="<?php echo $_shippingAddress->getId()."_S";?>"><?php echo $sName.', '.$sAdrInfo;?></option><!--16-1-2014 Added-->
+                            <?php foreach($customerAddressCollection as $customerAddressCol){
+                                $customer_address_id = $customerAddressCol->getData('entity_id');
+                                $addressLoadId = Mage::getModel('customer/address')->load($customer_address_id);
+                                $country_name=Mage::app()->getLocale()->getCountryTranslation($addressLoadId['country_id']);
+                                $Name = $addressLoadId['firstname'].' '.$addressLoadId['lastname'];
+                                $AdrInfo = $addressLoadId['street'].', '.$addressLoadId['city'].', '.$country_name.', '.$addressLoadId['postcode'].', '.$addressLoadId['region']; ?>
+                                
+                            <option value="<?php echo $customer_address_id;?>">
+                                <?php echo $Name.', '.$AdrInfo;?>
+                            </option>
+                            <?php }?>
+                            <option value="new">Add New Address</option>
+                            </select>
+                            
+                            <div id="customer_form_content1"  class="form_details" style="display: none;z-index: 100;position: absolute;background-color: #ffffff;top:500px;left:300px;">
+        
+                            <input type="hidden" name="oid" id="oid" value="<?php echo $ordId?>" />
+                            <input type="hidden" id="customerid" name="customerid" value="<?php echo $_order->getCustomerId()?>" />
+                            
+                                <div class="content form">
+                                    
+                                    <div class="hor-scroll-form">
+                                        <table cellspacing="0" class="form-list">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label"><label for="order-shipping_address_firstname">First Name <span class="required">*</span></label>
+                                                    </td>
+                                                    <td class="value">
+                                                        <input type="text" class="input-text" value="" name="firstname" id="firstname">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label"><label for="order-shipping_address_lastname">Last Name <span class="required">*</span></label></td>
+                                                    <td class="value">
+                                                    <input type="text" class="input-text" value="" name="lastname" id="lastname">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label"><label for="order-shipping_address_company">Company</label></td>
+                                                    <td class="value">
+                                                        <input type="text" class=" input-text" value="" name="company" id="company">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label"><label for="order-shipping_address_street0">Street Address <span class="required">*</span></label></td>
+                                                    <td class="value">
+                                                    <div class="multi-input"><input type="text" class="input-text" value="" name="street" id="street">
+                                                    </div>
+                                                    </td>
+                                                </tr>
+                                            <tr>
+                                                <td class="label"><label for="order-shipping_address_city">City <span class="required">*</span></label></td>
+                                                <td class="value">
+                                                    <input type="text" class="input-text " value="" name="city" id="city">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label"><label for="order-shipping_address_country_id">Country <span class="required">*</span></label></td>
+                                                <td class="value">
+                                                        
+                                                        <?php $_countries = $_countries = Mage::getResourceModel('directory/country_collection')->loadByStore()->toOptionArray(); ?>
+                                                        <?php if (count($_countries) > 0): ?>
+                                                                <select name="country_id" id="country_id">
+                                                                        <option value="">-- Please Select --</option>
+                                                                        <?php foreach($_countries as $_country): ?>
+                                                                                <option value="<?php echo $_country['value'] ?>">
+                                                                                        <?php echo $_country['label'] ?>
+                                                                                </option>
+                                                                        <?php endforeach; ?>
+                                                                </select>
+                                                        <?php endif; ?>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label">
+                                                    <label for="order-shipping_address_region">State/Province <span class="required" style="">*</span></label>
+                                                </td>
+                                                <td class="value"><input type="text" class="input-text" value="" name="region" id="region">
+                                                    <select style="display:none" class="select" name="region_id" id="order-shipping_address_region_id" defaultvalue="" disabled=""><option value="">Please select</option></select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label"><label for="order-shipping_address_postcode">Zip/Postal Code <span class="required">*</span></label></td>
+                                                <td class="value">
+                                                    <input type="text" class="input-text" value="" name="postcode" id="postcode">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label"><label for="order-shipping_address_telephone">Telephone <span class="required">*</span></label></td>
+                                                <td class="value">
+                                                    <input type="text" class="input-text" value="" name="telephone" id="telephone">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label"><label for="order-shipping_address_fax">Fax</label></td>
+                                                <td class="value">
+                                                    <input type="text" class=" input-text" value="" name="fax" id="fax">
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div id="submit_btn" class="form_submit">
+                                    <button type="button" onclick="saveAdr();" class="btn_cls">Save in Address Book</button>
+                                </div>
+                                <a href="javascript:void(0);" class="cross-custom-form" onclick="closePopupForm1('customer_form_content1');">Close Window</a>
+          
+                                </div>
+                            </div>
+                            </td>
+                            <!--select address ends here-->
+                            
+                            <!--select method starts here-->
+                            <td class="ship-method">
+                             <?php
+                                $methods = Mage::getStoreConfig('carriers', Mage::app()->getStore()->getId());
+                                
+                                $options = array();
+                                foreach($methods as $_code => $carrierConfig)
+                                {
+                                    if($carrierConfig['active']==1){
+                                    if($_code !='excellence'){
+                                    if(!$_title = Mage::getStoreConfig("carriers/$_code/title"))
+                                    $_title = $_code;
+                                    $shippingTitle = Mage::getStoreConfig('carriers/'.$_code.'/title');
+                                    $shippingPrice = Mage::getStoreConfig('carriers/'.$_code.'/price');
+                                    $tPrice=number_format(($shippingPrice*$countItem),2);
+                                    $val=$_code.'__'.$tPrice;  
+                                    $options[] = array('value' => $val, 'label' => $_title . " ($_code)");
+                                    }    
+                                    }
+                                }
+         
+           
+                             ?>
+                                
+                            <span style="float: left"> Select Shipping Method : </span>
+                            <select name="sel_metd1" id="order_customshipping_method__<?php echo $res['entity_id'];?>" > <!--////2-12-2013--> <!--onchange="selMethod1(<?php echo $res['entity_id'];?>);" removed 21-2-2014-->
+                            <option value="">Select</option>
+                            <?php
+                            foreach($options as $val){ 
+                            ?>
+                            <option value="<?php echo $val["value"]; ?>">
+                            <?php echo $val["label"];?>
+                            </option>
+                            <?php  } ?>
+                            
+                            </select>
+                            </td>
+                            <!--select method ends here-->
+                            <td><span onclick="loadbox('<?php echo $res['entity_id'] ?>');" style="cursor:pointer;"><strong>Confirm Box</strong></span> </td>
+                            </tr>
+                            <tr>
+                                <td>Price
+                                <div class="" id="metRet__<?php echo $res['entity_id'];?>" style="display: none">
+                                <span><strong>Select Method</strong></span>
+                                <div id="semt__<?php echo $res['entity_id'];?>"></div>
+                                </div></td>
+                                
+                                <td colspan='2'><input type="button" value="Create Label" onclick="postpartship(<?php echo $res['entity_id'];?>);" /></td>
+                            </tr>
+                            
+                            <?php }  ////21-2-2014 added ?>
+                        </table>
+                        
+                        
+                    </td>
+                    
+                </tr>
+                   
+                    
+                <?php    
+                } ?>
+                </table>
+            <?php   
+                
+            }else{
+                //echo $this->__('No shipment created yet.');?>
+                
+                <?php  if ($_order->getTracksCollection()->count()) : ?>
+                <a href="#" id="linkId" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_order) ?>','trackorder','width=800,height=600,resizable=yes,scrollbars=yes')" title="<?php echo $this->__('Track Order') ?>"><?php echo $this->__('Track Order') ?></a>
+                <br/>
+                <?php endif; ?>
+                <?php if ($_order->getShippingDescription()): ?>
+                    <strong><?php echo $this->escapeHtml($_order->getShippingDescription()) ?></strong>
+
+                    <?php if ($this->helper('tax')->displayShippingPriceIncludingTax()): ?>
+                        <?php $_excl = $this->displayShippingPriceInclTax($_order); ?>
+                    <?php else: ?>
+                        <?php $_excl = $this->displayPriceAttribute('shipping_amount', false, ' '); ?>
+                    <?php endif; ?>
+                    <?php $_incl = $this->displayShippingPriceInclTax($_order); ?>
+
+                    <?php echo $_excl; ?>
+                    <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                        (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                    <?php endif; ?>
+                <?php else: ?>
+                    <?php echo $this->helper('sales')->__('No shipping information available'); ?>
+                <?php endif; ?>
+                
+            <?php
+            }
+            
+            ?>
+                
+                
+            </fieldset>
+            
+            <!---------------------------------------------12-2-2014 GC E------------------------------------------------->
+        </div>
+    <!--</div>commented on 14-2-2014-->
+    <?php endif; ?>
+    <div class="clear"></div>
+    <?php echo $this->getGiftOptionsHtml() ?>
+    <div class="clear"></div>
+    
+    <!--12-11-2013 SOC-->
+    <?php
+        $ordId=$_order->getId();
+       
+        $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+        $tableName = Mage::getSingleton('core/resource')->getTableName('partialshipping_details');
+        
+        $select = $connectionRead->select()->from($tableName, array('*'))->where('order_id=?',$ordId);
+        $row = $connectionRead->fetchAll($select);
+        $countRow=count($row);
+        if($countRow > 0){ ?>
+          
+          <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-products"><?php echo Mage::helper('sales')->__('Items Partially Shipped') ?></h4>
+            </div>
+            </div>  
+        
+        
+       
+        <div class="grid np">
+                <div class="hor-scroll">
+                        <table cellspacing="0" class="data order-tables">
+                        
+                        <thead>
+                        <tr class="headings">
+                                <th>
+                                        Product
+                                </th>
+                                
+                                <th >
+                                        Quantity
+                                </th>
+                                <th>
+                                        Shipped Address
+                                </th>
+                                <th>
+                                        Shipping method
+                                </th>
+                                
+                        </tr>
+                        </thead>
+                        <tbody >
+                        <?php
+                        foreach($row as $rowdata) {
+                            $obj = Mage::getModel('catalog/product');
+                            $_product = $obj->load($rowdata['product_id']);
+                            
+                            $addressLoadId = Mage::getModel('customer/address')->load($rowdata['shipping_address_id']);
+                            $country_name=Mage::app()->getLocale()->getCountryTranslation($addressLoadId['country_id']);
+                            $Name = $addressLoadId['firstname'].' '.$addressLoadId['lastname'];
+                            $AdrInfo='';
+                            if($addressLoadId['city']) $AdrInfo .= $addressLoadId['city'];
+                            if($addressLoadId['region']) $AdrInfo .= ", ".$addressLoadId['region'];
+                            if($addressLoadId['postcode']) $AdrInfo .= ", ".$addressLoadId['postcode'];
+                            $addr=$Name."<br>".$AdrInfo."<br>".$country_name;
+                            
+                            $tableName1 = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
+                            
+                            $select1 = $connectionRead->select()->from($tableName1, array('*'))->where("order_id = '".$rowdata['order_id']."' AND product_id = '".$rowdata['product_id']."'");
+                            $row1 = $connectionRead->fetchrow($select1);
+                            $qtyOrdered=round($row1['qty_ordered']);
+                            $qtyInvoiced=round($row1['qty_invoiced']);
+                            
+                            
+                             //echo $sqlDesign = $connectionRead->select()
+                             //  ->from($tableName1, array('*'))
+                             //  ->where("order_id = '".$rowdata['order_id']."' AND product_id = '".$rowdata['product_id']."'");
+                             //  echo "<br>";
+                             //  
+                             //  
+                               
+                                
+                        ?>
+                        <tr class="border">
+                                <td>
+                                        <div class="item-container" id="order_item_20">
+                                                <div class="item-text">
+                                                        <h5 class="title"><span id="order_item_20_title"><?php echo $_product->getName(); ?></span></h5>
+                                                        <?php /*
+                                                        <div>
+                                                                <strong>SKU:</strong> <?php echo $_product->getSku(); ?>
+                                                        </div>
+                                                        */ ?>
+                                                        
+                                                </div>
+                                        </div>
+                                </td>
+                                
+                                <td>
+                                        <table cellspacing="0" class="qty-table">
+                                        <tbody>
+                                        <tr>
+                                                <td>
+                                                        <strong>Ordered</strong>
+                                                </td>
+                                                <td>
+                                                        <strong><?php echo $qtyOrdered ?></strong>
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                                <td>
+                                                        <strong>Invoiced</strong>
+                                                </td>
+                                                <td>
+                                                        <strong><?php echo $qtyInvoiced ?></strong>
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                                <td>
+                                                        <strong>Shipped</strong>
+                                                </td>
+                                                <td>
+                                                        <strong><?php echo $rowdata['product_qty']?></strong>
+                                                </td>
+                                        </tr>
+                                        </tbody>
+                                        </table>
+                                </td>
+                                <td >
+                                        <strong><?php echo $addr ?></strong>
+                                        <br>
+                                </td>
+                                <td >
+                                        <strong><?php echo $rowdata['shipping_method']." $".number_format($rowdata['shiping_price'],2)?></strong>
+                                </td>
+                                
+                        </tr>
+                         <?php  } ?>
+                        </tbody>
+                        </table>
+                </div>
+        </div>
+        
+        
+        
+        
+        <div class="clear"></div>
+    
+    
+    <?php  
+    
+    } ?>
+    <!--12-11-2013 EOC-->
+    
+    
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-products"><?php echo Mage::helper('sales')->__('Items Ordered') ?></h4>
+        </div>
+    </div>
+    <?php echo $this->getItemsHtml() ?>
+    <div class="clear"></div>
+
+    <div class="box-left">
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4><?php echo Mage::helper('sales')->__('Comments History') ?></h4>
+            </div>
+            <fieldset><?php echo $this->getChildHtml('order_history') ?></fieldset>
+        </div>
+    </div>
+    <div class="box-right entry-edit">
+        <div class="entry-edit-head"><h4><?php echo Mage::helper('sales')->__('Order Totals') ?></h4><div class="openpay" onclick="div_show();">Next Payment</div></div>
+        <div class="order-totals"><?php echo $this->getChildHtml('order_totals') ?></div>
+    </div>
+    <div class="clear"></div>
+    <div class="entry-edit">
+        <div class="entry-edit-head"><h4><?php echo Mage::helper('sales')->__('Payment Transaction') ?></h4></div>
+        <div class="order-totals">
+            <table class="data order-tables" style="width:100%;">
+                <thead>
+                <tr>
+                    <th>Payment Date</th>
+                    <th>Payment Type</th>
+                    <th>Received Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $transactionTable=Mage::getSingleton('core/resource')->getTableName('partial_payment');
+                    
+                    $sqlPaymentSystem="SELECT *,DATE_FORMAT(received_date,'%d/%m/%Y') as date_str FROM ".$transactionTable." WHERE orderid = '".$_order->getId()."' ORDER BY entity_id DESC";
+                    try {
+                            $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlPaymentSystem);
+                            $resultsSystem = $chkSystem->fetchall();
+                    } catch (Exception $e){
+                    echo $e->getMessage();
+                    }
+                    
+                    foreach($resultsSystem as $result)
+                    {
+                        ?>
+                         <tr>
+                            <td><?php echo $result['date_str'];?></td>
+                            <td><?php echo  Mage::getStoreConfig('payment/'. $result['payment_type'].'/title');?></td>
+                            <td><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($result['amount'],2,'.','');?></td>
+                         </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<?php echo $this->getChildHtml('popup_window');?>
+<script type="text/javascript">
+//<![CDATA[
+    /**
+     * Retrieve gift options tooltip content
+     */
+    function getGiftOptionsTooltipContent(itemId) {
+        var contentLines = [];
+        var headerLine = null;
+        var contentLine = null;
+
+        $$('#gift_options_data_' + itemId + ' .gift-options-tooltip-content').each(function (element) {
+            if (element.down(0)) {
+                headerLine = element.down(0).innerHTML;
+                contentLine = element.down(0).next().innerHTML;
+                if (contentLine.length > 30) {
+                    contentLine = contentLine.slice(0,30) + '...';
+                }
+                contentLines.push(headerLine + ' ' + contentLine);
+            }
+        });
+        return contentLines.join('<br/>');
+    }
+    giftOptionsTooltip.setTooltipContentLoaderFunction(getGiftOptionsTooltipContent);
+//]]>
+</script>

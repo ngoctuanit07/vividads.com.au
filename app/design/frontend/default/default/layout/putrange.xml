@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <putrange_index_index>
+        <reference name="content">
+            <block type="putrange/putrange" name="putrange" template="putrange/putrange.phtml" />
+        </reference>
+    </putrange_index_index>
+</layout> 

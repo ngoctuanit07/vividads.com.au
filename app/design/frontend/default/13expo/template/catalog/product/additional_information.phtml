@@ -1,0 +1,301 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+$curCatId = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId();
+
+/*load category */
+
+$_category = Mage::getSingleton('catalog/category')->load($curCatId);
+
+?>
+
+
+<div class="new-prod-desc">
+  <div class="pro-desc">
+    <h1><span>1</span>Product Description</h1>
+    <?php $_description = $this->getProduct()->getShortDescription(); ?>
+    <?php if ($_description): ?>
+    <h2> <?php echo $this->helper('catalog/output')->productAttribute($this->getProduct(), $_description, 'description') ?> </h2>
+    <?php endif; ?>
+  </div>
+  <div class="pro-feature">
+    <h1><span>2</span>Product Features</h1>
+    <ul>
+      <li> <img src="<?php echo $this->getSkinUrl()?>images/double_sided.png" width="100" height="100" /> <span><?php echo ('Double <br />Sided')?></span> </li>
+      <li> <img src="<?php echo $this->getSkinUrl()?>images/include_hd.png" width="100" height="100" /> <span><?php echo ('Includes HD <br />Graphics')?></span> </li>
+      <li class="last"> <img src="<?php echo $this->getSkinUrl()?>images/light_weight.png" width="100" height="100" /> <span><?php echo ('Light <br /> Weight')?></span> </li>
+      <li> <img src="<?php echo $this->getSkinUrl()?>images/quality_assurance.png" width="100" height="100" /> <span><?php echo ('Quality <br /> Assurance')?></span> </li>
+      <li> <img src="<?php echo $this->getSkinUrl()?>images/cmyk_color.png" width="100" height="100" /> <span><?php echo ('CMYK <br />Colors')?></span> </li>
+      <li  class="last"> <img src="<?php echo $this->getSkinUrl()?>images/australia_wide.png" width="100" height="100" /> <span><?php echo ('Australia <br />Wide')?></span> </li>
+    </ul>
+  </div>
+  <div class="package-includes">
+    <h1><span>3</span>Package Includes</h1>
+    <?php
+		  $product = Mage::registry('current_product');
+		  
+		    if($product->getTypeID() == 'bundle')
+		    {
+			$bundle_item = array();
+			$bundled_product = Mage::getModel('catalog/product')->load($product->getId());
+			
+			$selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
+			    $bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
+			);
+			
+			$optionCollection =  $bundled_product->getTypeInstance(true)->getOptions($bundled_product);
+			
+					
+			foreach($optionCollection as $val)
+			{
+			    echo '<div  class="bundle_items" ><div class="item_boxes"><table>';
+			   // <div class="bundle_name"><strong>'.$val->getDefaultTitle().'</strong></div><div class="item_box"><table>';
+			    
+			    foreach($selectionCollection as $option)
+			    {
+				if($val->getId() == $option->getOptionId())
+				{
+				     echo '<tr><td>'.round($option->getSelectionQty()).' - '.$option->getName().'</td></tr>';
+                                }
+                            }
+			    echo '</table></div></div>';
+			}
+		    }
+		  ?>
+    <div class="pro-img-right">
+      <?php
+     $_product = $this->getProduct();
+	 
+	 $imageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $_product->getImage(); ?>
+      <img height="466" width="466" src="<?php echo $imageUrl;?>" alt="nothing" /> </div>
+  </div>
+  <div class="additional-information">
+    <h1><span>4</span>Additional Information</h1>
+    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
+    <div class="image-sketch"> <img src="<?php echo $this->getSkinUrl()?>images/model.jpg" /> </div>
+  </div>
+  <br>
+  <div class="additional-featured">
+    <h1><span>5</span>Additional Features</h1>
+    <div class="additional_featured">
+      <ul>
+        <li><img src="<?php echo $this->getSkinUrl()?>images/dye_fabric.jpg" /></li>
+        <li><img src="<?php echo $this->getSkinUrl()?>images/life_time_warranty.jpg" /></li>
+        <li><img src="<?php echo $this->getSkinUrl()?>images/setup_time.jpg" /></li>
+        <li><img src="<?php echo $this->getSkinUrl()?>images/shippment_time.jpg" /></li>
+      </ul>
+    </div>
+  </div>
+  <div class="products-downloads">
+    <h1><span>6</span>Downloads (Graphic Templates)</h1>
+    <div class="prod-downloads">
+      <div class="prod-descp">
+        <p><?php echo ('Portable Slimline Fabric Tension Wall Series / Tradeshow Kit  provide 
+		maximum portability along with  amazing visual impact. These designs set apart your brand 
+		name in a tradeshow from all your competitors. Fabric Tradeshow displays are the ideal choice 
+		for all your tradeshow needs. Material: Stretchable Blockout; 360gsm Polyester. Portable Slimline Fabric 
+		Tension Wall Series / Tradeshow Kit  provide maximum portability along with  amazing visual impact. 
+		These designs set apart your brand name in a tradeshow from all your competitors. ')?></p>
+        <div class="download-button">
+          <?php
+			$productid=Mage::registry('product')->getId();
+                        $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_relation');
+                        $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE product_id='".$productid."'";
+                        try {
+                        $chkSaleOrderGrid = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                        } catch (Exception $e){
+                        //echo $e>getMessage();
+                        }
+                        ?>
+          <!--<h2><strong>Files Attached:</strong></h2>-->
+          <?php
+                        if(count($chkSaleOrderGrid) > 0)
+                        {
+                        ?>
+          <?php foreach($chkSaleOrderGrid as $res_objects) :
+                        
+                            $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_files');
+                            $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE file_id='".$res_objects["file_id"]."'";
+                            try {
+                            $chkSaleOrderGrid2 = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                            } catch (Exception $e){
+                            //echo $e>getMessage();
+                            }
+		
+                            foreach($chkSaleOrderGrid2 as $res_objects2) 
+                            {
+                            ?>
+          <div class="download-button"><a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$res_objects2["file_id"].'/'.$res_objects2["filename"]; ?>" title="<?php echo $res_objects2["filename"]; ?>" target="_blank"><img src="<?php echo $this->getSkinUrl()?>images/download_graphics.jpg "/></a>
+            <div>
+              <?php                         
+                            }
+                        endforeach; 
+                        ?>
+              <?php 
+                        }
+                        else
+                        {
+							?>
+              <div class='download-button'><img src="<?php echo $this->getSkinUrl()?>images/no_file_found.jpg "/></div>
+              <?php   }
+			
+		?>
+            </div>
+            </li>
+          </div>
+        </div>
+      </div>
+      <div class="pdf-icon"> <img src="<?php echo $this->getSkinUrl()?>images/pdf_icon.jpg" /> </div>
+    </div>
+  </div>
+  <div class="payment-methods">
+    <h1><span>7</span>Payment Methods</h1>
+    <div class="payment_info">
+      <p><?php echo ('Portable Slimline Fabric Tension Wall Series / Tradeshow Kit  provide maximum portability along with 
+     amazing visual impact. These designs set apart your brand name in a tradeshow from all your competitors. 
+     Fabric Tradeshow displays are the ideal choice for all your tradeshow needs. Material: Stretchable Blockout; 
+     360gsm Polyester. Stretchable Blockout; 360gsm Polyester.')?> </p>
+      <img src="<?php echo $this->getSkinUrl()?>images/creadit_card.jpg" /> </div>
+  </div>
+  <div class="order-process"> 
+    <script language="javascript">
+
+	var active_circle = '.step1';
+	var mobile_width = 480;
+		
+	jQuery(document).ready(function(e) {
+      
+    
+	jQuery('#order_process').find(active_circle).addClass('active');
+	
+	jQuery('#order_process  .step').hover(
+			function(){
+					
+					 jQuery('#order_process  .step').each(function(){jQuery(this).removeClass('active')});
+					
+			},
+			function(){
+					 jQuery('#order_process').find(active_circle).addClass('active');
+			});
+			
+	jQuery('#order_process  .step').on('touchstart', function () {
+		jQuery('#order_process  .step').each(function(){
+			if(jQuery(window).width() > 480)
+			{
+				jQuery(this).removeClass('active');
+				jQuery('#order_process').find('.caption').hide();
+			}
+		});
+		jQuery(this).addClass('active');
+		jQuery(this).find('.caption').show();
+	});
+	
+	
+	});
+	
+	function hideOrderProcess(){
+		  jQuery('.order_process_wrapper').fadeOut('slow');
+		  jQuery("#hide_button").text('View More');
+		  jQuery('html, body').animate({
+		        scrollTop: parseInt(jQuery("#order_process").offset().top)
+		    }, 1000);
+	}
+	function showOrderProcess(){
+		jQuery('.order_process_wrapper').fadeIn('slow');
+		jQuery("#hide_button").text('Hide');
+	}
+	jQuery("#hide_button").click(function() { 
+		  return (this.tog = !this.tog) ? hideOrderProcess() : showOrderProcess();
+	});
+	jQuery(window).resize(function(){
+		if(jQuery(window).width() > 480)
+			showOrderProcess();
+	});
+
+</script>
+    <h1><span>8</span>Our Order Process</h1>
+    <div class="order_text">
+      <p><?php echo ('Portable Slimline Fabric Tension Wall Series / Tradeshow Kit  provide maximum portability along with 
+     amazing visual impact. These designs set apart your brand name in a tradeshow from all your competitors. 
+     Fabric Tradeshow displays are the ideal choice for all your tradeshow needs. Material: Stretchable Blockout; 
+     360gsm Polyester. Stretchable Blockout; 360gsm Polyester.')?> </p>
+    </div>
+    <div id="order_process"> 
+      <div class="order_process_wrapper">
+        <div class="step1 step active"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step1.png" alt="">
+        <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step1_hover.png" alt=""></a>
+         <span class="caption"><span class="step_number">step # 1</span> <span class="step_title">Choose your display</span>&nbsp;Trade
+          show displays come in a slew of styles, shapes and sizes, and we offer 
+          only the best of them to set you up for success at your next event. Once
+          you find the right trade show display and add some useful accessories, 
+          you’re ready to upload your artwork to truly make it your own.</span></div>
+        <div class="step2 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step2.png" alt="">
+        <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step2_hover.png" alt=""></a> 
+        <span class="caption"><span class="step_number">step # 2</span> <span class="step_title">Place Order</span>&nbsp;It’s
+          time to check your shopping cart to make sure you haven’t forgot 
+          anything. Trade show display? Check. Uploaded artwork? Check. LED 
+          lights? Got it. Once everything is good to go, just fill in your billing
+          information and shipping destination to finalize your order.</span></div>
+        <div class="step3 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step3.png" alt="">
+        <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step3_hover.png" alt=""></a> <span class="caption">
+        <span class="step_number">step # 3</span> 
+        <span class="step_title">Upload &amp; Approve Artwork</span>&nbsp;Now
+          comes the fun part. Place your artwork on your product’s graphic 
+          template, and upload it into our Artwork Upload and Graphic Proofing 
+          System. Here, you have free reign to work with your display to achieve 
+          the look you envision before approving it for production.
+        </span></div>
+        <div class="step4 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step4.png" alt="">
+        <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step4_hover.png" alt=""></a>
+         <span class="caption"><span class="step_number">step # 4</span> <span class="step_title">Production begins</span>&nbsp;Now
+          that we know what you want, we’re ready to give you what you need. Our 
+          skilled production team moves into action, working with speed and 
+          precision to print the most accurate shades and hues and to stitch the 
+          strongest seams for one impressive display.</span></div>
+        <div class="step5 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step5.png" alt="">
+        <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step5_hover.png" alt=""></a> <span class="caption">
+        <span class="step_number">step # 5</span> <span class="step_title">Order ships</span>&nbsp;Before
+          shipping your customized exhibit, our quality assurance team rigorously
+          inspects your trade show display to make sure that everything is 
+          flawless and primed for your upcoming event. As soon we get the green 
+          light, your order is immediately shipped to your specified destination.</span></div>
+        <div class="step6 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step6.png" alt="">
+        <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step6_hover.png" alt=""></a> <span class="caption">
+        <span class="step_number">step # 6</span> <span class="step_title">Receive your order</span>&nbsp;Once
+          you receive your display, feel free to rip open that cardboard box like
+          it’s your birthday. Inside, you’ll find everything you’ll need to make a
+          strong impression at your next convention or trade show. (Just don’t 
+          forget to clean up all that cardboard. You’ve made a bit of a mess.)</span></div>
+      </div>
+      <span id="hide_button">Hide</span></div>
+  </div>
+</div>

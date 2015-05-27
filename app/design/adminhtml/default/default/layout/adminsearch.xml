@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminsearch_adminhtml_adminsearch_index>
+        <reference name="content">
+            <block type="adminsearch/adminhtml_adminsearch" name="adminsearch" />
+        </reference>
+    </adminsearch_adminhtml_adminsearch_index>
+</layout>

@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @copyright  Copyright (c) 2011 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Social Booster extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @author     MageWorx Dev Team
+ */
+-->
+<config>
+    <modules>
+        <MageWorx_SocialBooster>
+            <version>1.1.5</version>
+        </MageWorx_SocialBooster>
+    </modules>
+        
+    <admin>
+        <routers>
+            <socialbooster>
+                <use>admin</use>
+                <args>
+                    <module>MageWorx_SocialBooster</module>
+                    <frontName>socialbooster</frontName>
+                </args>
+            </socialbooster>
+        </routers>
+    </admin>
+    
+    <frontend>
+        <translate>
+            <modules>
+                <MageWorx_SocialBooster>
+                    <files>
+                        <default>MageWorx_SocialBooster.csv</default>
+                    </files>
+                </MageWorx_SocialBooster>
+            </modules>
+        </translate>
+        <routers>
+            <socialbooster>
+                <use>standard</use>
+                <args>
+                    <module>MageWorx_SocialBooster</module>
+                    <frontName>socialbooster</frontName>
+                </args>
+            </socialbooster>
+        </routers>
+        <layout>
+            <updates>
+                <socialbooster>
+                    <file>socialbooster.xml</file>
+                </socialbooster>
+            </updates>
+        </layout>
+    </frontend>
+    
+    <global>
+        <models>
+            <socialbooster>
+                <class>MageWorx_SocialBooster_Model</class>
+                <resourceModel>socialbooster_mysql4</resourceModel>
+            </socialbooster>            
+            <socialbooster_mysql4>
+                <class>MageWorx_SocialBooster_Model_Mysql4</class>                
+                <entities>
+                    <counter>
+                        <table>socialbooster_counter</table>
+                    </counter>
+                    <bookmark>
+                        <table>socialbooster_bookmark</table>
+                    </bookmark>
+                </entities>
+            </socialbooster_mysql4>            
+        </models>        
+        
+        <resources>
+            <socialbooster_setup>
+                <setup>
+                    <module>MageWorx_SocialBooster</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </socialbooster_setup>
+            <socialbooster_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </socialbooster_write>
+            <socialbooster_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </socialbooster_read>
+        </resources>
+        
+        <blocks>
+            <socialbooster>
+                <class>MageWorx_SocialBooster_Block</class>
+            </socialbooster>
+        </blocks>
+        <helpers>
+            <socialbooster>
+                <class>MageWorx_SocialBooster_Helper</class>
+            </socialbooster>
+        </helpers>
+    </global>
+    
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>                        
+                <admin>
+                    <children>
+                        <report>
+                            <children>
+                                <socialbooster translate="title" module="socialbooster">
+                                    <title>Social Booster</title>
+                                    <children>                            
+                                        <pages translate="title" module="socialbooster">
+                                            <title>Pages</title>
+                                            <sort_order>10</sort_order> 
+                                        </pages>
+                                        <services translate="title" module="socialbooster">
+                                            <title>Services</title>                                
+                                            <sort_order>20</sort_order>
+                                        </services>
+                                    </children>
+                                </socialbooster>
+                            </children>
+                        </report>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <mageworx_social_tools translate="title" module="mageworx">
+                                        <title>MageWorx &gt; Social Tools</title>
+                                        <sort_order>1</sort_order> 
+                                            <children>
+                                                <socialbooster translate="title" module="socialbooster">
+                                                    <title><![CDATA[Social Booster]]></title>
+                                                </socialbooster>
+                                            </children>
+                                        </mageworx_social_tools>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <menu>
+             <report>
+                <children>                                                
+                    <socialbooster translate="title" module="socialbooster">
+                        <title>Social Booster</title>                    
+                        <depends>
+                            <config>mageworx_social_tools/socialbooster/enabled</config>
+                        </depends>
+                        <sort_order>100</sort_order>
+                        <children>
+
+                            <pages translate="title" module="socialbooster">
+                                <title>Pages</title>
+                                <action>mageworx/socialbooster_pages</action>
+                                <sort_order>10</sort_order>
+                            </pages>
+
+                            <services translate="title" module="socialbooster">
+                                <title>Services</title>
+                                <action>mageworx/socialbooster_services</action>
+                                <sort_order>20</sort_order>
+                            </services>
+
+                        </children>    
+                    </socialbooster>                
+                </children>
+             </report>         
+        </menu>
+        <layout>
+            <updates>
+                <socialbooster>
+                    <file>socialbooster.xml</file>
+                </socialbooster>
+            </updates>
+        </layout>
+        
+        <translate>            
+            <modules>
+                <MageWorx_SocialBooster>
+                    <files>
+                        <default>MageWorx_SocialBooster.csv</default>
+                    </files>
+                </MageWorx_SocialBooster>
+            </modules>
+        </translate>        
+    </adminhtml>
+    
+    <default>
+        <mageworx_social_tools>
+            <socialbooster>
+                <enabled>1</enabled>
+                <bookmarks>scriptstyle,blinklist,delicious,digg,diigo,reddit,stumbleupon,technorati,mixx,myspace,designfloat,facebook,twitter,linkedin,newsvine,devmarks,misterwong,izeby,tipd,pfbuzz,friendfeed,blogmarks,fwisp,designmoo,bobrdobr,yandex,memoryru,100zakladok,moemesto,hackernews,printfriendly,designbump,ning,identica,xerpi,wikio,techmeme,sphinn,posterous,globalgrind,pingfm,nujij,ekudos,netvouz,netvibes,fleck,blogospherenews,webblend,wykop,blogengage,hyves,pusha,hatena,mylinkvault,slashdot,squidoo,propeller,faqpal,evernote,meneame,bitacoras,jumptags,bebo,n4g,strands,orkut,tumblr,stumpedia,current,blogger,plurk,google,googlebuzz,googleplusone</bookmarks>
+                <featured_bookmarks>digg,stumbleupon,myspace,facebook,twitter,googleplusone</featured_bookmarks>
+                <default_position>content</default_position>
+                <product_position>short_description</product_position>
+                <category_pages_enabled>1</category_pages_enabled>
+                <cms_pages_enabled>1</cms_pages_enabled>
+                <ignore_cms_pages>no-route,enable-cookies</ignore_cms_pages>
+            </socialbooster>
+        </mageworx_social_tools>
+    </default>
+</config>

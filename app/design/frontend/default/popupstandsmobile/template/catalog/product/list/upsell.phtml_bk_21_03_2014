@@ -1,0 +1,103 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_iphone
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /* ?>
+<?php //if(count($this->getItemCollection()->getItems())): ?>
+<div class="box-collateral box-up-sell">
+    <div class="box-title">
+        <h2><?php echo $this->__('You May Also Like') ?></h2>
+    </div>
+    <ul class="products-grid" id="upsell-product-list"><!-
+    <?php $this->resetItemsIterator() ?>
+    <?php for($_i=0;$_i<$this->getRowCount();$_i++): ?>
+        <?php for($_j=0;$_j<$this->getColumnCount();$_j++): ?>
+            <?php if($_link=$this->getIterableItem()): ?>
+            -><li class="item">
+                <a href="<?php echo $_link->getProductUrl() ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_link, 'small_image')->resize(135) ?>" width="135" height="135" alt="<?php echo $this->escapeHtml($_link->getName()) ?>" title="<?php echo $this->escapeHtml($_link->getName()) ?>" /></a>
+                <h3 class="product-name"><a href="<?php echo $_link->getProductUrl() ?>"><?php echo $this->escapeHtml($_link->getName()) ?></a></h3>
+                <?php echo $this->getPriceHtml($_link, true, '-upsell') ?>
+            </li><!-
+            <?php endif; ?>
+        <?php endfor; ?>
+    <?php endfor; ?>
+    -></ul>
+</div>
+<?php endif ?>
+<?php */?>
+<?php/*?>
+<?php 
+   
+   // Get product object.
+   $object = Mage::getModel('catalog/product');
+   
+   //Get product detail using product id  (Suppose you have product id is : $product_id)
+   //$_product = $object->load($product_id);
+   $_product = $this->getProduct();
+  
+   // Fetch list of upsell product using query.
+   $upsell_product = $_product->getUpSellProductCollection()->addAttributeToSort('position', Varien_Db_Select::SQL_ASC)->addStoreFilter(); 
+
+   //check if record is empty or not
+   $count = count($upsell_product); 
+   if(empty($count)) : 
+       //if empty
+       echo "Record not found";
+
+   else:
+
+     //if result is not empty then get  upsell product detail using foreach loop
+      foreach($upsell_product as $_upsell):
+         
+         //get detail of single upsell prdocut using upsell product id
+         $upsp = $object->load($_upsell->getId());
+
+         echo "Product Name : ". $upsp->getName();
+         echo "Poduct url : ". $upsp->getProductUrl();
+         echo "Product regular price : ". $upsp->getPrice();
+         
+       endforeach;
+   
+   endif;
+
+?>
+<?php */?>
+<?php
+ $_product = Mage::registry('product');
+$upsell_product_collection = $_product->getUpSellProductCollection();
+
+foreach($upsell_product_collection as $pdt)
+{
+    $pdt_id=$pdt->getId();
+    $model_upsell = Mage::getModel('catalog/product');
+    $_product_upsell = $model_upsell->load($pdt_id);
+    $upsell_name= $_product_upsell->getName();
+    $upsell_price= number_format($_product_upsell->getPrice(),2);
+    $upsell_img_url = $this->helper('catalog/image')->init($_product_upsell, 'image')->keepFrame(false)->resize(100,100);
+   
+    
+    
+}
+?>

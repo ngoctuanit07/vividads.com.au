@@ -1,0 +1,97 @@
+<?php
+class Partialshipping_Partialshipping_IndexController extends Mage_Core_Controller_Front_Action
+{
+    public function indexAction()
+    {
+    	
+    	/*
+    	 * Load an object by id 
+    	 * Request looking like:
+    	 * http://site.com/partialshipping?id=15 
+    	 *  or
+    	 * http://site.com/partialshipping/id/15 	
+    	 */
+    	/* 
+		$partialshipping_id = $this->getRequest()->getParam('id');
+
+  		if($partialshipping_id != null && $partialshipping_id != '')	{
+			$partialshipping = Mage::getModel('partialshipping/partialshipping')->load($partialshipping_id)->getData();
+		} else {
+			$partialshipping = null;
+		}	
+		*/
+		
+		 /*
+    	 * If no param we load a the last created item
+    	 */ 
+    	/*
+    	if($partialshipping == null) {
+			$resource = Mage::getSingleton('core/resource');
+			$read= $resource->getConnection('core_read');
+			$partialshippingTable = $resource->getTableName('partialshipping');
+			
+			$select = $read->select()
+			   ->from($partialshippingTable,array('partialshipping_id','title','content','status'))
+			   ->where('status',1)
+			   ->order('created_time DESC') ;
+			   
+			$partialshipping = $read->fetchRow($select);
+		}
+		Mage::register('partialshipping', $partialshipping);
+		*/
+
+			
+		$this->loadLayout();     
+		$this->renderLayout();
+    }
+    
+    function uploadetfileAction()
+    {
+	    $directory = Mage::getBaseDir('media') . DS ."shiplabel" . DS;
+
+	    //get all text files with a .txt extension.
+	    $texts = glob($directory . "*.txt");
+	    
+	    $date = date('dMY');
+	    
+	    //print each file name
+	    foreach($texts as $file)
+	    {
+		if(strpos($file,$date))
+		{
+		    //echo $file;
+		    
+		    $remote_file = '/outbox/'.basename($file);
+		    
+		    chmod($file, 0777);
+		    $fp = fopen($file, 'r');
+		    
+		    // set up basic connection
+		    $conn_id = ftp_connect('ftp.tnt.com.au') or die("Could not connect");
+		    
+		    // login with username and password
+		    $login_result = ftp_login($conn_id, 'vivid548', 'myV^@d7M0');
+		    ftp_pasv($conn_id, true);
+		    $ret = ftp_nb_put($conn_id, $remote_file, $file, FTP_ASCII, FTP_AUTORESUME);
+		    
+		    while ($ret == FTP_MOREDATA) {
+		    
+		       // Do whatever you want
+		      // echo ".";
+		    
+		       // Continue upload...
+		       $ret = ftp_nb_continue($conn_id);
+		    }
+		    
+		    if ($ret != FTP_FINISHED) {
+		       ///echo "There was an error uploading the file...";
+		      // exit(1);
+		    }
+		    
+		    fclose($fp);
+		    // close the connection
+		    ftp_close($conn_id);
+		}
+	    }
+    }
+}

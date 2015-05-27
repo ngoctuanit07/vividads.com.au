@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <systemalert_adminhtml_systemalert_index>
+        <reference name="content">
+            <block type="systemalert/adminhtml_systemalert" name="systemalert" />
+        </reference>
+    </systemalert_adminhtml_systemalert_index>
+</layout>

@@ -1,0 +1,44 @@
+ <?php
+
+    $url = Mage::helper("adminhtml")->getUrl("vendor/adminhtml_vendor/setvendor");
+    $url = str_replace('p//s','p/admin/s',$url);
+    
+    $product_id = Mage::registry('current_product')->getId();
+    $temptableVendor=Mage::getSingleton('core/resource')->getTableName('vendor_product');
+    $sqlVendor="SELECT * FROM ".$temptableVendor." WHERE product_id = '".$product_id."' ";
+    $chkVendor = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlVendor);
+
+ ?>
+<div class="assigntotal">
+<form enctype="multipart/form-data" name="form_planning" id="form_planning" method="POST" action="<?php echo $url?>">
+<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+<input type="hidden" name="product_id" value="<?php echo Mage::registry('current_product')->getId();?>"/>
+  <div class="setuser" style="float: left;width: 217px;">
+    <span><strong> Assign To Vendor :</strong></span>
+    <select name="user_id" id="user_id" onchange="assignto('<?php echo $chkDesign['item_id']?>','<?php echo $chkDesign['order_quote_id']?>',this.value);">
+     <option value="">Assign To</option>
+      <?php
+      
+	  $adminUserModel = Mage::getModel('admin/user');
+	  $userCollection = $adminUserModel->getCollection()->load();
+	  foreach($userCollection as $user)
+	  {
+            $roleId = implode('', $user->getRoles());
+             $roleName = Mage::getModel('admin/roles')->load($roleId)->getRoleName();
+             if($roleName == 'Vendor')
+             {
+                $selected = '';
+                if($chkVendor[0]['vendor_id'] == $user->getId())
+                $selected = 'selected';
+                
+                echo '<option value="'.$user->getId().'" '.$selected.' >'.$user->getUsername().'</option>';
+             }
+	  }
+      ?>
+   </select>
+  </div>
+  <div class="assignsave">
+    <button class="submit" >Submit</button>
+  </div>
+ </form>
+</div>

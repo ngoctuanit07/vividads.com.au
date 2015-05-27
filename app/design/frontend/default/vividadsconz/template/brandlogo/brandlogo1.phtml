@@ -1,0 +1,267 @@
+<?php
+
+/**
+
+ * M-Connect Solutions.
+
+ * 
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ *
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://www.mconnectsolutions.com/lab/
+
+ *
+
+ * @category   M-Connect
+
+ * @package    M-Connect
+
+ * @copyright  Copyright (c) 2009-2010 M-Connect Solutions. (http://www.mconnectsolutions.com)
+
+ */
+ 
+ // kindly remove the 1st if statement to make it work again...
+
+$mycheck ='remove if to work';
+
+if($mycheck=='rework'){
+
+
+if (Mage::getStoreConfig('brandlogo/general/brandlogoenabled') == "1"):         
+
+    $brandModel = Mage::getModel('brandlogo/brandlogo')->getCollection()->addFieldToFilter('status', 1);
+
+    if (count($brandModel) > 0):
+
+        ?>
+
+        
+
+
+
+    
+
+            <style type="text/css">
+
+            
+
+            
+
+#clients-logo{
+
+	width:210px;
+
+	margin:0px;
+
+	padding:0px;
+
+	float:left;
+
+
+
+}
+
+#clients-logo .clients_title{
+
+	width:210px;
+
+	height:40px;
+
+	float:left;
+
+	margin:0px;
+
+	padding:0px;
+
+	
+
+	}
+
+#clients-marquee{
+
+	width:208px;
+
+	float:left;
+
+	margin:0px;
+
+	padding:0px;
+
+		/*padding:20px;*/
+
+	background: #e3e3e3; /* Old browsers */
+
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UzZTNlMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZiZmJmYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlM2UzZTMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+
+background: -moz-linear-gradient(top,  #e3e3e3 0%, #fbfbfb 50%, #e3e3e3 100%); /* FF3.6+ */
+
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e3e3e3), color-stop(50%,#fbfbfb), color-stop(100%,#e3e3e3)); /* Chrome,Safari4+ */
+
+background: -webkit-linear-gradient(top,  #e3e3e3 0%,#fbfbfb 50%,#e3e3e3 100%); /* Chrome10+,Safari5.1+ */
+
+background: -o-linear-gradient(top,  #e3e3e3 0%,#fbfbfb 50%,#e3e3e3 100%); /* Opera 11.10+ */
+
+background: -ms-linear-gradient(top,  #e3e3e3 0%,#fbfbfb 50%,#e3e3e3 100%); /* IE10+ */
+
+background: linear-gradient(to bottom,  #e3e3e3 0%,#fbfbfb 50%,#e3e3e3 100%); /* W3C */
+
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e3e3e3', endColorstr='#e3e3e3',GradientType=0 ); /* IE6-8 */
+
+border:1px solid #ccc;
+
+
+
+	}
+
+#clients-marquee ul{
+
+	width:100%;
+
+	float:left;
+
+	margin:0px 0px 0px 0px;
+
+
+
+
+
+
+
+	}
+
+#clients-marquee ul li{
+
+		width:89px;
+
+		height:61px;
+
+		float:left;
+
+		margin:5px 0px 5px 3px;
+
+		padding:5px;
+
+		background-color:#fff;
+
+		border-radius:5px;
+
+		-moz-border-radius:5px;
+
+		-webkit-border-radius:5px;
+
+		-webkit-box-shadow: 0px 5px 0px 0px rgba(213, 213, 213, 0.5);
+
+		-moz-box-shadow:    0px 5px 0px 0px rgba(213, 213, 213, 0.5);
+
+ 		box-shadow:         0px 5px 0px 0px rgba(213, 213, 213, 0.5);
+
+		
+
+	}
+
+#clients-marquee ul li img{
+
+		width:89px;
+
+		height:61px;
+
+		float:left;
+
+		margin:0px;
+
+		padding:0px;
+
+	}
+
+            </style>
+
+   
+
+        <div id="clients-logo">
+
+            <div class="clients_title">
+
+                <?php
+
+                //if (Mage::getStoreConfig('brandlogo/general/logotitle') != "")
+
+                  //  echo Mage::getStoreConfig('brandlogo/general/logotitle');
+
+                ?>
+
+                <img src="<?php echo $this->getSkinUrl('images/our_clients.jpg')?>" width="210" height="40"/>
+
+            </div>
+
+
+
+            <div id="clients-marquee">
+
+               <marquee style="padding:5px;" scrollamount="5" scrolldelay="5">
+
+                <ul>
+
+                    <?php
+
+                    $imageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . "brandlogo";
+
+
+
+
+
+
+
+                    foreach ($brandModel as $k => $v) {
+
+                        ?>
+
+
+
+                        <li> <a href="<?php echo $v->getUrl(); ?>" target="_blank">
+
+                                <img src="<?php echo $imageUrl . $v->getFilename(); ?>" alt="<?php echo $v->getTitle(); ?>" title="<?php echo $v->getTitle(); ?>" />
+
+                            </a>
+
+                        </li>
+
+                        
+
+                        <?php
+
+                    }
+
+                    ?> 
+
+
+
+                </ul>
+
+</marquee>
+
+            </div>
+
+            
+
+<!--            <input type='hidden' id='hidden_auto_slide_seconds' value=0 />
+
+-->        </div>
+
+                
+
+        
+
+    <?php endif; ?>
+
+<?php endif; ?>
+<?php } ?>

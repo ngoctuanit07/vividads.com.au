@@ -1,0 +1,42 @@
+<div class="box base-mini new-albums">
+  
+
+	<?php 	
+			$_model = Mage::getModel('gallery/album');
+			
+		//	$_albums = $_model->getCollection()->getData();
+		
+	
+	$new_albums = $this->getNewAlbums(); 
+	
+
+	//zend_debug::dump($new_albums);
+	
+	?>
+
+	<ul>
+	<?php	foreach ($new_albums as $item){
+		
+		$_album_id = $item->getAlbum_id();		
+		
+		if($_album_id ==16){		
+		
+		?>
+			<li>				
+				
+                <a href="<?php echo $item->getUrlRewrite(); ?>" alt="<?php echo $item->getTitle(); ?>" >
+                <img src="<?php echo $this->helper('gallery/image')->init($item->getFilename())->resize(150, 150); ?>"/>
+                
+                </a>
+			</li>		
+	<?php 
+	
+	
+	} 
+	}
+	
+	?>
+	</ul>	
+
+	
+</div>

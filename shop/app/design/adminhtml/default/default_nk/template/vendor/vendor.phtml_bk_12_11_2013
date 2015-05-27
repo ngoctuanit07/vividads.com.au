@@ -1,0 +1,548 @@
+<?php
+
+$temptableSaleOrder=Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
+$sqlSaleOrder="SELECT * FROM ".$temptableSaleOrder;
+$chkSaleOrder = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlSaleOrder);
+
+foreach($chkSaleOrder as $item)
+{
+    $temptableVendor=Mage::getSingleton('core/resource')->getTableName('vendor_item');
+    if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableVendor))
+    {
+        $sqlVendor="SELECT * FROM ".$temptableVendor." WHERE item_id = '".$item['item_id']."' AND order_id = '".$item['order_id']."' ";
+        $chkVendors = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlVendor);
+    }
+    
+    if(!count($chkVendors))
+    {
+        $temptableProofs=Mage::getSingleton('core/resource')->getTableName('proofs');
+        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableProofs))
+        {
+            $sqlProofs="SELECT * FROM ".$temptableProofs." WHERE item_id = '".$item['item_id']."' AND order_id = '".$item['order_id']."' ";
+            $chkProofs = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlProofs);
+        }
+        
+        $temptableOrder=Mage::getSingleton('core/resource')->getTableName('vendor_order');
+        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableOrder))
+        {
+            $sqlOrder="SELECT * FROM ".$temptableOrder." WHERE item_id = '".$item['item_id']."' AND order_id = '".$item['order_id']."' ";
+            $chkOrder = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlOrder);
+        }
+        
+        $temptablePlanning=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptablePlanning))
+        {
+            $sqlPlanning="SELECT * FROM ".$temptablePlanning." WHERE item_id = '".$item['item_id']."' AND quote_id = '".$item['order_id']."' AND planning_type = 'order' ";
+            $chkPlanning = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlPlanning);
+        }
+        
+        if(count($chkProofs) > 0)
+        $file_recieved = 'yes';
+        else
+        $file_recieved = 'no';
+        
+        if($chkProofs[0]['status'] == 'Approved')
+        $proof_approved = 'yes';
+        else
+        $proof_approved = 'no';
+        
+        
+        $sqlVendorItem="INSERT INTO ".$temptableVendor." SET target_user = '".$chkOrder[0]['assign_to']."', item_id = '".$item['item_id']."', order_id = '".$item['order_id']."', product_id = '".$item['product_id']."', product_sku = '".addslashes($item['sku'])."', qty = '".$chkProofs[0]['quantity']."', progress = 'prod', proof_approve_date = '".$chkProofs[0]['approve_date']."', shipping_time = '".$chkPlanning[0]['shipping_date']."', file_recieved ='".$file_recieved."', proof_approved = '".$proof_approved."'";
+        
+       // if($chkPlanning[0]['shipping_date'] != '')
+        //exit;
+        
+        $chkVendorItem = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlVendorItem);
+    }
+    else
+    {
+        $temptableProofs=Mage::getSingleton('core/resource')->getTableName('proofs');
+        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableProofs))
+        {
+            $sqlProofs="SELECT * FROM ".$temptableProofs." WHERE item_id = '".$item['item_id']."' AND order_id = '".$item['order_id']."'  ORDER BY entity_id DESC LIMIT 1";
+            $chkProofs = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlProofs);
+        }
+        
+        $temptableOrder=Mage::getSingleton('core/resource')->getTableName('vendor_order');
+        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableOrder))
+        {
+            $sqlOrder="SELECT * FROM ".$temptableOrder." WHERE item_id = '".$item['item_id']."' AND order_id = '".$item['order_id']."' ";
+            $chkOrder = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlOrder);
+        }
+        
+        $temptablePlanning=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptablePlanning))
+        {
+            $sqlPlanning="SELECT * FROM ".$temptablePlanning." WHERE item_id = '".$item['item_id']."' AND quote_id = '".$item['order_id']."' AND planning_type = 'order' ";
+            $chkPlanning = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlPlanning);
+        }
+       
+        
+        if(count($chkProofs) > 0)
+        $file_recieved = 'yes';
+        else
+        $file_recieved = 'no';
+        
+        if($chkProofs[0]['status'] == 'Approved' or $chkProofs[0]['status'] == 'Awaiting Proof Approval')
+        $proof_approved = 'yes';
+        else
+        $proof_approved = 'no';
+        
+        
+        $sqlVendorItem="UPDATE ".$temptableVendor." SET   target_user = '".$chkOrder[0]['assign_to']."', qty = '".$chkProofs[0]['quantity']."',  proof_approve_date = '".$chkProofs[0]['approve_date']."', shipping_time = '".$chkPlanning[0]['shipping_date']."', file_recieved ='".$file_recieved."', proof_approved = '".$proof_approved."' WHERE item_id = '".$item['item_id']."' AND order_id = '".$item['order_id']."'";
+       // if($chkPlanning[0]['shipping_date'] != '')
+        //exit;
+        
+        $chkVendorItem = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlVendorItem);
+    }
+}
+
+function IntervalDays($CheckIn,$CheckOut){ 
+$CheckInX = explode("-", $CheckIn); 
+$CheckOutX =  explode("-", $CheckOut); 
+$date1 =  mktime(0, 0, 0, $CheckInX[1],$CheckInX[2],$CheckInX[0]); 
+$date2 =  mktime(0, 0, 0, $CheckOutX[1],$CheckOutX[2],$CheckOutX[0]); 
+ $interval =($date2 - $date1)/(3600*24); 
+
+// returns numberofdays 
+return  $interval ; 
+
+} 
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl()?>vendor.css" media="all" />
+<?php
+
+$user = Mage::getSingleton('admin/session');
+$userId = $user->getUser()->getUserId();
+
+$user_role = Mage::getSingleton('admin/session')->getUser();
+ //Get the role id of the user
+$roleId = implode('', $user_role->getRoles());
+
+//Get the role name
+$roleName = Mage::getModel('admin/roles')->load($roleId)->getRoleName();
+?>
+<?php
+
+if($roleName == 'Administrators')
+{
+?>
+<div id="roleid" style="display:none;">
+    <div class="vendortag"> Assign The Ptint Per Day</div>
+    <?php
+    
+    $url3 = Mage::helper("adminhtml")->getUrl("vendor/adminhtml_vendor/printassign");
+    
+        $roles = Mage::getModel('admin/roles')->getCollection();
+       foreach($roles as $role):
+          //echo '<br/>Role : '.$role->getId()." | ".$role->getRoleName();
+          if($role->getRoleName() == 'Vendor' )
+          {
+            $roleid = $role->getId();
+          }
+          
+       endforeach;
+       
+        $temptableUser=Mage::getSingleton('core/resource')->getTableName('admin_role');
+                
+        
+        $sqlUser="SELECT * FROM  ".$temptableUser." WHERE  parent_id ='".$roleid."' ";
+        $chkUser = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlUser);
+?>
+<form action="<?php echo str_replace('//s','/admin/s',$url3)?>" method="post" enctype="multipart/form-data">
+<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey()?>" />
+<table class="userset">
+    <?php
+        foreach($chkUser as $user)
+        {
+            $user = Mage::getModel('admin/user')->load($user['user_id']);
+            
+            $temptablePrint=Mage::getSingleton('core/resource')->getTableName('vendor_user_print');
+                
+        
+            $sqlPrint="SELECT * FROM  ".$temptablePrint." WHERE  user_id ='".$user->getId()."' ";
+            $chkPrint = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlPrint);
+            ?>
+            <tr>
+                <td class="tagleft">
+                    <?php echo $user->getName();?>
+                </td>
+                <td class="tagright">
+                   <input type="text" name="user[<?php echo $user->getId();?>]" value="<?php echo $chkPrint[0]['print_number']?>"/>
+                </td>
+            </tr>
+            <?php
+            
+        }
+       
+        
+    ?>
+    <tr>
+        <td colspan="2">
+            <div class="assignsubmit"><input type="submit" value="Submit" name="submit" /></div>
+            <div onclick="assignback();" class="assignback">Back</div>
+        </td>
+    </tr>
+</table>
+ </form>   
+</div>
+<?php }?>
+
+<div id="total_div">
+    
+<?php
+
+if($roleName == 'Administrators')
+{
+?>
+
+<script type="text/javascript">
+    function assignprint()
+   {
+    document.getElementById('roleid').style.display = 'block';
+    document.getElementById('total_div').style.display = 'none';
+    document.getElementById('assignp').style.display = 'none';
+   }
+   
+   function assignback()
+   {
+    document.getElementById('total_div').style.display = 'block';
+    document.getElementById('assignp').style.display = 'block';
+    document.getElementById('roleid').style.display = 'none';
+   }
+</script>  
+    <div class="assignp" id="assignp" onclick="assignprint();">Assign Print Number</div>
+    
+    
+    
+<div>
+    <table style="width:100%" class="vendoritemlist" cellspacing="0" cellpadding="0">
+        <thead>
+            <th>Model #</th>
+            <th>Order #</th>
+            <th>Qty</th>
+            <th>File Status</th>
+            <th>Proof Status</th>
+            <th>Approve Status</th>
+            <th>Size</th>
+            <th>Day To Deadline</th>
+            <th>Status</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <?php
+                
+            
+                $temptableVendor=Mage::getSingleton('core/resource')->getTableName('vendor_item');
+                $sqlVendor="SELECT * FROM ".$temptableVendor." ORDER BY entity_id DESC";
+                $chkVendors = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlVendor);
+                
+               
+                
+                foreach($chkVendors as $vendor)
+                {
+                    $read = 0;
+                    $order = Mage::getModel('sales/order')->load($vendor['order_id']);
+                    
+                    $customer = Mage::getModel('customer/customer')->load( $order->getCustomerId());
+                    
+                    $temptableChat=Mage::getSingleton('core/resource')->getTableName('vendor_chat');
+                    
+                    $user = Mage::getSingleton('admin/session');
+                    $userId = $user->getUser()->getUserId();
+                    
+                    $sqlChat="SELECT * FROM  ".$temptableChat." WHERE  vendor_list_id ='".$vendor['entity_id']."' AND is_read = 1 AND user_id != '".$userId."'";
+                    $chkChat = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlChat);
+                    
+                    if(count($chkChat)){ $read = 1;}
+            ?>
+            <tr>
+                    
+                    <td><?php echo $vendor['product_sku'];?></td>
+                    <td><?php echo $order->getIncrementId();?></td>
+                    <td><?php echo $vendor['qty'];?></td>
+                    <td><?php if($vendor['file_recieved'] == 'yes')echo 'File Recieved';else echo '......Waiting';?></td>
+                    <td><?php if($vendor['proof_approved'] == 'yes')echo 'Proof Sent';?></td>
+                    <td><?php if($vendor['proof_approve_date'] != '0000-00-00 00:00:00')echo 'Approve '.$vendor['proof_approve_date'];else if($vendor['proof_approved'] == 'yes')echo 'Pending Approval Waiting';?></td>
+                    
+                    <td>
+                        <?php
+                            $temptableProofs=Mage::getSingleton('core/resource')->getTableName('proofs');
+                            
+                            $sqlProofs="SELECT * FROM  ".$temptableProofs." WHERE  order_id = '".$vendor['order_id']."' AND item_id = '".$vendor['item_id']."' ";
+                            $chkProofs = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlProofs);
+                            
+                            $path = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'proofs/'.$chkProofs[0]['file'];
+                            $headers  = get_headers($path, 1);
+                            if($headers['Content-Length'] != 0)
+                            echo $fsize    = $headers['Content-Length']. ' bytes';
+                        ?>
+                    </td>
+                    <td><?php if($vendor['shipping_time'] != '0000-00-00')echo IntervalDays(date('Y-m-d'),$vendor['shipping_time']).' days';?></td>
+                    
+                    <td><?php echo $vendor['progress'];?></td>
+                    <td><span onclick="chatopen(<?php echo $vendor['entity_id']?>,<?php echo $read;?>)" id="list_<?php echo $vendor['entity_id']?>"><?php if(count($chkChat)){echo '<strong>'; $read = 1;?><img src="<?php echo $this->getSkinUrl();?>images/chat-actv.png"/><?php }else{?><img src="<?php echo $this->getSkinUrl();?>images/chat-nrml.png"/><?php }?></span></td>
+            </tr>
+            <?php
+                }
+                
+            ?>
+        </tbody>
+    </table>
+</div>
+<?php
+}
+else
+{
+?>
+<div>
+    <table style="width:100%" class="vendoritemlist" cellspacing="0" cellpadding="0">
+        <thead>
+            <th>Order Time</th>
+            <th>Order #</th>
+            <th>Customer Name</th>
+            <th>Sku</th>
+            <th>Shipping Time</th>
+            <th>Status</th>
+            <th>Progress</th>
+        </thead>
+        <tbody>
+            <?php
+                
+            
+                $temptableVendor=Mage::getSingleton('core/resource')->getTableName('vendor_item');
+                $sqlVendor="SELECT * FROM ".$temptableVendor." WHERE file_recieved = 'yes' AND proof_approved = 'yes' AND proof_approve_date != '0000-00-00 00:00:00'  AND target_user = '".$userId."'  ORDER BY entity_id DESC";
+                $chkVendors = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlVendor);
+                
+               
+                
+                foreach($chkVendors as $vendor)
+                {
+                    $read = 0;
+                $order = Mage::getModel('sales/order')->load($vendor['order_id']);
+                
+                $customer = Mage::getModel('customer/customer')->load( $order->getCustomerId());
+                
+                $temptableChat=Mage::getSingleton('core/resource')->getTableName('vendor_chat');
+                
+                $user = Mage::getSingleton('admin/session');
+                $userId = $user->getUser()->getUserId();
+                
+                $sqlChat="SELECT * FROM  ".$temptableChat." WHERE  vendor_list_id ='".$vendor['entity_id']."' AND is_read = 1 AND user_id != '".$userId."'";
+                $chkChat = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlChat);
+                
+                if(count($chkChat)){ $read = 1;}
+            ?>
+            <tr>
+                    <td><?php echo $vendor['proof_approve_date'];?></td>
+                    <td><?php echo $order->getIncrementId();?></td>
+                    <td><?php echo $customer->getName();?></td>
+                    <td><?php echo $vendor['product_sku'];?></td>
+                    <td><?php echo $vendor['shipping_time'];?></td>
+                    
+                    <td>
+                        <span onclick="chatopen(<?php echo $vendor['entity_id']?>,<?php echo $read?>)" id="list_<?php echo $vendor['entity_id']?>"><?php if(count($chkChat)){ $read = 1;?><img src="<?php echo $this->getSkinUrl();?>images/chat-actv.png"/><?php } else {?><img src="<?php echo $this->getSkinUrl();?>images/chat-nrml.png"/><?php }?></span>
+                        <span onclick="printorder(<?php echo $vendor['order_id']?>,<?php echo $vendor['item_id']?>)"><img src="<?php echo $this->getSkinUrl();?>images/prnt.png"/></span>
+                        <span onclick="shippingorder(<?php echo $vendor['order_id']?>,<?php echo $vendor['entity_id']?>)"><img src="<?php echo $this->getSkinUrl();?>images/ship.png"/></span>
+                    </td>
+                    <td><?php echo $vendor['progress'];?></td>
+            </tr>
+            <?php
+                }
+                
+            ?>
+        </tbody>
+    </table>
+</div>
+<?php
+}
+
+?>
+</div>
+
+<div class="chatmain" id="chatmain" style="display:none;">
+    <div class="chatclose" onclick="chatclose();">X</div>
+    <div class="chatbody">
+        <table class="chattab">
+            
+             <input name="listid" id="listid"   type="hidden">
+            <tr>
+                <td><div id="commentlist"></div></td>
+            </tr>
+            <tr>
+                <td><textarea class="comment" name="comment" id="comment"></textarea></td>
+            </tr>
+            <tr><td class="chatbutton"><button type="submit" name="submit" onclick="submitchat();" >Submit</button></td></tr>
+            
+        </table>
+    </div>
+</div>
+
+<div id="printid" style="display:none;"></div>
+
+<div id="docketid" style="display:none;"></div>
+
+
+
+<script type="text/javascript">
+function urlMaker()
+    {
+        var NumberValue = document.getElementById("label_count").value;
+        if ( isNaN(NumberValue) || NumberValue == "" || NumberValue == 0) 
+        {
+            <?php $message = $this->__('Please enter the number of label') ?>
+            alert("<?php echo $message ?>");        
+            return false;
+        }
+        
+         document.location.href = (document.getElementById("barurl").value + document.getElementById("label_count").value);
+         
+     }
+    function chatopen(id,read)
+    {
+        document.getElementById('listid').value = id;
+        
+        if(read == 1)
+        document.getElementById('list_'+id).innerHTML = '<img src="<?php echo $this->getSkinUrl();?>images/chat-nrml.png"/>';
+        
+        var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	       //alert(xmlhttp.responseText);
+	       document.getElementById("commentlist").innerHTML=xmlhttp.responseText;
+                document.getElementById('chatmain').style.display = 'block';
+	       
+	       
+	   }
+	 }
+       form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/vendor/adminhtml_vendor/chatload/?listid="+id+"&read="+read+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+    }
+    
+    function submitchat()
+    {
+       var listid = document.getElementById('listid').value;
+       var comment = document.getElementById('comment').value;
+       
+       document.getElementById('comment').value = '';
+       
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	       //alert(xmlhttp.responseText);
+	       document.getElementById("commentlist").innerHTML=xmlhttp.responseText;
+	       
+	       
+	   }
+	 }
+       form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/vendor/adminhtml_vendor/addchat/?listid="+listid+"&comment="+comment+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   
+   function printorder(orderid,itemid)
+    {
+       
+       
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	       //alert(xmlhttp.responseText);
+	       document.getElementById("printid").innerHTML=xmlhttp.responseText;
+               document.getElementById('printid').style.display = 'block';
+               document.getElementById('total_div').style.display = 'none';
+	       
+	       
+	   }
+	 }
+       form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/vendor/adminhtml_vendor/printload/?orderid="+orderid+"&itemid="+itemid+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   
+   function shippingorder(orderid,listid)
+    {
+       
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	       //alert(xmlhttp.responseText);
+	       document.getElementById("docketid").innerHTML=xmlhttp.responseText;
+               document.getElementById('docketid').style.display = 'block';
+               document.getElementById('total_div').style.display = 'none';
+	       
+	       
+	   }
+	 }
+       form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/vendor/adminhtml_vendor/docketload/?orderid="+orderid+"&listid="+listid+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   
+   function chatclose()
+   {
+     document.getElementById('chatmain').style.display = 'none';
+   }
+   
+   function backdocket()
+   {
+    document.getElementById('total_div').style.display = 'block';
+    document.getElementById('docketid').style.display = 'none';
+   }
+   
+   function backlist()
+   {
+    document.getElementById('total_div').style.display = 'block';
+    document.getElementById('printid').style.display = 'none';
+   }
+   
+   
+</script>

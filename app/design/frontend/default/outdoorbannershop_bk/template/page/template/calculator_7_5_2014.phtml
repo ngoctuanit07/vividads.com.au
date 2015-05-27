@@ -1,0 +1,1174 @@
+<script type="text/javascript" src="<?php echo $this->getJsUrl()?>jquery-latest.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+
+function loadProduct(cid){
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/loadproduct';
+	if(cid > 0){
+		
+		jQuery('#loader').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, catId: cid },  
+			success:function(result){
+				jQuery('#loader').css('display','none');
+				jQuery('#mainProduct').html(result);
+			}
+		});
+	}else{
+		alert('Please select a valid category');
+	}
+}
+
+function load_three_way_Product(cid){
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/loadproducthome';
+	if(cid > 0){
+		
+		jQuery('#loaderp2').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, catId: cid },  
+			success:function(result){
+				jQuery('#loaderp2').css('display','none');
+				jQuery('#mainProduct2').html(result);
+			}
+		});
+	}else{
+		alert('Please select a valid category');
+	}
+}
+
+function loadProductDetails(pid){
+	//alert("pid::"+pid);
+	pidar = pid.split(':');
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/loadproductdetails';
+	
+	//url= '<?php echo Mage::getBaseUrl();?>customoptions/index/index/id/'+pidar[1]+'/';
+	//url= '<?php echo Mage::getBaseUrl();?>catalog/product/view/id/610/';
+	
+	if(pid != ''){
+		jQuery('#loader').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, pId: pid },  
+			success:function(result){
+				//alert('response');
+				ret = result.split('##');
+				jQuery('#loader').css('display','none');
+				jQuery('#total_display').html(ret[0]);
+				jQuery('#total_display_1').html(ret[0]);
+				
+				jQuery('#price_get_home').val(ret[0]);
+				jQuery('#cusopt').html(ret[1]);
+				//jQuery('#prcbutnret').html(ret[2]); ///28-4-2014
+				
+				
+			}
+		});
+		
+	}else{
+		alert('Please select a valid product');
+	}
+	
+}
+
+function loadProductDetailsPop(pid){
+	//alert("pid::"+pid);
+	pidar = pid.split(':');
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/loadproductdetailspop';
+	var param="pId="+pid+"&form_key="+form_key;
+	if(pid != ''){
+		jQuery('#loader').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: param,  
+			success:function(result){
+				ret = result.split('##');
+				jQuery('#cusopt_pop').html(ret[1]);
+				jQuery('#cal-wrap').remove();
+				
+				
+			}
+		});
+		
+	}else{
+		alert('Please select a valid product');
+	}
+	
+}
+
+
+function getchildren(optid,optval){
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/getchildopt';
+	if(optval != 0){
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, optId: optid, optvalId :optval  },  
+			success:function(result){
+				jQuery('#cusopt_1').html(result);
+				
+			}
+		});
+		
+		
+		
+	}else{
+		alert('Please select a valid product');
+	}
+}
+
+function getchildrenpop(optid,optval){
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/getchildoptpop';
+	var param="form_key="+form_key+"&optId="+optid+"&optvalId="+optval;
+	//alert(param);
+	if(optval != 0){
+		jQuery.ajax({
+			url:url,
+			data: param,  
+			success:function(result){
+				
+				jQuery('#cusopt_pop_1').html(result);
+			}
+		});
+	}
+	else{
+		alert('Please select a valid product');
+	}
+}
+
+///////29-4-2014 S
+function gotodetails(){
+	var width=jQuery('#room_width').val();
+	var length=jQuery('#room_length').val();
+	var unit=jQuery("#major option:selected").text();
+	jQuery('#dimension_home').val("width="+width+""+unit+" length="+length+""+unit);
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/addcartmainhome';
+	var selArray = new Array();
+	var optArray = new Array();
+	var selStr = '';
+	var optStr = '';
+	var notes = jQuery('#description_pr').val();
+      
+	price = jQuery('#productcustomprice').val();
+	jQuery('#optarea .option select').each(function() {
+	    selid = this.id.split('_');
+	    optVal = jQuery( "#"+this.id+" option:selected" ).val();
+	    if(selid[1] != "" && optVal !=""){
+		selArray.push(selid[1]);
+		optArray.push(optVal);
+		selStr +=selid[1]+"##";
+		optStr +=optVal+"##";
+	    }
+	    
+	});
+	seloptstr = selStr+"**"+optStr;
+	jQuery('#optarr_home').val(seloptstr);
+	
+	if(optArray.length > 0){
+		jQuery('#form-home').submit();
+		
+	}else{
+		alert("Please select product options");
+	}
+	
+}
+
+</script>
+
+
+
+<?php
+	$storeId=Mage::app()->getStore()->getId();
+	$rootCategoryId = Mage::app()->getStore($storeId)->getRootCategoryId();
+	$categories = Mage::getModel('catalog/category')->getCategories($rootCategoryId);
+?>
+<!-- add to cart success pop up starts-->
+<div id="MB_window" style="width: 500px; height: auto; left: 504.5px; display:none;" >
+	<div id="MB_frame">
+		<div id="MB_header">
+			<div id="MB_caption">Add to Cart</div>
+			<a id="MB_close" title="Close window" href="javascript:void(0);" ><span>×</span></a>
+		</div>
+		<div id="MB_content" style="">
+			<div style="">
+				<ul class="messages">
+					<li class="success-msg">
+					<ul>
+					<li><span id="success-cart" style="display: none;"></span></li>
+					</ul>
+					</li>
+				</ul>
+				<div style="text-align: center;">
+					<button type="button" title="Continue Shopping" class="button MB_focusable"  onclick="iCart.close()"><span><span>Continue Shopping</span></span></button>
+					&nbsp;&nbsp;
+					<button type="button" title="Go to Shopping Cart" class="button MB_focusable" onclick="location.href='<?php echo $this->getBaseUrl();?>checkout/cart/'"><span><span>Go to Shopping Cart</span></span></button>
+				</div>
+				
+				<div class="icart-collaterals">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- add to cart success pop up ends-->
+
+<div class="formInfo">
+	<div id="instantBox" class="clearfix">
+		<div class="lable"></div>
+		<div class="lable lable2"></div>
+		<form id="form-home" method="post" action="<?php echo Mage::getBaseUrl();?>carpet/index/getgodetails">
+		<div class="instantBox-body clearfix">
+			<!---------Left Starts ---------->
+			<div class="instantPrice float-L">
+				<dl class="clearfix">
+				<dt>Category</dt>
+				<dd id="mainCategories">   
+					<select name="category" class="textfield" id="category" onchange="loadProduct(this.value)">
+					    <option value="0">--Please select--</option>
+					    <?php foreach($categories as $_category){ ?>
+					    <option value="<?php echo $_category->getId();?>"><?php echo $_category->getName();?></option>
+					    <?php } ?>
+					</select> 
+				</dd>
+				</dl>
+				
+				<dl class="clearfix">
+				<dt>Product</dt>
+				<dd>
+					<div id="mainProduct">
+					  <select class="textfield" id="product_sel" name="productid">
+					  <option value="0">--Please select--</option>
+					  </select>
+					</div>
+					<div id="loader" style="display:none; margin-left:100px;">
+					<img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/>
+					</div>                     
+				</dd>
+				</dl>
+				<div id="optarea">
+				<div class="option" id="cusopt"></div>
+				<div class="option" id="cusopt_1"></div>
+				</div>
+				
+				<dl class="clearfix">
+				<dt>Price</dt>
+				<dd class="price">
+				<div id="total_display" class="float-L">$0.00</div>
+				<input type="hidden" id="price_get_home" value="0" />
+				<!--<input type="hidden" id="optarr" value="" />-->
+				
+				  
+				</dd>
+			        </dl>
+				
+<!--		size width starts-->
+<div class="calculator-wrapper" id="cal-wrap">
+<div class="block block-calculator">
+	<div class="block-content">
+			 
+	<dl style="" id="unitBox" class="clearfix">
+		<dt>Unit</dt>
+		<dd>
+		<input type="hidden" name="cnvunit" id="cnvunit" value="m"/>
+		<select class="textfield dropdown-s" id="major" name="major" onchange="getconversion(this.value);">
+			<option value="m">m.</option>
+			<option value="cm">cm.</option>
+			<option value="mm">mm.</option>
+		</select> 
+		</dd>
+	</dl>
+	
+	<dl style="" id="sizeBox" class="clearfix">
+		<dt>Size (m)</dt>
+		
+		<dd id="main_size">
+		<div class="sizes-block">
+			<input type="text" size="5" value="1" name="room_width" id="room_width" onkeyup="getSizevalkeyHome();" >
+			<div class="float-L">
+				<a onclick=" getSizeValHome('room_width','arrowTop');" class="arrowTop" href="javascript:void(0);">I</a>
+				<a onclick="getSizeValHome('room_width','arrowbtm');" class="arrowbtm" href="javascript:void(0);">D</a>
+			</div>
+			<span>width</span>
+		</div>	
+		<div class="sizes-block last">
+			<input type="text" size="5" value="1" name="room_length" id="room_length" onkeyup="getSizevalkeyHome();" >
+			<div class="float-L">
+				<a onclick=" getSizeValHome('room_length','arrowTop');" class="arrowTop" href="javascript:void(0);">I</a>
+				<a onclick=" getSizeValHome('room_length','arrowbtm');"  class="arrowbtm" href="javascript:void(0);">D</a>
+			</div>
+			<span>height</span> 
+		</div>
+		</dd>
+	</dl>
+	</div>
+		
+</div>
+
+
+<div class="block block-calculator" style="display: none">
+	<div class="block-title">
+			<strong><span><?php echo $this->__('Conversion')?></span></strong>
+	</div>
+	<div class="block-content">
+		<p><?php echo $this->__('Convert feet and/or inches into meters:')?></p>
+		<div class="inneri">
+			<div class="inputi">
+				<div class="inputi-f"><?php echo $this->__('Feet')?></div>
+				<div class="inputi-f-s">&nbsp;</div>
+				<div class="inputi-f"><?php echo $this->__('Inches')?></div>
+			</div>
+			<div class="inputi">
+				<div class="inputi-f"><input type="text" size="5" value="1" name="feet" id="calc_feet" ></div>
+				<div class="inputi-f-s">&nbsp;</div>
+				<div class="inputi-f"><input type="text" size="5" value="1" name="inches" id="calc_inches"></div>
+			</div>
+			<div class="buttoni">
+				<button type="button"  class="button"><span><span><?php echo $this->__('Convert')?></span> </span> </button>
+			</div>
+		</div>
+		<div class="inneri">
+			<div class="texti">
+			<p><b><?php echo $this->__('Result:')?></b> <br>
+			<font color="#FF0066"><span id="calc_metres">0</span> <?php echo $this->__('meters')?></font>
+			</p>
+			</div>
+		</div>
+			
+	</div>
+</div>
+</div>
+<!--		size width ends-->
+	<div class="pricebottom">
+		<span class="prcbutn" style="height:0px" id="prcbutnret"> <!--28-4-2014-->
+			<input type="button" style="color:transparent;" value="start order" class="startOrder-btn" title="Start Order" name="getprice" onclick="gotodetails();"><!--29-4-2014-->
+		</span>
+		<dl class="totalprice blue-clr">
+			<div class="pricetopbg"></div>
+			<span id="grandtotaldisplay"> TOTAL PRICE : <span id="total_display_1">$0.00 </span></span>
+			<div class="pricebtmbg"></div>
+		</dl>
+	</div>
+</div>
+			<!------------Left Ends------- -->
+	<div class="instant-separator float-L">
+		<div class="ortext"></div>
+	</div>
+			
+<!--Right Starts -->
+<div class="quickStart-Order float-L">
+	<div class="quickStart-Order float-L">
+		<div class="title blue-clr">3 Easy ways to order</div>
+		<div class="align-C">Category:
+			<select name="threeway_category" class="textfield dropdown" style="width:215px;" id="threeway_category" onchange="load_three_way_Product(this.value)">
+				<option value="0">--Please select--</option>
+				<?php foreach($categories as $_category){ ?>
+				<option value="<?php echo $_category->getId();?>"><?php echo $_category->getName();?></option>
+				<?php } ?>
+			</select>
+		</div>
+		
+		<div id="mainProduct2">                
+			Product:
+			<select class="textfield" name="threeway_product" id="threeway_product" style="width:215px; margin-left:8px;">
+				<option value="0">--Please select--</option>
+			</select>                  
+		</div>               
+		<div id="loaderp2" style="display:none; margin-left:100px;">
+		<img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/>
+		</div>
+		<input type="hidden" name="optarr_home" id="optarr_home" />
+		<input type="hidden" name="cusprice_home" id="cusprice_home" value="0"/>
+		<div class="StartorderButtons">
+			<input name="submit-prt-ready" type="button" value="print ready" title="Submit Print Ready Design" class="buttons" id="printreadybtn" style="color:transparent;" onclick="uploadArtWork();" />
+			<input name="order-form" value="design tool" type="button" title="Design Your Own Banner" class="buttons designYour-banner" id="prdbtn" style="color:transparent;" />
+			<input name="product-details" type="button" value="letusdesign" title="Let us Design Your Banner" class="buttons letus-design-banner" id="letusbtn"  style="color:transparent;" />
+		</div>
+		
+	</div>
+</div>
+<!--Right Ends -->
+		</div>
+		<input type="hidden" name="dimension_home" id="dimension_home" />
+		</form>
+	</div>
+</div>
+
+<!---------------------------------------------------------------------------------------------------------------------------------------->
+
+
+<script type="text/javascript">
+
+function uploadArtWork()
+{
+	
+	var pid="";
+	var cid="";
+	
+	pid=document.getElementById("threeway_product").value;
+	cid=document.getElementById("threeway_category").value;
+	
+	arr_pro_devider=Array();
+	
+	arr_pro_devider=pid.split(":");
+	
+	if (arr_pro_devider.length>1)
+	{
+		pid=arr_pro_devider[1];
+	}
+	else
+	{
+		pid="";
+	}
+	
+	if (pid!="" && cid!="0")
+	{
+		getartWorkgc(pid,cid);
+	}
+	else
+	{
+		alert("Please select category and product before uploading an artwork");
+	}
+	
+	
+	
+}
+
+
+function getartWorkgc(pid,cid){
+    form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+    url= '<?php echo Mage::getBaseUrl();?>carpet/index/getartwork';
+    
+    if(pid != ''){
+        jQuery("#ajaxloader").css('display','block');
+        jQuery.ajax({
+            url:url,
+            data: { form_key: form_key, prodId: pid, catId: cid},  
+            success:function(result){
+                ret = result.split('##');
+                jQuery("#instantPriceId").html('');
+                jQuery("#ajaxloader").css('display','none');
+                jQuery("#uploadArtWorkPopup").css('display','block');
+                jQuery("#artworkreturn_1").html(ret[0]);
+                jQuery("#artworkreturn_2").html(ret[1]);
+                jQuery("#artworkreturn_3").html(ret[2]);
+		jQuery('.arrowbtm').trigger('click');
+		jQuery('.arrowtop').trigger('click');
+		loadProductDetailsPop(pid);
+            }
+	});
+        
+        
+    }
+}
+function changLimit(valu){
+    lgth = valu.length;
+    allgth = 255-lgth;
+    jQuery("#tWords").html(allgth);
+    
+}
+function addToCartGc(pid){
+	//alert(pid);
+	var width=jQuery('#room_width').val();
+	var length=jQuery('#room_length').val();
+	var unit=jQuery("#major option:selected").text();
+	jQuery('#dimension').val("width="+width+""+unit+" length="+length+""+unit);
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/addcartartwork';
+	var selArray = new Array();
+	var optArray = new Array();
+	var selStr = '';
+	var optStr = '';
+	var notes = jQuery('#description_pr').val();
+	
+	
+	price = jQuery('#productcustomprice').val();
+	jQuery('#artworkreturn .option select').each(function() {
+	    selid = this.id.split('_');
+	    optVal = jQuery( "#"+this.id+" option:selected" ).val();
+	    
+	    if(selid[1] != "" && optVal !=""){
+		selArray.push(selid[1]);
+		optArray.push(optVal);
+		
+		selStr +=selid[1]+"##";
+		optStr +=optVal+"##";
+		
+	    }
+	    
+	   
+	    
+	});
+   
+    seloptstr = selStr+"**"+optStr;
+    //jQuery('#cusprice').val(price);
+    jQuery('#optarr').val(seloptstr);
+    jQuery('#cusnote').val(notes);
+    
+    var form = new FormData(jQuery('#form-validate')[0]);
+    if(optArray.length > 0){
+        
+        jQuery.ajax({
+            type:'POST',
+            xhrFields: {
+                withCredentials: true
+            },
+            async: true,
+            cache: true,
+            contentType: false,
+            processData: false,
+            url:url,
+            data:form ,
+            //data: { form_key: form_key, prodId: pid, optarr: seloptstr, cusprice: price, file: artfile},  
+            success:function(result){
+		
+                jQuery('#subret').css('display','block');
+                jQuery('#subret').html(result);
+                //jQuery("#subret").fadeOut(5000);
+            }
+	});
+        
+    }else{
+        
+        alert("Please select product options");
+    }
+   
+    
+}
+
+function addToCartMain(){
+   
+    
+	//var width=jQuery('#room_width').val();
+	//var length=jQuery('#room_length').val();
+	//var unit=jQuery("#major option:selected").text();
+	//
+	//jQuery('#dimension_home').val("width="+width+""+unit+" length="+length+""+unit);
+	////return false;
+	//url= '<?php echo Mage::getBaseUrl();?>carpet/index/addcartmainhome';
+	//var selArray = new Array();
+	//var optArray = new Array();
+	//var selStr = '';
+	//var optStr = '';
+	//var notes = jQuery('#description_pr').val();
+	//     
+	//price = jQuery('#productcustomprice').val();
+	//jQuery('#optarea .option select').each(function() {
+	//    selid = this.id.split('_');
+	//    optVal = jQuery( "#"+this.id+" option:selected" ).val();
+	//  
+	//    if(selid[1] != "" && optVal !=""){
+	//	selArray.push(selid[1]);
+	//	optArray.push(optVal);
+	//	
+	//	selStr +=selid[1]+"##";
+	//	optStr +=optVal+"##";
+	//	
+	//    }
+	//    
+	//   
+	//    
+	//});
+	//seloptstr = selStr+"**"+optStr;
+	//jQuery('#optarr_home').val(seloptstr);
+	//if(optArray.length > 0){
+	//	jQuery('#form-home').submit();
+	//}else{
+	//    
+	//    alert("Please select product options");
+	//}
+   
+    
+}
+jQuery('#MB_close').click(function () {
+	jQuery('#success-cart').hide();
+	jQuery('#MB_window').hide();
+	
+	});
+
+
+
+
+jQuery(document).ready(function(e) {
+    jQuery('#close_button').click(function(){
+        
+        var htmlv = jQuery('<div>').append(jQuery("#artworkreturn").clone()).html();
+        jQuery("#instantPriceId").html(htmlv);
+        jQuery('#uploadArtWorkPopup').hide();
+        window.location.reload(true);
+        
+    });
+});
+function getSizeVal(size,classtype){
+			var curUnit=jQuery('#cnvunit').val();
+			var sizeid=size;
+			var Sizearr=size.split('_');
+			var name=Sizearr[1];
+			var size=jQuery("#"+size).val();
+			if(classtype=="arrowTop"){
+				size++;
+				jQuery('#'+sizeid).val(size);
+				var pid=jQuery('#product_id').val();
+				url= '<?php echo Mage::getBaseUrl();?>carpet/index/gettireunitprice';
+				var qty1=parseFloat(jQuery('#room_width').val());
+				var qty2=parseFloat(jQuery('#room_length').val());
+				if(curUnit=="cm"){
+					if(qty1>=100 && qty2>=100){
+					var qty1=Math.floor(qty1/100);
+					var qty2=Math.floor(qty2/100);
+					}
+					else{
+						qty1=1;
+						qty2=1;
+					}					
+					
+				}
+				if(curUnit=="mm"){
+						if(qty1>=1000 && qty2>=1000){
+								var qty1=Math.floor(qty1/1000);
+								var qty2=Math.floor(qty2/1000);
+						}
+						else{
+						qty1=1;
+						qty2=1;
+					}	
+					
+				}
+				//alert(qty1+"***"+qty2);
+				
+				qty=qty1*qty2;
+				var cur_price=jQuery('#price_get').val();
+				var opt_price=jQuery('#opt_price').val();
+				var param="pId="+pid+"&qty="+qty+"&old_price="+cur_price+"&opt_price="+opt_price;
+				if(pid != ''){
+					//jQuery('#loader').css('display','block');
+					jQuery.ajax({
+						url:url,
+						data: param,  
+						success:function(result){
+							jQuery('#cusprice').val(result);
+							jQuery('#price-to-change').html('AU$'+result);
+							jQuery('#total_display').html('$'+result);
+							jQuery('#total_display_1').html('$'+result);
+							jQuery('#cusprice_home').val(result);
+							
+						}
+					});
+					
+				}
+			}
+			if(classtype=="arrowbtm"){
+				if(size > 1){	
+				size--;
+				jQuery('#'+sizeid).val(size);
+				var pid=jQuery('#product_id').val();
+				url= '<?php echo Mage::getBaseUrl();?>carpet/index/gettireunitprice';
+				//qty=jQuery('#room_width').val() * jQuery('#room_length').val();
+				var qty1=parseFloat(jQuery('#room_width').val());
+				var qty2=parseFloat(jQuery('#room_length').val());
+			if(curUnit=="cm"){
+					if(qty1>=100 && qty2>=100){
+					var qty1=Math.floor(qty1/100);
+					var qty2=Math.floor(qty2/100);
+					}
+					else{
+						qty1=1;
+						qty2=1;
+					}					
+					
+				}
+				if(curUnit=="mm"){
+						if(qty1>=1000 && qty2>=1000){
+								var qty1=Math.floor(qty1/1000);
+								var qty2=Math.floor(qty2/1000);
+						}
+						else{
+						qty1=1;
+						qty2=1;
+					}
+				}
+				//alert(qty1+"***"+qty2);
+				
+				qty=qty1*qty2;
+				if(qty < 1){
+					qty=1;
+				}
+				var cur_price=jQuery('#price_get').val();
+				var param="pId="+pid+"&qty="+qty+"&old_price="+cur_price+"&opt_price="+opt_price;
+				if(pid != ''){
+					jQuery('#loader').css('display','block');
+					jQuery.ajax({
+						url:url,
+						data: param,  
+						success:function(result){
+							jQuery('#cusprice').val(result);
+							jQuery('#price-to-change').html('AU$'+result);
+						}
+					});
+					
+				}
+				}
+			}
+}
+function getSizevalkey(){
+				var pid=jQuery('#product_id').val();
+				url= '<?php echo Mage::getBaseUrl();?>carpet/index/gettireunitprice';
+				var qty1=parseFloat(jQuery('#room_width').val());
+				var qty2=parseFloat(jQuery('#room_length').val());
+				var curUnit=jQuery('#cnvunit').val()
+			if(curUnit=="cm"){
+					if(qty1>=100 && qty2>=100){
+					var qty1=Math.floor(qty1/100);
+					var qty2=Math.floor(qty2/100);
+					}
+					else{
+						qty1=1;
+						qty2=1;
+					}					
+					
+				}
+				if(curUnit=="mm"){
+						if(qty1>=1000 && qty2>=1000){
+								var qty1=Math.floor(qty1/1000);
+								var qty2=Math.floor(qty2/1000);
+						}
+						else{
+						qty1=1;
+						qty2=1;
+					}
+				}
+				qty=qty1*qty2;
+				var cur_price=jQuery('#price_get').val();
+				var opt_price=jQuery('#opt_price').val();
+				var param="pId="+pid+"&qty="+qty+"&old_price="+cur_price+"&opt_price="+opt_price;
+				if(pid != ''){
+					  jQuery('#loader').css('display','block');
+					  jQuery.ajax({
+					  url:url,
+					  data: param,  
+					  success:function(result){
+							jQuery('#cusprice').val(result);
+							jQuery('#price-to-change').html('AU$'+result);
+						}
+					});
+				}	
+}
+
+function getSizevalkeyHome(){
+	
+	var proid=jQuery("#product_sel").val();
+	var proid_arr=proid.split(':');
+	var pid=proid_arr[1];
+	//alert(pid);
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/gettireunitprice';
+	var qty1=parseFloat(jQuery('#room_width').val());
+	var qty2=parseFloat(jQuery('#room_length').val());
+	var curUnit=jQuery('#cnvunit').val();
+	if(curUnit=="cm"){
+		if(qty1>=100 && qty2>=100){
+		var qty1=Math.floor(qty1/100);
+		var qty2=Math.floor(qty2/100);
+		}
+		else{
+			qty1=1;
+			qty2=1;
+		}					
+		
+	}
+	if(curUnit=="mm"){
+			if(qty1>=1000 && qty2>=1000){
+				var qty1=Math.floor(qty1/1000);
+				var qty2=Math.floor(qty2/1000);
+			}
+			else{
+			qty1=1;
+			qty2=1;
+		}
+	}
+	qty=qty1*qty2;
+	var cur_price_str=jQuery('#price_get_home').val();
+	var cur_price=cur_price_str.replace("$","");
+	var opt_price=jQuery('#opt_price_home').val();
+	//alert(pid);
+	var param="pId="+pid+"&qty="+qty+"&old_price="+cur_price+"&opt_price="+opt_price;
+	if(pid != ''){
+		  jQuery('#loader').css('display','block');
+		  jQuery.ajax({
+		  url:url,
+		  data: param,  
+		  success:function(result){
+				jQuery('#cusprice').val(result);
+				jQuery('#price-to-change').html('AU$'+result);
+				jQuery('#total_display').html('$'+result);
+				jQuery('#total_display_1').html('$'+result);
+				jQuery('#cusprice_home').val(result);
+			}
+		});
+	}	
+}
+
+
+
+function getSizeValHome(size,classtype){
+	    //alert(jQuery('#cnvunit').val());
+			var curUnit=jQuery('#cnvunit').val();
+			var sizeid=size;
+			var Sizearr=size.split('_');
+			var name=Sizearr[1];
+			var size=jQuery("#"+size).val();
+			
+			
+			var proid=jQuery("#product_sel").val();
+			var proid_arr=proid.split(':');
+			var pid=proid_arr[1];
+			if(classtype=="arrowTop"){
+				size++;
+				jQuery('#'+sizeid).val(size);
+				
+				url= '<?php echo Mage::getBaseUrl();?>carpet/index/gettireunitprice';
+				var qty1=parseFloat(jQuery('#room_width').val());
+				var qty2=parseFloat(jQuery('#room_length').val());
+				
+				//alert(sizeid);
+				//alert(qty1);
+				
+				if(curUnit=="cm"){
+					if(qty1>=100 && qty2>=100){
+						var qty1=Math.floor(qty1/100);
+						var qty2=Math.floor(qty2/100);
+					}
+					else{
+						qty1=1;
+						qty2=1;
+					}					
+					
+				}
+				if(curUnit=="mm"){
+						if(qty1>=1000 && qty2>=1000){
+							var qty1=Math.floor(qty1/1000);
+							var qty2=Math.floor(qty2/1000);
+						}
+						else{
+							qty1=1;
+							qty2=1;
+						}	
+					
+				}
+				//alert(qty1+"***"+qty2);
+				
+				qty=qty1*qty2;
+				var cur_price=jQuery('#price_get').val();
+				var opt_price=jQuery('#opt_price_home').val();
+				var param="pId="+pid+"&qty="+qty+"&old_price="+cur_price+"&opt_price="+opt_price;
+				if(pid != ''){
+					//jQuery('#loader').css('display','block');
+					jQuery.ajax({
+						url:url,
+						data: param,  
+						success:function(result){
+							jQuery('#cusprice').val(result);
+							jQuery('#price-to-change').html('AU$'+result);
+							jQuery('#total_display').html('$'+result);
+							jQuery('#total_display_1').html('$'+result);
+							jQuery('#cusprice_home').val(result);
+						}
+					});
+					
+				}
+			}
+			if(classtype=="arrowbtm"){
+				if(size > 1){	
+				size--;
+				jQuery('#'+sizeid).val(size);
+				//var pid=jQuery('#product_id').val();
+				url= '<?php echo Mage::getBaseUrl();?>carpet/index/gettireunitprice';
+				//qty=jQuery('#room_width').val() * jQuery('#room_length').val();
+				var qty1=parseFloat(jQuery('#room_width').val());
+				var qty2=parseFloat(jQuery('#room_length').val());
+			if(curUnit=="cm"){
+					if(qty1>=100 && qty2>=100){
+					var qty1=Math.floor(qty1/100);
+					var qty2=Math.floor(qty2/100);
+					}
+					else{
+						qty1=1;
+						qty2=1;
+					}					
+					
+				}
+				if(curUnit=="mm"){
+						if(qty1>=1000 && qty2>=1000){
+								var qty1=Math.floor(qty1/1000);
+								var qty2=Math.floor(qty2/1000);
+						}
+						else{
+						qty1=1;
+						qty2=1;
+					}
+				}
+				//alert(qty1+"***"+qty2);
+				
+				qty=qty1*qty2;
+				if(qty < 1){
+					qty=1;
+				}
+				var cur_price=jQuery('#price_get').val();
+				var opt_price=jQuery('#opt_price_home').val();
+				var param="pId="+pid+"&qty="+qty+"&old_price="+cur_price+"&opt_price="+opt_price;
+				if(pid != ''){
+					//jQuery('#loader').css('display','block');
+					jQuery.ajax({
+						url:url,
+						data: param,  
+						success:function(result){
+							jQuery('#cusprice').val(result);
+							jQuery('#price-to-change').html('AU$'+result);
+							jQuery('#total_display').html('$'+result);
+							jQuery('#total_display_1').html('$'+result);
+							jQuery('#cusprice_home').val(result);
+						}
+					});
+					
+				}
+				}
+			}
+}
+
+function getconversion(unit){
+	var prev_unit=jQuery('#cnvunit').val();
+	var cur_unit=unit;
+	if(prev_unit=='m' && cur_unit=="cm"){
+		var room_width=jQuery('#room_width').val()*100;
+		var room_length=jQuery('#room_length').val()*100;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	if(prev_unit=='m' && cur_unit=="mm"){
+		var room_width=jQuery('#room_width').val()*1000;
+		var room_length=jQuery('#room_length').val()*1000;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	if(prev_unit=='cm' && cur_unit=="m"){
+		var room_width=jQuery('#room_width').val()/100;
+		var room_length=jQuery('#room_length').val()/100;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	if(prev_unit=='cm' && cur_unit=="mm"){
+		var room_width=jQuery('#room_width').val()*10;
+		var room_length=jQuery('#room_length').val()*10;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	if(prev_unit=='mm' && cur_unit=="m"){
+		var room_width=jQuery('#room_width').val()/1000;
+		var room_length=jQuery('#room_length').val()/1000;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	if(prev_unit=='mm' && cur_unit=="cm"){
+		var room_width=jQuery('#room_width').val()/10;
+		var room_length=jQuery('#room_length').val()/10;
+		jQuery('#room_width').val(room_width);
+		jQuery('#room_length').val(room_length);
+		jQuery('#cnvunit').val(cur_unit);
+	}
+	
+}
+
+jQuery('.textfield').live('change',function () {
+	var select_id=jQuery(this).attr('id');
+	var select_id_arr=select_id.split('_');
+	var opt_id=select_id_arr[1];
+        var select_val=jQuery("#"+select_id+" option:selected").text();
+	var n = select_val.indexOf("+");
+	if(n > 0){
+	var select_val_arr=select_val.split('+');
+	var priceStr=select_val_arr[1];
+	var price=priceStr.replace("$","");
+	var price=parseFloat(price);
+	jQuery('#opt_price').val(price);
+	jQuery('#opt_price_home').val(price);
+	var pricePro=parseFloat(jQuery('#price_get').val());
+	var priceStr=jQuery('#price_get_home').val();
+	var priceProHome1=priceStr.replace("$","");
+	var priceProHome=parseFloat(priceProHome1);
+	var changedPrice=price+pricePro;
+	var changedPriceHome=price+priceProHome;
+	jQuery('#hideopt_'+opt_id).val(price);
+	jQuery('#cusprice').val(changedPrice);
+	var sum=0;
+	 jQuery('#artworkreturn  input[type=\"hidden\"]').each(function(){
+		var curid=jQuery(this).attr('id');
+		var n1=curid.indexOf("_");
+		if(n1 > 0){
+			curid_arr=curid.split('_');
+			if(curid_arr[0]=="hideopt"){
+				sum= parseFloat(sum) + parseFloat(jQuery(this).attr('value'));
+			}
+			
+		}
+		
+	 });
+	 	jQuery('#optarea  input[type=\"hidden\"]').each(function(){
+		
+		//alert(jQuery(this).attr('id'));
+		var curid=jQuery(this).attr('id');
+		var n1=curid.indexOf("_");
+		if(n1 > 0){
+			
+			curid_arr=curid.split('_');
+			//alert(curid_arr[0]);
+			if(curid_arr[0]=="hideopt"){
+				
+				//alert(jQuery(this).attr('value'));
+				sum= parseFloat(sum) + parseFloat(jQuery(this).attr('value'));
+			}
+			
+		}
+		
+		//sum+=jQuery(this).attr('value');
+		
+	 });
+	 
+	//alert(sum);
+	var new_price=pricePro+sum;
+	var new_price_home=priceProHome+sum;
+	//alert(new_price);
+	jQuery('#price-to-change').html('AU$'+new_price);
+	jQuery('#total_display').html('$'+new_price_home);
+	jQuery('#total_display_1').html('$'+new_price_home);
+	jQuery('#opt_price').val(sum);
+	jQuery('#opt_price_home').val(sum);
+	jQuery('#cusprice').val(new_price);
+	jQuery('#cusprice_home').val(new_price_home);
+	
+	
+	}
+	
+	});
+
+</script>
+<?php
+if(Mage::getModel('catalog/layer')->getCurrentCategory()){
+    $catId = Mage::getModel('catalog/layer')->getCurrentCategory()->getId();   
+}else{
+    $catId=0;
+}
+?>
+
+<div class="ajaxloader" id="ajaxloader" style="display: none">LOADER</div>
+
+<script type="text/javascript">decorateGeneric($$('#product-options-wrapper dl'), ['last']);</script>
+
+<div id="uploadArtWorkPopup" style="display: none">
+<div id="uploadArtWork">
+
+<div class="txtHeading"></div>
+<div id="close_button" title="Click to close" >X</div>
+<div id="liveFormData">
+<div class="liveFormData_1">
+<div id="artworkreturn_1"></div>
+
+<div id="artworkreturn">
+<div class="option" id="cusopt_pop"></div>
+<div class="option" id="cusopt_pop_1"></div>
+<div class="calculator-wrapper">
+<div class="block block-calculator">
+		
+	<div class="block-content">
+			 
+	<dl style="" id="unitBox" class="clearfix">
+		<dt>Unit</dt>
+		<dd>
+		<input type="hidden" name="cnvunit" id="cnvunit" value="m"/>
+		<select class="textfield dropdown-s" id="major" name="major" onchange="getconversion(this.value);">
+			<option value="m">m.</option>
+			<option value="cm">cm.</option>
+			<option value="mm">mm.</option>
+		</select> 
+		</dd>
+	</dl>
+	
+	<dl style="" id="sizeBox" class="clearfix">
+		<dt>Size (m)</dt>
+		
+		<dd id="main_size">
+		<div class="sizes-block">
+			<input type="text" size="5" value="1" name="room_width" id="room_width" onkeyup="getSizevalkey();" >
+			<div class="float-L">
+			<a onclick=" getSizeVal('room_width','arrowTop');" class="arrowTop" href="javascript:void(0);">I</a>
+			<a onclick="getSizeVal('room_width','arrowbtm');" class="arrowbtm" href="javascript:void(0);">D</a>
+			</div>
+			<span>width</span>
+		</div>		  
+		
+		<div class="sizes-block last">
+			<input type="text" size="5" value="1" name="room_length" id="room_length" onkeyup="getSizevalkey();" >
+			<div class="float-L">
+				<a onclick=" getSizeVal('room_length','arrowTop');" class="arrowTop" href="javascript:void(0);">I</a>
+				<a onclick=" getSizeVal('room_length','arrowbtm');"  class="arrowbtm" href="javascript:void(0);">D</a>
+			</div>
+			<span>height</span> 
+		</div>
+		</dd>
+
+			
+	</dl>
+	<input type="hidden" id="opt_price_home" value="0"/>
+	
+	</div>
+		
+</div>
+
+
+<div class="block block-calculator" style="display: none">
+	<div class="block-title">
+			<strong><span><?php echo $this->__('Conversion')?></span></strong>
+	</div>
+	<div class="block-content">
+		<p><?php echo $this->__('Convert feet and/or inches into meters:')?></p>
+		<div class="inneri">
+			<div class="inputi">
+				<div class="inputi-f"><?php echo $this->__('Feet')?></div>
+				<div class="inputi-f-s">&nbsp;</div>
+				<div class="inputi-f"><?php echo $this->__('Inches')?></div>
+			</div>
+			<div class="inputi">
+				<div class="inputi-f"><input type="text" size="5" value="1" name="feet" id="calc_feet" ></div>
+				<div class="inputi-f-s">&nbsp;</div>
+				<div class="inputi-f"><input type="text" size="5" value="1" name="inches" id="calc_inches"></div>
+			</div>
+			<div class="buttoni">
+				<button type="button"  class="button"><span><span><?php echo $this->__('Convert')?></span> </span> </button>
+			</div>
+		</div>
+	<div class="inneri">
+		<div class="texti">
+			<p><b><?php echo $this->__('Result:')?></b> <br>
+			<font color="#FF0066"><span id="calc_metres">0</span> <?php echo $this->__('meters')?></font>
+			</p>
+		</div>
+	</div>
+			
+	</div>
+</div>
+</div>
+
+</div>
+<div id="artworkreturn_2"></div>
+</div>
+</div>
+<div id="artworkreturn_3"></div>
+</div>
+</div>

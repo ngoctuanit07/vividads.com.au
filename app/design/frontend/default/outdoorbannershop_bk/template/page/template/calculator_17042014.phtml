@@ -1,0 +1,465 @@
+<script type="text/javascript" src="<?php echo $this->getJsUrl()?>jquery-latest.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+
+function loadProduct(cid){
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/loadproduct';
+	if(cid > 0){
+		
+		jQuery('#loader').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, catId: cid },  
+			success:function(result){
+				jQuery('#loader').css('display','none');
+				jQuery('#mainProduct').html(result);
+			}
+		});
+	}else{
+		alert('Please select a valid category');
+	}
+}
+
+function load_three_way_Product(cid){
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/loadproducthome';
+	if(cid > 0){
+		
+		jQuery('#loaderp2').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, catId: cid },  
+			success:function(result){
+				jQuery('#loaderp2').css('display','none');
+				jQuery('#mainProduct2').html(result);
+			}
+		});
+	}else{
+		alert('Please select a valid category');
+	}
+}
+
+function loadProductDetails(pid){
+	pidar = pid.split(':');
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/loadproductdetails';
+	
+	//url= '<?php echo Mage::getBaseUrl();?>customoptions/index/index/id/'+pidar[1]+'/';
+	//url= '<?php echo Mage::getBaseUrl();?>catalog/product/view/id/610/';
+	
+	if(pid != ''){
+		jQuery('#loader').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, pId: pid },  
+			success:function(result){
+				//alert(result)
+				ret = result.split('##');
+				jQuery('#loader').css('display','none');
+				jQuery('#total_display').html(ret[0]);
+				jQuery('#total_display_1').html(ret[0]);
+				jQuery('#cusopt').html(ret[1]);
+				
+				
+			}
+		});
+		
+	}else{
+		alert('Please select a valid product');
+	}
+	
+}
+
+
+function getchildren(optid,optval){
+	//alert(optid);
+	//alert(optval);
+	form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+	url= '<?php echo Mage::getBaseUrl();?>carpet/index/getchildopt';
+	if(optval != 0){
+		//jQuery('#loader').css('display','block');
+		jQuery.ajax({
+			url:url,
+			data: { form_key: form_key, optId: optid, optvalId :optval  },  
+			success:function(result){
+				//alert(result);
+				//jQuery('#loader').css('display','none');
+				jQuery('#cusopt_1').html(result);
+				
+				//ret = result.split('##');
+				//for (var i=1;i<ret.length;i++)
+				//{
+				//	jQuery('#opt__'+ret[i]).css('display','block');
+				//}
+				//jQuery('#cusopt dl').each(function(){
+				//	var dl = jQuery(this);
+				//	var dlId = dl.attr('id').split('__');
+				//	
+				//	if(result.indexOf(dlId[1]) == -1 && dlId[1] != optid){
+				//		
+				//		jQuery('#opt__'+dlId[1]).css('display','none');
+				//	}
+				//	
+				//
+				//
+				//});
+				
+			}
+		});
+		
+		
+		
+	}else{
+		alert('Please select a valid product');
+	}
+}
+
+</script>
+
+
+
+<?php
+	$storeId=Mage::app()->getStore()->getId();
+	$rootCategoryId = Mage::app()->getStore($storeId)->getRootCategoryId();
+	$categories = Mage::getModel('catalog/category')->getCategories($rootCategoryId);
+?>
+
+
+
+<div class="formInfo">
+	<div id="instantBox" class="clearfix">
+		<div class="lable"></div>
+		<div class="lable lable2"></div>
+		<div class="instantBox-body clearfix">
+			<!---------Left Starts ---------->
+			<div class="instantPrice float-L">
+				<dl class="clearfix">
+				<dt>Category</dt>
+				<dd id="mainCategories">   
+					<select name="category" class="textfield" id="category" onchange="loadProduct(this.value)">
+					    <option value="0">--Please select--</option>
+					    <?php foreach($categories as $_category){ ?>
+					    <option value="<?php echo $_category->getId();?>"><?php echo $_category->getName();?></option>
+					    <?php } ?>
+					</select> 
+				</dd>
+				</dl>
+				
+				<dl class="clearfix">
+				<dt>Product</dt>
+				<dd>
+					<div id="mainProduct">
+					  <select class="textfield" id="product_sel">
+					  <option value="0">--Please select--</option>
+					  </select>
+					</div>
+					<div id="loader" style="display:none; margin-left:100px;">
+					<img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/>
+					</div>                     
+				</dd>
+				</dl>
+				
+				<div class="option" id="cusopt"></div>
+				<div class="option" id="cusopt_1"></div>
+				
+				
+				<dl class="clearfix">
+				<dt>Price</dt>
+				<dd class="price">
+				  <div id="total_display" class="float-L">$0.00</div>
+				  
+				</dd>
+			        </dl>
+				
+				
+				<div class="pricebottom">
+					<span class="prcbutn" style="height:0px">
+						<input type="button" style="color:transparent;" value="start order" class="startOrder-btn" title="Start Order" name="getprice">
+					</span>
+					<dl class="totalprice blue-clr">
+						<div class="pricetopbg"></div>
+						<span id="grandtotaldisplay"> TOTAL PRICE : <span id="total_display_1">$0.00 </span></span>
+						<div class="pricebtmbg"></div>
+					</dl>
+				</div>
+			</div>
+			<!------------Left Ends------- -->
+			<div class="instant-separator float-L">
+				<div class="ortext"></div>
+		        </div>
+			
+			<!--Right Starts -->
+			<div class="quickStart-Order float-L">
+				<div class="quickStart-Order float-L">
+					<div class="title blue-clr">3 Easy ways to order</div>
+					<div class="align-C">Category:
+						<select name="threeway_category" class="textfield dropdown" style="width:215px;" id="threeway_category" onchange="load_three_way_Product(this.value)">
+							<option value="0">--Please select--</option>
+							<?php foreach($categories as $_category){ ?>
+							<option value="<?php echo $_category->getId();?>"><?php echo $_category->getName();?></option>
+							<?php } ?>
+						</select>
+					</div>
+					
+					<div id="mainProduct2">                
+						Product:
+						<select class="textfield" name="threeway_product" id="threeway_product" style="width:215px; margin-left:8px;">
+							<option value="0">--Please select--</option>
+						</select>                  
+					</div>               
+					<div id="loaderp2" style="display:none; margin-left:100px;">
+					<img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/>
+					</div>
+					
+					<div class="StartorderButtons">
+						<input name="submit-prt-ready" type="button" value="print ready" title="Submit Print Ready Design" class="buttons" id="printreadybtn" style="color:transparent;" onclick="uploadArtWork();" />
+						<input name="order-form" value="design tool" type="button" title="Design Your Own Banner" class="buttons designYour-banner" id="prdbtn" style="color:transparent;" />
+						<input name="product-details" type="button" value="letusdesign" title="Let us Design Your Banner" class="buttons letus-design-banner" id="letusbtn"  style="color:transparent;" />
+					</div>
+					
+				</div>
+			
+					
+			</div>
+			<!--Right Ends -->
+		</div>
+	</div>
+</div>
+
+<!---------------------------------------------------------------------------------------------------------------------------------------->
+
+
+<script type="text/javascript">
+
+function uploadArtWork()
+{
+	
+	var pid="";
+	var cid="";
+	
+	pid=document.getElementById("threeway_product").value;
+	cid=document.getElementById("threeway_category").value;
+	
+	arr_pro_devider=Array();
+	
+	arr_pro_devider=pid.split(":");
+	
+	if (arr_pro_devider.length>1)
+	{
+		pid=arr_pro_devider[1];
+	}
+	else
+	{
+		pid="";
+	}
+	
+	if (pid!="" && cid!="0")
+	{
+		getartWorkgc(pid,cid);
+	}
+	else
+	{
+		alert("Please select category and product before uploading an artwork");
+	}
+	
+	
+	
+}
+
+
+function getartWorkgc(pid,cid){
+    form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+    url= '<?php echo Mage::getBaseUrl();?>carpet/index/getartwork';
+    
+    if(pid != ''){
+        jQuery("#ajaxloader").css('display','block');
+        jQuery.ajax({
+            url:url,
+            data: { form_key: form_key, prodId: pid, catId: cid},  
+            success:function(result){
+                ret = result.split('##');
+                jQuery("#instantPriceId").html('');
+                jQuery("#ajaxloader").css('display','none');
+                jQuery("#uploadArtWorkPopup").css('display','block');
+                jQuery("#artworkreturn_1").html(ret[0]);
+                jQuery("#artworkreturn_2").html(ret[1]);
+                jQuery("#artworkreturn_3").html(ret[2]);
+								jQuery('.arrowbtm').trigger('click');
+								jQuery('.arrowtop').trigger('click');
+            }
+	});
+        
+        
+    }
+}
+function changLimit(valu){
+    lgth = valu.length;
+    allgth = 255-lgth;
+    jQuery("#tWords").html(allgth);
+    
+}
+function addToCartGc(pid){
+    
+    url= '<?php echo Mage::getBaseUrl();?>carpet/index/addcartartwork';
+    var selArray = new Array();
+    var optArray = new Array();
+    var selStr = '';
+    var optStr = '';
+    var notes = jQuery('#description_pr').val();
+    
+    
+    price = jQuery('#productcustomprice').val();
+    jQuery('#artworkreturn .option select').each(function() {
+        selid = this.id.split('_');
+        optVal = jQuery( "#"+this.id+" option:selected" ).val();
+        //opId = selid[1];
+        
+        if(selid[1] != "" && optVal !=""){
+            selArray.push(selid[1]);
+            optArray.push(optVal);
+            
+            selStr +=selid[1]+"##";
+            optStr +=optVal+"##";
+            
+        }
+        
+       
+        
+    });
+   
+    
+    seloptstr = selStr+"**"+optStr;
+    jQuery('#cusprice').val(price);
+    jQuery('#optarr').val(seloptstr);
+    jQuery('#cusnote').val(notes);
+    
+    var form = new FormData(jQuery('#form-validate')[0]);
+    if(optArray.length > 0){
+        
+        jQuery.ajax({
+            type:'POST',
+            xhrFields: {
+                withCredentials: true
+            },
+            async: true,
+            cache: true,
+            contentType: false,
+            processData: false,
+            url:url,
+            data:form ,
+            //data: { form_key: form_key, prodId: pid, optarr: seloptstr, cusprice: price, file: artfile},  
+            success:function(result){
+                jQuery('#subret').css('display','block');
+                jQuery('#subret').html(result);
+                //jQuery("#subret").fadeOut(5000);
+            }
+	});
+        
+    }else{
+        
+        alert("Please select product options");
+    }
+   
+    
+}
+
+
+
+jQuery(document).ready(function(e) {
+    jQuery('#close_button').click(function(){
+        
+        var htmlv = jQuery('<div>').append(jQuery("#artworkreturn").clone()).html();
+        jQuery("#instantPriceId").html(htmlv);
+        jQuery('#uploadArtWorkPopup').hide();
+        window.location.reload(true);
+        
+    });
+});
+function getSizeVal(size){
+		var Sizearr=size.split('_');
+		var name=Sizearr[1];
+		var size=jQuery("#"+size).val();
+		var unit=jQuery("#major option:selected").text();
+		jQuery('#'+name).val(name+"="+size+""+unit);
+		jQuery('#dimension').val(jQuery('#width').val()+" "+jQuery('#length').val());
+			
+}
+</script>
+<?php
+if(Mage::getModel('catalog/layer')->getCurrentCategory()){
+    $catId = Mage::getModel('catalog/layer')->getCurrentCategory()->getId();   
+}else{
+    $catId=0;
+}
+?>
+<?php //$productId = $this->getProduct()->getId(); ?>
+<div class="ajaxloader" id="ajaxloader" style="display: none">LOADER</div>
+<?php/*
+<div class="formInfo">
+	<div id="instantBox" class="clearfix">
+		<div class="lable"></div>
+		<div class="lable lable2"></div>
+		<div class="instantBox-body clearfix">
+			<!---------Left Starts ---------->
+			<div class="instantPrice float-L" id="instantPriceId">
+				
+			    <?php echo $this->getChildHtml('', true, true);?>
+                                
+			</div>
+			<!------------Left Ends------- -->
+			<div class="instant-separator float-L">
+			    <div class="ortext"></div>
+		        </div>
+			
+			
+			<!--Right Starts -->
+			<div class="quickStart-Order float-L">
+				<div class="quickStart-Order float-L">
+			                   
+					<div id="loaderp2" style="display:none; margin-left:100px;">
+					    <img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/>
+					</div>
+					
+					<div class="StartorderButtons">
+                                            <input name="submit-prt-ready" type="button" value="print ready" title="Submit Print Ready Design" class="buttons" id="printreadybtn" onclick="getartWorkgc(<?php echo $productId ?>,<?php echo $catId ?>)" style="color:transparent;" />
+                                            <input name="order-form" value="design tool" type="button" title="Design Your Own Banner" class="buttons designYour-banner" id="prdbtn" style="color:transparent;" />
+                                            <input name="product-details" type="button" value="letusdesign" title="Let us Design Your Banner" class="buttons letus-design-banner" id="letusbtn"  style="color:transparent;" />
+					</div>
+				</div>
+			</div>
+			
+			<!--Right Ends -->		
+		</div>
+	</div>
+</div>
+<?php */?>
+<?php /*
+<div class="product-options" id="product-options-wrapper">
+    <?php //echo $this->getChildHtml('', true, true);?>
+    <?php if ($this->hasRequiredOptions()):?>
+        <!--<p class="required"><?php //echo $this->__('* Required Fields') ?></p>-->
+    <?php endif;?>
+</div>
+*/ ?>
+<script type="text/javascript">decorateGeneric($$('#product-options-wrapper dl'), ['last']);</script>
+
+<div id="uploadArtWorkPopup" style="display: none">
+    <div id="uploadArtWork">
+        
+        <div class="txtHeading"></div>
+        <div id="close_button" title="Click to close" >X</div>
+        <div id="liveFormData">
+            <div class="liveFormData_1">
+            <div id="artworkreturn_1"></div>
+            
+            <div id="artworkreturn">
+                <?php echo $this->getChildHtml('', true, true);?>
+            </div>
+            <div id="artworkreturn_2"></div>
+            </div>
+        </div>
+        <div id="artworkreturn_3"></div>
+    </div>
+    
+</div>

@@ -1,0 +1,459 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Category left navigation
+ *
+ * @see Mage_Catalog_Block_Navigation
+ */
+?>
+<style>
+<!--
+.calculator_selected_tab{
+	color: #444444 !important;
+	background-color: #FFF !important;
+ }
+-->
+</style>
+<!--scripting is coming from calculator.js from js/meshbanner/ folder-->
+
+<?php 
+	
+//if (!Mage::registry('current_category')) return ?>
+
+<div class="calculator">
+        	<div class="heading"><h1>QUICK QUOTE CULCULATOR</h1><div class="fullscreen"><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/arrow.png" width="28" height="28" /></a></div></div><!--heading-->
+          <div class="detail">
+            	<div class="topPoints">
+                <div class="tab1">01- Prices</div>
+                <div class="arrow1"></div>
+                <div class="tab1">02- Details</div>
+                <div class="arrow1"></div>
+                <div class="tab1">03- Upload</div>
+                </div><!--topPoints-->
+                
+                <div class="center-info">
+               	  <div class="topbuttons">
+                    <div class="customButton" >
+                    <a href="javascript:void(0);" id="customTab" >Custom</a></div>
+                    <div class="customButton">
+                    <a href="javascript:void(0);" id="standardTab" >Standard</a></div>
+                    <div class="restart"><a href="javascript:void(0);">
+                    <div class="calIcon"></div>RESTART PRICE CALCULATOR</a></div><!--restart-->
+                  </div><!--center-info-->
+                  <div class="clear"></div>
+                   <div class="infor">
+                   
+               	 <div class="left-panel" id="left_panel_custom">
+                        	<div class="catg" id="categorySelectBox">
+                         <span class="imgIcon">
+                         <img alt="meshb banners categories" id="categoryImg" align="left" src="<?php echo $this->getSkinUrl();?>images/categoryIcon.png" width="25" height="25" /></span>
+                         <span class="label" id="categoryLabel">Select Category</span><div class="arrow"></div>
+                        
+                        <input type="hidden" value="0" id="categoryInput" name="categoryInput" />
+                         </div>
+                          <!--dropdown box for categories-->
+                         <div id="categories_dropdown_box" class="dropDownBox" >
+                         <ul>
+                         
+                         <?php 
+					$category = array('213'=>'Mesh Banners Standard',
+								   '214'=>'Mesh Banners Custom',
+					);
+					
+				/*categories dropdown box */					
+				
+				foreach($category as $catId=>$catVal){						
+						?>
+                         <li class="dropDownBoxRow" onclick="javascript:changeCategory(categoryId<?php echo $catId;?>.value);">
+                         <input type="hidden" value="<?php echo $catId.':'.$catVal;?>" name="categoryId<?php echo $catId;?>" id="categoryId<?php echo $catId;?>" />
+                         <span class="imgIcon"><img  alt="meshb banners categories" align="left" src="<?php echo $this->getSkinUrl();?>images/categoryIcon.png" width="25" height="25" /></span>
+                         <span class="label" ><?php echo $catVal;?> </span>
+                         </li>
+                         <?php 
+					}
+					?>
+                         </ul>
+                         </div>
+                         <!--end of dropdown for categories box-->
+                         <!--catg-->
+                            <div class="product" id="productSelectBox">
+                            <span class="imgIcon"><img id="productImg" alt="meshb banners categories" align="left" src="<?php echo $this->getSkinUrl();?>images/productIcon.png" width="25" height="25" /></span>
+                         <span class="label" id="productLabel">Select Product</span>
+                            <div class="arrow"></div>                           
+                            <input type="hidden" value="0" id="productInput" name="productInput" />
+                            
+                            </div><!--product-->
+                             <!--dropdown box for products-->
+                         <div id="products_dropdown_box" class="dropDownBox" >
+                         <ul>
+                         
+                         <?php 
+					 /*fetching products dropdown*/
+					 
+					 $products = array('515'=>'Fence Mesh Banners',
+					 			    '516'=>'Event Ad Banner',
+								    '517'=>'Crowd Control Banner',
+								    '518'=>'Building Ads Banner',
+								    '519'=>'Construction Ads Banner',
+								    '520'=>'Sales Ads Banner',
+					 );
+					
+					foreach($products as $productId=>$productVal){
+						?>
+                         <li class="dropDownBoxRow" onclick="javascript:changeProduct(productId<?php echo $productId;?>.value);">
+                         <input type="hidden" value="<?php echo $productId.':'.$productVal;?>" name="productId<?php echo $productId;?>" id="productId<?php echo $productId;?>" />
+                        
+                         <span class="imgIcon"><img alt="meshb banners categories" align="left" src="<?php echo $this->getSkinUrl();?>images/productIcon.png" width="25" height="25" /></span>
+                         <span class="label"><?php echo $productVal;?> </span>
+                         </li>
+                         <?php 
+					}
+					?>
+                         </ul>
+                         </div>
+                         <!--end of dropdown for products box-->
+                            
+              <div class="units slectBox" id="unitSelectBox" ><span id="unitLabel">Meter</span><div class="arrow" ></div>
+              <input type="hidden" value="m" id="majorInput" name="majorInput" />
+              </div>
+              <!--dropdown box for Units-->
+                         <div id="units_dropdown_box" class="dropDownBox"  style="width:166px;">
+                         <ul>
+                         
+                         <?php 
+					/*defining the units for the dropdown*/
+					$units = array('m'=>'Meter',
+					               'cm'=>'Centemeter',
+								'mm'=>'Milimeter', 
+					                  );
+					
+					foreach($units as $unitId=>$unitVal){?>
+                         <li class="dropDownBoxRow" onclick="javascript:changeUnit(unitId<?php echo $unitId;?>.value);">
+                           <input type="hidden" value="<?php echo $unitId.':'.$unitVal;?>" name="unitId<?php echo $unitId;?>" id="unitId<?php echo $unitId;?>" />
+                        
+                              <span class="label"><?php echo $unitVal;?> </span>
+                         </li>
+                         <?php 
+					}
+					?>
+                         </ul>
+                         </div>
+                         <!--end of dropdown for Units box-->
+              <!--catg-->
+                            <div class="inputFiels">
+                            	<div class="width"><h1>Quantity</h1><div class="field">
+                              <input class="fieldBox" type="text" value="1" name="quantityBox" id="quantityBox" onclick="this.select();" />                              
+                              </div>
+                              
+                              </div>                             
+                              
+                                <div class="line"></div>
+                                <div class="width"><h1>Width (<span id="unitLabelA3">m</span>)</h1><div class="field"><input class="fieldBox" type="text" value="1.0" name="widthBox" id="widthBox"  onclick="this.select();"  /></div><div class="widthArrow"></div></div>
+                               <div class="line"></div>
+                                <div class="width"><h1>Height (<span id="unitLabelA4">m</span>)</h1><div class="heightArrow"></div><div class="field2"><input class="fieldBox" type="text" value="1.0" name="heightBox" id="heightBox"  onclick="this.select();"  /></div></div>
+                                
+                                <div class="divider">X</div>
+                                
+                            </div><!--inputFiels-->
+                            <div class="finish" id="finishSelectBox"><div class="headingNew">Finish</div><div class="icon"></div><div class="finishList"><div class="box"></div>
+                            <div class="textNew" id="finishLabel">Hemmed Edges<br /><span class="textStyle">Hemmed along all edges</span></div><div class="arrow"></div>
+                            
+                            </div>
+                            <input type="hidden" value="0" id="finishInput" name="finishInput" />
+                            <!--catg--></div>
+                            <!--dropdown box for finish options-->
+                         <div id="finish_dropdown_box" class="dropDownBox"  style=" margin-left: 107px;margin-top: -2px; width: 251px;">
+                         <ul>
+                         
+                         <?php 
+					/*defining the finish options for the dropdown*/
+					$finishOptions = array('HE'=>'Hemmed Edges',
+					               'PT1'=>'Top Pocket Only',
+								'PTB'=>'Pockets Top & Bottom',
+								'PLR'=>'Pockets Left & Right', 
+					                  );
+					
+					foreach($finishOptions as $finishId=>$finishVal){?>
+                         <li class="dropDownBoxRow" onclick="javascript:changeFinishing(finishId<?php echo $finishId;?>.value);">
+                              <input type="hidden" value="<?php echo $finishId.':'.$finishVal;?>" name="finishId<?php echo $finishId;?>" id="finishId<?php echo $finishId;?>" />
+                         <span class="box"></span><span class="label"><?php echo $finishVal;?> </span>
+                         </li>
+                         <?php 
+					}
+					?>
+                         </ul>
+                         </div>
+                         <!--end of dropdown for finish options-->                            
+                            <!--finish-->
+                            
+                            <div class="clear"></div>
+                            <div class="finish" id="sewingSelectBox">
+                            <div class="headingNew">Sewing</div><div class="icon"></div>
+                            <div class="finishList"><div class="box"></div>
+                            <div class="textNew" style="padding-top:7px" id="sewingLabel">Neutral Grey Thread</div><div class="arrow"></div></div><!--catg-->
+                            <input type="hidden" value="0" id="sewingInput" name="sewingInput" />
+                            </div>
+                         <!--dropdown box for sewing options-->
+                         <div id="sewing_dropdown_box" class="dropDownBox"  style=" margin-left: 107px;margin-top: -2px; width: 251px;">
+                         <ul>
+                         
+                         <?php 
+					/*defining the Sewing options for the dropdown*/
+					$sewingOptions = array('Grey'=>'Natural Grey Thread',
+					               'Red'=>'Red Thread',
+								'Blue'=>'Blue Thread',
+								'Black'=>'Black Thread',
+								'White'=>'White Thread', 
+					                  );
+					
+					foreach($sewingOptions as $sewingId=>$sewingVal){?>
+                         <li class="dropDownBoxRow"  onclick="javascript:changeSewing(sewingId<?php echo $sewingId;?>.value);">>
+                              <input type="hidden" value="<?php echo $sewingId.':'.$sewingVal;?>" name="sewingId<?php echo $sewingId;?>" id="sewingId<?php echo $sewingId;?>" />
+                              <span class="box"></span><span class="label"><?php echo $sewingVal;?> </span>
+                         </li>
+                         <?php 
+					}
+					?>
+                         </ul>
+                         </div>
+                         <!--end of dropdown for sewing options-->
+                            
+                            <!--finish-->
+                            <div class="clear"></div>
+                            <div class="finish" id="fittingSelectBox"><div class="headingNew" >Fittings</div><div class="icon"></div>
+                            <div class="finishList">
+                            <div class="box"></div><div class="textNew" id="fittingLabel">None<br /><span class="textStyle" >No Eyelets</span></div><div class="arrow"></div></div><!--catg-->
+                            <input type="hidden" value="0" id="fittingInput" name="fittingInput" />
+                            </div>
+                             <!--dropdown box for fitting options-->
+                         <div id="fitting_dropdown_box" class="dropDownBox"  style=" margin-left: 107px;margin-top: -2px; width: 251px;">
+                         <ul>
+                         
+                         <?php 
+					/*defining the Fitting options for the dropdown*/
+					$fittingOptions = array('none'=>'No Eylets',
+					               'T'=>'Top Only',
+								'TB'=>'Top & Bottom',
+								'L'=>'Left Only',
+								'LR'=>'Left & Right',
+								'CR'=>'Corners Only', 
+					                  );
+					
+					foreach($fittingOptions as $fittingId=>$fittingVal){?>
+                         <li class="dropDownBoxRow" onclick="javascript:changeFitting(fittingId<?php echo $fittingId;?>.value);">>
+                              <input type="hidden" value="<?php echo $fittingId.':'.$fittingVal;?>" name="fittingId<?php echo $fittingId;?>" id="fittingId<?php echo $fittingId;?>" />
+                            <span class="box"></span><span class="label"><?php echo $fittingVal;?> </span>
+                         </li>
+                         <?php 
+					}
+					?>
+                         </ul>
+                         </div>
+                         <!--end of dropdown for fitting options-->
+                            <!--fitting-->
+                            <div class="clear"></div>
+                            <div class="finish" id="shippingSelectBox"><div class="headingNew">Shipping</div>
+                            <div class="icon"></div><div class="finishList">
+                            <div class="box"></div>
+                            <div class="textNew" style="padding-top:7px" id="shippingLabel">Selected</div>
+                            <div class="arrow"></div></div><!--catg-->
+                            <input type="hidden" value="0" id="shippingInput" name="shippingInput" />
+                            </div>
+                                                 
+                         <!--dropdown box for Shipping options-->
+                         <div id="shipping_dropdown_box" class="dropDownBox"  style=" margin-left: 107px;margin-top: -2px; width: 251px;">
+                         <ul>
+                         
+                         <?php 
+					/*defining the Shipping options for the dropdown*/
+					$shippingOptions = array('pr'=>'Priority (Delivery)',
+					               'ex'=>'Express (Delivery)',
+								'st'=>'Standard (Delivery)',
+								  );
+					
+					foreach($shippingOptions as $shippingId=>$shippingVal){?>
+                        
+                         <li class="dropDownBoxRow"  onclick="javascript:changeShipping(shippingId<?php echo $shippingId;?>.value);">>
+                              <input type="hidden" value="<?php echo $shippingId.':'.$shippingVal;?>" name="shippingId<?php echo $shippingId;?>" id="shippingId<?php echo $shippingId;?>" />
+                              <span class="box"></span><span class="label"><?php echo $shippingVal;?> </span>
+                         </li>
+                         <?php 
+					}
+					?>
+                         </ul>
+                         </div>
+                         <!--end of dropdown for Shipping options-->
+                            
+                            <!--finish-->
+                     </div><!--left-panel custom-->
+                     <div class="left-panel" id="left_panel_standard" style="display:none;">
+                        	<div class="catg">Plaese Select Category<div class="arrow"></div></div><!--catg-->
+                            <div class="product">Please Select Products<div class="arrow"></div></div><!--catg-->
+                            <div class="units">Units<div class="arrow"></div></div><!--catg-->
+                            <div class="inputFiels">
+                            	<div class="width"><h1>Quantity</h1><div class="field"></div></div>
+                                <div class="line"></div>
+                                <div class="width"><h1>Width (<span class="majorUnitLabel">m</span>)</h1><div class="field"></div><div class="widthArrow"></div></div>
+                                <div class="divider">X</div>
+                                <div class="width"><h1>Height (<span class="majorUnitLabel">m</span>)</h1><div class="heightArrow"></div><div class="field2"></div></div>
+                            </div>
+                            
+                            <!--inputFiels-->
+                              </div><!--left-panel standard-->
+                     
+                     <div class="rightPanel2">
+                     
+                     	<div class="productImage">
+                        	<div class="width">
+                            <h1>Width (<span id="unitLabelA1">m</span>)</h1>
+                            <div class="widthArrow"></div>
+                            <div class="heightArrow"></div>
+                            <?php 
+					   		/*Main Template for the product*/
+					   ?>
+                            <div class="field2New"  id="mainTemplate">
+                              <div id="printableTemplate" class="printableTemplate">
+                              </div> 
+                            </div>
+                            
+                            <!--Full Zoom Panel-->
+                            
+                            <div class="zoomPanel" id="zoomPanel">
+                            <div class="inernalBleed" id="inernalBleed">
+                            <div class="printableArea" id="printableArea">
+                            
+                            </div>
+                            </div>
+                            
+                            </div>
+                            
+                            <!--End of Zoom Aerea-->
+                            
+                            <?php 
+					   /*end of main tempalte for the the product*/
+					   ?>
+                            
+                            </div><!--width-->
+                        </div><!--productImage-->
+                        <div class="clear"></div>
+                        
+                        <div class="calculate">
+                        <input type="hidden" name="productPrice" id="productPrice" value="40"/>
+                        <input type="hidden" name="printableArea" id="printableArea" value="0">
+                        <input type="hidden" name="internalBleed" id="internalBleed" value="0.025">                        
+                        <input type="hidden" name="ileteDistance" id="iletsDistance" value="0.3">
+                        <input type="hidden" name="totalIlets" id="totalIlets" value="0">
+                        <input type="hidden" name="iletsSize" id="iletsSize" value="0.025">
+                        <input type="hidden" name="discount" id="discount" value="0" />
+                        
+                        
+                        	<ul>
+                           	  <li><div class="tagText">Price ea</div><div class="tagText2"><input class="priceFieldBox" type="text" value="0.00" name="priceBox" id="priceBox"  onclick="this.select();"  /></div></li>
+                              <li><div class="tagText">Nov 5% Sale</div><div class="tagText2" style="background-color:#fdf7e6;"><input class="priceFieldBox" type="text" value="0.00" name="saleDiscount" id="saleDiscount"  onclick="this.select();"  /></div></li>
+                              <li><div class="tagText">Bonus Discount 7%</div><div class="tagText2" style="background-color:#f4fde6;"><input class="priceFieldBox" type="text" value="0.00" name="bonusDiscount" id="bonusDiscount"  onclick="this.select();"  /></div></li>
+                              <li><div class="tagText">Sub Total:</div><div class="tagText2" style="background-color:#ffffff;"><input class="priceFieldBox" type="text" value="0.00" name="subTotal" id="subTotal"  onclick="this.select();"  /></div></li>
+                            </ul>
+                            <div class="calcu"><a id="calculateBtn" href="javascript:void(0);">Calculate</a></div>
+                        </div><!--calculate-->                        
+                        <div class="clear"></div>
+                        
+                        <div class="add"><div class="addIcon"></div><a href="#">Add item to Quote</a></div>
+                        
+                     </div><!--rightPanel2-->
+                     <div class="clear"></div>
+                   <div class="detailNew">Dura Fence Mesh Banner (used by Builders, Construct & Temporary Fencing Co's etc) is a super tough outdoor grade heavy duty mesh banner sign for site fences, hoarding, privacy & dust control etc & other. Step Repeat Print or Full Length Graphic(s) <a href="#">Examples</a></div>
+                   <div class="alert">Fill in details above and click "Add Item to Quote"</div>
+                   </div><!--infor-->
+                    <div class="clear"></div>
+                    <div class="shadow"></div><!--shadow-->
+                    
+                    <div class="clear"></div>
+                </div><!--center-info-->
+                <div class="clear"></div>
+                
+                <div class="quoteItems" id="cartItems">
+                    	<h1>Total Add Items</h1>
+                        <div class="itemheading"><h1>QTY</h1><h1>ITEMS</h1></div><!--itemheading-->
+                        <div class="items">
+                        	<ul>
+                           	  <li>
+                                <div class="number">1</div>
+                                <div class="detailP"><p>45.0cm x 2534.0cm Dura Sports Mesh Banner <span class="p2">Reinforced Webbing Edges 
+Colors: Red, Sewing: Black Thread, Fittings: Top Only, Fitting Spacing: 300mm</span></p>
+<div class="bt"><div class="iconInfo"></div><a href="#">View Info Sheet</a></div>
+<div class="bt"><div class="iconInfo2"></div><a href="#">View Easy Template</a></div>
+</div>
+<div class="closeBt"><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/close.png" width="9" height="9" /></a></div>
+<div class="price">AUD $375.95</div>
+							  </li>
+                              <div class="clear"></div>
+                           	  <li style="background-color:#fff2e2;">
+                                <div class="number">2</div>
+                                <div class="detailP"><p>45.0cm x 2534.0cm Dura Sports Mesh Banner <span class="p2">Reinforced Webbing Edges 
+Colors: Red, Sewing: Black Thread, Fittings: Top Only, Fitting Spacing: 300mm</span></p>
+<div class="bt"><div class="iconInfo"></div><a href="#">View Info Sheet</a></div>
+<div class="bt"><div class="iconInfo2"></div><a href="#">View Easy Template</a></div>
+</div>
+<div class="closeBt"><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/close.png" width="9" height="9" /></a></div>
+<div class="price">AUD $375.95</div>
+							  </li>                            </ul>
+                              <div class="clear"></div>
+                        </div>
+                    </div><!--quoteItems-->
+                    <div class="clear"></div>
+                    
+                    <div class="startOrder">
+                   	  <div class="leftInfo"><h1>Weight: 0.00 kg</h1><div class="print"><div class="prinIcon"></div><a href="#">Print</a></div></div><!--leftInfo-->
+                        <div class="rightInfo">
+                        <h1>SubTotal : $0.00</h1>
+                        <h2>Discount : $0.00</h2>
+                        <h3>Shipping : $0.00</h3>
+                        <div class="clear"></div>
+                        <h4></h4>
+                        <h5>Grand Total : $0.00</h5>
+                        </div><!--rightInfo-->
+                      <div class="centerInfo"><div class="btNew"><a href="#">Start Order</a></div><div class="btNew3"><a href="#">Add to quote</a></div></div><!--centerInfo-->
+                      
+                    </div><!--startOrder-->
+                    
+            </div><!--detail-->
+        </div>
+<!--calculator-->
+
+
+<script src="http://localhost/bannershop/js/printcontent.js" type="text/javascript"></script>
+<script src="http://localhost/bannershop/js/measurementconvert.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(window).load(function() {
+	$('#calc-load').delay(600).fadeOut("slow",function() {
+		$('#calculate').fadeIn("slow");
+	});
+});
+</script>
+<!--end of calculator--> 
+<br/>
+<div class="clear"></div>

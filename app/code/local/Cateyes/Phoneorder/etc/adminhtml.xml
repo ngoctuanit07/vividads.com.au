@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <phoneorder>
+                                        <title>Cateyes Phone Order</title>
+                                    </phoneorder>  
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <sales>
+                        <children>
+                            <phoneorder_menu translate="title" module="phoneorder">
+                                <title>Phone Orders</title>
+                                <sort_order>300</sort_order>
+                            </phoneorder_menu>   
+                        </children>                     
+                    </sales>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

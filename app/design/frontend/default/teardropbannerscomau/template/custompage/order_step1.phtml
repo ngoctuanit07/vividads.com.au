@@ -1,0 +1,1158 @@
+<?php if(isset($_POST['step1'])){
+	/*echo '<pre>';
+	print_r($_POST);
+	 
+	echo '</pre>';*/
+	$product = $_POST['products_id'];
+	if($product='Concave'){
+	$size = $_POST['id']['1'];
+	} else {
+	$size = $_POST['sz']['1'];
+	}
+	$supports = $_POST['id']['2'];
+	
+	$side = $_POST['id']['3'];
+
+	$extra_base = '';
+	//$extra_base = 	$_POST['ex'];
+	if($_POST['ex']['0']){
+	$extra_base = 	$_POST['ex']['0'];
+	}
+	if($_POST['ex']['1']){
+	$extra_base = $extra_base ."  ".$_POST['ex']['1'];
+	}
+	if($_POST['ex']['2']){
+	$extra_base = $extra_base ."  ".$_POST['ex']['2'];
+	}
+	if($_POST['ex']['3']){
+	$extra_base = $extra_base ."  ".$_POST['ex']['3'];
+	}
+	$qty = $_POST['cart_quantity'];
+	 $extra_base;
+	
+	?> 
+    <div class="product_detail">
+
+<div class="order_step1" style="width:100%; text-align:center;">
+	<table width="100%"  style="margin-left: 50px;" cellspacing="0" cellpadding="0" border="0" class="maincont_tb">
+            <tbody>
+              <tr>
+                <td valign="top" align="left" colspan="3" class="text_area">&nbsp;</td>
+              </tr>
+              <tr> 
+                
+                <!-- content //-->
+                <td width="100%" valign="top" class="text_inner1"><table width="949" cellspacing="0" cellpadding="0" border="0" align="center">
+                    <tbody>
+                      <tr>
+                        <td valign="top" align="left"><!-- RCI [BOM] -global-top : includes/runtime/global/CDS_header_banner_global_top.php --> 
+                         
+                           
+                          
+                          <table width="949" cellspacing="0" cellpadding="0" border="0" align="center">
+                            <tbody>
+                              <tr>
+                                <td valign="top" align="left"><table width="949" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                      <tr>
+                                        <td valign="top" align="left" class="about_hding1"><table width="949" cellspacing="0" cellpadding="0" border="0">
+                                            <tbody>
+                                              <tr>
+                                                <td width="30">&nbsp;</td>
+                                                <td valign="middle" align="center"><img alt="" src="<?php echo $this->getSkinUrl()?>images/steps_gray_03.png"></td>
+                                                <td width="11">&nbsp;</td>
+                                                <td valign="middle" align="center"><img alt="" src="<?php echo $this->getSkinUrl()?>images/steps_blue2_07.png"></td>
+                                                <td width="11">&nbsp;</td>
+                                                <td valign="middle" align="center"><img alt="" src="<?php echo $this->getSkinUrl()?>images/steps_gray_07.png"></td>
+                                                <td width="11">&nbsp;</td>
+                                                <td width="526">&nbsp;</td>
+                                              </tr>
+                                            </tbody>
+                                          </table></td>
+                                      </tr>
+                                      <tr>
+                                        <td valign="top" align="left" class="step_bg_curve">
+                                        <form enctype="multipart/form-data" method="post" action="" name="cart_quantity">
+                                         <input type="hidden" name="product" value="<?php echo $product; ?>"  />
+                                         <input type="hidden" name="size" value="<?php echo $size; ?>"  />
+                                         <input type="hidden" name="supports" value="<?php echo $supports; ?>"  />
+                                         <input type="hidden" name="side" value="<?php echo $side; ?>"  />
+                                         <input type="hidden" name="extra_base" value="<?php echo $extra_base; ?>"  />
+                                         <input type="hidden" name="qty" value="<?php echo $qty; ?>"  />
+                                        
+                                            <table width="901" cellspacing="0" cellpadding="0" border="0" align="center">
+                                              <tbody>
+                                                <tr>
+                                                  <td height="15" colspan="2"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td valign="top" align="left" class="artwork" colspan="2">OPTION 1) Artwork To Be Supplied By Client </td>
+                                                </tr>
+                                                <tr>
+                                                  <td height="5" colspan="2"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td valign="top" align="left" style="color:#808080;padding:0 15px;" colspan="2">Here's where you give us all your pretty pictures. Download the artwork template, make sure your design fits on your chosen banner, and upload the final design! Easy.</td>
+                                                </tr>
+                                                <tr>
+                                                  <td height="15" colspan="2"></td>
+                                                </tr>
+                                                <tr>
+                                                  <td width="453" valign="top" align="left" class="first_td"><table width="432" cellspacing="0" cellpadding="0" border="0">
+                                                      <tbody>
+                                                        <tr>
+                                                          <td valign="top" align="left"><table width="432" cellspacing="0" cellpadding="0" border="0">
+                                                              <tbody>
+                                                                <tr>
+                                                                  <td width="9" valign="top" align="left"><img alt="" src="<?php echo $this->getSkinUrl()?>images/hding_bg_03.png"></td>
+                                                                  <td width="414" valign="middle" align="left" class="step_hding_bg">Download Template</td>
+                                                                  <td width="9" valign="top" align="left"><img alt="" src="<?php echo $this->getSkinUrl()?>images/hding_bg_07.png"></td>
+                                                                </tr>
+                                                              </tbody>
+                                                            </table></td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td height="20"></td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td valign="top" align="left"><table width="432" cellspacing="0" cellpadding="0" border="0">
+                                                              <tbody>
+                                                                <tr>
+                                                                  <td valign="middle" align="right" style="color:#808080;padding-top: 10px;"> To download template click  &nbsp; </td>
+                                                                  <td valign="middle" align="left"><a target="_blank" href="detail_information.pdf"><img border="0" alt="" src="<?php echo $this->getSkinUrl()?>images/step_button_16.png"></a></td>
+                                                                </tr>
+                                                              </tbody>
+                                                            </table></td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td><img width="100%" height="20" border="0" alt="" src="<?php echo $this->getSkinUrl()?>images/pixel_trans.gif"></td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td><table width="95%" cellspacing="2" cellpadding="2" border="0" align="center">
+                                                              <tbody>
+                                                                <tr>
+                                                                  <td><strong>Comments:</strong>(Additional information about your order)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td><textarea style="width:450px; height:100px;" name="acydetail" rows="5" cols="7"></textarea>
+                                                                    <input type="hidden" value="2" name="products_id"></td>
+                                                                </tr>
+                                                              </tbody>
+                                                            </table></td>
+                                                        </tr>
+                                                      </tbody>
+                                                    </table></td>
+                                                  <td valign="top" align="right" style="padding-left:6px;"><table width="432" cellspacing="0" cellpadding="0" border="0">
+                                                      <tbody>
+                                                        <tr>
+                                                          <td valign="top" align="left"><table width="432" cellspacing="0" cellpadding="0" border="0">
+                                                              <tbody>
+                                                                <tr>
+                                                                  <td width="9" valign="top" align="left"><img alt="" src="<?php echo $this->getSkinUrl()?>images/hding_bg_03.png"></td>
+                                                                  <td width="414" valign="middle" align="left" class="step_hding_bg">Upload artwork</td>
+                                                                  <td width="9" valign="top" align="left"><img alt="" src="<?php echo $this->getSkinUrl()?>images/hding_bg_07.png"></td>
+                                                                </tr>
+                                                              </tbody>
+                                                            </table></td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td style="color:#808080; padding:5px;">Be patience when file is uploading, this may take several minutes depending on the size of the file</td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td valign="top" align="left"><table width="432" cellspacing="0" cellpadding="0" border="0">
+                                                              <tbody>
+                                                                <tr>
+                                                                  <td height="20" colspan="2"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td valign="top" align="right" colspan="2"></td>
+                                                                </tr>
+                                                              </tbody>
+                                                            </table>
+                                                            <table class="options">
+                                                              <tbody>
+                                                                <tr>
+                                                                  <td><div style="width:450px" id="demo1" class="ax-uploader">
+                                                                      <fieldset>
+                                                                        upload file <input type="file" name="artwork" id="artwork"  />
+                                                                        
+
+                                                                        
+                                                                      </fieldset>
+                                                                      <span class="ax-net-info"></span></div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td><div style="width:450px" id="demo1" class="ax-uploader">
+                                                                      <fieldset>
+                                                                        upload file <input type="file" name="artwork1" id="artwork"  />
+                                                                        
+
+                                                                        
+                                                                      </fieldset>
+                                                                      <span class="ax-net-info"></span></div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td><div style="width:450px" id="demo1" class="ax-uploader">
+                                                                      <fieldset>
+                                                                        upload file <input type="file" name="artwork2" id="artwork"  />
+                                                                        
+
+                                                                        
+                                                                      </fieldset>
+                                                                      <span class="ax-net-info"></span></div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td><div style="width:450px; float:right;text-align:center;" id="demo1" class="ax-uploader">
+                              <input type="submit" value="Next" name="step2" class="Next" border="0" align="middle" title=" next " alt="next" src="<?php echo $this->getSkinUrl()?>images/next_03.png">
+                                                                      <span class="ax-net-info"></span></div>
+                                                                    </td>
+                                                                </tr>
+                                                                              
+                                                              </tbody>
+                                                            </table></td>
+                                                        </tr>
+                                                      </tbody>
+                                                    </table></td>
+                                                </tr>
+                                                <tr>
+                                                  <td height="50" colspan="2"></td>
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                            
+                                          </form></td>
+                                      </tr>
+                                    </tbody>
+                                  </table></td>
+                              </tr>
+                              <tr>
+                                <td height="50"></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          
+                          <!-- RCI [BOM] -global-bottom : includes/runtime/global/CDS_CDpathSession_global_bottom.php --> 
+                          <!-- RCI [EOM] -global-bottom : includes/runtime/global/CDS_CDpathSession_global_bottom.php --> 
+                          <!-- RCI [BOM] -global-bottom : includes/runtime/global/CDS_navigation_global_bottom.php --> 
+                          <!-- RCI [EOM] -global-bottom : includes/runtime/global/CDS_navigation_global_bottom.php --></td>
+                      </tr>
+                      <tr>
+                        <td height="50"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  
+                  <!-- content_eof //--></td>
+              </tr>
+              <tr>
+                <td><img width="1" height="5" border="0" alt="" src="<?php echo $this->getSkinUrl()?>images/pixel_trans.gif"></td>
+              </tr>
+            </tbody>
+          </table>
+          
+          </div>
+          </div>
+          
+          
+<?php 	 } elseif(isset($_POST['step2'])){ ?>
+<?php 
+/*echo '<pre>';
+	print_r($_POST);
+	print_r($_FILES); 
+	echo '</pre>';*/
+	$fileName = '';
+       if (isset($_FILES['artwork']['name']) && $_FILES['artwork']['name'] != '') {
+                try {           
+
+                    $uploader = new Varien_File_Uploader('artwork');
+                    $uploader->setAllowedExtensions(array('jpg', 'png','pdf'));
+                    $uploader->setAllowRenameFiles(true);
+                    $uploader->setFilesDispersion(false);
+                    $path = Mage::getBaseDir('media') . DS . 'contacts' . DS ;
+                    if(!is_dir($path)){
+                        mkdir($path, 0777, true);
+                    }
+                    $uploader->save($path, $_FILES['artwork']['name'] );             
+                    $newFilename = $uploader->getUploadedFileName();
+					$Imagename = $_FILES['artwork']['name'];
+
+
+                } catch (Exception $e) {
+                    $error = true;
+                }
+            }	
+       if (isset($_FILES['artwork1']['name']) && $_FILES['artwork1']['name'] != '') {
+                try {           
+
+                    $uploader = new Varien_File_Uploader('artwork1');
+                    $uploader->setAllowedExtensions(array('jpg', 'png','pdf'));
+                    $uploader->setAllowRenameFiles(true);
+                    $uploader->setFilesDispersion(false);
+                    $path = Mage::getBaseDir('media') . DS . 'contacts' . DS ;
+                    if(!is_dir($path)){
+                        mkdir($path, 0777, true);
+                    }
+                    $uploader->save($path, $_FILES['artwork1']['name'] );             
+                    $newFilename = $uploader->getUploadedFileName();
+
+					$Imagename1 = $_FILES['artwork1']['name'];		
+                } catch (Exception $e) {
+                    $error = true;
+                }
+            }	
+       if (isset($_FILES['artwork2']['name']) && $_FILES['artwork2']['name'] != '') {
+                try {           
+
+                    $uploader = new Varien_File_Uploader('artwork2');
+                    $uploader->setAllowedExtensions(array('jpg', 'png','pdf'));
+                    $uploader->setAllowRenameFiles(true);
+                    $uploader->setFilesDispersion(false);
+                    $path = Mage::getBaseDir('media') . DS . 'contacts' . DS ;
+                    if(!is_dir($path)){
+                        mkdir($path, 0777, true);
+                    }
+                    $uploader->save($path, $_FILES['artwork2']['name'] );             
+                    $newFilename = $uploader->getUploadedFileName();
+					$Imagename2 = $_FILES['artwork2']['name'];		
+
+
+                } catch (Exception $e) {
+                    $error = true;
+                }
+            }	
+			
+$product = $_POST['product'];
+$size = $_POST['size'];
+$supports = $_POST['supports'];
+$side = $_POST['side'];
+$extra_base = $_POST['extra_base']; 
+$qty = $_POST['qty'];
+//$Imagename = $_FILES['artwork']['name'];		
+			
+?>
+
+<div class="product_detail">
+
+<div class="order_step1" style="width:100%; text-align:center;">
+   <table class="maincont_tb" style="margin-left:50px;" cellpadding="0" cellspacing="0" border="0" width="100%">
+
+
+
+
+
+
+ <tbody><tr>
+
+       <td class="text_area" colspan="3" align="left" valign="top">&nbsp;</td>
+
+      </tr>
+
+  <tr>
+
+    
+    <!-- content //-->
+<td class="text_inner1" valign="top" width="100%">
+               <table cellpadding="0" cellspacing="0" align="center" border="0" width="949">
+
+          <tbody><tr>
+
+           <td align="left" valign="top">
+
+      
+      <table cellpadding="0" cellspacing="0" border="0" width="949">
+              <tbody><tr>
+                <td class="about_hding1" align="left" valign="top">
+                 <table cellpadding="0" cellspacing="0" border="0" width="949">
+                  <tbody><tr>
+                    <td width="30">&nbsp;</td>
+                    <td align="center" valign="middle"><img src="<?php echo $this->getSkinUrl()?>images/steps_gray_03.png" alt=""></td>
+                    <td width="11">&nbsp;</td>
+                    <td align="center" valign="middle"><img src="<?php echo $this->getSkinUrl()?>images/steps_gray_05.png" alt=""></td>
+                    <td width="11">&nbsp;</td>
+                    <td align="center" valign="middle"><img src="<?php echo $this->getSkinUrl()?>images/steps_blue3_07.png" alt=""></td>
+                    <td width="11">&nbsp;</td>
+                    <td width="526">&nbsp;</td>
+                  </tr>
+                </tbody></table>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" valign="top">
+      </td></tr><tr>
+                <td class="step_bg_curve" align="left" valign="top">
+                 <table cellpadding="0" cellspacing="0" align="center" border="0" width="901">
+                  <tbody><tr><td colspan="2" height="15"></td></tr>
+  
+ <tr>
+                    <td align="left" valign="top">           
+                
+                
+<!-- RCI [BOM] -global-top : includes/runtime/global/CDS_header_banner_global_top.php -->
+<!-- RCI [EOM] -global-top : includes/runtime/global/CDS_header_banner_global_top.php -->
+<form name="create_account" action="" method="post" style="float:left; padding-left:25px;" onsubmit="return check_form(create_account);" enctype="multipart/form-data">
+                                         <input type="hidden" name="product" value="<?php echo $product; ?>"  />
+                                         <input type="hidden" name="size" value="<?php echo $size; ?>"  />
+                                         <input type="hidden" name="supports" value="<?php echo $supports; ?>"  />
+                                         <input type="hidden" name="side" value="<?php echo $side; ?>"  />
+                                         <input type="hidden" name="extra_base" value="<?php echo $extra_base; ?>"  />
+                                         <input type="hidden" name="qty" value="<?php echo $qty; ?>"  />
+                                         <?php if($Imagename) {?>
+                                         <input type="hidden" name="Imagename" value="<?php echo $Imagename; ?>"  />
+                                         <?php } if($Imagename1) { ?>
+                                         <input type="hidden" name="Imagename1" value="<?php echo $Imagename1; ?>"  />
+                                         <?php } if($Imagename2) { ?>
+                                         <input type="hidden" name="Imagename2" value="<?php echo $Imagename2; ?>"  />
+                                         <?php } ?>
+
+ <input name="action" value="process" type="hidden"><table cellpadding="0" cellspacing="0" align="center" border="0" width="90%">
+
+      <tbody><tr>
+        <td class="smallText"><br><font color="#FF0000"><small><b>NOTE:</b></small></font> If you already have an account with us, please login at the <a href="http://www.teardrop123.com.au/login.php"><u>login page</u></a>.</td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo $this->getSkinUrl()?>images/pixel_trans.gif" alt="" border="0" height="10" width="100%"></td>
+      </tr>
+      <tr>
+        <td><table cellpadding="2" cellspacing="0" border="0" width="100%">
+          <tbody><tr>
+            <td class="main"><b>Your Personal Details</b></td>
+           <td class="inputRequirement" align="right">* Required information</td>
+          </tr>
+        </tbody></table></td>
+      </tr>
+      <tr>
+        <td><table class="infoBox" cellpadding="2" cellspacing="1" border="0" width="100%">
+          <tbody><tr class="infoBoxContents">
+            <td><table cellpadding="2" cellspacing="2" border="0">
+              <tbody><tr>
+                <td class="main">First Name:</td>
+                <td class="main"><input name="firstname" type="text">&nbsp;<span class="inputRequirement">*</span></td>
+              </tr>
+              <tr>
+                <td class="main">Last Name:</td>
+                <td class="main"><input name="lastname" type="text">&nbsp;<span class="inputRequirement">*</span></td>
+              </tr>
+              <tr>
+                <td class="main">E-Mail Address:</td>
+                <td class="main"><input name="email_address" type="text">&nbsp;<span class="inputRequirement">*</span></td>
+              </tr>
+            </tbody></table></td>
+          </tr>
+        </tbody></table></td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo $this->getSkinUrl()?>images/pixel_trans.gif" alt="" border="0" height="10" width="100%"></td>
+      </tr>
+      <tr>
+        <td class="main"><b>Company Details</b></td>
+      </tr>
+      <tr>
+        <td><table class="infoBox" cellpadding="2" cellspacing="1" border="0" width="100%">
+          <tbody><tr class="infoBoxContents">
+            <td><table cellpadding="2" cellspacing="2" border="0">
+              <tbody><tr>
+                <td class="main">Company Name:</td>
+                <td class="main"><input name="company" type="text">&nbsp;</td>
+              </tr>
+            </tbody></table></td>
+          </tr>
+        </tbody></table></td>
+      </tr>
+       
+       
+       
+      
+      <tr>
+        <td class="main"><b>Your Contact Information</b></td>
+      </tr>
+      <tr>
+        <td><table class="infoBox" cellpadding="2" cellspacing="1" border="0" width="100%">
+          <tbody><tr class="infoBoxContents">
+            <td><table cellpadding="2" cellspacing="2" border="0">
+              <tbody><tr>
+                <td class="main">Telephone Number:</td>
+                <td class="main"><input name="telephone" type="text">&nbsp;<span class="inputRequirement">*</span></td>
+              </tr>
+              <tr>
+                <td class="main">Fax Number:</td>
+                <td class="main"><input name="fax" type="text">&nbsp;</td>
+              </tr>
+            </tbody></table></td>
+          </tr>
+        </tbody></table></td>
+      </tr>
+   
+
+<!-- VISUAL VERIFY CODE start -->
+        
+      
+      <tr>
+        <td><img src="<?php echo $this->getSkinUrl()?>images/pixel_trans.gif" alt="" border="0" height="10" width="100%"></td>
+      </tr>
+<!--  VISUAL VERIFY CODE stop   -->
+      <tr>
+        <td><img src="<?php echo $this->getSkinUrl()?>images/pixel_trans.gif" alt="" border="0" height="10" width="100%"></td>
+      </tr>
+      <tr>
+        <td><table class="infoBox" cellpadding="2" cellspacing="1" border="0" width="100%">
+          <tbody><tr class="infoBoxContents">
+            <td><table cellpadding="2" cellspacing="0" border="0" width="100%">
+              <tbody><tr>
+                <td width="10"><img src="<?php echo $this->getSkinUrl()?>images/pixel_trans.gif" alt="" border="0" height="1" width="10"></td>
+                <td><input class="Next" name="step3" title="" value=""  border="0" type="submit"></td>
+                <td width="10"><img src="<?php echo $this->getSkinUrl()?>images/pixel_trans.gif" alt="" border="0" height="1" width="10"></td>
+              </tr>
+            </tbody></table></td>
+          </tr>
+        </tbody></table></td>
+      </tr>
+    </tbody></table></form>
+<!-- RCI [BOM] -global-bottom : includes/runtime/global/CDS_CDpathSession_global_bottom.php -->
+<!-- RCI [EOM] -global-bottom : includes/runtime/global/CDS_CDpathSession_global_bottom.php -->
+<!-- RCI [BOM] -global-bottom : includes/runtime/global/CDS_navigation_global_bottom.php -->
+<!-- RCI [EOM] -global-bottom : includes/runtime/global/CDS_navigation_global_bottom.php -->
+</td>
+</tr></tbody></table>
+</td>
+</tr></tbody></table>
+     </td>           
+
+          </tr>
+          <tr><td height="50"></td></tr>
+        </tbody></table>
+
+    <!-- content_eof //-->
+
+         
+   </td></tr><tr>
+
+    <td><img src="<?php echo $this->getSkinUrl()?>images/pixel_trans.gif" alt="" border="0" height="5" width="1"></td>
+
+  </tr>
+</tbody></table>
+</div>
+</div>
+
+<?php } elseif(isset($_POST['step3'])){
+/*echo '<pre>';
+	print_r($_POST);
+	
+	 
+	echo '</pre>';	
+exit;	*/
+	
+$product = $_POST['product'];
+$size = $_POST['size'];
+$supports = $_POST['supports'];
+$side = $_POST['side'];
+$extra_base = $_POST['extra_base']; 
+$qty = $_POST['qty'];
+if($_POST['Imagename']){
+$Imagename = $_POST['Imagename'];
+}
+if($_POST['Imagename1']){
+$Imagename = $Imagename." ".$_POST['Imagename1'];
+}
+if($_POST['Imagename2']){
+$Imagename = $Imagename." ".$_POST['Imagename2'];
+}
+$firstname= $_POST['firstname'];
+$lastname= $_POST['lastname'];
+$email_address= $_POST['email_address'];
+$company= $_POST['company'];
+$telephone= $_POST['telephone'];
+$fax= $_POST['fax'];	
+
+
+// the message
+$msg = "Hi,\n I am ".$firstname." ".$lastname.".\n I am interested in \n Product: ".$product."\n Size: ".$size." \n Supports: ".$supports." \n Side: ".$side."\n Extra Base: ".$extra_base."\n ImageName(s): ".$Imagename."\nQuantity: ".$qty."\n Email: ".$email_address."\n Company: ".$company."\n Telephone: ".$telephone."\n Fax: ".$fax."\n Looking forward for your response.";
+
+// use wordwrap() if lines are longer than 70 characters
+$msg = wordwrap($msg,70);
+
+// send email
+$to      = $email_address;
+$subject = 'Order Enquiry';
+$headers = 'From: faris.memon@gmail.com' . "\r\n" .
+    'Reply-To: faris.memon@gmail.com' . "\r\n" .
+	'Cc: faris.memon@gmail.com' . "\r\n";
+    'X-Mailer: PHP/' . phpversion();
+
+mail($to, $subject, $msg, $headers);
+//mail($email_address,"Order Enquiry",$msg);
+//mail("sales@tablethrows.com.au","Order Enquiry",$msg);
+if(mail){					
+					  Mage::getSingleton('customer/session')->addSuccess(
+					  Mage::helper('contacts')->__('Your inquiry was submitted and will be responded to as soon as possible. Thank you for contacting us.'));
+					// $this->_redirect('*/*/');
+					//return;
+					
+					
+					
+					}
+$url = $this->getUrl('');
+header('Location: '.$url);	
+	exit;
+	?>  <?php } else { 	?> 
+
+
+<div class="product_detail">
+
+<div class="order_step1" style="width:100%; text-align:center;">
+<table width="980" cellspacing="0" cellpadding="0" border="0" style="margin-left: 50px;" align="center">
+      <tbody>
+      <tr>
+       <td height="15"></td>
+      </tr>
+  <!-- header_eof //-->
+<!-- header_eof //-->
+
+<!-- body //-->
+      <!--content starts-->
+  <tr><td>
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0" class="maincont_tb">
+
+
+
+
+
+
+ <tbody>
+
+  <tr>
+
+    
+    <!-- content //-->
+<td width="100%" valign="top" class="text_inner1">
+               <table width="949" cellspacing="0" cellpadding="0" border="0" align="center">
+
+          <tbody><tr>
+
+           <td valign="top" align="left">
+
+      
+          <!-- RCI [BOM] -global-top : includes/runtime/global/CDS_header_banner_global_top.php -->
+<!-- RCI [EOM] -global-top : includes/runtime/global/CDS_header_banner_global_top.php -->
+    <!-- bof content.index_products.tpl.php-->
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tbody><tr>
+        <td><table width="100%" cellspacing="0" cellpadding="0" border="0">
+          <tbody><tr>
+            <td> 
+              <span class="category_desc"><div>
+              
+<h2 style=" color: #1E6FB4;font-family: Verdana,Arial,sans-serif;font-size: 18px;font-weight: normal;">Buy teardrop flags online @ Teardrop-Banners and save!</h2>
+<p>Teardrop flags are great if you want to be seen! They’re large, they move in the wind, and are available in a huge range of sizes and styles to suit any indoor or outdoor application. Also known as teardrop banners or flag banners, or even feather flags / bali flags for their tapered feathery shape and resemblance of traditional Balinese flags, their dimensions lend themselves well to adding depth and movement to advertising displays and trade show signage. Unlike many other websites we don’t have hidden costs, our products prices include delivery, carry cases and bases at the same cost, the only extra we charge for is double sided printing which cost $28 per flag no matter what the size is.</p>
+<p>Your custom teardrop flag design couldn't be simpler: just  choose your style and size and upload your artwork. Select a quantity in just one click- ideal for teardrop flag wholesale orders. We do the rest! We also have a large selection of bases to suit any job and each separate banner comes packaged in its own convenient carry bag. The banners themselves set up in just a few simple steps, and clear instructions are included.</p>
+<p>Teardrop123 offers free delivery across Australia, making your affordable teardrop banners even better value for money. Your hot new advertising flags will be delivered to your door in Perth, Melbourne, Sydney or any other destination around the country by Australia Post or courier.</p>
+<p>Should you have any further questions about the product specifications of our range of teardrop flying banners, or about the design &amp; ordering process, please feel free to contact the Teardrop123 team using the online contact form and a staff member will get back to you as soon as possible.</p>
+</div></span>            </td>
+            <td align="right"></td>
+          </tr>
+        </tbody></table></td>
+      </tr>
+      <tr>
+        <td><img width="100%" height="10" border="0" alt="" src="<?php echo $this->getSkinUrl()?>images/pixel_trans.gif"></td>
+      </tr>
+      <!--manufacture list in index product.php-->
+      <tr>
+        <td>
+        <script>
+function genrate(id)
+{
+
+	$("#"+'mydivs1').load("attributes_result.php?prid="+id);
+	$("#"+'mydivs2').load("attributes_result1.php?prid="+id);
+
+}
+function changesize(check){
+	var c = check;
+	
+	if(check=='2'){
+    document.getElementById("concave").style.display="none";
+	document.getElementById("teardrop").style.display="block";
+ 	} else{
+	document.getElementById("teardrop").style.display="none";
+	document.getElementById("concave").style.display="block";
+	}
+	}
+</script>
+ 
+ <table width="949" cellspacing="0" cellpadding="0" border="0" align="left">
+              <tbody><tr>
+                <td valign="top" align="left" class="about_hding1">
+                 <table width="949" cellspacing="0" cellpadding="0" border="0" align="left">
+                  <tbody><tr>
+                    <td width="30">&nbsp;</td>
+                    <td valign="middle" align="center"><img alt="" src="<?php echo $this->getSkinUrl()?>images/steps_blue_07.png"></td>
+                    <td width="11">&nbsp;</td>
+                    <td valign="middle" align="center"><img alt="" src="<?php echo $this->getSkinUrl()?>images/steps_gray_05.png"></td>
+                    <td width="11">&nbsp;</td>
+                    <td valign="middle" align="center"><img alt="" src="<?php echo $this->getSkinUrl()?>images/steps_gray_07.png"></td>
+                    <td width="11">&nbsp;</td>
+                    <td width="526">&nbsp;</td>
+                  </tr>
+                </tbody></table>
+                </td>
+              </tr>
+               <tr>
+                <td valign="top" align="left" class="step_bg_curve">
+                <form enctype="multipart/form-data" method="post" action="" name="cart_quantity">  
+                      
+                 <table width="901" style="padding-left:25px;" cellspacing="0" cellpadding="0" border="0" align="center">
+                  <tbody><tr><td height="15" colspan="2"></td></tr>
+           
+               
+ <tr>
+                    <!--<td valign="top" align="left" width="453" class="first_td"> -->
+                     <td width="453" valign="top" align="left"> 
+   	 <table width="432" cellspacing="0" cellpadding="0" border="0" align="left">
+                      <tbody><tr>
+                        <td valign="top" align="left">
+                        <img alt="" src="<?php echo $this->getSkinUrl()?>images/steps_buttons_06.png">
+                                                 </td>
+                      </tr>
+                      <tr><td height="20"></td></tr>
+                      <tr>
+                        <td valign="top" align="left">
+                         <table width="432" cellspacing="0" cellpadding="0" border="0" align="left">
+                          <tbody><tr>        
+<!--product-listin-col -->
+                            <td width="128" valign="top" align="left">
+                             <table width="128" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg" colspan="2"><img width="128" height="119" border="0" title=" Concave " alt="Concave" src="<?php echo $this->getSkinUrl()?>images/steps_page1_13.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name">Concave</td>
+                                <td valign="middle" align="right"><input type="radio" value="Concave" checked="checked" onclick="changesize('1');" name="products_id"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="24">&nbsp;</td>
+	                            <td width="128" valign="top" align="left">
+                             
+                            </td>
+                            <td width="24">&nbsp;</td>
+	                            <td width="128" valign="top" align="left">
+                             <table width="128" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg" colspan="2"><img width="128" height="119" border="0" title=" Teardrop " alt="Teardrop" src="<?php echo $this->getSkinUrl()?>images/steps_page_13.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name">Teardrop</td>
+                                <td valign="middle" align="right"><input type="radio"  value="Teardrop" onclick="changesize('2');" name="products_id"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="24">&nbsp;</td>
+	</tr><tr><td>&nbsp;</td></tr><tr>   </tr> </tbody></table>
+                        </td>
+                      </tr>
+                      <tr><td height="20"></td></tr></tbody></table> 
+                      
+           
+      <div id="mydivs1">
+		   <table width="432" cellspacing="0" cellpadding="0" border="0" align="left">
+                      <tbody><tr>
+                        <td valign="top" align="left">
+                        <img alt="" src="<?php echo $this->getSkinUrl()?>images//steps_buttons_12.png">
+                                                 </td>
+                      </tr>
+                      <tr>
+                        <td height="10">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td valign="top" align="left">
+                        <div id="concave" >
+                         <table width="360" cellspacing="2" cellpadding="2" border="0" align="left">
+                          <tbody><tr>
+                    <td width="64" valign="top" align="left">
+                    
+                             <table width="64" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                              
+                                <td valign="top" align="left" class="step_product_name">2.5m</td>
+                                <td valign="middle" align="left"><input type="radio" value="2.5m" name="id[1]" checked="checked"></td>
+                              
+                              </tr>
+                            </tbody></table>
+                            </td><td width="64" valign="top" align="left">
+                             <table width="64" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="top" align="left" class="step_product_name">3.5m</td>
+                                <td valign="middle" align="left"><input type="radio" value="3.5m" name="id[1]" checked="checked"></td>
+                              </tr>
+                            </tbody></table>
+                            </td><td width="64" valign="top" align="left">
+                             <table width="64" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="top" align="left" class="step_product_name">4.8m</td>
+                                <td valign="middle" align="left"><input type="radio" value="4.8m" name="id[1]" checked="checked"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>            </tr>
+                        </tbody></table>
+                        </div>
+                        <div id="teardrop" style="display:none;">
+                         <table width="360" cellspacing="2" cellpadding="2" border="0" align="left">
+                          <tbody><tr>
+                    <td width="64" valign="top" align="left">
+                    
+                             <table width="64" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                              
+                                <td valign="top" align="left" class="step_product_name">2m</td>
+                                <td valign="middle" align="left"><input type="radio" value="2m" name="sz[1]" checked="checked"></td>
+                              
+                              </tr>
+                            </tbody></table>
+                            </td><td width="64" valign="top" align="left">
+                             <table width="64" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="top" align="left" class="step_product_name">3m</td>
+                                <td valign="middle" align="left"><input type="radio" value="3m" name="sz[1]" checked="checked"></td>
+                              </tr>
+                            </tbody></table>
+                            </td><td width="64" valign="top" align="left">
+                             <table width="64" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="top" align="left" class="step_product_name">4.2m</td>
+                                <td valign="middle" align="left"><input type="radio" value="4.2m" name="sz[1]" checked="checked"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>            </tr>
+                        </tbody></table>
+                        </div>
+                        </td>
+                      </tr>
+                                          </tbody></table>
+                    
+                    <table width="320" cellspacing="0" cellpadding="0" border="0" align="left" style="padding-top:68px;">
+                          
+                         <tbody><tr>
+                        <td valign="top" align="left" colspan="2">
+                        <img alt="" src="<?php echo $this->getSkinUrl()?>images/steps4_20.png">
+                        </td>
+                      </tr>  
+                          
+                          <tr>
+                    <td valign="top" align="left">
+                             <table cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="top" align="left" class="step_product_name">Single Sided</td>
+                                <td valign="middle" align="left"><input type="radio" checked="checked" name="id[3]" value="Single Sided"></td>
+                              </tr>
+                            </tbody></table>
+                            </td><td valign="top" align="left">
+                             <table cellspacing="0" cellpadding="0" border="0">
+                              <tbody><tr>
+                                <td valign="top" align="left" class="step_product_name">Double Sided (+ $30)</td>
+                                <td valign="middle" align="left"><input type="radio" name="id[3]" value="Double Sided (+ $30)"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>            </tr>
+                        </tbody></table>
+              </div>      
+                     </td>
+                    <td valign="top" align="right" style="padding-left:18px;">
+                    <div id="mydivs2">
+		   <table width="432" cellspacing="0" cellpadding="0" border="0" align="left">
+                      <tbody><tr>
+                        <td valign="top" align="left">
+                      <img alt="" src="<?php echo $this->getSkinUrl()?>images/steps_buttons_17.png">
+                                                 </td>
+                      </tr>
+                      <tr><td height="20"></td></tr>
+                      <tr>
+                        <td valign="top" align="left">
+                        
+                         <table width="432" cellspacing="0" cellpadding="0" border="0" align="left">
+                          <tbody><tr>
+                          
+                          
+                            
+                            
+                            
+                            
+                 <td width="128" valign="top" align="left">
+                             <table width="128" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg" colspan="2"><img height="119" alt="" src="<?php echo $this->getSkinUrl()?>images/cross base.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name">Cross Base</td>
+                                <td valign="middle" align="right"><input type="radio" value="Cross Base" name="id[2]" checked="checked"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="24">&nbsp;</td><td width="128" valign="top" align="left">
+                             <table width="128" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg" colspan="2"><img height="119" alt="" src="<?php echo $this->getSkinUrl()?>images/ground spike base.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name">Ground Spike Base</td>
+                                <td valign="middle" align="right"><input type="radio" value="Ground Spike Base" name="id[2]" checked="checked"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="24">&nbsp;</td><td width="128" valign="top" align="left">
+                             <table width="128" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg" colspan="2"><img height="119" alt="" src="<?php echo $this->getSkinUrl()?>images/plate base.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name">Base Plate</td>
+                                <td valign="middle" align="right"><input type="radio" value="Base Plate" name="id[2]" checked="checked"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="24">&nbsp;</td></tr><tr><td colspan="2">&nbsp;</td></tr><tr><td width="128" valign="top" align="left">
+                             <table width="128" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg" colspan="2"><img height="119" alt="" src="<?php echo $this->getSkinUrl()?>images/wall mount base.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name">Wall Mount Base</td>
+                                <td valign="middle" align="right"><input type="radio" value="Wall Mount Base" name="id[2]" checked="checked"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="24">&nbsp;</td><td width="128" valign="top" align="left">
+                             <table width="128" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg" colspan="2"><img height="119" alt="" src="<?php echo $this->getSkinUrl()?>images/water bag base.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name">Water Bag</td>
+                                <td valign="middle" align="right"><input type="radio" value="Water Bag" name="id[2]" checked="checked"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="24">&nbsp;</td>                       
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                          </tr>
+                        </tbody></table>
+                        </td>
+                      </tr>
+                       </tbody></table>
+                       </div>
+                      
+          		   <div id="mydivs4">
+		   <table width="432" cellspacing="0" cellpadding="0" border="0" align="left">
+                      <tbody><tr>
+                        <td valign="top" align="left">
+                     <table width="432" cellspacing="0" cellpadding="0" border="0" align="left">
+                     <tbody><tr>
+                        <td valign="top" align="left">
+                        <img alt="" src="<?php echo $this->getSkinUrl()?>images//choose-btn.png">
+                                                 </td>
+                      </tr>
+                          
+                        </tbody></table>
+                        </td>
+                      </tr>
+                       <tr><td valign="middle" height="40" align="center" style="color:#369cbf; font-size:15px;"><strong>If you want additional bases select from  here</strong></td></tr>
+                      <tr>
+                        <td valign="top" align="left">
+                        
+                         <table width="432" cellspacing="0" cellpadding="0" border="0" align="left">
+                          <tbody><tr>
+                          
+                          
+                            
+                            
+                            
+                            
+                 <td width="90" valign="top" align="left">
+                             <table width="90" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg1" colspan="2"><img height="70" alt="" src="<?php echo $this->getSkinUrl()?>images/plate_base.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name1">base plate<br><span style="font-size:11px;font-weight:normal;">(&nbsp;+&nbsp;$40.00&nbsp;)</span></td>
+                                <td valign="middle" align="right"><input type="checkbox" value="base plate" name="ex[0]"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="18">&nbsp;</td><td width="90" valign="top" align="left">
+                             <table width="90" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg1" colspan="2"><img height="70" alt="" src="<?php echo $this->getSkinUrl()?>images/cross base.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name1">cross base<br><span style="font-size:11px;font-weight:normal;">(&nbsp;+&nbsp;$20.00&nbsp;)</span></td>
+                                <td valign="middle" align="right"><input type="checkbox" value="cross base" name="ex[1]"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="18">&nbsp;</td><td width="90" valign="top" align="left">
+                             <table width="90" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg1" colspan="2"><img height="70" alt="" src="<?php echo $this->getSkinUrl()?>images/ground spike base.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name1">ground spike<br><span style="font-size:11px;font-weight:normal;">(&nbsp;+&nbsp;$18.00&nbsp;)</span></td>
+                                <td valign="middle" align="right"><input type="checkbox" value="ground spike" name="ex[2]"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="18">&nbsp;</td><td width="90" valign="top" align="left">
+                             <table width="90" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody><tr>
+                                <td valign="middle" align="center" class="step_product_bg1" colspan="2"><img height="70" alt="" src="<?php echo $this->getSkinUrl()?>images/water bag base.jpg"></td>
+                              </tr>
+                              <tr><td height="10" colspan="2"></td></tr>
+                              <tr>
+                                <td valign="top" align="left" class="step_product_name1">water bag<br><span style="font-size:11px;font-weight:normal;">(&nbsp;+&nbsp;$10.00&nbsp;)</span></td>
+                                <td valign="middle" align="right"><input type="checkbox" value="water bag" name="ex[3]"></td>
+                              </tr>
+                            </tbody></table>
+                            </td>
+                            <td width="18">&nbsp;</td></tr><tr><td colspan="2">&nbsp;</td></tr><tr>                       
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                          </tr>
+                        </tbody></table>
+                        </td>
+                      </tr>
+                       </tbody></table>
+                       </div>
+		  
+		  
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+     <table width="432" cellspacing="0" cellpadding="0" border="0" align="right">
+                      
+                    
+                      
+                      <!--quantity start-->
+                       <tbody><tr>
+                        <td valign="top" align="left">
+                      <table width="432" cellspacing="0" cellpadding="0" border="0" align="right">
+                      <tbody><tr>
+                        <td valign="top" align="left">
+                      <img alt="" src="<?php echo $this->getSkinUrl()?>images//steps5_20.png">
+                                                 </td>
+                      </tr>
+                      <tr>
+                        <td height="10">&nbsp;</td>
+                      </tr>
+                     
+                      <tr>
+                        <td valign="top" align="left">
+                         <select style="font-size:15px; color:#333333" name="cart_quantity" class="select1">
+                         <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>                          </select>
+                        </td>
+                      </tr>
+                     </tbody></table>
+                      
+                      </td></tr>
+                       <!--quantity end-->
+                      
+                      
+                      
+                       <tr>
+                        <td valign="top" align="left">
+                      <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tbody><tr>
+                      
+                      <td valign="top" align="left"> 
+                   
+                    <style>
+					.ToolTextSize1{position:relative;}
+					.ToolTextHoverSize1{position:relative;}
+					.ToolTextSize1 span{display:none;}
+					.ToolTextHoverSize1 span{display:block;position:absolute;border:1px solid #000;padding:5px 5px 5px 5px;top:1.5em;left:0;color:#000;z-index:100000;width:400px;min-height:105px;background:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#E3E3E4));background:-moz-linear-gradient(top,#fff,#E3E3E4);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#E3E3E4);-ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#E3E3E4)";-webkit-border-radius:5px 5px 5px 5px;-moz-border-radius:5px 5px 5px 5px;border-radius:5px 5px 5px 5px;}
+                    </style>
+
+                        <div style="font-weight:normal;" onmouseout="javascript:this.className='ToolTextSize1'" onmouseover="javascript:this.className='ToolTextHoverSize1'" class="ToolTextSize1">
+          <h3>Click here to view the <label style="color:#369cbf;"> Sizing Chart</label></h3>
+         <span>
+          <img src="<?php echo $this->getSkinUrl()?>images/Teardrop_size.jpg" alt="">
+         </span>
+          </div>
+                                        
+                        
+                        
+                        
+                        
+                        </td>
+    <td valign="top" align="right"><input type="submit" value="Next" name="step1" class="Next" border="0" align="middle" title=" next " alt="next" src="<?php echo $this->getSkinUrl()?>images/next_03.png"></td>
+                      </tr>
+                    </tbody></table></td></tr>
+                      </tbody></table>                   
+                    
+</td></tr>
+ </tbody></table>
+                </form></td>
+              </tr>
+              
+</tbody></table>        </td>
+      </tr>
+    </tbody></table>
+    <!-- RCI [BOM] -global-bottom : includes/runtime/global/CDS_CDpathSession_global_bottom.php -->
+<!-- RCI [EOM] -global-bottom : includes/runtime/global/CDS_CDpathSession_global_bottom.php -->
+<!-- RCI [BOM] -global-bottom : includes/runtime/global/CDS_navigation_global_bottom.php -->
+<!-- RCI [EOM] -global-bottom : includes/runtime/global/CDS_navigation_global_bottom.php -->
+
+     </td>           
+
+          </tr>
+          <tr><td height="100"></td></tr>
+        </tbody></table>
+
+    <!-- content_eof //-->
+
+         
+   </td></tr><tr>
+
+    <td><img width="1" height="5" border="0" alt="" src="<?php echo $this->getSkinUrl()?>images/priceChart.png/pixel_trans.gif"></td>
+
+  </tr>
+</tbody></table>
+
+  </td></tr></tbody></table>
+  </div>
+ 
+             
+            
+             </div>
+<?php } ?>

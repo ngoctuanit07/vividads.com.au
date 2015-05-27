@@ -1,0 +1,198 @@
+<?php
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @copyright  Copyright (c) 2013 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Multi Fees extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @author     MageWorx Dev Team
+ */
+
+
+if (Mage::helper('multifees')->isEnabled()) {
+?>
+<script type="text/javascript">
+//<![CDATA[
+    var MultiFees = {
+        labelClick: function(obj, type, code) {
+            el=obj.previous().down(); 
+            if (!el) return false;
+            if (el.checked) el.checked = false; else el.checked = true;
+            
+            if (type=='cart') {
+                this.cartSubmit();
+            } else if (type=='payment') {
+                this.paymentSubmit(code);
+            } else if (type=='shipping') {
+                this.shippingSubmit(code);
+            }
+        },
+        setOptionImage: function(feeId, optionId, code) {
+            if (code!='') var fileDiv = $('multifees-option-file-'+code+'-'+feeId); else var fileDiv = $('multifees-option-file-'+feeId);            
+            if (fileDiv) {                
+                fileDiv.hide();
+                elA = fileDiv.down('a');
+                if (!elA) return;
+                elA.rel = '';                
+                if (optionId!='') {                    
+                    if (!feeOptionImgData[optionId]) return;                    
+                    elA.href = feeOptionImgData[optionId][1];
+                    var elImg = elA.down('img');
+                    if (!elImg) return;
+                    elImg.src = feeOptionImgData[optionId][0];
+                    elA.rel = 'mageworxLightbox[]';
+                    fileDiv.show();
+                }
+            }
+        },
+        cartSubmit: function() {
+            var data = {};
+            var fields = $('order-multifees').select('input', 'select', 'textarea');
+            for(var i=0;i<fields.length;i++) {
+                if (fields[i].getValue()) {
+                    if (!data[fields[i].name]) data[fields[i].name] = [];
+                    data[fields[i].name].push(fields[i].getValue());
+                }
+            }
+            data['is_cart_fee'] = 1;
+            order.loadArea(['shipping_method', 'totals', 'billing_method'], true, data);
+        },        
+        paymentSubmit: function(code) {
+            var data = {};
+            var fields = $('multifees_payment_'+code).select('input', 'select', 'textarea');
+            for(var i=0;i<fields.length;i++) {
+                if (fields[i].getValue()) {
+                    if (!data[fields[i].name]) data[fields[i].name] = [];
+                    data[fields[i].name].push(fields[i].getValue());
+                }
+            }
+            data['is_payment_fee'] = 1;
+            order.loadArea(['totals', 'billing_method'], true, data);
+        },
+        addShipping: function(code, json) {
+            var sMethodRadios = $$('input[type="radio"][id^="s_method_'+code+'_"]');
+            if (sMethodRadios.length>0) {
+                var sMethodUl = sMethodRadios.first().up('ul');
+                if (sMethodUl) {
+                    Element.insert(sMethodUl, {'after':json});
+                    this.hide($('multifees_shipping_'+code));
+                }
+                sMethodRadios.each(function(sMethodRadio) {
+                    $(sMethodRadio).writeAttribute('onclick','MultiFees.showShipping(\''+code+'\'); MultiFees.setShippingMethod(this);');
+                    
+                });
+            }
+        },        
+        setShippingMethod: function(radioEl){
+            var data = {};
+            var sMethodDd = radioEl.up('dd');
+            if (sMethodDd) {
+                var shippingFeesDiv = sMethodDd.down('div.multifees-shipping-fee');
+                if (shippingFeesDiv) {
+                    var fields = $(shippingFeesDiv).select('input', 'select', 'textarea');
+                    for(var i=0;i<fields.length;i++) {
+                        if (fields[i].getValue()) {
+                            if (!data[fields[i].name]) data[fields[i].name] = [];
+                            data[fields[i].name].push(fields[i].getValue());
+                        }
+                    }
+                    
+                }
+            }
+            data['order[shipping_method]'] = radioEl.value;
+            data['is_shipping_fee'] = 1;            
+            order.loadArea(['shipping_method', 'totals', 'billing_method'], true, data);
+        },        
+        showShipping: function(code, addressId) {            
+            var beginningDivId = 'multifees_shipping_';
+            if (code.indexOf('_')>0) beginningDivId += code.substr(0, code.indexOf('_')) + '_';
+            $$('div[id^="'+beginningDivId+'"]').each(function(multifeesDiv) {
+                this.hide(multifeesDiv);
+            }.bind(this));
+            this.show($('multifees_shipping_'+code));
+        },        
+        shippingSubmit: function(code) {
+            var data = {};
+            var fields = $('multifees_shipping_'+code).select('input', 'select', 'textarea');
+            for(var i=0;i<fields.length;i++) {
+                if (fields[i].getValue()) {
+                    if (!data[fields[i].name]) data[fields[i].name] = [];
+                    data[fields[i].name].push(fields[i].getValue());
+                }
+            }
+            data['is_shipping_fee'] = 1;
+            order.loadArea(['totals', 'shipping_method'], true, data);
+        },
+        showPayment: function() {
+            $$('div[id^="multifees_payment_"]').each(function(multifeesDiv) {
+                var code = multifeesDiv.id.replace('multifees_payment_','');
+                if (!$('p_method_'+code) || !$('p_method_'+code).checked) {
+                    this.hide(multifeesDiv);
+                } else {
+                    this.show(multifeesDiv);
+                }
+            }.bind(this));
+        },
+        show: function(multifeesDiv) {
+            if (multifeesDiv) {
+                multifeesDiv.show();
+                multifeesDiv.select('input', 'select', 'textarea').each(function(field) {
+                    field.disabled = false;
+                });
+            }
+        },
+        hide: function(multifeesDiv) {
+            if (multifeesDiv) {
+                multifeesDiv.hide();
+                multifeesDiv.select('input', 'select', 'textarea').each(function(field) {
+                    field.disabled = true;
+                });
+            }
+        }
+        
+    };
+
+    // add refresh cart fees block
+    order.prepareArea = function(area){   
+        if (order.giftMessageDataChanged) {
+            return area.without('giftmessage');
+        }    
+        if (area.indexOf('billing_method')!=-1) area.push('multifees');
+        return area;
+    }
+    // switch payment fees
+    if (typeof payment!='undefined') {
+        var parentSwitchMethod = payment.switchMethod.bind(payment);    
+        payment.switchMethod = function(method) {
+            parentSwitchMethod(method);
+            MultiFees.showPayment();
+        };
+    }
+    
+
+    MageworxLightboxOptions.labelImage = "<?php echo $this->__('Image')?>";
+    MageworxLightboxOptions.labelOf = "<?php echo $this->__('of')?>";
+//]]>
+</script>
+<?php } ?>

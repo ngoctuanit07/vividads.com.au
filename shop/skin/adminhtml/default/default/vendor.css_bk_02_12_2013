@@ -1,0 +1,91 @@
+
+/* ====================== 24_10_2013 ====================== */
+
+.vendoritemlist {border-left: 1px solid #D6D6D6; border-bottom: 1px solid #D6D6D6; border-right: 1px solid #D6D6D6;}
+.vendoritemlist  thead{background:#6f8992;}
+.vendoritemlist  thead th{color:#fff; padding:4px 0 4px 6px; border-right: 1px solid #87979C;}
+.vendoritemlist td{border-right: 1px solid #D6D6D6; padding:2px 0 0px 6px; line-height:25px;}
+.vendoritemlist td:last-child{border-right: 0px solid #D6D6D6;}
+
+.printtab {border-left: 1px solid #D6D6D6; border-bottom: 1px solid #D6D6D6; border-right: 1px solid #D6D6D6; width:90%;}
+.printtab thead{background:#6f8992;}
+.printtab thead td{color:#fff; padding:2px 0 2px 6px; border-right: 1px solid #87979C; font-weight:bold;}
+.printtab tbody td{ padding:2px 0 2px 6px; border-right: 1px solid #D6D6D6;}
+.printtab tbody td:last-child{border-right: 0px solid #87979C;}
+
+.totalaction a{ background:#ffac47 url(images/btn_bg.gif) repeat-x 0 100%; padding:2px 10px; color:#fff; text-decoration:none; font-weight:bold; float:left; margin-top:5px; border:1px solid #ed6502; }
+
+
+/* ====================== 25_10_2013 ====================== */
+
+
+.vendor-adminhtml-vendor-index .middle{position:relative;}
+.vendor-adminhtml-vendor-index .chatmain{display: block; border: 1px solid #e8e8e8; width: 365px; position: fixed; top: 110px; background-color: #fff; left: 50%; margin-left: -200px;
+-moz-box-shadow:0 0 10px #000000; -webkit-box-shadow:0 0 10px #000000; box-shadow:0 0 10px #000000; z-index:999;}
+
+.chatclose{float:right; padding:8px 10px 0 0; font-size:18px; cursor:pointer;}
+.chatbody table.chattab{width:92%; margin:30px auto;}
+#commentlist{overflow-y:scroll; height:300px; border:1px solid #dfdfdf; }
+#commentlist div:nth-child(even) {background: #d9dedf; padding-left: 5px; margin-bottom: 4px; cursor:pointer;}
+#commentlist div:nth-child(odd) {background: #FFF; padding-left: 5px; margin-bottom: 4px; cursor:pointer;}
+
+.chatbody textarea.comment{width:96.6%; min-height:60px; max-height:60px;  margin:10px 0; }
+.chatbody table.chattab .chatbutton{text-align:center;}
+.printbk {background:#ffac47 url(images/btn_bg.gif) repeat-x 0 100%; padding:2px 10px; color:#fff; text-decoration:none; font-weight:bold; float:left; margin:5px 0 0 4px; cursor:pointer;  border:1px solid #ed6502; }
+
+.totaldoc .doccss{width: 400px; margin:10px auto; background:#fff; border:1px solid #dfdfdf; padding:6px;}
+.totaldoc .doccss tbody tr:nth-child(even) {background: #d9dedf; padding:5px 0 5px 5px; margin-bottom: 4px; cursor:pointer;}
+.totaldoc .doccss tbody tr:nth-child(odd) {background: #fff; padding:5px 0 5px 5px; margin-bottom: 4px; cursor:pointer;}
+.totaldoc .tagname{font-weight:bold; line-height: 35px; padding-left: 12px;}
+.totaldoc .taginput{ line-height: 35px; padding-left: 12px;}
+.totaldoc .docsub  {background:#ffac47 url(images/btn_bg.gif) repeat-x 0 100%; padding:3px 8px; color:#fff; text-decoration:none; font-weight:bold; float:left; margin:5px 0 0 140px; cursor:pointer; border:0px; outline:none;  border:1px solid #ed6502;  }
+.totaldoc .docback {background:#ffac47 url(images/btn_bg.gif) repeat-x 0 100%; padding:3px 8px; color:#fff; text-decoration:none; font-weight:bold; float:left; margin:5px 0 0 4px; cursor:pointer; border:0px; outline:none;  border:1px solid #ed6502;  }
+
+#roleid{width: 400px; margin:10px auto; background:#fff; border:1px solid #dfdfdf;}
+#roleid .vendortag{ background:#6f8992; padding:6px 0; color:#fff; text-align:center; font-weight:bold;}
+#roleid .userset{width:90%; margin:10px auto;}
+#roleid .userset .tagleft{font-weight:bold; line-height: 35px; padding-left: 12px;}
+#roleid .userset .tagright{ line-height: 35px; padding-left: 12px;}
+
+.assignp{background:#ffac47 url(images/btn_bg.gif) repeat-x 0 100%; padding:3px 8px; color:#fff; text-decoration:none; font-weight:bold; float:left; margin:5px 0 0 100px; cursor:pointer; border:0px; outline:none;  border:1px solid #ed6502;  width:120px; right:38px; position:absolute; top:15px;}
+
+.userset .assignsubmit{background:#ffac47 url(images/btn_bg.gif) repeat-x 0 100%; padding:3px 8px; color:#fff; text-decoration:none; font-weight:bold; float:left; margin:5px 0 0 124px; cursor:pointer; border:0px; outline:none;  border:1px solid #ed6502;}
+.userset .assignsubmit input{background:none; border:0px; outline:none; color:#fff; font-weight:bold; cursor:pointer;}
+
+.userset .assignback{background:#ffac47 url(images/btn_bg.gif) repeat-x 0 100%; padding:3px 12px; color:#fff; text-decoration:none; font-weight:bold; float:left; margin:5px 0 0 4px; cursor:pointer; border:0px; outline:none;  border:1px solid #ed6502; font-size:13px;}
+
+.vendoritemlist span{cursor:pointer;}
+
+
+/* ====================== 07_11_2013 ====================== */
+
+.adminhtml-catalog-product-edit .order-totals{background:none;}
+.adminhtml-catalog-product-edit .total_proof{width:97%;}
+.adminhtml-catalog-product-edit .total_proof1{width: 100%;}
+.adminhtml-catalog-product-edit .total_proof1 .tabclass{width: 100%;border: 1px solid #cddddd;padding: 1em;background: #e7efef;margin: 1.5em 0;}
+.adminhtml-catalog-product-edit .total_proof1 .tabclass .removeitem{float: right;}
+.adminhtml-catalog-product-edit .order-totals table td {font-weight: bold; text-align:left;padding: 0px !important;margin: 0;vertical-align: middle;}
+.adminhtml-catalog-product-edit table td input[type="text"]{border-width: 1px;border-style: solid;border-color: #aaa #c8c8c8 #c8c8c8 #aaa;
+background: #fff;font: 12px arial, helvetica, sans-serif;}
+.adminhtml-catalog-product-edit table{margin:0; padding:0;}
+.adminhtml-catalog-product-edit table tr.headings {background: url(images/sort_row_bg.gif) 0 50% repeat-x;}
+.adminhtml-catalog-product-edit table tr.headings td{ background:none !important;}
+.adminhtml-catalog-product-edit table tr.headings td.tabtitle{width:160px;}
+.adminhtml-catalog-product-edit table tr.headings td.tabfile{width:225px;}
+.adminhtml-catalog-product-edit table tr.headings td.tablink{width:50px;}
+.adminhtml-catalog-product-edit table.border input{width: 95%;padding: 2px;}
+.adminhtml-catalog-product-edit .caption{width:250px; padding: 2px;margin-bottom: 10px;}
+.adminhtml-catalog-product-edit table.border tr td{padding: 2px 5px !important;}
+
+/*======================== 21_11_2013 =================================*/
+.removeitem, .addanother1, .submit-img {
+    background: none repeat scroll 0 0 #ED6502;
+    border: 1px solid #A04300;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 97px;
+    padding: 1px 10px;
+}
+.vendor-adminhtml-vendor-index .chatmain1{display: block; border: 1px solid #e8e8e8; width: 546px; position: fixed; top: 110px; background-color: #fff; left: 50%; margin-left: -200px;
+-moz-box-shadow:0 0 10px #000000; -webkit-box-shadow:0 0 10px #000000; box-shadow:0 0 10px #000000; z-index:999;}

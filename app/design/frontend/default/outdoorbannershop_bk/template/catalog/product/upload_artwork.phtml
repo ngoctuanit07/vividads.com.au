@@ -1,0 +1,456 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<script>
+
+function loadWindow(){
+
+jQuery(document).ready(function(e) {
+    	 
+	 
+	 
+	//collecting vars for posting variables///
+	var selData = document.getElementById('product2').value.split(':'); 
+	
+	
+	
+	
+	var categoryId=selData[0];
+	var productId =selData[1];
+	
+	if(productId==0){
+		alert('Please select correct product...');
+		return false;
+		}
+	
+	jQuery('div#uploadArtWorkPopup').show();
+	 jQuery('div#topbar').hide('slide');
+	 jQuery('categoryName').html('');
+	
+	 var formData = {                        
+		 			crAction:'uploadArtWork',
+					category_id :categoryId,
+					product_id:productId,					
+		 		}
+	 
+	 
+	 jQuery.ajax({
+		 
+		  	type: "POST",
+			url: '<?=$this->getUrl()?>ajax/ajax_uploadartwork.php',
+			data: formData,
+			dataType:'html',
+			beforeSend: function(){
+				jQuery('#loadImg').show();
+				},
+			complete:function(){
+				jQuery('#loadImg').hide();
+				},	
+			success:function(data){
+				jQuery('#liveFormData').html(data);
+				},
+				
+			error:function(err, xhttp, xError ){
+				alert(xError);
+				}, 
+			
+				 
+		 });
+	 
+	 
+	 
+	    
+    });
+	
+}//end of load window
+
+</script>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php 
+		//$_product = Mage::getModel('catalog/product')->loadByAttribute('sku', 'vinyl-banner-shop');
+		//$_product = $this->getProduct();
+		//echo "ID : ".$_product->getId();
+		print_r($this->getProductId());
+		
+?>
+
+<!-- rightbar start-->
+<div id="liveFormData">
+<div class="clearfix"></div>
+<div class="float-L clearfix" id="innerLeft-tabing">
+  <div id="uploadYourArtworkData" class="innerLeft-tabing">
+  <div class="title">Submit Your Artwork Detailshcfghd <?php echo "ID : ";//$_product->getId(); ?>      </div>
+   <form action="#" enctype="multipart/form-data" method="post" name="printreadyForm">
+    
+ <div style="height: 505px;  overflow: auto;    width: 625px;" id="printreadytab1" class="detailtab">
+        <dl class="clearfix">
+          <dt>Project Name</dt>
+          <dd>
+            <input type="text" value="" maxlength="70" class="textfield" id="projectname" name="projectname">
+          </dd>
+        </dl>
+        <dl class="clearfix">
+          <dt>Category</dt>
+          <dd>
+          <input type="text" value="Gallery " maxlength="70" class="textfield products" id="categoryName" name="categoryName" readonly="readonly">
+        </dd>
+        </dl>
+        <dl class="clearfix">
+          <dt>Product Name</dt>
+          <dd>
+            <input type="text" value="Custom Mesh Banner" maxlength="70" class="textfield products" id="productName" name="productName" readonly="readonly">
+          </dd>
+        </dl>
+        
+        
+        <dl class="clearfix">
+          <dt>Size</dt>
+          <dd class="w263">
+            
+            <input type="hidden" style="width:60px;" readonly="readonly" value="0" class="textfield" id="quantity_discount_pr" name="quantity_discount_pr">
+            
+            <input type="checkbox" style="display:none;" onclick="javascript:javascript:getPricePr()" value="" name="bothsides" id="bothsides">
+            
+            
+            <div style="width:515px;" class="sizebox1">
+              <div class="sizes-block">
+                <input type="text" onchange="javascript:getPricePr()" value="1" class="textfield" id="w_size_w" name="w_size_w">
+                <div class="float-L"> <a onclick="javascript:increaseCounterPr('w_size_w', document.getElementById('w_size_w').value),getPricePr()" class="arrowTop" href="javascript:void(0);"></a> 
+                <a onclick="javascript:decreaseCounterPr('w_size_w', document.getElementById('w_size_w').value),getPricePr()" class="arrowbtm" href="javascript:void(0);"></a> </div>
+              </div>
+              <span class="dimensions">width</span>
+              <div class="sizes-block">
+                <input type="text" onchange="javascript:getPricePr()" value="1" class="textfield" id="w_size_h" name="w_size_h">
+                <div class="float-L"> <a onclick="javascript:increaseCounterPr('w_size_h', document.getElementById('w_size_h').value),getPricePr()" class="arrowTop" href="javascript:void(0);"></a>
+                 <a onclick="javascript:decreaseCounterPr('w_size_h', document.getElementById('w_size_h').value),getPricePr()" class="arrowbtm" href="javascript:void(0);"></a> </div>
+              </div>
+              <span class="dimensions"> height </span>
+              <input type="hidden" value="m" id="w_size" name="w_size">
+              <select class="textfield dropdown-s" onchange="javascript:getPricePr(),ftTOin(this.value);" id="sizeUnit" name="sizeUnit">
+                <option value="m">m</option>
+                <option value="cm">cm</option>
+                <option value="mm">mm</option>
+                <!--<option value="ft" >Ft</option>
+                <option value="inch" >in</option>-->
+              </select>
+              <input type="hidden" value="" style="width:30px;" id="c_hecksizew" name="c_hecksizew">
+              <input type="hidden" value="" style="width:30px;" id="c_hecksizeh" name="c_hecksizeh">
+              <input type="hidden" value="" style="width:50px;" id="size_major" name="size_major">
+              
+             <!-- <a class="blue-clr underline mrg-L10" href="javascript:NewWindow('http://www.outdoorbannershop.com.au/ajax/ajax_price_view.php?id=1','PriceList','825','580','0','yes');" title="See Price">SEE PRICE</a> --></div>
+          </dd>
+        </dl>
+        
+        <!-- Ground mount  --> 
+        <!-- Ground mount  -->
+        <dl class="clearfix">
+          <dt>Quantity</dt>
+          <dd>
+         <select onchange="javascript:getPricePr()" style="width:80px;" name="quantity_pr" id="quantity_pr" class="textfield dropdown-s">
+                    
+                     
+                                           <option value="1">1</option>
+                                          <option value="2">2</option>
+                                          <option value="3">3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
+                                          <option value="6">6</option>
+                                          <option value="7">7</option>
+                                          <option value="8">8</option>
+                                          <option value="9">9</option>
+                                          
+                                        
+                    
+               </select>
+         
+        </dd>
+        </dl>
+        
+         <input type="hidden" class="textfield" style="width:60px;" readonly="readonly" value="30.0000" id="realPrice_pr" name="realPrice_pr">
+         <input type="hidden" class="textfield" style="width:60px;" readonly="readonly" value="30.0000" id="prsq_price_pr" name="prsq_price_pr">
+       
+        <input type="hidden" class="textfield" style="width:60px;" readonly="readonly" value="0" id="price_show_pr" name="price_show_pr">
+        <input type="hidden" class="textfield" style="width:60px;" readonly="readonly" value="0" name="base_total_pr" id="base_total_pr">
+        <input type="hidden" class="textfield" style="width:60px;" readonly="readonly" value="0" name="total_price_pr" id="total_price_pr">
+        <input type="hidden" class="textfield" style="width:60px;" readonly="readonly" value="0" id="total_area_pr" name="total_area_pr">
+      
+       <dl style="" id="finishSelectBoxPr" class="clearfix">
+          <dt>Finishing</dt>
+          <dd>
+         <div>
+           <select onchange="finishOptionsChange(this.value);" id="finish_sel_pr" class="textfield">
+             <option value="0">--Please select--</option>                  
+    <option value="HE">Hemmed Edges</option><option value="1PT">1 x Pole Pocket(Top Only)</option><option value="2PLR">2 x Pole Pockets(Left &amp; Right)</option><option value="2PTB">2 x Pole Pockets(Top &amp; Bottom)</option>     </select>
+     
+     <input type="hidden" value="1" name="finishOptionsFlag" id="finishOptionsFlag">
+                               
+            </div>            
+            <div style="display:none;" class="sub_attributes_box" id="finishSubBoxPr">
+              <div style="display:none;" id="topSelectBoxPr">
+                  <div class="sub_attrib sub_attrib_lable">Top:</div>
+                    <select style="width:59px;" id="size_top_sel_pr" class="textfield sub_attrib">
+                     <option value="0">--Please Select--</option>
+                     <option value="12mm">12mm Ø</option>
+                     <option value="15mm">25mm Ø</option>
+                     <option value="50mm">50mm Ø</option>
+                     <option value="75mm">75mm Ø</option>
+                     <option value="100mm">100mm Ø</option>
+                    </select>
+                    </div>
+                    
+                    <div style="display:none;" id="leftSelectBoxPr">
+                    <div class="sub_attrib sub_attrib_lable">Left:</div>
+                    <select style="width:59px;" id="size_left_sel_pr" class="textfield sub_attrib">
+                     <option value="0">--Please Select--</option>
+                    <option value="12mm">12mm Ø</option>
+                     <option value="15mm">25mm Ø</option>
+                     <option value="50mm">50mm Ø</option>
+                     <option value="75mm">75mm Ø</option>
+                     <option value="100mm">100mm Ø</option>
+                    </select>
+                    </div>
+                    <div style="display:none;" id="rightSelectBoxPr">
+                    <div class="sub_attrib sub_attrib_lable">Right:</div>
+                    <select style="width:59px;" id="size_right_sel_pr" class="textfield sub_attrib">
+                      <option value="0">--Please Select--</option>
+                     <option value="12mm">12mm Ø</option>
+                     <option value="15mm">25mm Ø</option>
+                     <option value="50mm">50mm Ø</option>
+                     <option value="75mm">75mm Ø</option>
+                     <option value="100mm">100mm Ø</option>
+                    </select>
+                    </div>
+                    
+                    <div style="display:none;" id="bottomSelectBoxPr">
+                   <div class="sub_attrib sub_attrib_lable">Bottom:</div>
+                    <select style="width:59px;" id="size_bottom_sel_pr" class="textfield sub_attrib">
+                     <option value="0">--Please Select--</option>
+                     <option value="12mm">12mm Ø</option>
+                     <option value="15mm">25mm Ø</option>
+                     <option value="50mm">50mm Ø</option>
+                     <option value="75mm">75mm Ø</option>
+                     <option value="100mm">100mm Ø</option>
+                    </select> 
+                    </div>
+                  
+                  </div>           
+        </dd>
+        </dl>
+        <dl style="" id="fittingSelectBoxPr" class="clearfix">
+          <dt>Fittings</dt>
+          <dd>
+         <div id="fittingSelectBox_pr">
+                 <select id="fittings_sel_pr" class="textfield">
+                                     <option value="0">None</option>
+                                    <option value="top_right_bottom_left">Top, Right, Bottom, Left</option>
+                                    <option value="top_only">Top Only</option>
+                                    <option value="top_bottom">Top &amp; Bottom</option>
+                                    <option value="left_right">Left &amp; Right</option>
+                                    <option value="left_right_bottom">Left, Right, Bottom</option>
+                                    <option value="corners_only">Corners Only</option>
+                                    </select>                   
+        </div></dd>
+        </dl>
+        <dl style="" id="spacingSelectBoxPr" class="clearfix">
+                <dt>Spacing</dt>
+                <dd><div>
+                  <select id="spacing_sel_pr" class="textfield">
+                                     <option value="0">--Please select--</option>
+                                    <option value="1000">1000 mm</option>
+                                    <option value="500">500 mm</option>
+                                    <option value="300">300 mm</option>
+                                    </select>
+                  </div>
+                            
+                </dd>
+              </dl>
+              
+               <dl style="display:none;" id="baseSelectBoxPr" class="clearfix">
+                <dt>Hardware</dt>
+                <dd><div>
+                  <select id="base_sel_pr" class="textfield">
+                   <option value="0">--Please Select--</option>
+                                     </select>
+                  </div>
+                                     
+                </dd>
+              </dl>
+        <dl class="clearfix">
+                <dt>Shipping</dt>
+                <dd>
+                  <div id="shippingmethodsPr">
+                    <select onchange="javascript:quantity()" class="textfield" name="shipping_method_pr" id="shipping_method_pr">
+                      <option value="0">Select Shipping</option>
+                      <option value="priority overnight">Priority Overnight (Delivery by 10-16-2013 for Print Ready File) </option>
+                      <option value="priority">Priority (Delivery by 10-18-2013 from proof)</option>
+                      <option value="expedited">Express (Delivery by 10-23-2013 from proof)</option>
+                      <option value="standard">Standard (Delivery by 10-29-2013 from proof)</option>
+                    </select>
+                  </div>
+                </dd>
+              </dl>
+        <dl class="clearfix">
+          <dt>Price</dt>
+          <dd id="total_display_pr"> 
+          <div style="font-size:16px" class="float-L" id="total_display_block_pr">$540.00</div>
+          <input type="hidden" value="30.0000" name="price_pr" id="price_pr"> </dd>
+        </dl>
+        <dl class="clearfix">
+          <dt>You Saved</dt>
+          <dd id="total_saved_pr"> 
+          <div style="font-size:18px" class="float-L" id="total_saved_block_pr">$151.20</div>
+          <input type="hidden" value="" name="saved_pr" id="saved_pr"> 
+          <input type="hidden" value="" name="discount_pr" id="discount_pr">
+          </dd>
+        </dl>
+        <dl class="clearfix">
+          <dt>Grand Total</dt>
+          <dd id="total_saved_pr"> 
+          <div style="font-size:24px" class="float-L" id="grand_total_block_pr">$540.00</div>
+          <input type="hidden" value="540.00" name="grand_total_pr" id="grand_total_pr"> 
+          </dd>
+        </dl>
+        <dl style="height:11px;">
+        </dl>
+        <!-- Backdrop side --> 
+        <!-- End Backdrop side --> 
+        <!-- Canopies --> 
+        <!-- Canopies -->
+        <dl class="float-L">
+          <dd class="text float-L">Include any notes or requests to our production team before they process your file...Type here...</dd>
+          <dd class="float-L textarea">
+            <textarea onkeydown="javascript:limitWords(document.getElementById('description_pr').value)" onkeyup="javascript:limitWords(document.getElementById('description_pr').value)" class="textfield w587" id="description_pr" name="description_pr"></textarea>
+            <div class="allowedWords">Allowed Words (<span id="tWords">255</span>)</div>
+            <input type="hidden" name="counter_pr" id="counter_pr" value="255">
+          </dd>
+          <div class="shadowSprite shadow590"></div>
+        </dl>
+        <dl style="height:15px;">
+        </dl>
+        <dl class="float-L">
+          <dd class="text float-L">Select Upload Options</dd>
+          <dd class="text">
+            <div class="upload-module clear">
+                <div class="Options1">
+                                <input type="radio" onclick="checkuploadvalue(this.value);return yousend_it('http://www.bannerbuzz.com/sitedrop_yousendit.php?p_id=1381807105','1381807105');" value="1" id="yousendit" name="uploadimage">
+                                <a style="color:#000000;" onclick="checkuploadvalue(1);return yousend_it('http://www.bannerbuzz.com/sitedrop_yousendit.php?p_id=1381807105','1381807105');" href="javascript:void(0);">Upload file on FTP server  (up to 2GB)</a>
+                                
+                                <span>
+                <input type="button" disabled="disabled" style="opacity:0.9;" onclick="checkuploadvalue('1');return yousend_it('http://www.bannerbuzz.com/sitedrop_yousendit.php?p_id=1381807105','1381807105');" id="uploadusendit" class="upload-file" name="Upload Files" value="">
+                <input type="hidden" id="ysi_id" name="ysi_id">
+                </span> </div>
+              <div class="Options2">
+                <input type="radio" onclick="checkuploadvalue(this.value);" value="2" id="artworklater" name="uploadimage">
+                <input type="hidden" id="sendlater_artwork" name="sendlaterartwork">
+                                <a onclick="checkuploadvalue(2);" id="selectopt3" href="javascript:void(0);">I’ll send my artwork file later after login.</a>
+                              </div>
+                          </div>
+          </dd>
+          <div class="shadowSprite shadow590"></div>
+        </dl>
+        <dl class="clearfix float-R">
+          <input type="hidden" style="width:60px;" value="0" class="textfield" name="accessories_pr" id="accessories_pr">
+          <input type="hidden" value="" id="category_id_pr" name="category_id_pr">
+          <input type="hidden" value="610" id="product_id_pr" name="product_id_pr">
+          
+          
+          <input type="button" onclick="javascript: return addToCartPr(30.0000, 610,quantity_pr.value);" name="addCartBtn" id="addCartBtn" value="" class="cart-button add-to-cart">
+        </dl>
+        <dl style="height:20px;">
+        </dl>
+      </div>
+    </form>
+  </div>
+  
+  <div class="shadowSprite shadow643">
+   
+  </div>
+</div>
+<!-- rightbar end-->
+<div class="float-R clearfix" id="innerRight-specifications">
+  <div style="width:270px; height:220px; border:0px solid #ccc;margin-top:15px;">
+  <p class="product-image">
+        		
+            <img title="Custom Mesh Banner" alt="Custom Mesh Banner" src="http://outdoorbannershop.com.au/media/catalog/product/cache/20/image/270x220/9df78eab33525d08d6e5fb8d27136e95/b/a/bannerw10h24-300-thum.jpg" id="mainImage">
+                         
+        
+    </p>
+  </div>
+  <div style="margin-top:30px;">
+  <!--<div class="mrg-B10">
+  <a href="javascript:NewWindow('http://www.outdoorbannershop.com.au/artworkspecs.php','Artwork','750','600','0','yes');" title="Recommended Artwork Specifications" class="underline blue-clr b">Recommended Artwork Specifications</a></div>-->
+  <div class="mrg-B10">
+    <dl class="clearfix">
+      <dt>File Type</dt>
+      <dd> JPEG, PDF, DOC, JPG, DOCX,
+        EPS, CDR, AI, GIF, PSD, TIF,
+        TIFF, PPT, PNG, BMP </dd>
+    </dl>
+    <dl class="clearfix">
+      <dt>Resolution</dt>
+      <dd>150 DPI to 600 DPI</dd>
+    </dl>
+    <dl class="clearfix">
+      <dt>Color Mode</dt>
+      <dd>CMYK</dd>
+    </dl>
+    <dl class="clearfix">
+      <dt>Text</dt>
+      <dd>Convert to Outlines</dd>
+    </dl>
+    <dl class="clearfix">
+      <dt>Layers</dt>
+      <dd>Flatten to a Background Layer</dd>
+    </dl>
+    <dl class="clearfix">
+      <dt>Compression</dt>
+      <dd>Zip files if necessary</dd>
+    </dl>
+  </div>
+  
+  <div class="clear">
+    <p>&nbsp;</p>
+  </div>
+  <div class="supportModule float-R">
+    <div class="supportIcon"></div>
+    <div class="smalltext">Need Help or questions?</div>
+    <div class="box grey-gredient-bg">
+      <div class="float-L">
+        <div class="calltext">(03) 8400-4345</div>
+        <a href="mailto:Array" class="emailink" title="send us email" rel="nofollow">send us email</a>&nbsp; » </div>
+      <div class="float-L livesupport"> 
+      <a rel="nofollow" href="#" onclick="window.open('https://messenger.providesupport.com/messenger/bannerbuzz.html', '_blank','menubar=0,location=0,scrollbars=auto,resizable=1,status=0,width=600,height=550');return false;">
+      <img align="bottom" alt="Live Support" title="Live Support" src="https://image.providesupport.com/image/bannerbuzz/current"></a> </div>
+    </div>
+  </div>
+</div>

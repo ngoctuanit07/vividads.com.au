@@ -1,0 +1,414 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_default
+ * @package    Mage
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ */
+?>
+<?php
+    /*
+?>
+<ul class="tabs">
+    <?php $i = 0; ?>
+    <?php foreach ($this->getTabs() as $_index => $_tab): ?>
+        <?php if($this->getChildHtml($_tab['alias']) && strlen(strip_tags(trim($this->getChildHtml($_tab['alias']))))>0): ?>
+            <?php
+                $tab_title = $_tab['title'];
+                $tab_is_custom = strpos($_tab['alias'], 'custom');
+                $tab_is_cms= strpos($_tab['alias'], 'cms');
+                if($tab_is_custom === 0){
+                    $tab_is_tmp_id =  substr($_tab['alias'], 6);
+                    $tab_is_custom_id = (!empty($tab_is_tmp_id)) ? $tab_is_tmp_id : '';
+                    $tab_title = Mage::getStoreConfig('easy_tabs/custom/customtabname'.$tab_is_custom_id);
+                } elseif($tab_is_cms === 0) {
+                    $tab_is_tmp_id =  substr($_tab['alias'], 3);
+                    $tab_is_custom_id = (!empty($tab_is_tmp_id)) ? $tab_is_tmp_id : '';
+                    $tab_title = Mage::getStoreConfig('easy_tabs/customcms/tabnamecms'.$tab_is_custom_id);
+                }
+
+            ?>
+            <li id="product_tabs_<?php echo $_tab['alias'] ?>" <?php echo !$i  ? 'class="active first"' : '' ?>><a href="#"><?php echo $tab_title; ?></a></li>
+	    <?php $i++; ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</ul>
+<div class="padder">
+    <?php foreach ($this->getTabs() as $_index => $_tab): ?>
+        <?php if($this->getChildHtml($_tab['alias'])): ?>
+            <div id="product_tabs_<?php echo $_tab['alias'] ?>_contents"><?php echo $this->getChildHtml($_tab['alias']); ?></div>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</div>
+<?php
+    */
+
+?>
+
+<?php
+
+    //Start of array creation for the button section in the content area of the accrodian.
+?>
+    <?php
+	$arr_buttons_name=array();
+	
+	
+	
+	foreach ($this->getTabs() as $_index => $_tab)
+	{
+	   if($this->getChildHtml($_tab['alias']) && strlen(strip_tags(trim($this->getChildHtml($_tab['alias']))))>0)
+	   {
+		$tab_title = $_tab['title'];
+                $tab_is_custom = strpos($_tab['alias'], 'custom');
+                $tab_is_cms= strpos($_tab['alias'], 'cms');
+                if($tab_is_custom === 0){
+                    $tab_is_tmp_id =  substr($_tab['alias'], 6);
+                    $tab_is_custom_id = (!empty($tab_is_tmp_id)) ? $tab_is_tmp_id : '';
+                    $tab_title = Mage::getStoreConfig('easy_tabs/custom/customtabname'.$tab_is_custom_id);
+                } elseif($tab_is_cms === 0) {
+                    $tab_is_tmp_id =  substr($_tab['alias'], 3);
+                    $tab_is_custom_id = (!empty($tab_is_tmp_id)) ? $tab_is_tmp_id : '';
+                    $tab_title = Mage::getStoreConfig('easy_tabs/customcms/tabnamecms'.$tab_is_custom_id);
+                }
+		$arr_buttons_name[]=$tab_title;
+	   }
+	}
+	
+	$tot_items=count($arr_buttons_name);
+    ?>
+
+<?php
+
+    //end of array creation for the button section in the content area of the accrodian.
+?>
+
+
+<div id="accordion-1111">
+    <ul id="accordion">
+
+	 <?php $i = 0; ?>
+    <?php foreach ($this->getTabs() as $_index => $_tab): ?>
+        <?php if($this->getChildHtml($_tab['alias']) && strlen(strip_tags(trim($this->getChildHtml($_tab['alias']))))>0): ?>
+            <?php
+                $tab_title = $_tab['title'];
+                $tab_is_custom = strpos($_tab['alias'], 'custom');
+                $tab_is_cms= strpos($_tab['alias'], 'cms');
+                if($tab_is_custom === 0){
+                    $tab_is_tmp_id =  substr($_tab['alias'], 6);
+                    $tab_is_custom_id = (!empty($tab_is_tmp_id)) ? $tab_is_tmp_id : '';
+                    $tab_title = Mage::getStoreConfig('easy_tabs/custom/customtabname'.$tab_is_custom_id);
+                } elseif($tab_is_cms === 0) {
+                    $tab_is_tmp_id =  substr($_tab['alias'], 3);
+                    $tab_is_custom_id = (!empty($tab_is_tmp_id)) ? $tab_is_tmp_id : '';
+                    $tab_title = Mage::getStoreConfig('easy_tabs/customcms/tabnamecms'.$tab_is_custom_id);
+                }
+
+		if($i==($tot_items-1))
+		{
+		    $target_click="tar__0";
+		    $nxt_tab_txt=$arr_buttons_name[0];
+		    
+		    $target_click1="tar__".($i+1);
+		    $nxt_tab_txt1='Package Includes';
+		    
+		}
+		else
+		{
+		    $target_click="tar__".($i+1);
+		    $nxt_tab_txt=$arr_buttons_name[($i+1)];
+		}
+		
+		if($i==0)
+		{
+		    $vall='class="active" style="width:450px;"';
+		}
+		else
+		{
+		    $vall='class="" style="width:35px;"';
+		}
+		
+		if($tab_title != 'Package Includes')//11_02_2014
+		{
+		
+            ?>
+           
+	      <li id="acc__<?php echo $i;?>" <?php echo $vall;?>>	  
+		<div  class="accro_heading"><span><?php echo $tab_title; ?></span></div>
+		<div class="acc_num"><?php echo ($i+1); ?></div>
+		<div class="accro_content">
+		  <?php echo $this->getChildHtml($_tab['alias']); ?>
+		  <div id="<?php if($target_click1 == '')echo $target_click;else echo $target_click1; ?>" class="go_to_nxt_tab"><span class="shownext"><span>View <?php if($nxt_tab_txt1 == '')echo $nxt_tab_txt;else echo $nxt_tab_txt1;?></span></span></div>
+		</div>
+	      </li>
+		
+		
+	    <?php
+	    
+	    }
+	    
+	    $i++; ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+    
+     <?php /**************** Start for Product includes 11_02_2014 *************************/
+     
+     $vall='class="" style="width:35px;"';
+     ?>
+	    <li id="acc__<?php echo $i;?>" style="width:35px;">	  
+		<div  class="accro_heading"><span><?php echo $this->__('Package Includes'); ?></span></div>
+		<div class="acc_num"><?php echo ($i+1); ?></div>
+		<div class="accro_content" >
+		    <h2><?php echo $this->__('Package Includes'); ?></h2>
+		  <?php
+		  $product = Mage::registry('current_product');
+		  
+		    if($product->getTypeID() == 'bundle')
+		    {
+			$bundle_item = array();
+			$bundled_product = Mage::getModel('catalog/product')->load($product->getId());
+			
+			$selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
+			    $bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
+			);
+			
+			$optionCollection =  $bundled_product->getTypeInstance(true)->getOptions($bundled_product);
+			
+					
+			foreach($optionCollection as $val)
+			{
+			    echo '<div  class="bundle_item" ><div class="item_box"><table>';
+			   // <div class="bundle_name"><strong>'.$val->getDefaultTitle().'</strong></div><div class="item_box"><table>';
+			    
+			    foreach($selectionCollection as $option)
+			    {
+				if($val->getId() == $option->getOptionId())
+				{
+				     echo '<tr><td>'.round($option->getSelectionQty()).' - '.$option->getName().'</td></tr>';
+                                }
+                            }
+			    echo '</table></div></div>';
+			}
+		    }
+		  ?>
+		  <div id="<?php echo "tar__".($i+1); ?>" class="go_to_nxt_tab"><span class="shownext"><span>View <?php echo $this->__('Downloads'); ?></span></span></div>
+		</div>
+	    </li>
+	    
+	    <?php /**************** End for Product includes 11_02_2014 *************************/ ?>
+	    
+	    <?php /******************** Start for download product 25_02_2014 ********************************/?>
+	    
+	    <li id="acc__<?php echo $i+1;?>" style="width:35px;">	  
+		<div  class="accro_heading"><span><?php echo $this->__('Downloads'); ?></span></div>
+		<div class="acc_num"><?php echo ($i+2); ?></div>
+		<div class="accro_content">
+		    <h2><?php echo $this->__('Downloads'); ?></span></h2>
+		    <?php
+			$productid=Mage::registry('product')->getId();
+                        $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_relation');
+                        $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE product_id='".$productid."'";
+                        try {
+                        $chkSaleOrderGrid = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                        } catch (Exception $e){
+                        //echo $e>getMessage();
+                        }
+                        ?>
+                        <!--<h2><strong>Files Attached:</strong></h2>-->
+                        <h2><strong><?php echo $this->__('Graphic Design Templates:');?></strong></h2><!--14_02_2014-->
+                        <?php
+                        if(count($chkSaleOrderGrid) > 0)
+                        {
+                        ?>                        
+                        
+                        <?php foreach($chkSaleOrderGrid as $res_objects) :
+                        
+                            $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_files');
+                            $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE file_id='".$res_objects["file_id"]."'";
+                            try {
+                            $chkSaleOrderGrid2 = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                            } catch (Exception $e){
+                            //echo $e>getMessage();
+                            }
+		
+                            foreach($chkSaleOrderGrid2 as $res_objects2) 
+                            {
+                            ?>    
+                            <div><a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$res_objects2["file_id"].'/'.$res_objects2["filename"]; ?>" title="<?php echo $res_objects2["filename"]; ?>" target="_blank"><?php echo strtoupper($res_objects2["filename"]); ?></a><div>
+                            <?php                         
+                            }
+                        endforeach; 
+                        ?>
+                        <?php 
+                        }
+                        else
+                        {
+                            echo "<div>No Files attached with this product.</div>";
+                        }
+			
+			//start 03_03_2014
+			$custom = Mage::getModel('catalog/product')->load(Mage::registry('product')->getId());
+			$tierPrice = $custom->getTierPrice();
+			
+			 if(empty($tierPrice))
+			{
+			    ?>
+			     <div id="<?php echo "tar__0" ?>" class="go_to_nxt_tab"><span class="shownext"><span>View <?php echo $nxt_tab_txt;?></span></span></div>
+			    
+			    <?php
+			}
+			else{
+			?>
+		  <div id="<?php echo "tar__".($i+2); ?>" class="go_to_nxt_tab"><span class="shownext"><span>View <?php echo $this->__('Bulk Discounts');?></span></span></div>
+			<?php }
+			//end 03_03_2014
+			?>
+		</div>
+	      </li>
+	      
+	    <?php /******************** End for download product 25_02_2014 ********************************/?>
+	    
+	    <?php
+	    	    /******************** Start for Tire Price 25_02_2014 ******************************************/
+		    $custom = Mage::getModel('catalog/product')->load(Mage::registry('product')->getId());
+		     $tierPrice = $custom->getTierPrice();
+		    
+		    
+		    if(!empty($tierPrice))
+		    {
+			
+	    ?>
+	    
+	    <li id="acc__<?php echo $i+2;?>" style="width:35px;">	  
+		<div  class="accro_heading"><span><?php echo $this->__('Bulk Discounts'); ?></span></div>
+		<div class="acc_num"><?php echo ($i+3); ?></div>
+		<div class="accro_content">
+		    <h2><?php echo $this->__('Bulk Discounts'); ?></span></h2>
+			<?php
+			    for($j=0;$j<count($tierPrice);$j++)
+			    {
+				//echo "price_id:".$tierPrice[$i]['price_id']."</br>";
+				 //echo " price:".$tierPrice[$i]['price']."</br>";
+				// echo "price_qty:".$tierPrice[$j]['price_qty']."</br>";
+				
+				if($tierPrice[$j+1]['price_qty'] != '')
+				$to = round($tierPrice[$j]['price_qty']).' to '.round($tierPrice[$j+1]['price_qty']);
+				else
+				$to = round($tierPrice[$j]['price_qty'])."+";
+				
+				$price = $custom->getPrice()*((100-$tierPrice[$j]['price'])/100);
+				
+				 echo '<div class="odd">Buy '.$to.' for <span class="final-tier-price">'.Mage::helper('core')->currency($price,true,false).'</span> each and save <strong class="benefit">'.round($tierPrice[$j]['price']).'%</strong></div>';
+			    }
+			?>
+		  <div id="<?php echo "tar__0"; ?>" class="go_to_nxt_tab"><span class="shownext"><span>View <?php echo $nxt_tab_txt;?></span></span></div>
+		</div>
+	      </li>
+	      
+	    
+	    
+	    <?php
+		    }
+	    	    /******************** End for Tire Price 25_02_2014 ******************************************/
+	    ?>
+    
+    </ul>
+    
+<!--    <ul id="accordion">-->
+<!--	<li>	  -->
+<!--	  <div class="accro_heading">Section 1 Header</div>-->
+<!--	  <div class="accro_content">-->
+<!--	    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis volutpat quam, non suscipit arcu accumsan at. Aliquam pellentesque.-->
+<!--	  </div>-->
+<!--	</li>-->
+<!--	<li>-->
+<!--	  -->
+<!--	  <div class="accro_heading">Section 2 Header</div>-->
+<!--	  <div class="accro_content">-->
+<!--	  Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis volutpat quam, non suscipit arcu accumsan at. Aliquam pellentesque.-->
+<!--	</li>-->
+<!--	<li>-->
+<!--	  -->
+<!--	  <div class="accro_heading">Section 3 Header</div>-->
+<!--	  <div class="accro_content">-->
+<!--	  Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis volutpat quam, non suscipit arcu accumsan at. Aliquam pellentesque.-->
+<!--	</li>-->
+<!--	<li>-->
+<!--	  -->
+<!--	  <div class="accro_heading">Section 4 Header</div>-->
+<!--	  <div class="accro_content">-->
+<!--	  Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis volutpat quam, non suscipit arcu accumsan at. Aliquam pellentesque.-->
+<!--      </li>-->
+<!--      <li>-->
+<!--	  -->
+<!--	  <div class="accro_heading">Section 5 Header</div>-->
+<!--	  <div class="accro_content">-->
+<!--	  Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis volutpat quam, non suscipit arcu accumsan at. Aliquam pellentesque.-->
+<!--      </li>-->
+<!--    </ul>-->
+    
+    
+    
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+var EasyTabs = Class.create();
+EasyTabs.prototype = {
+    initialize: function(selector) {
+        $$(selector).each(this.initTab.bind(this));
+    },
+
+    initTab: function(el) {
+        el.href = 'javascript:void(0)';
+        if ($(el).up('li').hasClassName('active')) {
+            this.showContent(el);
+        }
+        el.observe('click', this.showContent.bind(this, el));
+    },
+
+    showContent: function(a) {
+        var li = $(a).up('li'),
+            ul = $(li).up('ul');
+
+        ul.select('li'/*, 'ol'*/).each(function(el) {
+            var contents = $(el.id + '_contents');
+            if (el.id == li.id) {
+                el.addClassName('active');
+                contents.show();
+            } else {
+                el.removeClassName('active');
+                contents.hide();
+            }
+        });
+    }
+}
+new EasyTabs('.tabs a');
+</script>

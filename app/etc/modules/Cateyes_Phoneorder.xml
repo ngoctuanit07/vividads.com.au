@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Cateyes_Phoneorder>
+            <active>true</active>
+           	<codePool>local</codePool>         
+       </Cateyes_Phoneorder>
+    </modules>
+</config>

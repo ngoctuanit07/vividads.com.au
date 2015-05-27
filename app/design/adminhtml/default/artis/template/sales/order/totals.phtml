@@ -1,0 +1,386 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE  
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /*$_source = $this->getSource(); ?>
+<?php $this->setPriceDataObject($_source) ?>
+<?php if ($_source): ?>
+<table cellspacing="0" width="100%">
+    <?php echo $this->getChildHtml('main'); ?>
+    <?php echo $this->getChildHtml('footer'); ?>
+</table>
+<?php endif;*/ ?>
+<?php
+ $_order   = $this->getOrder();
+ 
+
+?>
+<style>
+.total_payment{
+ position: fixed;
+top: 8%;
+left: 30%;
+background-color: white;
+width: 521px;
+height: 300px;
+}
+.close_div{
+ position: fixed;
+top: 24%;
+left: 66%;
+background-color: white;
+width: 21px;
+height: 30px;
+}
+.block_div{
+ text-align: left;
+margin-top: 16px;
+}
+
+.calendar{
+position: fixed !important;  left: 668px !important; top: 168px !important;
+}
+
+.total_payment{border:1px solid #ccc; box-shadow:0px 0px 6px 0px #333;width: 361px !important;height: auto !important;padding: 20px;left: 50% !important;margin-left: -130px;}
+.total_payment .offline_payment table{width:100%;}
+.total_payment .offline_payment table td{text-align:left;padding: 2px 5px;}
+.total_payment .offline_payment table td.lebelall{text-align:right;}
+.total_payment .offline_payment table td input[type="text"]{width:100px;}
+.close_div{left: 355px !important;position: absolute !important;top: 7px !important;cursor: pointer;}
+.openpay{float:right; color:#fff; text-decoration:underline; cursor:pointer;}
+
+.order-tables thead th{font-weight:bold; padding:3px 20px 3px 10px;}
+.order-tables thead th, .order-tables tbody td{text-align:left;}
+</style>
+<script type="text/javascript" src="<?php echo $this->getJsUrl()?>mage/adminhtml/sales.js"></script>
+
+<script type="text/javascript">
+    var order = new AdminOrder(<?php echo $_order->getOrderDataJson() ?>);
+    order.setLoadBaseUrl('<?php echo $_order->getLoadBlockUrl() ?>');
+    var payment = {};
+    payment.switchMethod = order.switchPaymentMethod.bind(order);
+</script>
+   
+<table cellspacing="0" width="100%">
+    <col />
+    <col width="1" />
+    <?php $_totals = $this->getTotals('footer')?>
+    <?php if ($_totals):?>
+    <tfoot>
+    <?php foreach ($this->getTotals('footer') as $_code => $_total): ?>
+        <?php if ($_total->getBlockName()): ?>
+            <?php echo $this->getChildHtml($_total->getBlockName(), false); ?>
+        <?php else:?>
+        <tr class="<?php echo $_code?>">
+            <td <?php echo $this->getLabelProperties()?> class="label">
+                <strong><?php echo $this->escapeHtml($_total->getLabel()); ?></strong>
+            </td>
+            <td <?php echo $this->getValueProperties()?> class="emph">
+                <strong><?php echo $this->formatValue($_total) ?></strong>
+                <?php
+                  if($_total->getLabel() == 'Total Paid')
+                  {
+                   //echo '<div onclick="div_show();">pay</div>';
+                  }
+                ?>
+            </td>
+        </tr>
+        <?php endif?>
+    <?php endforeach?>
+    
+<?php /**************************** Start by Dev ***************************************/
+if(strpos(Mage::helper('core/url')->getCurrentUrl(),'invoice'))
+    {
+
+?>
+
+
+    <tr class="<?php echo $_code?>">
+        <td <?php echo $this->getLabelProperties()?> >
+            <strong><?php echo $this->__('Total Paid');?></strong>
+        </td>
+        <td <?php echo $this->getValueProperties()?> >
+            <strong><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($_order->getTotalPaid(),2,'.','') ?></strong>
+        </td>
+    </tr>
+    <tr class="<?php echo $_code?>">
+        <td <?php echo $this->getLabelProperties()?>>
+            <strong><?php echo $this->__('Total Due');?></strong>
+        </td>
+        <td <?php echo $this->getValueProperties()?>>
+            <strong><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($_order->getTotalDue(),2,'.','') ?></strong>
+        </td>
+    </tr>
+<?php }
+
+/**************************** End by dev ***************************************/?>
+    </tfoot>
+    <?php endif?>
+
+    <?php $_totals = $this->getTotals('')?>
+    <?php if ($_totals):?>
+    <tbody>
+    <?php foreach ($_totals as $_code => $_total): ?>
+        <?php if ($_total->getBlockName()): ?>
+            <?php echo $this->getChildHtml($_total->getBlockName(), false); ?>
+        <?php else:?>
+        
+        <?php
+        /*************** dev code by start *********************/
+            //if($_total->getLabel() == 'Total Paid')
+            //{
+            //  echo '<div onclick="div_show();">pay</div>';
+            //   
+            //}
+            /*************** dev code by end *********************/
+        ?>
+        
+        <tr class="<?php echo $_code?>">
+            <td <?php echo $this->getLabelProperties()?> class="label">
+                <?php if ($_total->getStrong()):?>
+                <strong><?php echo $this->escapeHtml($_total->getLabel()); ?></strong>
+                <?php else:?>
+                <?php echo $this->escapeHtml($_total->getLabel()); ?>
+                <?php endif?>
+            </td>
+            <?php if ($_total->getStrong()):?>
+            <td <?php echo $this->getValueProperties()?> class="emph">
+                <strong><?php echo $this->formatValue($_total) ?></strong>
+            <?php else:?>
+            <td <?php echo $this->getValueProperties()?>>
+                <?php echo $this->formatValue($_total) ?>
+            <?php endif?>
+            </td>
+        </tr>
+        <?php endif?>
+    <?php endforeach?>
+    
+    
+
+    </tbody>
+    <?php endif?>
+</table>
+
+<div class="total_payment" id="total_payment" style="display:none;">
+ <div class="close_div" onclick="div_hide();">Close</div>
+ <div class="block_div">
+   <div class="offline_payment">
+    <?php
+    $url = Mage::helper('adminhtml')->getUrl('partialpayment/adminhtml_partialpayment/payment');
+    
+    if(!strpos(Mage::helper('core/url')->getCurrentUrl(),'invoice'))
+    {
+    ?>
+<form id="edit_form" action="<?php  echo str_replace('//s','/admin/s',$url);?>" method="get" enctype="multipart/form-data">
+ <input name="orderid" id="orderid" value="<?php echo $_order->getId();?>"  type="hidden">
+        <table>
+         <?php /*?>
+          <tr>
+            <td class="lebelall">Amount</td>
+            <td><input type="text" name="received_amount" id="received_amount" /></td>
+          </tr>
+           <tr>
+            <td class="lebelall"><?php echo Mage::helper('contacts')->__('Date') ?></td>
+            <td><input name="date" id="date" value="" type="text"> <input name="order_id" id="order_id" value="<?php echo $_order->getId();?>" type="hidden">
+        <img title="Select date" id="_dob_trig" src="<?php echo str_replace('index.php','',$this->getBaseUrl());?>skin/adminhtml/default/default/images/grid-cal.gif" class="v-middle"></td>
+          </tr>
+          <?php
+          
+          $payments = Mage::getSingleton('payment/config')->getActiveMethods();
+          $methods = array(array('value'=>'', 'label'=>Mage::helper('adminhtml')->__('--Please Select--')));
+          foreach ($payments as $paymentCode=>$paymentModel) {
+               $paymentTitle = Mage::getStoreConfig('payment/'.$paymentCode.'/title');
+               $methods[$paymentCode] = array(
+                   'label'   => $paymentTitle,
+                   'value' => $paymentCode,
+               );
+               
+               if($paymentCode != 'free')
+               {
+               ?>
+                <tr>
+                 <td class="lebelall"><?php echo $paymentTitle;?></td>
+                 <td><input type="radio" name="received_card" id="received_card_<?php echo $paymentCode;?>" value="<?php echo $paymentCode;?>" /></td>
+               </tr>
+                 
+               <?php
+               }
+           }
+           
+          ?>
+<tr>
+            <?php */?>     
+                 <td colspan="50" ><?php echo $this->getChildHtml('billing_method') ?></td>
+               </tr>
+          <tr> 
+                 
+                 <td colspan="50" style="text-align:center;">
+                 <!--<button type="button" onClick="validatePayment()" name="submit" id="submit"  >Submit</button>-->
+                 <button type="submit"  name="submit" id="submit"  >Submit</button>
+                 </td>
+               </tr>
+
+        </table>
+</form>
+
+<?php }?>
+   </div>
+ </div>
+
+</div>
+<script type="text/javascript">
+
+
+function div_show()
+{
+  document.getElementById('total_payment').style.display = 'block';
+  //var id = jQuery('.payment-methods').find( "input:checked" ).attr('id');//11_03_2014
+  jQuery('.payment-methods').find( "input:checked" ).trigger('click');//11_03_2014
+}
+
+function div_hide()
+{
+  document.getElementById('total_payment').style.display = 'none';
+}
+
+function all_save(){
+   
+  
+	var amount = document.getElementById('received_amount').value;
+        var order_id = document.getElementById('order_id').value;
+        
+       var radio = document.getElementsByName('received_card');
+       
+   payment_type = '';
+   
+    for (k = 0; k < radio.length; ++k) {
+            
+            if (radio[k].checked) {
+                //alert(radio[k].value);
+                var payment_type = radio[k].value;
+            }
+        }
+  
+	
+        var date = document.getElementById('date').value;
+	
+    if(amount == '')
+    {
+      alert("Please enter the received amount");
+      return false;
+    }
+    
+    if(date == '')
+    {
+      alert("Please enter the date");
+      return false;
+    }
+    
+        
+    if(payment_type == '')
+    {
+      alert("Please select the payment type");
+      return false;
+    }
+      //alert(type);
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+		//alert(xmlhttp.responseText);
+            
+		//data= xmlhttp.responseText;
+		//document.getElementById('message_id').innerHTML = data;
+		//alert(data);
+                
+                //if(xmlhttp.responseText == '')
+                location.reload();
+		
+           
+            // alert(xmlhttp.responseText);
+            // clock(); 
+        }
+    }
+    //alert(str);
+    xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/set_payment.php?amount="+amount+"&payment_type="+payment_type+"&date="+date+"&order_id="+order_id,true);
+    xmlhttp.send(null);
+}
+
+
+/*****************************validate payment*********************************/
+
+
+function validatePayment(){
+	
+	var orderid = '<?php echo $this->getRequest()->getParam('order_id')?>';
+	var paymentvalidated = 1;
+	var formkey = '<?php echo Mage::getModel('core/session')->getFormKey();?>';
+	
+	var form_data = {
+					order_id:orderid,
+					payment_validated:paymentvalidated,
+					form_key:formkey,
+		};
+	
+	flag = 0;
+	
+	jQuery.ajax({
+		url:'<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/AdvancedStock/Misc/Savepayment/',
+		data:form_data,
+		type:'POST',		
+		beforeSend: function(data){
+			
+			},
+		success: function (resp){
+			 console.log(resp);
+			flag=1;	
+			//submitform(flag);
+			}	
+		
+		});
+					
+		return false;
+		
+	}
+	
+	function submitform(flag){
+		if(flag==1){
+			document.getElementById('edit_form').action = '<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/partialpayment/adminhtml_partialpayment/payment/';	
+			jQuery('form#edit_form').submit();			
+			}
+		}
+	
+
+/**************End Ajax**************/
+</script>
+

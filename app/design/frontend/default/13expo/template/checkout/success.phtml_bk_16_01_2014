@@ -1,0 +1,420 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+$incementid = $this->getOrderId();
+$order = Mage::getModel('sales/order')->loadByIncrementId($incementid);
+
+if(Mage::getSingleton('core/session')->getQuotedetails() != '')
+{
+        Mage::register('isSecureArea', 1);
+        $quotedata = explode('-',Mage::getSingleton('core/session')->getQuotedetails());
+        
+        $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+        $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $temptableOrder = Mage::getSingleton('core/resource')->getTableName('sales_flat_order');
+        $temptableGrid = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_grid');
+
+        $connectionWrite->beginTransaction();
+        $data = array();
+        $data2['increment_id'] = trim($quotedata[0],' ');
+        $where = $connectionWrite->quoteInto('entity_id =?', $order->getId());
+        $connectionWrite->update($temptableOrder, $data2, $where);
+        $connectionWrite->commit();
+        
+        $connectionWrite->beginTransaction();
+        $data1 = array();
+        $data1['increment_id'] = trim($quotedata[0],' ');
+        $where1 = $connectionWrite->quoteInto('entity_id =?', $order->getId());
+        $connectionWrite->update($temptableGrid, $data1, $where1);
+        $connectionWrite->commit();
+        
+        $temptableDesign = Mage::getSingleton('core/resource')->getTableName('task_designer');
+        
+        //$connectionWrite->beginTransaction();
+        //$data3 = array();
+        //$data3['order_quote_id'] = $order->getId();
+        //$data3['proof_type'] = 'order';
+        //$where1 = $connectionWrite->quoteInto("order_quote_id =? AND proof_type='quote' ", $quotedata[1]);
+        //$connectionWrite->update($temptableDesign, $data3, $where1);
+        //$connectionWrite->commit();
+        //
+        //$temptableProofs = Mage::getSingleton('core/resource')->getTableName('proofs');
+        //
+        //$connectionWrite->beginTransaction();
+        //$data4 = array();
+        //$data4['order_id'] = $order->getId();
+        //$data4['proof_type'] = 'order';
+        //$where1 = $connectionWrite->quoteInto("order_id =? AND proof_type='quote' ", $quotedata[1]);
+        //$connectionWrite->update($temptableProofs, $data4, $where1);
+        //$connectionWrite->commit();
+        
+        $temptableItems = Mage::getSingleton('core/resource')->getTableName('quotation_items');
+                
+        $select = $connectionRead->select()
+        ->from($temptableItems, array('*'))
+        ->where('quotation_id=?',$quotedata[1]);
+        //$row =$connectionRead->fetchRow($select);
+        $result = $connectionRead->fetchAll($select);
+        
+            
+        foreach($result as $quoteitem)
+        {
+            $tableItemName = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
+            
+            $select = $connectionRead->select()
+            ->from($tableItemName, array('*'))
+            ->where('order_id=?',$order->getId())
+            ->where('product_id=?',$quoteitem['product_id']);
+            $row =$connectionRead->fetchRow($select);
+        
+                $connectionWrite->beginTransaction();
+                $data3 = array();
+                $data3['order_quote_id'] = $order->getId();
+                $data3['proof_type'] = 'order';
+                $data3['item_id'] = $row['item_id'];
+                $where1 = $connectionWrite->quoteInto("order_quote_id =? AND proof_type='quote' AND item_id = '".$quoteitem['quotation_item_id']."' ", $quotedata[1]);
+                $connectionWrite->update($temptableDesign, $data3, $where1);
+                $connectionWrite->commit();
+                
+                $temptableProofs = Mage::getSingleton('core/resource')->getTableName('proofs');
+                
+                $connectionWrite->beginTransaction();
+                $data4 = array();
+                $data4['order_id'] = $order->getId();
+                $data4['proof_type'] = 'order';
+                $data4['item_id'] = $row['item_id'];
+                $where1 = $connectionWrite->quoteInto("order_id =? AND proof_type='quote' AND item_id = '".$quoteitem['quotation_item_id']."' ", $quotedata[1]);
+                $connectionWrite->update($temptableProofs, $data4, $where1);
+                $connectionWrite->commit();
+        }
+        
+        
+        // For adding the comment masage from quote to order   
+        $temptableHistory = Mage::getSingleton('core/resource')->getTableName('quotation_history');
+        $temptableComment = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_status_history');
+        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHistory))
+        {
+               // $sqlHistory ="SELECT * FROM ".$temptableHistory." WHERE qh_quotation_id = '".$quote_id."'";
+               // $chkHistory = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlHistory);
+                
+                 $select = $connectionRead->select()
+                ->from($temptableHistory, array('*'))
+                ->where('qh_quotation_id=?',$quotedata[1]);
+                
+                $chkHistory = $connectionRead->fetchAll($select);
+                
+                foreach($chkHistory as $history)
+                {
+                    
+                    //$sqlComment="INSERT INTO ".$temptableComment." SET parent_id = '".$order->getId()."', 
+                    //               comment = '".strtoupper($history['qh_user'])." - ".addslashes($history['qh_message'])."' ,
+                    //               created_at ='".$history['qh_date']."'";
+                    //               
+                    //$chkComment = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlComment);
+                    
+                    $connectionWrite->beginTransaction();
+                    $data5 = array();
+                    $data5['parent_id']= $order->getId();
+                    $data5['comment']= strtoupper($history['qh_user'])." - ".addslashes($history['qh_message']);
+                    $data5['created_at']= $history['qh_date'];
+                    $connectionWrite->insert($temptableComment, $data5);
+                    $connectionWrite->commit();
+                }
+        }
+        
+        
+        //$temptableQuote = Mage::getSingleton('core/resource')->getTableName('quotation');
+        //$temptableQuoteHistory = Mage::getSingleton('core/resource')->getTableName('quotation_history');
+        //$temptableQuoteItem = Mage::getSingleton('core/resource')->getTableName('quotation_items');
+        //
+        //$connectionWrite->beginTransaction();
+        //$condition = array($connectionWrite->quoteInto('qh_quotation_id=?', $quotedata[1]));
+        //$connectionWrite->delete($temptableQuoteHistory, $condition);
+        //$connectionWrite->commit();
+        //
+        //$connectionWrite->beginTransaction();
+        //$condition = array($connectionWrite->quoteInto('quotation_id=?', $quotedata[1]));
+        //$connectionWrite->delete($temptableQuoteItem, $condition);
+        //$connectionWrite->commit();
+        //
+        //$connectionWrite->beginTransaction();
+        //$condition = array($connectionWrite->quoteInto('increment_id=?', $quotedata[0]));
+        //$connectionWrite->delete($temptableQuote, $condition);
+        //$connectionWrite->commit();
+        
+        $quote = Mage::getModel("Quotation/Quotation")->load($quotedata[1]);
+        $quote->delete();
+            
+       
+        Mage::getSingleton('core/session')->setQuotedetails('');
+        
+}
+$items = $order->getAllItems();
+foreach ($items as $item) {
+     /************************ Get custom option value ******************************/
+     $ProductId = $item->getproductId();
+     $_options = $item->getProductOptions();
+    if(!empty($_options))
+    {
+    
+            //print_r($_options['options']);
+       
+            foreach($_options['options'] as $option){
+                   
+               
+                    if($option['label'] == 'Graphic Design Service'){
+                       
+                        if($option['value'] != '')
+                        {
+                            $title = explode(' ',$option['value']);
+                            
+                            if (is_numeric($title[0]))
+                            $revison_number = $title[0];
+                            else
+                            $revison_number = 10000;
+                        }
+                    }
+               
+            }
+            
+            $temptableProduct=Mage::getSingleton('core/resource')->getTableName('catalog_product_designer');
+            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableProduct))
+            {
+                $sqlProduct="SELECT * FROM ".$temptableProduct." WHERE product_id = '".$ProductId."'";
+                $chkProduct = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlProduct);
+            }
+            
+            $adminid = $chkProduct[0]['user_id'];
+             
+            $temptableDesign=Mage::getSingleton('core/resource')->getTableName('design_service');
+            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableDesign))
+            {
+                $sqlDesign="INSERT INTO  ".$temptableDesign." SET order_id = '".$order->getId()."', type='order', item_id ='".$item->getId()."', product_id = '".$ProductId."', revision_number = '".$revison_number."', assign_to = '".$adminid."', postdate = NOW() ";
+                $chkDesign = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlDesign);
+            }
+    }
+    
+     /************************** Add the vendor option to individual item in order ********************************************/
+        //$temptableProduct=Mage::getSingleton('core/resource')->getTableName('vendor_product');
+        //if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableProduct))
+        //{
+        //      $sqlProduct="SELECT * FROM ".$temptableProduct." WHERE product_id = '".$ProductId."'";
+        //      $chkProduct = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlProduct);
+        //}
+        //  
+        //$vendorid = $chkProduct[0]['vendor_id'];
+        // 
+        //$temptableVendor=Mage::getSingleton('core/resource')->getTableName('vendor_order');
+        //if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableVendor))
+        //{
+        //    $sqlVendor="INSERT INTO  ".$temptableVendor." SET order_id = '".$order->getId()."', item_id ='".$item->getId()."', product_id = '".$ProductId."', revision_number = '".$revison_number."', assign_to = '".$vendorid."', postdate = NOW() ";
+        //    $chkVendor = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlVendor);
+        //}
+        
+        $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+        $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $temptableProofs = Mage::getSingleton('core/resource')->getTableName('proofs');
+        
+        $select = $connectionRead->select()
+        ->from($temptableProofs, array('*'))
+        ->where('order_id=?',$order->getId())
+        ->where('item_id=?',$item->getId())
+        ->where('proof_type=?','order');
+        //$row =$connectionRead->fetchRow($select);
+        $result = $connectionRead->fetchAll($select);
+        
+        if(count($result) > 0)
+        $file_recieved = 'yes';
+        else
+        $file_recieved = 'no';
+        
+        if($result[0]['status'] == 'Approved')
+        $proof_approved = 'yes';
+        else
+        $proof_approved = 'no';
+        
+                          
+        $temptableVendor=Mage::getSingleton('core/resource')->getTableName('vendor_item');
+        
+        $_product = Mage::getModel('catalog/product')->load($item->getProductId());
+        
+        $name = $_product->getAttributeText('vendor_id');
+        $target_vendor = Mage::getResourceModel('catalog/product')->getAttribute("vendor_id")->getSource()->getOptionId($name);
+        
+        $connectionWrite->beginTransaction();
+        $data2 = array();
+        $data2['target_user']= $target_vendor;
+        $data2['item_id'] = $item->getId();
+        $data2['order_id'] = $order->getId();
+        $data2['product_id'] = $item->getProductId();
+        $data2['product_sku'] = addslashes($_product->getSku());
+        $data2['postdate'] = NOW();
+        $data2['order_status'] = $order->getStatus();
+        
+        $data2['file_recieved'] = $file_recieved;
+        $data2['proof_approved'] = $proof_approved;
+        $data2['proof_approve_date'] = Now();
+        if($row['quantity'] != '')
+        $data2['qty'] = $result[0]['quantity'];
+        
+        $connectionWrite->insert($temptableVendor, $data2);
+        $connectionWrite->commit();
+    /************************** Add the vendor option to individual item in order ********************************************/
+
+}
+
+$order = Mage::getModel('sales/order')->load($order->getId());
+
+//$orderTable=Mage::getSingleton('core/resource')->getTableName('sales_flat_order');
+//$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+//
+//$sqlPaymentSystem = $connectionRead->select()
+//            ->from($orderTable,array('*'))
+//            ->where('entity_id=?',$order->getId());
+//            
+//$chkSystem = $connectionRead->fetchRow($sqlPaymentSystem);
+
+
+
+
+
+$_order = Mage::getModel('sales/order')->load($order->getId());
+$paymentName = $_order->getPayment()->getMethodInstance()->getCode();
+
+///18-11-2013 SOC
+if($_order->getTotalPaid() > 0){
+        //26-11-2013 SOC
+        try {
+            //if($order->canShip()) {
+                
+                $shipmentid = Mage::getModel('sales/order_shipment_api')
+                                ->create($order->getIncrementId(), array());
+                
+                $ship = Mage::getModel('sales/order_shipment_api')
+                                ->addTrack($order->getIncrementId(), array());       
+           // }
+        }catch (Mage_Core_Exception $e) {
+        // print_r($e);
+        }
+        //26-11-2013 EOC
+        
+        
+        
+        //21-11-2013 SOC
+        $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $tableName = Mage::getSingleton('core/resource')->getTableName('partialshipping_shipment_grid');
+        
+        $date_post = strtotime($order->getCreatedAtStoreDate()); 
+        $time=date('Y-m-d H:i:s',$date_post );
+        
+        $addressLoadId = $order->getShippingAddress()->getData();
+        $Name = $addressLoadId['firstname'].' '.$addressLoadId['lastname'];
+        
+        $connectionWrite->beginTransaction();
+        $data = array();
+        $data['store_id']= $order->getStoreId();
+        $data['total_qty']= $order->getTotalQtyOrdered();
+        $data['order_id']= $order->getId();
+        $data['status']= 'Pending Shipment';
+        $data['increment_id']=$order->getIncrementId();;
+        $data['order_increment_id']=$order->getIncrementId();
+        $data['created_at']=$time;
+        $data['order_created_at']=$time;
+        $data['shipping_name']=$Name;
+        //echo "<pre>";print_r($data); exit;
+        $connectionWrite->insert($tableName, $data);
+        $connectionWrite->commit();
+        //21-11-2013 EOC
+
+}
+///18-11-2013 EOC
+
+
+
+
+if($_order->getTotalDue() == 0)
+{
+    $_order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
+    $_order->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING, true);
+}
+else if($_order->getTotalPaid() == 0)
+{
+   // $_order->setState('new', true);
+   $_order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
+    
+    if($paymentName == 'purchaseorder')
+    $_order->setStatus('purchaseorder_pending_payment', true);
+    elseif($paymentName == 'checkmo')
+    $_order->setStatus('checkmo_pending_payment', true);
+    else
+    $_order->setStatus('pending', true);
+}
+else if($_order->getTotalDue() > 0)
+{
+    $_order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
+    $_order->setStatus('partial_payment', true);
+}
+$_order->save();
+//14-11-2013 EOC
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Your order has been received.') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+
+<?php if ($this->getOrderId()):?>
+<?php if ($this->getCanViewOrder()) :?>
+    <?php /*?><p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p><?php */?>
+    <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($order->getIncrementId()))) ?></p>
+<?php  else :?>
+    <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
+<?php endif;?>
+    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
+<?php if ($this->getCanViewOrder() && $this->getCanPrintOrder()) :?>
+    <p>
+        <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
+        <?php echo $this->getChildHtml() ?>
+    </p>
+<?php endif;?>
+<?php endif;?>
+
+<?php if ($this->getAgreementRefId()): ?>
+    <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
+<?php endif;?>
+
+<?php if ($profiles = $this->getRecurringProfiles()):?>
+<p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+<ul class="disc">
+<?php foreach($profiles as $profile):?>
+<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+    <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+<?php endforeach;?>
+</ul>
+<?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>

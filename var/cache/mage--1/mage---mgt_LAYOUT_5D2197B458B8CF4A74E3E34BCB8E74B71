@@ -1,0 +1,846 @@
+a:4:{s:4:"data";s:32073:"<block name="formkey" type="core/template" template="core/formkey.phtml"/>
+<label>All Pages</label>
+<block type="page/html" name="root" output="toHtml" template="page/1column.phtml">
+   <block type="page/html_head" name="head" as="head">
+      <action method="addJs">
+         <script>prototype/prototype.js</script>
+      </action>
+      <action method="addJs">
+         <script>lib/ccard.js</script>
+      </action>
+      <action method="addJs">
+         <script>prototype/validation.js</script>
+      </action>
+      <action method="addJs">
+         <script>scriptaculous/builder.js</script>
+      </action>
+      <action method="addJs">
+         <script>scriptaculous/effects.js</script>
+      </action>
+      <action method="addJs">
+         <script>scriptaculous/dragdrop.js</script>
+      </action>
+      <action method="addJs">
+         <script>scriptaculous/slider.js</script>
+      </action>
+      <action method="addJs">
+         <script>scriptaculous/controls.js</script>
+      </action>
+      <action method="addJs">
+         <script>varien/js.js</script>
+      </action>
+      <action method="addJs">
+         <script>varien/form.js</script>
+      </action>
+      <action method="addJs">
+         <script>varien/menu.js</script>
+      </action>
+      <action method="addJs">
+         <script>mage/translate.js</script>
+      </action>
+      <action method="addJs">
+         <script>mage/cookies.js</script>
+      </action>
+      <block type="page/js_cookie" name="js_cookies" template="page/js/cookie.phtml"/>
+      <action method="addCss">
+         <stylesheet>css/styles.css</stylesheet>
+      </action>
+      <action method="addItem">
+         <type>skin_css</type>
+         <name>css/styles-ie.css</name>
+         <params/>
+         <if>lt IE 8</if>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/widgets.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/print.css</stylesheet>
+         <params>media=&quot;print&quot;</params>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/uploadstyle.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/uploadstyles.css</stylesheet>
+      </action>
+      <action method="addItem">
+         <type>js</type>
+         <name>lib/ds-sleight.js</name>
+         <params/>
+         <if>lt IE 7</if>
+      </action>
+      <action method="addItem">
+         <type>skin_js</type>
+         <name>js/ie6.js</name>
+         <params/>
+         <if>lt IE 7</if>
+      </action>
+   </block>
+   <block type="core/text_list" name="after_body_start" as="after_body_start" translate="label">
+      <label>Page Top</label>
+   </block>
+   <block type="page/html_notices" name="global_notices" as="global_notices" template="page/html/notices.phtml"/>
+   <block type="page/html_header" name="header" as="header">
+      <block type="page/template_links" name="top.links" as="topLinks"/>
+      <block type="page/switch" name="store_language" as="store_language" template="page/switch/languages.phtml"/>
+      <block type="core/text_list" name="top.menu" as="topMenu" translate="label">
+         <label>Navigation Bar</label>
+         <block type="page/html_topmenu" name="catalog.topnav" template="page/html/topmenu.phtml"/>
+      </block>
+      <block type="page/html_wrapper" name="top.container" as="topContainer" translate="label">
+         <label>Page Header</label>
+         <action method="setElementClass">
+            <value>top-container</value>
+         </action>
+      </block>
+      <block type="youama_slider/slider" name="youamaslider" alias="youamaslider" template="youama/slider/slider.phtml"/>
+   </block>
+   <block type="youama_slider/slider" name="youamaslider" alias="youamaslider" template="youama/slider/slider.phtml"/>
+   <block type="page/html_breadcrumbs" name="breadcrumbs" as="breadcrumbs"/>
+   <block type="core/text_list" name="left" as="left" translate="label">
+      <label>Left Column</label>
+      <block type="cms/block" name="out-clients-tablethrows" before="out-clients-tablethrows">
+         <action method="setBlockId">
+            <block_id>out-clients-tablethrows</block_id>
+         </action>
+      </block>
+      <block type="cms/block" name="artwork-tablethrows" after="-">
+         <action method="setBlockId">
+            <block_id>artwork-tablethrows</block_id>
+         </action>
+      </block>
+   </block>
+   <block type="core/messages" name="global_messages" as="global_messages"/>
+   <block type="core/messages" name="messages" as="messages"/>
+   <block type="core/text_list" name="content" as="content" translate="label">
+      <label>Main Content Area</label>
+   </block>
+   <block type="core/text_list" name="right" as="right" translate="label">
+      <label>Right Column</label>
+   </block>
+   <block type="page/html_footer" name="footer" as="footer" template="page/html/footer.phtml">
+      <block type="page/html_wrapper" name="bottom.container" as="bottomContainer" translate="label">
+         <label>Page Footer</label>
+         <action method="setElementClass">
+            <value>bottom-container</value>
+         </action>
+      </block>
+      <block type="page/switch" name="store_switcher" as="store_switcher" template="page/switch/stores.phtml"/>
+   </block>
+   <block type="core/text_list" name="before_body_end" as="before_body_end" translate="label">
+      <label>Page Bottom</label>
+   </block>
+</block>
+<block type="core/profiler" output="toHtml" name="core_profiler"/>
+<reference name="head">
+   <block type="core/template" name="optional_zip_countries" as="optional_zip_countries" template="directory/js/optional_zip_countries.phtml"/>
+</reference>
+<reference name="footer">
+   <block type="cms/block" name="cms_footer_links" before="footer_links">
+      <action method="setBlockId">
+         <block_id>footer_links</block_id>
+      </action>
+   </block>
+</reference>
+<reference name="top.links">
+   <action method="addLink" translate="label title" module="customer">
+      <label>Artwork Guide</label>
+      <url>artwork-guide.html</url>
+      <title>Artwork Guide</title>
+      <prepare/>
+      <urlParams/>
+      <position>10</position>
+   </action>
+   <action method="addLink" translate="label title" module="customer">
+      <label>Gallery</label>
+      <url>/gallery</url>
+      <title>Gallery</title>
+      <prepare/>
+      <urlParams/>
+      <position>10</position>
+   </action>
+   <action method="addLink" translate="label title" module="customer">
+      <label>Our Clients</label>
+      <url>/our-clients.html</url>
+      <title>Our Clients</title>
+      <prepare/>
+      <urlParams/>
+      <position>10</position>
+   </action>
+</reference>
+<reference name="left">
+   <remove name="socialbooster.product"/>
+   <remove name="socialbooster.category"/>
+   <remove name="socialbooster.cms"/>
+</reference>
+<reference name="right">
+   <block type="catalog/product_compare_sidebar" before="cart_sidebar" name="catalog.compare.sidebar" template="catalog/product/compare/sidebar.phtml"/>
+   <block type="core/template" name="right.permanent.callout" template="callouts/right_col.phtml">
+      <action method="setImgSrc">
+         <src>images/media/col_right_callout.jpg</src>
+      </action>
+      <action method="setImgAlt" translate="alt" module="catalog">
+         <alt>Keep your eyes open for our special Back to School items and save A LOT!</alt>
+      </action>
+   </block>
+</reference>
+<reference name="footer_links">
+   <action method="addLink" translate="label title" module="catalog" ifconfig="catalog/seo/site_map">
+      <label>Site Map</label>
+      <url helper="catalog/map/getCategoryUrl"/>
+      <title>Site Map</title>
+   </action>
+</reference>
+<block type="catalog/product_price_template" name="catalog_product_price_template"/>
+<reference name="catalog_product_price_template">
+   <action method="addPriceBlockType">
+      <type>msrp</type>
+      <block>catalog/product_price</block>
+      <template>catalog/product/price_msrp.phtml</template>
+   </action>
+   <action method="addPriceBlockType">
+      <type>msrp_item</type>
+      <block>catalog/product_price</block>
+      <template>catalog/product/price_msrp_item.phtml</template>
+   </action>
+   <action method="addPriceBlockType">
+      <type>msrp_noform</type>
+      <block>catalog/product_price</block>
+      <template>catalog/product/price_msrp_noform.phtml</template>
+   </action>
+</reference>
+<reference name="top.bar">
+   <block type="core/template" name="top.search" as="topSearch" template="catalogsearch/form.mini.phtml"/>
+</reference>
+<reference name="header">
+   <block type="core/template" name="top.search" as="topSearch" template="catalogsearch/form.mini.phtml"/>
+</reference>
+<reference name="footer_links">
+   <action method="addLink" translate="label title" module="catalogsearch" ifconfig="catalog/seo/search_terms">
+      <label>Search Terms</label>
+      <url helper="catalogsearch/getSearchTermUrl"/>
+      <title>Search Terms</title>
+   </action>
+   <action method="addLink" translate="label title" module="catalogsearch">
+      <label>Advanced Search</label>
+      <url helper="catalogsearch/getAdvancedSearchUrl"/>
+      <title>Advanced Search</title>
+   </action>
+</reference>
+<reference name="footer_links">
+   <block type="sales/guest_links" name="return_link"/>
+   <action method="addLinkBlock">
+      <blockName>return_link</blockName>
+   </action>
+</reference>
+<reference name="left">
+            
+        </reference>
+<reference name="head">
+   <block type="core/template" name="optional_zip_countries" as="optional_zip_countries" template="directory/js/optional_zip_countries.phtml"/>
+</reference>
+<reference name="topCart.extra_actions">
+   <block type="paypal/express_shortcut" name="paypal.partner.top_cart.shortcut" template="paypal/express/shortcut.phtml"/>
+</reference>
+<reference name="cart_sidebar.extra_actions">
+   <block type="paypal/express_shortcut" name="paypal.partner.cart_sidebar.shortcut" template="paypal/express/shortcut.phtml"/>
+</reference>
+<reference name="right">
+   <block type="poll/activePoll" name="right.poll">
+      <action method="setPollTemplate">
+         <template>poll/active.phtml</template>
+         <type>poll</type>
+      </action>
+      <action method="setPollTemplate">
+         <template>poll/result.phtml</template>
+         <type>results</type>
+      </action>
+   </block>
+</reference>
+<reference name="right">
+   <block type="reports/product_viewed" before="right.permanent.callout" name="right.reports.product.viewed" template="reports/product_viewed.phtml"/>
+   <block type="reports/product_compared" before="right.permanent.callout" name="right.reports.product.compared" template="reports/product_compared.phtml"/>
+</reference>
+<reference name="after_body_start">
+   <block type="googleanalytics/ga" name="google_analytics" as="google_analytics" template="googleanalytics/ga.phtml"/>
+</reference>
+<reference name="top.links">
+   <block type="wishlist/links" name="wishlist_link"/>
+   <action method="addLinkBlock">
+      <blockName>wishlist_link</blockName>
+   </action>
+</reference>
+<reference name="left">
+   <block type="wishlist/customer_sidebar" name="wishlist_sidebar" as="wishlist" after="cart_sidebar" template="wishlist/sidebar.phtml"/>
+</reference>
+<reference name="topCart.extra_actions">
+   <block type="paypaluk/express_shortcut" name="paypaluk.partner.top_cart.shortcut" template="paypal/express/shortcut.phtml"/>
+</reference>
+<reference name="cart_sidebar.extra_actions">
+   <block type="paypaluk/express_shortcut" name="paypaluk.partner.cart_sidebar.shortcut" template="paypal/express/shortcut.phtml"/>
+</reference>
+<reference name="footer_links">
+   <action method="addLink" translate="label title" module="contacts" ifconfig="contacts/contacts/enabled">
+      <label>Contact Us</label>
+      <url>contacts</url>
+      <title>Contact Us</title>
+      <prepare>true</prepare>
+   </action>
+</reference>
+<reference name="footer_links">
+   <action method="addLink" translate="label title" module="rss" ifconfig="rss/config/active">
+      <label>RSS</label>
+      <url>rss</url>
+      <title>RSS</title>
+      <prepare>true</prepare>
+      <urlParams/>
+      <position/>
+      <li/>
+      <a>class=&quot;link-rss&quot;</a>
+   </action>
+</reference>
+<block type="rss/list" name="head_rss" ifconfig="rss/config/active"/>
+<reference name="cart_sidebar">
+   <action method="addItemRender">
+      <type>bundle</type>
+      <block>bundle/checkout_cart_item_renderer</block>
+      <template>checkout/cart/sidebar/default.phtml</template>
+   </action>
+</reference>
+<reference name="wishlist_sidebar">
+   <action method="addPriceBlockType">
+      <type>bundle</type>
+      <block>bundle/catalog_product_price</block>
+      <template>bundle/catalog/product/price.phtml</template>
+   </action>
+</reference>
+<reference name="catalog_product_price_template">
+   <action method="addPriceBlockType">
+      <type>bundle</type>
+      <block>bundle/catalog_product_price</block>
+      <template>bundle/catalog/product/price.phtml</template>
+   </action>
+</reference>
+<reference name="head">
+   <block type="sharingtool/share" name="addthis_sharetool" after="-">
+      <action method="setTemplate">
+         <template>addthis/sharingtool/share.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="head">
+   <block type="sharingtool/share" name="addthis_sharetool">
+      <action method="setTemplate">
+         <template>addthis/sharingtool/share.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="head">
+   <action method="addItem">
+      <type>skin_css</type>
+      <name>css/amlabel.css</name>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addJs">
+      <script>amasty/amlanding/amlanding.js</script>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addItem">
+      <type>skin_css</type>
+      <name>css/clnews/style.css</name>
+   </action>
+   <action method="addJs">
+      <script>jquery/jquery-1.7.1-min.js</script>
+   </action>
+   <action method="addJs">
+      <script>commercelab/noconflict.js</script>
+   </action>
+   <action method="addJs">
+      <script>commercelab/treeview/jquery.treeview.pack.js</script>
+   </action>
+   <action method="addJs">
+      <script>commercelab/category_tree.js</script>
+   </action>
+   <action method="addCss">
+      <stylesheet>css/commercelab/treeview/jquery.treeview.css</stylesheet>
+   </action>
+</reference>
+<reference name="right">
+   <block type="clnews/settings" name="right.clnews.menu" before="-">
+      <action method="setTemplate" ifconfig="clnews/news/showrightblock">
+         <template>clnews/menu.phtml</template>
+      </action>
+   </block>
+   <block type="clnews/news" name="right.clnews.latest" after="right.clnews.menu">
+      <action method="setTemplate" ifconfig="clnews/news/showlatestnews">
+         <template>clnews/latest.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="left">
+   <block type="clnews/settings" name="left.clnews.menu" before="-">
+      <action method="setTemplate" ifconfig="clnews/news/showleftblock">
+         <template>clnews/menu.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="top.links">
+   <block type="clnews/settings" name="top.clnews.link">
+      <action method="getTopLink"/>
+   </block>
+</reference>
+<reference name="head">
+   <action method="addJs">
+      <script>ezapps/ezzoom.js</script>
+   </action>
+</reference>
+<reference name="before_body_end">
+   <block type="ezzoom/ajax_footer" name="ezzoom_ajax_footer" template="ezzoom/ajax/footer.phtml"/>
+</reference>
+<reference name="root">
+   <action method="setTemplate">
+      <template>page/2columns-right.phtml</template>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addCss" ifconfig="reviewsplus_sec/plus_config/status">
+      <stylesheet>css/reviewsplus/reviewsplus.css</stylesheet>
+   </action>
+   <action method="addCss" ifconfig="reviewsplus_sec/plus_config/status">
+      <stylesheet>css/reviewsplus/jquery.fancybox.css</stylesheet>
+   </action>
+   <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status">
+      <script>reviewsplus/jquery-1.10.1.min.js</script>
+   </action>
+   <script>jQuery.noConflict();</script>
+   <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status">
+      <script>reviewsplus/reviewsplus.js</script>
+   </action>
+   <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status">
+      <script>reviewsplus/jquery.fancybox.pack.js</script>
+   </action>
+   <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status">
+      <script>reviewsplus/jquery.fancybox.js</script>
+   </action>
+</reference>
+<reference name="right">
+   <block type="reviewsplus/sidebar" name="reviewsplus_sidebar" before="-" template="reviewsplus/sidebar.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addCss">
+      <stylesheet>css/faqs/accordion.css</stylesheet>
+   </action>
+</reference>
+<reference name="right">
+   <block type="faqs/block" name="block" before="-">
+      <action method="setTemplate">
+         <template>faqs/block.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="top.links">
+   <action method="addLink" translate="label title" module="wordpress" ifconfig="wordpress/toplink/enabled">
+      <label helper="wordpress/getTopLinkLabel"/>
+      <url helper="wordpress/getTopLinkUrl"/>
+      <title>Blog</title>
+      <prepare>0</prepare>
+      <urlParams/>
+      <position helper="wordpress/getTopLinkPosition"/>
+      <li_params/>
+      <a_params>class=&quot;top-link-blog&quot;</a_params>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="google/analyticsplus/firstouch">
+      <script>GoogleAnalyticsPlus/distilled.FirstTouch.js</script>
+   </action>
+   <block type="core/text_list" name="before_head_end" as="before_head_end"/>
+</reference>
+<reference name="before_head_end">
+   <block type="googleanalytics/ga" name="google_analytics" as="google_analytics"/>
+</reference>
+<reference name="after_body_start">
+   <action method="unsetChild">
+      <name>google_analytics</name>
+   </action>
+</reference>
+<reference name="before_body_end">
+   <action method="unsetChild">
+      <name>google_analytics</name>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addCss">
+      <stylesheet>quickcontact/css/form-contact.css</stylesheet>
+   </action>
+   <action method="addItem">
+      <type>skin_js</type>
+      <name>quickcontact/js/quickContact.js</name>
+   </action>
+   <action method="addItem">
+      <type>skin_js</type>
+      <name>quickcontact/js/modalwindow.js</name>
+   </action>
+</reference>
+<reference name="before_body_end">
+   <block type="core/template" name="quickcontact" template="quickcontact/form.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="iwdall/default/jquery">
+      <script>iwd/all/jquery-1.10.2.min.js</script>
+   </action>
+</reference>
+<reference name="head">
+   <block type="livechat/livechat" name="head.livechat.monitor">
+      <action method="setTemplate">
+         <template>livechat/monitor.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="head">
+   <action method="addItem">
+      <type>skin_css</type>
+      <name>css/vividslider/slider/slider.css</name>
+   </action>
+   <action method="addJs">
+      <script>vividslider/slider/slider.js</script>
+   </action>
+   <block type="vividslider_slider/slider" name="vividsliderslider" as="vividsliderslider">
+      <action method="setTemplate">
+         <template>vividslider/slider/style.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="content">
+            
+        </reference>
+<reference name="head">			
+			
+			
+        </reference>
+<reference name="right">
+   <block type="testimonial/testimonial" name="left.testimonial.testimonial" before="-">
+      <action method="setTemplate">
+         <template>testimonial/testimonial.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="left">
+            
+        </reference>
+<reference name="top.menu">
+   <remove name="catalog.topnav"/>
+   <block type="catalog/navigation" name="gallery.catalog.topnav" template="gallery/navigation/top.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="mageworx_cms/downloads/enabled">
+      <script>mageworx/downloads.js</script>
+   </action>
+   <action method="addCss" ifconfig="mageworx_cms/downloads/enabled">
+      <stylesheet>css/mageworx/downloads.css</stylesheet>
+   </action>
+</reference>
+<reference name="after_body_start">
+   <block type="core/template" template="downloads/init_popup.phtml" name="init_video_popup"/>
+</reference>
+<reference name="before_body_end">
+   <block type="core/template" template="downloads/video_popup.phtml" name="video_popup"/>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="mageworx_customers/icart/enabled">
+      <script>mageworx/modalbox.js</script>
+   </action>
+   <action method="addJs" ifconfig="mageworx_customers/icart/enabled">
+      <script>mageworx/icart.js</script>
+   </action>
+   <action method="addCss" ifconfig="mageworx_customers/icart/enabled">
+      <stylesheet>css/mageworx/modalbox.css</stylesheet>
+   </action>
+   <action method="addItem" ifconfig="mageworx_customers/icart/enabled">
+      <type>skin_css</type>
+      <name>css/mageworx/modalbox-ie.css</name>
+      <params/>
+      <if>lt IE 9</if>
+   </action>
+   <action method="addCss" ifconfig="mageworx_customers/icart/enabled">
+      <stylesheet>css/icart.css</stylesheet>
+   </action>
+   <action method="addJs" ifconfig="mageworx_customers/icart/enabled">
+      <script>varien/product.js</script>
+   </action>
+   <action method="addItem" ifconfig="mageworx_customers/icart/enabled">
+      <type>skin_js</type>
+      <name>js/bundle.js</name>
+   </action>
+   <action method="addItem" ifconfig="mageworx_customers/icart/enabled">
+      <type>js_css</type>
+      <name>calendar/calendar-win2k-1.css</name>
+      <params/>
+   </action>
+   <action method="addItem" ifconfig="mageworx_customers/icart/enabled">
+      <type>js</type>
+      <name>calendar/calendar.js</name>
+   </action>
+   <action method="addItem" ifconfig="mageworx_customers/icart/enabled">
+      <type>js</type>
+      <name>calendar/calendar-setup.js</name>
+   </action>
+</reference>
+<reference name="before_body_end">
+   <block type="icart/wrapper" name="icart_link_wrapper" template="icart/link_wrapper.phtml" ifconfig="mageworx_customers/icart/enabled"/>
+</reference>
+<reference name="head">
+   <action method="addCss">
+      <stylesheet>css/socialbooster/styles.css</stylesheet>
+   </action>
+</reference>
+<reference name="after_body_start">
+   <block type="core/template" name="social_start" template="socialbooster/after_body_start.phtml"/>
+</reference>
+<reference name="before_body_end">
+   <block type="core/template" name="social_end" template="socialbooster/before_body_end.phtml"/>
+</reference>
+<reference name="footer_links">
+   <action method="removeLinkByUrl">
+      <url helper="catalog/map/getCategoryUrl"/>
+   </action>
+   <action method="addLink" translate="label title" module="xsitemap">
+      <label>Site Map</label>
+      <url helper="xsitemap/data/getSitemapUrl"/>
+      <title>Site Map</title>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="ajaxcontacts/general/enabled">
+      <script>prototype/effects.js</script>
+   </action>
+   <action method="addJs" ifconfig="ajaxcontacts/general/enabled">
+      <script>prototype/window.js</script>
+   </action>
+   <action method="addJs" ifconfig="ajaxcontacts/general/enabled">
+      <script>ajaxcontacts/script.js</script>
+   </action>
+   <action method="addCss" ifconfig="ajaxcontacts/general/enabled">
+      <script>ajaxcontacts/css/styles.css</script>
+   </action>
+   <action method="addItem" ifconfig="ajaxcontacts/general/enabled">
+      <type>js_css</type>
+      <script>prototype/windows/themes/default.css</script>
+   </action>
+   <action method="addItem" ifconfig="ajaxcontacts/general/enabled">
+      <type>js_css</type>
+      <script>prototype/windows/themes/alphacube.css</script>
+   </action>
+   <block type="ajaxcontacts/wrapper" name="mp.ajaxcontacts.wrapper" as="ajaxcontacts_wrapper" template="ajaxcontacts/wrapper.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addCss" ifconfig="brandlogo/general/brandlogoenabled">
+      <stylesheet>css/brandlogo/carousel.css</stylesheet>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="jquerylib/general/next">
+      <script>jquery/jquery-1.10.1.min.js</script>
+   </action>
+   <action method="addJs">
+      <script>testimonial/jwplayer.js</script>
+   </action>
+   <action method="addJs">
+      <script>testimonial/prettyPhoto.js</script>
+   </action>
+   <action method="addCss">
+      <stylesheet>css/testimonial/prettyPhoto.css</stylesheet>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/next">
+      <script>jquery/jquery-migrate-1.2.1.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/next">
+      <script>jquery/mygento/jquery.init.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/enabled">
+      <script>jquery/jquery-1.6.4.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/enabled">
+      <script>jquery/mygento/jquery.init.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/experimental">
+      <script>jquery/jquery-2.0.2.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/experimental">
+      <script>jquery/mygento/jquery.init.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/easing">
+      <script>jquery/jquery.easing.1.3.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/carousel">
+      <script>jquery/jquery.jcarousel.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/ui">
+      <script>jquery/jqueryui/jquery-ui.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/ui">
+      <type>js_css</type>
+      <name>jquery/jqueryui/jquery-ui.min.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/mobile">
+      <script>jquery/jquery.mobile-1.3.1.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/hovercard">
+      <script>jquery/jquery.hovercard.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/ddslick">
+      <script>jquery/jquery.ddslick.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/masked">
+      <script>jquery/jquery.maskedinput.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/backstretch">
+      <script>jquery/jquery.backstretch.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/modernizr">
+      <script>jquery/jquery.modernizr.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/chosen">
+      <script>jquery/chosen/chosen.jquery.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/chosen">
+      <type>js_css</type>
+      <name>jquery/chosen/chosen.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/galleria">
+      <script>jquery/galleria/galleria-1.2.9.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/galleria">
+      <script>jquery/galleria/galleria.loadtheme.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/galleria">
+      <type>js_css</type>
+      <name>jquery/galleria/themes/classic/galleria.classic.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/nivo">
+      <script>jquery/nivo/nivo.slider.pack.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/nivo">
+      <type>js_css</type>
+      <name>jquery/nivo/nivo-slider.css</name>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/nivo">
+      <type>js_css</type>
+      <name>jquery/nivo/themes/default/default.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/slides">
+      <script>jquery/slides/slides.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/slides">
+      <type>js_css</type>
+      <name>jquery/slides/slides.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/fancy">
+      <script>jquery/fancybox/jquery.fancybox.pack.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/fancy">
+      <type>js_css</type>
+      <name>jquery/fancybox/jquery.fancybox.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/loupe">
+      <script>jquery/loupe/jquery.loupe.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/loupe">
+      <type>js_css</type>
+      <name>jquery/loupe/loupe.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/skitter">
+      <script>jquery/skitter/jquery.skitter.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/skitter">
+      <type>js_css</type>
+      <name>jquery/skitter/css/skitter.styles.min.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/tiptip">
+      <script>jquery/tiptip/jquery.tipTip.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/tiptip">
+      <type>js_css</type>
+      <name>jquery/tiptip/tipTip.css</name>
+   </action>
+</reference>
+<reference name="before_body_end">
+   <block type="varnishcache/cookie_environment" name="varnish.cache.cookie_environment" template="varnishcache/cookie/environment.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addItem" ifconfig="easy_tabs/general/enabled">
+      <type>skin_css</type>
+      <name>css/easytabs.css</name>
+   </action>
+   <action method="addItem" ifconfig="easy_tabs/general/enabled">
+      <type>skin_js</type>
+      <name>js/utility.js</name>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addItem">
+      <type>skin_css</type>
+      <name>css/youama/slider/slider.css</name>
+   </action>
+   <action method="addJs">
+      <script>youama/slider/slider.js</script>
+   </action>
+   <block type="youama_slider/slider" name="youamaslider" as="youamaslider">
+      <action method="setTemplate">
+         <template>youama/slider/style.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="content">
+            
+        </reference>
+<reference name="head">
+   <action method="removeItem">
+      <type>skin_css</type>
+      <name>css/uploadstyle.css</name>
+   </action>
+   <action method="removeItem">
+      <type>skin_css</type>
+      <name>css/uploadstyles.css</name>
+   </action>
+   <action method="addCss">
+      <script>externalform/css/style.css</script>
+   </action>
+</reference>
+<reference name="root">
+   <action method="setTemplate">
+      <template>page/1column.phtml</template>
+   </action>
+</reference>
+<reference name="content">
+   <remove name="currency"/>
+   <remove name="left"/>
+   <remove name="header"/>
+   <remove name="footer"/>
+   <block type="externalform/externalform" name="externalform" template="externalform/externalform.phtml"/>
+</reference>
+<reference name="top.links">
+   <action method="addLink" translate="label title" module="customer">
+      <label>Log In</label>
+      <url helper="customer/getLoginUrl"/>
+      <title>Log In</title>
+      <prepare/>
+      <urlParams/>
+      <position>100</position>
+   </action>
+</reference>
+<remove name="reorder"/>
+<reference name="top.links">
+   <action method="addLink" translate="label title" module="persistent">
+      <label helper="persistent/getPersistentName"/>
+      <url helper="persistent/getUnsetCookieUrl"/>
+      <title helper="persistent/getPersistentName"/>
+      <prepare/>
+      <urlParams/>
+      <position>9</position>
+   </action>
+</reference>
+";s:8:"lifetime";N;s:6:"expire";i:11428388024;s:8:"priority";i:8;}

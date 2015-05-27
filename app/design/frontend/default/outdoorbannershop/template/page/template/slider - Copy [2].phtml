@@ -1,0 +1,186 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * @see Mage_Page_Block_Template_Links
+ */
+	 $sliders = Mage::getStoreConfig('youamaslider');
+     $images = Mage::getBaseUrl('media') . 'youama/slider/';
+	 
+	 $control =0;
+	 $totalImages = count($sliders['image']);
+	 
+	 
+	 /////////////////////////////////fetching main categories///////////////////////
+	 
+	 $storeId    = Mage::app()->getStore()->getId();
+			
+	 $_store_cats = Mage::getModel('catalog/category')->load(1460);
+	 $_categories = $_store_cats->getChildrenCategories();
+	 
+	 
+	 
+?>
+
+
+
+<div class="float-L" id="rightbar"> 
+      <!-- homepage animation start-->
+      <div class="animation-container">
+        <div class="viewer"> <img src="<?php echo $this->getSkinUrl()?>images/banner_new.png" />        </div>
+      </div>
+      <div class="shadowSprite shadow720"></div>
+      
+      <!--homepage animation end--> 
+      
+      <!--calculator-->
+      <?php //echo $this->getChildHtml('calculator');
+	 /*calculator here*/	
+		echo $this->getLayout()->createBlock('core/template')->setTemplate('page/template/calculator.phtml')->toHtml();   
+	
+	 ?>
+      <!--/calculator-->
+     
+      <div id="homeCategory-module" >
+        <section class="title">
+          <h1>Our Brands</h1>
+        </section>
+        <div id="homeCategory-Tab1" class="clearfix">
+          
+     
+        <section class="category-module"> 
+          
+          <div class="productImage" >
+          <a href="#" class="category-img thumb">
+
+            <img src="<?php echo $this->getSkinUrl()?>images/fence-mesh-banner_1_2.jpg" width="207" height="209" /> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a href="#" class="blue-clr pro-title" title="<?php echo $this->__('Fence Mesh Banners')?>">
+			<?php echo $this->__('Fence Mesh Banners')?></a>
+            <p class="font11">
+			
+			
+			<?php echo $this->__('Fence Mesh Banners')?></p>
+            </div>
+          </section>
+          <section class="category-module"> 
+          
+          <div class="productImage" >
+          <a href="#" class="category-img thumb">
+
+            <img src="<?php echo $this->getSkinUrl()?>images/event-ad-banner_2.jpg" width="207" height="209" /> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a href="#" class="blue-clr pro-title" title="<?php echo $this->__('Event Ad Banners')?>">
+			<?php echo $this->__('Event Ad Banners')?></a>
+            <p class="font11">
+			
+			
+			<?php echo $this->__('Event Ad Banners')?></p>
+            </div>
+          </section>
+            
+   <section class="category-module"> 
+          
+          <div class="productImage" >
+          <a href="#" class="category-img thumb">
+
+            <img src="<?php echo $this->getSkinUrl()?>images/building-ad-banner.jpg" width="207" height="209" /> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a href="#" class="blue-clr pro-title" title="<?php echo $this->__('Building Ads Banner')?>">
+			<?php echo $this->__('Building Ads Banner')?></a>
+            <p class="font11">
+			
+			
+			<?php echo $this->__('Building Ads Banner')?></p>
+            </div>
+          </section>
+
+        </div>
+      </div>
+      <?php  
+	 // echo $this->getLayout()->createBlock('cms/block')->setBlockId('our-clients')->toHtml(); 
+	 
+	   
+			///fetching cms page
+			$tab1 = Mage::getModel('cms/page')->load('why-choose-us', 'identifier'); 
+			$tab2 = Mage::getModel('cms/page')->load('free-shipping', 'identifier'); 
+			$tab3 = Mage::getModel('cms/page')->load('top-sellers-vinyl-banners', 'identifier'); 
+	  		
+	  ?>
+       
+      
+      <div class="customTab">
+        <ul id="tabmenu" >
+          <li onClick="makeactive(1)">
+            <h2><a class="active" id="tab1"><?php echo $tab1->getTitle();?></a></h2>
+          </li>
+          <li onClick="makeactive(2)">
+            <h2><a class="" id="tab2"><?php echo $tab2->getTitle();?></a></h2>
+          </li>
+          <li onClick="makeactive(3)">
+            <h2><a class="" id="tab3"><?php echo $tab3->getTitle();?></a></h2>
+          </li>
+        </ul>
+        <div id="content" class="clearfix float-L ">
+        
+       
+
+         <?php echo $tab1->getContent();?>
+		
+        </div>
+        <div class="shadowSprite shadow720"></div>
+      </div>
+	  
+	  
+      <div style="display:none;">TJOOS-16788220</div>
+      
+      <!-- Main_page_eof //--> 
+      <!-- featured_products_mainpage //--> 
+      <!-- featured_products_eof //--> 
+      
+      <!-- footer start--> 
+      <script language="javascript">
+	 <!--
+	 document.getElementById('major').value='m';
+	 loadqtycombo();
+	 
+	 -->
+	 </script>
+      
+    </div>
+ <div class="clear">&nbsp;</div>

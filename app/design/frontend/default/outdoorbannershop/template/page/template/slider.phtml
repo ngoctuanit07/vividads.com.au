@@ -1,0 +1,185 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     base_default
+
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+/**
+
+ * @see Mage_Page_Block_Template_Links
+
+ */
+
+	 $sliders = Mage::getStoreConfig('youamaslider');
+
+     $images = Mage::getBaseUrl('media') . 'youama/slider/';
+	 $control =0;
+
+	 $totalImages = count($sliders['image']);
+	 /////////////////////////////////fetching main categories///////////////////////
+	 $storeId    = Mage::app()->getStore()->getId();
+	 $_store_cats = Mage::getModel('catalog/category')->load(1460);
+
+	 $_categories = $_store_cats->getChildrenCategories();?>
+
+<div class="float-L" id="rightbar">
+  <div id="TabbedPanels1" class="TabbedPanels">
+    <ul class="TabbedPanelsTabGroup">
+      <li class="TabbedPanelsTab" tabindex="0">Bulk Enquiry</li>
+      <li class="TabbedPanelsTab" tabindex="0">About Us</li>
+      <li class="TabbedPanelsTab" tabindex="0">Gallery</li>
+      <li class="TabbedPanelsTab" tabindex="0">Free Shipping</li>
+    </ul>
+    <div class="TabbedPanelsContentGroup">
+      <div class="TabbedPanelsContent">
+         <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('gallery-outdoor')->toHtml(); ?>
+        <?php //echo $this->getChildHtml('calculator');
+
+	 /*calculator here*/	
+
+//		echo $this->getLayout()->createBlock('core/template')->setTemplate('page/template/calculator.phtml')->toHtml();   
+		
+	//	echo $this->getLayout()->createBlock('core/template')->setTemplate('page/template/about_us.phtml')->toHtml();   
+
+	
+
+	 ?>
+        <div class="formInfo">
+          <form method="post" id="contactForm" action="http://outdoorbannershop.com.au/ajaxcontacts/index/calculatorPost/">
+            <div class="no-display">
+              <input type="hidden" value="" id="related-products-field" name="related_product">
+            </div>
+            <input type="hidden" value="" id="sessid" name="sessid">
+            <div class="clearfix" id="instantBox">
+              <div class="instantBox-body clearfix">
+                <div class="quickStart-Order float-L">
+                  <div id="messages_product_view"></div>
+                  <div class="fieldset">
+                    <ul class="form-list">
+                      <li class="fields">
+                        <div style="float: left; margin-bottom: 25px;" class="field">
+                          <label class="required" for="name"><em>*</em>Name</label>
+                          <div class="input-box">
+                            <input type="text" class="input-text required-entry" value="" title="Name" id="name" name="name">
+                          </div>
+                        </div>
+                        <div style="float: left; margin-bottom: 25px;" class="field">
+                          <label class="required" for="email"><em>*</em>Email</label>
+                          <div class="input-box">
+                            <input type="text" class="input-text required-entry validate-email" value="" title="Email" id="email" name="email">
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div style="float: left; margin-bottom: 25px;" class="field">
+                          <label for="telephone">Telephone</label>
+                          <div class="input-box">
+                            <input type="text" class="input-text" value="" title="Telephone" id="telephone" name="telephone">
+                          </div>
+                        </div>
+                      </li>
+                      <li class="wide">
+                        <div style="float: left; margin-bottom: 25px;" class="field">
+                          <label class="required" for="comment"><em>*</em>Comment</label>
+                          <div class="input-box">
+                            <textarea rows="3" cols="5" class="required-entry input-text" style="height: 74px; width: 530px; resize: none;" title="Comment" id="comment" name="comment"></textarea>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="buttons-set" style="float: right; width: 100%; position:relative; left:100%; border-top:none 0px;">
+                    <p class="required">* Required Fields</p>
+                    <input type="text" style="display:none !important;" value="" id="hideit" name="hideit">
+                    <button class="button" title="Submit" type="submit"><span><span>Submit</span></span></button>
+                  </div>
+                  <div style="display:none; margin-left:100px;" id="loaderp2"> <img alt="loading" src="http://outdoorbannershop.com.au/skin/frontend/default/outdoorbannershop/images/loading.gif"> </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="TabbedPanelsContent">
+       
+        
+        <div class="instantPrice float-L">
+          <p> Outdoor Banner Shop is Australia's choice for factory direct mesh banners. We provide high quality mesh banners that are used on outdoor fences, construction sites, building sites or at outdoor events. With hundreds of meters in production every month we can produce these banners at amazingly low prices. Our team of graphic experts can produce graphics for you at no additional cost. We can also produce custom mesh banners as per your requirement at almost any size.
+            
+            So call us today, or fill out the inquiry form towards your right as we will get back to you with a quote in no time. With Outdoor Banner Shop no job is too small. </p>
+        </div>
+      </div>
+      <div class="TabbedPanelsContent"><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('gallery-outdoor')->toHtml();?></div>
+      <div class="TabbedPanelsContent"><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('why-choose-us')->toHtml();?></div>
+    </div>
+  </div>
+  <div style="display:none;">TJOOS-16788220</div>
+  
+  <!-- Main_page_eof //--> 
+  
+  <!-- featured_products_mainpage //--> 
+  
+  <!-- featured_products_eof //--> 
+  
+  <!-- footer start--> 
+  
+  <script language="javascript">
+
+	 <!--
+
+	 document.getElementById('major').value='m';
+
+	 loadqtycombo();
+	 -->
+
+	 </script> 
+  <script type="text/javascript">
+//<![CDATA[
+    var contactForm = new VarienForm('contactForm', true);
+//]]>
+</script> 
+</div>
+<div class="clear">&nbsp;</div>

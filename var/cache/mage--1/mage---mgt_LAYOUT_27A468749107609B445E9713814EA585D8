@@ -1,0 +1,1351 @@
+a:4:{s:4:"data";s:54391:"<block name="formkey" type="core/template" template="core/formkey.phtml"/>
+<label>All Pages</label>
+<block type="page/html" name="root" output="toHtml" template="page/1column.phtml">
+   <block type="page/html_head" name="head" as="head">
+      <action method="addJs">
+         <script>prototype/prototype.js</script>
+      </action>
+      <action method="addJs">
+         <script>lib/ccard.js</script>
+      </action>
+      <action method="addJs">
+         <script>prototype/validation.js</script>
+      </action>
+      <action method="addJs">
+         <script>scriptaculous/builder.js</script>
+      </action>
+      <action method="addJs">
+         <script>scriptaculous/effects.js</script>
+      </action>
+      <action method="addJs">
+         <script>scriptaculous/dragdrop.js</script>
+      </action>
+      <action method="addJs">
+         <script>scriptaculous/controls.js</script>
+      </action>
+      <action method="addJs">
+         <script>scriptaculous/slider.js</script>
+      </action>
+      <action method="addJs">
+         <script>varien/js.js</script>
+      </action>
+      <action method="addJs">
+         <script>varien/form.js</script>
+      </action>
+      <action method="addJs">
+         <script>mage/translate.js</script>
+      </action>
+      <action method="addJs">
+         <script>mage/cookies.js</script>
+      </action>
+      <block type="page/js_cookie" name="js_cookies" template="page/js/cookie.phtml"/>
+      <action method="addItem">
+         <type>skin_js</type>
+         <name>js/modernizr.js</name>
+      </action>
+      <action method="addItem">
+         <type>skin_js</type>
+         <name>js/iphone.js</name>
+      </action>
+      <action method="addItem">
+         <type>skin_js</type>
+         <name>js/dnd.js</name>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/iphone.css</stylesheet>
+      </action>
+      <action method="addCss">
+         <stylesheet>css/custom.css</stylesheet>
+      </action>
+   </block>
+   <block type="core/text_list" name="after_body_start" as="after_body_start" translate="label">
+      <label>Page Top</label>
+   </block>
+   <block type="page/html_notices" name="global_notices" as="global_notices" template="page/html/notices.phtml"/>
+   <block type="page/html_header" name="header" as="header">
+      <block type="page/template_links" name="account.links" as="accountLinks"/>
+      <block type="page/template_links" name="top.links" as="topLinks"/>
+      <block type="page/template_links" name="checkout.links" as="checkoutLinks"/>
+      <block type="core/text_list" name="top.menu" as="topMenu" translate="label">
+         <label>Navigation Bar</label>
+         <block type="page/html_topmenu" name="catalog.topnav" template="page/html/topmenu.phtml"/>
+      </block>
+      <block type="page/html_wrapper" name="top.container" as="topContainer" translate="label">
+         <label>Page Header</label>
+         <action method="setElementClass">
+            <value>top-container</value>
+         </action>
+      </block>
+   </block>
+   <block type="page/html_breadcrumbs" name="breadcrumbs" as="breadcrumbs"/>
+   <block type="core/text_list" name="left" as="left" translate="label">
+      <label>Left Column</label>
+   </block>
+   <block type="core/messages" name="global_messages" as="global_messages"/>
+   <block type="core/messages" name="messages" as="messages"/>
+   <block type="core/text_list" name="content" as="content" translate="label">
+      <label>Main Content Area</label>
+   </block>
+   <block type="core/text_list" name="right" as="right" translate="label">
+      <label>Right Column</label>
+   </block>
+   <block type="page/html_footer" name="footer" as="footer" template="page/html/footer.phtml">
+      <block type="page/html_wrapper" name="bottom.container" as="bottomContainer" translate="label">
+         <label>Page Footer</label>
+         <action method="setElementClass">
+            <value>bottom-container</value>
+         </action>
+      </block>
+      <block type="page/template_links" name="footer_links" as="footer_links" template="page/template/links.phtml"/>
+   </block>
+   <block type="core/text_list" name="before_body_end" as="before_body_end" translate="label">
+      <label>Page Bottom</label>
+   </block>
+</block>
+<block type="core/profiler" output="toHtml" name="core_profiler"/>
+<reference name="head">
+   <block type="core/template" name="optional_zip_countries" as="optional_zip_countries" template="directory/js/optional_zip_countries.phtml"/>
+</reference>
+<reference name="footer">
+   <block type="cms/block" name="cms_footer_links" before="footer_links">
+      <action method="setBlockId">
+         <block_id>footer_links</block_id>
+      </action>
+   </block>
+</reference>
+<reference name="top.links">
+   <action method="addLink" translate="label title" module="customer">
+      <label>My Account</label>
+      <url helper="customer/getAccountUrl"/>
+      <title>My Account</title>
+      <prepare/>
+      <urlParams/>
+      <position>10</position>
+   </action>
+</reference>
+<reference name="account.links">
+   <action method="addLink" translate="label title before_text" module="customer">
+      <label>Register</label>
+      <url helper="customer/getRegisterUrl"/>
+      <title>Register</title>
+      <prepare/>
+      <urlParams/>
+      <position>100</position>
+   </action>
+</reference>
+<reference name="top.container">
+   <block type="cms/block" name="cms.top.callout" before="-">
+      <action method="setBlockId">
+         <block_id>top_callout</block_id>
+      </action>
+   </block>
+</reference>
+<block type="catalog/product_price_template" name="catalog_product_price_template"/>
+<reference name="catalog_product_price_template">
+   <action method="addPriceBlockType">
+      <type>msrp</type>
+      <block>catalog/product_price</block>
+      <template>catalog/product/price_msrp.phtml</template>
+   </action>
+   <action method="addPriceBlockType">
+      <type>msrp_item</type>
+      <block>catalog/product_price</block>
+      <template>catalog/product/price_msrp_item.phtml</template>
+   </action>
+   <action method="addPriceBlockType">
+      <type>msrp_noform</type>
+      <block>catalog/product_price</block>
+      <template>catalog/product/price_msrp_noform.phtml</template>
+   </action>
+</reference>
+<reference name="header">
+   <block type="core/template" name="top.search" as="topSearch" template="catalogsearch/form.mini.phtml"/>
+</reference>
+<reference name="top.links">
+   <block type="checkout/links" name="checkout_cart_link">
+      <action method="addCheckoutLink"/>
+   </block>
+</reference>
+<reference name="topCart.extra_actions">
+   <block type="paypal/express_shortcut" name="paypal.partner.top_cart.shortcut" template="paypal/express/shortcut.phtml"/>
+</reference>
+<reference name="cart_sidebar.extra_actions">
+   <block type="paypal/express_shortcut" name="paypal.partner.cart_sidebar.shortcut" template="paypal/express/shortcut.phtml"/>
+</reference>
+<reference name="right">
+   <block type="poll/activePoll" name="right.poll">
+      <action method="setPollTemplate">
+         <template>poll/active.phtml</template>
+         <type>poll</type>
+      </action>
+      <action method="setPollTemplate">
+         <template>poll/result.phtml</template>
+         <type>results</type>
+      </action>
+   </block>
+</reference>
+<reference name="right">
+   <block type="reports/product_viewed" before="right.permanent.callout" name="right.reports.product.viewed" template="reports/product_viewed.phtml"/>
+   <block type="reports/product_compared" before="right.permanent.callout" name="right.reports.product.compared" template="reports/product_compared.phtml"/>
+</reference>
+<reference name="after_body_start">
+   <block type="googleanalytics/ga" name="google_analytics" as="google_analytics" template="googleanalytics/ga.phtml"/>
+</reference>
+<reference name="top.links">
+   <block type="wishlist/links" name="wishlist_link"/>
+   <action method="addLinkBlock">
+      <blockName>wishlist_link</blockName>
+   </action>
+</reference>
+<reference name="right">
+   <block type="wishlist/customer_sidebar" name="wishlist_sidebar" as="wishlist" after="cart_sidebar" template="wishlist/sidebar.phtml"/>
+</reference>
+<reference name="topCart.extra_actions">
+   <block type="paypaluk/express_shortcut" name="paypaluk.partner.top_cart.shortcut" template="paypal/express/shortcut.phtml"/>
+</reference>
+<reference name="cart_sidebar.extra_actions">
+   <block type="paypaluk/express_shortcut" name="paypaluk.partner.cart_sidebar.shortcut" template="paypal/express/shortcut.phtml"/>
+</reference>
+<reference name="footer_links">
+   <action method="addLink" translate="label title" module="contacts" ifconfig="contacts/contacts/enabled">
+      <label>Contact Us</label>
+      <url>contacts</url>
+      <title>Contact Us</title>
+      <prepare>true</prepare>
+   </action>
+</reference>
+<block type="rss/list" name="head_rss" ifconfig="rss/config/active"/>
+<reference name="cart_sidebar">
+   <action method="addItemRender">
+      <type>bundle</type>
+      <block>bundle/checkout_cart_item_renderer</block>
+      <template>checkout/cart/sidebar/default.phtml</template>
+   </action>
+</reference>
+<reference name="wishlist_sidebar">
+   <action method="addPriceBlockType">
+      <type>bundle</type>
+      <block>bundle/catalog_product_price</block>
+      <template>bundle/catalog/product/price.phtml</template>
+   </action>
+</reference>
+<reference name="catalog_product_price_template">
+   <action method="addPriceBlockType">
+      <type>bundle</type>
+      <block>bundle/catalog_product_price</block>
+      <template>bundle/catalog/product/price.phtml</template>
+   </action>
+</reference>
+<reference name="footer">
+   <block type="newsletter/subscribe" name="footer.newsletter" as="footer.newsletter" template="newsletter/subscribe.phtml"/>
+</reference>
+<reference name="head">
+   <block type="sharingtool/share" name="addthis_sharetool" after="-">
+      <action method="setTemplate">
+         <template>addthis/sharingtool/share.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="head">
+   <block type="sharingtool/share" name="addthis_sharetool">
+      <action method="setTemplate">
+         <template>addthis/sharingtool/share.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="head">
+   <action method="addJs">
+      <script>amasty/amlanding/amlanding.js</script>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addItem">
+      <type>skin_css</type>
+      <name>css/clnews/style.css</name>
+   </action>
+   <action method="addJs">
+      <script>jquery/jquery-1.7.1-min.js</script>
+   </action>
+   <action method="addJs">
+      <script>commercelab/noconflict.js</script>
+   </action>
+   <action method="addJs">
+      <script>commercelab/treeview/jquery.treeview.pack.js</script>
+   </action>
+   <action method="addJs">
+      <script>commercelab/category_tree.js</script>
+   </action>
+   <action method="addCss">
+      <stylesheet>css/commercelab/treeview/jquery.treeview.css</stylesheet>
+   </action>
+</reference>
+<reference name="right">
+   <block type="clnews/settings" name="right.clnews.menu" before="-">
+      <action method="setTemplate" ifconfig="clnews/news/showrightblock">
+         <template>clnews/menu.phtml</template>
+      </action>
+   </block>
+   <block type="clnews/news" name="right.clnews.latest" after="right.clnews.menu">
+      <action method="setTemplate" ifconfig="clnews/news/showlatestnews">
+         <template>clnews/latest.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="left">
+   <block type="clnews/settings" name="left.clnews.menu" before="-">
+      <action method="setTemplate" ifconfig="clnews/news/showleftblock">
+         <template>clnews/menu.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="top.links">
+   <block type="clnews/settings" name="top.clnews.link">
+      <action method="getTopLink"/>
+   </block>
+</reference>
+<reference name="head">
+   <action method="addJs">
+      <script>ezapps/ezzoom.js</script>
+   </action>
+</reference>
+<reference name="before_body_end">
+   <block type="ezzoom/ajax_footer" name="ezzoom_ajax_footer" template="ezzoom/ajax/footer.phtml"/>
+</reference>
+<reference name="root">
+   <action method="setTemplate">
+      <template>page/2columns-right.phtml</template>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addCss" ifconfig="reviewsplus_sec/plus_config/status">
+      <stylesheet>css/reviewsplus/reviewsplus.css</stylesheet>
+   </action>
+   <action method="addCss" ifconfig="reviewsplus_sec/plus_config/status">
+      <stylesheet>css/reviewsplus/jquery.fancybox.css</stylesheet>
+   </action>
+   <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status">
+      <script>reviewsplus/jquery-1.10.1.min.js</script>
+   </action>
+   <script>jQuery.noConflict();</script>
+   <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status">
+      <script>reviewsplus/reviewsplus.js</script>
+   </action>
+   <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status">
+      <script>reviewsplus/jquery.fancybox.pack.js</script>
+   </action>
+   <action method="addJs" ifconfig="reviewsplus_sec/plus_config/status">
+      <script>reviewsplus/jquery.fancybox.js</script>
+   </action>
+</reference>
+<reference name="right">
+   <block type="reviewsplus/sidebar" name="reviewsplus_sidebar" before="-" template="reviewsplus/sidebar.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addCss">
+      <stylesheet>css/faqs/accordion.css</stylesheet>
+   </action>
+</reference>
+<reference name="right">
+   <block type="faqs/block" name="block" before="-">
+      <action method="setTemplate">
+         <template>faqs/block.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="top.links">
+   <action method="addLink" translate="label title" module="wordpress" ifconfig="wordpress/toplink/enabled">
+      <label helper="wordpress/getTopLinkLabel"/>
+      <url helper="wordpress/getTopLinkUrl"/>
+      <title>Blog</title>
+      <prepare>0</prepare>
+      <urlParams/>
+      <position helper="wordpress/getTopLinkPosition"/>
+      <li_params/>
+      <a_params>class=&quot;top-link-blog&quot;</a_params>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="google/analyticsplus/firstouch">
+      <script>GoogleAnalyticsPlus/distilled.FirstTouch.js</script>
+   </action>
+   <block type="core/text_list" name="before_head_end" as="before_head_end"/>
+</reference>
+<reference name="before_head_end">
+   <block type="googleanalytics/ga" name="google_analytics" as="google_analytics"/>
+</reference>
+<reference name="after_body_start">
+   <action method="unsetChild">
+      <name>google_analytics</name>
+   </action>
+</reference>
+<reference name="before_body_end">
+   <action method="unsetChild">
+      <name>google_analytics</name>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addCss">
+      <stylesheet>quickcontact/css/form-contact.css</stylesheet>
+   </action>
+   <action method="addItem">
+      <type>skin_js</type>
+      <name>quickcontact/js/quickContact.js</name>
+   </action>
+   <action method="addItem">
+      <type>skin_js</type>
+      <name>quickcontact/js/modalwindow.js</name>
+   </action>
+</reference>
+<reference name="before_body_end">
+   <block type="core/template" name="quickcontact" template="quickcontact/form.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="iwdall/default/jquery">
+      <script>iwd/all/jquery-1.10.2.min.js</script>
+   </action>
+</reference>
+<reference name="head">
+   <block type="livechat/livechat" name="head.livechat.monitor">
+      <action method="setTemplate">
+         <template>livechat/monitor.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="head">
+   <action method="addItem">
+      <type>skin_css</type>
+      <name>css/vividslider/slider/slider.css</name>
+   </action>
+   <action method="addJs">
+      <script>vividslider/slider/slider.js</script>
+   </action>
+   <block type="vividslider_slider/slider" name="vividsliderslider" as="vividsliderslider">
+      <action method="setTemplate">
+         <template>vividslider/slider/style.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="content">
+            
+        </reference>
+<reference name="head">			
+			
+			
+        </reference>
+<reference name="right">
+   <block type="testimonial/testimonial" name="left.testimonial.testimonial" before="-">
+      <action method="setTemplate">
+         <template>testimonial/testimonial.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="left">
+            
+        </reference>
+<reference name="top.menu">
+   <remove name="catalog.topnav"/>
+   <block type="catalog/navigation" name="gallery.catalog.topnav" template="gallery/navigation/top.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="mageworx_cms/downloads/enabled">
+      <script>mageworx/downloads.js</script>
+   </action>
+   <action method="addCss" ifconfig="mageworx_cms/downloads/enabled">
+      <stylesheet>css/mageworx/downloads.css</stylesheet>
+   </action>
+</reference>
+<reference name="after_body_start">
+   <block type="core/template" template="downloads/init_popup.phtml" name="init_video_popup"/>
+</reference>
+<reference name="before_body_end">
+   <block type="core/template" template="downloads/video_popup.phtml" name="video_popup"/>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="mageworx_customers/icart/enabled">
+      <script>mageworx/modalbox.js</script>
+   </action>
+   <action method="addJs" ifconfig="mageworx_customers/icart/enabled">
+      <script>mageworx/icart.js</script>
+   </action>
+   <action method="addCss" ifconfig="mageworx_customers/icart/enabled">
+      <stylesheet>css/mageworx/modalbox.css</stylesheet>
+   </action>
+   <action method="addItem" ifconfig="mageworx_customers/icart/enabled">
+      <type>skin_css</type>
+      <name>css/mageworx/modalbox-ie.css</name>
+      <params/>
+      <if>lt IE 9</if>
+   </action>
+   <action method="addCss" ifconfig="mageworx_customers/icart/enabled">
+      <stylesheet>css/icart.css</stylesheet>
+   </action>
+   <action method="addJs" ifconfig="mageworx_customers/icart/enabled">
+      <script>varien/product.js</script>
+   </action>
+   <action method="addItem" ifconfig="mageworx_customers/icart/enabled">
+      <type>skin_js</type>
+      <name>js/bundle.js</name>
+   </action>
+   <action method="addItem" ifconfig="mageworx_customers/icart/enabled">
+      <type>js_css</type>
+      <name>calendar/calendar-win2k-1.css</name>
+      <params/>
+   </action>
+   <action method="addItem" ifconfig="mageworx_customers/icart/enabled">
+      <type>js</type>
+      <name>calendar/calendar.js</name>
+   </action>
+   <action method="addItem" ifconfig="mageworx_customers/icart/enabled">
+      <type>js</type>
+      <name>calendar/calendar-setup.js</name>
+   </action>
+</reference>
+<reference name="before_body_end">
+   <block type="icart/wrapper" name="icart_link_wrapper" template="icart/link_wrapper.phtml" ifconfig="mageworx_customers/icart/enabled"/>
+</reference>
+<reference name="head">
+   <action method="addCss">
+      <stylesheet>css/socialbooster/styles.css</stylesheet>
+   </action>
+</reference>
+<reference name="after_body_start">
+   <block type="core/template" name="social_start" template="socialbooster/after_body_start.phtml"/>
+</reference>
+<reference name="before_body_end">
+   <block type="core/template" name="social_end" template="socialbooster/before_body_end.phtml"/>
+</reference>
+<reference name="footer_links">
+   <action method="removeLinkByUrl">
+      <url helper="catalog/map/getCategoryUrl"/>
+   </action>
+   <action method="addLink" translate="label title" module="xsitemap">
+      <label>Site Map</label>
+      <url helper="xsitemap/data/getSitemapUrl"/>
+      <title>Site Map</title>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="ajaxcontacts/general/enabled">
+      <script>prototype/effects.js</script>
+   </action>
+   <action method="addJs" ifconfig="ajaxcontacts/general/enabled">
+      <script>prototype/window.js</script>
+   </action>
+   <action method="addJs" ifconfig="ajaxcontacts/general/enabled">
+      <script>ajaxcontacts/script.js</script>
+   </action>
+   <action method="addCss" ifconfig="ajaxcontacts/general/enabled">
+      <script>ajaxcontacts/css/styles.css</script>
+   </action>
+   <action method="addItem" ifconfig="ajaxcontacts/general/enabled">
+      <type>js_css</type>
+      <script>prototype/windows/themes/default.css</script>
+   </action>
+   <action method="addItem" ifconfig="ajaxcontacts/general/enabled">
+      <type>js_css</type>
+      <script>prototype/windows/themes/alphacube.css</script>
+   </action>
+   <block type="ajaxcontacts/wrapper" name="mp.ajaxcontacts.wrapper" as="ajaxcontacts_wrapper" template="ajaxcontacts/wrapper.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addCss" ifconfig="brandlogo/general/brandlogoenabled">
+      <stylesheet>css/brandlogo/carousel.css</stylesheet>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addJs" ifconfig="jquerylib/general/next">
+      <script>jquery/jquery-1.10.1.min.js</script>
+   </action>
+   <action method="addJs">
+      <script>testimonial/jwplayer.js</script>
+   </action>
+   <action method="addJs">
+      <script>testimonial/prettyPhoto.js</script>
+   </action>
+   <action method="addCss">
+      <stylesheet>css/testimonial/prettyPhoto.css</stylesheet>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/next">
+      <script>jquery/jquery-migrate-1.2.1.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/next">
+      <script>jquery/mygento/jquery.init.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/enabled">
+      <script>jquery/jquery-1.6.4.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/enabled">
+      <script>jquery/mygento/jquery.init.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/experimental">
+      <script>jquery/jquery-2.0.2.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/general/experimental">
+      <script>jquery/mygento/jquery.init.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/easing">
+      <script>jquery/jquery.easing.1.3.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/carousel">
+      <script>jquery/jquery.jcarousel.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/ui">
+      <script>jquery/jqueryui/jquery-ui.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/ui">
+      <type>js_css</type>
+      <name>jquery/jqueryui/jquery-ui.min.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/mobile">
+      <script>jquery/jquery.mobile-1.3.1.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/hovercard">
+      <script>jquery/jquery.hovercard.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/ddslick">
+      <script>jquery/jquery.ddslick.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/masked">
+      <script>jquery/jquery.maskedinput.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/backstretch">
+      <script>jquery/jquery.backstretch.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/modernizr">
+      <script>jquery/jquery.modernizr.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/chosen">
+      <script>jquery/chosen/chosen.jquery.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/chosen">
+      <type>js_css</type>
+      <name>jquery/chosen/chosen.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/galleria">
+      <script>jquery/galleria/galleria-1.2.9.min.js</script>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/galleria">
+      <script>jquery/galleria/galleria.loadtheme.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/galleria">
+      <type>js_css</type>
+      <name>jquery/galleria/themes/classic/galleria.classic.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/nivo">
+      <script>jquery/nivo/nivo.slider.pack.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/nivo">
+      <type>js_css</type>
+      <name>jquery/nivo/nivo-slider.css</name>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/nivo">
+      <type>js_css</type>
+      <name>jquery/nivo/themes/default/default.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/slides">
+      <script>jquery/slides/slides.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/slides">
+      <type>js_css</type>
+      <name>jquery/slides/slides.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/fancy">
+      <script>jquery/fancybox/jquery.fancybox.pack.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/fancy">
+      <type>js_css</type>
+      <name>jquery/fancybox/jquery.fancybox.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/loupe">
+      <script>jquery/loupe/jquery.loupe.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/loupe">
+      <type>js_css</type>
+      <name>jquery/loupe/loupe.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/skitter">
+      <script>jquery/skitter/jquery.skitter.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/skitter">
+      <type>js_css</type>
+      <name>jquery/skitter/css/skitter.styles.min.css</name>
+   </action>
+   <action method="addJs" ifconfig="jquerylib/plugins/tiptip">
+      <script>jquery/tiptip/jquery.tipTip.min.js</script>
+   </action>
+   <action method="addItem" ifconfig="jquerylib/plugins/tiptip">
+      <type>js_css</type>
+      <name>jquery/tiptip/tipTip.css</name>
+   </action>
+</reference>
+<reference name="before_body_end">
+   <block type="varnishcache/cookie_environment" name="varnish.cache.cookie_environment" template="varnishcache/cookie/environment.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addItem" ifconfig="easy_tabs/general/enabled">
+      <type>skin_css</type>
+      <name>css/easytabs.css</name>
+   </action>
+   <action method="addItem" ifconfig="easy_tabs/general/enabled">
+      <type>skin_js</type>
+      <name>js/utility.js</name>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addItem">
+      <type>skin_css</type>
+      <name>css/youama/slider/slider.css</name>
+   </action>
+   <action method="addJs">
+      <script>youama/slider/slider.js</script>
+   </action>
+   <block type="youama_slider/slider" name="youamaslider" as="youamaslider">
+      <action method="setTemplate">
+         <template>youama/slider/style.phtml</template>
+      </action>
+   </block>
+</reference>
+<reference name="content">
+            
+        </reference>
+<label>Catalog Product View (Any)</label>
+<reference name="root">
+   <action method="setTemplate">
+      <template>page/1column.phtml</template>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addJs">
+      <script>varien/product.js</script>
+   </action>
+   <action method="addJs">
+      <script>varien/configurable.js</script>
+   </action>
+   <action method="addItem">
+      <type>js_css</type>
+      <name>calendar/calendar-win2k-1.css</name>
+      <params/>
+   </action>
+   <action method="addItem">
+      <type>js</type>
+      <name>calendar/calendar.js</name>
+   </action>
+   <action method="addItem">
+      <type>js</type>
+      <name>calendar/calendar-setup.js</name>
+   </action>
+</reference>
+<reference name="content">
+   <block type="catalog/product_view" name="product.info" template="catalog/product/view.phtml">
+      <block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
+      <block type="core/text_list" name="alert.urls" as="alert_urls" translate="label">
+         <label>Alert Urls</label>
+      </block>
+      <action method="setTierPriceTemplate">
+         <template>catalog/product/view/tierprices.phtml</template>
+      </action>
+      <block type="catalog/product_list_upsell" name="product.info.upsell" as="upsell_products" template="catalog/product/list/upsell.phtml">
+         <action method="setColumnCount">
+            <columns>4</columns>
+         </action>
+         <action method="setItemLimit">
+            <type>upsell</type>
+            <limit>4</limit>
+         </action>
+      </block>
+      <block type="catalog/product_view_additional" name="product.info.additional" as="product_additional_data"/>
+      <block type="catalog/product_view_description" name="product.description" as="description" template="catalog/product/view/description.phtml">
+         <action method="addToParentGroup">
+            <group>detailed_info</group>
+         </action>
+      </block>
+      <block type="catalog/product_view_attributes" name="product.attributes" as="additional" template="catalog/product/view/attributes.phtml">
+         <action method="addToParentGroup">
+            <group>detailed_info</group>
+         </action>
+      </block>
+      <block type="catalog/product_view" name="product.info.addto" as="addto" template="catalog/product/view/addto.phtml"/>
+      <block type="catalog/product_view" name="product.info.addtocart" as="addtocart" template="catalog/product/view/addtocart.phtml"/>
+      <block type="core/text_list" name="product.info.extrahint" as="extrahint" translate="label">
+         <label>Product View Extra Hint</label>
+      </block>
+      <block type="catalog/product_list_related" name="catalog.product.related" before="-" template="catalog/product/list/related.phtml"/>
+      <block type="catalog/product_view" name="product.info.options.wrapper" as="product_options_wrapper" template="catalog/product/view/options/wrapper.phtml" translate="label">
+         <label>Info Column Options Wrapper</label>
+         <block type="core/template" name="options_js" template="catalog/product/view/options/js.phtml"/>
+         <block type="catalog/product_view_options" name="product.info.options" as="product_options" template="catalog/product/view/options.phtml">
+            <action method="addOptionRenderer">
+               <type>text</type>
+               <block>catalog/product_view_options_type_text</block>
+               <template>catalog/product/view/options/type/text.phtml</template>
+            </action>
+            <action method="addOptionRenderer">
+               <type>file</type>
+               <block>catalog/product_view_options_type_file</block>
+               <template>catalog/product/view/options/type/file.phtml</template>
+            </action>
+            <action method="addOptionRenderer">
+               <type>select</type>
+               <block>catalog/product_view_options_type_select</block>
+               <template>catalog/product/view/options/type/select.phtml</template>
+            </action>
+            <action method="addOptionRenderer">
+               <type>date</type>
+               <block>catalog/product_view_options_type_date</block>
+               <template>catalog/product/view/options/type/date.phtml</template>
+            </action>
+         </block>
+         <block type="core/html_calendar" name="html_calendar" as="html_calendar" template="page/js/calendar.phtml"/>
+      </block>
+      <block type="catalog/product_view" name="product.info.options.wrapper.bottom" as="product_options_wrapper_bottom" template="catalog/product/view/options/wrapper/bottom.phtml" translate="label">
+         <label>Bottom Block Options Wrapper</label>
+         <action method="insert">
+            <block>product.tierprices</block>
+         </action>
+         <block type="catalog/product_view" name="product.clone_prices" as="prices" template="catalog/product/view/price_clone.phtml"/>
+         <action method="append">
+            <block>product.info.addtocart</block>
+         </action>
+      </block>
+      <block type="core/template_facade" name="product.info.container1" as="container1">
+         <action method="setDataByKey">
+            <key>alias_in_layout</key>
+            <value>container1</value>
+         </action>
+         <action method="setDataByKeyFromRegistry">
+            <key>options_container</key>
+            <key_in_registry>product</key_in_registry>
+         </action>
+         <action method="append">
+            <block>product.info.options.wrapper</block>
+         </action>
+         <action method="append">
+            <block>product.info.options.wrapper.bottom</block>
+         </action>
+      </block>
+      <block type="core/template_facade" name="product.info.container2" as="container2">
+         <action method="setDataByKey">
+            <key>alias_in_layout</key>
+            <value>container2</value>
+         </action>
+         <action method="setDataByKeyFromRegistry">
+            <key>options_container</key>
+            <key_in_registry>product</key_in_registry>
+         </action>
+         <action method="append">
+            <block>product.info.options.wrapper</block>
+         </action>
+         <action method="append">
+            <block>product.info.options.wrapper.bottom</block>
+         </action>
+      </block>
+      <action method="unsetCallChild">
+         <child>container1</child>
+         <call>ifEquals</call>
+         <if>0</if>
+         <key>alias_in_layout</key>
+         <key>options_container</key>
+      </action>
+      <action method="unsetCallChild">
+         <child>container2</child>
+         <call>ifEquals</call>
+         <if>0</if>
+         <key>alias_in_layout</key>
+         <key>options_container</key>
+      </action>
+   </block>
+</reference>
+<reference name="head">
+   <action method="addItem" ifconfig="sales/msrp/enabled">
+      <type>skin_js</type>
+      <name>js/msrp.js</name>
+   </action>
+</reference>
+<reference name="content">
+   <block type="core/template" template="catalog/msrp/popup.phtml" name="product.tooltip"/>
+</reference>
+<reference name="catalog_product_price_template">
+   <action method="addPriceBlockType">
+      <type>msrp</type>
+      <block>catalog/product_price</block>
+      <template>catalog/product/price_msrp_item.phtml</template>
+   </action>
+</reference>
+<reference name="product.clone_prices">
+   <action method="addPriceBlockType">
+      <type>msrp</type>
+      <block>catalog/product_price</block>
+      <template>catalog/product/price_msrp_item.phtml</template>
+   </action>
+</reference>
+<update handle="MAP_popup"/>
+<update handle="MAP_price_msrp_item"/>
+<reference name="product.info">
+   <block type="payment/catalog_product_view_profile" name="product.info.additional.recurring.schedule" as="recurring_info" template="payment/catalog/product/view/profile/schedule.phtml">
+      <action method="addToParentGroup">
+         <group>detailed_info</group>
+      </action>
+      <action method="setTitle" translate="value">
+         <value>Recurring Profile</value>
+      </action>
+   </block>
+</reference>
+<reference name="product.info.options.wrapper">
+   <block type="payment/catalog_product_view_profile" name="product.info.options.recurring" as="recurring_options" template="payment/catalog/product/view/profile/options.phtml"/>
+</reference>
+<reference name="product.info.extrahint">
+   <block type="cataloginventory/qtyincrements" name="product.info.extrahint.qtyincrements" template="cataloginventory/qtyincrements.phtml"/>
+</reference>
+<reference name="product.tooltip">
+   <block type="page/html_wrapper" name="product.info.addtocart.paypal.wrapper" translate="label">
+      <block type="paypal/express_shortcut" name="product.info.addtocart.paypal" template="paypal/express/shortcut.phtml">
+         <action method="setIsInCatalogProduct">
+            <value>1</value>
+         </action>
+         <action method="setShowOrPosition">
+            <value>after</value>
+         </action>
+      </block>
+   </block>
+</reference>
+<reference name="product.info.addtocart">
+   <block type="page/html_wrapper" name="product.info.addtocart.paypal.wrapper" translate="label">
+      <label>PayPal Express Checkout Shortcut Wrapper</label>
+      <block type="paypal/express_shortcut" name="product.info.addtocart.paypal" template="paypal/express/shortcut.phtml">
+         <action method="setIsInCatalogProduct">
+            <value>1</value>
+         </action>
+      </block>
+   </block>
+</reference>
+<update handle="SHORTCUT_popup"/>
+<reference name="right">
+   <block type="paypal/logo" name="paypal.partner.right.logo" template="paypal/partner/logo.phtml">
+                
+            </block>
+</reference>
+<reference name="product.tooltip">
+   <block type="page/html_wrapper" name="product.info.addtocart.paypaluk.wrapper" translate="label">
+      <block type="paypaluk/express_shortcut" name="product.info.addtocart.paypaluk" template="paypal/express/shortcut.phtml">
+         <action method="setIsInCatalogProduct">
+            <value>1</value>
+         </action>
+         <action method="setShowOrPosition">
+            <value>after</value>
+         </action>
+      </block>
+   </block>
+</reference>
+<reference name="product.info.addtocart">
+   <block type="page/html_wrapper" name="product.info.addtocart.paypaluk.wrapper" translate="label">
+      <label>PayPal Express Checkout (Payflow Edition) Shortcut Wrapper</label>
+      <action method="setHtmlTagName">
+         <tag>p</tag>
+      </action>
+      <action method="setElementClass">
+         <class>paypal-logo</class>
+      </action>
+      <block type="paypaluk/express_shortcut" name="product.info.addtocart.paypaluk" template="paypal/express/shortcut.phtml">
+         <action method="setIsInCatalogProduct">
+            <value>1</value>
+         </action>
+      </block>
+   </block>
+</reference>
+<update handle="SHORTCUT_uk_popup"/>
+<reference name="content">
+   <reference name="product.info">
+      <reference name="alert.urls">
+         <block type="productalert/product_view" name="productalert.price" as="productalert_price" template="productalert/product/view.phtml">
+            <action method="preparePriceAlertData"/>
+            <action method="setHtmlClass">
+               <value>alert-price link-price-alert</value>
+            </action>
+            <action method="setSignupLabel" translate="value">
+               <value>Sign up for price alert</value>
+            </action>
+         </block>
+         <block type="productalert/product_view" name="productalert.stock" as="productalert_stock" template="productalert/product/view.phtml">
+            <action method="prepareStockAlertData"/>
+            <action method="setHtmlClass">
+               <value>alert-stock link-stock-alert</value>
+            </action>
+            <action method="setSignupLabel" translate="value">
+               <value>Sign up to get notified when this product is back in stock</value>
+            </action>
+         </block>
+      </reference>
+   </reference>
+</reference>
+<reference name="catalog.product.related">
+   <action method="addPriceBlockType">
+      <type>bundle</type>
+      <block>bundle/catalog_product_price</block>
+      <template>bundle/catalog/product/price.phtml</template>
+   </action>
+</reference>
+<reference name="content">
+   <block type="core/template" name="external.pagecache.cookie" template="pagecache/cookie.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addJs">
+      <stylesheet>amasty/plugins/jquery.carouFredSel-6.2.0.js</stylesheet>
+   </action>
+   <action method="addJs">
+      <stylesheet>amasty/plugins/jquery.mousewheel.min.js</stylesheet>
+   </action>
+   <action method="addJs">
+      <stylesheet>amasty/plugins/jquery.touchSwipe.min.js</stylesheet>
+   </action>
+   <action method="addJs">
+      <stylesheet>amasty/plugins/jquery.transit.min.js</stylesheet>
+   </action>
+   <action method="addJs">
+      <stylesheet>amasty/plugins/jquery.ba-throttle-debounce.min.js</stylesheet>
+   </action>
+   <action method="addItem">
+      <type>js_css</type>
+      <name>amasty/plugins/fancybox/jquery.fancybox.css?v=2.1.4</name>
+      <params/>
+   </action>
+   <action method="addJs">
+      <stylesheet>amasty/plugins/fancybox/jquery.fancybox.js?v=2.1.4</stylesheet>
+   </action>
+   <action method="addItem">
+      <type>js_css</type>
+      <name>amasty/plugins/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.5</name>
+      <params/>
+   </action>
+   <action method="addJs">
+      <stylesheet>amasty/plugins/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.5</stylesheet>
+   </action>
+   <action method="addItem">
+      <type>js_css</type>
+      <name>amasty/plugins/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.7</name>
+      <params/>
+   </action>
+   <action method="addJs">
+      <stylesheet>amasty/plugins/fancybox/helpers/jquery.fancybox-thumbs.js?v=1.0.7</stylesheet>
+   </action>
+   <action method="addJs">
+      <stylesheet>amasty/plugins/fancybox/helpers/jquery.fancybox-media.js?v=1.0.5</stylesheet>
+   </action>
+   <action method="addJs">
+      <stylesheet>amasty/amzoom/zoomer.js</stylesheet>
+   </action>
+   <action method="addItem">
+      <type>js_css</type>
+      <name>amasty/amzoom/css/zoomer.css</name>
+      <params/>
+   </action>
+</reference>
+<reference name="product.info.media">
+   <action method="setTemplate">
+      <template>amzoom/media.phtml</template>
+   </action>
+</reference>
+<reference name="head">
+   <action method="addItem">
+      <type>skin_css</type>
+      <name>css/carpet/skin.css</name>
+   </action>
+</reference>
+<reference name="product.info.options">
+   <action method="addOptionRenderer">
+      <type>text</type>
+      <block>catalog/product_view_options_type_text</block>
+      <template>carpet/text.phtml</template>
+   </action>
+</reference>
+<reference name="product.info.options.wrapper.bottom">
+   <block type="catalog/product_view" name="bs.init" template="carpet/init.phtml"/>
+</reference>
+<reference name="product.info.options.wrapper">
+   <block type="catalog/product_view" name="bs.calc" after="-" template="carpet/calc.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addItem">
+      <type>skin_css</type>
+      <name>css/phoneorder.css</name>
+   </action>
+</reference>
+<reference name="content">
+   <block type="phoneorder/centerblock" name="phoneorder.center" as="phoneorder_center" after="product.info.options.wrapper.bottom" template="phoneorder/form_content.phtml"/>
+</reference>
+<reference name="right">
+   <block type="phoneorder/rightblock" name="phoneorder.right" as="phoneorder_right" before="-" template="phoneorder/form_right.phtml"/>
+</reference>
+<reference name="content">
+   <reference name="product.info">
+      <reference name="product.info.additional">
+         <block type="faqs/ProductFaqs" name="product.info.faqs" as="product_faqs">
+            <action method="setFromXml">
+               <from_xml>yes</from_xml>
+            </action>
+         </block>
+      </reference>
+   </reference>
+</reference>
+<reference name="product.info.additional">
+   <block type="wordpress/post_associated" name="wordpress_posts_associated" template="wordpress/post/associated.phtml">
+      <action method="setTitle" translate="title" module="wordpress">
+         <title>Related Blog Posts</title>
+      </action>
+      <action method="setEntity">
+         <type>product</type>
+      </action>
+   </block>
+</reference>
+<reference name="content">
+   <block type="iuvo_schema/schema" before="product.view" name="iuvo_schema"/>
+</reference>
+<reference name="product.info.extrahint">
+   <block type="CrmTicket/Front_Product_AskQuestionButton" name="product.askquestion.button" template="CrmTicket/Product/AskQuestionButton.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addJs">
+      <script>prototype/window.js</script>
+   </action>
+   <action method="addJs">
+      <script>mdn/CrmTicket.js</script>
+   </action>
+   <action method="addJs">
+      <script>varien/form.js</script>
+   </action>
+   <action method="addItem">
+      <type>js_css</type>
+      <name>prototype/windows/themes/default.css</name>
+   </action>
+   <action method="addItem">
+      <type>js_css</type>
+      <name>prototype/windows/themes/alphacube.css</name>
+   </action>
+</reference>
+<reference name="product.info.extrahint">
+   <block type="GlobalPDF/Product" name="product.info.addto.print" template="GlobalPDF/Product.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addJs">
+      <script>mdn/QuotationFront.js</script>
+   </action>
+</reference>
+<reference name="product.info.extrahint">
+   <block type="Quotation/Frontend_Product" name="product.info.requestquote" template="Quotation/request_quote.phtml"/>
+</reference>
+<reference name="head">
+   <action method="addCss">
+      <stylesheet>gallery/css/gallery.css</stylesheet>
+   </action>
+</reference>
+<reference name="right">
+   <block type="gallery/gallery" name="newalbum" template="gallery/newalbums.phtml">
+      <action method="setTotalAlbum">
+         <total_album>4</total_album>
+      </action>
+   </block>
+</reference>
+<reference name="product.info">
+   <block type="downloads/product" name="downloads.product"/>
+</reference>
+<reference name="content">
+   <block type="seosuite/rdfa_product" name="mageworx.seo.product" before="product.info"/>
+</reference>
+<reference name="product.info">
+   <block type="socialbooster/wrapper" name="socialbooster.product"/>
+</reference>
+<reference name="product.info.addto">
+   <action method="setTemplate">
+      <template>socialbooster/catalog-product-view-addto.phtml</template>
+   </action>
+</reference>
+<reference name="product.info.additional">
+   <block type="productupload/productupload" before="product.info.description" name="productupload" template="productupload/productupload.phtml" as="productupload_productupload">
+            </block>
+</reference>
+<reference name="head">
+   <action method="addCss">
+      <stylesheet>mico/css/muploadultimate.css</stylesheet>
+   </action>
+   <action method="addItem">
+      <type>skin_js</type>
+      <name>mico/js/uploader/mupload.min.js</name>
+   </action>
+   <action method="addItem">
+      <type>skin_js</type>
+      <name>mico/js/muploadultimate.js</name>
+   </action>
+</reference>
+<reference name="content">
+   <block type="mupload/product" name="mupload" after="product.info" template="mico/mupload/product.phtml"/>
+</reference>
+<reference name="product.info.options">
+   <action method="addOptionRenderer">
+      <type>file</type>
+      <block>catalog/product_view_options_type_file</block>
+      <template>mico/mupload/product_view_options_type_file.phtml</template>
+   </action>
+</reference>
+<reference name="product.info">
+   <action method="unsetChild" ifconfig="easy_tabs/general/descriptiontabbed">
+      <name>description</name>
+   </action>
+   <action method="unsetChild" ifconfig="easy_tabs/general/additionaltabbed">
+      <name>additional</name>
+   </action>
+   <action method="unsetChild" ifconfig="easy_tabs/general/upsellproductstabbed">
+      <name>upsell_products</name>
+   </action>
+</reference>
+<reference name="right">
+   <action method="unsetChild" ifconfig="easy_tabs/general/relatedtabbed">
+      <name>catalog.product.related</name>
+   </action>
+</reference>
+<reference name="product.info.additional">
+   <action method="unsetChild" ifconfig="easy_tabs/general/tagstabbed">
+      <name>product_tag_list</name>
+   </action>
+   <block type="catalog/product_view_tabs" name="product.info.tabs" as="info_tabs">
+      <action method="setTemplate" ifconfig="easy_tabs/general/enabled">
+         <template>easytabs/tabs.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/general/descriptiontabbed">
+         <alias>description_tabbed</alias>
+         <title>Product Description</title>
+         <block>catalog/product_view_description</block>
+         <template>easytabs/description.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/general/additionaltabbed">
+         <alias>additional_tabbed</alias>
+         <title>Additional Information</title>
+         <block>catalog/product_view_attributes</block>
+         <template>easytabs/attributes.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/general/upsellproductstabbed">
+         <alias>upsell_products_tabbed</alias>
+         <title>We Also Recommend</title>
+         <block>catalog/product_list_upsell</block>
+         <template>catalog/product/list/upsell.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/general/relatedtabbed">
+         <alias>related_tabbed</alias>
+         <title>Related Products</title>
+         <block>catalog/product_list_related</block>
+         <template>easytabs/catalogproductrelated.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="tag" ifconfig="easy_tabs/general/tagstabbed">
+         <alias>tags_tabbed</alias>
+         <title>Product Tags</title>
+         <block>tag/product_list</block>
+         <template>easytabs/catalogproducttags.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="review" ifconfig="easy_tabs/general/reviewtabbed">
+         <alias>review_tabbed</alias>
+         <title>Product&apos;s Review</title>
+         <block>review/product_view_list</block>
+         <template>easytabs/catalogproductreview.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/custom/customtab">
+         <alias>custom</alias>
+         <title>Custom tab</title>
+         <block>catalog/product_view</block>
+         <template>easytabs/catalogproductcustom.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/custom/customtab1">
+         <alias>custom1</alias>
+         <title>Custom tab</title>
+         <block>catalog/product_view</block>
+         <template>easytabs/catalogproductcustom1.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/custom/customtab2">
+         <alias>custom2</alias>
+         <title>Custom tab</title>
+         <block>catalog/product_view</block>
+         <template>easytabs/catalogproductcustom2.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/custom/customtab3">
+         <alias>custom3</alias>
+         <title>Custom tab</title>
+         <block>catalog/product_view</block>
+         <template>easytabs/catalogproductcustom3.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/custom/customtab4">
+         <alias>custom4</alias>
+         <title>Custom tab</title>
+         <block>catalog/product_view</block>
+         <template>easytabs/catalogproductcustom4.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/customcms/tabcms">
+         <alias>cms</alias>
+         <title>CMS tab</title>
+         <block>core/template</block>
+         <template>easytabs/catalogproductcms.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/customcms/tabcms1">
+         <alias>cms1</alias>
+         <title>CMS tab</title>
+         <block>core/template</block>
+         <template>easytabs/catalogproductcms1.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/customcms/tabcms2">
+         <alias>cms2</alias>
+         <title>CMS tab</title>
+         <block>core/template</block>
+         <template>easytabs/catalogproductcms2.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/customcms/tabcms3">
+         <alias>cms3</alias>
+         <title>CMS tab</title>
+         <block>core/template</block>
+         <template>easytabs/catalogproductcms3.phtml</template>
+      </action>
+      <action method="addTab" translate="title" module="catalog" ifconfig="easy_tabs/customcms/tabcms4">
+         <alias>cms4</alias>
+         <title>CMS tab</title>
+         <block>core/template</block>
+         <template>easytabs/catalogproductcms4.phtml</template>
+      </action>
+   </block>
+</reference>
+<label>Catalog Product View (Simple)</label>
+<reference name="product.info">
+   <block type="catalog/product_view_type_simple" name="product.info.simple" as="product_type_data" template="catalog/product/view/type/default.phtml">
+      <block type="core/text_list" name="product.info.simple.extra" as="product_type_data_extra" translate="label">
+         <label>Product Extra Info</label>
+      </block>
+   </block>
+</reference>
+<reference name="product.info.simple.extra">
+   <block type="cataloginventory/stockqty_default" template="cataloginventory/stockqty/default.phtml"/>
+</reference>
+<reference name="product.info.upsell">
+   <action method="addPriceBlockType">
+      <type>bundle</type>
+      <block>bundle/catalog_product_price</block>
+      <template>bundle/catalog/product/price.phtml</template>
+   </action>
+   <action method="setItemLimit">
+      <type>bundle</type>
+      <limit>4</limit>
+   </action>
+</reference>
+<reference name="product.info.simple">
+   <action method="setTemplate" ifconfig="grafischdirectrichsnippets/product/stock">
+      <template>richsnippets/catalog/product/view/type/default.phtml</template>
+   </action>
+</reference>
+<reference name="account.links">
+   <action method="addLink" translate="label title" module="customer">
+      <label>Log In</label>
+      <url helper="customer/getLoginUrl"/>
+      <title>Log In</title>
+      <prepare/>
+      <urlParams/>
+      <position>1</position>
+   </action>
+</reference>
+<remove name="reorder"/>
+<reference name="right">
+   <block type="sales/reorder_sidebar" name="sale.reorder.sidebar" as="reorder" template="sales/reorder/sidebar.phtml"/>
+</reference>
+";s:8:"lifetime";N;s:6:"expire";i:11428393919;s:8:"priority";i:8;}

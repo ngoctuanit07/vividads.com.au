@@ -1,0 +1,10 @@
+a:4:{s:4:"data";s:228:"<script type="text/javascript">
+    //<![CDATA[
+    Mage.Cookies.set(
+        'PAGECACHE_ENV',
+            '2bfb9e9683acc87e4a54f1dc123b35e6',
+        new Date(new Date().getTime() + 38400 * 1000)
+        );
+    //]]>
+</script>
+";s:8:"lifetime";i:7200;s:6:"expire";i:1428403717;s:8:"priority";i:8;}

@@ -1,0 +1,201 @@
+<?php 
+    $type = $this->getRequest()->getParam('type');
+    $start_date = $this->getRequest()->getParam('start');
+    $network = ($type<100) ? '01' : '02';
+    $shipping_data = Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData();
+    $toPostcode = !empty($shipping_data['postcode']) ? $shipping_data['postcode'] : null;
+    $business_days = Mage::helper('auspost/delivery')->getDeliveryDates($start_date, $network, $toPostcode);
+    $timed_business_days = Mage::helper('auspost/delivery')->getDeliveryDates($start_date, $network, $toPostcode, true);
+    
+    
+    Mage::helper('auspost/delivery')->isOptionAvailable($type, $toPostcode);
+?>
+<div align="left"><h3><?php echo $this->__('Select deliveries')?></h3></div>
+<br /><hr style="border-color: #DEDEDE;" noshade="noshade" size="1" /><br />
+
+<?php if (!empty($business_days) && ($type == 2 || $type == 102)) : ?>
+    <div id="pre5" align="left">
+        <strong><a class="left" href="javascript:void(0)" onclick="pre5Days()"><?php echo $this->__('Pre 5 Days') ?></a></strong>
+    </div>
+    <div id="next5" align="right">
+        <strong><a class="right" href="javascript:void(0)" onclick="next5Days()"><?php echo $this->__('Next 5 Days') ?></a></strong>
+    </div><br /><br />
+    <table border="0" cellpadding="10" width="95%">        
+        <tr>
+            <?php foreach ($business_days as $d => $date) : ?>
+                <td class="schedule_dates" id="<?php echo 'sch_'.$d ?>">
+                    <input name="auspost_shipping_method_option" type="radio" value="<?php echo $date?>" class="radio main-radio"/>
+                    <?php echo Mage::helper('auspost')->niceDateFormat($date) ?>
+                </td>
+            <?php endforeach; ?>
+        </tr>
+    </table>            
+<?php elseif (!empty($timed_business_days) && ($type == 3 || $type == 103)) : ?>
+    <div id="pre5" align="left">
+        <strong><a class="left" href="javascript:void(0)" onclick="pre5Days()"><?php echo $this->__('Pre 5 Days') ?></a></strong>
+    </div>
+    <div id="next5" align="right">
+        <strong><a class="right" href="javascript:void(0)" onclick="next5Days()"><?php echo $this->__('Next 5 Days') ?></a></strong>
+    </div><br /><br />
+    <table border="0" cellpadding="10" width="95%">
+        <tr>
+            <?php $timeslot = Mage::helper('auspost/delivery')->getDeliveryTimeslotByDay(1); ?>
+            <?php foreach ($timed_business_days as $d => $date) : ?>
+                <td class="schedule_dates" id="<?php echo 'sch_'.$d ?>">
+                    <?php if (!empty($timeslot['AMPM'])) : ?>
+                        <input name="auspost_shipping_method_date" type="radio" class="radio group-radio" id="<?php echo 'radio_'.$d ?>"/>
+                    <?php endif; ?>
+                    <strong><?php echo Mage::helper('auspost')->niceDateFormat($date) ?></strong> <br />
+                    <div id="<?php echo 'checkbox_group_'. $d ?>">
+                        <?php if (!empty($timeslot['AMPM'])) : ?>
+                            <?php foreach ($timeslot['AMPM'] as $slot) : ?>
+                                <span style="margin-left: 15px;">&nbsp;</span>
+                                <input name="auspost_shipping_method_option" type="checkbox" value="<?php echo strtolower($slot).'_'.$date ?>" class="checkbox sub-checkbox"/> <?php echo $slot ?> <br />
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <?php echo $this->__('No option'); ?>
+                        <?php endif; ?>
+                    </div>
+                </td>
+            <?php endforeach; ?>
+        </tr>
+    </table>            
+<?php elseif (!empty($timed_business_days) && ($type == 4 || $type == 104)) : ?>
+    <div id="pre5" align="left">
+        <strong><a class="left" href="javascript:void(0)" onclick="pre5Days()"><?php echo $this->__('Pre 5 Days') ?></a></strong>
+    </div>
+    <div id="next5" align="right">
+        <strong><a class="right" href="javascript:void(0)" onclick="next5Days()"><?php echo $this->__('Next 5 Days') ?></a></strong>
+    </div><br /><br />
+    <table border="0" cellpadding="10" width="95%">        
+        <tr>
+            <?php $timeslot = Mage::helper('auspost/delivery')->getDeliveryTimeslotByDay(1); ?>
+            <?php foreach ($timed_business_days as $d => $date) : ?>
+                
+                <td class="schedule_dates" id="<?php echo 'sch_'.$d ?>">
+                    <?php if (!empty($timeslot['2HRS'])) : ?>
+                        <input name="auspost_shipping_method_date" type="radio" class="radio group-radio" id="<?php echo 'radio_'.$d ?>"/>
+                    <?php endif; ?>
+                    <strong><?php echo Mage::helper('auspost')->niceDateFormat($date) ?></strong> <br />
+                    <div id="<?php echo 'checkbox_group_'. $d ?>">
+                        <?php if (!empty($timeslot['2HRS'])) : ?>
+                            <?php foreach ($timeslot['2HRS'] as $slot) : ?>
+                                <?php $slotv = $this->buildTimeSlotString($slot); ?>
+                                <input name="auspost_shipping_method_option" type="checkbox" value="<?php echo $slotv.'_'.$date ?>" class="checkbox sub-checkbox"/> <?php echo $slot ?> <br />
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <?php echo $this->__('No option'); ?>
+                        <?php endif; ?>
+                    </div>
+                </td>
+            <?php endforeach; ?>
+        </tr>
+    </table>
+    <script>
+        jQuery()
+            jQuery('.schedule_dates').each(function(){
+                
+            });
+    </script>        
+<?php elseif ($type == 5 || $type == 105) : ?>
+    <table border="0" cellpadding="10" width="95%">
+        <tr>
+            <?php for ($i=1; $i<=5; $i++) : ?>
+                <?php $day = Mage::helper('auspost')->getDateStr($i); ?>
+                <td>
+                    <input name="auspost_shipping_method_option" type="checkbox" value="<?php echo strtolower($day) ?>" class="checkbox  main-checkbox"/>
+                    <?php echo $day; ?>
+                </td>
+            <?php endfor; ?>
+        </tr>
+    </table>            
+<?php elseif ($type == 6 || $type == 106) : ?>
+    <table border="0" cellpadding="10" width="95%">    
+        <tr>
+            <?php $timeslot = Mage::helper('auspost/delivery')->getDeliveryTimeslotByDay(1); ?>
+            <?php for ($i=1; $i<=5; $i++) : ?>
+                <?php $day = Mage::helper('auspost')->getDateStr($i); ?>
+                <td>
+                    <strong><?php echo ucfirst($day) ?></strong><br />
+                    <?php if (!empty($timeslot['AMPM'])) : ?>
+                        <?php foreach ($timeslot['AMPM'] as $slot) : ?>
+                            <input name="auspost_shipping_method_option" type="checkbox" value="<?php echo strtolower($slot).'_'.strtolower($day) ?>" class="checkbox main-checkbox"/> <?php echo $slot ?> <br />
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <?php echo $this->__('No option'); ?>
+                    <?php endif; ?>
+                </td>
+            <?php endfor; ?>
+        </tr>
+    </table>
+<?php elseif ($type == 7 || $type == 107) : ?>
+    <table border="0" cellpadding="10" width="95%">
+        <tr>
+            <?php $timeslot = Mage::helper('auspost/delivery')->getDeliveryTimeslotByDay(1); ?>
+            <?php for ($i=1; $i<=5; $i++) : ?>
+                <?php $day = Mage::helper('auspost')->getDateStr($i); ?>
+                <td>
+                    <strong><?php echo ucfirst($day) ?></strong><br />
+                    <?php if (!empty($timeslot['2HRS'])) : ?>
+                        <?php foreach ($timeslot['2HRS'] as $slot) : ?>
+                            <input name="auspost_shipping_method_option" type="checkbox" value="<?php echo strtolower($slot).'_'.strtolower($day) ?>" class="checkbox main-checkbox"/> <?php echo $slot ?> <br />
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <?php echo $this->__('No option'); ?>
+                    <?php endif; ?>
+                </td>
+            <?php endfor; ?>
+        </tr>
+    </table>
+<?php elseif ($type == 8 || $type == 108) : ?>
+    <table border="0" cellpadding="10" width="95%">    
+        <tr>
+            <td>
+                <input name="auspost_shipping_method_option" type="checkbox" value="am" class="checkbox main-checkbox"/> AM <br />
+                <input name="auspost_shipping_method_option" type="checkbox" value="pm" class="checkbox main-checkbox"/> PM 
+            </td>
+        </tr>
+    </table>            
+<?php elseif ($type == 9 || $type == 109) : ?>
+    <table border="0" cellpadding="10" width="95%">    
+        <tr>
+            <td>
+                <input name="auspost_shipping_method_option" type="checkbox" value="7-9_am" class="checkbox main-checkbox"/> 7 AM - 9 AM <br />
+                <input name="auspost_shipping_method_option" type="checkbox" value="9-11_am" class="checkbox main-checkbox"/> 9 AM - 11 AM <br />
+                <input name="auspost_shipping_method_option" type="checkbox" value="11-1_pm" class="checkbox main-checkbox"/> 11 AM - 1 PM <br />
+                <input name="auspost_shipping_method_option" type="checkbox" value="1-3_pm" class="checkbox main-checkbox"/> 1 PM - 3 PM <br />
+                <input name="auspost_shipping_method_option" type="checkbox" value="3-5_pm" class="checkbox main-checkbox"/> 3 PM - 5 PM <br />
+            </td>
+        </tr>
+    </table>            
+<?php else : ?>
+    <?php $shipping_data = Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData(); ?>
+    <div style="color: red;"><?php echo $this->__('No delivery date/time available to your address (Postcode: '.$shipping_data['postcode'].')')?></div>
+<?php endif; ?>
+<br /><hr style="border-color: #DEDEDE;" noshade="noshade" size="1" /><br />
+<script>
+pre5Days();
+function pre5Days ()
+{
+    jQuery('#pre5').hide(); jQuery('#next5').show();
+    jQuery('.schedule_dates').each(function(){
+       var id = jQuery(this).attr('id').split('_').pop();
+       if (id>=5)
+            jQuery(this).hide();
+       else
+            jQuery(this).show();
+    });
+}
+
+function next5Days ()
+{
+    jQuery('#pre5').show(); jQuery('#next5').hide();
+    jQuery('.schedule_dates').each(function(){
+       var id = jQuery(this).attr('id').split('_').pop();
+       if (id<5)
+            jQuery(this).hide();
+       else
+            jQuery(this).show();
+    });
+}
+</script>

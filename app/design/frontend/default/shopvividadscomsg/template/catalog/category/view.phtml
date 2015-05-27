@@ -1,0 +1,642 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     base_default
+
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+?>
+
+<?php
+
+/**
+
+ * Category view template
+
+ *
+
+ * @see Mage_Catalog_Block_Category_View
+
+ */
+
+?>
+
+<?php
+
+    $_helper    = $this->helper('catalog/output');
+
+    $_category  = $this->getCurrentCategory();
+
+    $_imgHtml   = '';
+
+    if ($_imgUrl = $_category->getImageUrl()) {
+
+        $_imgHtml = '<p class="category-image">
+		<img src="'.$_imgUrl.'" alt="'.$this->htmlEscape($_category->getName()).'" title="'.$this->htmlEscape($_category->getName()).'" />
+		</p>';
+
+        $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
+
+    }
+
+?>
+
+<div class="page-title category-title" style="display:none;">
+
+    <?php if($this->IsRssCatalogEnable() && $this->IsTopCategory()): ?>
+
+        <a href="<?php echo $this->getRssLink() ?>" class="link-rss"><?php echo $this->__('Subscribe to RSS Feed') ?></a>
+
+    <?php endif; ?>
+
+    <h1><?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></h1>
+
+</div>
+
+
+
+
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+
+
+<?php //if($_imgUrl): ?>
+
+    <?php //echo $_imgHtml ?>
+
+<?php //endif; ?>
+
+
+
+<?php
+
+$getParentCatIdPage=$_category->getParentId();
+
+$collectionPage = Mage::getModel('catalog/category')->getCategories($getParentCatIdPage);
+
+//echo "Count :".$collectionPage->count();
+
+                $cntValPage=0;
+
+                
+
+                $valArr=array();
+
+                foreach ($collectionPage as $_childCategory1){
+
+                   $cntValPage++;
+
+                    $cur_categoryPage=Mage::getModel('catalog/category')->load($_childCategory1->getId());
+
+                    $catName1 = $cur_categoryPage->getName();
+
+                    //echo "kk :".$_childCategory1->getId();
+
+                    //echo "<br>hh :".$_category->getId();
+
+                    if($_childCategory1->getId() < ($_category->getId()-1)){
+
+                        //$activeClass="active";
+
+                        //echo $cntValPage."Cat Name :".$catName1;
+
+                        //echo "<br>";
+
+                        $varCatPrev=$catName1;
+
+                    }
+
+                    
+
+                    $valArr[]=$_childCategory1->getId();
+
+                    
+
+                    
+
+                }
+
+//echo "ID :".$_category->getId();
+
+asort($valArr);
+
+//print_r($valArr);
+
+
+
+function set (&$array,$key) {
+
+   reset ($array);
+
+   while (key($array) !== $key) {
+
+       if (next($array) === false) throw new Exception('Invalid key');
+
+   }
+
+}
+
+
+
+/****************For next cat id*******************/
+
+$current = $_category->getId();
+
+$sorting = $valArr;
+
+$currentkey = array_search($current, $sorting);
+
+set($sorting,$currentkey);
+
+//echo "<br>Current :".current($sorting);
+
+//echo "<br>Next :".next($sorting);
+
+$NextCat=next($sorting);
+
+/****************End next cat id*******************/
+
+
+
+/****************For prev cat id*******************/
+
+set($sorting,$currentkey);
+
+//echo "<br>Prev :".prev($sorting);
+
+$PrevCat=prev($sorting);
+
+/****************End prev cat id*******************/
+
+
+
+
+
+
+
+$CategoryLoadPrev=Mage::getModel('catalog/category')->load($PrevCat);
+
+$prevCatName = $CategoryLoadPrev->getName();
+
+//echo "kkkkkkkkkkkkkk".$prevCatName;
+
+$prevCatUrl=$CategoryLoadPrev->getUrl();
+
+
+
+
+
+$CategoryLoadNext=Mage::getModel('catalog/category')->load($NextCat);
+
+$nextCatName = $CategoryLoadNext->getName();
+
+//echo "kkkkkkkkkkkkkk".$prevCatName;
+
+$nextCatUrl=$CategoryLoadNext->getUrl();
+
+?>
+
+
+
+<?php
+
+//echo "jjjjjjjjjjjj :".$_category->getLevel();
+
+$findCatLevel=$_category->getLevel();
+
+?>
+
+
+
+<?php if($_imgUrl): ?>
+
+<!-- Custom Code here-->
+
+<div class="category-banner">
+
+    <?php if($findCatLevel == 3) { ?>
+
+    <a href="<?php echo $prevCatUrl; ?>" class="category-link left-category-link"><?php echo $prevCatName; ?></a>
+
+    <a href="<?php echo $nextCatUrl; ?>" class="category-link right-category-link"><?php echo $nextCatName; ?></a>
+
+    <?php } ?>
+
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="category-image-table" style="text-align: center !important;width: 100%;" >
+
+        <tbody>
+
+            <tr>
+
+                <td align="center" valign="middle" height="387">
+
+                    <p class="category-image">
+
+                        <?php echo $_imgHtml ?>
+
+                    </p>        
+
+                </td>
+
+            </tr>
+
+            
+
+        </tbody>
+
+    </table>
+
+
+
+    <h1 id="category-name" class="category-name"><?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></h1>
+
+<!-- Custom code for video -->
+
+<script src="<?php echo $this->getJsUrl(); ?>extjs/jquery-1.9.1.min.js"></script>
+
+<?php
+
+//if($this->getCurrentCategory()->getVideoUrl() !="")
+
+if($this->getCurrentCategory()->getCatVideo() !="")
+
+{
+
+?>
+
+<script type="text/javascript">
+
+jQuery.noConflict();
+
+jQuery(document).ready(function() {	
+
+
+
+	    jQuery('.video-image-mask').click(function (e) {
+
+                var id = '#dialog1';
+
+	
+
+		//Get the screen height and width
+
+		var maskHeight = jQuery(document).height();
+
+		var maskWidth = jQuery(window).width();
+
+	
+
+		//Set heigth and width to mask to fill up the whole screen
+
+		jQuery('#mask1').css({'width':maskWidth,'height':maskHeight});
+
+		
+
+		//transition effect		
+
+		jQuery('#mask1').fadeIn(1000);	
+
+		jQuery('#mask1').fadeTo("slow",0.8);	
+
+	
+
+		//Get the window height and width
+
+		var winH = jQuery(window).height();
+
+		var winW = jQuery(window).width();
+
+              
+
+		//Set the popup window to center
+
+		jQuery(id).css('top',  winH/2-jQuery(id).height()/2);
+
+		jQuery(id).css('left', winW/2-jQuery(id).width()/2);
+
+	
+
+		//transition effect
+
+		jQuery(id).fadeIn(2000);
+
+            });
+
+	
+
+	//if close button is clicked
+
+	jQuery('.window .magento_close').click(function (e) {
+
+		//Cancel the link behavior
+
+		e.preventDefault();
+
+                
+
+                var video = jQuery(".youtube-player").attr("src");
+
+                    jQuery(".youtube-player").attr("src","");
+
+                    jQuery(".youtube-player").attr("src",video);
+
+		
+
+		jQuery('#mask1').hide();
+
+		jQuery('.window').hide();
+
+	});		
+
+	
+
+	//if mask is clicked
+
+	jQuery('#mask1').click(function () {
+
+		//$(this).hide();
+
+		//$('.window').hide();
+
+	});		
+
+	
+
+});
+
+
+
+</script>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl(); ?>css/style-pop.css" media="all" />
+
+<div class="video-image-div">
+
+<img width="89" height="115" src="<?php echo $this->getSkinUrl(); ?>images/logo.png" alt="Video" class="video-image" style="margin-left:75px; margin-top:20px;">
+
+<div class="video-image-mask"></div>
+
+</div>
+
+
+
+<div id="boxes1">
+
+    <div style="display: none;" id="dialog1" class="window">        
+
+        <div id="media_window_close" class="magento_close"></div>
+
+        <div id="cataegory_video">  <?php /*?>
+
+            <object width="100%" height="100%"><param name="allowfullscreen" value="true">
+
+                        <param name="allowscriptaccess" value="always">
+
+                        <param name="opaque" value="wmode">
+
+                          
+
+                        <param name="movie" value="<?php echo $this->getCurrentCategory()->getVideoUrl(); ?>&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=2f5ea2&amp;fullscreen=1">
+
+                        <embed width="100%" height="100%" src="<?php echo $this->getCurrentCategory()->getVideoUrl(); ?>&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=2f5ea2&amp;fullscreen=1&amp;autoplay=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" wmode="opaque">
+
+                       
+
+                        </object> <?php */?>
+
+                        <iframe title="YouTube video player" class="youtube-player" type="text/html" 
+
+width="988" height="579" src="<?php echo $this->getCurrentCategory()->getCatVideo(); ?>"
+
+frameborder="0" allowFullScreen></iframe>
+
+        </div>       
+
+    </div>
+
+    <!-- Mask to cover the whole screen -->
+
+    <div style="width: 1478px; height: 602px; display: none; opacity: 0.8;" id="mask1"></div>
+
+</div>
+
+
+
+
+
+<?php } ?>
+
+<!-- End video code  -->
+
+
+
+
+
+<?php if($_description=$this->getCurrentCategory()->getDescription()): ?>
+
+    <div class="category-description std">
+
+        <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
+
+    </div>
+
+    <?php endif; ?>
+
+
+
+</div>
+
+<!--End-->
+
+<?php endif;
+
+
+
+//echo "<br>Check 1";
+
+?>
+
+
+
+
+
+
+
+<?php if($this->isContentMode()): ?>
+
+    <?php echo $this->getCmsBlockHtml(); //echo "<br>Check 2"; ?>
+
+
+
+<?php elseif($this->isMixedMode()): ?>
+
+    <?php echo $this->getCmsBlockHtml(); //echo "<br>Check 3"; ?>
+
+    <?php echo $this->getProductListHtml() ?>
+
+
+
+<?php else: ?>
+
+    <?php echo $this->getProductListHtml(); //echo "<br>Check 4"; ?>
+
+<?php endif; ?>
+
+
+
+
+
+
+
+<?php /******************Start display brother category*********************/ ?>
+
+<?php if($findCatLevel == 3) { ?>
+
+<div class="brother-category-table-top-bg">&nbsp;</div>
+
+<div class="foot-cat">
+
+<table cellspacing="0" cellpadding="0" border="0" width="100" class="brother-category-table">
+
+    <tbody>
+
+        <tr>
+
+            <?php
+
+                $getParentCatId=$_category->getParentId();
+
+                //$collection = Mage::getModel('catalog/category')->getCollection()
+
+                $collection = Mage::getModel('catalog/category')->getCategories($getParentCatId);
+
+                
+
+                //echo "Count :".$collection->count();
+
+                $cntVal=0;
+
+                foreach ($collection as $_childCategory){
+
+                    $cntVal++;
+
+                    //echo $cntVal;
+
+                    //$_img= $_childCategory->getThumbnail();
+
+                    //$catName=$_childCategory->getName();
+
+                    //$getCatUrl=$_childCategory->getUrl();
+
+                    $cur_category=Mage::getModel('catalog/category')->load($_childCategory->getId());
+
+                    //echo $getCatUrl;
+
+                    //echo "name : ".$cur_category->getName();
+
+                    //echo "<br>";
+
+                    $catName = $cur_category->getName();
+
+                    
+
+                    if($_category->getId() == $cur_category->getId())
+
+                    {
+
+                        $activeClass="active";
+
+                    }else{
+
+                        $activeClass="";
+
+                    }
+
+                    
+
+                    if($cntVal ==1) {
+
+                        $firstClass="first";
+
+                    }else{
+
+                        $firstClass="";
+
+                    }
+
+            ?>
+
+            <td align="center" valign="middle" class="<?php echo $firstClass; ?> <?php echo $activeClass; ?>">
+
+                <a href="<?php echo $cur_category->getUrl(); ?>" title="Pop Up Displays">
+
+                    <img width="90" height="90" src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$cur_category->getThumbnail()  ?>" alt="<?php //echo $catName; ?>" class="brother-category-image"><br>
+
+                    <span><?php echo $catName; ?></span>
+
+                </a>
+
+            </td>
+
+            <?php } ?>
+
+        </tr>
+
+    </tbody>
+
+</table>
+
+</div>
+
+<?php } ?>
+
+<?php /******************End display brother category*********************/ 
+
+//echo $this->getChildHtml('product_list');
+
+?>
+

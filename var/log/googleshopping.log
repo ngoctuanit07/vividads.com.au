@@ -1,0 +1,702 @@
+2015-03-05T09:29:17+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/portable-folding-brochure-display-stand-a4-black.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Portable Brochure Stand (A4) - Black"/><atom:title type="text">Portable Brochure Stand (A4) - Black</atom:title><atom:content type="text">&lt;p style="text-align: justify;"&gt;The classy zigzag brochure stand features your business' name and logo with high definition printing that compliments your trademark color giving an aesthetic appeal to your entire exhibit. Moreover, the stands' frame is absolutely light in weight. If there's anything that would make the stand heavy, it would only be the materials on it, that is the brochures, and NOT the materials of which the frame is made.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;With our brochure stand holding your interestingly created brochures, your brands' value and impression enhances manifold! The overall appearance looks utterly neat and tidy, making it easy for you to perfectly explain all the products' features to your customers.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;Place the stand anywhere to create an interactive, user friendly stand. An added advantage it has is it locks into the security holder where it is protected, meanwhile accessible to visitors, executives, and all other people in the show. It is available as single width units, in textured high shine silver. This lightweight stand comes with an aluminum carry case, so your stand stays safe and sound!&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;The perks don't end here. There is a lot more to the beautifully designed, elegantly created brochure stand. With alluring looks, this stand can take up to 100 pages. An easy way to display, the portable, easy to assemble brochure holder is just the right choice and works great in all kinds of exhibitions, product launches, receptions as well as conferences and press meets.&lt;/p&gt;</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">1598_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">300.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk8-4t_1.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; vividads.com.au &gt; Brochure Stands / Holders</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK8-4T</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Thu, 05 Mar 2015 09:29:17 GMT
+                    [Expires] => Thu, 05 Mar 2015 09:29:17 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>GData</domain><code>quotaExceeded</code><internalReason>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</internalReason><extendedHelp>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</extendedHelp></error></errors>
+        )
+
+    [__pid] => 17890
+)
+
+2015-03-05T09:29:20+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/portable-zig-zag-portable-brochure-display-stand-a3.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Portable Brochure Stand (A3)"/><atom:title type="text">Portable Brochure Stand (A3)</atom:title><atom:content type="text">&lt;p style="text-align: justify;"&gt;The classy zigzag brochure stand features your business' name and logo with high definition printing that compliments your trademark color giving an aesthetic appeal to your entire exhibit. Moreover, the stands' frame is absolutely light in weight. If there's anything that would make the stand heavy, it would only be the materials on it, that is the brochures, and NOT the materials of which the frame is made.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;With our brochure stand holding your interestingly created brochures, your brands' value and impression enhances manifold! The overall appearance looks utterly neat and tidy, making it easy for you to perfectly explain all the products' features to your customers.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;Place the stand anywhere to create an interactive, user friendly stand. An added advantage it has is it locks into the security holder where it is protected, meanwhile accessible to visitors, executives, and all other people in the show. It is available as single width units, in textured high shine silver. This lightweight stand comes with an aluminum carry case, so your stand stays safe and sound!&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;The perks don't end here. There is a lot more to the beautifully designed, elegantly created brochure stand. With an adjustable height, this stand can take up to 100 pages. An easy way to display, this portable, easy to assemble brochure holder is just the right choice and works great in all kinds of exhibitions, product launches, receptions as well as conferences and press meets.&lt;/p&gt;</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">1596_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">350.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk8-3t_2.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; vividads.com.au &gt; Brochure Stands / Holders</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK8-3T</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Thu, 05 Mar 2015 09:29:20 GMT
+                    [Expires] => Thu, 05 Mar 2015 09:29:20 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>GData</domain><code>quotaExceeded</code><internalReason>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</internalReason><extendedHelp>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</extendedHelp></error></errors>
+        )
+
+    [__pid] => 17890
+)
+
+2015-03-05T09:29:23+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/portable-zig-zag-portable-brochure-display-stand-a4.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Portable Brochure Stand (A4) - Silver"/><atom:title type="text">Portable Brochure Stand (A4) - Silver</atom:title><atom:content type="text">&lt;p style="text-align: justify;"&gt;The classy zigzag brochure stand features your business' name and logo with high definition printing that compliments your trademark color giving an aesthetic appeal to your entire exhibit. Moreover, the stands' frame is absolutely light in weight. If there's anything that would make the stand heavy, it would only be the materials on it, that is the brochures, and NOT the materials of which the frame is made.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;With our brochure stand holding your interestingly created brochures, your brands' value and impression enhances manifold! The overall appearance looks utterly neat and tidy, making it easy for you to perfectly explain all the products' features to your customers.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;Place the stand anywhere to create an interactive, user friendly stand. An added advantage it has is it locks into the security holder where it is protected, meanwhile accessible to visitors, executives, and all other people in the show. It is available as single width units, in textured high shine silver. This lightweight stand comes with an aluminum carry case, so your stand stays safe and sound!&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;The perks don't end here. There is a lot more to the beautifully designed, elegantly created brochure stand. With an adjustable height, this stand can take up to 100 pages. An easy way to display, this portable, easy to assemble brochure holder is just the right choice and works great in all kinds of exhibitions, product launches, receptions as well as conferences and press meets.&lt;/p&gt;</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">1594_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">300.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk8-2t_2.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; vividads.com.au &gt; Brochure Stands / Holders</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK8-2T</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Thu, 05 Mar 2015 09:29:23 GMT
+                    [Expires] => Thu, 05 Mar 2015 09:29:23 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>GData</domain><code>quotaExceeded</code><internalReason>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</internalReason><extendedHelp>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</extendedHelp></error></errors>
+        )
+
+    [__pid] => 17890
+)
+
+2015-03-05T10:54:57+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/slimline-display-wall-3m-wide-2882.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Value Package - Slimline Display Wall (3m Wide)"/><atom:title type="text">Value Package - Slimline Display Wall (3m Wide)</atom:title><atom:content type="text">&lt;p style="text-align: justify;"&gt;Considering buying display tools for your brand? Find out the amazing offers this value pack has to deliver. One of the essential items inclusive of the pack is the great wall from our bestselling line of slim lines that can provide you with an efficient, yet a smart way to promote your products and services.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;The fabric-tension display wall makes your booth a sight for sore eyes in the crowded trade show floor. Use it as a structural aspect of your booth, and meet all your company&amp;rsquo;s promotion needs. Displaying with this curved-wall is a highly cost effective way of uniquely promoting your brand.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;Used with a pair of bright LED lights, the wall illuminates your trade show floor and helps detract from the harsh lights of most convention halls. You may want to use it to create faux architectural features of your exhibit, turning your booth look more polished and brighter. Alternatively, you may use it to delineate spaces within your exhibit booth that needed extra bit of attention.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;Our table throw adds depth and richness to an otherwise plain looking booth. This colorful table throw will certainly add color and vibrancy to an otherwise bland sphere of your exhibit. Shape an impressive exhibit just by covering a table; it's that easy! Choose any color or design for your custom printed stretchy table throw. You may consider a richly colored tapestry to add some bounce or you may provide your own design and colors. Just because you cover a table doesn't mean you can't still use it. It will take on an entire new look when you add artfully arranged accents on the top.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;Come and get it before it&amp;rsquo;s too late! We offer all in one solutions so you can get the best out of your trade show experience. This kit has to offer everything that provides true value to you for a rich, classy expo display.&lt;/p&gt;</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">1758_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">1725.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/p/vpxo106_1.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; vividads.com.au &gt; Tradeshow Displays Package</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VP-XO-106</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Thu, 05 Mar 2015 10:54:57 GMT
+                    [Expires] => Thu, 05 Mar 2015 10:54:57 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>GData</domain><code>quotaExceeded</code><internalReason>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</internalReason><extendedHelp>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</extendedHelp></error></errors>
+        )
+
+    [__pid] => 9946
+)
+
+2015-03-06T01:44:09+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/slimline-display-lcd-mount.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Slimline Display LCD Mount"/><atom:title type="text">Slimline Display LCD Mount</atom:title><atom:content type="text">Slimline Display LCD Mount</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">1765_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">149.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//l/c/lcd-mount.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; vividads.com.au &gt; Crowd Control Barriers</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK4-19LM</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Fri, 06 Mar 2015 01:44:09 GMT
+                    [Expires] => Fri, 06 Mar 2015 01:44:09 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>GData</domain><code>quotaExceeded</code><internalReason>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</internalReason><extendedHelp>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</extendedHelp></error></errors>
+        )
+
+    [__pid] => 6891
+)
+
+2015-03-11T00:05:35+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/ipad-kiosk-stand-for-promotional-marketing-with-printed-grphic-kit.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="iPad Kiosk Stand with Printed Graphic"/><atom:title type="text">iPad Kiosk Stand with Printed Graphic</atom:title><atom:content type="text"> iPad stands have revolutionized the concept of traditional corporate events, meeting and tradeshows. Attractive, approachable and stimulating; the most effective trade show booths possess these characteristics, leading to the utmost success in lead generation and client interest. Display your company image with elegance and professionalism on the most innovative and portable iPad / Tablet Kiosk solution on the market.</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">1223_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">700.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk4-17hg_1.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; vividads.co.nz &gt; Accessories</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK4-17HG</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 00:05:35 GMT
+                    [Expires] => Wed, 11 Mar 2015 00:05:35 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>sc</domain><code>auth/frontend/cannot_impersonate</code><location type='other'>request</location><internalReason>Customer 10902344 cannot be represented by the authenticated customer 100167004. One can only access one's own feeds or those of a managed account.</internalReason></error></errors>
+        )
+
+    [__pid] => 24340
+)
+
+2015-03-11T00:05:37+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/ipad-kiosk-stand-for-promotional-marketing-kit.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="iPad Kiosk Stand with Printed Graphic"/><atom:title type="text">iPad Kiosk Stand with Printed Graphic</atom:title><atom:content type="text">iPad stands have revolutionized the concept of traditional corporate events, meeting and tradeshows. These extremely portable iPad stands play a vital role in improving and encouraging participation amongst the company's clientele. Whether it is video or survey, iPad / Tablet Kiosk bridges the gap between your content, and consumers noticing it. Product demonstrations and displays inspire viewers to focus on your company, building stronger leads with less time.</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">1219_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">600.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk4-13hg_1.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; vividads.co.nz &gt; Accessories</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK4-13HG</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 00:05:37 GMT
+                    [Expires] => Wed, 11 Mar 2015 00:05:37 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>sc</domain><code>auth/frontend/cannot_impersonate</code><location type='other'>request</location><internalReason>Customer 10902344 cannot be represented by the authenticated customer 100167004. One can only access one's own feeds or those of a managed account.</internalReason></error></errors>
+        )
+
+    [__pid] => 24340
+)
+
+2015-03-11T00:05:40+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/lcd-display-stand-for-tradeshows-retail-interactive-marketing.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title=" LCD Display Stand for Tradeshows &amp; Retail Display"/><atom:title type="text"> LCD Display Stand for Tradeshows &amp; Retail Display</atom:title><atom:content type="text">Our LCD stands covers both the office and expo display situations. Very easy to assemble and transport. Finished with a powder coating. The LCD stands, plasma stands are made from brushed aluminum with a satin silver finish. Durable for use in heavily trafficked areas, rust-proof aluminum blends in with nearly any environment.</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">290_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">799.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk100l_2.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; vividads.co.nz &gt; Accessories</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK100L</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 00:05:40 GMT
+                    [Expires] => Wed, 11 Mar 2015 00:05:40 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>sc</domain><code>auth/frontend/cannot_impersonate</code><location type='other'>request</location><internalReason>Customer 10902344 cannot be represented by the authenticated customer 100167004. One can only access one's own feeds or those of a managed account.</internalReason></error></errors>
+        )
+
+    [__pid] => 24340
+)
+
+2015-03-11T00:10:27+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/slimline-double-sided-fabric-tension-banner-stands-85-140hcm.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Double Sided -  Banner Stands (85 * 140cm)"/><atom:title type="text">Double Sided -  Banner Stands (85 * 140cm)</atom:title><atom:content type="text">&lt;p&gt;Vivid Ads has an exceptional set of skills, people, processes, facilities and track record. Brought together, this enables us to develop innovative and quality products that make your life easier. The typical customer benefits are super quick turnaround times, in-depth project management and more importantly quality drive by our vast experience. We thoroughly understand how critical it is for us to retain you as a client, in our goal to build a strong long term relationship with you.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;This section examines how our premium quality products are superior to your average down the road display shop:&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;br /&gt; &lt;strong&gt;Heavy Duty 4.5 grade frame:&amp;nbsp;&lt;/strong&gt;We produce all our goods&amp;nbsp;with heavy duty 4.5 grade Russian-made aluminium products.&amp;nbsp;This is a premium grade aluminium specially designed for commercial grade use and would last you a life time. The anodized tubes are carefully sliced to make sure the lock in mechanism is amazingly solid, this ensures that your frame is as sturdy as possible. &amp;nbsp;&amp;nbsp;&lt;br /&gt; &lt;br /&gt; &lt;strong&gt;Stability Mechanism:&amp;nbsp;&lt;/strong&gt;Our fabric banner stand frames are complimented by many features to make your experience wonderful. Our unique slide and lock mechanism ensures that the frame is extremely stable once assembled to ensure safety for you and your audience. All longer poles have a high elasticity bungee cord running inside them, so you never loose a component of your display system. The heavy duty base is engineered to carry 80% of the weight to allow for the display to be extremely stable.&lt;br /&gt; &lt;br /&gt; &lt;strong&gt;Versatility:&amp;nbsp;&lt;/strong&gt;Our fabric banner stands are innovatively designed to &amp;nbsp;offer you versatility that was never possible before. These frames can be combined with other components to form larger displays. So as your marketing message updates, all you need to do is order a new set of graphics and you will be able to replace them yourself instantly without any tools.&lt;/p&gt;&lt;p&gt;&lt;br /&gt; &lt;strong&gt;Ultra High Definition Graphics:&amp;nbsp;&lt;/strong&gt;Assigning fabrics to the our banner stands is as easy as ABC. The unique fabric is stitched almost like a pillow case so it can be slid on to the frame. This creates amazing tension in the fabric, making your artwork look out of this planet. Your printed graphics are of top notch quality. A great thanks to Fabrijet 3204D printer. We have over 3000m2 of custom branded fabrics in production for our clients each month. We ensure you that your brand colours from C to M to Y to K will be stop on. A special heat transfer process also makes these colours permanent for outdoor use. Our fabrics are also fully washable so it is perfectly fine if you happen to spill some coffee on it.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Reprints:&amp;nbsp;&lt;/strong&gt;Unlike many other small sized firms operating in this industry, we have been here for years and hope to be for many years to come. However here is the secret: Every company has a unique size of frame, so if you need a reprint and that small business has vanished off the planet, guess what? You are stuck with your display with no one to reprint it for you. Whereas we keep all your structure files safe in our servers, indefinitely. So if you need a reprint, all you need is your last order number and you are good to go!&lt;/p&gt;</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">1175_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">399.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk1-12hg_2.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; shop.vividads.com.sg &gt; Shop By Products &gt; Marketing Banner Stands</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK1-12HG</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 00:10:27 GMT
+                    [Expires] => Wed, 11 Mar 2015 00:10:27 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>sc</domain><code>auth/frontend/cannot_impersonate</code><location type='other'>request</location><internalReason>Customer 10902344 cannot be represented by the authenticated customer 100167004. One can only access one's own feeds or those of a managed account.</internalReason></error></errors>
+        )
+
+    [__pid] => 27872
+)
+
+2015-03-11T00:10:30+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/premium-single-sided-rollup-pullup-system-size-85-205cm.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Premium Banner Stand (85 * 205cm)"/><atom:title type="text">Premium Banner Stand (85 * 205cm)</atom:title><atom:content type="text">&lt;p&gt;Vivid Ads has an exceptional set of skills, people, processes, facilities and track record. Brought together, this enables us to develop innovative and quality products that make your life easier. The typical customer benefits are super quick turnaround times, in-depth project management, and more importantly quality drive by our vast experience. We thoroughly understand how critical it is for us to retain you as a client, in our goal to build a strong long term relationship with you.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;This section examines how our premium quality products are superior to your average down the road display shop:&lt;/p&gt;&lt;p&gt;&lt;strong&gt;&lt;br /&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Premium Base:&amp;nbsp;&lt;/strong&gt;The premium base of this banner stand employs an air locking mechanism and anti-heat mechanism using thermopole dots. This is used to protect your printed banner from moisture, dust, and reduce the impact of heat when in storage.&lt;/p&gt;&lt;p&gt;&lt;br /&gt; &lt;strong&gt;Heavy Duty 4.5 grade frame:&amp;nbsp;&lt;/strong&gt;This banner stand is produced with a heavy duty Russian-made aluminum anodized base. The commercial grade nature of the stand allows for over 10,000 roll ups on average. Commercial grade stainless steel springs are used all over to make the retraction nice and easy for you. This is also done so you can get maximum use out of the pull stand in the long term.&lt;br /&gt; &lt;br /&gt; &lt;strong&gt;Stability Mechanism:&amp;nbsp;&lt;/strong&gt;Our fabric banner stand frames are complimented by many features to make your experience wonderful. Structurally engineered, this stand carries 80% of its weight in the base to provide for maximum stability of the stand in various surrounding conditions. All longer poles have a high elasticity bungee cord running inside them, so you never loose a component of your display system. &lt;br /&gt; &lt;br /&gt; &lt;strong&gt;Ultra High Definition Graphics:&amp;nbsp;&lt;/strong&gt;We understand how important are your brand colors and graphics to you hence, we offer HD printing across all our banner stands and other printed products range. Your banner is produced using our latest printers and are printed in Ultra High Definition. This allows for your graphics to have maximum impact on your audience and be as catchy as they can be.&lt;/p&gt;</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">329_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">500.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk1-9hg_2.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; shop.vividads.com.sg &gt; Shop By Products &gt; Marketing Banner Stands</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK1-9HG</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 00:10:30 GMT
+                    [Expires] => Wed, 11 Mar 2015 00:10:30 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>sc</domain><code>auth/frontend/cannot_impersonate</code><location type='other'>request</location><internalReason>Customer 10902344 cannot be represented by the authenticated customer 100167004. One can only access one's own feeds or those of a managed account.</internalReason></error></errors>
+        )
+
+    [__pid] => 27872
+)
+
+2015-03-11T00:10:33+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/retractable-marketing-display-banner-stands.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Pullup Banner Stand (100 * 200cm)"/><atom:title type="text">Pullup Banner Stand (100 * 200cm)</atom:title><atom:content type="text">&lt;p&gt;Vivid Ads has an exceptional set of skills, people, processes, facilities and track record. Brought together, this enables us to develop innovative and quality products that make your life easier. The typical customer benefits are super quick turnaround times, in-depth project management, and more importantly quality drive by our vast experience. We thoroughly understand how critical it is for us to retain you as a client, in our goal to build a strong long term relationship with you.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;This section examines how our premium quality products are superior to your average down the road display shop:&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;br /&gt; &lt;strong&gt;Heavy Duty 4.5 grade frame:&amp;nbsp;&lt;/strong&gt;This banner stand is produced with a heavy duty Russian-made aluminum anodized base. The commercial grade nature of the stand allows for over 10,000 roll ups on average. Commercial grade stainless steel springs are used all over to make the retraction nice and easy for you. This is also done so you can get maximum use out of the pull stand in the long term.&lt;br /&gt; &lt;br /&gt; &lt;strong&gt;Stability Mechanism:&amp;nbsp;&lt;/strong&gt;Our fabric banner stand frames are complimented by many features to make your experience wonderful. Structurally engineered, this stand carries 80% of its weight in the base to provide for maximum stability of the stand in various surrounding conditions. All longer poles have a high elasticity bungee cord running inside them, so you never loose a component of your display system. &lt;br /&gt; &lt;br /&gt; &lt;strong&gt;Ultra High Definition Graphics:&amp;nbsp;&lt;/strong&gt;We understand how important are your brand colors and graphics to you hence, we offer HD printing across all our banner stands and other printed products range. Your banner is produced using our latest printers and are printed in Ultra High Definition. This allows for your graphics to have maximum impact on your audience and be as catchy as they can be.&lt;/p&gt;</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">328_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">349.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk1-1chg_3.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; shop.vividads.com.sg &gt; Shop By Products &gt; Marketing Banner Stands</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK1-1CHG</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 00:10:33 GMT
+                    [Expires] => Wed, 11 Mar 2015 00:10:33 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>sc</domain><code>auth/frontend/cannot_impersonate</code><location type='other'>request</location><internalReason>Customer 10902344 cannot be represented by the authenticated customer 100167004. One can only access one's own feeds or those of a managed account.</internalReason></error></errors>
+        )
+
+    [__pid] => 27872
+)
+
+2015-03-11T00:10:36+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/promotional-marketing-advertising-pull-up-banners.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Pullup Banner Stand (80 * 200cm)"/><atom:title type="text">Pullup Banner Stand (80 * 200cm)</atom:title><atom:content type="text">&lt;p&gt;Vivid Ads has an exceptional set of skills, people, processes, facilities and track record. Brought together, this enables us to develop innovative and quality products that make your life easier. The typical customer benefits are super quick turnaround times, in-depth project management, and more importantly quality drive by our vast experience. We thoroughly understand how critical it is for us to retain you as a client, in our goal to build a strong long term relationship with you.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;This section examines how our premium quality products are superior to your average down the road display shop:&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;br /&gt; &lt;strong&gt;Heavy Duty 4.5 grade frame:&amp;nbsp;&lt;/strong&gt;This banner stand is produced with a heavy duty Russian-made aluminum anodized base. The commercial grade nature of the stand allows for over 10,000 roll ups on average. Commercial grade stainless steel springs are used all over to make the retraction nice and easy for you. This is also done so you can get maximum use out of the pull stand in the long term.&lt;br /&gt; &lt;br /&gt; &lt;strong&gt;Stability Mechanism:&amp;nbsp;&lt;/strong&gt;Our fabric banner stand frames are complimented by many features to make your experience wonderful. Structurally engineered, this stand carries 80% of its weight in the base to provide for maximum stability of the stand in various surrounding conditions. All longer poles have a high elasticity bungee cord running inside them, so you never loose a component of your display system. &lt;br /&gt; &lt;br /&gt; &lt;strong&gt;Ultra High Definition Graphics:&amp;nbsp;&lt;/strong&gt;We understand how important are your brand colors and graphics to you hence, we offer HD printing across all our banner stands and other printed products range. Your banner is produced using our latest printers and are printed in Ultra High Definition. This allows for your graphics to have maximum impact on your audience and be as catchy as they can be.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">327_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">299.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk1-1bhg_3.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; shop.vividads.com.sg &gt; Shop By Products &gt; Marketing Banner Stands</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK1-1BHG</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 00:10:36 GMT
+                    [Expires] => Wed, 11 Mar 2015 00:10:36 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>sc</domain><code>auth/frontend/cannot_impersonate</code><location type='other'>request</location><internalReason>Customer 10902344 cannot be represented by the authenticated customer 100167004. One can only access one's own feeds or those of a managed account.</internalReason></error></errors>
+        )
+
+    [__pid] => 27872
+)
+
+2015-03-11T00:10:39+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/pop-up-banner-signs-1.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Pullup Banner Stand (60 *140cm)"/><atom:title type="text">Pullup Banner Stand (60 *140cm)</atom:title><atom:content type="text">Roll Up / Pull Up / Retractable banner display systems are one of the most popular ways of getting a business message or advertisement to an audience. These displays are eye-catching, inexpensive and easy to use and can be assembled in less than a minute and disassembled just as easily. All you need do once you are at the venue is unlock the bottom case, slide up the banner and hook it onto its pole stand.</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">326_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">199.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/d/vdk1-1ahg_1.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">out of stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; Mobile Store &gt; Shop By Product</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VDK1-1AHG</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 00:10:39 GMT
+                    [Expires] => Wed, 11 Mar 2015 00:10:39 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>sc</domain><code>auth/frontend/cannot_impersonate</code><location type='other'>request</location><internalReason>Customer 10902344 cannot be represented by the authenticated customer 100167004. One can only access one's own feeds or those of a managed account.</internalReason></error></errors>
+        )
+
+    [__pid] => 27872
+)
+
+2015-03-11T00:37:20+00:00 DEBUG (7): Array
+(
+    [method] => GET
+    [url] => https://content.googleapis.com/content/v1/100168326/items/products/generic/online:en:AU:496_5?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => 
+    [content_type] => 
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 00:37:19 GMT
+                    [Expires] => Wed, 11 Mar 2015 00:37:19 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>GData</domain><code>quotaExceeded</code><internalReason>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</internalReason><extendedHelp>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</extendedHelp></error></errors>
+        )
+
+    [__pid] => 11454
+)
+
+2015-03-11T00:52:52+00:00 DEBUG (7): Array
+(
+    [method] => GET
+    [url] => https://content.googleapis.com/content/v1/100168326/items/products/generic/online:en:AU:498_5?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => 
+    [content_type] => 
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 00:52:52 GMT
+                    [Expires] => Wed, 11 Mar 2015 00:52:52 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>GData</domain><code>quotaExceeded</code><internalReason>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</internalReason><extendedHelp>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</extendedHelp></error></errors>
+        )
+
+    [__pid] => 20376
+)
+
+2015-03-11T01:11:16+00:00 DEBUG (7): Array
+(
+    [method] => GET
+    [url] => https://content.googleapis.com/content/v1/100168326/items/products/generic/online:en:AU:503_5?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => 
+    [content_type] => 
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 01:11:16 GMT
+                    [Expires] => Wed, 11 Mar 2015 01:11:16 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>GData</domain><code>quotaExceeded</code><internalReason>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</internalReason><extendedHelp>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</extendedHelp></error></errors>
+        )
+
+    [__pid] => 30615
+)
+
+2015-03-11T22:28:40+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/10902344/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/premium-banner-stand-85-205cm-1861.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Value Package - Premium Banner Stand (85 * 205cm)"/><atom:title type="text">Value Package - Premium Banner Stand (85 * 205cm)</atom:title><atom:content type="text">&lt;p&gt;Mesmerize your audience with our incredibly marvelous value kit, coming with state of the art background display that has a curve, distinguishing it from the mainstream, and turning your whole exhibit unique in its own style. Others will only build castles in the air for you. We, on the contrary, promise admirable, first-rate quality that lasts forever.&lt;br /&gt;&lt;br /&gt;With a curvy look, our display serves as a background wall in a way that even the most distracted of customers are bound to pause and look at it. Exclusive in style and looks, our slimline fabric display offers ease of use and swift set up time. This display has an entirely unique, eye catching design, drawing the eyes of the on lookers towards its immensely captivating curved layout.&lt;br /&gt;&lt;br /&gt;Coming with the kit is our fabric podium that has a polished wooden table top and a hard case to keep your counter display safe. Additionally, this display is extremely easy to carry along. The heavy duty structure of the counter makes your brand become the center of attention in that crowded trade show floor. The spider frame allows for easy assembling and dismantling, making it easy to take along your display easily, anywhere, anytime of the day.&lt;br /&gt;&lt;br /&gt;With High Definition fabric, the clarity and quality not only increases but also provides ease of visibility and spark. Your business needs no more than our heavy-duty podium that is the wisest of all choices when your concern is maximum impact on your clients. With the zipper at the backside of the fabric, assembling the counter becomes a piece of cake. We understand all your needs well which is why our experts employ the latest tools and techniques to form these kiosks. Do not waste another second and start engaging your clients now with the all new fabric desk we offer!&lt;br /&gt;&lt;br /&gt;You don't need a reason to buy this kit. That's true! With all the necessary marketing tools inside, the kit offers everything successful trade demonstration demands. Furthermore, the kit lasts longer than you may expect it to. What could be better than having something that lasts a lifetime.&lt;/p&gt;&lt;p&gt;&lt;br /&gt;Come and get it before its too late! We offer all-in-one solutions so you can get the best out of your trade show experience. This kit has to offer everything that provides true value to you for a rich, classy expo display.&lt;/p&gt;</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">1746_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">1500.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/p/vpxo94.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; vividads.com.au &gt; Pull Up / Roll Up Banners Stands</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VP-XO-94</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 22:28:40 GMT
+                    [Expires] => Wed, 11 Mar 2015 22:28:40 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>sc</domain><code>auth/frontend/cannot_impersonate</code><location type='other'>request</location><internalReason>Customer 10902344 cannot be represented by the authenticated customer 100167004. One can only access one's own feeds or those of a managed account.</internalReason></error></errors>
+        )
+
+    [__pid] => 21715
+)
+
+2015-03-11T22:37:58+00:00 DEBUG (7): Array
+(
+    [method] => POST
+    [url] => https://content.googleapis.com/content/v1/100167004/items/products/generic?warnings
+    [headers] => Array
+        (
+            [x-http-method-override] => 
+        )
+
+    [body] => <atom:entry xmlns:atom="http://www.w3.org/2005/Atom"><atom:link href="http://vividads.com.au/slimline-display-wall-3m-wide-3127.html?___store=vividads_com_au&amp;___store=vividads_com_au" rel="alternate" type="text/html" title="Slimline Display Wall (3m Wide)"/><atom:title type="text">Slimline Display Wall (3m Wide)</atom:title><atom:content type="text">&lt;p style="text-align: justify;"&gt;There are several reasons why this kit works best in nearly all Australian trade show exhibits. Inclusive of all trade show essentials, the kit is an efficient and effective way to inform all your clients about your products and services. Use it anywhere at any time you want to, and you will certainly notice remarkably increased returns on your investment.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;The fabric-tension display wall makes your booth a sight for sore eyes in the crowded trade show floor. Use it as a structural aspect of your booth, and meet all your company&amp;rsquo;s promotion needs. Displaying with this curved-wall is a highly cost effective way of uniquely promoting your brand.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;Used with a pair of bright LED lights, the wall illuminates your trade show floor and helps detract from the harsh lights of most convention halls. You may want to use it to create faux architectural features of your exhibit, turning your booth look more polished and brighter. Alternatively, you may use it to delineate spaces within your exhibit booth that needed extra bit of attention.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;With all their clarity and glare, the remarkably striking fabric banner stands catch the attention of all people on the move. Anyone out and about would be bound to look at the stands, and would certainly rush towards your booth right on. Our banner stands are not only portable and lightweight, but equally easy to assemble and dismantle, with banner graphics rolling up into the base, allowing you to easily carry them anywhere you like. They come in an easy carry case, with two feet for each. The feet twist out to stabilize the display, giving your trade show floor, maximum wallop.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;Our brochure stand is an added advantage to this kit. Exceedingly popular among all Australian trade shows, it brings elegance in its true form. There is no other better way to say that you are a state-of-the-art company than to use this lightweight, user-friendly brochure stand. With its neat and well organized display style, our classy zigzag design of the brochure stand features your business' name and logo with high definition printing that compliments your trademark color giving an aesthetic appeal to your stand. Moreover, the stands' frames is absolutely light in weight. If there's anything that would make the stand heavy, it would only be the materials on it, that is the brochures, and NOT the materials of which the frame is made.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;Our table throw adds depth and richness to an otherwise plain looking booth. This colorful table throw will certainly add color and vibrancy to an otherwise bland sphere of your exhibit. Shape an impressive exhibit just by covering a table; it's that easy! Choose any color or design for your custom printed stretchy table throw. You may consider a richly colored tapestry to add some bounce or you may provide your own design and colors. Just because you cover a table doesn't mean you can't still use it. It will take on an entire new look when you add artfully arranged accents on the top.&lt;/p&gt;&lt;p style="text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;&lt;p style="text-align: justify;"&gt;Come and get before it&amp;rsquo;s</atom:content><app:control xmlns:app="http://www.w3.org/2007/app"/><id xmlns="http://schemas.google.com/structuredcontent/2009">1756_166</id><attribute xmlns="http://schemas.google.com/structuredcontent/2009" unit="AUD" name="price" type="float">2175.00</attribute><image_link xmlns="http://schemas.google.com/structuredcontent/2009">http://vividads.com.au/media/catalog/product//v/p/vpxo105.jpg</image_link><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="condition" type="text">new</attribute><target_country xmlns="http://schemas.google.com/structuredcontent/2009">AU</target_country><content_language xmlns="http://schemas.google.com/structuredcontent/2009">en</content_language><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="availability" type="text">in stock</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="google_product_category" type="text"/><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="product_type" type="text"> &gt; vividads.com.au &gt; Tradeshow Displays Package</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="brand" type="text">Vivid Displays</attribute><attribute xmlns="http://schemas.google.com/structuredcontent/2009" name="mpn" type="text">VP-XO-105</attribute></atom:entry>
+    [content_type] => application/atom+xml
+    [remaining_redirects] => 
+    [response] => Zend_Http_Response Object
+        (
+            [version:protected] => 1.1
+            [code:protected] => 403
+            [message:protected] => Forbidden
+            [headers:protected] => Array
+                (
+                    [Content-type] => application/vnd.google.gdata.error+xml
+                    [Date] => Wed, 11 Mar 2015 22:37:58 GMT
+                    [Expires] => Wed, 11 Mar 2015 22:37:58 GMT
+                    [Cache-control] => private, max-age=0
+                    [X-content-type-options] => nosniff
+                    [X-frame-options] => SAMEORIGIN
+                    [X-xss-protection] => 1; mode=block
+                    [Server] => GSE
+                    [Alternate-protocol] => 443:quic,p=0.08
+                    [Accept-ranges] => none
+                    [Vary] => Accept-Encoding
+                    [Connection] => close
+                )
+
+            [body:protected] => <errors xmlns='http://schemas.google.com/g/2005'><error><domain>GData</domain><code>quotaExceeded</code><internalReason>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</internalReason><extendedHelp>As announced in June 2014, the Shopping Content API v1 was sunset at the end of February 2015 and replaced by Shopping Content API v2 (https://developers.google.com/shopping-content/). You can request a temporary migration extension until March 31, 2015 to finish any remaining Shopping Content API v1 migration work here: http://goo.gl/OP6EXQ</extendedHelp></error></errors>
+        )
+
+    [__pid] => 24067
+)
+

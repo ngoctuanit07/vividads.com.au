@@ -1,0 +1,197 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * @see Mage_Page_Block_Template_Links
+ */
+	 $sliders = Mage::getStoreConfig('youamaslider');
+     $images = Mage::getBaseUrl('media') . 'youama/slider/';
+	 
+	 $control =0;
+	 $totalImages = count($sliders['image']);
+	 
+	 
+	 /////////////////////////////////fetching main categories///////////////////////
+	 
+	 $storeId    = Mage::app()->getStore()->getId();
+			
+	 $_store_cats = Mage::getModel('catalog/category')->load(1460);
+	 $_categories = $_store_cats->getChildrenCategories();
+	 
+	 
+	 
+?>
+
+
+
+<div class="float-L" id="rightbar"> 
+      <!-- homepage animation start-->
+      <div class="animation-container">
+        <div class="viewer">
+          <div class="sliderControl"> 
+          <?php 
+		      $i = 0;
+		  		foreach($sliders as $slider){
+					if($slider['image']!=''){
+						$i++;
+		  ?>
+          <a href="#" rel="<?php echo $i;?>"><?php echo $i;?></a>
+            <?php 
+					}
+				
+				}
+			?>
+             </div>
+          <div class="slideimages"> 
+          <?php 
+		  	foreach($sliders as $slider){
+				if($slider['image']!=''){
+		  ?>
+          <a href="<?php echo $slider['link'];?>" target="_blank" title="<?php echo $slider['text'];?>">
+           <img src="<?php echo $images.$slider['image'];?>" width="720" height="160" alt="<?php echo $slider['link'];?>"  />
+           </a> 
+            <?php 
+				}
+			
+			}
+			?>
+            </div>
+        </div>
+      </div>
+      <div class="shadowSprite shadow720"></div>
+      
+      <!--homepage animation end--> 
+      
+      <!--calculator-->
+      <?php //echo $this->getChildHtml('calculator');
+	 /*calculator here*/	
+		echo $this->getLayout()->createBlock('core/template')->setTemplate('page/template/calculator.phtml')->toHtml();   
+	
+	 ?>
+      <!--/calculator-->
+     
+      <div id="homeCategory-module">
+        <section class="title">
+          <h1>Vinyl Banners & Custom Banner Printing</h1>
+        </section>
+        <div id="homeCategory-Tab1" class="clearfix">
+          
+     <?php
+     ////Main Categories Show here///
+	 $_store_cats = Mage::getModel('catalog/category')->load(1546);
+	 $_fullcolor_categories = $_store_cats->getChildrenCategories();
+			$counter=0;
+			$j=1;
+			foreach($_fullcolor_categories as $_category){
+						if($counter <6 ){	
+						
+						$cur_category=Mage::getModel('catalog/category')->load($_category->getId());
+						$layer = Mage::getSingleton('catalog/layer');
+						$layer->setCurrentCategory($cur_category);		
+		?>
+          
+          <section class="category-module"> 
+          
+          <div class="productImage" >
+          <a href="<?php echo $_category->getUrl();?>" class="category-img thumb<?=$j;?>">
+          <?php  $full_path_url = $layer->getCurrentCategory()->getImageUrl();		 ?>	
+            <img src="<?php echo $full_path_url; ?>" width="207" height="209" /> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a href="<?php echo $_category->getUrl();?>" class="blue-clr pro-title" title="<?php echo $_category->getName();?>">
+			<?php echo $_category->getName();?></a>
+            <p class="font11">
+			
+			<?php // echo $layer->getCurrentCategory()->getDescription(); ?>
+			
+			<?php echo substr($layer->getCurrentCategory()->getDescription(),0,100);?>...</p>
+            </div>
+          </section>
+          
+        <?php
+			}
+			$counter++;
+			$j++;
+			
+		}
+		?>
+        
+        
+        </div>
+      </div>
+      <?php
+            
+			///fetching cms page
+			$tab1 = Mage::getModel('cms/page')->load('why-choose-us', 'identifier'); 
+			$tab2 = Mage::getModel('cms/page')->load('free-shipping', 'identifier'); 
+			$tab3 = Mage::getModel('cms/page')->load('top-sellers-vinyl-banners', 'identifier'); 
+	  		
+	  ?>
+       
+      
+      <div class="customTab">
+        <ul id="tabmenu" >
+          <li onClick="makeactive(1)">
+            <h2><a class="active" id="tab1"><?php echo $tab1->getTitle();?></a></h2>
+          </li>
+          <li onClick="makeactive(2)">
+            <h2><a class="" id="tab2"><?php echo $tab2->getTitle();?></a></h2>
+          </li>
+          <li onClick="makeactive(3)">
+            <h2><a class="" id="tab3"><?php echo $tab3->getTitle();?></a></h2>
+          </li>
+        </ul>
+        <div id="content" class="clearfix float-L ">
+        
+       
+        <?php echo $tab1->getContent();?>
+        </div>
+        <div class="shadowSprite shadow720"></div>
+      </div>
+      
+      <!-- right end --> 
+      
+    
+      <div style="display:none;">TJOOS-16788220</div>
+      
+      <!-- Main_page_eof //--> 
+      <!-- featured_products_mainpage //--> 
+      <!-- featured_products_eof //--> 
+      
+      <!-- footer start--> 
+      <script language="javascript">
+	 <!--
+	 document.getElementById('major').value='m';
+	 loadqtycombo();
+	 
+	 -->
+	 </script>
+      
+    </div>
+ <div class="clear">&nbsp;</div>

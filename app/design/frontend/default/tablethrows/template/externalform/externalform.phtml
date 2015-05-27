@@ -1,0 +1,1151 @@
+<style>
+<!--
+.uploader_artwork {
+	display: none;
+}
+.contacts_button {
+	display: none;
+}
+#livechat-full {
+	display: none;
+}
+.main-container {
+
+}
+.externalform-index-index .page {
+	background: transparent !important;
+	float: left;
+	margin: 0 auto;
+	position: relative;
+}
+.externalform-index-index {
+	background: none !important;
+}
+.externalform-index-index  input.input-text, select {
+    background: none repeat scroll 0 0 white !important;
+    border: none 0px;
+    color: #343434;
+    font-size: 12px !important;
+    font-weight: normal !important;
+
+    line-height: 25px;
+}
+.page .layout-grid {
+	background: none repeat scroll 0 0 #ef781e;
+	margin: 0;
+	padding: 0;
+}
+.row {
+	margin: 0 auto;
+	background-color: #ef781e;
+	width: 1040px;
+}
+.col1-layout .col-main {
+	margin: 0px auto 0px 11px;
+	width: 900px;
+	background-color: #ef781e;
+}
+.addthis_toolbox {
+	display: none;
+}
+externalform-index-index .col2-left-layout .col-main {
+	width: 930px;
+}
+.externalform-index-index .main {
+	float: left;
+	margin-top: 0;
+	width: 940px !important;
+	margin-left: 0px !important;
+}
+.externalform-index-index .top_menu {
+	margin-bottom: 5px;
+	float: right;
+	display: none !important;
+}
+.externalform-index-index .youama-slider-block {
+	display: none !important;
+}
+.externalform-index-index .contact_info {
+	float: right;
+	display: none !important;
+}
+.externalform-index-index .Bread-Crumbs {
+	background: #ef781e;
+	border: none 0px;/* float: left; *//* margin: 0px 0 0; *//* width: 940px; *//* border-bottom: 1px solid #f6d6be; */
+}
+.factory {
+	margin: 0;
+	position: relative;
+	top: 0;
+	display: none;
+	width: 1200px;
+}
+.error_labels {
+	color: #fff;
+	left: 15px;
+	position: relative;
+	text-shadow: 1px 2px 1px #5d5c5c;
+	top: 11px;
+	background-color: #F00;
+	line-height: 20px;
+	padding: 3px;
+	display: none;
+}
+#quoteLoader .main-container .col-main {
+	width: 900px;
+	margin: 0px 17px 0px 17px
+}
+.prod {
+	-moz-appearance: none;
+	color: #919da8;
+	display: block;
+	font-family: "Roboto", Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	margin: 0;
+	outline: medium none;
+	padding: 9px 10px;
+	text-indent: 0.01px;
+	text-overflow: "";
+	z-index: 10;
+	border: 2px solid #bdc3c7;
+	height: 42px;
+	position: relative;
+	vertical-align: top;
+	width: 100%;
+	border-radius: 3px;
+	transition: all 0.5s ease-in-out 0s;
+	box-sizing: border-box;
+}
+.con {
+	float: left;
+	margin-left: 20px;
+	padding: 5px 0;
+}
+.form-header {
+	margin-top: 10px !important;
+}
+.del_button {
+	float: left;
+	margin-left: 10px;
+	margin-top: -22px;
+	width: 10%;
+}
+.item-other-options {
+	position: absolute;
+	width: 300px;
+	height: auto;
+	border: 1px solid #888;
+	z-index: 999;
+	background-color: #FFF;
+	padding: 5px;
+}
+
+.ds_box {
+	background-color: #FFF;
+	border: 1px solid #000;
+	position: absolute;
+	z-index: 32767;
+}
+.ds_tbl {
+	background-color: #FFF;
+}
+.cms-quotation .smart-forms .header-primary {
+    background-color: #ef781e;
+    border-bottom: 5px solid #ef781e;
+    border-top: 1px solid #ef781e;
+    width: 100%;
+}
+.cms-quotation .smart-forms .frm-row .colm6 {
+    width: 49.77%;
+}
+.cms-quotation .smart-forms .frm-row .colm11 {
+    width: 99.66%;
+}
+.cms-quotation .smart-forms .form-footer {
+    overflow: hidden;
+    padding: 25px 25px 0;
+    text-align: right;
+    width: 100%;
+}
+.ds_head {
+	background-color: #333;
+	color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: center;
+	letter-spacing: 2px;
+}
+.ds_subhead {
+	background-color: #CCC;
+	color: #000;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	width: 32px;
+}
+.ds_cell {
+	background-color: #EEE;
+	color: #000;
+	font-size: 13px;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 5px;
+	cursor: pointer;
+}
+.ds_cell:hover {
+	background-color: #F3F3F3;
+} /* This hover code won't work for IE */
+
+-->
+</style>
+
+<table class="ds_box" cellpadding="0" cellspacing="0" id="ds_conclass" style="display: none;">
+  <tr>
+    <td id="ds_calclass"></td>
+  </tr>
+</table>
+<?php
+  ///getting store and store id
+
+	 $_store_id = Mage::app()->getStore()->getId();
+	 $_store = Mage::getSingleton('core/store')->load($_store_id); 
+	 $_store_group = $_store->getGroup()->getData();
+	 $_root_category = $_store_group['root_category_id'];
+	 $_category = Mage::getModel('catalog/category')->load($_root_category);
+	 $_subcategories = $_category->getChildrenCategories();
+	 $rootId = Mage::app()->getStore($storeId)->getRootCategoryId();
+     $categories = Mage::getModel('catalog/category')
+			        ->getCollection()
+			        ->addFieldToFilter('path', array('like'=> "1/$rootId/%"));
+    //echo "sdgsdfg".Mage::getSingleton("core/session",array('name' => 'frontend'))->getCaptcha();
+	//var_dump($_subcategories);
+	//exit;
+    //exit;
+     Mage::getSingleton("core/session")->setCaptcha("");	
+	 $current_session = Mage::getSingleton('customer/session');
+	 $current_customer = $current_session->getCustomer();
+	 $logged_in = $current_session->isLoggedIn();	 
+	 $customer_data = $current_customer->getData();
+	 
+	 ///get default Billing address of current customer
+	 if($logged_in){
+		 $baddress = array();
+		 if($current_customer->getDefault_billing()){
+		 $baddress = Mage::getModel('customer/address')->load($current_customer->getDefault_billing());
+		 
+		// $address = Mage::getModel('customer/address')->load($current_customer->getDefault_billing());
+		// $customer = array_merge((array)$current_customer,$baddress->getDefaultBillingAddress()->getData());
+		 
+		 $billing_address = $baddress->getData();			
+			$customer = array_merge($customer_data,$billing_address );
+		}
+		
+		//   var_dump($customer);  
+		
+	 }
+?>
+<link rel="stylesheet" type="text/css"  href="<?php echo $this->getSkinUrl()?>externalform/css/smart-forms.css">
+<link rel="stylesheet" type="text/css"  href="<?php echo $this->getSkinUrl()?>externalform/css/font-awesome.min.css">
+<script  src="<?php echo $this->getSkinUrl()?>externalform/js/jquery.form.min.js"> </script> 
+<script  type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/jquery.validate.min.js"></script> 
+<script  type="text/javascript"  src="<?php echo $this->getSkinUrl()?>externalform/js/additional-methods.min.js"></script> 
+<script  type="text/javascript"  src="<?php echo $this->getSkinUrl()?>externalform/js/smart-form.js"></script> 
+<script  type="text/javascript">
+
+// Set the initial date.
+var ds_i_date = new Date();
+ds_c_month = ds_i_date.getMonth() + 1;
+ds_c_year = ds_i_date.getFullYear();
+// Get Element By Id
+function ds_getel(id) {
+	return document.getElementById(id);
+}
+// Get the left and the top of the element.
+function ds_getleft(el) {
+	var tmp = el.offsetLeft;
+	el = el.offsetParent
+	while(el) {
+		tmp += el.offsetLeft;
+		el = el.offsetParent;
+	}
+	return tmp;
+}
+function ds_gettop(el) {
+	var tmp = el.offsetTop;
+	el = el.offsetParent
+	while(el) {
+		tmp += el.offsetTop;
+		el = el.offsetParent;
+	}
+	return tmp;
+}
+// Output Element
+var ds_oe = ds_getel('ds_calclass');
+// Container
+var ds_ce = ds_getel('ds_conclass');
+// Output Buffering
+var ds_ob = ''; 
+function ds_ob_clean() {
+	ds_ob = '';
+}
+function ds_ob_flush() {
+	ds_oe.innerHTML = ds_ob;
+	ds_ob_clean();
+}
+function ds_echo(t) {
+	ds_ob += t;
+}
+var ds_element; // Text Element...
+var ds_monthnames = ['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December']; // You can translate it for your language.
+var ds_daynames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; // You can translate it for your language.
+// Calendar template
+function ds_template_main_above(t) {
+	return '<table cellpadding="3" cellspacing="1" class="ds_tbl">'
+	     + '<tr>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_py();"><<</td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_pm();"><</td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_hi();" colspan="3">[Close]</td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_nm();">></td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_ny();">>></td>'
+		 + '</tr>'
+	     + '<tr>'
+		 + '<td colspan="7" class="ds_head">' + t + '</td>'
+		 + '</tr>'
+		 + '<tr>';
+}
+function ds_template_day_row(t) {
+	return '<td class="ds_subhead">' + t + '</td>';
+	// Define width in CSS, XHTML 1.0 Strict doesn't have width property for it.
+}
+function ds_template_new_week() {
+	return '</tr><tr>';
+}
+function ds_template_blank_cell(colspan) {
+	return '<td colspan="' + colspan + '"></td>'
+}
+function ds_template_day(d, m, y) {
+	return '<td class="ds_cell" onclick="ds_onclick(' + d + ',' + m + ',' + y + ')">' + d + '</td>';
+	// Define width the day row.
+}
+function ds_template_main_below() {
+	return '</tr>'
+	     + '</table>';
+}
+// This one draws calendar...
+function ds_draw_calendar(m, y) {
+	// First clean the output buffer.
+	ds_ob_clean();
+	// Here we go, do the header
+	ds_echo (ds_template_main_above(ds_monthnames[m - 1] + ' ' + y));
+	for (i = 0; i < 7; i ++) {
+		ds_echo (ds_template_day_row(ds_daynames[i]));
+	}
+	// Make a date object.
+	var ds_dc_date = new Date();
+	ds_dc_date.setMonth(m - 1);
+	ds_dc_date.setFullYear(y);
+	ds_dc_date.setDate(1);
+	if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12) {
+		days = 31;
+	} else if (m == 4 || m == 6 || m == 9 || m == 11) {
+		days = 30;
+	} else {
+		days = (y % 4 == 0) ? 29 : 28;
+	}
+	var first_day = ds_dc_date.getDay();
+	var first_loop = 1;
+	// Start the first week
+	ds_echo (ds_template_new_week());
+	// If sunday is not the first day of the month, make a blank cell...
+	if (first_day != 0) {
+		ds_echo (ds_template_blank_cell(first_day));
+	}
+	var j = first_day;
+	for (i = 0; i < days; i ++) {
+		// Today is sunday, make a new week.
+		// If this sunday is the first day of the month,
+		// we've made a new row for you already.
+		if (j == 0 && !first_loop) {
+			// New week!!
+			ds_echo (ds_template_new_week());
+		}
+		// Make a row of that day!
+		ds_echo (ds_template_day(i + 1, m, y));
+		// This is not first loop anymore...
+		first_loop = 0;
+		// What is the next day?
+		j ++;
+		j %= 7;
+	}
+	// Do the footer
+	ds_echo (ds_template_main_below());
+	// And let's display..
+	ds_ob_flush();
+	// Scroll it into view.
+	ds_ce.scrollIntoView();
+}
+// A function to show the calendar.
+// When user click on the date, it will set the content of t.
+function ds_sh(t) {
+	
+	
+	// Set the element to set...
+	ds_element = t;
+	// Make a new date, and set the current month and year.
+	var ds_sh_date = new Date();
+	ds_c_month = ds_sh_date.getMonth() + 1;
+	ds_c_year = ds_sh_date.getFullYear();
+	// Draw the calendar
+	ds_draw_calendar(ds_c_month, ds_c_year);
+	// To change the position properly, we must show it first.
+	ds_ce.style.display = '';
+	// Move the calendar container!
+	the_left = ds_getleft(t);
+	the_top = ds_gettop(t) + t.offsetHeight;
+	//console.log('left='+the_left+' top='+the_top);
+	//the_left = the_left-311;
+	//the_top = the_top-930;
+	
+	//ds_ce.style.left = the_left+ 'px';
+	//ds_ce.style.top = the_top+ 'px';
+	
+	//console.log('left='+the_left+' top='+the_top);
+	
+	jQuery(function(){
+		 
+		var fposition = jQuery('.smart-forms').offset();
+		if(fposition){
+			var ftop = the_top-fposition.top;
+			var fleft = the_left-fposition.left;
+			ftop = ftop-63;
+			fleft = fleft+158;
+			ds_ce.style.left = fleft+ 'px';
+			ds_ce.style.top = ftop+ 'px';
+		}else{
+			ds_ce.style.left = the_left+ 'px';
+			ds_ce.style.top = the_top+ 'px';
+			}
+			// console.log(fposition);
+		});
+	// Scroll it into view.
+	//ds_ce.scrollIntoView();
+}
+// Hide the calendar.
+function ds_hi() {
+	ds_ce.style.display = 'none';
+}
+// Moves to the next month...
+function ds_nm() {
+	// Increase the current month.
+	ds_c_month ++;
+	// We have passed December, let's go to the next year.
+	// Increase the current year, and set the current month to January.
+	if (ds_c_month > 12) {
+		ds_c_month = 1; 
+		ds_c_year++;
+	}
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+// Moves to the previous month...
+function ds_pm() {
+	ds_c_month = ds_c_month - 1; // Can't use dash-dash here, it will make the page invalid.
+	// We have passed January, let's go back to the previous year.
+	// Decrease the current year, and set the current month to December.
+	if (ds_c_month < 1) {
+		ds_c_month = 12; 
+		ds_c_year = ds_c_year - 1; // Can't use dash-dash here, it will make the page invalid.
+	}
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+// Moves to the next year...
+function ds_ny() {
+	// Increase the current year.
+	ds_c_year++;
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+// Moves to the previous year...
+function ds_py() {
+	// Decrease the current year.
+	ds_c_year = ds_c_year - 1; // Can't use dash-dash here, it will make the page invalid.
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+// Format the date to output.
+function ds_format_date(d, m, y) {
+	// 2 digits month.
+	m2 = '00' + m;
+	m2 = m2.substr(m2.length - 2);
+	// 2 digits day.
+	d2 = '00' + d;
+	d2 = d2.substr(d2.length - 2);
+	// YYYY-MM-DD
+	return y + '-' + m2 + '-' + d2;
+}
+// When the user clicks the day.
+function ds_onclick(d, m, y) {
+	// Hide the calendar.
+	ds_hi();
+	// Set the value of it, if we can.
+	if (typeof(ds_element.value) != 'undefined') {
+		ds_element.value = ds_format_date(d, m, y);
+	// Maybe we want to set the HTML in it.
+	} else if (typeof(ds_element.innerHTML) != 'undefined') {
+		ds_element.innerHTML = ds_format_date(d, m, y);
+	// I don't know how should we display it, just alert it to user.
+	} else {
+		alert (ds_format_date(d, m, y));
+	}
+}
+// And here is the end.
+// ]]> -->
+function setCookie(cname,cvalue,exdays)
+{
+    var d = new Date();
+    d.setTime(d.getTime()+(exdays*24*60*60*1000));
+    var expires = "expires="+d.toGMTString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+function getCookie(cname)
+{
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) 
+      {
+      var c = ca[i].trim();
+      if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+      }
+    return "";
+}
+
+///update captcha code and refresh page// 
+  function updateCaptcha(){
+		 var captchaurl = '<?php echo Mage::getBaseUrl() ?>index.php/externalform/index/refreshcpatcha';
+		 var params={form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey();?>',}
+		 jQuery.ajax({
+			 url: captchaurl,
+			type: "POST",
+			dataType:"JSON",					
+			data: params,
+			beforeSend: function(){
+				jQuery('#captcha_loader').show();
+				},
+			success: function(data){
+				//console.log(data.newtext);
+				document.getElementById('captcha_value').value = data.newtext;
+				 document.getElementById('captcha').src='<?php echo Mage::getBaseUrl(); ?>externalform/captcha.php?ts=<?php echo time(); ?>&text='+data.newtext; 
+				 document.getElementById('captcha-form').focus();
+				 jQuery('#captcha_loader').hide();
+				},			
+			 });
+		 }
+      function addProductRow(){
+                   // alert('Hello ');
+				  // console.log(<?php echo $_root_category;?>);
+				 //  return false;
+					//exit;
+                    jQuery.ajax({
+                         url: "<?php echo Mage::getBaseUrl();?>index.php/externalform/index/addMore/",
+                         type: "POST",
+                         data: "store_id=<?php echo $_store_id; ?>&root_cat=<?php echo $_root_category; ?>",
+                          beforeSend: function(){
+							 jQuery('#new_product_add').show();
+							 },
+                         success: function(abc){
+                                 jQuery("#all_pro_con").append(abc);
+                                 jQuery(".del_it").unbind("click");
+                                 jQuery(".del_it").bind("click",del_it);
+								 jQuery('#new_product_add').hide();
+                         }
+                    });
+                }		
+	  function getProduct(catid,curr_ele){
+                    var param="catid="+catid+"&storeid="+'<?php echo $_store_id?>';
+					//console.log(param);
+                    jQuery.ajax({
+                           type:'POST',
+                           url:'<?php echo Mage::getBaseUrl();?>index.php/externalform/index/getProduct/',
+                           data:param,
+						   beforeSend: function(){
+							   jQuery(curr_ele).parent().parent().parent().find("#load_product").show();
+							   },
+                           success: function(ret){
+                           	// alert(ret);				
+                             // console.log(jQuery(curr_ele).parent().parent().parent().parent());
+					jQuery(curr_ele).parent().parent().parent().parent().find(".proddiv").html(ret);                    jQuery(curr_ele).parent().parent().parent().find("#load_product").hide();
+                            }
+                });
+                }				
+      function getProdImage(prodid,curr_ele){
+                    var param="prodid="+prodid;
+                    jQuery.ajax({
+                           type:'POST',
+                           url:'<?php echo Mage::getBaseUrl();?>index.php/externalform/index/getProductImage/',
+                           data:param,
+						   beforeSend: function(){
+							     jQuery(curr_ele).parent().parent().parent().find("#load_image").show();
+							   },
+                           success: function(ret)
+                           {
+                             //alert(ret);                           
+                              //jQuery('#prodimgdiv').html(ret);
+                              jQuery(curr_ele).parent().parent().parent().parent().find(".prodimgdiv").html(ret);
+                              //initLightbox();
+							  jQuery(curr_ele).parent().parent().parent().find("#load_image").hide();
+							  loadProductOptions(prodid,curr_ele);
+                            }
+                });
+            }
+	function loadProductOptions(prodid,curr_ele){
+		var param="prodid="+prodid;
+                    jQuery.ajax({
+                           type:'POST',
+                           url:'<?php echo Mage::getBaseUrl();?>index.php/externalform/index/getProductOptions/',
+                           data:param,
+						   beforeSend: function(){
+							      jQuery(curr_ele).parent().parent().parent().find("#load_image").show();
+								 jQuery(curr_ele).parent().parent().parent().parent().find(".products_options").html('');
+							   },
+                           success: function(resp)
+                           {
+                              //jQuery('#prodimgdiv').html(ret);
+                               jQuery(curr_ele).parent().parent().parent().parent().find(".products_options").html(resp);							 
+							   jQuery(curr_ele).parent().parent().parent().find("#load_image").hide();
+                            }
+                });
+		}		
+		// get product Image ajax call funciton code ends here.                               
+		// delete product row ajax call funciton code starts here.                   
+      function del_it()
+            {
+                jQuery(this).parent().parent().remove();
+            }
+	function submitOrder(){
+          var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;    
+          var actionUrl=jQuery("#actionUrl").attr("value");
+            //alert(actionUrl);
+             //  jQuery("#loader_id").show();
+              // jQuery("#sub_cusord").hide();
+			   console.log($( "#cus_ordfrm" ).validate());	
+			   console.log(jQuery('.state-error'));
+			   console.log('submitted');
+        return false;
+          /////checking if captcha is ok ///
+		  jQuery.ajax({
+			url: actionUrl,
+			type: "POST",
+			dataType:"JSON",					
+			data: jQuery("#cus_ordfrm").serialize(),
+			success: function(resp){
+		    if(resp.cap_error== 1)
+                 {
+                         jQuery("#captcha_lbl").html("You have entered an incorrect captcha code. Try again");
+					     jQuery("#loader_id").hide();
+                         jQuery("#sub_cusord").show();
+						 jQuery("#captcha_lbl").show();
+					     jQuery("#captcha-form").attr("value","");
+						 jQuery("#captcha-form").css("border","4px solid #fd0402");
+					     jQuery("#change-image").trigger("click");
+                   return false; 
+                }
+		          //   console.log(resp);
+    			ord = resp.id;
+		if(resp.type=="order")
+                 {
+                 //location.reload();
+                //jQuery("#Success").html("Your order has been placed . Your order id is #"+ord+'. '+stock);
+                jQuery("#cus_ordfrm").css("display","none");  
+				jQuery("#thank_u").css("display","block");	
+                jQuery("#thank_u").html("Thank you for your interest, We will get back to you shortly. Your Invoice number is "+ord);
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+				window.top.location.href='<?php echo Mage::getBaseUrl(); ?>index.php/externalform/index/thankyou';
+		}else if(resp.type=="quote")
+    			 {
+           //location.reload();
+           //jQuery("#Success").html("Your quote has been placed . Your quote id is #"+ord+'. '+stock);
+		   jQuery("#cus_ordfrm").css("display","none");  
+		   jQuery("#thank_u").css("display","block");
+		   jQuery("#thank_u").html("Thank you for your interest, We will get back to you shortly. Your quote number is #"+ord);		
+			document.body.scrollTop = document.documentElement.scrollTop = 0;
+			window.top.location.href='<?php echo Mage::getBaseUrl(); ?>index.php/externalform/index/thankyou';
+            //location.reload();
+       		}else{
+				  jQuery("#thank_u").html("Something has gone wrong. "+stock);
+                  jQuery("#loader_id").hide();
+                  jQuery("#sub_cusord").show();
+				  jQuery("#thank_u").html(resp.msg);
+                }				
+				}
+          });  
+     }	
+	 
+	 ///functio removeitem from the added items
+	 
+	 function removeItem(itemid, curr_ele){
+		 
+		 var conf = confirm('Please confirm item remove request. ');
+		 if(!conf){
+			 return false;
+			 }
+		  
+		//  jQuery(this).parent().parent().remove();
+		  var param="prodid="+itemid;
+                    jQuery.ajax({
+                           type:'POST',
+                           url:'<?php echo Mage::getBaseUrl();?>index.php/externalform/index/removeitem/',
+                           data:param,
+						   beforeSend: function(){
+							     // jQuery(curr_ele).parent().parent().parent().find("#load_image").show();
+								//  jQuery(curr_ele).parent().parent().parent().parent().find(".products_options").html('');
+							   },
+                           success: function(resp)
+                           {
+                             // console.log(resp);							  
+							 //  console.log(curr_ele);	
+			 jQuery(curr_ele).parent().parent().parent().parent().parent().parent().hide();
+                            }
+                });
+		 
+		 }
+	 
+	 	
+    </script>
+<div class="smart-forms smart-container wrap-2">
+  <div class="form-header header-primary">
+    <h4><i class="fa fa-comments"></i>Get A Free Quote</h4>
+  </div>
+  <!-- end .form-header section -->
+  <form id="cus_ordfrm" name="cus_ordfrm" method="post" action="<?php echo Mage::getBaseUrl() ?>index.php/externalform/index/placeOrder/" onSubmit="return false;"  enctype="multipart/form-data">
+    <input type="hidden" id="store_id" name="store_id" value="<?php echo $_store_id; ?>"/>
+    <input type="hidden" id="type" name="type" value="quote" />
+    <input type="hidden" name="action" value="post_order">
+    <input type="hidden" name="actionUrl" id="actionUrl" value="<?php echo Mage::getBaseUrl() ?>index.php/externalform/index/placeOrder/" />
+    <div class="form-body">
+      <div class="spacer-b40">
+        <div class="tagline"><span>Your Details </span></div>
+        <!-- .tagline --> 
+      </div>
+      <div class="frm-row">
+        <div class="section colm colm6">
+          <label class="field prepend-icon ">
+          <input type="text" name="comp_val" value="<?php if($logged_in) echo $customer['company'];?>" id="comp_val" class="gui-input" placeholder="Company">
+          <label class="field-icon"><i class="fa fa-university"></i></label>
+          </label>
+        </div>
+        <!-- end section -->
+        <div class="section colm colm6">
+          <label class="field prepend-icon">
+          <input type="text" value="<?php if($logged_in) echo $customer['firstname'];?>"  name="fnamebill" id="fnamebill" class="gui-input" placeholder="First Name">
+          <label class="field-icon"><i class="fa fa-user"></i></label>
+          </label>
+        </div>
+        <!-- end section --> 
+      </div>
+      <div class="frm-row">
+        <div class="section colm colm6">
+          <label class="field prepend-icon">
+          <input type="text" name="lnamebill" value="<?php if($logged_in) echo $customer['lastname'];?>" id="lnamebill" class="gui-input" placeholder="Last Name">
+          <label class="field-icon"><i class="fa fa-user"></i></label>
+          </label>
+        </div>
+        <div class="section colm colm6">
+          <label class="field prepend-icon">
+          <input type="tel" name="phonebill" id="phonebill" value="<?php if($logged_in) echo $customer['telephone'];?>" class="gui-input" placeholder="Phone">
+          <label class="field-icon"><i class="fa fa-phone-square"></i></label>
+          </label>
+        </div>
+      </div>
+      <div class="frm-row">
+        <div class="section colm colm6">
+          <label class="field prepend-icon">
+          <input type="email" value="<?php if($logged_in) echo $customer['email'];?>" name="emailbill" id="emailbill" class="gui-input" placeholder="Enter email address">
+          <label class="field-icon"><i class="fa fa-envelope"></i></label>
+          </label>
+        </div>
+        <div class="section colm colm6">
+          <label class="field prepend-icon">
+          <input type="email" value="<?php if($logged_in) echo $customer['email'];?>" name="conemailbill" id="conemailbill" class="gui-input" placeholder="Enter confirm email address">
+          <label class="field-icon"><i class="fa fa-envelope"></i></label>
+          </label>
+        </div>
+      </div>
+      <div class="frm-row">
+        <div class="section colm colm6">
+          <label class="field prepend-icon">
+          <input type="text" name="add1bill" value="<?php if($logged_in) echo $customer['street'];?>" id="add1bill" class="gui-input" placeholder="Billing Address">
+          <label class="field-icon"><i class="fa fa-automobile"></i></label>
+          </label>
+        </div>
+        <div class="section colm colm6">
+          <label class="field select">
+            <select id="countrybill" name="countrybill" style="margin-top:0px; height:42px !important;">
+              <option value="AU" <?php if($logged_in && $customer['country_id']=='AU') echo 'selected';?>>Australia</option>
+            </select>
+            <i class="arrow double"></i> </label>
+        </div>
+      </div>
+      <div class="frm-row">
+        <div class="section colm colm6">
+          <label class="field prepend-icon">
+          <input type="text" name="citybill" value="<?php if($logged_in) echo $customer['city'];?>" id="citybill" class="gui-input" placeholder="City">
+          <label class="field-icon"><i class="fa fa-home"></i></label>
+          </label>
+        </div>
+        <div class="section colm colm6">
+          <label class="field select">
+            <?php
+       $store1 = Mage::getModel('core/store')->load($_store_id);
+	   Mage::app($store1->getCode());
+       $countrycode = Mage::getStoreConfig('general/country/default',$store1);
+       $statearray = Mage::getModel('directory/region')->getResourceCollection()
+	                 ->addCountryFilter(trim($countrycode,' '))->load();
+       $vvl="";
+       foreach ($statearray as $_state) {
+       		$vvl=trim($_state->getCode());
+        	break;
+       }
+       if($vvl!="")
+       {
+		?>
+            <select name="statebill" style="margin-top:0px; height:42px !important;" id="statebill">
+              <option value="" selected="">Choose State</option>
+              <?php
+							    /***************** start 28_01_2014 **********************/
+							     //$countrycode = 'AU';
+        $store1 = Mage::getModel('core/store')->load($_store_id);
+        Mage::app($store1->getCode());
+        $countrycode = Mage::getStoreConfig('general/country/default',$store1);
+        $statearray = Mage::getModel('directory/region')->getResourceCollection()
+		              ->addCountryFilter(trim($countrycode,' '))->load();
+        $state ='';
+		foreach ($statearray as $_state) {
+		 	$state .= '<option';
+			if($logged_in && $_state->getCode()==$customer['region']){
+				$state .=' selected ';
+			}
+			$state .='  value="' . $_state->getCode() . '">' .  $_state->getDefaultName() . '</option>';
+	     }
+		 echo $state;
+							 /***************** end 28_01_2014 **********************/
+	    ?>
+            </select>
+            <?php	}else{  ?>
+            <input type="text" id="statebill" name="statebill" value=""   />
+            <?php }	?>
+            <i class="arrow double"></i> </label>
+        </div>
+      </div>
+      <div class="frm-row">
+        <div class="section colm colm6">
+          <label class="field prepend-icon">
+          <input type="text" name="zipbill" id="zipbill" value="<?php if($logged_in){ echo $customer['postcode'];} ?>" class="gui-input" placeholder="Post Code">
+          <label class="field-icon"><i class="fa fa-qrcode"></i></label>
+          </label>
+        </div>
+        <div class="section colm colm6">
+          <label class="field prepend-icon">
+          <input type="text"  class="gui-input" placeholder="When do you need the goods by"  id="del_date" onClick="ds_sh(this); " name="del_date">
+          <label class="field-icon"><i class="fa fa-calendar"></i></label>
+          </label>
+        </div>
+      </div>
+      <div class="frm-row">
+      <div class="section colm colm11">
+        <label class="field prepend-icon">
+        <textarea class="gui-textarea" id="comment" name="comment" placeholder="Quote Details"></textarea>
+        <label class="field-icon"><i class="fa fa-comments"></i></label>
+        <span class="input-hint"> <strong>NOTE:</strong> Be as detailed as possible for better feedback.</span>
+        </label>
+      </div>
+      </div>
+      <?php  	
+		$items = Mage::getSingleton('core/session',array('name'=>'frontend'))->getProducts();
+		//var_dump($items);
+		//$session->unsetData('product_id');
+		//$session->unsetData('qty');
+		$count = count($items);
+		
+		if($count>0){
+    ?>
+      <div class="spacer-b40">
+        <div class="tagline"><span>Choose product(s) and quantity </span></div>
+        <!-- .tagline --> 
+      </div>
+      <?php } ?>
+      <div class="frm-row">
+        <div id="all_pro_con">
+          <?php
+		
+			/*
+			foreach ($cart->getAllItems() as $item) {
+			 echo   $productName = $item->getProduct()->getName();
+			 echo    $productPrice = $item->getProduct()->getPrice();
+			 echo "<br>";
+			}
+			*/		  
+			//$items = Mage::getSingleton('checkout/session')->getQuote()->getAllItems();
+			//$items = Mage::getSingleton('core/session',array('name'=>'frontend'))->getProducts();
+ 			//$qty = Mage::getSingleton('checkout/session')->getQuote()->getItemsQty();
+		
+	foreach($items as $item) { 
+		//var_dump($item);
+		$productId = $item['product_id'];
+		$product = Mage::getModel('catalog/product')->load($item['product_id']);
+    	//var_dump($product);
+		//	var_dump($product);
+		$productName  = $product->getName();	
+		$productUrl = $product->getProductUrl();	 		
+		$productSku = $product->getSku();
+   		$categoryIds = $item['product']->getCategoryIds(); // returns category ids from product
+		$catId = end($categoryIds); 
+		
+		?>
+          <!--<div class="one_pro">
+    <div class="con" style="width:32%; margin-right:5px;"><span class="lab">Category</span><span class="inp">
+      <label class="field select">
+        <select name="category[]" id="cat" onChange="getProduct(this.value,this);">
+          <option value="">Select a category</option>
+          <?php
+                foreach($categories as $_sub){
+				//foreach($_subcategories as $_sub){						
+				$_sub=Mage::getModel('catalog/category')->setStoreId($_store_id)->load($_sub->getId());
+				if($_sub->getId()==$catId){     ?>
+          <option value="<?php echo $_sub->getId(); ?>" selected><?php echo $_sub->getName(); ?></option>
+          <?php } else { ?>
+          <option value="<?php echo $_sub->getId(); ?>"><?php echo $_sub->getName(); ?></option>
+          <?php  }  
+				  } ?>
+        </select>
+        <i class="arrow double"></i> </label>
+      <img id="load_product" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/default/default/externalform/images/loading2.gif" style="width:30px; height:30px; display:none; float:left;" /> </span></div>
+    <div class="con proddiv"><span class="lab">Products</span><span class="inp">
+      <label class="field select">
+        <select name="products[]" id="catproduct" class="prod">
+          <option value="">Select a product</option>
+          <option value="<?php echo $productSku;?>" selected><?php echo $productName;?></option>
+        </select>
+        <i class="arrow double"></i> </label>
+      <img id="load_image" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/default/default/externalform/images/loading2.gif" style="width:30px; height:30px; display:none; float:left;" /> </span></div>
+    <div class="im_con prodimgdiv"> <span class="im">Product Image</span>
+     <a title="<?php echo $productName;?>" href="<?php echo $product->getProductUrl();?>"> 
+     <img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($product->getThumbnail()); ?>" alt="<?php echo $productName;?>" /> 
+     </a> 
+     </div>
+    <div class="pro_qty"><span class="lab">Quantity</span>
+      <input type="text" name="quantity[]" class="quantity" value="<?php echo $item['qty']; ?>" />
+      <span class="error_labels" id="quantity_lbl">Please enter quantity </span> </div>
+    <div class="del_button"><a href="javascript:void(0);" class="del_it">Delete</a></div>
+    <div class="products_options">
+      <?php  
+			   //show the product options
+			   $selected[442] = 1002; 
+			   $selected[443] = 1004;
+			   echo  $this->getProductOptions($product, $selected); 
+		   ?>
+    </div>
+  </div>--> 
+          <!-- new design from here-->
+          <div style="clear:both">
+            <h3><?php echo $this->__('Quote Items'); ?></h3>
+            <table class="data-table cart-table" id="shopping-cart-table">
+              <colgroup>
+              <col width="1">
+              <col>
+              <col width="1">
+              <col width="1">
+              <col width="1">
+              <col width="1">
+              <col width="1">
+              </colgroup>
+              <thead style="display:none;">
+                <tr class="first last">
+                  <th rowspan="1">&nbsp;</th>
+                  <th rowspan="1"><span class="nobr">Product Name</span></th>
+                  <th rowspan="1"></th>
+                  <th colspan="1" class="a-center"><span class="nobr">Unit Price</span></th>
+                  <th class="a-center" rowspan="1">Qty</th>
+                  <th colspan="1" class="a-center">Subtotal</th>
+                  <th class="a-center" rowspan="1">&nbsp;</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr class="first last">
+                  <td class="a-right last" colspan="50"><!--<button id="empty_cart_button" class="button btn-empty" title="Clear Shopping Cart" value="empty_cart" name="update_cart_action" type="submit"><span><span>Clear Shopping Cart</span></span></button>
+              <button class="button btn-update" title="Update Shopping Cart" value="update_qty" name="update_cart_action" type="submit"><span><span>Update Shopping Cart</span></span></button>--> 
+                    <!--<span class="update-shopping-cart-arrow">Update required prior to checkout</span>--> 
+                    <!--[if lt IE 8]>
+                            <input type="hidden" id="update_cart_action_container" />
+                            <script type="text/javascript">
+                            //<![CDATA[
+                                Event.observe(window, 'load', function()
+                                {
+                                    // Internet Explorer (lt 8) does not support value attribute in button elements
+                                    $emptyCartButton = $('empty_cart_button');
+                                    $cartActionContainer = $('update_cart_action_container');
+                                    if ($emptyCartButton && $cartActionContainer) {
+                                        Event.observe($emptyCartButton, 'click', function()
+                                        {
+                                            $emptyCartButton.setAttribute('name', 'update_cart_action_temp');
+                                            $cartActionContainer.setAttribute('name', 'update_cart_action');
+                                            $cartActionContainer.setValue('empty_cart');
+                                        });
+                                    }
+                                });
+                            //]]>
+                            </script>
+                            <![endif]--></td>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr class="first odd"> 
+                  <!--  Custom code here  -->
+                  <td style="background-color:#FFF; "><input type="hidden" value="<?php echo $catId;?>" name="category[]" id="category[]" />
+                    <input type="hidden" value="<?php echo $productSku;?>" name="products[]" id="products[]" />
+                    <a class="product-image fancybox" rel="mageworxLightbox[]" href="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($product->getThumbnail()); ?>" onclick="return false;" > 
+                    <img height="130" width="130" alt="<?php echo $productName;?>" src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($product->getThumbnail()); ?>"/> </a></td>
+                  <td style="background-color:#FFF; "><h2 class="product-name"> <a href="<?php echo $productUrl; ?>"><?php echo $productName; ?></a> </h2>
+                    <div onmouseout="hideoption('<?php echo $product->getEntity_id();?>');" onmouseover="viewoption('<?php echo $product->getEntity_id();?>');" class="view_all">View Details</div>
+                    <div onmouseout="hideoption('<?php echo $product->getEntity_id();?>');" onmouseover="viewoption('<?php echo $product->getEntity_id();?>');" style="display: none;" class="truncated" id="truncated_<?php echo $product->getEntity_id();?>">
+                      <?php  
+			   //show the product options
+			   $selected[442] = 1002; 
+			   $selected[443] = 1004;
+			   echo  $this->getProductOptions($product, $selected, $item['qty'] ); 
+		   ?>
+                    </div>
+                    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="cart-item-qty-and-price-table">
+                      <tbody>
+                        <tr class="even">
+                          <td style="background-color:#FFF; "><dl class="item-options">
+                              <dt>Qty</dt>
+                              <dd>
+                                <input maxlength="12" class="input-text qty" title="Qty" size="4" value="<?php echo $item['qty']; ?>" name="quantity[]" id="quantity[]">
+                              </dd>
+                            </dl></td>
+                          <!--<td style="background-color:#FFF; "><dl class="item-options">
+                        <dt>Item Price</dt>
+                        <dd>
+                          <div class="a-left"> --> 
+                          <!--  Start unit price      --> 
+                          <!-- <span class="cart-price"> <span class="price"><?php //echo $this->helper('checkout')->formatPrice($product->getPrice()); ?></span> </span> --> 
+                          <!--  End Unit Price        --> 
+                          <!--</div>
+                        </dd>
+                      </dl></td>-->
+                         <!-- <td class="last" style="background-color:#FFF; "><a class="shopping-cart-action" title="Remove" href="<?php echo $this->getUrl()?>checkout/cart/delete/id/<?php echo $product->getEntity_id();?>/uenc/aHR0cDovLzEzZXhwby5jb20uYXUvY2hlY2tvdXQvY2FydC8,/">Remove</a> <br></td>-->
+                        <td class="last" style="background-color:#FFF; ">
+                        <a class="shopping-cart-action" title="Remove" href="javascript:void(0)" onClick="removeItem(<?php echo $item['product_id'];?>, this)">Remove</a> <br></td>
+                        </tr>
+                      </tbody>
+                    </table></td>
+                  <!--  End Custom code --> 
+                </tr>
+                <script type="text/javascript">
+					function viewoption(id)
+					{
+						document.getElementById('truncated_'+id).style.display = 'block';
+					}
+					function hideoption(id)
+					{
+						document.getElementById('truncated_'+id).style.display = 'none';
+					}
+			</script>
+              </tbody>
+            </table>
+            <script type="text/javascript">decorateTable('shopping-cart-table')</script> 
+          </div>
+          <!--end of design -->
+          <?php } 
+		  ///end of selected items
+		   ?>
+          <!--<div class="one_pro">
+            <div class="con" style="width:32%; margin-right:5px;"><span class="lab">Category</span><span class="inp">
+              <label class="field select">
+                <select name="category[]" id="cat" onChange="getProduct(this.value,this);">
+                  <option value="">Select a category</option>
+                  <?php
+                foreach($_subcategories as $_sub){
+                $_sub=Mage::getModel('catalog/category')->setStoreId($_store_id)->load($_sub->getId());
+                ?>
+                  <option value="<?php echo $_sub->getId(); ?>"><?php echo $_sub->getName(); ?></option>
+                  <?php  }   ?>
+                </select>
+                <i class="arrow double"></i> </label>
+              <img id="load_product" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/default/default/externalform/images/loading2.gif" style="width:30px; height:30px; display:none; float:left;" /> </span></div>
+            <div class="con proddiv"><span class="lab">Products</span><span class="inp">
+              <label class="field select">
+                <select name="products[]" id="catproduct" class="prod">
+                  <option value="">Select a product</option>
+                </select>
+                <i class="arrow double"></i> </label>
+              <img id="load_image" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/default/default/externalform/images/loading2.gif" style="width:30px; height:30px; display:none; float:left;" /> </span></div>
+            <div class="im_con prodimgdiv"><span class="im" style="color:#fff;">Product Image</span>
+              <div class="def_cl"></div>
+            </div>
+            <div class="pro_qty"><span class="lab">Quantity</span>
+              <input type="text" name="quantity[]" class="quantity" value="1" />
+              <span class="error_labels" id="quantity_lbl">Please enter quantity </span> </div>
+            <div class="del_button"><a href="javascript:void(0);" class="del_it">Delete</a></div>          
+          <div class="products_options"> </div>
+          </div>--> 
+        </div>
+        <!--<div class="add_more_con"> <img id="new_product_add" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/default/default/externalform/images/loading2.gif" style="display: none; float: left; position: relative;left: -340px;top: 0px;" /> <a href="javascript:void(0);" id="add_more" style="float:left;" onClick="addProductRow();">Add Another Product</a> </div>--> 
+      </div>
+        <div class="frm-row">
+      <div class="section colm colm11">
+        <?php 
+			$words  = "abcdefghijlmnopqrstuvwyz";
+                                    $vocals = "aeiou";                                
+                                    $text  = "";
+                                    $vocal = rand(0, 1);
+                                    $length = rand(3, 3);
+                                    for ($i=0; $i<$length; $i++) {
+                                        if ($vocal) {
+                                            $text .= substr($vocals, mt_rand(0, 3), 1);
+                                        } else {
+                                            $text .= substr($words, mt_rand(0, 3), 1);
+                                        }
+                                        $vocal = !$vocal;                        
+						            }
+		//	echo $text;			
+		Mage::getSingleton("core/session",array('name' => 'frontend'))->setCaptcha($text);
+	?>
+        <div class="smart-widget sm-left sml-120">
+          <label class="field">
+            <input type="text" name="captcha" id="captcha-form"  class="gui-input sfcode" placeholder="Enter code">
+            <img  id="captcha_loader" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/default/default/externalform/images/loading2.gif" style="display: none;  float: left;    left: -92px;  position: relative; top: -36px;  z-index: 9999;" /> </label>
+          <label for="securitycode" class="button captcode"> <img src="<?php echo Mage::getBaseUrl(); ?>externalform/captcha.php?ts=<?php echo time(); ?>&text=<?php echo $text; ?>" id="captcha" style="height: 39px; background: none repeat scroll 0px 0px transparent;"  />
+            <input  type="hidden" id="captcha_value" name="captchavalue" value="<?php echo $text; ?>" />
+            <span class="refresh-captcha" onClick="updateCaptcha();"> <i class="fa fa-refresh"></i> </span> </label>
+        </div>
+        <!-- end .smart-widget section --> 
+      </div></div>
+      <div class="result spacer-b10"></div>
+      <!-- end .result  section -->
+      <div class="section progress-section">
+        <div class="progress-bar progress-animated bar-primary">
+          <div class="bar"></div>
+          <div class="percent">0%</div>
+        </div>
+      </div>
+      <!-- end progress section --> 
+    </div>
+    <!-- end .form-body section -->
+    <div class="section alert-success" style="padding: 10px 10px 16px 30px; display:none;"> Success: Your quote/order has been placed successfuly. <br/>
+      Quote ID: <span id="quote_id"></span> <br/>
+      Please wait you are re-directing, if it did not please <a href="" id="hlink">click here</a>. </div>
+    <div class="form-footer"> 
+      <!--<button  onClick="submitOrder(this);" name="sub_cusord" type="submit" id="sub_cusord" class="button btn-primary">Get Free Quote</button>-->
+      <button  name="sub_cusord" type="submit" id="sub_cusord" class="button btn-primary">Get Free Quote</button>
+    </div>
+    <!-- end .form-footer section -->
+  </form>
+</div>
+<?php 
+		/*quit below part*/
+		?>
+

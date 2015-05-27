@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @copyright  Copyright (c) 2013 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Multi Fees extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_MultiFees
+ * @author     MageWorx Dev Team
+ */
+-->
+<layout version="0.1.0">
+    
+    <checkout_cart_index>
+        <reference name="head">            
+            <action method="addItem"><type>js_css</type><name>mageworx/lightbox/css/lightbox.css</name><params/></action> 
+            <action method="addItem"><type>js</type><name>mageworx/lightbox/js/lightbox.js</name><params/></action>
+            
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.js</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name><params/></action>
+            
+            <action method="addCss"><stylesheet>css/multifees.css</stylesheet></action>            
+        </reference>
+        <reference name="checkout.cart">
+            <block type="multifees/fee" name="checkout.cart.fee" as="fee" template="multifees/cart_fee.phtml" />
+        </reference>
+        <reference name="before_body_end">
+            <block type="core/template" name="checkout.cart.multifees.wrapper" as="multifees_wrapper" template="multifees/wrapper.phtml">
+                <block type="core/html_calendar" name="html_calendar" as="html_calendar" template="page/js/calendar.phtml" />
+            </block>
+            <block type="core/template" name="checkout.cart.multifees.estimate.shipping.wrapper" as="multifees_estimate_shipping_wrapper" template="multifees/estimate_shipping_wrapper.phtml" />
+        </reference>
+    </checkout_cart_index>
+    
+    <checkout_onepage_index translate="label">
+        <reference name="head">
+            <action method="addItem"><type>js_css</type><name>mageworx/lightbox/css/lightbox.css</name><params/></action> 
+            <action method="addItem"><type>js</type><name>mageworx/lightbox/js/lightbox.js</name><params/></action>
+            
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.js</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name><params/></action>
+            
+            <action method="addCss"><stylesheet>css/multifees.css</stylesheet></action>            
+        </reference>
+        <reference name="before_body_end">
+            <block type="core/template" name="checkout.cart.multifees.wrapper" as="multifees_wrapper" template="multifees/wrapper.phtml">
+                <block type="core/html_calendar" name="html_calendar" as="html_calendar" template="page/js/calendar.phtml" />
+            </block>
+        </reference>
+    </checkout_onepage_index>
+    
+    <checkout_multishipping_shipping translate="label">
+        <reference name="head">
+            <action method="addItem"><type>js_css</type><name>mageworx/lightbox/css/lightbox.css</name><params/></action> 
+            <action method="addItem"><type>js</type><name>mageworx/lightbox/js/lightbox.js</name><params/></action>
+            
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.js</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name><params/></action>
+            
+            <action method="addCss"><stylesheet>css/multifees.css</stylesheet></action>            
+        </reference>
+        <reference name="before_body_end">
+            <block type="core/template" name="checkout.cart.multifees.wrapper" as="multifees_wrapper" template="multifees/wrapper.phtml">
+                <block type="core/html_calendar" name="html_calendar" as="html_calendar" template="page/js/calendar.phtml" />
+            </block>
+            <block type="core/template" name="checkout.cart.multifees.multishipping.wrapper" as="multifees_multishipping_wrapper" template="multifees/multishipping_wrapper.phtml" />
+        </reference>
+    </checkout_multishipping_shipping>
+    
+    
+    <checkout_multishipping_billing translate="label">
+        <reference name="head">
+            <action method="addItem"><type>js_css</type><name>mageworx/lightbox/css/lightbox.css</name><params/></action> 
+            <action method="addItem"><type>js</type><name>mageworx/lightbox/js/lightbox.js</name><params/></action>
+            
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.js</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name><params/></action>
+            
+            <action method="addCss"><stylesheet>css/multifees.css</stylesheet></action>            
+        </reference>
+        <reference name="before_body_end">
+            <block type="core/template" name="checkout.cart.multifees.wrapper" as="multifees_wrapper" template="multifees/wrapper.phtml">
+                <block type="core/html_calendar" name="html_calendar" as="html_calendar" template="page/js/calendar.phtml" />
+            </block>            
+        </reference>
+    </checkout_multishipping_billing>
+        
+    <checkout_fee_submit>
+        <update handle="checkout_cart_index" />
+        <block type="core/template" name="multifees.update.cart" template="multifees/checkout_fee_submit.phtml" output="toHtml" />
+    </checkout_fee_submit>        
+    
+    <sales_order_view>
+        <reference name="order_totals">
+            <block type="multifees/sales_order_totals" name="multifees" />
+        </reference>
+    </sales_order_view>    
+    <sales_order_print>
+        <reference name="order_totals">
+            <block type="multifees/sales_order_totals" name="multifees" />
+        </reference>
+    </sales_order_print>    
+    <sales_email_order_items>
+        <reference name="order_totals">
+            <block type="multifees/sales_order_totals" name="multifees" />
+        </reference>
+    </sales_email_order_items>
+    
+    <sales_order_invoice>
+        <reference name="invoice_totals">
+            <block type="multifees/sales_order_totals" name="multifees" />
+        </reference>
+    </sales_order_invoice>
+    <sales_order_printinvoice>
+        <reference name="invoice_totals">
+            <block type="multifees/sales_order_totals" name="multifees" />
+        </reference>
+    </sales_order_printinvoice>
+    <sales_email_order_invoice_items>
+        <reference name="invoice_totals">
+            <block type="multifees/sales_order_totals" name="multifees" />
+        </reference>
+    </sales_email_order_invoice_items>
+    
+    <sales_order_creditmemo>
+        <reference name="creditmemo_totals">
+            <block type="multifees/sales_order_totals" name="multifees" />
+        </reference>
+    </sales_order_creditmemo>
+    <sales_order_printcreditmemo>
+        <reference name="creditmemo_totals">
+            <block type="multifees/sales_order_totals" name="multifees" />
+        </reference>
+    </sales_order_printcreditmemo>
+    <sales_email_order_creditmemo_items>
+        <reference name="creditmemo_totals">
+            <block type="multifees/sales_order_totals" name="multifees" />
+        </reference>
+    </sales_email_order_creditmemo_items>
+</layout>

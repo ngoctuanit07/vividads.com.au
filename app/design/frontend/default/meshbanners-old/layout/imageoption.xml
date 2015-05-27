@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+		<reference name="head">
+            <action method="addJs"><script>magestore/imageoption.js</script></action>
+			<action method="addJs"><script>prototype/tooltip.js</script></action>
+			<action method="addJs"><script>prototype/tooltip_manager.js</script></action>
+			<action method="addJs"><script>scriptaculous/scriptaculous.js</script></action>
+			<action method="addCss"><stylesheet>css/magestore/imageoption.css</stylesheet></action>
+        </reference>	
+    </default>
+</layout> 

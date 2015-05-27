@@ -1,0 +1,300 @@
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl('js'); ?>tiny_mce/tiny_mce.js"></script>
+<link rel="stylesheet" type="text/css"  href="<?php echo $this->getSkinUrl()?>externalform/css/smart-forms.css">
+<link rel="stylesheet" type="text/css"  href="<?php echo $this->getSkinUrl()?>externalform/css/font-awesome.min.css">
+
+
+<div id="window_askquestion" name="window_askquestion">
+  
+  
+<div class="smart-wrap" style="margin:30px;">  
+  <form id="product_question" method="POST" name="product_question" action="<?php echo $this->getSubmitUrl(); ?>" enctype="multipart/form-data">
+<div class="smart-forms smart-container wrap-1">
+            <div class="form-header header-primary">
+            	<h4><i class="fa fa fa-ticket"></i>Open A Ticket</h4>
+		          </div>
+                  
+            <div class="form-body"> 
+            
+            
+                             
+<div class="frm-row">                  
+          <div class="section colm colm12">
+		<label class="field-label" for="Account Information"><?php echo $this->__('Category') ?>
+        	<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+
+	         <label class="field select">
+              <select id="contact-select1" style="height: 42px ! important; width: 375px !important;">
+		         <option value=""><?php echo $this->__('How can we help you ?'); ?></option>
+  <?php
+        $block = $this->getLayout()->createBlock('CrmTicket/Admin_Category_Select');
+        $cats = json_decode($block->getMainCategoriesAsJson());
+         foreach ($cats as $cat) {
+							
+              $catId = $cat->{'id'};
+              $catName = $cat->{'name'};
+               echo '<option value="' . $catId . '">' . $catName . '</option>';
+              }
+    ?>              </select>
+            <i class="arrow double"></i> </label>     
+                  
+          </div>   
+</div>               
+      <?php if (mage::helper('CrmTicket/Customer')->customerIsConnected()) : ?>
+              <input type="hidden" id="ct_customer_id" name="ticket[ct_customer_id]" value="<?php echo mage::helper('CrmTicket/Customer')->getCustomerId(); ?>">              
+	  <?php else: ?>                        
+      <div class="section">
+     <label for="Account Information" class="field-label">First Name<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+        <label for="<?php echo $this->__('First Name') ?>" class="field prepend-icon">
+        <input class="gui-input required-entry" type="text" id="firts_name_customer" name="customer[first_name_customer]" style="width:375px !important;">       
+        <label class="field-icon"><i class="fa fa-user"></i></label>  
+      </label>                  
+	   </div>
+      <div class="section">
+     <label for="Account Information" class="field-label">Last name<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+        <label for="<?php echo $this->__('Last Name') ?>" class="field prepend-icon">
+       <input class="gui-input required-entry" type="text" id="last_name_customer" name="customer[last_name_customer]" style="width:375px !important;">
+        <label class="field-icon"><i class="fa fa-user"></i></label>  
+      </label>                  
+	   </div>
+       <div class="section">
+     <label for="Account Information" class="field-label">E-mail<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+        <label for="<?php echo $this->__('E-mail') ?>" class="field prepend-icon">
+         <input class="gui-input required-entry" type="text" id="customer_email" name="customer[customer_email]" style="width:375px !important;">
+        <label class="field-icon"><i class="fa fa-envelope"></i></label>  
+      </label>                  
+	   </div>
+      <?php endif; ?>                 
+	  
+      <div class="section">
+     <label for="Account Information" class="field-label">Subject<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+        <label for="<?php echo $this->__('Subject') ?>" class="field prepend-icon">
+	    <input class="gui-input required-entry" type="text" id="ct_subject" name="ticket[ct_subject]" style="width:375px !important;" >
+        <label class="field-icon"><i class="fa fa-support"></i></label>  
+      </label>                  
+	   </div>      
+      <?php if (Mage::helper('CrmTicket')->allowProductSelection()): ?>
+      <div class="section">
+     <label for="Account Information" class="field-label">Subject<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+        <label for="<?php echo $this->__('Subject') ?>" class="field prepend-icon">
+			<select class="select" id="ct_product_id" name="ticket[ct_product_id]" style="width:375px !important;height:42px !important;">
+                    <option></option>
+                    <?php foreach ($this->getProducts() as $pro): ?>
+                    <option <?php echo ($this->getProduct()->getId() == $pro->getId() ? ' selected ' : ''); ?> value="<?php echo $pro->getId(); ?>"><?php echo $pro->getName(); ?></option>
+                    <?php endforeach; ?>
+                  </select>
+        <label class="field-icon"><i class="fa fa-support"></i></label>  
+      </label>                  
+	   </div>      
+       <?php endif; ?>      
+              <?php if (mage::helper('CrmTicket/Customer')->customerIsConnected()) : ?>
+              <?php if (Mage::helper('CrmTicket')->allowCustomerObjectSelection()): ?>
+      <div class="section">              
+		<label class="field-label" for="Account Information"><?php echo $this->__('It is about') ?>
+        	<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+
+	         <label class="field select">
+                <select class="select" name="ticket[ct_object_id]" id="ct_object_id" style="width:375px !important;height:42px !important;">
+                    <option value="">-</option>
+                    <?php foreach ($this->getCustomerObjects() as $group => $items) : ?>
+                    <optgroup label="<?php echo $group; ?>">
+                    <?php foreach($items as $k => $v): ?>
+                    <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+                    <?php endforeach; ?>
+                    </optgroup>
+                    <?php endforeach; ?>
+                  </select>
+            <i class="arrow double"></i> </label>                       
+	</div>
+              <?php endif; ?>
+              <?php endif; ?>
+
+ <?php if (mage::helper('CrmTicket/Customer')->customerIsConnected()) : ?>
+              <?php if (Mage::getStoreConfig('crmticket/ticket_data/show_priority')): ?>
+      <div class="section">
+		<label class="field-label" for="Account Information"><?php echo $this->__('Priority') ?>
+        	<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+	         <label class="field select">
+                  <select class="required-entry select" id="ct_priority" name="ticket[ct_priority]" style="width:375px !important; height:42px !important;">
+                    <option value="" >Select Priorty</option>
+                    <?php foreach ($this->getPriorities() as $priority): ?>
+                    <option value="<?php echo $priority->getId(); ?>"><?php echo $priority->getctp_name(); ?></option>
+                    <?php endforeach; ?>
+                  </select>
+              <i class="arrow double"></i> </label>                                       
+</div>                  
+      <div class="section">
+		<label class="field-label" for="Account Information"><?php echo $this->__('Content') ?>
+        	<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+		<label class="field prepend-icon">
+                  <textarea name="ctm_content" title="" id="ctm_content" class="gui-textarea" rows="2" cols="15" style="width:375px !important;" ></textarea>
+                  <input type="hidden" name="ctm_source_type" id="ctm_source_type" value="<?php echo MDN_CrmTicket_Model_Message::TYPE_FORM; ?>">
+        <label class="field-icon"><i class="fa fa-comments"></i></label>
+        </label>                  
+</div>                  
+
+              <?php endif; ?>
+              <?php endif; ?>              
+
+       <?php if (Mage::getStoreConfig('crmticket/attachements/allow_attachement_on_message')): ?>
+                  <p><b><?php echo $this->__('Attachments'); ?> :</b></p>
+                  <?php
+                         $helper = Mage::helper('CrmTicket/Attachment');
+                         $max = $helper->getPublicMaxAttachementAllowed();
+                         $key = $helper->getPublicMessageAttachementKey();
+                         for ($i = 1; $i <= $max; $i++): ?>
+                  <input type="file" name="<?php echo $key.$i; ?>" id="<?php echo $key.$i; ?>">
+                  <br/>
+                  <?php endfor; ?>
+                  <?php endif; ?>
+</div>
+  <div class="form-footer">                  
+		<div style="text-align:left;" class="button-set"> <br>
+			<p style="text-align:left;float:left" class="required"><?php echo $this->__('* Required Fields'); ?></p>
+            <button id="openTicketSubmit" class="button" style="background:none;" ><span><span><?php echo $this->__('Submit'); ?>
+            </span></span></button>
+          </div> 
+	</div>       
+      
+</div>                    
+  
+  </form>
+  
+</div>  
+  <script type="text/javascript">
+        editForm = new VarienForm('product_question', '');
+
+        subCats = new Array();
+<?php
+$block = $this->getLayout()->createBlock('CrmTicket/Admin_Category_Select');
+$cats = json_decode($block->getMainCategoriesAsJson());
+
+foreach ($cats as $cat) :
+    $catId = $cat->{'id'};
+    $catName = $cat->{'name'};
+    ?>
+tmps = new Array();
+    <?php
+    foreach ($cats->{$catId}->{'childs'} as $subcat) :
+        $subcatId = $subcat->{'id'};
+        $subcatName = $subcat->{'name'};
+        ?>
+                    tmp = new Array();
+                    tmp['id'] = <?php echo $subcatId; ?>;
+                    tmp['name'] = "<?php echo $subcatName; ?>";
+                    tmps[tmps.length] = tmp;
+    <?php endforeach; ?>
+            subCats[<?php echo $catId; ?>] = tmps;
+<?php endforeach; ?>
+
+    function refreshSelect(level, object)
+    {
+        var selectedIndex = (object.options[object.selectedIndex].value == '' ? 0 : object.options[object.selectedIndex].value);
+
+        var divSubCat = document.getElementById('div-contact2');
+        var listSubCat = document.getElementById('contact-select2');
+        var formCustomer = document.getElementById('div-contact3');
+
+        if(selectedIndex==0)
+        {
+            if(level==2)
+            {
+                divSubCat.style.display = 'none';
+            }
+            formCustomer.style.display = 'none';
+        }
+        else if(level==2)
+        {
+            var html = "<option value=''><?php echo $this->__('Please select a category'); ?></option>";
+            for (var i=0; i< subCats[selectedIndex].length; i++) {
+                html += "<option value=\"";
+                html += subCats[selectedIndex][i]['id'] + "\">";
+                html += subCats[selectedIndex][i]['name'] + "</option>";
+            }
+
+            listSubCat.value='';
+            listSubCat.innerHTML = html;
+            divSubCat.style.display = 'block';
+        }
+        else {
+          document.getElementById('div-contact'+level).style.display = 'block';
+        }
+    }
+
+    </script> 
+<script type="text/javascript"> 
+ jQuery("#openTicketSubmit" ).click(function() {
+	 var cat = 			jQuery('#contact-select1').val();
+	 var ct_subject   = jQuery('#ct_subject').val();	 
+	 var ct_object_id = jQuery('#ct_object_id').val();
+	 var ct_priority  = jQuery('#ct_priority').val();	 
+	 var ctm_content  = jQuery('#ctm_content').val();
+	 var err = 0;
+
+	if(cat === undefined || cat == null || cat.length <= 0){
+//		$('.eRRor').show();
+		jQuery('#contact-select1').css("border","medium none");		
+		jQuery('#contact-select1').css("border","1px solid red");		
+		console.log('contact-select1 is null');
+
+		err = 1;
+	}else{
+		jQuery('#contact-select1').css("border","2px solid #bdc3c7");		
+
+		}
+	if(ct_subject==''){
+//		$('.eRRor').show();
+		jQuery('#ct_subject').css("border","1px solid red");		
+		console.log('ct_subject');
+		err = 1;
+	}else{
+		jQuery('#ct_subject').css("border","2px solid #bdc3c7");		
+		}
+
+	if(ct_object_id==''){
+//		$('.eRRor').show();
+		jQuery('#ct_object_id').css("border","1px solid red");		
+		console.log('ct_object_id');		
+		err = 1;
+	}else{
+		jQuery('#ct_object_id').css("border","2px solid #bdc3c7");		
+		}
+
+	if(ct_priority==''){
+//		$('.eRRor').show();
+		jQuery('#ct_priority').css("border","1px solid red");		
+		console.log('ct_priority');		
+		err = 1;		
+	}else{
+		jQuery('#ct_priority').css("border","2px solid #bdc3c7");		
+		}
+
+	if(ctm_content==''){
+//		$('.eRRor').show();
+		jQuery('#ctm_content').css("border","1px solid red");		
+		console.log('ctm_content');				
+		err = 1;
+	}else{
+		jQuery('#ctm_content').css("border","2px solid #bdc3c7");		
+		}
+console.log(err);
+if(err == 1){
+	return false;
+	}else {
+		return true;
+		
+		}	
+	
+/*    console.log($( "#cus_ordfrm" ).validate());		 
+	data = jQuery("#product_question").serialize();
+	console.log(data);*/
+	
+// alert('You are here..');
+
+
+});
+
+
+
+</script>    
+
+</div>

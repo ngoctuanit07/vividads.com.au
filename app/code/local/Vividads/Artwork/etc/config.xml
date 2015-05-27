@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+  <global>
+    <blocks>
+      <vividads_artwork>
+        <class>Vividads_Artwork_Block</class>
+      </vividads_artwork>
+    </blocks>
+  </global>
+</config>

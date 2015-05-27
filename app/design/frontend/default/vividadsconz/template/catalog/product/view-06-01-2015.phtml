@@ -1,0 +1,444 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<?php 
+/*echo $_product->getName();
+echo '<pre>';
+//var_dump
+print_r($_product);
+echo '</pre>'; */
+?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view">
+  <div class="product-essential">
+    <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?> style="float: left; width: 100%;">
+      <div class="no-display">
+        <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+        <input type="hidden" name="related_product" id="related-products-field" value="" />
+      </div>
+      <div class="product-img-box"> <?php echo $this->getChildHtml('media') ?> </div>
+      <div class="main_right_float"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('vertical_categories')->toHtml() ?> 
+        <!--<div class="right_float" >
+					</div>--> 
+      </div>
+      <div style="position: relative; top:-550px; padding:0px;" class="pro_left wide">
+        <h1 style="margin:0px 0px 0px 20px !important; font-family:'swis721_cn_btroman'; font-size:24px; letter-spacing:1px;"><span style="width: 223px ! important; float: left; color: rgb(255, 255, 15); font-family:'swis721_cn_btroman'; font-size: 24px;  letter-spacing:1px;">Product Name: </span><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?> </h1>
+        <?php //echo $_product->getAttributeText('sku') ?>
+        <h1 style="margin:0px 0px 0px 20px !important; font-family:'swis721_cn_btroman'; font-size:24px;  letter-spacing:1px;"><?php echo "<span style='width: 223px ! important; float: left; color: rgb(255, 255, 15); font-family:'swis721_cn_btroman'; font-size: 24px;  letter-spacing:1px;'>Product Model :</span> ".$_product->getSku() ?> </h1>
+        <?php 
+$specialPrice = round($_product->getSpecialPrice(),2);
+if($specialPrice>0) { ?>
+        <h1 style="margin:0px 0px 0px 20px !important; font-family:'swis721_cn_btroman'; font-size:24px;  letter-spacing:1px;"><span style="width: 223px ! important; float: left; color: rgb(255, 255, 15); font-family:'swis721_cn_btroman'; font-size: 24px;  letter-spacing:1px;"><?php echo "Old Price: ";?></span><strike><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?></strike> +GST</h1>
+        <h1 style="margin:0px 0px 0px 20px !important; font-family:'swis721_cn_btroman'; font-size:24px;  letter-spacing:1px;"><?php echo "<span style='width: 223px ! important; float: left; color: rgb(255, 255, 15); font-family:'swis721_cn_btroman'; font-size: 24px;  letter-spacing:1px;'>Current Price: </span>".round($_product->getSpecialPrice(),2).".00";?> +GST</h1>
+        <?php	} else{ ?>
+        <h1 style="margin:0px 0px 0px 20px !important; font-family:'swis721_cn_btroman'; font-size:24px;  letter-spacing:1px;"><?php echo "<span style='width: 223px ! important; float: left; color: rgb(255, 255, 15); font-family:'swis721_cn_btroman'; font-size: 24px;  letter-spacing:1px;'>Price: </span> ".$_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> +GST</h1>
+        <?php } ?>
+        <?php //echo $_product->getTierPriceHtml() ?>
+        <?php echo $this->getChildHtml('alert_urls') ?>
+        <?php //echo $this->getChildHtml('product_type_data') ?>
+        <?php //print_r($_product->getAttributeText('dimension'));?>
+        <?php //echo $this->getChildHtml('extrahint') ?>
+        <?php //echo htmlspecialchars($_product->getAttributeText('dimension')); ?>
+        <?php //echo $description = $_product->getData('dimension');  ?>
+        <div class="new-prod-desc">
+          <div class="pro-desc">
+            <h1>Product Description</h1>
+            <h2>
+			<?php //echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
+            <?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?>
+            </h2>
+          </div>
+          <div class="pro-feature"  style="float:left;">
+            <h1>Product Features</h1>
+           <h2 style="margin-top:13px; margin-bottom:13px;"><img src="<?php echo $this->getSkinUrl()?>images/products_feature.jpg" alt="<?php echo ("Products Features")?>" /></h2>
+          </div>
+          <div class="package-includes">
+            <h1>Package Includes</h1>
+            <?php
+		  $product = Mage::registry('current_product');
+		    if($product->getTypeID() == 'bundle')
+		    {
+			$bundle_item = array();
+			$bundled_product = Mage::getModel('catalog/product')->load($product->getId());
+			$selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
+			    $bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
+			);
+			$optionCollection =  $bundled_product->getTypeInstance(true)->getOptions($bundled_product);
+			foreach($optionCollection as $val)
+			{
+			    echo '<div  class="bundle_items" ><div class="item_boxes"><table>';
+			   // <div class="bundle_name"><strong>'.$val->getDefaultTitle().'</strong></div><div class="item_box"><table>';
+			    foreach($selectionCollection as $option)
+			    {
+				if($val->getId() == $option->getOptionId())
+				{
+				     echo '<tr><td>'.round($option->getSelectionQty()).' - '.$option->getName().'</td></tr>';
+                                }
+                            }
+			    echo '</table></div></div>';
+			}
+		    }
+		  ?>
+            <div class="pro-img-right">
+              <?php if($_product->getPackage_image() !='')
+{
+$filePaths=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getPackage_image()
+?>
+              <img src="<?php echo $filePaths;?>"  />
+              
+            </div>
+          <?php /*?>  <?php }else {?>
+            <div class="pro-img-right">
+        <?php
+     $_product = $this->getProduct();
+	 $imageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $_product->getImage(); ?>
+        <img height="300" width="300" src="<?php echo $imageUrl;?>" alt="nothing" /> 
+        </div><?php */?>
+        <?php }?>
+          </div>
+          <div class="additional-information"  style="float:left;">
+            <h1>Additional Information</h1>
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
+            <?php if($_product->getWire_frame() !='')
+        {
+        $filePath=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getWire_frame()
+        ?>
+            <div class="image-sketch"> <img src="<?php echo $filePath;?>" /> </div>
+            <?php } ?>
+          </div>
+          <div class="additional-featured"  style="float:left;">
+            <h1>Additional Features</h1>
+            <div class="additional_featured">
+              <ul>
+                <li><img src="<?php echo $this->getSkinUrl()?>images/dye_fabric.jpg" /></li>
+                <li><img src="<?php echo $this->getSkinUrl()?>images/life_time_warranty.jpg" /></li>
+                <li><img src="<?php echo $this->getSkinUrl()?>images/setup_time.jpg" /></li>
+                <li><img src="<?php echo $this->getSkinUrl()?>images/shippment_time.jpg" /></li>
+              </ul>
+            </div>
+          </div>
+          <div class="video-section"  style="float:left;">
+            <h1>Product Video</h1>
+            <div class="video-counter">
+              <p> <?php echo ('Portable Slimline Fabric Tension Wall Series / Tradeshow Kit  provide maximum portability along with 
+	 amazing visual impact. These designs set apart your brand name in a tradeshow from all your competitors.
+	  Fabric Tradeshow displays are the ideal choice for all your tradeshow needs. Material: Stretchable Blockout; 360gsm Polyester.
+	   Stretchable Blockout; 360gsm Polyester. ')?> </p>
+              <div class="video-player">
+                <?php 
+		$product_video = $_product->getData('introvideo'); 
+		if($product_video !=null){ ?>
+                <iframe width="825" height="450" frameborder="0" allowfullscreen="" mozallowfullscreen="" webkitallowfullscreen="" src="//player.vimeo.com/video/<?php echo $product_video;?>"></iframe>
+                <?php }else{ ?>
+                <?php echo '<h2>No Video For This Product</h2>'?>
+                <?php } ?>
+              </div>
+            </div>
+          </div>
+          <div class="products-downloads"  style="float:left;">
+            <h1>Downloads (Graphic Templates)</h1>
+            <div class="prod-downloads">
+              <div class="prod-descp">
+                <p><?php echo ('Portable Slimline Fabric Tension Wall Series / Tradeshow Kit  provide 
+		maximum portability along with  amazing visual impact. These designs set apart your brand 
+		name in a tradeshow from all your competitors. Fabric Tradeshow displays are the ideal choice 
+		for all your tradeshow needs. Material: Stretchable Blockout; 360gsm Polyester. Portable Slimline Fabric 
+		Tension Wall Series / Tradeshow Kit  provide maximum portability along with  amazing visual impact. 
+		These designs set apart your brand name in a tradeshow from all your competitors. ')?></p>
+                <div class="download-button">
+                  <?php
+			$productid=Mage::registry('product')->getId();
+                        $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_relation');
+                        $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE product_id='".$productid."'";
+                        try {
+                        $chkSaleOrderGrid = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                        } catch (Exception $e){
+                        //echo $e>getMessage();
+                        }
+                        ?>
+                  <!--<h2><strong>Files Attached:</strong></h2>-->
+                  <?php
+                        if(count($chkSaleOrderGrid) > 0)
+                        {
+                        ?>
+                  <?php foreach($chkSaleOrderGrid as $res_objects) :
+                            $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_files');
+                            $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE file_id='".$res_objects["file_id"]."'";
+                            try {
+                            $chkSaleOrderGrid2 = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                            } catch (Exception $e){
+                            //echo $e>getMessage();
+                            }
+                            foreach($chkSaleOrderGrid2 as $res_objects2) 
+                            {
+                            ?>
+                  <div class="download-button"><a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$res_objects2["file_id"].'/'.$res_objects2["filename"]; ?>" title="<?php echo $res_objects2["filename"]; ?>" target="_blank"><img src="<?php echo $this->getSkinUrl()?>images/download_graphics.jpg "/></a> </div>
+                  <?php                         
+                            }
+                        endforeach; 
+                        ?>
+                  <?php 
+                        }
+                        else
+                        {
+							?>
+                  <div class='download-button'><img src="<?php echo $this->getSkinUrl()?>images/no_file_found.jpg "/></div>
+                  <?php   }
+		?>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearer"></div>
+          <div class="payment-methods"  style="float:left;">
+            <h1>Payment Methods</h1>
+            <div class="payment_info">
+              <p><?php echo ('Portable Slimline Fabric Tension Wall Series / Tradeshow Kit  provide maximum portability along with 
+     amazing visual impact. These designs set apart your brand name in a tradeshow from all your competitors. 
+     Fabric Tradeshow displays are the ideal choice for all your tradeshow needs. Material: Stretchable Blockout; 
+     360gsm Polyester. Stretchable Blockout; 360gsm Polyester.')?> </p>
+              <img src="<?php echo $this->getSkinUrl()?>images/creadit_card.jpg" /> </div>
+          </div>
+          <div class="order-process"  style="float:left;"> 
+            <script language="javascript">
+	var active_circle = '.step1';
+	var mobile_width = 480;
+	jQuery(document).ready(function(e) {
+	jQuery('#order_process').find(active_circle).addClass('active');
+	jQuery('#order_process  .step').hover(
+			function(){
+					 jQuery('#order_process  .step').each(function(){jQuery(this).removeClass('active')});
+			},
+			function(){
+					 jQuery('#order_process').find(active_circle).addClass('active');
+			});
+	jQuery('#order_process  .step').on('touchstart', function () {
+		jQuery('#order_process  .step').each(function(){
+			if(jQuery(window).width() > 480)
+			{
+				jQuery(this).removeClass('active');
+				jQuery('#order_process').find('.caption').hide();
+			}
+		});
+		jQuery(this).addClass('active');
+		jQuery(this).find('.caption').show();
+	});
+	});
+	function hideOrderProcess(){
+		  jQuery('.order_process_wrapper').fadeOut('slow');
+		  jQuery("#hide_button").text('View More');
+		  jQuery('html, body').animate({
+		        scrollTop: parseInt(jQuery("#order_process").offset().top)
+		    }, 1000);
+	}
+	function showOrderProcess(){
+		jQuery('.order_process_wrapper').fadeIn('slow');
+		jQuery("#hide_button").text('Hide');
+	}
+	jQuery("#hide_button").click(function() { 
+		  return (this.tog = !this.tog) ? hideOrderProcess() : showOrderProcess();
+	});
+	jQuery(window).resize(function(){
+		if(jQuery(window).width() > 480)
+			showOrderProcess();
+	});
+</script>
+            <h1>Our Order Process</h1>
+            <div class="order_text">
+              <p><?php echo ('Portable Slimline Fabric Tension Wall Series / Tradeshow Kit  provide maximum portability along with 
+     amazing visual impact. These designs set apart your brand name in a tradeshow from all your competitors. 
+     Fabric Tradeshow displays are the ideal choice for all your tradeshow needs. Material: Stretchable Blockout; 
+     360gsm Polyester. Stretchable Blockout; 360gsm Polyester.')?> </p>
+            </div>
+            <div id="order_process">
+              <div class="order_process_wrapper">
+                <div class="step1 step active"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step1.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step1_hover.png" alt=""></a> <span class="caption"><span class="step_number">step # 1</span> <span class="step_title">Choose your display</span>&nbsp;Trade
+                  show displays come in a slew of styles, shapes and sizes, and we offer 
+                  only the best of them to set you up for success at your next event. Once
+                  you find the right trade show display and add some useful accessories, 
+                  you’re ready to upload your artwork to truly make it your own.</span></div>
+                <div class="step2 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step2.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step2_hover.png" alt=""></a> <span class="caption"><span class="step_number">step # 2</span> <span class="step_title">Place Order</span>&nbsp;It’s
+                  time to check your shopping cart to make sure you haven’t forgot 
+                  anything. Trade show display? Check. Uploaded artwork? Check. LED 
+                  lights? Got it. Once everything is good to go, just fill in your billing
+                  information and shipping destination to finalize your order.</span></div>
+                <div class="step3 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step3.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step3_hover.png" alt=""></a> <span class="caption"> <span class="step_number">step # 3</span> <span class="step_title">Upload &amp; Approve Artwork</span>&nbsp;Now
+                  comes the fun part. Place your artwork on your product’s graphic 
+                  template, and upload it into our Artwork Upload and Graphic Proofing 
+                  System. Here, you have free reign to work with your display to achieve 
+                  the look you envision before approving it for production. </span></div>
+                <div class="step4 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step4.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step4_hover.png" alt=""></a> <span class="caption"><span class="step_number">step # 4</span> <span class="step_title">Proofe Approved</span>&nbsp;Now
+                  that we know what you want, we’re ready to give you what you need. Our 
+                  skilled production team moves into action, working with speed and 
+                  precision to print the most accurate shades and hues and to stitch the 
+                  strongest seams for one impressive display.</span></div>
+                <div class="step5 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step5.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step5_hover.png" alt=""></a> <span class="caption"><span class="step_number">step # 5</span> <span class="step_title">Production begins</span>&nbsp;Now
+                  that we know what you want, we’re ready to give you what you need. Our 
+                  skilled production team moves into action, working with speed and 
+                  precision to print the most accurate shades and hues and to stitch the 
+                  strongest seams for one impressive display.</span> </div>
+                <div class="step6 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step6.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step6_hover.png" alt=""></a> <span class="caption"> <span class="step_number">step # 6</span> <span class="step_title">Order ships</span>&nbsp;Before
+                  shipping your customized exhibit, our quality assurance team rigorously
+                  inspects your trade show display to make sure that everything is 
+                  flawless and primed for your upcoming event. As soon we get the green 
+                  light, your order is immediately shipped to your specified destination.</span></div>
+                <div class="step7 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step7.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step7_hover.png" alt=""></a> <span class="caption"><span class="step_number">step # 7</span> <span class="step_title">Production begins</span>&nbsp;Now
+                  that we know what you want, we’re ready to give you what you need. Our 
+                  skilled production team moves into action, working with speed and 
+                  precision to print the most accurate shades and hues and to stitch the 
+                  strongest seams for one impressive display.</span> </div>
+                <div class="step8 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step8.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step8_hover.png" alt=""></a> <span class="caption"> <span class="step_number">step # 8</span> <span class="step_title">Order ships</span>&nbsp;Before
+                  shipping your customized exhibit, our quality assurance team rigorously
+                  inspects your trade show display to make sure that everything is 
+                  flawless and primed for your upcoming event. As soon we get the green 
+                  light, your order is immediately shipped to your specified destination.</span></div>
+              </div>
+              <span id="hide_button">Hide</span></div>
+          </div>
+          <?php
+$product->getId();
+$upsp1 = Mage::getModel('catalog/product')->load($product->getId());
+$upsell_product = $upsp1->getUpSellProductCollection();
+//$upsp2 = Mage::getModel('catalog/product')->load($current_product->getProductUrl());
+//print_r($upsell_product);
+if(count($upsell_product)>0){ ?>
+          <div class="related_prod"  style="float:left;">
+            <div class="related-heading"> <img src="<?php echo $this->getSkinUrl()?>images/related_heading.jpg"  alt="Related Products"/> </div>
+            <div class="category-products" style="float:left;">
+              <ul class="products-grid" style="width:920px;">
+                <?php
+foreach($upsell_product as $_upsell)
+{
+$_upsell->getId();
+$upsp = Mage::getModel('catalog/product')->load($_upsell->getId());
+/*echo '<pre>';
+var_dump($upsp);*/
+ $Img = $upsp->getSmallImage();
+ $url = $this->getUrl('');
+ $_img_path = Mage::getBaseUrl('media').'catalog/product/'.$Img; 
+ $productUrl = $url.$upsp->getUrlPath(); 
+?>
+                <?php /*?><?php var_dump($current_product);
+exit;
+?><?php */?>
+                <!--<div id="related_<?php //echo $_upsell->getId()?>" class="mini-upsell-ite" >-->
+                <li class="hover_pro item" style="margin-bottom:36px;">
+                  <div class="mask-product">
+                    <div class="pro-det-con"> <a href="<?php echo $upsp->getProductUrl(); //echo $productUrl; ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img width="181" height="241" src="<?php echo $_img_path; ?>"  alt="" /></a>
+                      <?php
+                /**************For assign to promotion product************************/
+                if($_product->getPromotionicon() !='')
+                {
+                    $filePath=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getPromotionicon()
+                ?>
+                      <div class="promoicon-image"> <img width="75" height="75.5" style="position:absolute;  right:0;  top:0; " src="<?php echo $filePath; ?>" /> </div>
+                      <?php
+                }
+                /**************End assign to promotion product************************/
+                ?>
+                    </div>
+                  </div>
+                  <?php 
+						$_p_model = $_product->getSku();
+						$_store_id = Mage::app()->getStore()->getStoreId();
+				?>
+                  <?php //echo $this->getPriceHtml($_product, true) ?>
+                </li>
+                <?php
+}?>
+              </ul>
+            </div>
+          </div>
+          <?php } ?>
+          
+          <div class="pro_upselling">
+		 
+         <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('related')->toHtml() ?>
+          </div>
+          
+        </div>
+        <?php if ($_product->getDescription()):?>
+        <div class="pro-desc">
+          <h2 style="color:#fff; font-family: Arial; font-size: 13px; margin: 0px ! important; width: 101%;"><?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?></h2>
+        </div>
+        <?php endif;?>
+      </div>
+      <div class="clearer"></div>
+    </form>
+    <script type="text/javascript">
+    //<![CDATA[
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+        productAddToCartForm.submit = function(button, url) {
+            if (this.validator.validate()) {
+                var form = this.form;
+                var oldUrl = form.action;
+                if (url) {
+                   form.action = url;
+                }
+                var e = null;
+                try {
+                    this.form.submit();
+                } catch (e) {
+                }
+                this.form.action = oldUrl;
+                if (e) {
+                    throw e;
+                }
+                if (button && button != 'undefined') {
+                    button.disabled = true;
+                }
+            }
+        }.bind(productAddToCartForm);
+        productAddToCartForm.submitLight = function(button, url){
+            if(this.validator) {
+                var nv = Validation.methods;
+                delete Validation.methods['required-entry'];
+                delete Validation.methods['validate-one-required'];
+                delete Validation.methods['validate-one-required-by-name'];
+                if (this.validator.validate()) {
+                    if (url) {
+                        this.form.action = url;
+                    }
+                    this.form.submit();
+                }
+                Object.extend(Validation.methods, nv);
+            }
+        }.bind(productAddToCartForm);
+    //]]>
+    </script> 
+  </div>
+</div>

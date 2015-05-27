@@ -1,0 +1,503 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+
+
+<div class="spec-middle-container">
+<div class="middle col-1-layout">
+<!-- start center -->
+<div id="main" class="col-main">
+
+<!-- start content -->
+<div class="product-info-box">
+<h3 class="product-crumbs"> </h3>
+<div class="product-right">
+  <div class="product-shop">
+    <div class="product-title-box">
+      <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+     <div class="no-display">
+        <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+        <input type="hidden" name="related_product" id="related-products-field" value="" />
+      </div>
+      <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+       
+        <h2 class="product-manufacturer"> 
+		<?php echo $_product->getManufacturer();?> </h2>
+        <h1 class="product-name"> <?php echo $_product->getName();?> </h1>
+        <h3 class="product-colour">   </h3>
+        <div class="inline-block">
+          <div class="price-box"> 
+          <span class="regular-price" id="product-price-124565"> 
+          <span class="price"><?php echo $this->getPriceHtml($_product) ?>
+           <?php echo $this->getTierPriceHtml() ?></span> </span> </div>
+          <div class="ratings add-review-button">
+           <a href="javascript:;">[&nbsp;rate&nbsp;]</a> </div>
+        </div>
+        <div class="product-badges">
+          <div class="badge-popular"></div>
+        </div>
+       
+        <ul class="add-to-box">
+        </ul>
+        <div class="clear absolute-product-bar">
+          <div class="clear"></div>
+          <div class="product-top-bar">
+            <div class="size-bar">
+              
+              <div class="sizing-chart-link">
+               <a class="more" href="http://outdoorbanner.com.au/size-chart/?___store=en4">sizing chart</a> </div>
+            <a class="fancybox" href="#inline1" title="Combine & Save">Combine & Save</a>
+            
+            </div>
+            <fieldset class="product-options" id="product-options-wrapper">
+              <dl>
+                <dd class="last">
+                  <?php echo $this->getChildHtml('product_type_data') ?> 
+		<?php echo $this->getChildHtml('extrahint') ?>
+        <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+        <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+        <?php endif;?>
+                </dd>
+                
+              </dl>
+            </fieldset>
+            <div class="product-options-bottom">
+              <fieldset class="add-to-cart-box">
+                <span class="qty-box">
+                <label for="qty">Qty:</label>
+                <input name="qty" type="text" class="input-text qty" id="qty" maxlength="12" value="1" />
+                </span>
+                <button type="submit" class="form-button buy-now"><span>BUY NOW</span></button>
+                <button class="form-button notify-me" style="display: none;"><span>Notify Me</span></button>
+              </fieldset>
+            </div>
+            <div class="find-in-store yesscript">
+              <button class="form-button" type="submit"> <span>Find in Store</span> </button>
+            </div>
+          </div>
+          <div class="size-info-pop-up" style="display: none;"></div>
+        </div>
+        <div class="clear"></div>
+        <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.hypedc.com%2F574-womens-gcp-grey-pink.html&amp;show_faces=false&amp;width=200&amp;font=lucida%2Bgrande&amp;colorscheme=dark" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px;" allowTransparency="true"></iframe>
+      </form>
+    </div>
+    <div class="shopping-box">
+      <h4>SHOPPING AT HYPEDC.COM</h4>
+      <ul>
+        <li><span style="color: #ff0000;"><span style="font-size: medium;">FREE Shipping!! </span></span>
+          <div class="more"><a class="more show-shipping" href="http://outdoorbanner.com.au/shipping/?___store=en4">[&nbsp;more&nbsp;]</a></div>
+        </li>
+        <li>
+          <label></label>
+          <span style="color: #ff0000;"><span style="font-size: medium;">No hassle 30 day return </span></span>
+          <div class="more"><a class="more show-shipping" href="http://outdoorbanner.com.au/returns/?___store=en4">[&nbsp;more&nbsp;]</a></div>
+        </li>
+        
+      </ul>
+      
+    </div>
+    
+    <div style="display: none;" id="notify-me-wrapper">
+      <div class="content-block">
+        <div id="notify-me" class="notify-me"> Please enter your email address to be notified when this product is back in
+          stock.
+          <form action="http://www.hypedc.com/hype/dc/addnotify" method="post">
+            Your Email:
+            <input type="text" name="email"/>
+            <input class="hidden_id" type="hidden" name="id" value="124565"/>
+            <button type="submit" name="submit" class="form-button"><span>Subscribe</span></button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="collateral-box">
+      <div class="head">
+        <h4>Tags</h4>
+        <a href="javascript:;" class="add-tag">[ add a tag ]</a>
+        <div class="add-tag-box">
+          <p class="tag-log-in-box"> You need to be logged in to tag. <a href="http://outdoorbanner.com.au/customer/account">Click here to log in.</a> </p>
+        </div>
+      </div>
+      No tags yet. </div>
+    <div class="blog-box">
+      <h4>RELATED NEWS</h4>
+      <a href="http://outdoorbanner.com.au/news/2013/05/10/new-balance-nb-lifestyle-women-on-the-move-campaign"><img style="width: 225px" src="http://www.hypedc.com/wordpress/wp-content/uploads/2013/05/feaure-NB-Chela.jpg" alt="Article Image" /></a>
+      <div class="content"> <a href="http://outdoorbanner.com.au/news/2013/05/10/new-balance-nb-lifestyle-women-on-the-move-campaign"><strong>Outdoorbanners.com.au &#8211; NB Lifestyle Women on the Move Campaign</strong></a> <br />
+        <p>The new NB campaign features 6 cool women on the move and their unique stories.</p>
+        <a class="more" href="http://outdoorbanner.com.au/news/2013/05/10/new-balance-nb-lifestyle-women-on-the-move-campaign">[&nbsp;more&nbsp;]</a> </div>
+    </div>
+  </div>
+</div>
+
+<!--Left box of product display-->
+
+<div class="product-left">
+<div class="product-img-box" title="<?php echo $_product->getName();?>">
+<div class="brand" style="background: url(<?php echo $full_path_url;?>); width: 80px; height: 60px; position: absolute; z-index: 40; margin: 8px"></div>
+<div class="click-to-zoom">double click shoe to zoom</div>
+
+
+<?php 
+	// product image /
+	        $product = Mage::getModel('catalog/product')->load($_product->getId());
+			$full_path_url = Mage::helper('catalog/image')->init($product, 'image')->resize(740,740);
+?>
+<div class="image-fading">
+  <p style="display: block" class="product-image-zoom selected">
+   <img style="top: -96px; cursor: auto;" src="<?php echo $full_path_url;?>" alt="<?php echo $_product->getName();?>" title="<?php echo $_product->getName();?>" /> </p>
+</div>
+
+
+
+<div style="display: none;" class="image-fading">
+  <p style="display: block" class="product-image-zoom selected"> <img style="display: none;" id="image-zoom-0" class="single-image-zoom" src="http://www.hypedc.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/n/e/new-balance-574-womens-36872.jpg" width="573px" alt="New Balance 574 WOMENS" title="New Balance 574 WOMENS" /> </p>
+  <p style="display: none" class="product-image-zoom "> <img style="display: none;" id="image-zoom-1" class="single-image-zoom spec-src" spec-src="http://www.hypedc.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/n/e/new-balance-574-womens-36873.jpg" width="573px" alt="New Balance 574 WOMENS" title="New Balance 574 WOMENS" /> </p>
+  <p style="display: none" class="product-image-zoom "> <img style="display: none;" id="image-zoom-2" class="single-image-zoom spec-src" spec-src="http://www.hypedc.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/n/e/new-balance-574-womens-36874.jpg" width="573px" alt="New Balance 574 WOMENS" title="New Balance 574 WOMENS" /> </p>
+  <p style="display: none" class="product-image-zoom "> <img style="display: none;" id="image-zoom-3" class="single-image-zoom spec-src" spec-src="http://www.hypedc.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/n/e/new-balance-574-womens-36875.jpg" width="573px" alt="New Balance 574 WOMENS" title="New Balance 574 WOMENS" /> </p>
+</div>
+<div class="share-shoe-wrapper">
+<a href="http://outdoorbanner.com.au/sendfriend/product/send/id/124565/cat_id/12/">
+<span class="share-shoe"></span></a></div>
+<div style="display: none;" id="shareshoeinfo">
+<div>
+<ul class="cluetip-login-box">
+<form class="share-shoe-form" action="http://www.hypedc.com/sendfriend/product/sendmail/id/124565" method="post">
+  <li>
+    <label>What is your email address? </label>
+    <input type="text" class="required email user-email" name="sender[email]"/>
+  </li>
+  <li>
+    <label>What is your friend's email address? </label>
+    <input type="text" class="required email friend-email" name="recipients[email][]"/>
+  </li>
+  <li>
+    <label>Email content</label>
+    <textarea name="sender[message]" class="email-content"></textarea>
+  </li>
+  <input style="display: none;" class="user-name" name="sender[name]" value="Me" />
+  <input style="display: none;" class="friend-name" name="recipients[name][]" value="You" />
+  <li>
+    <button type="submit" class="send">SEND</button>
+  </li>
+  
+</form>
+</ul>
+<div class="clear"></div>
+<div class="yesscript social-links">
+<br />
+Feeling social? Spread the word with these: <br />
+<ul class="social">
+  <li> 
+    <script>
+       function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}
+    </script> 
+    <a target="_blank" href="http://www.facebook.com/share.php?u=http://www.hypedc.com/574-womens-gcp-grey-pink.html" onclick="return fbs_click()" target="_blank"><img src="http://b.static.ak.fbcdn.net/images/share/facebook_share_icon.gif?7:26981" alt="" />
+    <label>Facebook</label>
+    </a> </li>
+  <li> <a target="_blank" href="http://www.myspace.com/Modules/PostTo/Pages/?u=http://www.hypedc.com/574-womens-gcp-grey-pink.html&t=http://www.hypedc.com/574-womens-gcp-grey-pink.html"><img src="http://www.hypedc.com/media/social/myspace.png" />
+    <label>MySpace</label>
+    </a> </li>
+  <li> <a target="_blank" href="http://del.icio.us/post?url=http://www.hypedc.com/574-womens-gcp-grey-pink.html&title=http://www.hypedc.com/574-womens-gcp-grey-pink.html"><img src="http://www.hypedc.com/media/social/delicious.png" />
+    <label>Delicious</label>
+    </a> </li>
+  <li> <a target="_blank" href="http://digg.com/submit?phase=2&url=http://www.hypedc.com/574-womens-gcp-grey-pink.html"><img src="http://www.hypedc.com/media/social/digg.png" />
+    <label>Digg</label>
+    </a> </li>
+  <li> <a target="_blank" href="http://www.stumbleupon.com/submit?url=http://www.hypedc.com/574-womens-gcp-grey-pink.html"><img src="http://www.hypedc.com/media/social/stumble.png" />
+    <label>StumbleUpon</label>
+    </a> </li>
+  <br />
+  <p class="real-tiny">note: we do not store these details, and we won't send anything to you or your friend except for the link to this page</p>
+  </div>
+</ul>
+</div>
+</div>
+<div style="display: none;" class="more-views">
+  <div class="bg-more-views"> More<br />
+    Views </div>
+  <ul>
+    <li> <a href="javascript:;" link="0" class="gallery-image"> <span style="background-image: url(http://www.hypedc.com/media/catalog/product/cache/1/thumbnail/84x/9df78eab33525d08d6e5fb8d27136e95/n/e/new-balance-574-womens-36872.jpg)"> </span> </a> </li>
+    <li> <a href="javascript:;" link="1" class="gallery-image"> <span style="background-image: url(http://www.hypedc.com/media/catalog/product/cache/1/thumbnail/84x/9df78eab33525d08d6e5fb8d27136e95/n/e/new-balance-574-womens-36873.jpg)"> </span> </a> </li>
+    <li> <a href="javascript:;" link="2" class="gallery-image"> <span style="background-image: url(http://www.hypedc.com/media/catalog/product/cache/1/thumbnail/84x/9df78eab33525d08d6e5fb8d27136e95/n/e/new-balance-574-womens-36874.jpg)"> </span> </a> </li>
+    <li> <a href="javascript:;" link="3" class="gallery-image"> <span style="background-image: url(http://www.hypedc.com/media/catalog/product/cache/1/thumbnail/84x/9df78eab33525d08d6e5fb8d27136e95/n/e/new-balance-574-womens-36875.jpg)"> </span> </a> </li>
+  </ul>
+</div>
+<script type="text/javascript">
+            var image = true;
+        </script>
+</div>
+<div id="messages_product_view"></div>
+<div class="product-left-box">
+  <div class="box base-mini mini-related-items">
+    <div class="content by-color"> 
+    <a href="http://outdoorbanner.com.au/catalog/product/view/id/124538/s/574-womens-nvt-navy/category/12/">
+      <div class="item image"> <img src="http://www.hypedc.com/media/catalog/product/cache/1/thumbnail/159x159/9df78eab33525d08d6e5fb8d27136e95/n/e/new-balance-574-womens-33592.jpg" /> 
+      </div>
+      </a>
+      <div class="item description">
+        <p>
+       		<?php 
+					echo $_product->getDescription();
+			?> 
+        </p>
+      </div>
+      <div class="item details"> 
+      <span class="label">Classification</span>
+      <span class="value">ATHL LACE</span> </div>
+      
+    </div>
+    
+    
+    
+    <div id="by-like-container">
+    
+     <a href="#" id="by-like-prev" onclick="return false;">
+      <div class="bg-arrow-prev">&lt&lt</div>
+      </a>
+      <?php
+        $related_prods = $_product->getRelatedProductIds();
+        foreach($related_prods as $related){
+            $_rel = Mage::getModel('catalog/product')->load($related);
+            $_img = '<img src="'.$this->helper('catalog/image')->init($_rel, 'image')->resize(115, 90).'" alt="'.$this->htmlEscape($_rel->getImageLabel()).'" title="'.$this->htmlEscape($_rel->getImageLabel()).'" />';
+            
+            ?>
+      <div class="content by-like">
+        <ol style="width: 680px" pos="0">
+          <a href="http://outdoorbanner.com.au/996-womens-navy-pink-ubl.html"> <span class="hidden-span">
+          <li  class="super-products" style="background-image: url(http://www.hypedc.com/media/catalog/product/cache/1/thumbnail/170x170/9df78eab33525d08d6e5fb8d27136e95/n/e/new-balance-996-womens-41025.jpg);">
+            <div class="catalog-listing">
+              <div class="item hidden">
+                <div class="in-stock-red"></div>
+                <h5>996 WOMENS</h5>
+                <div class="price-box"> <span class="regular-price" id="product-price-135073"> <span class="price">$129.95</span> </span> </div>
+                <div class="medals">
+                  <div class="badge-exclusive"></div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="in-stock"></div>
+                <h5>996 WOMENS</h5>
+                <div class="price-box"> <span class="regular-price" id="product-price-135073"> <span class="price">$129.95</span> </span> </div>
+                <div class="medals">
+                  <div class="badge-exclusive"></div>
+                </div>
+              </div>
+            </div>
+          </li>
+          </span> </a> 
+        </ol>
+      </div>
+      <?php 
+		}
+	  ?>
+      <a href="#" id="by-like-next" onclick="return false;">
+      <div class="bg-arrow-next">&gt&gt</div>
+      </a> </div>
+  </div>
+</div>
+<div class="product-left-box">
+   <?php if ($_product->getShortDescription()):?>
+  <div class="brand-box">
+    <div class="head">About <?php echo $_product->getName();?>:</div>
+    <div class="content">
+      <p>
+      
+        <div class="short-description">
+          <h2><?php echo $this->__('Product Summary') ?></h2>
+          <div class="std">		  
+		  <?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?></div>
+        </div>
+       
+      
+      </p>
+      <div class="clear"></div>
+    </div>
+  </div>
+   <?php endif;?>
+</div>
+<div class="customer-reviews-wrapper">
+  <div class="collateral-box dedicated-review-box" id="customer-reviews">
+    <div class="head">
+      <h4>REVIEWS</h4>
+    </div>
+     
+    <div id="review-list">
+    <div style="padding:10px;">
+    <h4>Write your own review</h4>
+    <div class="social-widgets">Social Widgets</div>
+    </div>
+        
+      <div class="logged-out-review-box">
+       
+        <p><?php echo $this->getReviewsSummaryHtml($_product, false, true)?></p>
+        <p class="review-log-in-box">
+        <a href="http://outdoorbanner.com.au/customer/account" id="login-link">Login to review</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+
+</div>
+</div>
+<!-- end content -->
+
+</div>
+<!-- end center -->
+
+<ul id="brand_footer">
+  <li> <a href="http://outdoorbanner.com.au/adidas" title="View shoes from adidas"> <img src="http://www.hypedc.com/media/brands/adidas.png" alt="adidas Logo" /> <span>adidas</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/asics" title="View shoes from Asics"> <img src="http://www.hypedc.com/media/brands/asics.png" alt="Asics Logo" /> <span>Asics</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/birkenstock" title="View shoes from Birkenstock"> <img src="http://www.hypedc.com/media/brands/birkenstock.png" alt="Birkenstock Logo" /> <span>Birkenstock</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/clae" title="View shoes from Clae"> <img src="http://www.hypedc.com/media/brands/clae.png" alt="Clae Logo" /> <span>Clae</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/clarks-originals" title="View shoes from Clarks Originals"> <img src="http://www.hypedc.com/media/brands/clarks-originals.png" alt="Clarks Originals Logo" /> <span>Clarks Originals</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/converse" title="View shoes from Converse"> <img src="http://www.hypedc.com/media/brands/converse.png" alt="Converse Logo" /> <span>Converse</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/dr-martens" title="View shoes from Dr Martens"> <img src="http://www.hypedc.com/media/brands/dr-martens.png" alt="Dr Martens Logo" /> <span>Dr Martens</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/lacoste" title="View shoes from Lacoste"> <img src="http://www.hypedc.com/media/brands/lacoste.png" alt="Lacoste Logo" /> <span>Lacoste</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/le-coq-sportif" title="View shoes from Le Coq Sportif"> <img src="http://www.hypedc.com/media/brands/le-coq-sportif.png" alt="Le Coq Sportif Logo" /> <span>Le Coq Sportif</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/merrell" title="View shoes from Merrell"> <img src="http://www.hypedc.com/media/brands/merrell.png" alt="Merrell Logo" /> <span>Merrell</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/new-balance" title="View shoes from New Balance"> <img src="http://www.hypedc.com/media/brands/new-balance.png" alt="New Balance Logo" /> <span>New Balance</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/nike" title="View shoes from Nike"> <img src="http://www.hypedc.com/media/brands/nike.png" alt="Nike Logo" /> <span>Nike</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/onitsuka-tiger" title="View shoes from Onitsuka Tiger"> <img src="http://www.hypedc.com/media/brands/onitsuka-tiger.png" alt="Onitsuka Tiger Logo" /> <span>Onitsuka Tiger</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/pointer" title="View shoes from Pointer"> <img src="http://www.hypedc.com/media/brands/pointer.png" alt="Pointer Logo" /> <span>Pointer</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/puma" title="View shoes from Puma"> <img src="http://www.hypedc.com/media/brands/puma.png" alt="Puma Logo" /> <span>Puma</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/saucony" title="View shoes from Saucony"> <img src="http://www.hypedc.com/media/brands/saucony.png" alt="Saucony Logo" /> <span>Saucony</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/shubar" title="View shoes from Shubar"> <img src="http://www.hypedc.com/media/brands/shubar.png" alt="Shubar Logo" /> <span>Shubar</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/supra" title="View shoes from Supra"> <img src="http://www.hypedc.com/media/brands/supra.png" alt="Supra Logo" /> <span>Supra</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/timberland" title="View shoes from Timberland"> <img src="http://www.hypedc.com/media/brands/timberland.png" alt="Timberland Logo" /> <span>Timberland</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/toms" title="View shoes from TOMS"> <img src="http://www.hypedc.com/media/brands/toms.png" alt="TOMS Logo" /> <span>TOMS</span> </a> </li>
+
+  <li> <a href="http://outdoorbanner.com.au/vans" title="View shoes from Vans"> <img src="http://www.hypedc.com/media/brands/vans.png" alt="Vans Logo" /> <span>Vans</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/wolverine" title="View shoes from Wolverine"> <img src="http://www.hypedc.com/media/brands/wolverine.png" alt="Wolverine Logo" /> <span>Wolverine</span> </a> </li>
+</ul>
+</div>
+</div>
+
+  
+    <script type="text/javascript">
+        //<![CDATA[
+            var productAddToCartForm = new VarienForm('product_addtocart_form');
+            productAddToCartForm.submit = function(button, url) {
+                if (this.validator.validate()) {
+                    var form = this.form;
+                    var oldUrl = form.action;
+
+                    if (url) {
+                       form.action = url;
+                    }
+                    var e = null;
+                    try {
+                        this.form.submit();
+                    } catch (e) {
+                    }
+                    this.form.action = oldUrl;
+                    if (e) {
+                        throw e;
+                    }
+
+                    if (button && button != 'undefined') {
+                        button.disabled = true;
+                    }
+                }
+            }.bind(productAddToCartForm);
+
+            productAddToCartForm.submitLight = function(button, url){
+                if(this.validator) {
+                    var nv = Validation.methods;
+                    delete Validation.methods['required-entry'];
+                    delete Validation.methods['validate-one-required'];
+                    delete Validation.methods['validate-one-required-by-name'];
+                    // Remove custom datetime validators
+                    for (var methodName in Validation.methods) {
+                        if (methodName.match(/^validate-datetime-.*/i)) {
+                            delete Validation.methods[methodName];
+                        }
+                    }
+
+                    if (this.validator.validate()) {
+                        if (url) {
+                            this.form.action = url;
+                        }
+                        this.form.submit();
+                    }
+                    Object.extend(Validation.methods, nv);
+                }
+            }.bind(productAddToCartForm);
+        //]]>
+        </script> 
+  
+ 
+ 
+ 
+ <?php /*?>
+ 
+  <div class="related-products">
+    <ul>
+      <?php
+        $related_prods = $_product->getRelatedProductIds();
+        foreach($related_prods as $related){
+            $_rel = Mage::getModel('catalog/product')->load($related);
+            $_img = '<img src="'.$this->helper('catalog/image')->init($_rel, 'image')->resize(115, 90).'" alt="'.$this->htmlEscape($_rel->getImageLabel()).'" title="'.$this->htmlEscape($_rel->getImageLabel()).'" />';
+            
+            ?>
+      <li>
+      
+      
+      
+        <h2 class="product-title"><a href="<?php echo $_rel->getProductUrl()?>" title="<?php echo $_rel->getName()?>"><?php echo $_rel->getName()?></a></h2>
+        <a href="<?php echo $_rel->getProductUrl()?>" title="<?php echo $_rel->getName()?>"><?php echo $_helper->productAttribute($_product, $_img, 'image');?></a> </li>
+      <?php
+        }
+        ?>
+    </ul>
+  </div>
+  <div class="product-collateral" style="display:none;">
+    <?php foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html):?>
+    <div class="box-collateral <?php echo "box-{$alias}"?>">
+      <?php if ($title = $this->getChildData($alias, 'title')):?>
+      <h2><?php echo $this->escapeHtml($title); ?></h2>
+      <?php endif;?>
+      <?php echo $html; ?> </div>
+    <?php endforeach;?>
+    <?php echo $this->getChildHtml('upsell_products') ?> <?php echo $this->getChildHtml('product_additional_data') ?> </div>
+</div>
+<?php echo $this->getChildHtml('info_tabs') ?>
+<div id="inline1" style="width:400px;display: none;">
+ <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('combine-and-save')->toHtml() ?>
+  </div>
+<?php */?>

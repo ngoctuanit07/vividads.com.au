@@ -1,0 +1,64 @@
+<div class="home-page-cms-content">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr align="center" valign="top">
+    <td width="362" class="home-page-left">
+    	<div class="box-contents">
+        <div class="box-headings">
+        <span class="icon">
+        <img src="<?php echo $this->getSkinUrl()?>images/client_say.jpg" />
+        </span>
+        <h1>Testimonial's</h1>
+        </div>
+        	<div class="box-contents-text">       <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial')->toHtml() ;
+   
+  ?></div>
+        
+        </div>
+    </td>
+    <td width="7">&nbsp;</td>
+    <td width="362" align="left" bgcolor="#FFFFFF">    	
+    
+    <div class="box-contents">
+        <div class="box-headings">
+        <span class="icon">
+        <img src="<?php echo $this->getSkinUrl()?>images/aboutus.jpg" />
+        </span>
+        <h1>Who we are</h1>
+        </div>
+        	<div class="box-contents-text-about">
+        	  <p>At   Custom Booths we understand the importance of display's   in Exhibition's.We specialize in designing custom made   booth's that are   eye catching, bespoke and truly amazing.<br>
+                <br>
+With   only a fleeting moment to attract the attention of a   trade show   attendee, your exhibit must appeal to your target   audience's interests.   Your display must effectively communicate who   you are, what you do and   how your company can help them.Since the past   decade we have   created amazing exhibition structure's and booth's for   our clients.   We've got designs you have never seen before, that is   cause we just   don't order them from an overseas catalog, we design and   construct these   amazing booth's everyday, tailored to your requirement's. <br>
+<br>
+       	      There is no limit to the <strong>custom exhibit design experience</strong> we     can create for you. If it can be imagined, it can be built. Whether     your needs are large or small, our attention to detail, exceptional     exhibit design work and seamless production process is our promise on     every job.<br clear="all">
+        	</p></div>
+        
+        </div></td>
+    <td width="7">&nbsp;</td>
+    <td width="362" class="home-page-right" bgcolor="#FFFFFF"><div class="box-contents">
+        <div class="box-headings">
+        <span class="icon">
+        <img src="<?php echo $this->getSkinUrl()?>images/videoicon.jpg" />
+        </span>
+        <h1>Contact Us for a Free Consultation!</h1>
+        </div>
+        <div class="box-contents-video">
+        	<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('contacts')->toHtml() ;
+   
+  ?>
+        
+        </div>
+        	<?php /*?><div class="box-contents-video">
+            	<div class="video"><iframe width="338" height="163" src="//www.youtube.com/embed/FZnapu4sFt8" frameborder="0" allowfullscreen></iframe></div>
+               	<div class="video-content"><strong>Custom Booths Set Up Video</strong><br>
+               	  This video demonstrates how easy it is to<br>
+               	  set up the Media Wall.<br>
+       	        <strong>NO TOOLS REQUIRED</strong></div>
+            
+          </div><?php */?>
+        
+        </div></td>
+  </tr>
+</table>
+
+</div>

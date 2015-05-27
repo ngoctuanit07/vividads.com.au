@@ -1,0 +1,291 @@
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php ?>
+<style>
+ .disabled-class{color:#999; background-color:#999;}
+ .active-class{ color:#063;}
+ 
+</style>
+<title>My Quotes</title>
+<?php 
+ if(Mage::getSingleton('customer/session')->isLoggedIn()) {
+     $customerData = Mage::getSingleton('customer/session')->getCustomer();
+      $customerid = $customerData->getId();
+	  $CustomerName = $customerData->getName();
+ }
+if($customerid){
+	
+		   // get customer id
+		    $xml = simplexml_load_file('app/etc/local.xml');
+			$host = $xml->global->resources->default_setup->connection->host;
+	 		$username = $xml->global->resources->default_setup->connection->username;
+	 		$password = $xml->global->resources->default_setup->connection->password;
+	 		$dbname = $xml->global->resources->default_setup->connection->dbname;
+			
+			$con = mysql_connect($host, $username, $password);
+
+			if (!$con)
+			  {
+			  die('Could not connect: ' . mysql_error());
+			  }
+           			
+			$db_selected = mysql_select_db($dbname,$con);
+		//	mysql_query("SET NAMES 'utf8' ");
+ 			//$sql = "SELECT * FROM quotation WHERE customer_id ='".$customerid."'  and status != 'new' ; " ;
+			$sql = "SELECT * FROM quotation WHERE customer_id ='".$customerid."'   " ;
+			$result = mysql_query($sql,$con);
+			$data_array = array();
+			$i=0;
+			if($result){
+			while ($row = mysql_fetch_assoc($result)) {
+				//var_dump($row);
+				
+		 		    $data_array[$i]['customer_id']= $row["customer_id"];
+					//echo "<br>";
+		    		$data_array[$i]['increment_id']= $row["increment_id"];
+					//echo "<br>";
+				    $data_array[$i]['quotation_id']= $row["quotation_id"];
+				    $data_array[$i]['created_time'] = $row["created_time"];
+				    $data_array[$i]['price_ht'] = $row["price_ht"];
+				    $data_array[$i]['status'] = $row["status"];
+				    $data_array[$i]['manager'] = $row["manager"];
+				  
+				   $i++;
+		}
+	         
+			  
+			} 
+	   
+	
+	
+	}
+	/*echo '<pre>';
+	print_r($data_array);
+	echo '</pre>';*/
+ $quotes = $this->getQuotations()->getSize()
+?>
+<div class="page-title">
+    <h1 style="color:#666"><?php echo $this->__('My Quotations'); ?></h1>
+</div>
+<button class="button" style="float:right;" onclick="setLocation('<?php echo $this->getUrl('get_a_quote');?>')"><span><span>Create New Quotation<span class="icon"></span></span></span></button>
+<?php
+$magentoCurrentUrl = Mage::helper('core/url')->getCurrentUrl();
+
+$strurl = explode('?',$magentoCurrentUrl);
+
+$pagesize = $_REQUEST['limit'];
+
+?>
+<div class="pager">
+    
+        <p class="amount">
+                    <strong><?php echo $this->getQuotations()->getSize()?> Item(s)</strong>
+            </p>
+<?php
+
+if($pagesize == '')
+$pagesize = 10;
+
+$total = $this->getQuotations()->getSize()/$pagesize;
+$total_round = round($this->getQuotations()->getSize()/$pagesize);
+
+
+
+if(strpos($magentoCurrentUrl,'/p/'))
+$strurl1 = substr($strurl[0], 0, -2);
+else
+{
+    $strurl1 = $strurl[0].'p/';
+}
+
+
+if($total >= 1)
+{
+    if($total > $total_round)
+    {
+	$total = $total+1;
+    }
+    else
+    {
+	$total = $total_round;
+    }
+    
+    echo '<div class="quote_page">';
+    for($i=1;$i<=$total;$i++)
+    {
+	if(strpos($magentoCurrentUrl,'/p/'.$i.'/'))
+	echo '<span class="reg_pager">'.$i.'</span>';
+	else
+	echo '<span class="reg_pager"><a href="'.$strurl1.$i.'/?'.$strurl[1].'">'.$i.'</a></span>';
+    }
+    echo '</div>';
+}
+
+
+?>
+    
+        <div class="limiter">
+        <label>Show</label>
+        <select onchange="setLocation(this.value)">
+                    <option value="<?php echo $strurl[0].'?';?>limit=10" <?php if($pagesize == 10)echo 'selected';?>>
+                10            </option>
+                    <option value="<?php echo $strurl[0].'?';?>limit=20" <?php if($pagesize == 20)echo 'selected';?>>
+                20            </option>
+                    <option value="<?php echo $strurl[0].'?';?>limit=50" <?php if($pagesize == 50)echo 'selected';?>>
+                50            </option>
+                </select> per page    </div>
+    
+    
+        </div>
+
+
+
+<?php if($data_array): 
+		
+?>
+<table cellspacing="0" class="data-table" id="my-quotations-table">
+    <thead>
+        <tr>
+            <th><?php echo $this->__('Quotation #') ?></th>
+            <th><?php echo $this->__('CREATED DATE') ?></th>
+	   		<th><?php echo $this->__('QUOTE TOTAL') ?></th>
+            <th><?php echo $this->__('QUOTED BY') ?></th>
+           <!-- <th><?php echo $this->__('STATUS') ?></th>-->
+            <th style="padding-left:90px;"><?php echo $this->__('ACTION') ?></th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <?php $_odd = ''; ?>
+        <?php for($j=0; $j<=count($data_array)-1; $j++) { ?>
+        	<?php //$_quotation->checkExpirationDateAndApply(); ?>
+            <?php 
+				//if quotation is status with new etc 
+		$hidden_class = '';
+		$bg_class = '';
+		$view_quote = '<span class="active-class" ><img  src="'.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'view_icon.png">&nbsp;&nbsp;View Quotation</span>';
+		$href = $this->getUrl().'Quotation/Quote/View/quote_id/'.$data_array[$j]['quotation_id'];
+		if( strtolower($data_array[$j]['status']) == strtolower('new') ){
+			$hidden_class =  'class="disabled-class" ';
+			$href='javascript:void(0)';
+			$view_quote = '<span style="color:#989ca2;" >Processing...</span>';
+			$bg_class = 'style="background:none;"';
+			?>
+            <?php 
+				}
+			?>
+            <tr <?php if( $j%2 == 0) echo $bg_class; ?> <?php echo $hidden_class;?>>
+                <td><?php echo $data_array[$j]['increment_id']; ?></td>
+                <td><?php echo $this->formatDate($data_array[$j]['created_time']);?></td>
+		<td>
+		<?php
+		 
+		if($data_array[$j]['status']==strtolower('new')){			 
+			echo 'processing...';
+		}else{
+		echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->
+		getCurrentCurrencyCode())->getSymbol().number_format($data_array[$j]['price_ht'],2,'.','');
+		}
+		?></td>
+               <!-- <td><?php echo $CustomerName ?></td>-->
+                 <td><?php echo $this->__($data_array[$j]['manager']); ?></td>
+                <!--<td><?php echo $this->__($data_array[$j]['status']); ?></td>-->
+                <td class="a-center">
+                 <a href="<?php echo $href;?>" class="view-link"><?php echo $view_quote; ?></a>
+                   
+                </td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
+ 
+<script type="text/javascript">decorateTable('my-quotations-table')</script>
+
+<?php else: ?>
+    <p style="padding-left:10px;"><?php echo $this->__('You have no quotation available.') ?></p>
+<?php endif ?>
+
+<?php if (Mage::getStoreConfig('quotation/quotation_request/allow_text') && Mage::helper('quotation')->currentCustomerCanRequestQuote()): ?>
+
+<p>&nbsp;</p>
+
+
+
+
+
+<!--<div class="page-title">
+    <h1><?php //echo $this->__('Request for a new quotation') ?></h1>
+</div>-->
+
+<?php //echo $this->__('To request for a new quotation, please fill the field below being as accurate as possible to describe your needs'); ?>
+<p>&nbsp;</p>
+<!--<form id="form_request" name="form_request" method="POST" action="<?php //echo $this->getNewRequestPostUrl(); ?>">
+<center>
+<textarea cols="110" rows="10" id="description" name="description"></textarea>
+<p>&nbsp;</p>
+<br><button type="submit" title="Save" class="button"><span><span><?php //echo $this->__('Submit') ?></span></span></button> 
+</center>
+</form>-->
+
+<?php endif; ?>
+<p>&nbsp;</p>
+<div class="pager">
+    
+<p class="amount">
+	    <strong><?php echo $this->getQuotations()->getSize()?> Item(s)</strong>
+    </p>
+<?php
+
+if($pagesize == '')
+$pagesize = 10;
+
+$total = $this->getQuotations()->getSize()/$pagesize;
+$total_round = round($this->getQuotations()->getSize()/$pagesize);
+
+
+
+if(strpos($magentoCurrentUrl,'/p/'))
+$strurl1 = substr($strurl[0], 0, -2);
+else
+{
+    $strurl1 = $strurl[0].'p/';
+}
+
+
+
+
+if($total >= 1)
+{
+    if($total > $total_round)
+    {
+	$total = $total+1;
+    }
+    else
+    {
+	$total = $total_round;
+    }
+    
+    echo '<div class="quote_page">';
+    for($i=1;$i<=$total;$i++)
+    {
+	if(strpos($magentoCurrentUrl,'/p/'.$i.'/'))
+	echo '<span class="reg_pager">'.$i.'</span>';
+	else
+	echo '<span class="reg_pager"><a href="'.$strurl1.$i.'/?'.$strurl[1].'">'.$i.'</a></span>';
+    }
+    echo '</div>';
+}
+?>
+
+<div class="limiter">
+<label>Show</label>
+<select onchange="setLocation(this.value)">
+	    <option value="<?php echo $strurl[0].'?';?>limit=10" <?php if($pagesize == 10)echo 'selected';?>>
+	10            </option>
+	    <option value="<?php echo $strurl[0].'?';?>limit=20" <?php if($pagesize == 20)echo 'selected';?>>
+	20            </option>
+	    <option value="<?php echo $strurl[0].'?';?>limit=50" <?php if($pagesize == 50)echo 'selected';?>>
+	50            </option>
+	</select> per page    </div>
+
+
+</div>

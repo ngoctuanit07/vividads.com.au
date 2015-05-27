@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <phoneorder translate="label" module="phoneorder">
+            <label>Cateyes Phone Order</label>
+            <tab>sales</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>20</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <configuration translate="label">
+                    <label>Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+					<leftblock translate="label">
+                            <label>Show Left Side Block</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </leftblock>
+                        <rightblock translate="label">
+                            <label>Show Right Side Block</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </rightblock>
+                        <centerblock translate="label">
+                            <label>Show Center Side Block</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </centerblock> 
+                        <availabilitymsg translate="label">
+                            <label>Availability Information For Your Customers</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>e.g. Available Mon-Fri 9am-5pm</comment>
+                        </availabilitymsg>  
+                        <notification translate="label">
+                            <label>Send Notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Send notification when the customer will fill in the form. Warnig! You must configure smtp account in next tab</comment>
+                        </notification>   
+                        <notificationemail translate="label">
+                            <label>Email For Notifications</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>e.g. admin@mystore.com</comment>
+                        </notificationemail>    
+                        <stylename translate="label">
+                            <label>Predefined Boxes Style</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>phoneorder_adminhtml/system_config_source_styles</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>If you want other styles of box simply edit one of predefined in skin/frontend/default/default/css/phoneorder.css</comment>
+                        </stylename>                                                                                                                   
+                    </fields>
+                </configuration>
+                <smtp translate="label">
+                    <label>SMTP</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <authentication translate="label">
+                            <label>Authentication</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>phoneorder_adminhtml/system_config_source_authenticate</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Choose how you authenticate with SMTP server. If you choose no authentication - username and password will be ignored</comment> 
+                        </authentication>
+                        <username translate="label">
+                            <label>Username</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>SMTP username</comment> 
+                        </username> 
+                        <password translate="label">
+                            <label>Password</label>
+                            <frontend_type>password</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>SMTP password</comment> 
+                        </password>  
+                        <host translate="label">
+                            <label>Host</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>   
+                            <comment>SMTP server hostaname</comment>                         
+                        </host>   
+                        <port translate="label">
+                            <label>Port</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>For TLS default is 25, for SSL is 465</comment>
+                        </port>    
+                        <ssl translate="label">
+                            <label>SSL Security</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>phoneorder_adminhtml/system_config_source_ssl</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>If your account has SSL security, use one of ssl option</comment>
+                        </ssl>                                                                                                                   
+                    </fields>
+                </smtp>
+
+            </groups>
+        </phoneorder>
+    </sections>
+</config>

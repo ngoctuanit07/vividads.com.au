@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <factoryphotos_adminhtml_factoryphotos_index>
+        <reference name="content">
+            <block type="factoryphotos/adminhtml_factoryphotos" name="factoryphotos" />
+        </reference>
+    </factoryphotos_adminhtml_factoryphotos_index>
+</layout>

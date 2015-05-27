@@ -1,0 +1,208 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<?php 
+$_helper = $this->helper('catalog/product_compare');
+$_items = $_helper->getItemCount() > 0 ? $_helper->getItemCollection() : null;
+?>
+<script >
+/*function addToCart for product sample button*/
+	 
+	 function addToCartSample(productId){
+		 
+		
+		//var url = 'checkout/cart/add?product='+product_id+'&qty;='+quantity+'';
+		//setLocation('http://outdoorbannershop.com.au/checkout/icart/add/uenc/aHR0cDovL291dGRvb3JiYW5uZXJzaG9wLmNvbS5hdS9mbGFncy9mZWF0dXJlLWZsYWdzLmh0bWw,/product/'+product_id+'/price/'+grandTotal+'/');
+		 	 
+		setLocation('<?=$this->getUrl();?>checkout/icart/add/uenc/aHR0cDovL291dGRvb3JiYW5uZXJzaG9wLmNvbS5hdS9mbGFncy9mZWF0dXJlLWZsYWdzLmh0bWw,/product/'+productId+'/price/0/qty/0');
+		
+		
+	}
+</script>
+
+<div id="leftbar" class="float-L">
+     <?php 
+	$productId = 321;
+			/*adding saple kit product to the cart */
+			$product = Mage::getModel('catalog/product')
+ 	                     // set the current store ID
+ 	                     ->setStoreId(Mage::app()->getStore()->getId())
+ 	                     // load the product object
+ 	                     ->load($productId);
+			//print_r($product->getData());		 
+	?>
+     
+     
+      <div class="sample_kit">      
+        <input type="button" value="a" name="Free Sample kit" onclick="javascript:addToCartSample(<?php echo $product->getId();?>);" />
+      </div>
+      
+      
+      
+      <!-- Left Navigation -->
+       
+      
+      <script>
+	  <!--
+	  	function showCategory(txtBox,obj, subCatsBox){
+		var $=jQuery.noConflict();	
+			
+		$(document).ready(function(){
+			
+			if($('#'+txtBox).val()==1){
+			$('#'+obj).html('<span class="minus" title="click to hide category"></span>');
+			$('#'+subCatsBox).toggle();
+			$('#'+txtBox).val(0);
+			}else{
+				$('#'+obj).html('<span class="plus" title="click to show category"></span>');
+				$('#'+subCatsBox).toggle();
+				$('#'+txtBox).val(1);
+				}
+			});
+		}
+	  -->
+	  </script>
+   
+      <div class="leftBlock">
+        <div id="home-Testi">
+          <div class="padding">
+            <div class="title clearfix"><a href="<?php echo $this->getUrl('testimonial')?>" title="<?php echo $this->__('Testimonials')?>" rel="nofollow"><?php echo $this->__('Testimonials')?></a></div>
+            <div class="testi-content">
+              <p id="testimonal_comment">     <?php 
+		 		//left sidebar static block////
+				//left-sidebar-hompage
+			echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial')->toHtml() 
+				
+		 ?></p>
+              <?php /*?><p class="userName" id="testimonal_commentBy">- Richdarwin</p><?php */?>
+            </div>
+            <?php /*?><div class="buttons"> <a href="javascript:void(0);" onclick="return testimonial('prev');" style="display:none;" id="prev_testimonial" class="prev float-L" rel="nofollow"> </a> <a href="javascript:void(0);" onclick="return testimonial('next');" id="next_testimonial" class="next float-L" rel="nofollow"></a>
+              <input type="hidden" value="1" name="testimonid" id="testimonid"/>
+            </div><?php */?>
+          </div>
+          <div class="testi-faces"></div>
+        </div>
+        <div class="shadowSprite shadow210"></div>
+      </div>
+      
+      <!-- Latets News -->
+      
+      <div id="latestblogcomment"  style="background: url(<?php echo $this->getSkinUrl();?>images/bg-blog.png) no-repeat left bottom #f1f1f1 !important; border:2px solid #ccc; padding:7px;" class="clearfix"> </div>
+      <div class="shadowSprite shadow210"></div>
+      <script type="text/javascript">
+	  function fetchblogpost()
+	  {
+	  	  var strURL = 'headlines.php';
+ 		  var req = getXMLHTTP();		
+		  if(req)
+		  {
+				req.onreadystatechange = function()
+				{
+					if (req.readyState == 4)
+					{
+						if (req.status == 200)
+						{
+							if(req.responseText !== 0)
+							{
+ 								document.getElementById('latestblogcomment').innerHTML = req.responseText;
+ 							}
+						}
+					}
+				}
+				req.open("GET", strURL, true);
+				req.send(null);
+			}	
+	  }
+	 </script> 
+      <script type="text/javascript">fetchblogpost();</script> 
+      <!-- Latets News --> 
+    </div>
+
+<div class="block block-list block-compare">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Compare Products') ?>
+            <?php if($_helper->getItemCount() > 0): ?> 
+                <small><?php echo $this->__('(%d)', $_helper->getItemCount()) ?></small>
+            <?php endif; ?>
+        </span></strong>
+    </div>
+    <div class="block-content">
+    <?php if($_helper->getItemCount() > 0): ?>
+        <ol id="compare-items">
+        <?php foreach($_items as $_index => $_item): ?>
+            <li class="item">
+                <input type="hidden" class="compare-item-id" value="<?php echo $_item->getId() ?>" />
+                <a href="<?php echo $_helper->getRemoveUrl($_item) ?>" title="<?php echo $this->__('Remove This Item') ?>" class="btn-remove" onclick="return confirm('<?php echo $this->__('Are you sure you would like to remove this item from the compare products?') ?>');"><?php echo $this->__('Remove This Item') ?></a>
+                <p class="product-name"><a href="<?php echo $this->getProductUrl($_item) ?>"><?php echo $this->helper('catalog/output')->productAttribute($_item, $_item->getName(), 'name') ?></a></p>
+            </li>
+        <?php endforeach; ?>
+        </ol>
+        <script type="text/javascript">decorateList('compare-items')</script>
+        <div class="actions">
+            <a href="<?php echo $_helper->getClearListUrl() ?>" onclick="return confirm('<?php echo $this->__('Are you sure you would like to remove all products from your comparison?') ?>');"><?php echo $this->__('Clear All') ?></a>
+            <button type="button" title="<?php echo $this->__('Compare') ?>" class="button" onclick="popWin('<?php echo $_helper->getListUrl() ?>','compare','top:0,left:0,width=820,height=600,resizable=yes,scrollbars=yes')"><span><span><?php echo $this->__('Compare') ?></span></span></button>
+        </div>
+    <?php else: ?>
+        <p class="empty"><?php echo $this->__('You have no items to compare.') ?></p>
+    <?php endif; ?>
+    </div>
+</div>
+
+
+
+
+
+<div class="block block-subscribe">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Newsletter') ?></span></strong>
+    </div>
+    <form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="newsletter-validate-detail">
+        <div class="block-content">
+            <div class="form-subscribe-header">
+	            <?php $cms_block = Mage::getModel('cms/block')
+		            ->setStoreId( Mage::app()->getStore()->getId() )
+		            ->load('shopper_newsletter_text');
+	            if($cms_block->getIsActive()) {
+		            echo $this->getLayout()->createBlock('cms/block')->setBlockId('shopper_newsletter_text')->toHtml();
+	            }
+	            ?>
+            </div>
+            <div class="input-box">
+               <input type="text" name="email" id="newsletter" title="<?php echo $this->__('Sign up for our newsletter') ?>" class="input-text required-entry validate-email" />
+            </div>
+            <div class="actions">
+                <button type="submit" title="<?php echo $this->__('Subscribe') ?>" class="button"><span><span><?php echo $this->__('Subscribe') ?></span></span></button>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+    //<![CDATA[
+        var newsletterSubscriberFormDetail = new VarienForm('newsletter-validate-detail');
+    //]]>
+    </script>
+</div>
+ 

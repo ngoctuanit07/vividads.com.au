@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @copyright  Copyright (c) 2011 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Social Booster extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @author     MageWorx Dev Team
+ */
+-->
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addCss">
+               <!-- <stylesheet>css/socialbooster/styles.css</stylesheet>-->
+            </action>
+        </reference>
+        <reference name="after_body_start">
+            <block type="core/template" name="social_start" template="socialbooster/after_body_start.phtml" />
+        </reference>
+        <reference name="before_body_end">
+            <block type="core/template" name="social_end" template="socialbooster/before_body_end.phtml" />
+        </reference>
+	<remove name="after_body_start"></remove>
+	<remove name="before_body_end"></remove>
+    </default>
+
+    <catalog_product_view>
+        <reference name="product.info">
+            <block type="socialbooster/wrapper" name="socialbooster.product" />
+        </reference>
+        <reference name="product.info.addto">
+            <action method="setTemplate">
+                <template>socialbooster/catalog-product-view-addto.phtml</template>
+            </action>
+        </reference>
+    </catalog_product_view>
+
+    <catalog_category_default>
+        <block type="socialbooster/wrapper" name="socialbooster.category" />
+    </catalog_category_default>
+	
+    <catalog_category_layered>
+        <block type="socialbooster/wrapper" name="socialbooster.category" />
+    </catalog_category_layered>
+	
+    <cms_page>
+        <reference name="cms.wrapper">
+            <block type="socialbooster/wrapper" name="socialbooster.cms"/>
+        </reference>
+    </cms_page>
+</layout>

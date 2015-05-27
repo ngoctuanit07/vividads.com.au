@@ -1,0 +1,69 @@
+<div class="page-head">
+    <h3 style="font-family:Arial, serif, sans-serif; font-size:16px; text-transform:uppercase; font-weight:bold;"><?php echo Mage::helper('testimonial')->__('Write Your Own Testimonial') ?></h3>
+</div>
+<form action="<?php echo $this->getAction() ?>" id="testimonial-form" method="post" enctype="multipart/form-data" onsubmit="return jcap();" name="testimonial-form">
+<fieldset>
+<div class="div_submit">
+			<div class="div_submit_content" >
+
+        <?php // do not remove div - some problem whith validator in IE ?>
+        <div>
+        <label for="client_name" style="font-family:Arial, serif, sans-serif; font-size:12px; line-height:25px;"><?php echo Mage::helper('testimonial')->__('Your Name') ?><span class="required">*</span></label><br />
+        <input class="required-entry input-text" name="client_name" id="client_name" style="width: 450px;" type="text" value="" />
+        </div>
+	
+        <div>
+        <label for="email" style="font-family:Arial, serif, sans-serif; font-size:12px; line-height:25px;"><?php echo Mage::helper('testimonial')->__('Your Email') ?><span class="required">*</span></label><br />
+        <input name="email" type="text" id="email" style="width: 450px;" class="required-entry validate-email input-text" />
+        </div>
+     	
+        <div>
+        <label for="company" style="font-family:Arial, serif, sans-serif; font-size:12px; line-height:25px;"><?php echo Mage::helper('testimonial')->__('Your Company') ?></label><br />
+        <input name="company" class="input-text" id="company" style="width: 450px;" type="text" value="" />
+        </div>
+        
+		<!-- v2.2.2 - added class="input-text" - phamthuy -->
+		<div>
+        <label for="address" style="font-family:Arial, serif, sans-serif; font-size:12px; line-height:25px;"><?php echo Mage::helper('testimonial')->__('Your Address') ?></label><br />
+        <input name="address" class="input-text" type="text" id="address" style="width: 450px; padding:4px;"  value="" />
+        </div>
+        
+        <div style="padding:5px 0px;">
+        <label for="media" style="font-family:Arial, serif, sans-serif; font-size:12px; line-height:25px;"><?php echo Mage::helper('testimonial')->__('Upload Media(Video, Image):') ?></label>
+        <input type="file" name="media1" id="media1" style="width:200px;margin-left:20px;" />
+        </div>
+        
+        <div>
+        <label for="media_url" style="font-family:Arial, serif, sans-serif; font-size:12px; line-height:25px;"><?php echo Mage::helper('testimonial')->__('Media(Video, Image) URL') ?></label><br />
+        <input class="MW_validate_media input-text" name="media_url" type="text" id="media_url" style="width: 450px;"  />
+        </div>
+
+        <div>
+        <label for="description" style="font-family:Arial, serif, sans-serif; font-size:12px; line-height:25px;"><?php echo Mage::helper('testimonial')->__('Your Testimonial') ?><span class="required">*</span></label><br />
+        <textarea class="required-entry" name="description" id="description" cols="53" rows="10" style="width: 450px;"></textarea>
+        </div>
+       
+		<?php if (Mage::getStoreConfig("hm_testimonial/general/enable")==true): ?>
+		<label for="security_code"><?php echo Mage::helper('testimonial')->__('Security code') ?><span class="required">*</span></label><br />
+		
+			<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS).'testimonial/md5.js';?>"></script>
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS).'testimonial/jcap.js';?>"></script>
+
+				<script type="text/javascript">
+				sjcap();
+				</script>
+				<noscript><p>[This resource requires a Javascript enabled browser.]</p></noscript>
+<?php endif;?>
+	<br/>
+   <div class="button-set">        
+        <button class="form-button button right btn-cart"  id="submit" name="submit" type="submit"><span><span><?php echo Mage::helper('testimonial')->__('Submit Testimonial') ?></span></span></button>
+    </div>
+    </div>
+     </div>
+</fieldset>
+<!--<p><input type="submit" id="submit" name="submit" value="Submit"></p>-->
+
+</form>
+	<script type="text/javascript">
+	editForm = new Validation('testimonial-form'); 
+	</script>

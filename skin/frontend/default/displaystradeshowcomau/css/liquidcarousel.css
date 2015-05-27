@@ -1,0 +1,66 @@
+.liquid {
+	width:1100px;
+	margin:0px auto;
+	padding:0px;
+}
+.liquid .previous {
+	display:block;
+	height:50px;
+	width:20px;
+	background-image:url('../images/previous.png');
+	background-repeat:no-repeat;
+	background-position:center 50%;
+	float:left;
+	margin:0;
+	cursor:pointer;
+	padding:0;
+}
+.liquid .next {
+	display:block;
+	height:50px;
+	width:20px;
+	background-image:url('../images/next.png');
+	background-repeat:no-repeat;
+	background-position:center 50%;
+	float:right;
+	margin:0;
+	padding:0;
+	cursor:pointer;
+
+}
+.liquid ul li {
+   background: url("../images/nav-sep.png") no-repeat scroll left 50% rgba(0, 0, 0, 0);
+    color: #fff;
+    display: block;
+	margin:0px !important;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 46px;
+    padding: 0 40px 0px 40px;    text-align: center;
+    text-shadow: 1px 1px #000;
+    text-transform: uppercase;
+}
+.liquid ul li:nth-child(1) {
+	background-image:none;
+    color: #fff;
+    display: block;
+	margin:0px !important;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 46px;
+    padding: 0 40px 0px 40px;
+    text-align: center;
+    text-shadow: 1px 1px #000;
+    text-transform: uppercase;
+}
+
+.liquid ul li a{
+	color:#fff;
+	text-decoration:none;
+
+}
+.liquid ul li a:hover{
+	color:#fff;
+	text-decoration:underline;
+
+}

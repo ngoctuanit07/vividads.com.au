@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<layout version="1.0.0">
+    <catalog_product_view>
+        <reference name="head">
+            <!-- include jQuery plugins -->
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.carouFredSel-6.2.0.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.mousewheel.min.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.touchSwipe.min.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.transit.min.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.ba-throttle-debounce.min.js</stylesheet></action>
+            
+            <!-- fancyBox -->            
+            <action method="addItem"><type>js_css</type><name>amasty/plugins/fancybox/jquery.fancybox.css?v=2.1.4</name><params/></action>
+            <action method="addJs"><stylesheet>amasty/plugins/fancybox/jquery.fancybox.js?v=2.1.4</stylesheet></action>  
+            <action method="addItem"><type>js_css</type><name>amasty/plugins/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.5</name><params/></action>
+            <action method="addJs"><stylesheet>amasty/plugins/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.5</stylesheet></action>
+            <action method="addItem"><type>js_css</type><name>amasty/plugins/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.7</name><params/></action>
+            <action method="addJs"><stylesheet>amasty/plugins/fancybox/helpers/jquery.fancybox-thumbs.js?v=1.0.7</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/fancybox/helpers/jquery.fancybox-media.js?v=1.0.5</stylesheet></action>
+            
+            <!-- module sourse -->
+            <action method="addJs"><stylesheet>amasty/amzoom/zoomer.js</stylesheet></action>
+            <action method="addItem"><type>js_css</type><name>amasty/amzoom/css/zoomer.css</name><params/></action>
+        </reference>
+        <reference name="product.info.media">
+            <action method="setTemplate"><template>amzoom/media.phtml</template></action>
+        </reference>
+    </catalog_product_view>
+    <catalog_category_view>
+        <reference name="head">            
+<!--            <action method="addJs"><stylesheet>amasty/plugins/jquery.carouFredSel-6.2.0.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.mousewheel.min.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.touchSwipe.min.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.transit.min.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.ba-throttle-debounce.min.js</stylesheet></action>-->
+            
+            <!-- module sourse -->
+           <!-- <action method="addJs"><stylesheet>amasty/amzoom/zoomer.js</stylesheet></action>
+            <action method="addItem"><type>js_css</type><name>amasty/amzoom/css/zoomer.css</name><params/></action>
+            --> 
+			<action method="removeItem"><script>scriptaculous/scriptaculous.js</script></action>
+            <action method="removeItem"><script>varien/product.js</script></action>
+            <block type="amzoom/grid" name="amzoom.grid" before="-"/>
+        </reference>
+    </catalog_category_view>
+	<catalogsearch_result_index>
+        <reference name="head">                       
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.carouFredSel-6.2.0.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.mousewheel.min.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.touchSwipe.min.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.transit.min.js</stylesheet></action>
+            <action method="addJs"><stylesheet>amasty/plugins/jquery.ba-throttle-debounce.min.js</stylesheet></action>
+            
+			<!-- module sourse -->
+            <action method="addJs"><stylesheet>amasty/amzoom/zoomer.js</stylesheet></action>
+            <action method="addItem"><type>js_css</type><name>amasty/amzoom/css/zoomer.css</name><params/></action>
+            
+            <block type="amzoom/grid" name="amzoom.grid" before="-"/>
+        </reference>
+    </catalogsearch_result_index>
+</layout>

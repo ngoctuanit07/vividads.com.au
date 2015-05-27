@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ordercalculator_Calculator>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Ordercalculator_Calculator>
+    </modules>
+</config> 

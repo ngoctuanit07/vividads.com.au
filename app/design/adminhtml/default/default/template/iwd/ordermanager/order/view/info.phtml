@@ -1,0 +1,435 @@
+<script type="text/javascript">
+    var ORDER_ID = <?php echo $this->getOrder()->getId(); ?>;
+</script>
+
+<?php
+$_order = $this->getOrder();
+$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
+$orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+?>  
+  
+<?php 
+///5-12-2013 SOC 
+if($this->getRequest()->getParam('shipment_id')){
+    $partShipID=$this->getRequest()->getParam('shipment_id');
+    $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+    $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+    $tableName = Mage::getSingleton('core/resource')->getTableName('partialshipping_shipment_grid');
+    $select = $connectionRead->select()->from($tableName, array('*'))->where('entity_id=?',$partShipID);
+    $row = $connectionRead->fetchRow($select);
+
+    $orderId=$row['order_id'];
+    $_shipmenIncrtId=$row['increment_id'];
+    $_order = Mage::getModel('sales/order')->load($orderId);
+    
+}else{
+    
+    $_order = $this->getOrder();
+	
+	//fetching order items//
+	$_current_order = Mage::getModel('sales/order')->load($this->getRequest()->getParam('order_id'));
+	//Zend_debug::dump(count($_current_order->getAllItems()));
+	//Zend_debug::dump($this);	
+    //echo "OID :".$_order->getId();
+}
+
+//$orderAttributes = Mage::getModel('amorderattr/attribute')->load($_order->getId(), 'order_id');
+//echo $value = $orderAttributes->getData('delivery_date');
+///5-12-2013 EOC
+?>
+<?php ///$_order = $this->getOrder() ?>
+<?php
+    $orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
+    $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+	
+	
+	if($_current_order->getValidUntil()){
+		$valid_date = formatDate($_current_order->getValidUntil(),'medium',true) ;
+	}else{
+		$created_date = date('Y-m-d', strtotime($_order->getCreated_at()));
+		$valid_date = date('Y-m-d',strtotime($created_date.'+14 days'));
+		$valid_date = $this->formatDate($valid_date,'medium',true);
+	}
+		
+	
+	//$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
+
+    //$date_post = strtotime($_order->getCreatedAtDate()); 
+    //$Ordtime=date('Y-m-d H:i:s',$date_post );
+    //
+    //$orderAdminDate = $Ordtime ;
+    //$orderAdminDate = $Ordtime ;
+    
+    //echo "ORDER ID: ".$_order->getId();
+    //echo "<pre>";print_r($_order);
+
+
+//<!--7-1--2013 SOC by GC-->
+
+    $magentoCurrentUrl = Mage::helper('core/url')->getCurrentUrl();
+    //$pos1 = stripos($magentoCurrentUrl, 'sales_order_shipment');
+    $pos2 = stripos($magentoCurrentUrl, 'sales_shipment');
+        
+
+//<!--7-1--2013 EOC by GC-->
+?>
+
+<div class="box-left order-info">
+    <!--Order Information-->
+    <div class="entry-edit">
+        <?php if ($_order->getEmailSent()):
+            $_email = Mage::helper('sales')->__('the order confirmation email was sent');
+        else:
+            $_email = Mage::helper('sales')->__('the order confirmation email is not sent');
+        endif; ?>
+        <div class="entry-edit-head order-edit">
+            <?php if ($this->getNoUseOrderLink()): ?>
+                <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Order #%s', $_order->getRealOrderId()) ?>
+                    (<?php echo $_email ?>)</h4>
+            <?php else: ?>
+                <a href="<?php echo $this->getViewUrl($_order->getId()) ?>"><?php echo Mage::helper('sales')->__('Order #%s', $_order->getRealOrderId()) ?></a>
+                <strong>(<?php echo $_email ?>)</strong>
+            <?php endif; ?>
+
+            <div class="tools" style="float:right">
+                <?php $is_allow = Mage::getSingleton('admin/session')->isAllowed('iwd_ordermanager/order/actions/edit_order_information'); ?>
+                <?php if($is_allow): ?>
+                    <a id="order_information_edit_<?php echo $_order->getEntityId(); ?>"
+                       class="order_information_edit" href="#"
+                       title="<?php echo Mage::helper('sales')->__('Edit order information'); ?>">
+                        <?php echo Mage::helper('sales')->__('Edit'); ?></a>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list" id="order_information">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date') ?></label></td>
+                    <td class="value"><strong><?php echo $orderAdminDate ?></strong></td>
+                </tr>
+                <?php if ($orderAdminDate != $orderStoreDate): ?>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo Mage::helper('sales')->__('Order Date (%s)', $_order->getCreatedAtStoreDate()->getTimezone()) ?></label>
+                        </td>
+                        <td class="value"><strong><?php echo $orderStoreDate ?></strong></td>
+                    </tr>
+                <?php endif; ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Order Status') ?></label></td>
+                    <td class="value"><strong><span
+                                id="order_status"><?php echo $_order->getStatusLabel() ?></span></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Purchased From') ?></label></td>
+                    <td class="value"><strong><?php echo $this->getOrderStoreName() ?></strong></td>
+                </tr>
+                <?php if ($_order->getRelationChildId()): ?>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo Mage::helper('sales')->__('Link to the New Order') ?></label></td>
+                        <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationChildId()) ?>">
+                                <?php echo $_order->getRelationChildRealId() ?>
+                            </a></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if ($_order->getRelationParentId()): ?>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo Mage::helper('sales')->__('Link to the Previous Order') ?></label></td>
+                        <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationParentId()) ?>">
+                                <?php echo $_order->getRelationParentRealId() ?>
+                            </a></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if ($_order->getRemoteIp()): /*&& $this->shouldDisplayCustomerIp()):*/ ?>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('sales')->__('Placed from IP') ?></label></td>
+                        <td class="value"><strong><?php echo $_order->getRemoteIp();
+                                echo ($_order->getXForwardedFor()) ? ' (' . $this->escapeHtml($_order->getXForwardedFor()) . ')' : ''; ?></strong>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+                <?php if ($_order->getGlobalCurrencyCode() != $_order->getBaseCurrencyCode()): ?>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getGlobalCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label>
+                        </td>
+                        <td class="value"><strong><?php echo $_order->getBaseToGlobalRate() ?></strong></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if ($_order->getBaseCurrencyCode() != $_order->getOrderCurrencyCode()): ?>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getOrderCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label>
+                        </td>
+                        <td class="value"><strong><?php echo $_order->getBaseToOrderRate() ?></strong></td>
+                    </tr>
+                <?php endif; ?>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <!--Account Information-->
+    <div class="entry-edit">
+
+        <div class="entry-edit-head order-account">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Account Information') ?></h4>
+
+            <div class="tools" style="float:right">
+                <?php $is_allow = Mage::getSingleton('admin/session')->isAllowed('iwd_ordermanager/order/actions/edit_account_information'); ?>
+                <?php if ($is_allow): ?>
+                    <a id="account_information_edit_<?php echo $_order->getEntityId(); ?>"
+                        class="account_information_edit" href="#"
+                        title="<?php echo Mage::helper('sales')->__('Edit account information for order only'); ?>">
+                        <?php echo Mage::helper('sales')->__('Edit'); ?></a>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <div class="hor-scroll" id="account_information_<?php echo $_order->getEntityId(); ?>">
+                    <table cellspacing="0" class="form-list">
+                        <tr>
+                            <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Name') ?></label></td>
+                            <td class="value">
+                                <?php if ($_customerUrl = $this->getCustomerViewUrl()) : ?>
+                                    <a href="<?php echo $_customerUrl ?>"
+                                       target="_blank"><strong><?php echo $this->htmlEscape($_order->getCustomerName()) ?></strong></a>
+                                <?php else: ?>
+                                    <strong><?php echo $this->htmlEscape($_order->getCustomerName()) ?></strong>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label"><label><?php echo Mage::helper('sales')->__('Email') ?></label></td>
+                            <td class="value"><a
+                                    href="mailto:<?php echo $_order->getCustomerEmail() ?>"><strong><?php echo $_order->getCustomerEmail() ?></strong></a>
+                            </td>
+                        </tr>
+                        <?php if ($_groupName = $this->getCustomerGroupName()) : ?>
+                            <tr>
+                                <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Group') ?></label>
+                                </td>
+                                <td class="value"><strong><?php echo $_groupName ?></strong></td>
+                            </tr>
+                        <?php endif; ?>
+                        <?php foreach ($this->getCustomerAccountData() as $data): ?>
+                            <tr>
+                                <td class="label"><label><?php echo $data['label'] ?></label></td>
+                                <td class="value"><strong><?php echo $data['value'] ?></strong></td>
+                            </tr>
+                        <?php endforeach; ?>
+
+                        <?php if(Mage::getConfig()->getModuleConfig('IWD_OnepageCheckoutSignature')->is('active', 'true')): ?>
+                            <tr class="signature_block">
+                                <?php echo $this->getChildHtml('opcsignature.signature');?>
+                            </tr>
+                        <?php endif; ?>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<?php 
+		if(!$this->getRequest()->getParam('shipment_id')){
+?>
+
+<div class="grid np">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Order\'s Short Summary') ?></h4>
+            <div class="tools"><?php // echo $this->getAddressEditLink($_order->getBillingAddress())?></div>
+        </div>
+        <fieldset>
+        
+        <table cellspacing="0" class="form-list">
+          <tr>
+            <td class="label"><label><?php echo Mage::helper('sales')->__('Total Amount');?></label></td>
+            <td class="value"><strong><span id="order_status2">
+			<?php echo Mage::helper('core')->formatPrice($_current_order->getBase_grand_total(),true);?></span></strong></td>
+          </tr>
+            <tbody>
+                        <tr>
+                <td width="142" class="label"><label>
+				<?php echo Mage::helper('sales')->__('Total Paid Amount');?></label></td>
+                <td width="401" class="value">
+                <strong><?php echo Mage::helper('core')->formatPrice($_current_order->getBase_total_paid(), true); ?></strong></td>
+            </tr>
+              <tr>
+                          <td class="label"><label><?php echo Mage::helper('sales')->__('Total Due Amount');?></label></td>
+                          <td class="value">
+                          <strong><span id="order_status3">
+						  <?php echo Mage::helper('core')->formatPrice($_current_order->getBase_total_due(), true);?></span></strong></td>
+              </tr>
+              
+              
+          </tbody></table>
+        
+            <div class="hor-scroll">
+    <table cellspacing="0" class="data order-tables">
+        <colgroup><col><col width="1"><col width="1">
+        <col width="1"><col width="1"><col width="1">
+        <col width="1"><col width="1"> <col width="1">
+        <col width="1">
+        </colgroup>
+        <thead>
+            <tr class="headings">
+                <th><?php echo Mage::helper('sales')->__('Item Title');?></th>
+                <th><span class="nobr"><?php echo Mage::helper('sales')->__('Vendor Assigned');?></span></th>
+                <th><span class="nobr"><?php echo Mage::helper('sales')->__('Ordered Qty');?></span></th>
+                <th><?php echo Mage::helper('sales')->__('Approved Qty');?></th>
+                <th class="a-center"><?php echo Mage::helper('sales')->__('Remaining Qty');?></th>
+                <th class="a-center"><?php echo Mage::helper('sales')->__('Artwork Files');?></th>
+                <th><?php echo Mage::helper('sales')->__('Proof Uploaded');?></th>
+                <th><span class="nobr"><?php echo Mage::helper('sales')->__('Proof Approved');?></span></th>
+                <th><span class="nobr"><?php echo Mage::helper('sales')->__('Proof Rejected');?></span></th>
+                <th class="last"><span class="nobr"><?php echo Mage::helper('sales')->__('Final Status');?></span></th>
+            </tr>
+        </thead>
+        
+        <?php 
+				
+				$count=0;
+				foreach($_current_order->getAllItems() as $_item){
+					$count++;
+					//var_dump($_item);
+					 $cproduct = Mage::getModel('catalog/product')->load($_item->getProduct_id());
+					//var_dump($cproduct);
+				 	if($cproduct->getIs_printable()==165){
+		?>
+        <tbody <?php if($count%2 == 0){?> class="even" <?php }else{?> class="odd" <?php  }?> >
+        	<tr class="border">
+            	<td> <div class="item-container" >
+                    <div class="item-text">
+                    <h5 class="title"><span ><?php echo $_item->getName();?></span></h5>
+                        <div><strong><?php echo Mage::helper('sales')->__('SKU:'); ?></strong> 
+						<?php echo $_item->getSku();?></div>
+                    </div>
+                    </div> 	
+            	</td>
+             	
+                <?php 
+					///checking if vendor is assigned and which one
+					$_vendor = Mage::getModel('vendor/vendor')
+								   ->getVendorTitle($_order->getId(), $_item->getId());	
+				?>
+                <td class="a-center"><?php echo $_vendor;?></td>
+             	
+                
+                <td class="a-center"><?php $_ordered_qty=$_item->getQty_ordered(); echo round($_item->getQty_ordered());?></td>
+    		 	<?php 
+						/* check Approved Quantity */
+						//getProofApprovedQty($_order_id = 0, $_item_id=0)
+						
+						 $_approvedQty = Mage::getModel('vendor/vendor')
+							 	   ->getProofs($_order->getId(), $_item->getId());
+				?>
+                <td class="a-center"><?php  echo $_approvedQty;?></td>
+                
+    			<td class="a-center"><?php $_remaining = $_ordered_qty-$_approvedQty; echo round($_remaining); ?></td>
+
+                <?php 
+						/*  check Artworkfiles*/
+					 	$artworkFiles = Mage::getModel('vendor/vendor')
+							 		->getArtworkFiles($_order->getIncrementId(), $_item->getId(), 'admin');
+				?>
+                <td class="a-center">
+                    <span class="price-excl-tax">
+                    <span class="price"><?php echo $artworkFiles;?> </span>
+                    </span>
+                </td>
+                <?php 
+						/*  check proof files*/
+						$proofFiles = Mage::getModel('vendor/vendor')
+										->getProofFiles($_order->getId(), $_item->getId(), 'admin');
+				?>
+                <td class="a-center"><span class="price"> <?php echo $proofFiles;?></span></td>
+                
+                <?php 
+				/*  check Artworkfiles*/
+						$proofApprovedFiles = Mage::getModel('vendor/vendor')
+										->getProofApprovedFiles($_order->getId(), $_item->getId(), 'admin');
+				?>
+				
+                <td class="a-center"><?php echo $proofApprovedFiles;?></td>
+                
+                <?php 
+				/*  check $proofRejectedFiles*/
+						$proofRejectedFiles = Mage::getModel('vendor/vendor')
+										->getProofRejectedFiles($_order->getId(), $_item->getId(), 'admin');
+				?>
+                <td class="a-center"><span class="price"> <?php echo $proofRejectedFiles; ?></span></td>
+               
+                <td class="a-center last"><span class="price"><?php echo $_current_order->getStatus(); ?> </span>    </td>
+		</tr>
+		</tbody>
+        <?php 
+					 }
+				} //end of foreach
+		?>
+        
+	</table>
+  </div>
+        </fieldset>
+    </div>
+</div>
+
+<?php 
+		}
+?>
+
+
+<div class="box-left">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="hor-scroll">
+            <div class="entry-edit-head billing-address">
+                <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Billing Address') ?></h4>
+
+                <div class="tools" style="float:right">
+                    <?php $is_allow = Mage::getModel('iwd_ordermanager/address')->isAllowEditAddress(); ?>
+                    <?php if ($is_allow): ?>
+                        <a id="billing_address_edit_<?php echo $_order->getBillingAddress()->getId() ?>"
+                           class="order_address_edit" href="#"
+                           title="<?php echo Mage::helper('sales')->__('Edit billing address for order only'); ?>">
+                            <?php echo Mage::helper('sales')->__('Edit'); ?></a>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <fieldset>
+                <address id="order_address_<?php echo $_order->getBillingAddress()->getId() ?>"><?php echo $_order->getBillingAddress()->getFormated(true) ?></address>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<?php if (!$this->getOrder()->getIsVirtual()): ?>
+    <div class="box-right">
+        <!--Shipping Address-->
+        <div class="hor-scroll">
+            <div class="entry-edit">
+                <div class="entry-edit-head order-shipping">
+                    <h4 class="icon-head head-shipping-address"><?php echo Mage::helper('sales')->__('Shipping Address') ?></h4>
+                    <div class="tools" style="float:right">
+                        <?php if ($is_allow): ?>
+                            <a id="shipping_address_edit_<?php echo $_order->getShippingAddress()->getId() ?>"
+                               class="order_address_edit" href="#"
+                               title="<?php echo Mage::helper('sales')->__('Edit shipping address for order only') ?>">
+                                <?php echo Mage::helper('sales')->__('Edit'); ?>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <fieldset>
+                    <address id="order_address_<?php echo $_order->getShippingAddress()->getId() ?>"><?php echo $_order->getShippingAddress()->getFormated(true) ?></address>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<?php endif; ?>

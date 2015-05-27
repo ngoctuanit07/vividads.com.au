@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+	<vendorlist_all_index>
+		<reference name="head">
+			<action method="setTitle">
+				<title>Vendor Information</title>
+			</action>
+		</reference>
+
+		<reference name="content">
+			<block type="vendorlist/vendor" name="vendorlist_vendor"
+				template="vendorminisite/vendor_info.phtml">
+				<action method="setTemplate">
+					<template>vendorminisite/vendor_info.phtml</template>
+				</action>
+				
+				<block type="vendorlist/toolbars" name="vendor_list_toolbar"
+					template="catalog/product/list/toolbar.phtml">
+					<block type="page/html_pager" name="vendor_list_toolbar_pager" />
+				</block>
+				<action method="setToolbarBlockName">
+					<name>vendor_list_toolbar</name>
+				</action>
+				
+			</block>
+		</reference>
+
+	</vendorlist_all_index>
+
+
+	<vendorlist_index_index>
+		<reference name="head">
+			<action method="setTitle">
+				<title>Vendors List</title>
+			</action>
+		</reference>
+
+		<reference name="content">
+			<block type="vendorlist/vendors" name="vendorlist_vendors"
+				template="vendorminisite/vendors_info.phtml">
+				<action method="setTemplate">
+					<template>vendorminisite/vendors_info.phtml</template>
+				</action>
+				<block type="vendorlist/toolbar" name="vendor_list_toolbar"
+					template="catalog/product/list/toolbar.phtml">
+					<block type="page/html_pager" name="vendor_list_toolbar_pager" />
+				</block>
+				<action method="setToolbarBlockName">
+					<name>vendor_list_toolbar</name>
+				</action>
+			</block>
+		</reference>
+
+	</vendorlist_index_index>
+
+
+</layout> 

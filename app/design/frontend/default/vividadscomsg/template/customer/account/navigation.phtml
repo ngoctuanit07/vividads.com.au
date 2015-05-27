@@ -1,0 +1,119 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     default_iphone
+
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+ 
+
+?>
+<?php $_links = $this->getLinks(); ?>
+<?php $_index = 1; ?>
+<?php $_count = count($_links); ?>
+
+
+<div class="cate-heading" style="margin-top:15px;"> <?php echo $this->__('My Account'); ?> </div>
+<div class="account-nav">
+  <ul>
+    <?php 
+
+			$_links = $this->getLinks();
+			#print_r($_links);		
+			unset($_links['recurring_profiles']);
+			unset($_links['reviews']);
+			unset($_links['proofs']);
+			unset($_links['downloadable_products']);
+			unset($_links['wishlist']); 
+			unset($_links['OAuth Customer Tokens']);
+			unset($_links['billing_agreements']);
+			unset($_links['quotations']);			
+
+//var_dump($_links);			
+
+			/*$home = new Varien_Object();
+			$home->setData(array('name'=>'home',
+								'label'=>'Home',
+								 'path'=>'/',
+								 'url'=>'http://usedbooths.com.au/Quotation/Quote/List/' 
+								 ));
+
+	$_links['home'] = $home;*/
+	//	$_links = array('home'=>);
+
+   ?>
+    <?php /*?>            <?php $_links = $this->getLinks(); ?><?php */?>
+    <?php $_index = 1; ?>
+    <?php 
+			$_count = count($_links)+1; 			
+
+			?>
+    <?php foreach ($_links as $_link){
+		 $url = $_link->getUrl();
+		 $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+	//	if($_index==1){?>
+		<!--	<li><a href="<?php echo $this->getUrl('');?>" title="Home">Home</a></li>-->
+			<?php //} ?>
+    <?php $_last = ($_index++ >= $_count); ?>
+    
+	<?php // if ($this->isActive($_link) ){ ?>
+    
+    <?php if ( $currentUrl == $url ){ ?>
+    
+    <?php 
+		//var_dump($_link);
+	?>
+    <li class="current<?php echo ($_last ? ' last' : '') ?>"><?php echo $_link->getLabel() ?></li>
+   
+    <?php }else{?>
+    <?php 
+		//	var_dump($_link);
+	?>
+    <li<?php echo ($_last ? ' class="last"' : '') ?>><a href="<?php echo $_link->getUrl() ?>" title="<?php 		echo $_link->getLabel() ?>"><?php echo $_link->getLabel() ?></a></li>
+    <?php } ?>
+    <?php 	} ?>		
+  </ul>
+</div>

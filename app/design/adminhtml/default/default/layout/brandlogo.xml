@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <brandlogo_adminhtml_brandlogo_index>
+        <reference name="content">
+            <block type="brandlogo/adminhtml_brandlogo" name="brandlogo" />
+        </reference>
+    </brandlogo_adminhtml_brandlogo_index>
+</layout>

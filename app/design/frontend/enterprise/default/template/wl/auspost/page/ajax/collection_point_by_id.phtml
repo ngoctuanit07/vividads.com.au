@@ -1,0 +1,6 @@
+<?php
+    
+    $id = $this->getRequest()->getParam('id');
+    $point = $this->getCollectionPointById($id);
+    echo json_encode($point);
+

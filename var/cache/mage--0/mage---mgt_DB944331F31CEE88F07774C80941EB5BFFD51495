@@ -1,0 +1,69 @@
+a:4:{s:4:"data";s:3054:"<div class="footer-container">
+    <div class="footer">
+        <div class="fooot-top">
+        <div class="foot-part-1">
+            <!--<div class="block block-subscribe">               
+                <form action="" method="post">
+                    <div class="block-content">
+                        <div class="form-subscribe-header">
+                           <label for="newsletter">
+		
+		<span> MAILING LIST</span> <i>Get exclusive deals &amp; notifications</i></label>
+                        </div>
+                        <div class="input-box">
+                            <input type="text" id="newsletter" class="input-text required-entry validate-email">
+                         </div>
+                        <div class="actions">
+                            <button class="button"><span><span>Subscribe</span></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>-->
+	            </div>
+        <div class="live-chat">
+
+
+
+</div>
+        </div>
+        <div class="fooot-bottom">
+            <div class="foot-left">
+			    <ul class="flink"><!--
+<li class="first"><a href="#">Site Map</a></li>
+<li><a href="#">Search Terms</a></li>
+<li><a href="#">Advance Search</a></li>
+<li><a href="#">Orders and Returns</a></li>-->
+<li><a href="http://13expo.com.au/m/upload/">Upload Artwork</a></li>
+<li><a onclick="showContactsForm({
+        url: 'http://13expo.com.au/m/ajaxcontacts/index/form/',
+        post_url: 'http://13expo.com.au/m/ajaxcontacts/index/',
+        width: 650,
+        height: 460,
+        ok_label: 'Submit',
+        cancel_label: 'Cancel'
+    }); return false;" href="#">Contact Us</a></li>
+<li><a href="http://13expo.com.au/m/about-us">About Us</a></li>
+<li class="last"><a href="http://13expo.com.au/m/customer-service">Customer Service</a></li>
+</ul>
+<div class="phone_details_footer">
+<p>24 Hour Customer Support</p>
+<h2>1300 72 16 14</h2>
+</div>            <div class="footer_link">
+                	
+                    <ul>
+                    	<li><a href="#"><img src="http://13expo.com.au/skin/frontend/default/13expomobile/images/master.png" alt="" border="0" /></a></li>
+                        <li><a href="#"><img src="http://13expo.com.au/skin/frontend/default/13expomobile/images/visa.png" alt="" border="0" /></a></li>
+                        <li><a href="#"><img src="http://13expo.com.au/skin/frontend/default/13expomobile/images/amb.png" alt="" border="0" /></a></li>
+                        <li><a href="#"><img src="http://13expo.com.au/skin/frontend/default/13expomobile/images/paypel.png" alt="" border="0" /></a></li>
+                        <li><a href="#"><img src="http://13expo.com.au/skin/frontend/default/13expomobile/images/discover.png" alt="" border="0" /></a></li>
+                    </ul>
+                </div>
+	    <address>Red Carpet Backdrop And Event Backdrop
+</address>
+            </div>
+            <div class="foot-right">
+            </div>
+        </div>
+    </div>
+</div>
+                ";s:8:"lifetime";i:7200;s:6:"expire";i:1428403572;s:8:"priority";i:8;}

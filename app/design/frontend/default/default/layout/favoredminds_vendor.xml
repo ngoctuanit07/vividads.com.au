@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+  <default>
+    <reference name="top.links">
+      <action method="addLink" translate="label title" module="vendor" ifconfig="vendor/links/header"><label>Vendor</label><url>vendor</url><title>Vendor Section</title><prepare>true</prepare><position>21</position></action>
+    </reference>
+  </default>
+
+  <vendor_rss_index>
+    <!-- TODO: display the list of all feeds -->
+  </vendor_rss_index>
+
+  <vendor_rss_orders>
+    <block type="vendor/rss_orders" output="toHtml" name="vendor.rss.orders"/>
+  </vendor_rss_orders>
+
+  <vendor_rss_newvendors>
+    <block type="vendor/rss_newvendors" output="toHtml" name="vendor.rss.newvendors"/>
+  </vendor_rss_newvendors>
+
+  <vendor_rss_statements>
+    <block type="vendor/rss_statements" output="toHtml" name="vendor.rss.statements"/>
+  </vendor_rss_statements>
+
+  <vendor_index_index>
+    <reference name="head">
+      <action method="setTitle"><title>Vendor Interface</title></action>
+      <action method="addCss"><stylesheet>css/vendor.css</stylesheet></action>
+    </reference>
+
+    <reference name="root">
+      <action method="setTemplate"><template>page/1column.phtml</template></action>
+    </reference>
+
+    <reference name="content">
+      <block type="vendor/home" name="vendor_home" template="vendor/home.phtml">
+        <action method="setTemplate"><template>vendor/home.phtml</template></action>
+      </block>
+    </reference>
+
+  </vendor_index_index>
+
+  <vendor_signup_index>
+    <reference name="root">
+      <action method="setTemplate"><template>page/1column.phtml</template></action>
+    </reference>
+
+    <reference name="content">
+      <block type="vendor/signup" name="vendor_signup" template="vendor/signup.phtml">
+        <action method="setTemplate"><template>vendor/signup.phtml</template></action>
+      </block>
+    </reference>
+  </vendor_signup_index>
+
+  <vendor_signup_welcome>
+    <reference name="root">
+      <action method="setTemplate"><template>page/1column.phtml</template></action>
+    </reference>
+
+    <reference name="content">
+      <block type="vendor/welcome" name="vendor_welcome" template="vendor/welcome.phtml">
+        <action method="setTemplate"><template>vendor/welcome.phtml</template></action>
+      </block>
+    </reference>
+
+  </vendor_signup_welcome>
+
+  <vendor_redirect_index>
+    <reference name="root">
+      <action method="setTemplate"><template>page/1column.phtml</template></action>
+    </reference>
+
+    <reference name="content">
+      <block type="vendor/redirect" name="vendor_redirect" template="vendor/redirect.phtml">
+        <action method="setTemplate"><template>vendor/redirect.phtml</template></action>
+      </block>
+    </reference>
+  </vendor_redirect_index>
+
+  <vendor_sales_index>
+    <reference name="content">
+      <block type="vendor/sales" name="vendor_sales" template="vendor/sales/index.phtml" />
+    </reference>
+  </vendor_sales_index>
+  <!--
+Email layouts section
+-->
+  <vendor_sales_email_order_items>
+    <block type="vendor/email_items" name="items" template="vendor/email/items.phtml" />
+  </vendor_sales_email_order_items>
+</layout> 

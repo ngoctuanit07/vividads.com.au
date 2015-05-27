@@ -1,0 +1,308 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MDN_ProductReturn>
+            <version>1.9.1</version>
+        </MDN_ProductReturn>
+    </modules>
+    
+    <global>
+        <helpers>
+            <ProductReturn>
+                <class>MDN_ProductReturn_Helper</class>
+            </ProductReturn>
+        </helpers>
+        <blocks>
+            <ProductReturn>
+                <class>MDN_ProductReturn_Block</class>
+            </ProductReturn>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_view>MDN_ProductReturn_Block_Admin_Sales_Order_View</sales_order_view>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <models>
+            <ProductReturn>
+                <class>MDN_ProductReturn_Model</class>
+                <resourceModel>ProductReturn_mysql4</resourceModel>
+            </ProductReturn>
+            <ProductReturn_mysql4>
+                <class>MDN_ProductReturn_Model_Mysql4</class>
+                <!-- defini les tables utilisables -->
+                <entities>
+                    <Rma>
+                        <table>rma</table>
+                    </Rma>
+                    <RmaProducts>
+                        <table>rma_products</table>
+                    </RmaProducts>
+                    <RmaHistory>
+                        <table>rma_history</table>
+                    </RmaHistory>
+                    <SupplierReturn>
+                        <table>rma_supplier_return</table>
+                    </SupplierReturn>
+                    <RmaReservation>
+                        <table>rma_reservation</table>
+                    </RmaReservation>
+                </entities>
+            </ProductReturn_mysql4>
+        </models>
+
+        <resources>
+            <ProductReturn_setup>
+                <setup>
+                    <module>MDN_ProductReturn</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ProductReturn_setup>
+            <ProductReturn_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </ProductReturn_write>
+            <ProductReturn_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </ProductReturn_read>
+        </resources>
+
+        <events>
+            <orderpreparartion_create_tabs>
+                <observers>
+                    <ProductReturn>
+                        <type>singleton</type>
+                        <class>ProductReturn/Observer</class>
+                        <method>orderpreparartion_create_tabs</method>
+                    </ProductReturn>
+                </observers>
+            </orderpreparartion_create_tabs>
+            <orderpreparation_print_order_documents>
+                <observers>
+                    <ProductReturn>
+                        <type>singleton</type>
+                        <class>ProductReturn/Observer</class>
+                        <method>orderpreparation_print_order_documents</method>
+                    </ProductReturn>
+                </observers>            
+            </orderpreparation_print_order_documents>
+        </events>
+        
+    </global>
+    
+    <adminhtml>
+    	
+        <menu>
+            <erp>
+                <title>ERP</title>
+                <sort_order>500</sort_order>
+               <!-- <children>
+                    <productreturn translate="title" module="ProductReturn">
+                        <title>Product Returns</title>
+                        <sort_order>500</sort_order>
+                        <children>
+                            <customerreturn translate="title" module="ProductReturn">
+                                <title>Customer Returns</title>
+                                <action>ProductReturn/Admin/Grid</action>
+                            </customerreturn>
+                            <pendingproducts translate="title" module="ProductReturn">
+                                <title>Pending products</title>
+                                <action>ProductReturn/PendingProducts/Grid</action>
+                            </pendingproducts>-->
+                        	<!--
+                        	<supplierreturn translate="title" module="ProductReturn">
+		                        <title>Supplier Returns</title>
+		                        <action>ProductReturn/SupplierReturn/Grid</action>                    	
+                        	</supplierreturn>
+                        	-->
+                      <!--  </children>
+                    </productreturn>
+                </children>-->
+            </erp>
+	    <sales>
+	     <children>
+                    <productreturn translate="title" module="ProductReturn">
+                        <title>Product Returns</title>
+                        <sort_order>500</sort_order>
+                        <children>
+                            <customerreturn translate="title" module="ProductReturn">
+                                <title>Customer Returns</title>
+                                <action>ProductReturn/Admin/Grid</action>
+                            </customerreturn>
+                            <pendingproducts translate="title" module="ProductReturn">
+                                <title>Pending products</title>
+                                <action>ProductReturn/PendingProducts/Grid</action>
+                            </pendingproducts>
+                        	<!--
+                        	<supplierreturn translate="title" module="ProductReturn">
+		                        <title>Supplier Returns</title>
+		                        <action>ProductReturn/SupplierReturn/Grid</action>                    	
+                        	</supplierreturn>
+                        	-->
+                        </children>
+                    </productreturn>
+                </children>
+	    </sales>
+        </menu>
+        
+        <translate>
+            <modules>
+                <MDN_ProductReturn>
+                    <files>
+                        <default>MDN_ProductReturn.csv</default>
+                    </files>
+                </MDN_ProductReturn>
+            </modules>
+        </translate>
+        
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <erp>
+                            <title>ERP</title>
+                            <children>
+                                <productreturn module="ProductReturn">
+                                    <title>Product Return</title>
+                                    <children>
+                                        <customerreturn module="ProductReturn">
+                                            <title>Customer Returns</title>
+                                        </customerreturn>
+                                        <pendingproducts module="ProductReturn">
+                                            <title>Pending Products</title>
+                                        </pendingproducts>
+                                        <supplierreturn module="ProductReturn">
+                                            <title>Supplier Returns</title>
+                                        </supplierreturn>
+                                    </children>
+                                </productreturn>
+                            </children>
+                        </erp>
+
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <productreturn module="ProductReturn">
+                                            <title>Product Returns</title>
+                                        </productreturn>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+
+
+        <routers>
+            <ProductReturn>
+                <use>standard</use>
+                <args>
+                    <module>MDN_ProductReturn</module>
+                    <frontName>ProductReturn</frontName>
+                </args>
+            </ProductReturn>
+        </routers>
+        
+        <layout>
+            <updates>
+                <ProductReturn>
+                    <file>ProductReturn.xml</file>
+                </ProductReturn>
+            </updates>
+        </layout>
+
+    </adminhtml>
+    
+    <frontend>
+    
+        <secure_url>
+            <productreturn_front_list>/ProductReturn/Front/List</productreturn_front_list>
+            <productreturn_front_newrequestselectorder>ProductReturn/Front/NewRequestSelectOrder</productreturn_front_newrequestselectorder>
+            <productreturn_front_newrequest>/ProductReturn/Front/NewRequest</productreturn_front_newrequest>
+            <productreturn_front_submitrequest>/ProductReturn/Front/SubmitRequest</productreturn_front_submitrequest>
+            <productreturn_front_view>/ProductReturn/Front/View</productreturn_front_view>
+            <productreturn_front_viewcgv>/ProductReturn/Front/ViewCGV</productreturn_front_viewcgv>
+        </secure_url>
+    
+        <routers>
+            <ProductReturn>
+                <use>standard</use>
+                <args>
+                    <module>MDN_ProductReturn</module>
+                    <frontName>ProductReturn</frontName>
+                </args>
+            </ProductReturn>
+        </routers>
+        
+        <layout>
+            <updates>
+                <ProductReturn>
+                    <file>ProductReturn.xml</file>
+                </ProductReturn>
+            </updates>
+        </layout>
+
+        <translate>
+            <modules>
+                <MDN_ProductReturn>
+                    <files>
+                        <default>MDN_ProductReturn.csv</default>
+                    </files>
+                </MDN_ProductReturn>
+            </modules>
+        </translate>
+        
+    </frontend>
+    
+    <admin>
+        <routers>
+            <ProductReturn>
+                <use>admin</use>
+                <args>
+                    <module>MDN_ProductReturn</module>
+                    <frontName>ProductReturn</frontName>
+                </args>
+            </ProductReturn>
+        </routers>
+    </admin>
+
+    <default>
+        <productreturn>
+            <general>
+                <default_validity_duration>30</default_validity_duration>
+                <add_tab_in_order_preparation>0</add_tab_in_order_preparation>
+            </general>
+            <product_return>
+                <max_days_request>7</max_days_request>
+                <other_reason>Cancel;Defect</other_reason>
+                <new_status_for_product_received>product_received</new_status_for_product_received>
+                <new_status_for_request>requested</new_status_for_request>
+                <display_disabled_shipping_methods>1</display_disabled_shipping_methods>
+                <display_disabled_payment_methods>1</display_disabled_payment_methods>
+            </product_return>
+        </productreturn>
+    </default>
+    
+ 
+    <crontab>
+        <jobs>
+            <update_status_rma>
+                <schedule>
+                    <cron_expr>00 17 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>ProductReturn/Observer::UpdateStatusRma</model>
+                </run>
+            </update_status_rma>
+        </jobs>
+    </crontab>
+    
+</config>

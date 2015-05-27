@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @category   Mconnect
+ * @package    Mconnect_Brandlogo
+ * @author     M-Connect Solutions. (http://www.mconnectsolutions.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <tabs>
+        <mconnect_brandlogo>            
+            <label>Brand Logo</label>
+            <sort_order>198</sort_order>
+        </mconnect_brandlogo>            
+    </tabs>
+    <sections>
+        <brandlogo translate="label" module="brandlogo">
+            <label>Brand Logo Settings</label>
+            <tab>mconnect_brandlogo</tab>
+            <frontend_type>text</frontend_type>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>               
+            <groups>
+                <general translate="label">
+                    <label>Brand Logo</label>
+                    <sort_order>601</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>                    
+                        <brandlogoenabled translate="label">
+                            <label>Enable/Disable Brand Logo</label>                            
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>48</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </brandlogoenabled>               
+                        <logotitle translate="label">
+                            <label>Brand Logo Title</label>                            
+                            <frontend_type>text</frontend_type>                                                                
+                            <comment>
+                <![CDATA[This input will be visible on the frontend the default title is "Brands".]]>
+                            </comment>
+                            <sort_order>49</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </logotitle>               
+                                
+                        <brandlogoresizeenabled translate="label">
+                            <label>Enable Brand Logo Resizing</label>                            
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </brandlogoresizeenabled> 
+                        
+                        <logoheight translate="label">
+                            <label>Logo Height</label>                            
+                            <frontend_type>text</frontend_type>                            
+                            <comment>
+                <![CDATA[Depends on this value your logo will be resized and visible on frontend .]]>
+                            </comment>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </logoheight>               
+                        <logowidth translate="label">
+                            <label>Logo Width</label>                            
+                            <frontend_type>text</frontend_type>                            
+                            <comment>
+                <![CDATA[Depends on this value your logo will be resized and visible on frontend.]]>
+                            </comment>
+                            <sort_order>52</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </logowidth>   
+                        
+                        <enableautoslide translate="label">
+                            <label>Enable Auto Slide</label>                            
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enableautoslide>
+                        
+                        <enablepauseonhover translate="label">
+                            <label>Enable Slider Pause On Hover</label>                            
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enablepauseonhover>                                                                       
+                    </fields>
+                </general>                    
+            </groups>
+        </brandlogo>       
+    </sections>
+</config>

@@ -1,0 +1,97 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Category left navigation
+ *
+ * @see Mage_Catalog_Block_Navigation
+ */
+?>
+
+<?php 
+	
+ //if (!Mage::registry('current_category')) return ?>
+
+
+
+
+<?php 
+/*
+ $_store_id  = Mage::app()->getStore('meshbanners');
+ 
+ $_store_root_category_id =  Mage::app()->getStore('meshbanners')->getRootCategoryId();
+/// $_categories = Mage::getModel('catalog/category')->load($_store_root_category_id);
+ $_store_category = Mage::getModel('catalog/category')->load(1)->getChildrenCategories();
+
+//echo '<h1>current Category</h1>';
+//var_dump($_categories->getData());
+*/
+
+  $_store_categories =$this->getCurrentChildCategories();
+  
+  //print_r($_store_categories->getData());
+?>
+<?php  $_cats_count = is_array($_store_categories)?count($_store_categories):$_store_categories->count(); ?>
+<?php 
+
+   
+if($_cats_count){ ?>
+<!--Start of ourCategories Section-->
+ 
+<div class="ourProduct">
+            	<h1><b><?php echo __('OUR PRODUCTS'); ?></b></h1>
+                <ul>
+       <?php foreach ($_store_categories as $_store_category){ 
+	          	$_store_category = $_store_category->load();
+				$store_layer = Mage::getSingleton('catalog/layer');				
+				//$store_layer= $store_layer->getCurrentCategory();				
+				//echo $_store_category->getImageUrl();				 
+			?>
+                    
+              <?php    if($_store_category->getIsActive() && $_store_category->getInclude_in_menu()!=1){ ?>
+                    
+                    <li>
+                    <a href="<?php echo $_store_category->getUrl();?>" title="<?php echo $_store_category->getName();?>">
+                    <div class="iamgeBox">
+				<?php $full_path_url =  $_store_category->getImageUrl();	?>
+                    <img src="<?php echo $full_path_url;?>" width="218" height="240" />
+                    </div>
+                    </a>
+                    <h2><a href="<?php echo $_store_category->getUrl();?>"><?php echo $_store_category->getName();?></a></h2>
+                    </li>
+                   
+				<?php } ?>
+                <?php  }   ?>
+                    
+                </ul>
+		</div>
+            <!--end of ourCategories Section-->
+      
+         
+   
+<?php }    ?>
+
+<div class="clear"></div>

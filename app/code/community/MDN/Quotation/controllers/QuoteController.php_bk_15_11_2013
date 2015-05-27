@@ -1,0 +1,1226 @@
+<?php
+
+class MDN_Quotation_QuoteController extends Mage_Core_Controller_Front_Action {
+
+    /**
+     * Check if quote belong to current customer
+     * @param <type> $quoteId
+     * @return <type>
+     */
+    protected function checkQuoteOwner($quote) {
+        $customerId = Mage::Helper('customer')->getCustomer()->getId();
+        if ($quote->getcustomer_id() != $customerId)
+            $this->_redirect('');
+    }
+
+    /**
+     * Quote view
+     */
+    public function viewAction() {
+        try
+        {
+            $QuoteId = $this->getRequest()->getParam('quote_id');
+            $Quote = Mage::getModel('Quotation/Quotation')->load($QuoteId);
+            $this->checkQuoteOwner($Quote);
+            $this->loadLayout();
+            $this->renderLayout();
+        }
+        catch(Exception $ex)
+        {
+            Mage::getSingleton('customer/session')->addError($ex->getMessage());
+            $this->_redirect('*/*/List');
+        }
+    }
+
+    /**
+     * Print quote
+     */
+    public function printAction() {
+        $QuoteId = $this->getRequest()->getParam('quote_id');
+        $quote = Mage::getModel('Quotation/Quotation')->load($QuoteId);
+        $this->checkQuoteOwner($quote);
+        try {
+            $this->loadLayout();
+            $quote->commit();
+            $pdf = Mage::getModel('Quotation/quotationpdf')->getPdf(array($quote));
+            $name = Mage::helper('quotation')->__('quotation_') . $quote->getincrement_id() . '.pdf';
+            $this->_prepareDownloadResponseV2($name, $pdf->render(), 'application/pdf');
+        } catch (Exception $ex) {
+            Mage::getSingleton('checkout/session')->addError($ex->getMessage());
+            $this->_redirect('Quotation/Quote/View', array('quote_id' => $QuoteId));
+        }
+    }
+
+    /**
+     * Add quote to cart
+     */
+    public function commitAction() {
+
+        $quoteId = $this->getRequest()->getParam('quote_id');
+        $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+        $this->checkQuoteOwner($quote);
+
+        try {
+            $model = Mage::getModel('Quotation/Quotation_Cart');
+            $model->addToCart($quote, $this);
+            
+            Mage::getSingleton('core/session')->setQuotedetails($quote->getIncrementId().'-'.$quoteId);
+
+            Mage::getSingleton('checkout/session')->addSuccess($this->__('Quote added to cart'));
+            $this->_redirect('checkout/cart');
+        } catch (Exception $ex) {
+            Mage::getSingleton('checkout/session')->addError($ex->getMessage());
+            $this->_redirect('checkout/cart');
+        }
+    }
+
+    /**
+     * Custom download response method for magento multi version compatibility
+     */
+    protected function _prepareDownloadResponseV2($fileName, $content, $contentType = 'application/octet-stream') {
+        $this->getResponse()
+                ->setHttpResponseCode(200)
+                ->setHeader('Pragma', 'public', true)
+                ->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true)
+                ->setHeader('Content-type', $contentType, true)
+                ->setHeader('Content-Length', strlen($content))
+                ->setHeader('Content-Disposition', 'attachment; filename=' . $fileName)
+                ->setBody($content);
+    }
+
+    /**
+     * Display quotes grid
+     */
+    public function ListAction() {
+        $this->loadLayout();
+        $this->_initLayoutMessages('customer/session');
+        $this->renderLayout();
+    }
+
+    /**
+     * Redirect customer to authentication page if not logged in and action = CreateRequest
+     */
+    public function preDispatch() {
+        parent::preDispatch();
+
+        $action = $this->getRequest()->getActionName();
+        if ($action == 'RequestFromCart') {
+            if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
+                $this->setFlag('', self::FLAG_NO_DISPATCH, true);
+                Mage::getSingleton('customer/session')->addError($this->__('You must be logged in to request for a quotation.'));
+                Mage::getSingleton('customer/session')->setBeforeAuthUrl(Mage::getUrl('Quotation/Quote/RequestFromCart', array('_current' => true)));
+                $this->_redirectUrl(Mage::helper('customer')->getLoginUrl());
+            }
+        }
+        if ($action == 'IndividualRequest') {
+            if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
+                $this->setFlag('', self::FLAG_NO_DISPATCH, true);
+                Mage::getSingleton('customer/session')->addError($this->__('You must be logged in to request for a quotation.'));
+                Mage::getSingleton('customer/session')->setBeforeAuthUrl(Mage::getUrl('Quotation/Quote/IndividualRequest', array('_current' => true, 'product_id' => $this->getRequest()->getParam('product_id'))));
+                $this->_redirectUrl(Mage::helper('customer')->getLoginUrl());
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Return an array with quote options seralized for quotation module
+     *
+     * @param unknown_type $quoteItem
+     */
+    private function getQuoteOptions($quoteItem) {
+        $retour = array();
+
+        if ($optionIds = $quoteItem->getOptionByCode('option_ids')) {
+            $options = array();
+            foreach (explode(',', $optionIds->getValue()) as $optionId) {
+                if ($option = $quoteItem->getProduct()->getOptionById($optionId)) {
+
+                    $quoteItemOption = $quoteItem->getOptionByCode('option_' . $option->getId());
+
+                    $group = $option->groupFactory($option->getType())
+                                    ->setOption($option)
+                                    ->setQuoteItemOption($quoteItemOption);
+
+                    $retour[$option->getId()] = $quoteItemOption->getValue();
+                }
+            }
+        }
+
+        $retour = Mage::helper('quotation/Serialization')->serializeObject($retour);
+        return $retour;
+    }
+
+    /**
+     * Authenticate customer, add quote to cart and redirect to cart
+     *
+     */
+    public function DirectAuthAction() {
+        $quote_id = $this->getRequest()->getParam('quote_id');
+        $security_key = $this->getRequest()->getParam('security_key');
+        $helper = Mage::helper('quotation/DirectAuth');
+        $quote = $helper->getQuote($quote_id, $security_key);
+
+        try {
+            if ($quote == null)
+                throw new Exception($this->__('Request invalid'));
+
+            //authenticate customer
+            $helper->authenticateCustomer($quote);
+
+            //go in quote
+            $this->_redirect('Quotation/Quote/View', array('quote_id' => $quote_id));
+        } catch (Exception $ex) {
+            Mage::getSingleton('customer/session')->addError($ex->getMessage());
+            $this->_redirect('');
+        }
+    }
+
+    //*********************************************************************************************************************************************************
+    //*********************************************************************************************************************************************************
+    //Customer REQUEST
+    //*********************************************************************************************************************************************************
+    //*********************************************************************************************************************************************************
+
+    /**
+     * Create a quote inquiry with cart's products
+     *
+     */
+    public function RequestFromCartAction() {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
+     * Create a quote inquiry with cart's products
+     *
+     */
+    public function CreateIndividualRequestAction() {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
+     * Quote request for one product
+     *
+     */
+    public function IndividualRequestAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
+     * Send textual quote request
+     *
+     */
+    public function SendTextualRequestAction() {
+
+        //Create new quotation
+        $customerId = Mage::Helper('customer')->getCustomer()->getId();
+        $NewQuotation = Mage::getModel('Quotation/Quotation')
+                        ->setcustomer_id($customerId)
+                        ->setcaption($this->__('New request'))
+                        ->setcustomer_msg($this->getRequest()->getPost('description'))
+                        ->setcustomer_request(1)
+                        ->setstatus(MDN_Quotation_Model_Quotation::STATUS_CUSTOMER_REQUEST)
+                        ->save();
+
+        //Notify admin
+        $notificationModel = Mage::getModel('Quotation/Quotation_Notification');
+        $notificationModel->NotifyCreationToAdmin($NewQuotation);
+
+        //confirm & redirect
+        Mage::getSingleton('customer/session')->addSuccess(__('You quotation request has been successfully sent. You will be notified once store administrator will have reply to your request'));
+        $this->_redirect('Quotation/Quote/List/');
+    }
+
+    /**
+     * 
+     */
+    public function SendIndividualRequestAction()
+    {
+        //Create new quotation
+        $customerId = Mage::Helper('customer')->getCustomer()->getId();
+        $NewQuotation = Mage::getModel('Quotation/Quotation')
+                        ->setcustomer_id($customerId)
+                        ->setcaption($this->__('New request'))
+                        ->setcustomer_msg($this->getRequest()->getPost('description'))
+                        ->setcustomer_request(1)
+                        ->setstatus(MDN_Quotation_Model_Quotation::STATUS_CUSTOMER_REQUEST)
+                        ->save();
+
+        //Notify admin
+        $notificationModel = Mage::getModel('Quotation/Quotation_Notification');
+        $notificationModel->NotifyCreationToAdmin($NewQuotation);
+
+        //add product
+        $productId = $this->getRequest()->getPost('product_id');
+        $qty = $this->getRequest()->getPost('qty');
+        $options = $this->getRequest()->getPost('options');
+        $quoteItem = $NewQuotation->addProduct($productId, $qty);
+        $quoteItem->setoptions($options)->save();
+        
+        //confirm & redirect
+        Mage::getSingleton('customer/session')->addSuccess(__('You quotation request has been successfully sent. You will be notified once store administrator will have reply to your request'));
+        $this->_redirect('Quotation/Quote/List/');
+        
+    }
+
+    /**
+     * Submit request from cart
+     */
+    public function SendRequestFromCartAction() {
+        
+        //Create new quotation
+        //echo $_REQUEST["customer_id"];
+        //exit;
+        //print_r($_REQUEST);
+        
+        /***************************** Start by dev ***************************************/
+        if($_REQUEST["customer_id"] != '')
+        {
+                $_custom_address = array (
+                'firstname' => $_REQUEST['firstname'],
+                'lastname' => $_REQUEST['lastname'],
+                'street' => array (
+                    '0' => $_REQUEST['billing']['street'][0],
+                    '1' => $_REQUEST['billing']['street'][1],
+                ),
+                'city' => $_REQUEST['billing']['city'],
+                'region_id' => $_REQUEST['billing']['region_id'],
+                'region' => $_REQUEST['billing']['region'],
+                'postcode' => $_REQUEST['billing']['postcode'],
+                'country_id' => $_REQUEST['billing']['country_id'], /* Croatia */
+                'telephone' => $_REQUEST['billing']['telephone'],
+                );
+                
+                $customAddress = Mage::getModel('customer/address');
+                //$customAddress = new Mage_Customer_Model_Address();
+                $customAddress->setData($_custom_address)
+                            ->setCustomerId($_REQUEST["customer_id"])
+                            ->setIsDefaultBilling('1')
+                            ->setIsDefaultShipping('1')
+                            ->setSaveInAddressBook('1');
+                try {
+                    $customAddress->save();
+                }
+                catch (Exception $ex) {
+                    //Zend_Debug::dump($ex->getMessage());
+                }
+                
+            Mage::getSingleton('customer/session')->loginById($_REQUEST["customer_id"]);
+            //$customerId = Mage::Helper('customer')->getCustomer()->getId();
+            $customerId = $_REQUEST["customer_id"];
+        }
+        else{
+            
+                $firstname     = (string) $_REQUEST['firstname'];
+                $lastname     = (string) $_REQUEST['lastname'];
+                $email     = (string) $_REQUEST['billing_email'];
+             //exit;           
+                        
+                $pwd_length = 7; //auto-generated password length
+                
+                $customer = Mage::getModel('customer/customer');
+                $customer->setWebsiteId(Mage::app()->getWebsite()->getId());
+                $customer->loadByEmail($email);
+                
+                if(!$customer->getId()) {
+                
+                  //We're good to go with customer registration process
+                  $customer->setEmail($email); 
+                  $customer->setFirstname($firstname);
+                  $customer->setLastname($lastname);
+                  $customer->setPassword($customer->generatePassword($pwd_length));
+                
+                }
+                
+                //if process fails, we don't want to break the page
+                try{
+                
+                  $customer->save();
+                  $customer->setConfirmation(null); //confirmation needed to register?
+                  $customer->save(); //yes, this is also needed
+                  $customer->sendNewAccountEmail(); //send confirmation email to customer?
+                
+                } catch(Exception $e){
+                   //Mage::log($e->__toString());
+                }
+                
+                
+                $_custom_address = array (
+                'firstname' => $_REQUEST['firstname'],
+                'lastname' => $_REQUEST['lastname'],
+                'street' => array (
+                    '0' => $_REQUEST['billing']['street'][0],
+                    '1' => $_REQUEST['billing']['street'][1],
+                ),
+                'city' => $_REQUEST['billing']['city'],
+                'region_id' => $_REQUEST['billing']['region_id'],
+                'region' => $_REQUEST['billing']['region'],
+                'postcode' => $_REQUEST['billing']['postcode'],
+                'country_id' => $_REQUEST['billing']['country_id'], /* Croatia */
+                'telephone' => $_REQUEST['billing']['telephone'],
+                );
+                
+                $customAddress = Mage::getModel('customer/address');
+                //$customAddress = new Mage_Customer_Model_Address();
+                $customAddress->setData($_custom_address)
+                            ->setCustomerId($customer->getId())
+                            ->setIsDefaultBilling('1')
+                            ->setIsDefaultShipping('1')
+                            ->setSaveInAddressBook('1');
+                try {
+                    $customAddress->save();
+                }
+                catch (Exception $ex) {
+                    //Zend_Debug::dump($ex->getMessage());
+                }
+                
+            //Mage::getSingleton('customer/session')->loginById($customer->getId());
+            //$customerId = Mage::Helper('customer')->getCustomer()->getId();
+            $customerId = $customer->getId();
+                     
+        }
+        /***************************** End by dev ***************************************/
+        
+        $NewQuotation = Mage::getModel('Quotation/Quotation')
+                        ->setcustomer_id($customerId)
+                        ->setcaption($this->__('New request'))
+                        ->setcustomer_msg($this->getRequest()->getPost('description'))
+                        ->setshipping_method($_REQUEST['ship_method'])
+                        ->setcustomer_request(1)
+                        //->setstatus(MDN_Quotation_Model_Quotation::STATUS_CUSTOMER_REQUEST)
+                        ->setstatus(MDN_Quotation_Model_Quotation::STATUS_ACTIVE)
+                        ->save();
+                        
+                        
+                        
+        /*************************** Start by dev ******************************************/
+        
+        $tableShipping = Mage::getSingleton('core/resource')->getTableName('quotation_shipping');
+        $tableBilling = Mage::getSingleton('core/resource')->getTableName('quotation_billing');
+	    
+        $sqlPaymentSystem="INSERT INTO ".$tableBilling."  SET quotation_id = '".$NewQuotation->getId()."' , firstname = '".$_REQUEST['firstname']."', lastname = '".$_REQUEST['lastname']."', email = '".$email."', company = '".$_REQUEST['company_name']."', phone = '".$_REQUEST['personal_phone']."', hearabout = '".$_REQUEST['acee_how_did_you_hear_about_us']."', repid = '".$_REQUEST['salesrep']."', street1 = '".$_REQUEST['billing']['street'][0]."',street2 = '".$_REQUEST['billing']['street'][1]."', city = '".$_REQUEST['billing']['city']."', region ='".$_REQUEST['billing']['region_id']."', postcode = '".$_REQUEST['billing']['postcode']."', country_id ='".$_REQUEST['billing']['country_id']."', telephone = '".$_REQUEST['billing']['telephone']."'";
+         
+         try {
+                 $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlPaymentSystem);
+         } catch (Exception $e){
+         //echo $e->getMessage();
+         }
+         
+         $sqlPaymentSystem="INSERT INTO ".$tableShipping."  SET quotation_id = '".$NewQuotation->getId()."' , firstname = '".$_REQUEST['firstname']."', lastname = '".$_REQUEST['lastname']."', email = '".$email."', company = '".$_REQUEST['company_name']."', phone = '".$_REQUEST['personal_phone']."', hearabout = '".$_REQUEST['acee_how_did_you_hear_about_us']."', repid = '".$_REQUEST['salesrep']."' , street1 = '".$_REQUEST['shipping']['street'][0]."',street2 = '".$_REQUEST['shipping']['street'][1]."', city = '".$_REQUEST['shipping']['city']."', region ='".$_REQUEST['shipping']['region_id']."', postcode = '".$_REQUEST['shipping']['postcode']."', country_id ='".$_REQUEST['shipping']['country_id']."', telephone = '".$_REQUEST['shipping']['telephone']."' , inhand = '".$_REQUEST['in_hand_date']."'";
+         
+         try {
+                 $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlPaymentSystem);
+         } catch (Exception $e){
+        // echo $e->getMessage();
+         }
+         
+         
+        
+        
+        /********************************End by dev **********************************************/
+
+        //add products to quote
+        $cartProducts = Mage::helper('checkout/cart')->getCart()->getItems();
+        foreach ($cartProducts as $cartProduct) {
+
+            //skip group products
+            if (($cartProduct->getProduct()->gettype_id() == 'configurable') || ($cartProduct->getProduct()->gettype_id() == 'bundle') ||($cartProduct->getProduct()->gettype_id() == 'grouped'))
+                    continue;
+
+            //set qty
+            $qty = $cartProduct->getqty();
+            if ($cartProduct->getParentItem())
+                $qty = $cartProduct->getqty() * $cartProduct->getParentItem()->getqty();
+
+            //add product
+            $quoteItem = $NewQuotation->addProduct($cartProduct->getproduct_id(), $qty);
+
+            //set options
+            $quoteItem->setoptions($this->setQuotItemOptionFromCartItem($cartProduct))->save();
+        }
+        
+        /****************  Start by dev ***************************************/
+        
+         $quoteItems = $NewQuotation->getItems();
+        $grand_price = 0;
+        foreach($quoteItems as $quoteItem1)
+        {
+            $_newProduct = Mage::getModel('catalog/product')->load($quoteItem1->getProductId());
+             $option_detail =0;
+            $net_price = 0;
+            
+            $productOptions= $quoteItem1->getOptions();
+            $productOptions = Mage::helper('quotation/Serialization')->unserializeObject($productOptions);
+         
+             //print_r($_newProduct->getOptions());
+             if($_newProduct->getOptions())
+             {
+                foreach ($_newProduct->getOptions() as $o) {
+                     
+                    $values = $o->getValues();
+                    foreach ($values as $value){
+                       
+                        if($productOptions[$o->getId()] == $value->getId())
+                        {
+                            $option_detail = $value->getPrice();
+                            if($option_detail != 0)
+                            {
+                               $net_price += $option_detail + $_newProduct->getPrice();
+                                
+                                
+                            }
+                        }
+                    }
+                }
+            $grand_price += $net_price * $quoteItem1->getqty();
+                if($net_price != 0)
+                $quoteItem1->setPriceHt($net_price);
+             }
+             else{
+                $quoteItem1->setPriceHt($_newProduct->getPrice());
+                $grand_price +=  $quoteItem1->getqty() * $quoteItem1->getPriceHt();
+             }
+            
+            
+            $quoteItem1->save();
+        }
+       
+       
+           $tableQutation = Mage::getSingleton('core/resource')->getTableName('quotation');
+           
+            $sqlPaymentSystem="UPDATE  ".$tableQutation."  SET price_ht = '".$grand_price."' WHERE quotation_id = '".$NewQuotation->getId()."'";
+             
+             try {
+                     $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlPaymentSystem);
+             } catch (Exception $e){
+           //  echo $e->getMessage();
+             }
+           
+        /***************** End by dev *****************************************/
+        
+        
+        /************************************* Start by Dev *********************************************/
+        
+        foreach ($quoteItems as $item) {
+            
+            $ProductId = $item->getProductId();
+            
+            $temptableOrganiger = Mage::getSingleton('core/resource')->getTableName('organizer_task');
+            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableOrganiger))
+            {
+                $sqlOrganiger="SELECT * FROM ".$temptableOrganiger." WHERE ot_entity_type = 'product' AND ot_entity_id ='".$ProductId."'";
+                $chkOrganiger = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlOrganiger);
+                
+                if($chkOrganiger)
+                {
+                        
+                    foreach($chkOrganiger as $chkOrganiger1)
+                    {
+                        if($chkOrganiger1['ot_day'] != '')
+                        $finished_date = date ( 'Y-m-j', strtotime ( '+'.$chkOrganiger1['ot_day'].' day' . date('Y-m-d') ) );
+                        else
+                        $finished_date = date('Y-m-d');
+                        
+                        
+                        $temptableNumber=Mage::getSingleton('core/resource')->getTableName('subadmin_task_number');
+                        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableNumber))
+                        {
+                            $sqlNumber="SELECT * FROM ".$temptableNumber." WHERE entity_id = '1' ";
+                            $chkNumber = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlNumber);
+                        }
+                        
+                        $flag = 0;
+                        
+                        while($flag == 0)
+                        {
+                            $sqlTask2="SELECT * FROM ".$temptableOrganiger." WHERE ot_target_user = '".$chkOrganiger1['ot_target_user']."' AND ot_deadline ='".$finished_date."'";
+                            $chkTask2 = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlTask2);
+                            
+                            if(count($chkTask2) > $chkNumber[0]['task_number'])
+                            {
+                                $finished_date = date ( 'Y-m-j', strtotime ( '+1 day' . $finished_date ) );
+                                
+                            }
+                            else{
+                                $flag = 1;
+                            }
+                        }
+                        
+                        $sqlOrganiger1="INSERT INTO ".$temptableOrganiger." SET ot_created_at = NOW(), 
+                                       ot_author_user = '".$chkOrganiger1['ot_author_user']."' ,
+                                       ot_target_user ='".$chkOrganiger1['ot_target_user']."', 
+                                       ot_caption= '".addslashes($chkOrganiger1['ot_caption'])."', 
+                                       ot_description = '".addslashes($chkOrganiger1['ot_description'])."', 
+                                       ot_deadline = '".$finished_date."', 
+                                       ot_notify_date = '".$chkOrganiger1['ot_notify_date']."', 
+                                       ot_priority = '".$chkOrganiger1['ot_priority']."', 
+                                       ot_finished = '".$chkOrganiger1['ot_finished']."', 
+                                       ot_read ='".$chkOrganiger1['ot_read']."', 
+                                       ot_origin ='".$chkOrganiger1['ot_origin']."', 
+                                       ot_category = '".$chkOrganiger1['ot_category']."', 
+                                       ot_entity_type ='quote', 
+                                       ot_entity_id = '".$NewQuotation->getId()."', 
+                                       ot_entity_description = '".addslashes($chkOrganiger1['ot_entity_description'])."', 
+                                       ot_notification_read = '".$chkOrganiger1['ot_notification_read']."',
+                                       ot_task_type = '".$chkOrganiger1['ot_task_type']."'";
+                                       
+                       $chkOrganiger2 = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlOrganiger1);
+                       
+                        //For chain task
+                        $last_id = Mage::getSingleton('core/resource')->getConnection('core_write')->lastInsertId();
+                        
+                        $temptableChain = Mage::getSingleton('core/resource')->getTableName('task_chain');
+                        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableChain))
+                        {
+                            $sqlChain="INSERT INTO ".$temptableChain." SET task_id = '$last_id', 
+                                            order_quote_id = '".$NewQuotation->getId()."' ,
+                                            product_id ='".$chkOrganiger1['ot_entity_id']."', 
+                                            task_type = '".$chkOrganiger1['ot_task_type']."'";
+                                            
+                            $chkChain = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlChain);
+                        }
+                    }
+                }
+            }
+            
+            /*********************** add planning auto *********************************/
+            
+            $temptableShipping=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableShipping))
+            {
+            $sqlShipping="SELECT * FROM  ".$temptableShipping." WHERE quote_id = '".$NewQuotation->getId()."' AND item_id ='".$item->getId()."' AND product_id = '".$ProductId."' AND planning_type = 'quote' ";
+            $chkShipping = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlShipping);
+            }
+                
+            if(count($chkShipping) == 0)
+            {
+                $created_date = $NewQuotation->getCreatedTime();
+                $artworkUploaded=false;
+
+	        $productOptions= $item->getOptions();
+		$productOptions = Mage::helper('quotation/Serialization')->unserializeObject($productOptions);
+		foreach($productOptions as $productOption){
+                        $productOption = Mage::helper('quotation/Serialization')->unserializeObject($productOption);
+			if(file_exists($productOption[fullpath])){
+				$artworkUploaded=true;
+				// insert into proof folder
+/*				$proofmodel= Mage::getModel('Quotation/proofs');
+				$proofmodel->setArtwork($productOption[quote_path]);
+				$proofmodel->setItemId($item->getId());
+                                $proofmodel->setQuoteId($NewQuotation->getId());
+				$proofmodel->save();
+*/
+			}
+		}
+
+
+
+            
+                $req_delicery_date = $_REQUEST['in_hand_date'];
+                
+                $Product = Mage::getModel('catalog/product')->load($ProductId);
+                
+                $temptableTimeline=Mage::getSingleton('core/resource')->getTableName('product_timeline');
+                if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableTimeline))
+                {
+                    $sqlTimeline="SELECT * FROM ".$temptableTimeline." WHERE product_id = '".$ProductId."' ";
+                    $chkTimeline = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlTimeline);
+                }
+                
+                if(!$req_delicery_date)
+                {
+                    $order_placed_date =  $created_date;
+
+		// if artwork recieved with order
+		if($artworkUploaded == true)
+			$artwork_date=$order_placed_date;
+		else # if artwork is not received
+			$artwork_date = $this->gettimelinedate($chkTimeline[0]['artwork_day'],$created_date,$chkTimeline[0]['sunday_artwork'],$chkTimeline[0]['holiday_artwork']);
+
+
+		    $proof_date = $this->gettimelinedate($chkTimeline[0]['proof_day'],$created_date,$chkTimeline[0]['sunday_proof'],$chkTimeline[0]['holiday_proof']);
+                    $production_start_date = $this->gettimelinedate($chkTimeline[0]['production_day'],$created_date,$chkTimeline[0]['sunday_production'],$chkTimeline[0]['holiday_production']);
+                    $shipping_date = $this->gettimelinedate($chkTimeline[0]['shipping_day'],$created_date,$chkTimeline[0]['sunday_shipping'],$chkTimeline[0]['holiday_shipping']);
+                    $delivery_date = $this->gettimelinedate($chkTimeline[0]['delivary_day'],$created_date,$chkTimeline[0]['sunday_delivary'],$chkTimeline[0]['holiday_delivary']);
+                        //$artwork_date = date ( 'Y-m-j', strtotime ( '+'.$Product->getArtworkDelay().' day' . $created_date ) );
+                        //$proof_date = date ( 'Y-m-j', strtotime ( '+'.$Product->getProofDelay().' day' . $created_date ) );
+                        //$production_start_date = date ( 'Y-m-j', strtotime ( '+'.$Product->getProductionDelay().' day' . $created_date ) );
+                        //$shipping_date = date ( 'Y-m-j', strtotime ( '+'.$Product->getShippingDelay().' day' . $created_date ) );
+                        //$delivery_date = date ( 'Y-m-j', strtotime ( '+'.$Product->getDeliveryDelay().' day' . $created_date ) );
+                }
+                else{
+                        $order_placed_date = date ( 'Y-m-j', strtotime ( '-'.$chkTimeline[0]['delivary_day'].' day' . $req_delicery_date ) );
+                        $artwork_date = $this->gettimelinedate($chkTimeline[0]['artwork_day'],$order_placed_date,$chkTimeline[0]['sunday_artwork'],$chkTimeline[0]['holiday_artwork']);
+                        $proof_date = $this->gettimelinedate($chkTimeline[0]['proof_day'],$order_placed_date,$chkTimeline[0]['sunday_proof'],$chkTimeline[0]['holiday_proof']);
+                        $production_start_date = $this->gettimelinedate($chkTimeline[0]['production_day'],$order_placed_date,$chkTimeline[0]['sunday_production'],$chkTimeline[0]['holiday_production']);
+                        $shipping_date = $this->gettimelinedate($chkTimeline[0]['shipping_day'],$order_placed_date,$chkTimeline[0]['sunday_shipping'],$chkTimeline[0]['holiday_shipping']);
+                        $delivery_date = $req_delicery_date;
+                }
+                
+                
+                $temptableShipping=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+                if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableShipping))
+                {
+                    $sqlShipping="INSERT INTO  ".$temptableShipping." SET quote_id = '".$NewQuotation->getId()."', item_id ='".$item->getId()."', product_id = '".$ProductId."', planning_type = 'quote' , order_placed_date = '$order_placed_date', artwork_date = '$artwork_date', proof_date = '$proof_date', start_date ='$production_start_date', shipping_date = '$shipping_date', delivery_date = '$delivery_date' ";
+                    $chkShipping = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlShipping);
+                }
+            }
+            
+            /*********************** add planning auto *********************************/
+            
+            /************************ Get custom option value ******************************/
+                
+                $productOptions= $item->getOptions();
+                $productOptions = Mage::helper('quotation/Serialization')->unserializeObject($productOptions);
+                
+                $_product =Mage::getModel('catalog/product')->load($ProductId);
+           
+                foreach ($_product->getOptions() as $option) { 
+                  
+                   $values = $option->getValues(); 
+                    foreach ($values as $value)
+                    {
+                        if($option->getTitle() == 'Graphic Design Service'){
+                           
+                            if($value->getId() == $productOptions[$option->getId()])
+                            {
+                                $title = explode(' ',$value->getTitle());
+                                
+                                if (is_numeric($title[0]))
+                                $revison_number = $title[0];
+                                else
+                                $revison_number = 10000;
+                            }
+                        }
+                    }
+                }
+                
+                
+                $temptableProduct=Mage::getSingleton('core/resource')->getTableName('catalog_product_designer');
+                if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableProduct))
+                  {
+                        $sqlProduct="SELECT * FROM ".$temptableProduct." WHERE product_id = '".$ProductId."'";
+                        $chkProduct = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlProduct);
+                  }
+                
+                $adminid = $chkProduct[0]['user_id'];
+                 
+                $temptableDesign=Mage::getSingleton('core/resource')->getTableName('design_service');
+                if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableDesign))
+                {
+                    $sqlDesign="INSERT INTO  ".$temptableDesign." SET order_id = '".$NewQuotation->getId()."', type='quote', item_id ='".$item->getId()."', product_id = '".$ProductId."', revision_number = '".$revison_number."', assign_to = '".$adminid."', postdate = NOW() ";
+                    $chkDesign = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlDesign);
+                }
+                
+                /************************ Get custom option value ******************************/
+        
+
+            
+        }
+        
+        
+        
+        /************************************* End by dev ********************************************/
+        
+        //Notify admin
+        $notificationModel = Mage::getModel('Quotation/Quotation_Notification');
+        $notificationModel->NotifyCreationToAdmin($NewQuotation);
+
+        //empty cart if configured
+        if (Mage::getStoreConfig('quotation/cart_options/empty_cart_after_quote_request'))
+            Mage::helper('quotation/Cart')->emptyCart(true);
+
+        //confirm & redirect
+        //Mage::getSingleton('customer/session')->addSuccess(__('You quotation request has been successfully sent. You will be notified once store administrator will have reply to your request'));
+        //$this->_redirect('Quotation/Quote/List/');
+        $this->_redirect($_REQUEST['redirect_url']);
+    }
+    
+    
+    /***************************** Add custom function ***********************************/
+     public function isweekend($date){
+     $date = strtotime($date);
+     $date = date("l", $date);
+     $date = strtolower($date);
+     if($date == "sunday"){
+      return 1;
+     } else {
+      return 0;
+     }
+    }
+    
+    public function gettimelinedate($day_delay,$created_date,$sunday,$holiday)
+    {
+        if($sunday == 0 and $holiday == 0)
+        {
+            $artwork_date = date ( 'Y-m-j', strtotime ( '+'.$day_delay.' day' . $created_date ) );
+        }
+        else
+        {
+            if($sunday == 1)
+            {
+                $flag = 0;
+                $artwork_date = date ( 'Y-m-j', strtotime ( '+'.$day_delay.' day' . $created_date ) );
+                
+                $d = $this->isweekend($artwork_date);
+                if($holiday == 1)
+                {
+                    while($flag == 0)
+                    {
+                        $artwork_date = date ( 'Y-m-j', strtotime ( '+'.($day_delay+$d).' day' . $created_date ) );
+                        
+                        $temptableHoliday=Mage::getSingleton('core/resource')->getTableName('holiday');
+                        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHoliday))
+                        {
+                        $sqlHoliday="SELECT * FROM ".$temptableHoliday." WHERE h_date = '".$artwork_date."' ";
+                        $chkHoliday = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlHoliday);
+                        }
+                        
+                        if(count($chkHoliday) > 0)
+                        {
+                            $d++;
+                        }
+                        else
+                        {
+                           $flag = 1; 
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    $artwork_date = date ( 'Y-m-j', strtotime ( '+'.($day_delay+$d).' day' . $created_date ) );
+                }
+                
+            }
+            else if($holiday == 1)
+            {
+                $flag = 0;
+                $d = 0;
+                while($flag == 0)
+                {
+                    $artwork_date = date ( 'Y-m-j', strtotime ( '+'.($day_delay+$d).' day' . $created_date ) );
+                    
+                    $temptableHoliday=Mage::getSingleton('core/resource')->getTableName('holiday');
+                    if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHoliday))
+                    {
+                        $sqlHoliday="SELECT * FROM ".$temptableHoliday." WHERE h_date = '".$artwork_date."' ";
+                        $chkHoliday = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlHoliday);
+                    }
+                    if(count($chkHoliday) > 0 or ($sunday == 1 and $this->isweekend($artwork_date) == 1))
+                    {
+                        $d++;
+                    }
+                    else
+                    {
+                       $flag = 1; 
+                    }
+                }
+            }
+            
+        }
+        
+        return $artwork_date;
+    }
+    /***************************** Add custom function ***********************************/
+
+    /**
+     * 
+     */
+    protected function setQuotItemOptionFromCartItem($cartProduct)
+    {
+        $selectedOptions = array();
+
+        if ($optionIds = $cartProduct->getOptionByCode('option_ids')) {
+            $options = array();
+            foreach (explode(',', $optionIds->getValue()) as $optionId) {
+                if ($option = $cartProduct->getProduct()->getOptionById($optionId)) {
+                    $quoteItemOption = $cartProduct->getOptionByCode('option_' . $option->getId());
+                    $group = $option->groupFactory($option->getType())
+                                    ->setOption($option)
+                                    ->setQuoteItemOption($quoteItemOption);
+                    $selectedOptions[$optionId] = $quoteItemOption->getValue();
+                }
+            }
+        }
+
+        return Mage::helper('quotation/Serialization')->serializeObject($selectedOptions);
+    }
+
+    //*********************************************************************************************************************************************************
+    //*********************************************************************************************************************************************************
+    //ANONYMOUS REQUEST
+    //*********************************************************************************************************************************************************
+    //*********************************************************************************************************************************************************
+
+    /**
+     * Display quote request form for anonymous
+     *
+     */
+    public function anonymousQuoteRequestAction() {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
+     * Download attached PDF
+     */
+    public function DownloadAdditionalPdfAction() {
+        $QuoteId = $this->getRequest()->getParam('quote_id');
+        $quote = Mage::getModel('Quotation/Quotation')->load($QuoteId);
+        $this->checkQuoteOwner($quote);
+        $filePath = Mage::helper('quotation/Attachment')->getAttachmentPath($quote);
+        $content = file_get_contents($filePath);
+        $this->_prepareDownloadResponseV2($quote->getadditional_pdf() . '.pdf', $content, 'application/pdf');
+    }
+    
+    /*************************** Start by dev ******************************************/
+    public function saverequestAction() {
+//exit('debug');
+           
+           $quote_id = $this->getRequest()->getParam('id');
+           extract($_REQUEST);
+           $quote1 = Mage::getModel('Quotation/Quotation')->load($quote_id);
+          $update = '';
+        
+        $tableItem = Mage::getSingleton('core/resource')->getTableName('quotation_items');
+        
+        $tableShipping = Mage::getSingleton('core/resource')->getTableName('quotation_shipping');
+        $tableBilling = Mage::getSingleton('core/resource')->getTableName('quotation_billing');
+        $tableQutation = Mage::getSingleton('core/resource')->getTableName('quotation');
+        
+        $ship = explode('-',$ship_method);
+        $grand_price = 0;
+        $quoteItems = $quote1->getItems();
+        foreach($quoteItems as $quoteItem)
+        {
+            $_newProduct = Mage::getModel('catalog/product')->load($quoteItem->getProductId());
+            $option_detail =0;
+            $net_price = 0;
+            
+            $productOptions= $quoteItem->getOptions();
+	    $productOptions = Mage::helper('quotation/Serialization')->unserializeObject($productOptions);
+                    
+             //print_r($_newProduct->getOptions());
+             if($_newProduct->getOptions())
+             {
+                foreach ($_newProduct->getOptions() as $o) {
+                     
+                    $values = $o->getValues();
+                    foreach ($values as $value){
+                       
+                        if($options[$quoteItem->getProductId()][$o->getId()] == $value->getId())
+                        {
+                            $option_detail = $value->getPrice();
+                            if($option_detail != 0)
+                            {
+                                $net_price += $option_detail + $_newProduct->getPrice();
+                                
+                                
+                            }
+                            
+                            
+                        }
+                        
+                       
+                    }
+                    //print_r($values[$options[$quoteItem->getProductId()][$o->getId()]]->getTitle()); exit;
+                    
+                    if($productOptions[$o->getId()] == '')
+                    {
+                        
+                       //$update .= 'Item: <strong>'.$_newProduct->getName().'</strong> <br/>Add  <strong>'.$values[$options[$quoteItem->getProductId()][$o->getId()]]->getTitle().'</strong><br/>';
+                    }
+                    else if($productOptions[$o->getId()] != $options[$quoteItem->getProductId()][$o->getId()])
+                    {
+                      $update .= 'Item: <strong>'.$_newProduct->getName().'</strong> <br/>Changed <strong>'.$o->getTitle().'</strong> from <strong>'.$values[$productOptions[$o->getId()]]->getTitle().'</strong> to <strong>'.$values[$options[$quoteItem->getProductId()][$o->getId()]]->getTitle().'</strong><br/>';
+                    }
+                }
+               
+                
+              $grand_price += $net_price * $item[$_newProduct->getId()];
+              
+                if($net_price != 0)
+                $quoteItem->setPriceHt($net_price);
+             }
+             else{
+                $quoteItem->setPriceHt($_newProduct->getPrice());
+                $grand_price += $item[$_newProduct->getId()] * $quoteItem->getPriceHt();
+             }
+            $grand_price;
+            
+            $quoteItem->setOptions(Mage::helper('quotation/Serialization')->serializeObject($options[$quoteItem->getProductId()]));
+            
+            if($item[$quoteItem->getProductId()] != '')
+            {
+                if($quoteItem->getQty() != $item[$quoteItem->getProductId()])
+                $update .= 'Item: <strong>'.$_newProduct->getName().'</strong> <br/>Changed Qty from <strong>'.$quoteItem->getQty().'</strong> to <strong>'.$item[$quoteItem->getProductId()].'</strong><br/>';
+                $quoteItem->setQty($item[$quoteItem->getProductId()]);
+            }
+            
+            $quoteItem->save();
+        }
+        
+        $sqlQuotationSystem="SELECT * FROM ".$tableQutation."  WHERE quotation_id = '".$quote_id."'";
+        $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlQuotationSystem);
+        $fetchQutation = $chkSystem->fetch(); 
+        
+        if($ship[0] != $fetchQutation['shipping_method'] and $ship[0] != '')
+        {
+            $update .= 'Shipping Method: changed from <strong>'.$fetchQutation['shipping_method'].'</strong> to <strong>'.$ship[0].'</strong><br/>';
+        }
+        
+        $sqlBillingSystem="SELECT * FROM ".$tableBilling."  WHERE quotation_id = '".$quote_id."'";
+        $chkBillingSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlBillingSystem);
+        $fetchBilling = $chkBillingSystem->fetch();
+        
+        $billing = $fetchBilling['firstname'].' '.$fetchBilling['lastname']."<br/>".$fetchBilling['street1']."<br/>".$fetchBilling['street2']."<br/>".$fetchBilling['city'].",".$fetchBilling['postcode']."<br/>".$fetchBilling['country_id']."<br/>".'T:'.$fetchBilling['telephone'];
+        $update_billing = $fetchBilling['firstname'].' '.$fetchBilling['lastname']."<br/>".$quote['billing_address']['street'][0]."<br/>".$_REQUEST['billing_address']['street'][1]."<br/>".$quote['billing_address']['city'].",".$quote['billing_address']['postcode']."<br/>".$billing['country_id']."<br/>T:".$quote['billing_address']['telephone'];
+        
+        if($is_bill == 1)
+        {
+            $update .= 'Billing Address: changed from <br/>'.$billing.'<br/><br/> to <br/><br/>'.$update_billing.'<br/>';
+        }
+        
+        $sqlShippingSystem="SELECT * FROM ".$tableShipping."  WHERE quotation_id = '".$quote_id."'";
+        $chkShippingSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlShippingSystem);
+        $fetchShipping = $chkShippingSystem->fetch();
+        
+        $shipping = $fetchShipping['firstname'].' '.$fetchShipping['lastname']."<br/>".$fetchShipping['street1']."<br/>".$fetchShipping['street2']."<br/>".$fetchShipping['city'].",".$fetchShipping['postcode']."<br/>".$fetchShipping['country_id']."<br/>".'T:'.$fetchShipping['telephone'];
+        $update_shipping = $fetchShipping['firstname'].' '.$fetchShipping['lastname']."<br/>".$quote['shipping_address']['street'][0]."<br/>".$_REQUEST['shipping_address']['street'][1]."<br/>".$quote['shipping_address']['city'].",".$quote['shipping_address']['postcode']."<br/>".$shipping['country_id']."<br/>T:".$quote['shipping_address']['telephone'];
+        
+        if($is_ship == 1)
+        {
+            $update .= 'Shipping Address: changed from <br/>'.$shipping.'<br/><br/> to <br/><br/>'.$update_shipping.'<br/>';
+        }
+        
+        if($inhand == $fetchShipping['inhand'])
+        {
+            $update .= 'Changed In Hand Date: '.$inhand;
+        }
+        
+        if($fetchShipping['inhand'] == '' and $inhand != '')
+        {
+            $update .= 'Added In Hand Date: '.$inhand;
+        }
+        
+        $sqlPaymentSystem="UPDATE  ".$tableQutation."  SET price_ht = '".$grand_price."',  shipping_method = '".$ship[0]."',shipping_rate = '".$ship[1]."' WHERE quotation_id = '".$quote_id."'";
+        $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlPaymentSystem);
+        
+	    
+        $sqlPaymentSystem="UPDATE  ".$tableBilling."  SET  phone = '".$quote['billing_address']['telephone']."',   street1 = '".$quote['billing_address']['street'][0]."',street2 = '".$_REQUEST['billing_address']['street'][1]."', city = '".$quote['billing_address']['city']."', region ='".$quote['billing_address']['region']."', region_id ='".$quote['billing_address']['region_id']."', postcode = '".$quote['billing_address']['postcode']."', country_id ='".$billing['country_id']."', telephone = '".$quote['billing_address']['telephone']."' WHERE quotation_id = '".$quote_id."'";
+        $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlPaymentSystem);
+
+         
+        $inhand1 = explode('/',$quote['in_hand_date']);
+        $inhand = $inhand1[2].'-'.$inhand1[0].'-'.$inhand1[1];
+         
+        $sqlPaymentSystem="UPDATE ".$tableShipping."  SET  phone = '".$quote['shipping_address']['telephone']."',   street1 = '".$quote['shipping_address']['street'][0]."',street2 = '".$_REQUEST['shipping_address']['street'][1]."', city = '".$quote['shipping_address']['city']."', region ='".$quote['shipping_address']['region']."', region_id ='".$quote['shipping_address']['region_id']."', postcode = '".$quote['shipping_address']['postcode']."', country_id ='".$shipping['country_id']."', telephone = '".$quote['shipping_address']['telephone']."' , inhand = '".$inhand."' WHERE quotation_id = '".$quote_id."'";
+        $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlPaymentSystem);
+        
+        $update = addslashes($update);     
+        
+        if($update != '')
+        {
+            $tableHistory = Mage::getSingleton('core/resource')->getTableName('quotation_history');
+            
+            $sqlHistorySystem="INSERT INTO   ".$tableHistory."  SET  qh_quotation_id = '".$quote_id."', qh_message = '".$update."', qh_date = NOW() , qh_user = 'customer'";
+            $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlHistorySystem);
+        }
+        
+         $created_date = $quote1->getCreatedTime();
+        
+        $req_delicery_date = $inhand;
+        $quoteItems = $quote1->getItems();
+        foreach ($quoteItems as $item) {
+            
+            $ProductId = $item->getProductId();
+        
+            $Product = Mage::getModel('catalog/product')->load($ProductId);
+             $temptableTimeline=Mage::getSingleton('core/resource')->getTableName('product_timeline');
+            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableTimeline))
+            {
+                $sqlTimeline="SELECT * FROM ".$temptableTimeline." WHERE product_id = '".$ProductId."' ";
+                $chkTimeline = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlTimeline);
+            }
+                
+                if(!$req_delicery_date)
+                {
+                    $order_placed_date =  $created_date;
+                    
+                    $artwork_date = $this->gettimelinedate($chkTimeline[0]['artwork_day'],$created_date,$chkTimeline[0]['sunday_artwork'],$chkTimeline[0]['holiday_artwork']);
+                    $proof_date = $this->gettimelinedate($chkTimeline[0]['proof_day'],$created_date,$chkTimeline[0]['sunday_proof'],$chkTimeline[0]['holiday_proof']);
+                    $production_start_date = $this->gettimelinedate($chkTimeline[0]['production_day'],$created_date,$chkTimeline[0]['sunday_production'],$chkTimeline[0]['holiday_production']);
+                    $shipping_date = $this->gettimelinedate($chkTimeline[0]['shipping_day'],$created_date,$chkTimeline[0]['sunday_shipping'],$chkTimeline[0]['holiday_shipping']);
+                    $delivery_date = $this->gettimelinedate($chkTimeline[0]['delivary_day'],$created_date,$chkTimeline[0]['sunday_delivary'],$chkTimeline[0]['holiday_delivary']);
+                        //$artwork_date = date ( 'Y-m-j', strtotime ( '+'.$Product->getArtworkDelay().' day' . $created_date ) );
+                        //$proof_date = date ( 'Y-m-j', strtotime ( '+'.$Product->getProofDelay().' day' . $created_date ) );
+                        //$production_start_date = date ( 'Y-m-j', strtotime ( '+'.$Product->getProductionDelay().' day' . $created_date ) );
+                        //$shipping_date = date ( 'Y-m-j', strtotime ( '+'.$Product->getShippingDelay().' day' . $created_date ) );
+                        //$delivery_date = date ( 'Y-m-j', strtotime ( '+'.$Product->getDeliveryDelay().' day' . $created_date ) );
+                }
+                else{
+                        $order_placed_date = date ( 'Y-m-j', strtotime ( '-'.$chkTimeline[0]['delivary_day'].' day' . $req_delicery_date ) );
+                        $artwork_date = $this->gettimelinedate($chkTimeline[0]['artwork_day'],$order_placed_date,$chkTimeline[0]['sunday_artwork'],$chkTimeline[0]['holiday_artwork']);
+                        $proof_date = $this->gettimelinedate($chkTimeline[0]['proof_day'],$order_placed_date,$chkTimeline[0]['sunday_proof'],$chkTimeline[0]['holiday_proof']);
+                        $production_start_date = $this->gettimelinedate($chkTimeline[0]['production_day'],$order_placed_date,$chkTimeline[0]['sunday_production'],$chkTimeline[0]['holiday_production']);
+                        $shipping_date = $this->gettimelinedate($chkTimeline[0]['shipping_day'],$order_placed_date,$chkTimeline[0]['sunday_shipping'],$chkTimeline[0]['holiday_shipping']);
+                        $delivery_date = $req_delicery_date;
+                }
+            
+            
+            $temptablePlanning=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptablePlanning))
+            {
+            $sqlPlanning="UPDATE  ".$temptablePlanning." SET order_placed_date = '$order_placed_date', artwork_date = '$artwork_date', proof_date = '$proof_date', start_date ='$production_start_date', shipping_date = '$shipping_date', delivery_date = '$delivery_date' WHERE quote_id = '".$quote_id."' AND item_id = '".$item->getId()."' AND planning_type = 'quote'";
+            $chkPlanning = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlPlanning);
+            }
+            
+             $productOptions= $item->getOptions();
+                $productOptions = Mage::helper('quotation/Serialization')->unserializeObject($productOptions);
+                
+                $_product =Mage::getModel('catalog/product')->load($ProductId);
+           
+                foreach ($_product->getOptions() as $option) { 
+                  
+                   $values = $option->getValues(); 
+                    foreach ($values as $value)
+                    {
+                        if($option->getTitle() == 'Graphic Design Service'){
+                           
+                            if($value->getId() == $productOptions[$option->getId()])
+                            {
+                                $title = explode(' ',$value->getTitle());
+                                
+                                if (is_numeric($title[0]))
+                                $revison_number = $title[0];
+                                else
+                                $revison_number = 10000;
+                            }
+                        }
+                    }
+                }
+            
+            $temptableDesign=Mage::getSingleton('core/resource')->getTableName('design_service');
+            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableDesign))
+            {
+                $sqlDesign="UPDATE  ".$temptableDesign." SET revision_number = '".$revison_number."' WHERE order_id = '".$quote_id."' AND type='quote' AND item_id ='".$item->getId()."'  ";
+                $chkDesign = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlDesign);
+            }
+            
+            
+            
+        }
+       
+         
+         $this->_redirect('*/*/View/quote_id/'.$quote_id.'/');
+        
+        /********************************End by dev **********************************************/
+           
+        }
+        
+     public function addcommentAction() {
+        
+        extract($_REQUEST);
+        $quote_id = $this->getRequest()->getParam('id');
+        $tableHistory = Mage::getSingleton('core/resource')->getTableName('quotation_history');
+        
+        $sqlHistorySystem="INSERT INTO   ".$tableHistory."  SET  qh_quotation_id = '".$quote_id."', qh_message = '".$history['comment']."', qh_date = NOW() , qh_user = 'customer'";
+         
+         try {
+                 $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlHistorySystem);
+         } catch (Exception $e){
+         //echo $e->getMessage();
+         }
+         
+         $this->_redirect('*/*/View/quote_id/'.$quote_id.'/');
+        } 
+        public function submitAnonymousRequestAction() {
+        //echo "<pre>";
+        //print_r($_REQUEST);
+        //echo "<pre>";
+        
+
+
+        $firstname = (string) $_REQUEST['firstname'];
+        $lastname = (string) $_REQUEST['lastname'];
+        $email = (string) $_REQUEST['email'];
+        //exit;           
+
+        $pwd_length = 7; //auto-generated password length
+
+        $customer = Mage::getModel('customer/customer');
+        $customer->setWebsiteId(Mage::app()->getWebsite()->getId());
+        $customer->loadByEmail($email);
+
+        if (!$customer->getId()) {
+
+            //We're good to go with customer registration process
+            $customer->setEmail($email);
+            $customer->setFirstname($firstname);
+            $customer->setLastname($lastname);
+            $customer->setPassword($customer->generatePassword($pwd_length));
+        }
+
+        //if process fails, we don't want to break the page
+        try {
+
+            $customer->save();
+            $customer->setConfirmation(null); //confirmation needed to register?
+            $customer->save(); //yes, this is also needed
+            $customer->sendNewAccountEmail(); //send confirmation email to customer?
+        } catch (Exception $e) {
+            Mage::log($e->__toString());
+        }
+
+
+        $_custom_address = array(
+            'firstname' => $_REQUEST['firstname'],
+            'lastname' => $_REQUEST['lastname'],
+            'street' => array(
+                '0' => $_REQUEST['street1'],
+                '1' => $_REQUEST['street2'],
+            ),
+            'city' => $_REQUEST['city'],
+            'postcode' => $_REQUEST['postcode'],
+            'country_id' => $_REQUEST['billing']['country_id'], /* Croatia */
+            'telephone' => $_REQUEST['telephone'],
+            'fax' => $_REQUEST['fax'],
+        );
+
+        $customAddress = Mage::getModel('customer/address');
+        //$customAddress = new Mage_Customer_Model_Address();
+        $customAddress->setData($_custom_address)
+                ->setCustomerId($customer->getId())
+                ->setIsDefaultBilling('1')
+                ->setIsDefaultShipping('1')
+                ->setSaveInAddressBook('1');
+        try {
+            $customAddress->save();
+        } catch (Exception $ex) {
+            //Zend_Debug::dump($ex->getMessage());
+        }
+
+        //Mage::getSingleton('customer/session')->loginById($customer->getId());
+        //$customerId = Mage::Helper('customer')->getCustomer()->getId();
+        $customerId = $customer->getId();
+        /* ===================================================================== */
+        $NewQuotation = Mage::getModel('Quotation/Quotation')
+                ->setcustomer_id($customerId)
+                ->setcaption($this->__('New request'))
+                ->setcustomer_msg($this->getRequest()->getPost('comments'))
+                ->setcustomer_request(1)
+                //->setstatus(MDN_Quotation_Model_Quotation::STATUS_CUSTOMER_REQUEST)
+                ->setstatus(MDN_Quotation_Model_Quotation::STATUS_ACTIVE)
+                ->save();
+        Mage::getSingleton('customer/session')->addSuccess(__('You quotation request has been successfully sent. You will be notified once store administrator will have reply to your request'));
+        $this->_redirect('gallery');
+    }
+        
+        
+}

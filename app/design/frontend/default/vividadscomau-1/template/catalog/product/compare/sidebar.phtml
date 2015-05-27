@@ -1,0 +1,311 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     base_default
+
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+/* @var $this Mage_Catalog_Block_Product_Compare_Sidebar */
+
+?>
+
+<div class="left_navi">
+
+<div class="block block-list block-compare" style="margin-bottom:0px;">
+
+<div class="cate-heading">
+
+ <?php echo ('SHOP BY CATEGORIES')?>
+
+</div>
+
+</div>
+
+<div class="block-content">
+
+
+
+<?php
+
+ $count=1;
+
+$cats = Mage::getModel('catalog/category')->load(4115)->getChildrenCategories();
+
+
+
+?>
+
+ <ul class="left_nav">
+
+ <?php foreach($cats as $category):
+
+
+
+  ?>
+
+
+
+ <li><a href="<?php echo $category->getUrl() ?>" style="padding-right:10px;"><span class="<?php echo $name; ?>"><?php echo $count;?>&nbsp;-</span><?php echo $category->getName() ?></a></li>
+
+ <?php $count++; ?>
+
+<?php endforeach;?> 
+
+
+
+</ul>
+
+ </div>
+
+</div>
+
+<div class="clearer"></div>
+
+<?php
+
+$catIds = array(
+
+					0 =>  '4078' ,
+
+					1 =>  '4079' ,
+
+					2 =>  '4080' ,
+
+					3 =>  '4161' ,
+
+					4 =>  '4162' ,
+
+					5 =>  '4081' ,
+
+					6 =>  '4082' ,
+
+					7 =>  '4083' ,
+
+					8 =>  '4084' ,
+
+					9 =>  '4085' ,
+
+					10 => '4086' ,
+					
+					11 => '4164' ,
+
+					/*12 => '4087' ,
+
+					13 => '4088' ,*/
+
+					14 => '4089' ,
+
+					15 => '4090' ,
+
+					16 => '4091' ,
+
+										);
+
+        $categories = array();
+
+		$c=0;
+
+        foreach($catIds as $catId) {
+
+			 
+            $category = Mage::getModel('catalog/category')->load($catId); 
+
+            $categories[$category->getName()] = array(
+                'url' => $category->getUrl(),
+			    'id' =>  $catId,
+				'img' => $category->getThumbnail()
+
+				);
+
+				 
+				
+				}
+
+					
+					$counter=5;
+
+			
+
+?>
+
+    <div class="block block-list block-compare" style="margin-bottom:0px;">
+
+    <div class="cate-heading">
+
+    <?php echo ('SHOP BY PRODUCT')?> 
+
+    </div>
+
+    </div>
+
+    <div class="block-content">
+
+  <?php if($categories){
+//echo count($categories);
+  
+
+	   ?>
+
+     <ul class="left_nav">
+
+            <?php foreach($categories as $name => $data):  ?>
+
+            
+
+             <li><a href="<?php echo $data['url']; ?>" style="padding-right:10px;">
+
+             	 <span class="<?php echo $name; ?>"><?php echo $counter+1 ;?>&nbsp;-</span>
+
+				 <?php echo $name; ?></a>
+
+                 </li>
+             <?php $counter ++;?>
+
+            <?php endforeach; ?>
+
+     </ul>    
+
+         <?php } ?>    
+
+    
+
+   </div> 
+
+    
+
+    
+
+    
+
+    
+
+
+
+</div>
+
+<div class="clearer"></div>
+
+<div class="clients">
+
+		<div class="clients-banner">
+
+        	<img src="<?php echo $this->getSkinUrl()?>images/ourclients.jpg" />
+
+        
+
+        
+
+        </div>
+
+        	<div class="testimonial">
+
+            
+
+<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial')->toHtml() ?>
+
+
+
+            	</div>
+
+                <div class="artwork-banner">
+
+        	<a href="http://sendyourartwork.com" target="_blank"><img src="<?php echo $this->getSkinUrl()?>images/artwork.jpg" /></a>
+
+        
+
+        
+
+        </div>
+
+        <div class="price-guarante">
+
+			<ul>
+
+            <li><img src="<?php echo $this->getSkinUrl()?>images/index_40.jpg "/></li>
+
+            <li><img src="<?php echo $this->getSkinUrl()?>images/index_43.jpg "/></li>
+
+            <li><img src="<?php echo $this->getSkinUrl()?>images/index_51.jpg "/></li>
+
+            <li><img src="<?php echo $this->getSkinUrl()?>images/index_39.jpg "/></li>
+
+            </ul>
+
+        
+
+        
+
+        </div>
+
+        <div class="gallery-bg">
+
+     	<a href="https://picasaweb.google.com/107954288426326953438/TradeShowPopupDisplayStands?noredirect=1" target="_blank"> <img src="<?php echo $this->getSkinUrl()?>images/TradeShowPopupDisplayStands.jpg " style="position:relative; left:18px;"/></a>
+
+        <p>Trade Show Popup Display Stands</p>
+
+        
+
+        </div>
+
+        <div class="gallery-bg">
+
+     	<a href="https://picasaweb.google.com/107954288426326953438?noredirect=1" target="_blank"> <img src="<?php echo $this->getSkinUrl()?>images/BannerStandsRollupPullupRetractable.jpg " style="position:relative; left:18px;"/></a>
+
+        <p>Banner Stands (Rollup / Pullup / Retractable)</p>
+
+        
+
+        </div>
+
+        <div class="stand_design">
+
+        <img src="<?php echo $this->getSkinUrl()?>images/exhibition_services_australia.jpg" />
+
+        </div>
+
+
+
+</div>

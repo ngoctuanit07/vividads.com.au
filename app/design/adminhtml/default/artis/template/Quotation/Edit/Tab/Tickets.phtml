@@ -1,0 +1,24 @@
+<?php
+	/*
+		File Name: Tickets.phtml
+		Category:  MDN_Quotation
+		Block: 	   MDN_Quotation_Block_Ticket    
+	*/
+    $quote_id = $this->getRequest()->getParam('quote_id');	
+    $quote = Mage::getModel('Quotation/Quotation')->load($quote_id);
+
+ 
+	$gridBlock = $this->getLayout()
+						->createBlock('Quotation/Ticket_Grid')
+						->setEntityType('quote')
+						->setEntityId($quote_id)
+						->setShowTarget(false)
+						->setShowEntity(false)
+						->setTemplate('Quotation/Ticket/List.phtml');
+		
+	
+	$content = $gridBlock->toHtml();
+	echo $content;
+	 
+	
+?>

@@ -1,0 +1,344 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_order = $this->getOrder() ?>
+<?php
+$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
+$orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+?>
+<div class="box-left">
+    <!--Order Information-->
+    <div class="entry-edit">
+        <?php if ($_order->getEmailSent()):
+            $_email = Mage::helper('sales')->__('the order confirmation email was sent');
+        else:
+            $_email = Mage::helper('sales')->__('the order confirmation email is not sent');
+        endif; ?>
+        <div class="entry-edit-head">
+        <?php if ($this->getNoUseOrderLink()): ?>
+            <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?> (<?php echo $_email ?>)</h4>
+        <?php else: ?>
+            <a href="<?php echo $this->getViewUrl($_order->getId()) ?>"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?></a>
+            <strong>(<?php echo $_email ?>)</strong>
+        <?php endif; ?>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date') ?></label></td>
+                <td class="value"><strong><?php echo $orderAdminDate ?></strong></td>
+            </tr>
+            <?php if ($orderAdminDate != $orderStoreDate):?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date (%s)', $_order->getCreatedAtStoreDate()->getTimezone()) ?></label></td>
+                <td class="value"><strong><?php echo $orderStoreDate ?></strong></td>
+            </tr>
+            <?php endif;?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Status') ?></label></td>
+                <td class="value"><strong><span id="order_status"><?php echo $_order->getStatusLabel() ?></span></strong></td>
+            </tr>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Purchased From') ?></label></td>
+                <td class="value"><strong><?php echo $this->getOrderStoreName() ?></strong></td>
+            </tr>
+            <?php if($_order->getRelationChildId()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Link to the New Order') ?></label></td>
+                <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationChildId()) ?>">
+                    <?php echo $_order->getRelationChildRealId() ?>
+                </a></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getRelationParentId()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Link to the Previous Order') ?></label></td>
+                <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationParentId()) ?>">
+                    <?php echo $_order->getRelationParentRealId() ?>
+                </a></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getRemoteIp() && $this->shouldDisplayCustomerIp()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Placed from IP') ?></label></td>
+                <td class="value"><strong><?php echo $_order->getRemoteIp(); echo ($_order->getXForwardedFor())?' (' . $this->escapeHtml($_order->getXForwardedFor()) . ')':''; ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getGlobalCurrencyCode() != $_order->getBaseCurrencyCode()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getGlobalCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+                <td class="value"><strong><?php echo $_order->getBaseToGlobalRate() ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getBaseCurrencyCode() != $_order->getOrderCurrencyCode()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getOrderCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+                <td class="value"><strong><?php echo $_order->getBaseToOrderRate() ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <!--Account Information-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Account Information') ?></h4>
+            <div class="tools"><?php echo $this->getAccountEditLink()?></div>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Name') ?></label></td>
+                    <td class="value">
+                    <?php if ($_customerUrl=$this->getCustomerViewUrl()) : ?>
+                        <a href="<?php echo $_customerUrl ?>" target="_blank"><strong><?php echo $this->htmlEscape($_order->getCustomerName()) ?></strong></a>
+                    <?php else: ?>
+                        <strong><?php echo $this->htmlEscape($_order->getCustomerName()) ?></strong>
+                    <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Email') ?></label></td>
+                    <td class="value"><a href="mailto:<?php echo $_order->getCustomerEmail() ?>"><strong><?php echo $_order->getCustomerEmail() ?></strong></a></td>
+                </tr>
+                <?php if ($_groupName = $this->getCustomerGroupName()) : ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Group') ?></label></td>
+                    <td class="value"><strong><?php echo $_groupName ?></strong></td>
+                </tr>
+                <?php endif; ?>
+                <?php foreach ($this->getCustomerAccountData() as $data):?>
+                <tr>
+                    <td class="label"><label><?php echo $data['label'] ?></label></td>
+                    <td class="value"><strong><?php echo $data['value'] ?></strong></td>
+                </tr>
+                <?php endforeach;?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<div class="box-left">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Billing Address') ?></h4>
+            <div class="tools"><?php echo $this->getAddressEditLink($_order->getBillingAddress())?></div>
+        </div>
+        <fieldset>
+            <address><?php echo $_order->getBillingAddress()->getFormated(true) ?></address>
+        </fieldset>
+    </div>
+</div>
+<?php if (!$this->getOrder()->getIsVirtual()): ?>
+<div class="box-right">
+    <!--Shipping Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-shipping-address"><?php echo Mage::helper('sales')->__('Shipping Address') ?></h4>
+            <div class="tools"><?php echo $this->getAddressEditLink($_order->getShippingAddress())?></div>
+             <a href="javascript:void(0);" id="shpstatusId" onclick="statusPopup('show_address');" title="<?php echo $this->__('Choose Address') ?>"><?php echo $this->__('Choose Address') ?></a>
+        </div>
+        <fieldset>
+            <address><?php echo $_order->getShippingAddress()->getFormated(true) ?></address>
+        </fieldset>
+    </div>
+</div>
+<div class="clear"></div>
+<?php endif; ?>
+
+<!---------------Custom code for address displaying as a dropdown------------------------>
+
+<?php $customer_id = $_order->getCustomerId();
+$customer = Mage::getModel('customer/customer')->load($customer_id);
+$customerAddressCollection = Mage::getResourceModel('customer/address_collection')->addAttributeToFilter('parent_id',$customer_id)->getItems();
+?>
+
+<div class="shipping-adr-custom" id="show_address" style="display: none;">
+   <select onchange="newaddress('customer_form_content');" name="sel_adr" id="order-customshipping_address_customer_address_id">
+            <?php foreach($customerAddressCollection as $customerAddressCol){
+                $customer_address_id = $customerAddressCol->getData('entity_id');
+                $addressLoadId = Mage::getModel('customer/address')->load($customer_address_id);
+                $country_name=Mage::app()->getLocale()->getCountryTranslation($addressLoadId['country_id']);
+                $Name = $addressLoadId['firstname'].' '.$addressLoadId['lastname'];
+                $AdrInfo = $addressLoadId['street'].', '.$addressLoadId['city'].', '.$country_name.', '.$addressLoadId['postcode'].', '.$addressLoadId['region'];?>
+                
+            <option value="<?php echo $customer_address_id;?>">
+                <?php echo $Name.', '.$AdrInfo;?>
+            </option>
+            <?php }?>
+            <option value="new">Add New Address</option>
+        </select>
+    <a id="crs_custom" href="javascript:void(0);" class="cross" onclick="closePopup('show_address');">Close Window</a>
+
+</div>
+<?php   $OId = $_order->getId();
+            //$Url = "zulfe/sales_order_shipment/new/order_id/".$OId;
+           // $url = Mage::helper("adminhtml")->getUrl($Url);
+           $url = Mage::helper("adminhtml")->getUrl("partialshipping/adminhtml_partialshipping/newformpost");
+           ?>
+
+        <form action="<?php echo $url ?>" method="post" id="form-validate">
+        <input type="hidden" name="oid" value="<?php echo $OId?>" />
+         <input type="hidden" name="customerid" value="<?php echo $_order->getCustomerId()?>" />
+        <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+<div id="customer_form_content" class="form_details" style="display: none;">
+    <div class="content form">
+        
+        <div class="hor-scroll-form">
+            <table cellspacing="0" class="form-list">
+                <tbody>
+                    <tr>
+                        <td class="label"><label for="order-shipping_address_firstname">First Name <span class="required">*</span></label>
+                        </td>
+                        <td class="value">
+                            <input type="text" class=" required-entry input-text required-entry" value="" name="order[shipping_address][firstname]" id="order-shipping_address_firstname_form">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label for="order-shipping_address_lastname">Last Name <span class="required">*</span></label></td>
+                        <td class="value">
+                        <input type="text" class=" required-entry input-text required-entry" value="" name="order[shipping_address][lastname]" id="order-shipping_address_lastname_form">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label for="order-shipping_address_company">Company</label></td>
+                        <td class="value">
+                            <input type="text" class=" input-text" value="" name="order[shipping_address][company]" id="order-shipping_address_company_form">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label for="order-shipping_address_street0">Street Address <span class="required">*</span></label></td>
+                        <td class="value">
+                        <div class="multi-input"><input type="text" class="input-text required-entry" value="" name="order[shipping_address][street][0]" id="order-shipping_address_street0_form">
+                        </div><div class="multi-input"><input type="text" class="input-text" value="" name="order[shipping_address][street][1]" id="order-shipping_address_street1_form">
+                        </div>
+                        </td>
+                    </tr>
+                <tr>
+                    <td class="label"><label for="order-shipping_address_city">City <span class="required">*</span></label></td>
+                    <td class="value">
+                        <input type="text" class=" required-entry input-text required-entry" value="" name="order[shipping_address][city]" id="order-shipping_address_city_form">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label for="order-shipping_address_country_id">Country <span class="required">*</span></label></td>
+                    <td class="value">
+                        <select class="countries input-text required-entry required-entry select" name="order[shipping_address][country_id]" id="order-shipping_address_country_id_form">
+                            <option value=""> </option>
+                            <option selected="selected" value="NZ">New Zealand</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        <label for="order-shipping_address_region">State/Province <span class="required" style="">*</span></label>
+                    </td>
+                    <td class="value"><input type="text" class="input-text required-entry" value="" name="order[shipping_address][region]" id="order-shipping_address_region_form">
+                        <select style="display:none" class="select" name="order[shipping_address][region_id]" id="order-shipping_address_region_id" defaultvalue="" disabled=""><option value="">Please select</option></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label for="order-shipping_address_postcode">Zip/Postal Code <span class="required">*</span></label></td>
+                    <td class="value">
+                        <input type="text" class=" required-entry input-text required-entry" value="" name="order[shipping_address][postcode]" id="order-shipping_address_postcode_form">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label for="order-shipping_address_telephone">Telephone <span class="required">*</span></label></td>
+                    <td class="value">
+                        <input type="text" class=" required-entry input-text required-entry" value="" name="order[shipping_address][telephone]" id="order-shipping_address_telephone">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label for="order-shipping_address_fax">Fax</label></td>
+                    <td class="value">
+                        <input type="text" class=" input-text" value="" name="order[shipping_address][fax]" id="order-shipping_address_fax">                </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="submit_btn" class="form_submit">
+        <button type="submit" class="btn_cls">Save in Address Book</button>
+    </div>
+    </form>
+ <a href="javascript:void(0);" class="cross-custom-form" onclick="closePopupForm('customer_form_content');">Close Window</a>
+</div>
+
+
+<!---------------Custom code for address displaying as a dropdown End--------------------->
+
+<script type="text/javascript">
+function statusPopup(id) {
+       var e = document.getElementById(id);
+       //alert(e);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+        
+    }
+function closePopup(id) {
+       var e = document.getElementById(id);
+       //alert(e);
+       
+          e.style.display = 'none';
+         
+    }
+    
+function newaddress(id) {
+var SelId = document.getElementById(id);
+var FormId = document.getElementById("order-customshipping_address_customer_address_id");
+var selectedValue = FormId.options[FormId.selectedIndex].value;
+//alert(selectedValue);
+if (selectedValue == 'new') {
+    if(SelId.style.display == 'block')
+          SelId.style.display = 'none';
+       else
+          SelId.style.display = 'block';
+           
+}
+else{
+     SelId.style.display = 'none';
+}
+}
+function closePopupForm(id) {
+    
+
+       var e = document.getElementById(id);
+       //alert(e);
+       
+          e.style.display = 'none';
+          
+    }
+
+</script>

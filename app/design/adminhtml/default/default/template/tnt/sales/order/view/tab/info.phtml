@@ -1,0 +1,614 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /** @var $this Mage_Adminhtml_Block_Sales_Order_View_Tab_Info */ ?>
+<?php $_order = $this->getOrder() ?>
+<div>
+    <div id="order-messages">
+        <?php echo $this->getChildHtml('order_messages') ?>
+    </div>
+    <?php echo $this->getChildHtml('order_info') ?>
+    <input type="hidden" name="order_id" value="<?php echo $_order->getId() ?>"/>
+    <?php if ($_order->getIsVirtual()): ?>
+    <div class="box-right">
+    <?php else: ?>
+    <div class="box-left">
+    <?php endif; ?>
+        <!--Payment Method-->
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-payment-method"><?php echo Mage::helper('sales')->__('Payment Information') ?></h4>
+            </div>
+            <fieldset>
+                <?php echo $this->getPaymentHtml() ?>
+                <div><?php echo Mage::helper('sales')->__('Order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
+            </fieldset>
+        </div>
+    </div>
+    <?php if (!$_order->getIsVirtual()): ?>
+    <div class="box-right">
+        <!--Shipping Method-->
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-shipping-method"><?php echo Mage::helper('sales')->__('Shipping &amp; Handling Information') ?></h4>
+            </div>
+            <fieldset>
+                <?php  if ($_order->getTracksCollection()->count()) : ?>
+                <a href="#" id="linkId" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_order) ?>','trackorder','width=800,height=600,resizable=yes,scrollbars=yes')" title="<?php echo $this->__('Track Order') ?>"><?php echo $this->__('Track Order') ?></a>
+                <br/>
+                <?php endif; ?>
+                <?php if ($_order->getShippingDescription()): ?>
+                    <strong><?php echo $this->escapeHtml($_order->getShippingDescription()) ?></strong>
+
+                    <?php if ($this->helper('tax')->displayShippingPriceIncludingTax()): ?>
+                        <?php $_excl = $this->displayShippingPriceInclTax($_order); ?>
+                    <?php else: ?>
+                        <?php $_excl = $this->displayPriceAttribute('shipping_amount', false, ' '); ?>
+                    <?php endif; ?>
+                    <?php $_incl = $this->displayShippingPriceInclTax($_order); ?>
+
+                    <?php echo $_excl; ?>
+                    <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                        (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                    <?php endif; ?>
+                <?php else: ?>
+                    <?php echo $this->helper('sales')->__('No shipping information available'); ?>
+                <?php endif; ?>
+            </fieldset>
+        </div>
+    </div>
+    <?php endif; ?>
+    <div class="clear"></div>
+    <?php echo $this->getGiftOptionsHtml() ?>
+    <div class="clear"></div>
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-products"><?php echo Mage::helper('sales')->__('Items Ordered') ?></h4>
+        </div>
+    </div>
+    <?php echo $this->getItemsHtml() ?>
+    <div class="clear"></div>
+
+    <div class="box-left">
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4><?php echo Mage::helper('sales')->__('Comments History') ?></h4>
+            </div>
+            <fieldset><?php echo $this->getChildHtml('order_history') ?></fieldset>
+        </div>
+    </div>
+    <div class="box-right entry-edit">
+        <div class="entry-edit-head"><h4><?php echo Mage::helper('sales')->__('Order Totals') ?></h4><div class="openpay" onclick="div_show();">Next Payment</div></div>
+        <div class="order-totals"><?php echo $this->getChildHtml('order_totals') ?></div>
+    </div>
+    <div class="clear"></div>
+    <div class="entry-edit">
+        <div class="entry-edit-head"><h4><?php echo Mage::helper('sales')->__('Payment Transaction') ?></h4></div>
+        <div class="order-totals">
+            <table class="data order-tables" style="width:100%;">
+                <thead>
+                <tr>
+                    <th>Payment Date</th>
+                    <th>Payment Type</th>
+                    <th>Received Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $transactionTable=Mage::getSingleton('core/resource')->getTableName('partial_payment');
+
+                    $sqlPaymentSystem="SELECT *,DATE_FORMAT(received_date,'%d/%m/%Y') as date_str FROM ".$transactionTable." WHERE orderid = '".$_order->getId()."' ORDER BY entity_id DESC";
+                    try {
+                            $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlPaymentSystem);
+                            $resultsSystem = $chkSystem->fetchall();
+                    } catch (Exception $e){
+                    echo $e->getMessage();
+                    }
+
+                    foreach($resultsSystem as $result)
+                    {
+                        ?>
+                         <tr>
+                            <td><?php echo $result['date_str'];?></td>
+                            <td><?php echo  Mage::getStoreConfig('payment/'. $result['payment_type'].'/title');?></td>
+                            <td><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($result['amount'],2,'.','');?></td>
+                         </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+</div>
+
+</div>
+
+<?php echo $this->getChildHtml('popup_window');?>
+<script type="text/javascript">
+//<![CDATA[
+    /**
+     * Retrieve gift options tooltip content
+     */
+    function getGiftOptionsTooltipContent(itemId) {
+        var contentLines = [];
+        var headerLine = null;
+        var contentLine = null;
+
+        $$('#gift_options_data_' + itemId + ' .gift-options-tooltip-content').each(function (element) {
+            if (element.down(0)) {
+                headerLine = element.down(0).innerHTML;
+                contentLine = element.down(0).next().innerHTML;
+                if (contentLine.length > 30) {
+                    contentLine = contentLine.slice(0,30) + '...';
+                }
+                contentLines.push(headerLine + ' ' + contentLine);
+            }
+        });
+        return contentLines.join('<br/>');
+    }
+    giftOptionsTooltip.setTooltipContentLoaderFunction(getGiftOptionsTooltipContent);
+//]]>
+</script>
+<div>
+
+	<div class="clear"></div>
+
+        <div>
+
+
+
+	 <!--floating menu div -->
+
+    <div style="position: relative; float:left; ">  
+
+    <div  
+
+        id="floatdiv" class="box"  
+
+        style="position: absolute; width: 96px; height: 120px; background-color: #6f8992; layer-background-color: #993333; border: 1px none #000000; left: 7px; margin-top: 50px; margin-right:20px;">  
+
+        Saved Shipment Option Box.  
+
+    </div>  
+
+   </div> 
+
+  <div style="padding-left:	140px;"> <!--saved shipment div -->
+
+<?php   echo "<br/>";  ?>
+
+	<div class="entry-edit">
+
+    	<div class="entry-edit-head" style="color:#ffffff">
+
+        	<h1 class="icon-head head-products"><div align="center"><?php echo "Saved Shipment"?></div></h1>
+
+        </div>
+
+	</div>
+
+	<div class="clear"></div>
+
+<?php   echo "<br/><br/>";
+
+$shipmentArr=$this->getShipments();
+
+foreach($shipmentArr as $shipment):
+
+$disabled="";
+
+
+
+if($shipment['shipment']['shipment_status'] == 9)
+
+$disabled="disabled";
+
+ ?>
+
+<form id="edit_form" method="post" action="<?php echo $this->getSaveUrl() ?>">
+
+    <?php echo $this->getBlockHtml('formkey')?>
+
+
+
+<div class="entry-edit">
+
+        <div class="entry-edit-head">
+
+            <h3 class="icon-head head-products"><?php echo "Shipping Address:".implode(" , ",array($shipment['address']['firstname'],$shipment['address']['lastname'],$shipment['address']['street'],$shipment['address']['postcode'],$shipment['address']['city'],$shipment['address']['country_id'],$shipment['address']['country_id']))?></h3>
+
+        </div>
+
+        <div class="entry-edit-head">
+
+            <h4 class="icon-head head-products">Items to Ship </h4>
+
+        </div>
+
+    </div>
+
+<div id="ship_items_container">
+
+            <div class="grid np">
+
+  <div class="hor-scroll">
+
+    <table cellspacing="0" class="data order-tables">
+
+        <colgroup><col> </
+
+        <col width="1">
+
+        <col width="1">
+
+                </colgroup><thead>
+
+            <tr class="headings">
+
+                <th>Product</th>
+
+                <th class="last"><span class="nobr">Qty to Ship</span></th>
+
+                <th class="last">Delete</th>                			
+
+            </tr>
+
+        </thead>
+
+                        <tbody class="odd">
+
+<?php
+
+foreach($shipment['items'] as $rowitem){
+
+if(empty($rowitem)) continue;
+
+?>
+
+
+
+            <tr class="border">
+
+    <td>
+
+    <h5 class="title"><span id="order_item_236_title"><?php echo $this->productName($rowitem['product_id']);?></span></h5>
+
+    <div><strong>SKU:</strong> <?php echo $this->productSku($rowitem['product_id']); ?></div>    
+
+        </td>
+
+        <td><input type="hidden" class="input-text" name="shipment[items][<?php echo $rowitem['order_item_id'];?>]" value="<?php echo $rowitem['qty'];?>"><strong><?php echo $rowitem['qty'];?></strong>
+
+        </td> 
+
+        <td><button type="Button" value="Delete" onclick="deleteShipment()">Delete</button></td>       
+
+        </tr>
+
+<?
+
+}
+
+?>
+
+
+
+      </tbody>
+
+                 
+
+    </table>
+
+  </div>
+
+
+
+</div>
+
+<br>
+
+<div class="box-left entry-edit">
+
+    <div class="entry-edit-head"><h4>Shipment Comments</h4></div>
+
+    <fieldset>
+
+        <div id="order-history_form">
+
+            <span class="field-row">
+
+                <label class="normal" for="shipment_comment_text">Shipment Comments</label>
+
+                <textarea id="shipment_comment_text" name="shipment[comment_text]" rows="3" cols="5" style="height:6em; width:99%;"></textarea>
+
+            </span>
+
+            <div class="clear"></div>
+
+        </div>
+
+    </fieldset>
+
+</div>
+
+
+
+<div class="box-right entry-edit">
+
+    <div class="order-totals">
+
+        <div class="order-totals-bottom">
+
+        
+
+        <div align="right">
+
+        		<?
+
+				if($disabled == "") { ?>        
+
+        		<?php $rates=$this->requestShippingRates($shipment['shipment']['entity_id']);
+
+					foreach($rates as $rate){
+
+						//print_r($rate->getData());
+
+						if(is_array($rate['method_title']))
+
+							$method_title=trim($rate['method_title'][0],"-");
+
+						else
+
+							$method_title=trim($rate['method_title'],"-");
+
+						$servicecode = (is_array($rate['method']))?$rate['method'][0]:$rate['method'];
+
+				echo $method_title ?> <input type="text" name="cost[<?php echo $servicecode ?>]" value="<?php echo $rate['cost'] ?>" /><input type="radio" name="tnt_service_code" value="<?php echo $servicecode?>"/><?php echo "</br>"?>      
+
+	             <?php  }?>
+
+                 
+
+			</div>               	
+
+                    <p>
+
+              <label class="normal" for="notify_customer">Append Comments</label>
+
+              <input id="notify_customer" name="shipment[comment_customer_notify]" value="1" type="checkbox" disabled="">
+
+          </p>
+
+                    <p>
+
+              <label class="normal" for="send_email">Email Copy of Shipment</label>
+
+              <input id="send_email" name="shipment[send_email]" value="1" type="checkbox">
+
+          </p>
+
+          <?php  }else{?>
+
+          </div>
+
+          <?php  } ?>
+
+                    <div class="a-right">
+
+                    <?
+
+					if($disabled == "") { ?>
+
+          <button id="id_6eceae713e042473f72d1353a158d7cd" title="Submit Shipment" type="submit" class="scalable save submit-button" style="" ><span><span><span>Submit Shipment</span></span></span></button>          
+
+          <? }else{ 
+
+		  	      if($shipment['address']['country_id']=='AU'){?>
+
+          <a href="<?php echo Mage::helper('core/url')->getHomeUrl()."tnt/labels/index/shipment_id/".$shipment['shipment']['entity_id']?>" target="_blank">Print Labels Local</a>
+
+          		<? }else{						
+
+						$baseUrl = "http://iconnection.tnt.com:81/results.asp?id=".$shipment['shipment']['access_code']."&datatype=";?>
+
+          	<a href="<?php echo $baseUrl.'LB'; ?>" target="_blank">Print LabelsINT</a>
+
+            <a href="<?php echo $baseUrl.'MN'; ?>" target="_blank">Print ManifestINT</a>
+
+            <a href="<?php echo $baseUrl.'IN'; ?>" target="_blank">Print InvoiceINT</a>            
+
+            <input type="button" onclick='showresults("invprt","<?= $baseUrl ?>IN",30,30)' value="Commercial Invoice" name="invoice">
+
+            <? }//end of inner else ?>
+
+            <? }//end of outer else ?>
+
+        <input type="hidden" class="input-text" name="saveid" value="<?=$shipment['shipment']['entity_id']?>">
+
+        <input type="hidden" class="input-text" name="addressid" value="<?=$shipment['shipment']['shipping_address_id']?>">
+
+			
+
+            
+
+			</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="clear"></div>
+
+<script type="text/javascript">
+
+function showresults(winName, url, myTop, myLeft){
+
+var myParms = 'top=' + myTop + ',left=' + myLeft;
+
+var url2 = '' + url;
+
+var win = window.open(url2,winName,"width=800,height=560,status=no,resizable=no,scrollbars=yes," + myParms);
+
+} 
+
+/*
+
+
+
+//<![CDATA[
+
+var sendEmailCheckbox = $('send_email');
+
+if (sendEmailCheckbox) {
+
+    var notifyCustomerCheckbox = $('notify_customer');
+
+    var shipmentCommentText = $('shipment_comment_text');
+
+    Event.observe(sendEmailCheckbox, 'change', bindSendEmail);
+
+    bindSendEmail();
+
+}
+
+function bindSendEmail()
+
+{
+
+    if (sendEmailCheckbox.checked == true) {
+
+        notifyCustomerCheckbox.disabled = false;
+
+        //shipmentCommentText.disabled = false;
+
+    }
+
+    else {
+
+        notifyCustomerCheckbox.disabled = true;
+
+        //shipmentCommentText.disabled = true;
+
+    }
+
+}
+
+function toggleCreateLabelCheckbox(){
+
+    var checkbox = $('create_shipping_label');
+
+    var submitButton = checkbox.up('.order-totals').select('.submit-button span')[0];
+
+    if (checkbox.checked) {
+
+        submitButton.innerText += '...';
+
+    } else {
+
+        submitButton.innerText = submitButton.innerText.replace(/\.\.\.$/, '');
+
+    }
+
+}
+
+//]]>*/
+
+function deleteShipment(){
+
+		alert("ABC");
+
+
+	}
+
+function submitShipment(btn){
+
+    var checkbox = $(btn).up('.order-totals').select('#create_shipping_label')[0];
+
+    if (checkbox && checkbox.checked) {
+
+        packaging.showWindow();
+
+    } else if(editForm.submit()) {
+
+        disableElements('submit-button');
+
+    }
+
+} 
+
+    floatingMenu.add('floatdiv',  
+
+        {  
+
+            // Represents distance from top or  
+
+            // bottom browser window border  
+
+            // depending upon property used.  
+
+            // Only one should be specified.  
+
+            targetTop: 10,  
+
+            // targetBottom: 0,  
+
+  
+
+            // prohibits movement on x-axis  
+
+            prohibitXMovement: true,  
+
+  
+
+            // Remove this one if you don't  
+
+            // want snap effect  
+
+            snap: true  
+
+        });  
+
+</script> 
+
+    </div>
+
+
+
+
+
+
+
+</form>
+
+
+
+        <?php endforeach; 
+
+  ?>
+
+  </div>

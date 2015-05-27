@@ -1,0 +1,103 @@
+<?php
+$browseBy = $_REQUEST['g'];
+?>
+<style>
+    .browse ul{
+        list-style-type: none;
+        margin: 15px 0 0;
+        padding: 0 4px;
+    }
+    .browse ul li{
+        float: left;
+        margin: 1px 1px 0 0;
+    }
+    .browse ul li a.selected {
+        /* IE10 Consumer Preview */ 
+        background-image: -ms-linear-gradient(top, #EC9A1D 0%, #E36913 100%);
+        /* Mozilla Firefox */ 
+        background-image: -moz-linear-gradient(top, #EC9A1D 0%, #E36913 100%);
+        /* Opera */ 
+        background-image: -o-linear-gradient(top, #EC9A1D 0%, #E36913 100%);
+        /* Webkit (Safari/Chrome 10) */ 
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #EC9A1D), color-stop(1, #E36913));
+        /* Webkit (Chrome 11+) */ 
+        background-image: -webkit-linear-gradient(top, #EC9A1D 0%, #E36913 100%);
+        /* W3C Markup, IE10 Release Preview */ 
+        background-image: linear-gradient(to bottom, #EC9A1D 0%, #E36913 100%);
+        text-shadow: 0 1px 0 #666666;
+    }
+    .browse ul li a {
+        background-color: #0E79BC;
+        background-image: linear-gradient(to bottom, #1A95E3, #0E79BD);
+        background-repeat: repeat-x;
+        border-bottom: 1px solid #0E79BD;
+        border-color: #0E79BD;
+        border-radius: 1px 1px 1px 1px;
+        color: #FFFFFF;
+        display: block;
+        font-family: 'Oswald-Regular',sans-serif;
+        font-size: 14px;
+        padding: 3px 0;
+        text-align: center;
+        text-decoration: none;
+        text-shadow: 0 1px 0 #008DC1;
+        width: 25px;
+    }
+</style>
+<div class="gallery-title">
+    <h1><?php echo $this->__('Gallery') ?></h1>
+</div>
+<div class="browse">
+    <ul>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=a" class="<?php if($browseBy == 'a' || $browseBy == '')echo "selected"?>">A</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=b" class="<?php if($browseBy == 'b')echo "selected"?>">B</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=c" class="<?php if($browseBy == 'c')echo "selected"?>">C</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=d" class="<?php if($browseBy == 'd')echo "selected"?>">D</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=e" class="<?php if($browseBy == 'e')echo "selected"?>">E</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=f" class="<?php if($browseBy == 'f')echo "selected"?>">F</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=g" class="<?php if($browseBy == 'g')echo "selected"?>">G</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=h" class="<?php if($browseBy == 'h')echo "selected"?>">H</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=i" class="<?php if($browseBy == 'i')echo "selected"?>">I</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=j" class="<?php if($browseBy == 'j')echo "selected"?>">J</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=k" class="<?php if($browseBy == 'k')echo "selected"?>">K</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=l" class="<?php if($browseBy == 'l')echo "selected"?>">L</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=m" class="<?php if($browseBy == 'm')echo "selected"?>">M</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=n" class="<?php if($browseBy == 'n')echo "selected"?>">N</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=o" class="<?php if($browseBy == 'o')echo "selected"?>">O</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=p" class="<?php if($browseBy == 'p')echo "selected"?>">P</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=q" class="<?php if($browseBy == 'q')echo "selected"?>">Q</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=r" class="<?php if($browseBy == 'r')echo "selected"?>">R</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=s" class="<?php if($browseBy == 's')echo "selected"?>">S</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=t" class="<?php if($browseBy == 't')echo "selected"?>">T</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=u" class="<?php if($browseBy == 'u')echo "selected"?>">U</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=v" class="<?php if($browseBy == 'v')echo "selected"?>">V</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=w" class="<?php if($browseBy == 'w')echo "selected"?>">W</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=x" class="<?php if($browseBy == 'x')echo "selected"?>">X</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=y" class="<?php if($browseBy == 'y')echo "selected"?>">Y</a></li>
+        <li><a href="<?php echo Mage::getBaseUrl() ?>gallery/?g=z" class="<?php if($browseBy == 'z')echo "selected"?>">Z</a></li>
+    </ul>
+</div>
+<div class="clearfix"><br /></div>
+<?php $cnt = count($this->getCategory()); ?>
+<?php if($cnt > 0 ): 
+    $i = 0;
+    ?>
+    <ul style="width:100%;list-style-type: none;">
+        <?php foreach ($this->getCategory() as $item): ?>                  
+            <li class="item <?php if($i == 0)echo 'first';?> fadeIn animated" style="width:225px;float: left;padding: 0px;margin: 0px;">
+                <!--a style="height:200px;overflow: hidden;" class="product-image" href="<?php //echo Mage::getBaseUrl().$item->getUrl(); ?>.html">
+                   <img src="<?php //echo $this->resizeImage($item->getFilename(), 208, 230, ''); ?>" alt="<?php   //echo $item->getTitle(); ?>" />
+                </a-->
+            <h2 class="product-name"><a href="<?php echo Mage::getBaseUrl().$item->getUrl(); ?>.html"><?php   echo $item->getTitle
+                    (); ?></a></h2>
+            <!--p><?php //echo $item->getContent(); ?></p-->
+            </li>
+        <?php 
+            $i++; 
+            //if($i == 25)break;
+        endforeach;  
+        ?> 
+    </ul>
+<?php else: ?>
+	<div>There is no Category here</div>
+<?php endif; ?>

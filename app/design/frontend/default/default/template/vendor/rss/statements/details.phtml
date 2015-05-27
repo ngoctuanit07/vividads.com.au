@@ -1,0 +1,17 @@
+<?php
+/*
+store view name = $_statement->getStore()->getName()
+web site name = $_statement->getStore()->getWebsite()->getName()
+store name = $_statement->getStore()->getGroup()->getName()
+*/
+$_statement = $this->getStatement();
+$_helper 		= Mage::app()->getHelper('vendor');
+$_vendor = $_helper->getVendor($_statement->getVendorId());
+$core = Mage::helper('core');
+?>
+<div>
+  <?php echo $this->__('Statement ID: %s', $_statement->getStatementId()) ?><br />
+  <?php echo $this->__('Statement Name: %s', $_statement->getStatementFilename()) ?><br />
+  <?php echo $this->__('Payment to %s: %s', $_vendor->getCompanyName(), $core->formatPrice($_statement->getTotalPayout(), false)) ?><br />
+  <?php echo $this->__('Comission to %s: %s', Mage::app()->getWebsite()->getName(), $core->formatPrice($_statement->getTotalComission(), false)) ?><br />
+</div>

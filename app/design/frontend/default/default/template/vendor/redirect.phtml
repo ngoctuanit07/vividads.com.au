@@ -1,0 +1,31 @@
+<?php
+	
+	$vendorSession	= Mage::getSingleton('vendor/session');
+	$logindata		= $vendorSession->getData("logindata");
+	$vendorSession->unsetData("logindata");
+	
+	
+	$adminurl	= Mage::helper("adminhtml")->getUrl("vendor/adminhtml_sales");
+	
+	if(!empty($logindata))
+	{
+?>
+	
+	Please wait while you are redirected to your administration area
+	
+	<form action="<?php echo $adminurl; ?>" method="post" name="loginform" id="loginform">
+		<?php echo $this->getBlockHtml('formkey')?>
+		
+		<input type="hidden" value="<?php echo $logindata["username"]; ?>" name="login[username]">
+		<input type="hidden" value="<?php echo $logindata["password"]; ?>" name="login[password]">
+		
+	</form>
+	<script type="text/javascript">
+		window.onload	= function()
+		{
+			document.forms["loginform"].submit();
+		};
+	</script>
+<?php
+	}
+?>

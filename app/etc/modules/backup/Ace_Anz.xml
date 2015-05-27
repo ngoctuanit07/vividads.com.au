@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Ace ANZ eGate Extension
+ *
+ *
+ * @category   Ace
+ * @package    Ace_Anz
+ */
+-->
+<config>
+    <modules>
+        <Ace_Anz>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Ace_Anz>
+    </modules>
+</config> 

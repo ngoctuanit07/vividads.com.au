@@ -1,0 +1,39 @@
+/*body {
+font-family:verdana;
+font-size:15px;
+}
+
+a {color:#333; text-decoration:none}
+a:hover {color:#ccc; text-decoration:none}*/
+
+#mask {
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:9000;
+  background-color:#000;
+  display:none;
+}  
+#boxes .window {
+  position:absolute;
+  left:0;
+  top:0;
+  width:440px;
+  height:200px;
+  display:none;
+  z-index:9999;
+  padding:20px;
+}
+#boxes #dialog {
+  /*width:375px;*/ 
+  width:793px;
+  /*height:203px;*/
+  height:auto;
+  padding:10px;
+  background-color:#ffffff;
+}
+
+a.close {display:block; width:auto; background:url("<?php echo $this->getSkinUrl(); ?>images/agree-btn-l.png")0 0 no-repeat; padding:0 0 0 11px; text-decoration:none; margin:0; height:37px; float:left; margin-right:15px;}
+a:hover.close {display:block; width:auto; background:url("<?php echo $this->getSkinUrl(); ?>images/agree-btn-l.png")0 100% no-repeat; padding:0 0 0 11px; text-decoration:none; margin:0; height:37px; float:left; margin-right:15px;}
+a.close span {display:block; width:auto; background:url("<?php echo $this->getSkinUrl(); ?>images/agree-btn-r.png")100% 0 no-repeat; padding:9px 22px 0 11px; text-decoration:none; margin:0; height:28px; float:left; font:normal 16px Arial, Helvetica, sans-serif; color:#fff;}
+a:hover.close span {display:block; width:auto; background:url("<?php echo $this->getSkinUrl(); ?>images/agree-btn-r.png")100% 100% no-repeat; padding:9px 22px 0 11px; text-decoration:none; margin:0; height:28px; float:left; font:normal 16px Arial, Helvetica, sans-serif; color:#fff;}

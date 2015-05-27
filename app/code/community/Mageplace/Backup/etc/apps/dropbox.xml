@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<application>
+	<dropbox>
+		<label>Dropbox</label>
+		<auth>1</auth>
+		<settings>
+			<consumerKey>
+				<label>App key</label>
+				<type>text</type>
+				<required>1</required>
+			</consumerKey>
+			<consumerSecret>
+				<label>App secret</label>
+				<type>text</type>
+				<required>1</required>
+			</consumerSecret>
+			<description>
+				<text>To get &quot;App key&quot; and &quot;App secret&quot; register your application on &lt;a href=&quot;https://www.dropbox.com/developers/apps&quot; target=&quot;_blank&quot;&gt;Dropbox apps&lt;/a&gt;</text>
+				<type>note</type>
+			</description>			
+			<appPath>
+				<label>Dropbox Directory</label>
+				<type>text</type>
+				<required>0</required>
+			</appPath>
+			<connTimeOut>
+				<label>Connection Timeout</label>
+				<type>text</type>
+				<required>0</required>
+				<note>Value by default - 10 seconds</note>
+			</connTimeOut>
+			<filepartmaxsize>
+				<label>Max file size</label>
+				<type>text</type>
+				<required>0</required>
+				<note>File size that the backup will be divided into. Default size is 100 Mb.</note>
+				<value>100</value>
+			</filepartmaxsize>
+		</settings>
+	</dropbox>
+</application>

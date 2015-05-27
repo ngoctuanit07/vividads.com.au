@@ -1,0 +1,81 @@
+body{ margin: 0; padding: 0;}
+.total-main { width: 920px; margin: 0 auto;background: #EF781E; font: normal 12px/16px Arial; color: #fff; padding: 20px 40px; margin-top: 40px;}
+.top_area { margin: 0 auto; width: 1000px;background: #EF781E;}
+input { font: 12px Arial;}
+
+.all_bill { float: left; width: 50%; margin-top: 30px; position: relative;}
+#ship_info { float: left; width: 50%; margin-top: 30px;}
+.con { padding: 5px 0; width: 25%; float: left;}
+.im_con {width: 18%; float: left;}
+.lab { float: left; width: 100%; font: bold 16px/20px Arial; }
+.inp { float: left; width: 100%;}
+#pro_qty { float: left; width: 25%; }
+#pro_qty input { width: 15%; text-align: center; height: 28px; border: 0; outline: none; }
+.desc-step3 { float: left; width: 100%; margin-top: 20px;}
+span.im { width: 100%; float: left; display: block;font: bold 16px/20px Arial;}
+.im_con img { text-align: center;}
+.req-head {}
+.m_con { width: 100%; float: left; margin: 10px 0; position: absolute; top: -38px; left: 0;}
+.pord-pic, .liveord-head, .req-head { width: 100%; float: left; padding: 5px 0;}
+.name-head, .bill-head, .loc-head, .coun-head, .ph-head, .email-head, .comp-head { width: 20%; float: left; clear: both;}
+.name-data, .bill-data, .loc-data, .coun-data, .ph-data, .email-data, .comp-data, .inv-data { width: 75%; margin-left: 5%; float: left;}
+.def_cl { width: 88px; height: 88px; background: #fff; float: left; margin-left: 8px;}
+.im_con img { width: 88px; height: 88px; background: #fff; float: left; margin-left: 8px;}
+
+.nam1, .nam2 {margin: 5px 0; display: block; line-height: 28px; float: left; width: 100%;}
+.nput2 { margin: 5px 0; display: block; float: left; width: 100%;}
+.bill-data input { margin: 0 0 5px 0; display: block; width: 80%; height: 28px; border: 0; margin: 5px 0; float: left}
+span.nput1 input { width: 80%; height: 28px; border: 0;}
+span.nput2 input { width: 80%; height: 28px; border: 0;}
+.ph-data input { width: 80%; height: 28px; border: 0; float: left; margin: 5px 0; outline: 0; }
+.email-data input { width: 80%; height: 28px; border: 0;float: left; margin: 5px 0; outline: 0;}
+.comp-data input { width: 80%; height: 28px; border: 0; outline: 0; margin: 5px 0;}
+.ship_add { margin: 10px 0; font: bold 16px/18px Arial;}
+span.nput2 select.contenta { width: 80%; height: 28px; border: 0;}
+#pro_qty input { margin-left: 30px;}
+.nput1 input{ display: block;}
+.nput1 { display: block; width: 100%; float: left; margin: 5px 0;}
+span.inp select { border: 0; height: 28px; outline: none;}
+.pord-pic input { border: 0; padding: 6px 15px; background: #333; color: #fff; cursor: pointer; border-radius: 5px; font: 12px Arial; }
+.pord-pic input:hover { color: #fff; background: #444444;}
+span.fontRed { color:#b50000;}
+.req-head { margin-top: 20px;}
+.success { float: right; padding: 7px; font: bold 14px Arial; width: 26%; text-align: center; line-height: 25px; margin: -70px 0 0; }
+.inv-data{ float: left; width: 75%; margin-left: 0;}
+.inv-data select { border: 0; margin: 5px 0; float: left; width: 80%; height: 28px;}
+.inv-head .nam1{ line-height: normal;}
+.inv-head { width: 25%; float: left;}
+
+/*---------------------------13-12-13-----------------------------------*/
+.pro_qty { width: 15%; float: left;}
+.del_button { width: 10%; float: left;}
+.one_pro { width: 100%; float: left;}
+.pro_qty input.quantity { width: 30px; height: 28px; text-align: center; border: 0; outline: none;}
+
+.del_button a.del_it { width: 17px; height: 17px; background: url(../images/delete3_btn.png) no-repeat 0 0; overflow: hidden; text-indent: 50px; margin: 35px auto 0; display: block;}
+
+.add_more_con { width: 100%; float: left;}
+.add_more_con a { font: bold 12px/16px Arial; text-decoration: underline; color: #fff; outline: none;}
+.add_more_con a:hover { text-decoration: none;}
+.total-main:after { clear: both; content: "."; display: block; font-size: 0; height: 0; line-height: 0; overflow: hidden;}
+
+
+.captcha_area { float: left; width:100%;}
+.captcha_area .captcha_img { margin:10px 0 10px 187px;}
+.reset_captcha { width: 12%; float: left;}
+.reset_captcha a { color: #fff; font-weight: bold; text-decoration: underline;}
+.reset_captcha a:hover { text-decoration: none;}
+.captcha_input input { border: 0; outline: none; height: 28px; width: 275px; margin: 10px 0 10px 0;}
+
+/*---------------------------24-12-13-----------------------------------*/
+.main_main { background: #EF781E; margin: 0 auto; float: left; }
+.thank_u { font: 15px/18px Arial; color: #fff; margin-top: 10px; padding: 10px; min-height: 200px;}
+
+
+
+
+
+
+
+
+

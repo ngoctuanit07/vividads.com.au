@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<config>
+	<extendware>
+		<quickaccess>
+			<ewcatcopy>
+                <resource>extendware/ewcatcopy</resource>
+				<children>
+					<ewcatcopy translate="title" module="ewcatcopy">
+						<title>Manage Categories</title>
+						<action>adminhtml/catalog_category/</action>
+						<resource>catalog/categories</resource>
+						<sort_order>1</sort_order>
+					</ewcatcopy>
+				</children>
+				<title/>
+			</ewcatcopy>
+		</quickaccess>
+	</extendware>
+	<acl>
+		<resources>
+            <admin>
+                <children>
+                    <extendware translate="title" module="ewcatcopy">
+                    	<title>Extendware</title>
+                    	<sort_order>0</sort_order>
+                        <children>
+                        	<ewcatcopy translate="title" module="ewcatcopy">
+                        		<title>Category Copy</title>
+                        		<children>
+                        			<settings translate="title">
+                        				<title>Settings</title>
+                        				<children>
+				                            <main translate="title">
+				                                <title>Main</title>
+				                                <children>
+					                                <ewcatcopy translate="title">
+						                                <title>General</title>
+						                            </ewcatcopy>
+					                            </children>
+				                            </main>
+			                            </children>
+			            			</settings>
+			            		</children>
+			            	</ewcatcopy>
+                        </children>
+                    </extendware>
+                </children>
+            </admin>
+        </resources>
+	</acl>
+</config>

@@ -1,0 +1,114 @@
+<script type="text/javascript">
+	!window.jQuery && document.write('<script type="text/javascript" src="<?php echo $this->getSkinUrl("quickview/js/jquery-1.7.2.min.js");?>" />');
+	
+</script>
+
+<?php
+    $_helper = $this->helper('catalog/output');
+    $_dialogWidth   = Mage::helper('quickview/quickview')->getDialogWidth();
+    $_dialogHeight  = Mage::helper('quickview/quickview')->getDialogHeight();
+    $_isModal       = Mage::helper('quickview/quickview')->getIsModal();
+    $_library       = Mage::helper('quickview/quickview')->getLibrary();
+?>
+
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+?>
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<div class="category-products">
+    <?php echo $this->getToolbarHtml() ?>
+    <?php // List mode ?>
+    <?php if($this->getMode()!='grid'): ?>
+    <?php $_iterator = 0; ?>
+    <ol class="products-list" id="products-list">
+    <?php foreach ($_productCollection as $_product): ?>
+		<!-- modal box -->
+               <?php if($_library  ==1 ) { ?> 
+				<script type="text/javascript">
+					jQuery.noConflict();
+					(function(jQuery) {
+					
+					  jQuery(function() {
+						jQuery("#various<?php echo $_product->getId(); ?>").fancybox({
+						
+								'autoScale'			: true,
+								'transitionIn'		: 'none',
+								'transitionOut'		: 'none',
+								'type'				: 'iframe'
+								<?php if($_isModal==="true") { ?>
+								,'modal'			    : true
+								<?php } ?>
+							});
+					  });
+					})(jQuery);
+				</script>
+			<?php } ?>
+		<!-- end modal box -->	
+        
+    <?php endforeach; ?>
+    </ol>
+    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+    <?php else: ?>
+
+    <?php // Grid Mode ?>
+
+    <?php $_collectionSize = $_productCollection->count() ?>
+    <?php $_columnCount = $this->getColumnCount(); ?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+	
+               <?php if($_library ==1 ) { ?> 
+				<script type="text/javascript">
+					jQuery.noConflict();
+					(function(jQuery) {
+					
+					  jQuery(function() {
+						jQuery("#various<?php echo $_product->getId(); ?>").fancybox({
+						
+								'autoScale'			: true,
+								'transitionIn'		: 'none',
+								'transitionOut'		: 'none',
+								'type'				: 'iframe'
+								<?php if($_isModal==="true") { ?>
+								,'modal'			    : true
+								<?php } ?>
+							});
+					  });
+					})(jQuery);
+				</script>
+			<?php } ?>
+		<!-- end modal box -->	
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+            
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+        <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+    <?php endif; ?>
+
+    <div class="toolbar-bottom">
+        <?php echo $this->getToolbarHtml() ?>
+    </div>
+</div>
+<?php endif; ?>
+<?php if($_library  !=1 ) { ?> 
+<script type="text/javascript">
+if (typeof jQuery == 'undefined') {
+    alert("<?php echo $this->__('Jquery library is not loaded. Please goto System > Configuration > Catalog > Feature Product and enable it.') ?>");
+} else {
+	jQuery.noConflict();
+    jQuery(document).ready(function() {
+        var tb_pathToImage = "<?php echo $this->getSkinUrl('quickview/images/loadingAnimation.gif'); ?>";
+        tb_init('a.thickbox, area.thickbox, input.thickbox');//pass where to apply thickbox
+        imgLoader = new Image();// preload image
+        imgLoader.src = tb_pathToImage;
+    });
+}
+</script>
+<?php } ?>

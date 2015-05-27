@@ -1,0 +1,44 @@
+/********************** Tabs */
+.product-view .tabs { margin: 15px 0px; overflow:hidden; border-bottom:1px solid #496778;  zoom: 1;}
+.product-view .tabs li                { float:left; border-right:1px solid #ffffff; border-left:1px solid #fff; font-size:0.9em; line-height:1em;  background: #f2f2f2; }
+.product-view .tabs li.first          { border-left:0; }
+.product-view .tabs li.last           { border-right:0; }
+.product-view .tabs a                 { display:block; padding:6px 10px; color:#444; text-decoration: none;}
+.product-view .tabs a:hover           { background-color:#ddd; text-decoration:none; color:#444; ; text-decoration: none;}
+.product-view .tabs li.active a,
+.product-view .tabs li.active a:hover { background:#496778;  font-weight:bold; color:#fff; }
+
+#product_tabs_tags_tabbed_contents.input-box input	{ width: 300px; }
+#product_tabs_tags_tabbed_contents .input-box	{ width: 300px; float:left; margin-right: 10px;}
+#product_tabs_related_tabbed_contents li	{ float:left; margin-right: 10px;}
+#product_tabs_related_tabbed_contents ol	{ clear: both;}
+.product-collateral:after { content:"."; display:block; clear:both; font-size:0; line-height:0; height:0; overflow:hidden; zoom: 1}
+
+#accordion-1111{margin: 20px 0 0; background: url(../images/haccordion_div_bg.png) no-repeat left bottom; height: auto;}
+#accordion li.active .accro_heading{background:url(../images/cursel_bg-act.png) repeat-x left center;}
+#accordion {list-style: none;margin: 0;padding: 0;height: auto;overflow: hidden;}
+	 
+	#accordion li {float: none;display: block;height: 38px;width: 100%;padding: 0;overflow: hidden;color: #fff;text-decoration: none;font-size: 16px;line-height: 1.5em;border-bottom: 1px solid #D7D7D7;position: relative;}
+	 
+.accro_heading {border-bottom: solid 1px #d7d7d7;border: 0px solid white;float: none; background:url(../images/cursel_bg.png) repeat-x left center; height: 38px;	width: 100%;
+margin-right: 0;position: relative;cursor: pointer;}
+#accordion li .accro_heading span{font-size: 16px; font-family: Arial; padding: 7px 0 0 12px; display: block; font-weight: normal; color: #333;}
+ #accordion li.active .accro_heading span{color:#fff; }	 
+#accordion li.active {width: 100%; height: auto ;}
+	
+.accro_content{ margin: 5px 0px; float: none; font-size: 13px; line-height: 18px; font-weight: normal; text-align: justify; background:#fff; color: #444; padding: 10px 15px;min-height: 50px;}
+.accro_content p{margin-bottom:15px; font-size: 13px; line-height: 18px; font-weight: normal; color: #444;}
+#accordion li.active .accro_content{display: block !important;}
+	
+.acc_num{ font-size: 0; height: 23px; background:url(../images/plus.png) no-repeat 0 0; position:absolute; right:13px; top:7px; width: 23px; display: block; z-index: 999; cursor: pointer;}
+#accordion li.active .acc_num{color:#fff; background:url(../images/minus.png) no-repeat 0 0; height:auto !important;}
+
+
+
+
+
+
+
+
+
+

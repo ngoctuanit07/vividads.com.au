@@ -1,0 +1,193 @@
+<style>
+.total_payment{
+ position: fixed;
+top: 8%;
+left: 30%;
+background-color: white;
+width: 521px;
+height: 300px;
+}
+.close_div{
+ position: fixed;
+top: 24%;
+left: 66%;
+background-color: white;
+width: 21px;
+height: 30px;
+}
+.block_div{
+ text-align: left;
+margin-top: 16px;
+}
+
+.calendar{
+position: fixed !important;  left: 668px !important; top: 168px !important;
+}
+
+.total_payment{border:1px solid #ccc; box-shadow:0px 0px 6px 0px #333;width: 361px !important;height: auto !important;padding: 20px;left: 50% !important;margin-left: -130px;}
+.total_payment .offline_payment table{width:100%;}
+.total_payment .offline_payment table td{text-align:left;padding: 2px 5px;}
+.total_payment .offline_payment table td.lebelall{text-align:right;}
+.total_payment .offline_payment table td input[type="text"]{width:100px;}
+.close_div{left: 355px !important;position: absolute !important;top: 7px !important;cursor: pointer;}
+.openpay{float:right; color:#fff; text-decoration:underline; cursor:pointer;}
+
+.order-tables thead th{font-weight:bold; padding:3px 20px 3px 10px;}
+.order-tables thead th, .order-tables tbody td{text-align:left;}
+</style>
+<div class="total_payment" id="total_payment" style="display:none;">
+ <div class="close_div" onclick="div_hide();">Close</div>
+ <div class="block_div">
+   <div class="offline_payment">
+        <table>
+
+
+<form id="edit_form1" action="<?php  echo str_replace('//s','/admin/s',$url);?>" method="get" enctype="multipart/form-data">
+ <input name="orderid" id="orderid" value="<?php echo $this->getId();?>"  type="hidden">
+<?php if($this->hasMethods()): ?>
+<table>
+          <tr>
+            <td class="lebelall">Amount</td>
+            <td><input type="text" name="amount" id="received_amount" class="required-entry" /></td>
+          </tr>
+           <tr>
+            <td class="lebelall"><?php echo Mage::helper('contacts')->__('Date') ?></td>
+            <td><input name="date" id="date" value="" type="text" class="required-entry"> <input name="order_id" id="order_id"  type="hidden">
+        <img title="Select date" id="_dob_trig" src="<?php echo str_replace('index.php','',$this->getBaseUrl());?>skin/adminhtml/default/default/images/grid-cal.gif" class="v-middle"></td>
+          </tr>
+</table>
+<div id="order-billing_method_form">
+    
+    <dl class="payment-methods">
+    <?php
+        $_methods       = $this->getMethods();
+        $_methodsCount  = count($_methods);
+        $_counter = 0;
+    ?>
+    <?php foreach ($_methods as $_method): $_code = $_method->getCode(); $_counter++; ?>
+        <dt>
+        <?php if ($_methodsCount > 1): ?>
+            <input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" onclick="payment.switchMethod('<?php echo $_code ?>')"<?php if($this->getSelectedMethodCode()==$_code): ?> checked="checked"<?php endif; ?> <?php if ($_counter == $_methodsCount) : ?>class="validate-one-required-by-name"<?php endif;?>/>
+        <?php else :?>
+            <span class="no-display"><input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" checked="checked" /></span>
+        <?php endif;?>
+
+            <label for="p_method_<?php echo $_code ?>"><?php echo $_method->getTitle() ?></label>
+        </dt>
+        <dd>
+            <?php echo $this->getChildHtml('payment.method.'.$_code) ?>
+        </dd>
+    <?php endforeach; ?>
+    </dl>
+
+</div>
+</td>
+               </tr>
+          <tr>
+                 
+                 <td colspan="50" style="text-align:center;"><button type="submit" name="submit" id="submit"  >Submit</button></td>
+               </tr>
+
+        </table>
+</form>
+<?php else: ?>
+    <div><?php echo Mage::helper('sales')->__('No Payment Methods') ?></div>
+<?php endif; ?>
+</div></div></div>
+<script type="text/javascript">
+    //<![CDATA[
+ Calendar.setup({
+        inputField : 'date',
+        ifFormat : '%Y-%m-%d',
+        button : '_dob_trig',
+       // align : 'Bl',
+        singleClick : true
+    });
+//]]>
+</script>
+<script type="text/javascript">
+
+
+function div_show()
+{
+  document.getElementById('total_payment').style.display = 'block';
+}
+
+function div_hide()
+{
+  document.getElementById('total_payment').style.display = 'none';
+}
+
+function all_save(){
+   
+  
+	var amount = document.getElementById('received_amount').value;
+        var order_id = document.getElementById('order_id').value;
+        
+       var radio = document.getElementsByName('received_card');
+       
+   payment_type = '';
+   
+    for (k = 0; k < radio.length; ++k) {
+            
+            if (radio[k].checked) {
+                //alert(radio[k].value);
+                var payment_type = radio[k].value;
+            }
+        }
+  
+	
+        var date = document.getElementById('date').value;
+	
+    if(amount == '')
+    {
+      alert("Please enter the received amount");
+      return false;
+    }
+    
+    if(date == '')
+    {
+      alert("Please enter the date");
+      return false;
+    }
+    
+        
+    if(payment_type == '')
+    {
+      alert("Please select the payment type");
+      return false;
+    }
+      //alert(type);
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+		//alert(xmlhttp.responseText);
+            
+		//data= xmlhttp.responseText;
+		//document.getElementById('message_id').innerHTML = data;
+		//alert(data);
+                
+                //if(xmlhttp.responseText == '')
+                location.reload();
+		
+           
+            // alert(xmlhttp.responseText);
+            // clock(); 
+        }
+    }
+    //alert(str);
+    xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/set_payment.php?amount="+amount+"&payment_type="+payment_type+"&date="+date+"&order_id="+order_id,true);
+    xmlhttp.send(null);
+}
+/**************End Ajax**************/
+</script>
+

@@ -1,0 +1,16 @@
+<?php //0007f
+// Copyright © 2014 Extendware
+// Are you trying to customize your extension? Contact us and maybe we can help!
+
+?>
+4+oV5B3ls4iRJI5ibb5DQ3tt++YB+yHEi8HZsvNCP8uCxDSe0EZ9mS/zJUrNfAOdTdjgIk0dxlsK
+h63+8c53q46y4HLcquh5feRXNA2cmKxmLjudTQsh2tXq5Br2RUErFwnLYKzPdFyewdIuIf0VylSm
+sXv48ib4fTlcCDAm1zQB8OQ+rkZXSGaLshNycedJShgC0rnqIz46toMcYVmkQcbn3WtAephkzds9
+pDN3bbryMAqWCr3jwneECkEf6UP/Kc0AIep2VNEFPnZFl/Ou+W6IAzcflOFdh8n1Jax4ZMOs6TCJ
+cJ7qNi+0KNbEzw1ZriB/DBSM+SgOOXcWn1h88y/6JzVssBm8PLZKpoZYfuGAbngwvsEpbJ/LwJKF
++7xPwkgaAlanskoUdakjaJ6NI7Eg3rvFkrjrYpEgm2cTJgm6eUjDfS0OSmUoejqEeimzUKdPPWND
+UmqTHqUx12bzvcP78oAByV4ceR7R+n0+LmeM/TweTAM+nYncUCC5hzL2CmsNKFKZf+DY9bmcnA9t
+HEpV/ff8HhDNPhy/9PajC5uAxagxyTt8KtUgWvI5dgj0v8HbYopjqby7pLkT+h4SStud1RJred0I
+4kix3aqG/h0G6cq0lc7mDKL8ADC4bYP39orcTRQ49ogn7nH9wNSJbvVPq3OuoKeHXfKV6hizTqzg
+TFFnztCpaHtSXUnvW7natysLBOA3hRIJ3zFePSTYjmWBZfQN9L3+gKDRvax/sXuqx0GKjpP0XY9O
+muXjuGCsi4XfdOAhjrf1XELBSByBi8gbVY4=

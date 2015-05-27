@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Emjainteractive_AdminPaymentmethod>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Emjainteractive_AdminPaymentmethod>
+    </modules>
+</config> 

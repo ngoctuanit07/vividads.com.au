@@ -1,0 +1,30 @@
+/* line 27, ../sass/_pie.scss */
+.pie-element {
+  behavior: url("../../../../../PIE.htc");
+  position: relative;
+}
+
+/* line 4, ../sass/blog.scss */
+.base-mini {
+  border: none;
+}
+
+/* line 8, ../sass/blog.scss */
+.box.base-mini .head, .box.base-mini ol, .box.base-mini .content {
+  background: #171717;
+}
+
+/* line 12, ../sass/blog.scss */
+.middle.col-2-right-layout #main.col-main {
+  border-right: white 1px solid;
+  margin-left: 10px;
+  width: 730px;
+  padding-right: 10px;
+}
+
+/* line 19, ../sass/blog.scss */
+.middle.col-2-right-layout .col-right.side-col {
+  width: 225px;
+  padding-left: 10px;
+  padding-right: 10px;
+}

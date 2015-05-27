@@ -1,0 +1,150 @@
+<?php $ticket = $this->getTicket(); ?>
+<?php $attachments = $this->getTicket()->getAttachments(); ?>
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+<div class="page-title">
+    <h1><?php echo $this->__('Ticket #%s : %s', $ticket->getId(), $ticket->getct_subject()); ?></h1>
+</div>
+
+<div class="col2-set generic-box">
+        <table border="0" width="100%">
+            <tr>
+                <td>
+                    <?php echo $this->__('<b>Created at : </b>%s', $this->formatDate($ticket->getct_created_at(), 'long')); ?>
+                    <br><?php echo $this->__('<b>Updated at : </b>%s', $this->formatDate($ticket->getct_created_at(), 'long')); ?>
+                    <br><?php echo $this->__('<b>Category : </b>%s', $ticket->getCategory()->getctc_name()); ?>
+                    <br><?php echo $this->__('<b>Status : </b>%s', $this->__($ticket->getct_status())); ?>
+
+                    <?php /* -------------------------- OBJECT ------------------------------ */ ?>
+                    <?php if (Mage::helper('CrmTicket')->allowCustomerObjectSelection()): ?>
+                    <?php $object = $this->getObjectPublicName($ticket->getct_object_id()); ?>
+                      <?php if($object): ?>
+                        <br><?php echo $this->__('<b>Object : </b>%s', $object); ?>
+                      <?php endif; ?>
+                    <?php endif; ?>
+
+                    <?php if (Mage::getStoreConfig('crmticket/attachements/allow_attachement_on_ticket')): ?>
+                      <br>
+                      <?php /* -------------------------- ATTACHMENTS ------------------------------ */ ?>
+                      <?php if (count($attachments) > 0): ?>
+                      <?php echo $this->__('<b>Attachments : </b>'); ?><br/>
+                          <?php foreach ($attachments as $attachment):
+                            $attFileName=$attachment->getFileName();
+                            if($attachment->canPreview()): ?>
+                              <a href="#a" onclick="showImageAttachementPopup('<?php echo $this->getAttachmentDownloadUrl($attachment); ?>','<?php echo $attFileName; ?>')"><?php echo $attFileName; ?></a>
+                            <?php else: ?>
+                              <a href="<?php echo $this->getAttachmentDownloadUrl($attachment); ?>"><?php echo $attFileName; ?></a>
+                             <?php endif; ?>
+                             <br/>
+                          <?php endforeach; ?>
+                      <?php else: ?>
+                          <?php echo $this->__('There is no attachment.'); ?>
+                      <?php endif; ?>
+                    <?php endif; ?>
+
+
+                </td>
+                <td class="a-right">
+                    <?php if ($this->getTicket()->customerCanEdit()): ?>
+                        <button onclick="setLocation('<?php echo $this->getResolvedUrl(); ?>')" class="button"><span><span><?php echo $this->__('Set resolved'); ?><span class="icon"></span></span></span></button>                    
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </table>
+
+</div>
+
+<br/>
+
+
+<?php foreach ($this->getTicket()->getMessages() as $message): ?>
+<table border="0" width="100%" class="ticket-messages-table" >
+<tr class="customer-comment">
+<?php $chkUser = $message->getctm_author(); ?>
+<?php if($chkUser=='admin'){  ?>
+<td class="comment-additional" width="35%" style="padding:10px 22px;background:#747474;vertical-align:middle;border: 1px solid #e2e2e2;">
+<?php }else{ ?>
+<td class="comment-additional" width="35%" style="padding:10px 22px;background:#99BB1E;vertical-align:middle;border: 1px solid #e2e2e2;">
+<?php } ?>
+<?php  $commentDate = $this->__('%s', Mage::helper('core')->formatDate($message->getctm_updated_at(), 'long', true));
+echo date_format(date_create($commentDate), 'm/d/Y H:i A'); ?>
+                            </td>
+  <td class="ticket-message-<?php echo $message->getctm_author(); ?>" style="padding:10px 22px;vertical-align:middle; line-height:0; border: 1px solid #e2e2e2;background:#f6f6f6;color:#929292;">
+  <?php 
+
+//  echo $myMessage = preg_replace('/<p[^>]*>(.*)<\/p[^>]*>/i', '$1', $myMessage); ?>
+            <p><?php echo strtoupper($this->__($message->getctm_author())).' - '.preg_replace('/<p[^>]*>(.*)<\/p[^>]*>/i', '$1', $message->getctm_content());?> </p>
+            <?php if (Mage::getStoreConfig('crmticket/attachements/allow_attachement_on_message')): ?>
+                  <?php $messageAttachements = $message->getAttachments(); ?>
+                  <?php if(count($messageAttachements)>0) :?>
+                     <div class="box-attachements">
+                         <p><hr/><br/><b><?php echo $this->__('Attachments : '); ?></b></p>
+                         <p>
+                         <?php foreach ($messageAttachements as $attachment): ?>
+                             <div class="crm-attachment">
+                                 <?php
+                                 $attFileName=$attachment->getFileName();
+                                 if($attachment->canPreview()): ?>
+                                   <a href="#" onclick="showImageAttachementPopup('<?php echo $this->getAttachmentMessageDownloadLink($message,$attachment); ?>','<?php echo $attFileName; ?>')"><?php echo $attFileName; ?></a>
+                                 <?php else: ?>
+                                   <a href="<?php echo $this->getAttachmentMessageDownloadLink($message,$attachment); ?>"><?php echo $attFileName; ?></a>
+                                  <?php endif; ?>
+                             </div>
+                         <?php endforeach; ?>
+                         </p>
+                     </div>
+                  <?php endif; ?>
+            <?php endif; ?>
+  </td>
+
+</tr>
+</table>
+
+<?php endforeach; ?>
+
+
+<?php if ($this->getTicket()->customerCanEdit()): ?>
+    
+    <script type="text/javascript" src="<?php echo Mage::getBaseUrl('js'); ?>tiny_mce/tiny_mce.js"></script>
+
+    <form method="POST" action="<?php echo $this->getSubmitUrl(); ?>" enctype="multipart/form-data">
+        <input type="hidden" name="ticket_id" id="ticket_id" value="<?php echo $this->getTicket()->getId(); ?>">
+        <p class="eRRor" style="display:none; color:red;">Kindly Enter Field </p>
+            <textarea name="ctm_content" title="" id="ctm_content" class="textarea " style="width:98%;height:68px; resize:none; margin-bottom:5px; margin-top:5px; background-color:white;" cols="20" rows="5"></textarea>
+                               
+
+
+            <?php if (Mage::getStoreConfig('crmticket/attachements/allow_attachement_on_message')): ?>
+            <p><b><?php echo $this->__('Attachments'); ?>  :</b></p>
+            <?php
+            $helper = Mage::helper('CrmTicket/Attachment');
+            $max = $helper->getPublicMaxAttachementAllowed();
+            $key = $helper->getPublicMessageAttachementKey();
+            for ($i = 1; $i <= $max; $i++): ?>
+            <input type="file" name="<?php echo $key.$i; ?>" id="<?php echo $key.$i; ?>"><br/>
+            <?php endfor; ?>           
+            <?php endif; ?>
+            
+                <button id="submit-comment-button" type="submit" class="submit button submit-comment"><span><span>
+                </span></span></button>
+            
+       
+    </form>
+<?php endif; ?>
+<script type="text/javascript">
+$( "#submit-comment-button" ).click(function() {
+	var txt = $('#ctm_content').val();
+	if(txt==''){
+		$('#ctm_content').css("border","1px solid red");
+		$('.eRRor').show();
+		$("#ctm_content").focus();
+		return false;
+	 }
+	
+
+
+
+});
+
+</script>

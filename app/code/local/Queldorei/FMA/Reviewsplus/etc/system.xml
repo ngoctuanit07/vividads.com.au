@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<config>
+	  <tabs>
+		<reviewsplus translate="label" module="reviewsplus">
+            <label>Reviews Plus</label>
+            <sort_order>1000</sort_order>
+        </reviewsplus>
+	  </tabs>
+	  <sections>
+		<reviewsplus_sec  translate="label" module="reviewsplus">                    
+		<label>Reviews Plus Configuration</label>
+		<tab>reviewsplus</tab>
+		<frontend_type>text</frontend_type>
+		<sort_order>1001</sort_order>
+		<show_in_default>1</show_in_default>
+		<show_in_website>1</show_in_website>
+		<show_in_store>1</show_in_store>            
+		<groups>
+                    <plus_config translate="label"> 
+                        <label>Reviewsplus Configuration</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>0</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                            <fields>
+                                <status translate="label">
+                                  <label>Status</label>
+                                  <frontend_type>select</frontend_type>
+                                  <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                                  <sort_order>0</sort_order>
+                                  <show_in_default>1</show_in_default>
+                                  <show_in_website>1</show_in_website>
+                                  <show_in_store>1</show_in_store>
+                                </status>
+                                <review_popup>
+                                    <label>Review Form Popup</label>
+                                    <sort_order>2</sort_order>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <comment>Set to yes to show #review form in a popup</comment>
+                                </review_popup>
+                            </fields>
+                    </plus_config>
+                    <sidebar translate="label"> 
+                        <label>Reviews Plus Sidebar</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>2</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                            <fields>
+                                <active translate="label">
+                                    <label>Enabled</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <sort_order>0</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                 </active>
+                        
+                                <by_date translate="label">
+                                    <label>Order By Date</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <sort_order>20</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </by_date>
+                                <count translate="label">
+                                    <label>Reviews Count</label>
+                                    <frontend_type>text</frontend_type>
+                                    <sort_order>30</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </count>
+                                <max_words translate="label">
+                                    <label>Words Count</label>
+                                    <frontend_type>text</frontend_type>
+                                    <sort_order>40</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <comment><![CDATA[Set to zero to show full review text.]]></comment>
+                                </max_words>
+                                <show_stars translate="label">
+                                    <label>Display Rating Stars</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <sort_order>50</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </show_stars>
+                                <for_category translate="label">
+                                    <label>Reviews for Current Category</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <sort_order>60</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </for_category>
+                                <for_product translate="label">
+                                    <label>Reviews for Current Product</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <sort_order>70</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </for_product>
+                            </fields>
+                    </sidebar>
+                    <feedback_config translate="label"> 
+                        <label>Feedback Configuration</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>3</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                            <fields>
+                                <status translate="label">
+                                  <label>Status</label>
+                                  <frontend_type>select</frontend_type>
+                                  <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                                  <sort_order>1</sort_order>
+                                  <show_in_default>1</show_in_default>
+                                  <show_in_website>1</show_in_website>
+                                  <show_in_store>1</show_in_store>
+                                </status>
+                                <email_subject translate="label">
+                                	<label>Email Subject Text</label>
+                                	<frontend_type>text</frontend_type>
+                                	<sort_order>2</sort_order>
+                                	<show_in_store>1</show_in_store>
+                                	<show_in_website>1</show_in_website>
+                                	<show_in_default>1</show_in_default>
+                                </email_subject>
+                                <email_body>
+                                	<label>Email Body Contents</label>
+                                	<frontend_type>textarea</frontend_type>
+    								<sort_order>3</sort_order>
+                                	<show_in_store>1</show_in_store>
+                                	<show_in_website>1</show_in_website>
+                                	<show_in_default>1</show_in_default>
+                                </email_body>
+                                 <email_footer>
+                                <label>Email Footer Contents</label>
+                                	<frontend_type>textarea</frontend_type>
+    								<sort_order>4</sort_order>
+                                	<show_in_store>1</show_in_store>
+                                	<show_in_website>1</show_in_website>
+                                	<show_in_default>1</show_in_default>
+                                </email_footer>
+                                <feedback_email_icon translate="label comment">
+                                        <label>Url For Feedback Button:</label>
+                                        <frontend_type>text</frontend_type>
+                                        <sort_order>70</sort_order>
+                                        <show_in_default>1</show_in_default>
+                                        <show_in_website>1</show_in_website>
+                                        <show_in_store>1</show_in_store>
+                                        <comment>URL to use for a Leave Feedback icon, if blank text will be used instead of image.</comment>
+                                </feedback_email_icon>
+                                <email_footer_link translate="label comment">
+                                    <label>Footer link text:</label>
+                                    <frontend_type>text</frontend_type>
+                                    <sort_order>50</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <comment>Text for email footer i.e. store name link, leave blank for no footer link. Use a URL to a .png file for an image.</comment>
+                                </email_footer_link>
+                                <count_products>
+                                	<label>Request feedback for number of products</label>
+                                	<frontend_type>text</frontend_type>
+                                	<sort_order>5</sort_order>
+                                	<show_in_store>1</show_in_store>
+                                	<show_in_website>1</show_in_website>
+                                	<show_in_default>1</show_in_default>
+                                </count_products>
+                                <time_delay translate="label comment">
+                                        <label>Delay in Feedback Request Email : </label>
+                                        <frontend_type>select</frontend_type>
+                                        <source_model>reviewsplus_adminhtml/system_config_source_emaildelay</source_model>
+                                        <sort_order>80</sort_order>
+                                        <show_in_default>1</show_in_default>
+                                        <show_in_website>1</show_in_website>
+                                        <show_in_store>1</show_in_store>
+                                        <comment>Time Interval in Order and Feedback email request</comment>
+                                </time_delay>
+                                    <test_mode_enabled translate="label comment">
+                                    <label>Test mode enabled:</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <sort_order>100</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <comment>Set to YES emails will be sent to store general address, enabled by default for testing, if set to NO emails will be sent to customer.</comment>
+                                </test_mode_enabled>
+                            </fields>
+                        </feedback_config>
+		</groups>
+            </reviewsplus_sec>
+            
+	  </sections>
+</config>

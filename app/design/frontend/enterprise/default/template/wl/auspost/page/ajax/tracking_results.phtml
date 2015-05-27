@@ -1,0 +1,31 @@
+<?php
+    $code = $this->getRequest()->getParam('code');
+    $results = $this->getTracking($code);
+?>
+<?php if (!empty($results) && empty($results['ErrorMessage'])) : ?>
+    <?php foreach ($results  as $result) :?>
+        <h4><?php echo $this->__('Tracking ID') ?>: <?php echo $result['TrackingID'] ?></h4>
+        <?php if (!empty ($result['Events'])) : ?>
+            <table border="1">
+                <tr>
+                    <th><?php echo $this->__('Description') ?></th>
+                    <th><?php echo $this->__('Date Time') ?></th>
+                    <th><?php echo $this->__('Location') ?></th>
+                </tr>
+                <?php foreach ($result['Events'] as $event) : ?>
+                    <tr>
+                        <td><?php echo $event['EventDescription'] ?></td>
+                        <td><?php echo $event['EventDateTime'] ?></td>
+                        <td><?php echo $event['Location'] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php else : ?>
+            <p><?php echo $this->__('No event found!') ?></p>
+        <?php endif; ?>
+    <?php endforeach; ?>
+<?php elseif (!empty($results['ErrorMessage'])) : ?>
+    <p><?php echo $results['ErrorMessage'] ?></p>
+<?php else : ?>
+    <p><?php echo $this->__('No Tracking found or Invalid tracking number!') ?></p>
+<?php endif; ?>

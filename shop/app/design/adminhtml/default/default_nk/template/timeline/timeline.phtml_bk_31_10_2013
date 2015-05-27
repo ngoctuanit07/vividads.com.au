@@ -1,0 +1,135 @@
+<?php
+$url = Mage::helper("adminhtml")->getUrl("timeline/adminhtml_timeline/savetime");
+
+$url2 = Mage::helper("adminhtml")->getUrl("timeline/adminhtml_timeline/savetasknumber");
+
+$temptableTimeline=Mage::getSingleton('core/resource')->getTableName('product_timeline');
+$sqlTimeline="SELECT * FROM ".$temptableTimeline." WHERE product_id = '0' ";
+$chkTimeline = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlTimeline);
+
+$temptableTask=Mage::getSingleton('core/resource')->getTableName('subadmin_task_number');
+$sqlTask="SELECT * FROM ".$temptableTask." WHERE entity_id = '1' ";
+$chkTask = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlTask);
+	
+?>
+<?php Mage::app()->getLayout()->getMessagesBlock()->setMessages(Mage::getSingleton('customer/session')->getMessages(true)); 
+echo $this->getMessagesBlock()->getGroupedHtml(); ?> 
+<div class="maintimeline">
+    <form enctype="multipart/form-data" name="form_planning" id="form_planning" method="POST" action="<?php echo $url?>">
+    <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+    <table class="timelinetab">
+        <tr>
+            <td class="timecap">Artwork delay time</td>
+            <td><input type="text" name="artwork" value="<?php echo $chkTimeline[0]['artwork_day']?>" /></td>
+            <td><input type="checkbox" name="sunday_artwork" value="1" <?php if($chkTimeline[0]['sunday_artwork'] == 1)echo 'checked';?>/> Exclude Sunday</td>
+            <td><input type="checkbox" name="holiday_artwork" value="1" <?php if($chkTimeline[0]['holiday_artwork'] == 1)echo 'checked';?>/> Exclude Holiday</td>
+        </tr>
+        <tr>
+            <td class="timecap">Proof approval delay time</td>
+            <td><input type="text" name="proof" value="<?php echo $chkTimeline[0]['proof_day']?>" /></td>
+            <td><input type="checkbox" name="sunday_proof" value="1" <?php if($chkTimeline[0]['sunday_proof'] == 1)echo 'checked';?>/> Exclude Sunday</td>
+            <td><input type="checkbox" name="holiday_proof" value="1" <?php if($chkTimeline[0]['holiday_proof'] == 1)echo 'checked';?>/> Exclude Holiday</td>
+        </tr>
+        <tr>
+            <td class="timecap">Production Start delay time</td>
+            <td><input type="text" name="production" value="<?php echo $chkTimeline[0]['production_day']?>" /></td>
+            <td><input type="checkbox" name="sunday_production" value="1" <?php if($chkTimeline[0]['sunday_production'] == 1)echo 'checked';?>/> Exclude Sunday</td>
+            <td><input type="checkbox" name="holiday_production" value="1" <?php if($chkTimeline[0]['holiday_production'] == 1)echo 'checked';?>/> Exclude Holiday</td>
+        </tr>
+        <tr>
+            <td class="timecap">Delivary delay time</td>
+            <td><input type="text" name="delivary" value="<?php echo $chkTimeline[0]['delivary_day']?>" /></td>
+            <td><input type="checkbox" name="sunday_delivary" value="1" <?php if($chkTimeline[0]['sunday_delivary'] == 1)echo 'checked';?>/> Exclude Sunday</td>
+            <td><input type="checkbox" name="holiday_delivary" value="1" <?php if($chkTimeline[0]['holiday_delivary'] == 1)echo 'checked';?>/> Exclude Holiday</td>
+        </tr>
+        <tr>
+            <td class="timecap">Shipping delay time</td>
+            <td><input type="text" name="shipping" value="<?php echo $chkTimeline[0]['shipping_day']?>" /></td>
+            <td><input type="checkbox" name="sunday_shipping" value="1" <?php if($chkTimeline[0]['sunday_shipping'] == 1)echo 'checked';?>/> Exclude Sunday</td>
+            <td><input type="checkbox" name="holiday_shipping" value="1" <?php if($chkTimeline[0]['holiday_shipping'] == 1)echo 'checked';?>/> Exclude Holiday</td>
+        </tr>
+        <tr>
+            <td colspan="4"><button type="submit" name="submit">Save</button></td>
+        </tr>
+    </table>
+    </form>
+</div>
+<?php
+    
+    $url3 = Mage::helper("adminhtml")->getUrl("vendor/adminhtml_vendor/printassign");
+    
+        $roles = Mage::getModel('admin/roles')->getCollection();
+       foreach($roles as $role):
+          //echo '<br/>Role : '.$role->getId()." | ".$role->getRoleName();
+          if($role->getRoleName() == 'subadmin' )
+          {
+            $roleid = $role->getId();
+          }
+          
+       endforeach;
+       
+        $temptableUser=Mage::getSingleton('core/resource')->getTableName('admin_role');
+                
+        
+        $sqlUser="SELECT * FROM  ".$temptableUser." WHERE  parent_id ='".$roleid."' ";
+        $chkUser = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlUser);
+?>
+<div class="commontask">
+    <form enctype="multipart/form-data" name="form_planning" id="form_planning" method="POST" action="<?php echo $url2?>">
+    <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+        <table class="tabnum">
+            <tr>
+		<td>
+		    <select name="subadmin">
+			<option value="">Assign Subadmin</option>
+			<?php
+			    foreach($chkUser as $user)
+			    {
+				$user = Mage::getModel('admin/user')->load($user['user_id']);
+				
+				$temptablePrint=Mage::getSingleton('core/resource')->getTableName('vendor_user_print');
+				    
+			    
+				$sqlPrint="SELECT * FROM  ".$temptablePrint." WHERE  user_id ='".$user->getId()."' ";
+				$chkPrint = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlPrint);
+				?>
+				       <option value="<?php echo $user->getId();?>]" /><?php echo $user->getName();?></option
+				    
+				<?php
+				
+			    }
+			   
+			    
+			?>
+		    </select>
+		</td>
+		<td>
+		    <select name="product">
+			<option value="">Product Sku</option>
+			<?php
+			    $collection = Mage::getModel('catalog/product')->getCollection()->addAttributeToSort('name', 'ASC');
+			   // $collection->addAttributeToFilter('status',1);
+			   
+			    foreach($collection as $_product)
+			    {
+				$_newProduct = Mage::getModel('catalog/product')->load($_product->getId());
+				if(trim($_newProduct->getName()) != '')
+				{
+				
+				?>
+				       <option value="<?php echo $_product->getId();?>]" /><?php echo $_newProduct->getSku();?></option>
+				    
+				<?php
+				}
+				
+			    }
+			?>
+		    </select>
+		</td>
+                <td class="timecap">Number of Task per Day :</td>
+                <td><input type="text" name="task_number"  /></td>
+                <td><button type="submit" name="submit">Save</button></td>
+            </tr>
+        </table>
+    </form>
+</div>

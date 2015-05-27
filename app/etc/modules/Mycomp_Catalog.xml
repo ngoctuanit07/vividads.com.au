@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Mycomp_Catalog>
+      <codePool>local</codePool>
+      <active>true</active>
+    </Mycomp_Catalog>
+  </modules>
+</config>

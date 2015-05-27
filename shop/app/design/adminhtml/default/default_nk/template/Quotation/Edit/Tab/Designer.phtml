@@ -1,0 +1,347 @@
+<?php
+/**
+ * Custom tab template
+ */
+?>
+
+<?php
+$quote_id = $this->getRequest()->getParam('quote_id');
+$quote = Mage::getModel('Quotation/Quotation')->load($quote_id);
+
+ $_order = $this->getOrder();
+ $url = Mage::helper('adminhtml')->getUrl('admin/sales_order/proofsquote');
+ 
+ $items = $quote->getItems();
+
+ foreach($items as $item)
+ {
+   $_product = Mage::getModel('catalog/product')->load($item->getProductId());
+   $proofItem[$item->getId()] = $_product->getName();
+ }
+ 
+
+function getdrop1($arrayproofs)
+ {
+   foreach($arrayproofs as $key=>$arrayproof)
+   {
+     echo '<option value="'.$key.'">'.addslashes($arrayproof).'</option>';
+   }
+ }
+
+
+ //
+ //$items = $quote->getItems();
+ //  
+ // foreach($items as $item)
+ // {
+ //   $_product = Mage::getModel('catalog/product')->load($item->getProductId());
+ //   $proofItem[$item->getId()] = $_product->getName();
+ // }
+ //   
+    $url = Mage::helper("adminhtml")->getUrl("designer/adminhtml_designer/addcomment");
+    $url = str_replace('p//s','p/admin/s',$url);
+
+ ?>
+      
+     <script type="text/javascript">
+    
+
+    
+function add_another1()
+{
+	i = document.getElementById('form_count').value;
+	i++;
+	var str = '<div id="tab_'+i+'" class="alltab"><br><div class="file_class"><input type="file" name="item_file[]"></div><div class="item_class"><select name="item[]"><option>Select Item</option><?php stripslashes(getdrop1($proofItem));?></select></div><div class="comment_class"><textarea name="comment[]"></textarea></div><span class="removeitem" onclick="div_remove1('+i+')" id="rem_'+i+'" style="cursor:pointer;">Remove</span></div>';
+	jQuery("#content2").append(str);
+	document.getElementById('form_count').value = i;
+	
+}
+
+function div_remove1(id)
+{
+	i = document.getElementById('form_count').value;
+	jQuery("#tab_"+id).remove();
+}
+</script>
+     <?php
+$url1 = Mage::helper("adminhtml")->getUrl("designer/adminhtml_designer/adddesign");
+$url1 = str_replace('p//s','p/admin/s',$url1);
+?>
+     <div class="entry-edit">
+        <div class="entry-edit-head"><h4>Add Design</h4></div>
+        <div class="order-totals">
+         
+           <div class="total_proof"><input type="hidden" id="form_count" />
+            <form action="<?php  echo str_replace('//s','/admin/s',$url1);?>" method="post" enctype="multipart/form-data">
+             <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+             <input name="orderid" id="orderid" value="<?php echo $quote_id;?>"  type="hidden">
+	     <input name="type" value="quote" type="hidden"/>
+                <table class="total_proof" style="width: 100%;">
+                    <tr class="txt">
+                        <td valign="top">
+                         <div id="dvFile">
+                          <div class="file_class">
+                          <input type="file" name="item_file[]">
+                          </div>
+                          <div class="item_class">
+                             <select name="item[]"><option>Select Item</option><?php getdrop1($proofItem);?></select>
+                          </div>
+			  <div class="comment_class">
+                             <textarea name="comment[]"></textarea>
+                          </div>
+                         </div>
+                        </td>
+                        <td valign="top">
+                         <span onclick="add_another1();" style="cursor:pointer;" title="Add book suggetion" class="addanother">Add another</span><span class="submitclass"><input name="submit" id="submit" type="submit"  class="submit-img" /></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="10" align="left" valign="middle" colspan="6">
+                        <div id="content2"></div></td>
+                    </tr>
+                </table>
+                
+            </form>
+        </div>
+            
+        </div>
+    </div><br/>
+
+
+ <div class="designermain">
+     
+        <div class="order-additional order-comments">
+            <table class="data-table" id="design_tab" cellspacing="0">
+                <tr class="headcls">
+                    <th> Date </th>
+                    <th> Item </th>
+                    <th> Comment</th>
+                    <th> Design File</th>
+                    <th> Status </th>
+		    <th> Action </th>
+		    <?php
+		      
+		      $roleId = implode('', Mage::getSingleton('admin/session')->getUser()->getRoles());
+            
+		      //Get the role name
+		      $roleName = Mage::getModel('admin/roles')->load($roleId)->getRoleName();
+		      if($roleName == 'Administrators')
+		      {
+		    ?>
+		    <th> Assign To </th>
+		    <?php
+		      }
+		    ?>
+                </tr>
+                <?php
+		$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+		$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+		
+                    $temptableDesign=Mage::getSingleton('core/resource')->getTableName('task_designer');
+		    if($connectionWrite->isTableExists($temptableDesign))
+		    {
+		      //$sqlDesign="SELECT *,DATE_FORMAT(postdate,'%D %M, %Y') AS p_date FROM  ".$temptableDesign." WHERE order_quote_id ='".$quote_id."' AND proof_type ='quote' ORDER BY item_id ";
+		      $sqlDesign = $connectionRead->select()
+					->from($temptableDesign, array("*,DATE_FORMAT(postdate,'%D %M, %Y') AS p_date"))
+					->where("order_quote_id ='".$quote_id."' AND proof_type ='quote'")
+					->order('item_id');
+		      $chkDesigns = $connectionRead->fetchAll($sqlDesign);
+		    }
+                    
+		    $url2 = Mage::helper('adminhtml')->getUrl('designer/adminhtml_designer/download');
+                    foreach($chkDesigns as $chkDesign)
+                    {
+                        
+                        $temptableItem=Mage::getSingleton('core/resource')->getTableName('quotation_items');
+                        //$sqlItem="SELECT * FROM  ".$temptableItem." WHERE quotation_item_id ='".$chkDesign['item_id']."'  ";
+                        $sqlItem = $connectionRead->select()
+					  ->from($temptableItem, array('*'))
+					  ->where('quotation_item_id=?', $chkDesign['item_id']);
+                        $chkItem = $connectionRead->fetchAll($sqlItem);
+                        
+                        //$_Product = Mage::getModel('catalog/product')->load($chkItem['product_id']);
+			
+			$temptableService=Mage::getSingleton('core/resource')->getTableName('design_service');
+			if($connectionWrite->isTableExists($temptableService))
+			{
+			//$sqlService="SELECT * FROM  ".$temptableService." WHERE order_id ='".$chkDesign['order_quote_id']."' AND item_id = '".$chkDesign['item_id']."'  ";
+			$sqlService = $connectionRead->select()
+					    ->from($temptableService, array('*'))
+					    ->where("order_id ='".$chkDesign['order_quote_id']."' AND item_id = '".$chkDesign['item_id']."'");
+			$chkService = $connectionRead->fetchAll($sqlService);
+			}
+		    
+			
+			
+			if($roleName == 'Administrators' or Mage::getSingleton('admin/session')->getUser()->getId() == $chkService[0]['assign_to'])
+			{
+                ?>
+                <tr>
+                    <td><?php echo $chkDesign['p_date']?></td>
+                    <td><?php echo $chkItem[0]['caption'];?></td>
+                    <td><?php echo $chkDesign['comment']?></td>
+                    <td><a href="<?php echo str_replace('//s','/admin/s',$url2).'file/'.$chkDesign['file'].'/';?>"><?php echo $chkDesign['file']?></a></td>
+                    <td><?php echo $chkDesign['status']?></td>
+		    <td> <a class="shoedetails" onclick="allcomment('<?php echo $chkDesign['entity_id']?>','<?php echo $quote->getId()?>')">Show Details</a>   <a onclick="deletedesign('<?php echo $chkDesign['entity_id']?>','<?php echo $quote->getId()?>')" style="cursor:pointer;">Delete</a> </td>
+		    <?php
+		      if($roleName == 'Administrators')
+		      {
+		    ?>
+		    <td>
+		     <select name="ot_author_user" id="ot_author_user" onchange="assignto('<?php echo $chkDesign['item_id']?>','<?php echo $chkDesign['order_quote_id']?>',this.value,'quote');">
+		      <option value="">Assign To</option>
+		       <?php
+		       
+			   
+			   $adminUserModel = Mage::getModel('admin/user');
+			   $userCollection = $adminUserModel->getCollection()->load();
+			   foreach($userCollection as $user)
+			   {
+			       $selected = '';
+			       if($user->getId() == $chkService[0]['assign_to'])
+			       $selected = 'selected';
+			       
+			       echo '<option value="'.$user->getId().'" '.$selected.' >'.$user->getUsername().'</option>';
+			   }
+		       ?>
+		    </select>
+		    </td>
+		    <?php
+		    
+		      }?>
+                </tr>
+                <?php }
+		
+		
+		    }?>
+            </table>
+        </div>
+    </div>
+ <div class="tooltip" id="tooltip"style="display:none;">
+  <div class="close" onclick="close1();">X</div>
+  <div class="tooltipbody" id="tooltipbody">
+   
+  </div>
+  <div class="fromtool">
+<form enctype="multipart/form-data" name="form_planning" id="form_planning" method="POST" action="<?php echo $url?>">
+<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+   <table class="total_proof" style="width: 100%;">
+       <tr class="txt"><input type="hidden" id="form_count" />
+	   <td valign="top" class="fromclass">
+	    <input type="hidden" name="entity_id" id="entity_id"/>
+	    <input type="hidden" name="order_id" id="dorderid"/>
+	    <input type="hidden" name="type" value="quote"/>
+	    <div id="dvFile">
+	     <div class="file_class">
+	     <input type="file" name="item_file">
+	     </div>
+	   <div class="item_comment">
+		<textarea name="comment"></textarea>
+	     </div>
+	    </div>
+	   </td>
+	   
+       </tr>
+       <tr><td class="clssubmit">
+	    <button class="submit" >Submit</button>
+	   </td></tr>
+   </table>
+   </form>
+  </div>
+ </div>
+ 
+<script type="text/javascript">
+   function allcomment(id,orderid)
+   {
+       document.getElementById('entity_id').value = id;
+       document.getElementById('dorderid').value = orderid;
+       
+       
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	      // alert(xmlhttp.responseText);
+	       
+	       document.getElementById('tooltipbody').innerHTML = xmlhttp.responseText;
+	       document.getElementById('tooltip').style.display = 'block';
+	       
+	   }
+	 }
+	 form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/designer/adminhtml_designer/allcomment/?id="+id+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   
+   function deletedesign(id,orderid)
+   {
+       
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	       //alert(xmlhttp.responseText);
+	       document.getElementById("design_tab").innerHTML=xmlhttp.responseText;
+	       
+	   }
+	 }
+	 form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/designer/adminhtml_designer/deletedesign/?id="+id+"&orderid="+orderid+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   
+   function assignto(itemid,orderid,userid,type)
+   {
+       
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	       //alert(xmlhttp.responseText);
+	       
+	       location.reload();
+	       
+	   }
+	 }
+	 form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/designer/adminhtml_designer/assignto/?itemid="+itemid+"&orderid="+orderid+"&userid="+userid+"&type="+type+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   function close1()
+   {
+    document.getElementById('tooltip').style.display = 'none';
+   }
+</script>

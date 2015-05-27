@@ -1,0 +1,1453 @@
+
+<style>
+	<!--
+.uploader_artwork{display:none;}
+.contacts_button{display:none;}
+#livechat-full{display:none;}
+
+.main-container {
+    background: none repeat scroll 0 0 #fff;
+}
+.row {
+    margin: 0 auto;
+    width: 1040px;
+}
+.col1-layout .col-main {
+    margin: 0 0 0 0px;
+    width: 1000px;
+}
+.addthis_toolbox{display:none;}
+	-->
+</style>
+<?php
+
+
+
+     $storeId=$_GET["store_id"];
+    
+    if($storeId==5)
+    {
+        $root_cat=48;
+    }
+    else
+    {
+        $allStores = Mage::app()->getStores();
+        foreach ($allStores as $_eachStoreId => $val) 
+        {
+            $_storeId[] = Mage::app()->getStore($_eachStoreId)->getId();
+        }
+        if(in_array($storeId,$_storeId))
+        $id = Mage::app()->getStore($storeId)->getRootCategoryId();
+        else
+        {
+            echo 'This store id is not exist'.
+            $id = '';
+        }
+        
+        if($id != '')
+        $root_cat=$id;
+        else
+        $root_cat=48;
+    }
+    
+    $_category = Mage::getModel('catalog/category')->load($root_cat);
+    $_subcategories = $_category->getChildrenCategories();
+
+
+    //echo "sdgsdfg".Mage::getSingleton("core/session",array('name' => 'frontend'))->getCaptcha();
+    //exit;
+    Mage::getSingleton("core/session")->setCaptcha("");	
+
+?>
+<?php
+/*
+<script src="<?php echo Mage::getBaseUrl('js')."calendar/calendar.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Mage::getBaseUrl('js')."calendar/calendar-setup.js" ?>" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo Mage::getBaseUrl('js') ?>calendar/calendar-win2k-1.css"  />
+<script type="text/javascript">var Translator = new Translate([]);</script> 
+<script type="text/javascript">
+//<![CDATA[
+enUS = {"m":{"wide":["January","February","March","April","May","June","July","August","September","October","November","December"],"abbr":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]}}; // en_US locale reference
+Calendar._DN = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]; // full day names
+Calendar._SDN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]; // short day names
+Calendar._FD = 0; // First day of the week. "0" means display Sunday first, "1" means display Monday first, etc.
+Calendar._MN = ["January","February","March","April","May","June","July","August","September","October","November","December"]; // full month names
+Calendar._SMN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; // short month names
+Calendar._am = "AM"; // am/pm
+Calendar._pm = "PM";
+ 
+// tooltips
+Calendar._TT = {};
+Calendar._TT["INFO"] = "About the calendar";
+ 
+Calendar._TT["ABOUT"] =
+"DHTML Date/Time Selector\n" +
+"(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" +
+"For latest version visit: http://www.dynarch.com/projects/calendar/\n" +
+"Distributed under GNU LGPL. See http://gnu.org/licenses/lgpl.html for details." +
+"\n\n" +
+"Date selection:\n" +
+"- Use the \xab, \xbb buttons to select year\n" +
+"- Use the " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " buttons to select month\n" +
+"- Hold mouse button on any of the above buttons for faster selection.";
+Calendar._TT["ABOUT_TIME"] = "\n\n" +
+"Time selection:\n" +
+"- Click on any of the time parts to increase it\n" +
+"- or Shift-click to decrease it\n" +
+"- or click and drag for faster selection.";
+ 
+Calendar._TT["PREV_YEAR"] = "Prev. year (hold for menu)";
+Calendar._TT["PREV_MONTH"] = "Prev. month (hold for menu)";
+Calendar._TT["GO_TODAY"] = "Go Today";
+Calendar._TT["NEXT_MONTH"] = "Next month (hold for menu)";
+Calendar._TT["NEXT_YEAR"] = "Next year (hold for menu)";
+Calendar._TT["SEL_DATE"] = "Select date";
+Calendar._TT["DRAG_TO_MOVE"] = "Drag to move";
+Calendar._TT["PART_TODAY"] = ' (' + "Today" + ')';
+ 
+// the following is to inform that "%s" is to be the first day of week
+Calendar._TT["DAY_FIRST"] = "Display %s first";
+ 
+// This may be locale-dependent. It specifies the week-end days, as an array
+// of comma-separated numbers. The numbers are from 0 to 6: 0 means Sunday, 1
+// means Monday, etc.
+Calendar._TT["WEEKEND"] = "0,6";
+ 
+Calendar._TT["CLOSE"] = "Close";
+Calendar._TT["TODAY"] = "Today";
+Calendar._TT["TIME_PART"] = "(Shift-)Click or drag to change value";
+ 
+// date formats
+Calendar._TT["DEF_DATE_FORMAT"] = "%b %e, %Y";
+Calendar._TT["TT_DATE_FORMAT"] = "%B %e, %Y";
+ 
+Calendar._TT["WK"] = "Week";
+Calendar._TT["TIME"] = "Time:";
+ 
+CalendarDateObject._LOCAL_TIMZEONE_OFFSET_SECONDS = -28800;
+
+//]]>
+</script>
+*/
+?> 
+<div class="main_main">
+                    <form id="cus_ordfrm" name="cus_ordfrm" method="post" >
+                        <div class="total-main" id="total-main_1">
+                        <input type="hidden" id="store_id" name="store_id" value="<?php echo $storeId; ?>"/>
+                            <div id="all_pro_con">
+                                <div class="one_pro">
+                                        <div class="con">
+                                         
+                                          <span class="lab">Category:</span>
+                                          <span class="inp">
+                                            <select name="category[]" id="cat" onchange="getProduct(this.value,this);">
+                                              
+                                                <option value="">Select a category</option>
+                                              
+                                                  <?php
+                                                  foreach($_subcategories as $_sub){
+                                                  
+                                                  $_sub=Mage::getModel('catalog/category')->setStoreId($storeId)->load($_sub->getId());
+                                                  
+                                                  ?>    
+                                                  
+                                                      <option value="<?php echo $_sub->getId(); ?>"><?php echo $_sub->getName(); ?></option>
+                                                      
+                                                  <?php
+                                                  
+                                                  }
+                                                  
+                                                  ?>
+                                              
+                                              
+                                            </select>
+                                         </span>
+                                            
+                                        </div>
+                                        <div class="con proddiv">
+                                            <span class="lab">
+                                                Products:
+                                            </span>
+                                            <span class="inp">
+                                                <select name="products[]" class="prod">
+                                                      <option value="">Select a product</option>
+                                                </select>
+                                            </span>
+                                          
+                                        </div>
+                                            
+                                        <div class="im_con prodimgdiv">
+                                            <span class="im">Product Image:</span>
+                                            <div class="def_cl"></div>
+                                            
+                                        </div>
+                                        
+                                        <div class="pro_qty">
+                                            <span class="lab">
+                                                Enter Quantity:
+                                            </span>
+                                            <input type="text" name="quantity[]" class="quantity" value="1" />
+                                        </div>
+                                        
+                                        <div class="del_button">
+                                            <a href="javascript:void(0);" class="del_it">Delete</a>
+                                        </div>
+                                </div>
+                            
+                            
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            <div class="add_more_con">
+                            
+                                <a href="javascript:void(0);" id="add_more">Add more product</a>
+                                
+                            </div>
+                            
+                          
+                          
+                            
+                            
+                           <!---------------------------------------------------------------> 
+                            
+                            
+                            
+                            <div class="desc-step3">
+                                <div class="all_bill">
+                                        <div class="ship_add">Billing Address</div>
+                                        <div class="m_con">
+                                            <input type="checkbox" name="shipaddress" id="shipaddress" value="1"><span class="fontBrick" style="padding-left:10px;">Click here if your shipping and billing address are different.</span>
+                                        </div>
+                                        <div class="name-head">
+                                            <div class="nam1">First Name:<span class="fontRed">*</span></div>
+                                            <div class="nam1">Last Name:<span class="fontRed">*</span></div>
+                                        </div>
+                                        
+                                        <div class="name-data">
+                                            <span class="nput1"><input type="text" id="fnamebill" name="fnamebill"> </span>
+                                            <span class="nput2"><input type="text" id="lnamebill" name="lnamebill"> </span>
+                                        </div>
+                                        <div class="comp-head">
+                                            <div class="nam1">Company:</div>
+                                        </div>
+                                        
+                                        <div class="comp-data">
+                                            <input type="text" id="comp_val" name="comp_val" class="bil-nput">                                
+                                        </div>
+                                        
+                                        <div class="bill-head">
+                                            <div class="nam1">Billing Address:<span class="fontRed">*</span></div>
+                                        </div>
+                                        
+                                        <div class="bill-data">
+                                            <input type="text" id="add1bill" name="add1bill" class="bil-nput">
+                                           <!-- Thank you for your interest, We will get back to you shortly-->
+                                            <input type="text" id="add2bill" name="add2bill" class="bil-nput">
+                                        </div>
+                                        
+                                        
+                                        <div class="loc-head">
+                                           <div class="nam1">City:<span class="fontRed">*</span></div>
+                                           <div class="nam2">State:<span class="fontRed">*</span></div>
+                                        </div>
+                                        
+                                        <div class="loc-data">
+                                            <span class="nput1"><input type="text" id="citybill" name="citybill"></span>
+                                            <span class="nput2">
+                                                <select name="statebill" id="statebill" class="contenta">
+                                                    <option value="" selected="">Choose State</option>
+                                                     <?php
+                                                /***************** start 28_01_2014 **********************/
+                                                 //$countrycode = 'AU';
+                                                
+                                                  $store1 = Mage::getModel('core/store')->load($storeId);
+                                                  Mage::app($store1->getCode());
+                                                   
+                                                   $countrycode = Mage::getStoreConfig('general/country/default',$store1);
+                                                  
+
+                                                  $statearray = Mage::getModel('directory/region')->getResourceCollection() ->addCountryFilter(trim($countrycode,' '))->load();
+                                                 
+                                                         foreach ($statearray as $_state) {
+                                                             echo "<option value='" . $_state->getCode() . "'>" .  $_state->getDefaultName() . "</option>";
+                                                         }
+                                             /***************** end 28_01_2014 **********************/
+                                                ?>
+                                                   <!-- <option value="ACT">ACT</option>
+                                                    <option value="NSW">NSW</option>
+                                                    <option value="QLD">QLD</option>
+                                                    <option value="SA">SA</option>
+                                                    <option value="TAS">TAS</option>
+                                                    <option value="VIC">VIC</option>
+                                                    <option value="WA">WA</option>
+                                                    <option value="NT">NT</option>-->
+                                                </select>
+                                            
+                                            <!--<select class="contenta" id="statebill" name="statebill">
+                                                <option value="0" selected="selected">---Select State/Territory---</option>
+                                                <option value="AL">Alabama</option>
+                                                <option value="AK">Alaska</option>
+                                                <option value="AZ">Arizona</option>
+                                                <option value="AR">Arkansas</option>
+                                                <option value="CA">California</option>
+                                                <option value="CO">Colorado</option>
+                                                <option value="CT">Connecticut</option>
+                                                <option value="DE">Delaware</option>
+                                                <option value="DC">District of Columbia</option>
+                                                <option value="FL">Florida</option>
+                                                <option value="GA">Georgia</option>
+                                                <option value="HI">Hawaii</option>
+                                                <option value="ID">Idaho</option>
+                                                <option value="IL">Illinois</option>
+                                                <option value="IN">Indiana</option>
+                                                <option value="IA">Iowa</option>
+                                                <option value="KS">Kansas</option>
+                                                <option value="KY">Kentucky</option>
+                                                <option value="LA">Louisiana</option>
+                                                <option value="ME">Maine</option>
+                                                <option value="MD">Maryland</option>
+                                                <option value="MA">Massachussets</option>
+                                                <option value="MI">Michigan</option>
+                                                <option value="MN">Minnesota</option>
+                                                <option value="MS">Mississippi</option>
+                                                <option value="MO">Missouri</option>
+                                                <option value="MT">Montana</option>
+                                                <option value="NE">Nebraska</option>
+                                                <option value="NV">Nevada</option>
+                                                <option value="NH">New Hampshire</option>
+                                                <option value="NJ">New Jersey</option>
+                                                <option value="NM">New Mexico</option>
+                                                <option value="NY">New York</option>
+                                                <option value="NC">North Carolina</option>
+                                                <option value="ND">North Dakota</option>
+                                                <option value="OH">Ohio</option>
+                                                <option value="OK">Oklahoma</option>
+                                                <option value="OR">Oregon</option>
+                                                <option value="PA">Pennsylvania</option>
+                                                <option value="RI">Rhode Island</option>
+                                                <option value="SC">South Carolina</option>
+                                                <option value="SD">South Dakota</option>
+                                                <option value="TN">Tennessee</option>
+                                                <option value="TX">Texas</option>
+                                                <option value="UT">Utah</option>
+                                                <option value="VT">Vermont</option>
+                                                <option value="VA">Virginia</option>
+                                                <option value="WA">Washington</option>
+                                                <option value="WV">West Virginia</option>
+                                                <option value="WI">Wisconsin</option>
+                                                <option value="WY">Wyoming</option>
+                                                <option value="0">------US Territories------</option>
+                                                <option value="GU">Guam</option>
+                                                <option value="PR">Puerto Rico</option>
+                                                <option value="VI">Virgin Islands</option>                        
+                                            </select>--> </span>
+                                        </div>
+                                        
+                                        <div class="coun-head">
+                                            <div class="nam1">ZIP:<span class="fontRed">*</span></div>
+                                            <!--<div class="nam1">Country:<span class="fontRed">*</span></div>-->
+                                        </div>
+                                        
+                                        <div class="coun-data">
+                                            <span class="nput1"><input type="text" id="zipbill" name="zipbill"></span>
+                                            
+                                        </div>
+                                        
+                                        <div class="ph-head">
+                                            <div class="nam1">Phone:<span class="fontRed">*</span></div>
+                                        </div>
+                                        
+                                        <div class="ph-data">
+                                            <input type="text" id="phonebill" name="phonebill">
+                                        </div>
+                                        
+                                        <div class="email-head">
+                                           <div class="nam1"> E-mail:<span class="fontRed">*</span></div>
+                                        </div>
+                                        
+                                        <div class="email-data">
+                                            <input type="text" id="emailbill" name="emailbill">
+                                        </div>
+                                        
+                                        <div class="inv-head" style="display:none;"><!-- 30_01_2014 -->
+                                           <div class="nam1"> Are you requesting for a quote/invoice<span class="fontRed">*</span></div>
+                                        </div>
+                                        
+                                        <div class="inv-data" style="display:none;"><!-- 30_01_2014 -->
+                                              <select class="verd2" name="type">
+                                                <!--<option value="invoice">INVOICE</option>--><!-- 30_01_2014 -->
+                                                <option value="quote" selected="selected">QUOTE</option>
+                                              </select>
+                                        </div>
+                                    </div>
+                                
+                                
+                                <!--section start for shipping--->
+                                
+                                <div id="ship_info" style="display:none;">
+                                    
+                                    <div class="ship_add">Shipping Address Information</div>
+                                    
+                                    <div class="name-head">
+                                        <div class="nam1">First Name:<span class="fontRed">*</span></div>
+                                        <div class="nam1">Last Name:<span class="fontRed">*</span></div>
+                                    </div>
+                                    
+                                    <div class="name-data">
+                                        <span class="nput1"><input type="text" id="fnameship" name="fnameship"> </span>
+                                        <span class="nput2"><input type="text" id="lnameship" name="lnameship"> </span>
+                                    </div>
+				        <div class="comp-head">
+		                            <div class="nam1">Company:</div>
+		                        </div>
+		                        
+		                        <div class="comp-data">
+		                            <input type="text" id="comp_val_ship" name="comp_val_ship" class="bil-nput">                                
+		                        </div>	
+                                    
+                                    <div class="bill-head">
+                                        <div class="nam1">Shipping Address:<span class="fontRed">*</span></div>
+                                    </div>
+                                    
+                                    <div class="bill-data">
+                                        <input type="text" id="add1ship" name="add1ship" class="bil-nput">
+                                        <input type="text" id="add2ship" name="add2ship" class="bil-nput">
+                                    </div>
+                                    
+                                    <div class="loc-head">
+                                       <div class="nam1">City:<span class="fontRed">*</span></div>
+                                       <div class="nam2">State:<span class="fontRed">*</span></div>
+                                    </div>
+                                    
+                                    <div class="loc-data">
+                                        <span class="nput1"><input type="text" id="cityship" name="cityship"></span>
+                                        <span class="nput2">
+                                            <select name="stateship" id="stateship" class="contenta">
+                                                <option value="" selected="">Choose State</option>
+                                                <?php
+                                                /***************** start 28_01_2014 **********************/
+                                                 //$countrycode = 'AU';
+                                                $countrycode = Mage::getStoreConfig('general/country/default',$store1);
+                                                  
+
+                                                  $statearray = Mage::getModel('directory/region')->getResourceCollection() ->addCountryFilter(trim($countrycode,' '))->load();
+                                                         foreach ($statearray as $_state) {
+                                                             echo "<option value='" . $_state->getCode() . "'>" .  $_state->getDefaultName() . "</option>";
+                                                         }
+                                                  /***************** end 28_01_2014 **********************/
+                                                ?>
+                                              <!--  <option value="ACT">ACT</option>
+                                                <option value="NSW">NSW</option>
+                                                <option value="QLD">QLD</option>
+                                                <option value="SA">SA</option>
+                                                <option value="TAS">TAS</option>
+                                                <option value="VIC">VIC</option>
+                                                <option value="WA">WA</option>
+                                                <option value="NT">NT</option>-->
+                                            </select>
+                                            <!--<select class="contenta" id="stateship" name="stateship">
+                                            <option value="0" selected="selected">---Select State/Territory---</option>
+                                            <option value="AL">Alabama</option>
+                                            <option value="AK">Alaska</option>
+                                            <option value="AZ">Arizona</option>
+                                            <option value="AR">Arkansas</option>
+                                            <option value="CA">California</option>
+                                            <option value="CO">Colorado</option>
+                                            <option value="CT">Connecticut</option>
+                                            <option value="DE">Delaware</option>
+                                            <option value="DC">District of Columbia</option>
+                                            <option value="FL">Florida</option>
+                                            <option value="GA">Georgia</option>
+                                            <option value="HI">Hawaii</option>
+                                            <option value="ID">Idaho</option>
+                                            <option value="IL">Illinois</option>
+                                            <option value="IN">Indiana</option>
+                                            <option value="IA">Iowa</option>
+                                            <option value="KS">Kansas</option>
+                                            <option value="KY">Kentucky</option>
+                                            <option value="LA">Louisiana</option>
+                                            <option value="ME">Maine</option>
+                                            <option value="MD">Maryland</option>
+                                            <option value="MA">Massachussets</option>
+                                            <option value="MI">Michigan</option>
+                                            <option value="MN">Minnesota</option>
+                                            <option value="MS">Mississippi</option>
+                                            <option value="MO">Missouri</option>
+                                            <option value="MT">Montana</option>
+                                            <option value="NE">Nebraska</option>
+                                            <option value="NV">Nevada</option>
+                                            <option value="NH">New Hampshire</option>
+                                            <option value="NJ">New Jersey</option>
+                                            <option value="NM">New Mexico</option>
+                                            <option value="NY">New York</option>
+                                            <option value="NC">North Carolina</option>
+                                            <option value="ND">North Dakota</option>
+                                            <option value="OH">Ohio</option>
+                                            <option value="OK">Oklahoma</option>
+                                            <option value="OR">Oregon</option>
+                                            <option value="PA">Pennsylvania</option>
+                                            <option value="RI">Rhode Island</option>
+                                            <option value="SC">South Carolina</option>
+                                            <option value="SD">South Dakota</option>
+                                            <option value="TN">Tennessee</option>
+                                            <option value="TX">Texas</option>
+                                            <option value="UT">Utah</option>
+                                            <option value="VT">Vermont</option>
+                                            <option value="VA">Virginia</option>
+                                            <option value="WA">Washington</option>
+                                            <option value="WV">West Virginia</option>
+                                            <option value="WI">Wisconsin</option>
+                                            <option value="WY">Wyoming</option>
+                                            <option value="0">------US Territories------</option>
+                                            <option value="GU">Guam</option>
+                                            <option value="PR">Puerto Rico</option>
+                                            <option value="VI">Virgin Islands</option>                        
+                                        </select>--> </span>
+                                    </div>
+                                    
+                                    <div class="coun-head">
+                                        <div class="nam1">ZIP:<span class="fontRed">*</span></div>
+                                        
+                                    </div>
+                                    
+                                    <div class="coun-data">
+                                        <span class="nput1"><input type="text" id="zipship" name="zipship"></span>
+                                       
+                                    </div>
+                                    
+                                    <div class="ph-head">
+                                        <div class="nam1">Phone:<span class="fontRed">*</span></div>
+                                    </div>
+                                    
+                                    <div class="ph-data">
+                                        <input type="text" id="phoneship" name="phoneship">
+                                    </div>
+                                                           
+                                    
+                                </div>        
+                                <?php
+                                    $words  = "abcdefghijlmnopqrstvwyz";
+                                    $vocals = "aeiou";
+                                
+                                    $text  = "";
+                                    $vocal = rand(0, 1);
+                                    $length = rand(5, 8);
+                                    for ($i=0; $i<$length; $i++) {
+                                        if ($vocal) {
+                                            $text .= substr($vocals, mt_rand(0, 4), 1);
+                                        } else {
+                                            $text .= substr($words, mt_rand(0, 22), 1);
+                                        }
+                                        $vocal = !$vocal;
+                                    }
+                                    Mage::getSingleton("core/session",array('name' => 'frontend'))->setCaptcha($text);
+                                ?> 
+                                <!--section end for shipping-->
+                                <div class="captcha_area">
+					<div class="captcha_img">
+						<img src="<?php echo Mage::getBaseUrl(); ?>externalform/captcha.php?ts=<?php echo time(); ?>&text=<?php echo $text; ?>" id="captcha" />	
+					</div>
+					<!--<div class="reset_captcha">
+						<a href="javascript:void(0);" onclick="document.getElementById('captcha').src='<?php //echo Mage::getBaseUrl(); ?>externalform/captcha.php?'+Math.random(); document.getElementById('captcha-form').focus();" id="change-image">Not readable? Change text.</a>
+					</div>-->
+					<div class="captcha_input">
+						<input type="text" name="captcha" id="captcha-form" autocomplete="off" />
+					</div>
+                                        <div class="req-head">
+                                             <span class="fontRed">*</span> Required
+                                         </div>
+                                        
+                                        <div class="req-head">
+                                             <div class="ph-head">
+                                                 <div class="nam1">Delivery Date:</div>
+                                             </div>
+                                             
+                                             <div class="ph-data">
+                                                 <input type="text" id="del_date" onclick="ds_sh(this);" name="del_date" style="width:20%;margin-left: -118px;">
+					<?php
+					/*
+                                                  <img src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>" alt="" class="v-middle" id="calendar-deldate_trig" title="<?php echo $this->__('Date selector') ?>" />
+                                                  <script type="text/javascript">
+                                                  Calendar.setup({
+                                                  inputField : "del_date",
+                                                  ifFormat: "%Y-%m-%d",
+                                                  button : "calendar-deldate_trig",
+                                                  //align : "Bl",
+                                                  singleClick : true
+                                                  });
+                                                  </script>
+					*/
+					?>
+                                             </div>
+                                         </div>
+                                         
+                                         <div class="req-head">
+                                             <div class="ph-head">
+                                                 <div class="nam1">Comment:<span class="fontRed">*</span></div>
+                                             </div>
+                                             
+                                             <div class="ph-data">
+                                                 <textarea type="text" id="comment" name="comment" style="width:40%; height:100px;margin-left: -118px; border:1px solid #ccc;"></textarea>
+                                             </div>
+                                         </div>
+				</div>
+                                
+                                
+                               
+                                
+                                
+                                
+                                <div class="pord-pic">
+                                    
+                                    <input type="button" name="sub_cusord" id="sub_cusord" value="Submit" />
+                                    <img id="loader_id" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/default/default/images/externalform/ajax-loader.gif" style="width:30px; height:30px; display:none;" />                        
+                                    
+                                </div>
+                                
+                                
+                              
+                                    
+                                    
+                                    
+                            </div>
+                            
+                            <input type="hidden" name="action" value="post_order">
+                            <input type="hidden" name="actionUrl" id="actionUrl" value="<?php echo Mage::getBaseUrl() ?>index.php/externalform/index/placeOrder/">
+                            
+                            <!--------------------------------------------------------------->
+                            
+                            
+                            <div class="Success" id="Success"></div>
+                    
+                            
+                            
+                                
+                        </div>
+                    </form>
+		    <div class="thank_u" id="thank_u"></div>	
+        </div>
+        
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script> 
+	<link rel="stylesheet" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/base/default/externalform/css/lightbox/lightbox.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="<?php echo Mage::getBaseUrl(); ?>externalform/js/prototype.lite.js"></script>
+	<script type="text/javascript" src="<?php echo Mage::getBaseUrl(); ?>externalform/js/moo.fx.js"></script>
+	<script type="text/javascript" src="<?php echo Mage::getBaseUrl(); ?>externalform/js/litebox-1.0.js"></script>
+        
+        <script>
+            
+            jQuery(document).ready(function(){
+
+		initLightbox();
+                
+                jQuery("#downloads_video_overlay").css("display","none");
+                jQuery("#add_more").click(function(){
+                    
+                    
+                    jQuery.ajax({
+                         url: "<?php echo Mage::getBaseUrl();?>index.php/externalform/index/addMore/",
+                         type: "POST",
+                         data: "store_id=<?php echo $storeId; ?>&root_cat=<?php echo $root_cat; ?>",
+                         success: function(abc){
+                                                                 
+                                 jQuery("#all_pro_con").append(abc);
+                                 
+                                 jQuery(".del_it").unbind("click");
+                                 jQuery(".del_it").bind("click",del_it);
+                         }
+                    });
+                    
+                    
+                    
+                    
+                });
+                
+                
+                
+                jQuery("#sub_cusord").click(function(){
+                    
+                    
+                    
+                         var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        		 var address = document.getElementById("emailbill").value;
+        		 
+        		// if(jQuery("#creditcardtype").attr("value")=="0")
+        		// {
+        		//		  jQuery("#creditcardtype").css("border","1px solid #fd0402");
+        		//		  jQuery("#creditcardtype").focus();
+        		//		  return false;
+        		// }
+        		// else
+        		// {
+        		//		  jQuery("#creditcardtype").css("border","3px solid #2F2F2F");
+        		// }
+        		// 
+        		// if(jQuery("#creditcardNum").attr("value")=="")
+        		// {
+        		//		  jQuery("#creditcardNum").css("border","1px solid #fd0402");
+        		//		  jQuery("#creditcardNum").focus();
+        		//		  return false;
+        		// }
+        		// else
+        		// {
+        		//		  jQuery("#creditcardNum").css("border","3px solid #2F2F2F");
+        		// }
+        		// 
+        		// if(jQuery("#ccVerNum").attr("value")=="")
+        		// {
+        		//		  jQuery("#ccVerNum").css("border","1px solid #fd0402");
+        		//		  jQuery("#ccVerNum").focus();
+        		//		  return false;
+        		// }
+        		// else
+        		// {
+        		//		  jQuery("#ccVerNum").css("border","3px solid #2F2F2F");
+        		// }
+                        
+        		 		 
+        		 if(document.getElementById("fnamebill").value=="")
+        		 {
+        				  jQuery("#fnamebill").css("border","1px solid #fd0402");
+        				  jQuery("#fnamebill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#fnamebill").css("border","1px solid #ccc");
+        		 }
+        		 
+        		 if(document.getElementById("lnamebill").value=="")
+        		 {
+        				  jQuery("#lnamebill").css("border","1px solid #fd0402");
+        				  jQuery("#lnamebill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#lnamebill").css("border","1px solid #ccc");
+        		 }
+        		 
+        		 if((document.getElementById("add2bill").value==""))
+        		 {
+        				  jQuery("#add2bill").css("border","1px solid #fd0402");
+        				  jQuery("#add2bill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#add2bill").css("border","1px solid #ccc");
+        		 }
+        		 
+        		 if(document.getElementById("citybill").value=="")
+        		 {
+        				  jQuery("#citybill").css("border","1px solid #fd0402");
+        				  jQuery("#citybill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#citybill").css("border","1px solid #ccc");
+        		 }
+        		 
+        		 if(document.getElementById("statebill").value=="")
+        		 {
+        				  jQuery("#statebill").attr("style","border:1px solid #fd0402 !important");
+        				  jQuery("#statebill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#statebill").attr("style","border:1px solid #ccc !important");
+        		 }
+        		 
+        		 if(document.getElementById("zipbill").value=="")
+        		 {
+        				  jQuery("#zipbill").css("border","1px solid #fd0402");
+        				  jQuery("#zipbill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#zipbill").css("border","1px solid #ccc");
+        		 }
+			 
+
+
+
+        		 
+        //		 if(document.getElementById("countrybill").value=="")
+        //		 {
+        //				  jQuery("#countrybill").css("border","1px solid #fd0402");
+        //                                  alert("Please enter the country.");
+        //				  jQuery("#countrybill").focus();
+        //				  return false;
+        //		 }
+        //		 else
+        //		 {
+        //				  jQuery("#countrybill").css("border","3px solid #2F2F2F");
+        //		 }
+                         
+                        if(document.getElementById("phonebill").value=="")
+                         {
+                                          jQuery("#phonebill").css("border","1px solid #fd0402");
+                                          jQuery("#phonebill").focus();
+                                          return false;
+                         }
+                         else
+                         {
+                                          jQuery("#phonebill").css("border","1px solid #ccc");
+                         }
+                         
+                         if(isNaN(document.getElementById("phonebill").value))
+                         {
+                                          jQuery("#phonebill").attr("value","");
+                                          jQuery("#phonebill").css("border","1px solid #fd0402");
+                                          alert('Please enter numeric number in billing phone');
+                                          jQuery("#phonebill").focus();
+                                          return false;
+                         }
+                         else
+                         {
+                                          jQuery("#phonebill").css("border","1px solid #ccc");
+                         }
+                         
+                         
+                         
+                         
+                         if(document.getElementById("emailbill").value=="")
+                         {
+                        		  jQuery("#emailbill").css("border","1px solid #fd0402");
+                        		  jQuery("#emailbill").focus();
+                        		  return false;
+                         }
+                         else
+                         {
+                        		  jQuery("#emailbill").css("border","1px solid #ccc");
+                         }
+                         
+                         if(reg.test(address) == false)
+                         {
+                        		  jQuery("#emailbill").attr("value","");
+                        		  jQuery("#emailbill").css("border","1px solid #fd0402");
+                                            alert('Please enter a valid email id');
+                        		  jQuery("#emailbill").focus();
+                        		  return false;
+                         }
+                         else
+                         {
+                        		  jQuery("#emailbill").css("border","1px solid #ccc");
+                         }
+
+			 if(document.getElementById("del_date").value=="")
+        		 {
+        				  jQuery("#del_date").css("border","1px solid #fd0402");
+        				  jQuery("#del_date").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#del_date").css("border","1px solid #ccc");
+        		 }
+			 if(document.getElementById("comment").value=="")
+        		 {
+        				  jQuery("#comment").attr("style","border:1px solid #fd0402 !important; width:40%; height:100px;margin-left: -118px;");
+        				  jQuery("#comment").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#comment").attr("style","border:1px solid #ccc; width:40%; height:100px;margin-left: -118px;");
+        		 }
+                         
+                         
+                         if(jQuery('#shipaddress').is(':checked')==true)
+                         {
+                                
+                                          if(document.getElementById("fnameship").value=="")
+                                          {
+                                                           jQuery("#fnameship").css("border","1px solid #fd0402");
+                                                           jQuery("#fnameship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#fnameship").css("border","1px solid #ccc");
+                                          }
+                                          
+                                          if(document.getElementById("lnameship").value=="")
+                                          {
+                                                           jQuery("#lnameship").css("border","1px solid #fd0402");
+                                                           jQuery("#lnameship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#lnameship").css("border","1px solid #ccc");
+                                          }
+                                          
+                                          if((document.getElementById("add1ship").value=="") && (document.getElementById("add2ship").value==""))
+                                          {
+                                                           jQuery("#add1ship").css("border","1px solid #fd0402");
+                                                           jQuery("#add1ship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#add1ship").css("border","1px solid #ccc");
+                                          }
+                                          
+                                          if(document.getElementById("cityship").value=="")
+                                          {
+                                                           jQuery("#cityship").css("border","1px solid #fd0402");
+                                                           jQuery("#cityship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#cityship").css("border","1px solid #ccc");
+                                          }
+                                          
+                                          if(document.getElementById("stateship").value=="")
+                                          {
+                                                           jQuery("#stateship").css("border","1px solid #fd0402");
+                                                           jQuery("#stateship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#stateship").css("border","1px solid #ccc");
+                                          }
+                                          
+                                          if(document.getElementById("zipship").value=="")
+                                          {
+                                                           jQuery("#zipship").css("border","1px solid #fd0402");
+                                                           jQuery("#zipship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#zipship").css("border","1px solid #ccc");
+                                          }
+                                          
+                                          //if(jQuery("#countryship").attr("value")=="")
+                                          //{
+                                          //                 jQuery("#countryship").css("border","1px solid #fd0402");
+                                          //                 jQuery("#countryship").focus();
+                                          //                 return false;
+                                          //}
+                                          //else
+                                          //{
+                                          //                 jQuery("#countryship").css("border","3px solid #2F2F2F");
+                                          //}
+                                          
+                                          if(document.getElementById("phoneship").value=="")
+                                          {
+                                                           jQuery("#phoneship").css("border","1px solid #fd0402");
+                                                           jQuery("#phoneship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#phoneship").css("border","1px solid #ccc");
+                                          }
+                                          
+                                          if(isNaN(document.getElementById("phoneship").value))
+                                          {
+                                                           jQuery("#phoneship").attr("value","");
+                                                           jQuery("#phoneship").css("border","1px solid #fd0402");
+                                                           alert('Please enter numeric number in shipping phone');
+                                                           jQuery("#phoneship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#phoneship").css("border","1px solid #FFFFFF");
+                                          }
+                                                           
+                                                           
+                                                           
+                         }
+                    
+                        
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        var actionUrl=jQuery("#actionUrl").attr("value");
+                         //alert(actionUrl);
+                         
+                         jQuery("#loader_id").show();
+                         jQuery("#sub_cusord").hide();
+                         
+                        jQuery.ajax({
+                            url: actionUrl,
+                            type: "POST",
+                            data: jQuery("#cus_ordfrm").serialize(),
+                            success: function(abc){
+
+                                            //alert(abc);
+
+				    if(abc=="cap_err")
+                                    {
+                                 
+                                             jQuery("#Success").html("You have entered an incorrect captcha code. Try again");
+					     jQuery("#loader_id").hide();
+                                             jQuery("#sub_cusord").show();
+					     jQuery("#captcha-form").attr("value","");
+					     jQuery("#change-image").trigger("click");
+                                             return false; 
+                                             
+                                    }
+
+                                    arr=Array();
+                                    arr=abc.split("___");
+                                    var ord_success=arr[0];
+                                    var ord=arr[1];
+                                    
+                                    if(arr[2] != '')
+                                    var stock=arr[2];
+                                    else
+                                    var stock='';
+                                    //alert(ord);
+                                    
+                                    if(ord_success=="order")
+                                    {
+                                             //location.reload();
+                                             //jQuery("#Success").html("Your order has been placed . Your order id is #"+ord+'. '+stock);
+                                             jQuery("#cus_ordfrm").css("display","none");  
+					     jQuery("#thank_u").css("display","block");	
+                                             jQuery("#thank_u").html("Thank you for your interest, We will get back to you shortly. Your Invoice number is "+ord);
+						document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                             //location.reload();
+                                    }
+                                    else if(ord_success=="quote")
+                                    {
+                                             //location.reload();
+                                             //jQuery("#Success").html("Your quote has been placed . Your quote id is #"+ord+'. '+stock);
+					     jQuery("#cus_ordfrm").css("display","none");  
+					     jQuery("#thank_u").css("display","block");
+					     jQuery("#thank_u").html("Thank you for your interest, We will get back to you shortly. Your quote number is #"+ord);		
+						document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                                //location.reload();
+                                    }
+                                    else
+                                    {
+                                             jQuery("#Success").html("Something has gone wrong. "+stock);
+                                             
+                                             jQuery("#loader_id").hide();
+                                            jQuery("#sub_cusord").show();
+                                    }
+				jQuery("#Success").html(abc);
+                            }
+                        });  
+                    
+                    
+                    
+                });
+                
+                jQuery(".del_it").unbind("click");
+                jQuery(".del_it").bind("click",del_it);
+                
+                
+                
+                
+               jQuery("#shipaddress").click(function(e){
+                    if(jQuery('#shipaddress').is(':checked')==true)
+                    {
+                                     
+                                     jQuery('#ship_info').attr('style','display:block');
+                    }
+                    else
+                    {
+                                     
+                                     jQuery('#ship_info').attr('style','display:none');    
+                    }
+               });
+                
+                
+                
+                
+                
+                
+                
+                
+            });
+            
+                function getProduct(catid,curr_ele){
+
+                    
+                    
+                    var param="catid="+catid+"&storeid="+'<?php echo $storeId?>';
+                    jQuery.ajax({
+                           type:'POST',
+                           url:'<?php echo Mage::getBaseUrl();?>index.php/externalform/index/getProduct/',
+                           data:param,
+                          
+                           success: function(ret){
+                           
+                           	//alert(ret);
+				
+                              jQuery(curr_ele).parent().parent().parent().find(".proddiv").html(ret);
+             
+                              
+                            }
+                            
+              
+                });
+                }
+                
+                
+                   
+                function getProdImage(prodid,curr_ele){
+                    
+                    var param="prodid="+prodid;
+                    jQuery.ajax({
+                           type:'POST',
+                           url:'<?php echo Mage::getBaseUrl();?>index.php/externalform/index/getProductImage/',
+                           data:param,
+                          
+                           success: function(ret)
+                           {
+                            
+                            
+                            //alert(ret);
+                           
+                              //jQuery('#prodimgdiv').html(ret);
+                              jQuery(curr_ele).parent().parent().parent().find(".prodimgdiv").html(ret);
+             		      
+                              initLightbox();
+                            }
+                            
+              
+                });
+            }
+            
+            function del_it()
+            {
+                jQuery(this).parent().parent().remove();
+            }
+         
+        </script>
+<style type="text/css">
+
+.ds_box {
+	background-color: #FFF;
+	border: 1px solid #000;
+	position: absolute;
+	z-index: 32767;
+}
+
+.ds_tbl {
+	background-color: #FFF;
+}
+
+.ds_head {
+	background-color: #333;
+	color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: center;
+	letter-spacing: 2px;
+}
+
+.ds_subhead {
+	background-color: #CCC;
+	color: #000;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	width: 32px;
+}
+
+.ds_cell {
+	background-color: #EEE;
+	color: #000;
+	font-size: 13px;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.ds_cell:hover {
+	background-color: #F3F3F3;
+} /* This hover code won't work for IE */
+
+</style>
+</head>
+<body>
+
+<table class="ds_box" cellpadding="0" cellspacing="0" id="ds_conclass" style="display: none;">
+<tr><td id="ds_calclass">
+</td></tr>
+</table>
+
+<script type="text/javascript">
+// <!-- <![CDATA[
+
+// Project: Dynamic Date Selector (DtTvB) - 2006-03-16
+// Script featured on JavaScript Kit- http://www.javascriptkit.com
+// Code begin...
+// Set the initial date.
+var ds_i_date = new Date();
+ds_c_month = ds_i_date.getMonth() + 1;
+ds_c_year = ds_i_date.getFullYear();
+
+// Get Element By Id
+function ds_getel(id) {
+	return document.getElementById(id);
+}
+
+// Get the left and the top of the element.
+function ds_getleft(el) {
+	var tmp = el.offsetLeft;
+	el = el.offsetParent
+	while(el) {
+		tmp += el.offsetLeft;
+		el = el.offsetParent;
+	}
+	return tmp;
+}
+function ds_gettop(el) {
+	var tmp = el.offsetTop;
+	el = el.offsetParent
+	while(el) {
+		tmp += el.offsetTop;
+		el = el.offsetParent;
+	}
+	return tmp;
+}
+
+// Output Element
+var ds_oe = ds_getel('ds_calclass');
+// Container
+var ds_ce = ds_getel('ds_conclass');
+
+// Output Buffering
+var ds_ob = ''; 
+function ds_ob_clean() {
+	ds_ob = '';
+}
+function ds_ob_flush() {
+	ds_oe.innerHTML = ds_ob;
+	ds_ob_clean();
+}
+function ds_echo(t) {
+	ds_ob += t;
+}
+
+var ds_element; // Text Element...
+
+var ds_monthnames = [
+'January', 'February', 'March', 'April', 'May', 'June',
+'July', 'August', 'September', 'October', 'November', 'December'
+]; // You can translate it for your language.
+
+var ds_daynames = [
+'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
+]; // You can translate it for your language.
+
+// Calendar template
+function ds_template_main_above(t) {
+	return '<table cellpadding="3" cellspacing="1" class="ds_tbl">'
+	     + '<tr>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_py();"><<</td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_pm();"><</td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_hi();" colspan="3">[Close]</td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_nm();">></td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_ny();">>></td>'
+		 + '</tr>'
+	     + '<tr>'
+		 + '<td colspan="7" class="ds_head">' + t + '</td>'
+		 + '</tr>'
+		 + '<tr>';
+}
+
+function ds_template_day_row(t) {
+	return '<td class="ds_subhead">' + t + '</td>';
+	// Define width in CSS, XHTML 1.0 Strict doesn't have width property for it.
+}
+
+function ds_template_new_week() {
+	return '</tr><tr>';
+}
+
+function ds_template_blank_cell(colspan) {
+	return '<td colspan="' + colspan + '"></td>'
+}
+
+function ds_template_day(d, m, y) {
+	return '<td class="ds_cell" onclick="ds_onclick(' + d + ',' + m + ',' + y + ')">' + d + '</td>';
+	// Define width the day row.
+}
+
+function ds_template_main_below() {
+	return '</tr>'
+	     + '</table>';
+}
+
+// This one draws calendar...
+function ds_draw_calendar(m, y) {
+	// First clean the output buffer.
+	ds_ob_clean();
+	// Here we go, do the header
+	ds_echo (ds_template_main_above(ds_monthnames[m - 1] + ' ' + y));
+	for (i = 0; i < 7; i ++) {
+		ds_echo (ds_template_day_row(ds_daynames[i]));
+	}
+	// Make a date object.
+	var ds_dc_date = new Date();
+	ds_dc_date.setMonth(m - 1);
+	ds_dc_date.setFullYear(y);
+	ds_dc_date.setDate(1);
+	if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12) {
+		days = 31;
+	} else if (m == 4 || m == 6 || m == 9 || m == 11) {
+		days = 30;
+	} else {
+		days = (y % 4 == 0) ? 29 : 28;
+	}
+	var first_day = ds_dc_date.getDay();
+	var first_loop = 1;
+	// Start the first week
+	ds_echo (ds_template_new_week());
+	// If sunday is not the first day of the month, make a blank cell...
+	if (first_day != 0) {
+		ds_echo (ds_template_blank_cell(first_day));
+	}
+	var j = first_day;
+	for (i = 0; i < days; i ++) {
+		// Today is sunday, make a new week.
+		// If this sunday is the first day of the month,
+		// we've made a new row for you already.
+		if (j == 0 && !first_loop) {
+			// New week!!
+			ds_echo (ds_template_new_week());
+		}
+		// Make a row of that day!
+		ds_echo (ds_template_day(i + 1, m, y));
+		// This is not first loop anymore...
+		first_loop = 0;
+		// What is the next day?
+		j ++;
+		j %= 7;
+	}
+	// Do the footer
+	ds_echo (ds_template_main_below());
+	// And let's display..
+	ds_ob_flush();
+	// Scroll it into view.
+	ds_ce.scrollIntoView();
+}
+
+// A function to show the calendar.
+// When user click on the date, it will set the content of t.
+function ds_sh(t) {
+	// Set the element to set...
+	ds_element = t;
+	// Make a new date, and set the current month and year.
+	var ds_sh_date = new Date();
+	ds_c_month = ds_sh_date.getMonth() + 1;
+	ds_c_year = ds_sh_date.getFullYear();
+	// Draw the calendar
+	ds_draw_calendar(ds_c_month, ds_c_year);
+	// To change the position properly, we must show it first.
+	ds_ce.style.display = '';
+	// Move the calendar container!
+	the_left = ds_getleft(t);
+	the_top = ds_gettop(t) + t.offsetHeight;
+	ds_ce.style.left = the_left + 'px';
+	ds_ce.style.top = the_top + 'px';
+	// Scroll it into view.
+	ds_ce.scrollIntoView();
+}
+
+// Hide the calendar.
+function ds_hi() {
+	ds_ce.style.display = 'none';
+}
+
+// Moves to the next month...
+function ds_nm() {
+	// Increase the current month.
+	ds_c_month ++;
+	// We have passed December, let's go to the next year.
+	// Increase the current year, and set the current month to January.
+	if (ds_c_month > 12) {
+		ds_c_month = 1; 
+		ds_c_year++;
+	}
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+
+// Moves to the previous month...
+function ds_pm() {
+	ds_c_month = ds_c_month - 1; // Can't use dash-dash here, it will make the page invalid.
+	// We have passed January, let's go back to the previous year.
+	// Decrease the current year, and set the current month to December.
+	if (ds_c_month < 1) {
+		ds_c_month = 12; 
+		ds_c_year = ds_c_year - 1; // Can't use dash-dash here, it will make the page invalid.
+	}
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+
+// Moves to the next year...
+function ds_ny() {
+	// Increase the current year.
+	ds_c_year++;
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+
+// Moves to the previous year...
+function ds_py() {
+	// Decrease the current year.
+	ds_c_year = ds_c_year - 1; // Can't use dash-dash here, it will make the page invalid.
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+
+// Format the date to output.
+function ds_format_date(d, m, y) {
+	// 2 digits month.
+	m2 = '00' + m;
+	m2 = m2.substr(m2.length - 2);
+	// 2 digits day.
+	d2 = '00' + d;
+	d2 = d2.substr(d2.length - 2);
+	// YYYY-MM-DD
+	return y + '-' + m2 + '-' + d2;
+}
+
+// When the user clicks the day.
+function ds_onclick(d, m, y) {
+	// Hide the calendar.
+	ds_hi();
+	// Set the value of it, if we can.
+	if (typeof(ds_element.value) != 'undefined') {
+		ds_element.value = ds_format_date(d, m, y);
+	// Maybe we want to set the HTML in it.
+	} else if (typeof(ds_element.innerHTML) != 'undefined') {
+		ds_element.innerHTML = ds_format_date(d, m, y);
+	// I don't know how should we display it, just alert it to user.
+	} else {
+		alert (ds_format_date(d, m, y));
+	}
+}
+
+// And here is the end.
+
+// ]]> -->
+</script>

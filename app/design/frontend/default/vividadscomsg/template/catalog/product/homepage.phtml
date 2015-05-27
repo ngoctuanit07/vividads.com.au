@@ -1,0 +1,232 @@
+<?php
+/**
+* Magento
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE_AFL.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@magentocommerce.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+** Do not edit or add to this file if you wish to upgrade Magento to newer
+* versions in the future. If you wish to customize Magento for your
+* needs please refer to http://www.magentocommerce.com for more information.
+*
+* @category    design
+* @package     base_default
+* @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+* @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*/
+?>
+<?php
+/**
+* Product list template
+*
+* @see Mage_Catalog_Block_Product_List
+*/
+?>
+<div class="intro">
+  <h2>Welcome to <span style="color:#ec761c;">Vivid Exhibition Displays - Unleash Your Brand</span></h2>
+  <p style="width:96%;"><span style="color:#f37d4b;">We know who you are and we know exactly what </span>
+you need to unleash your brand at your next event. Vivid Ads helps you create displays that are eye catching as well as vivid so you do not go unnoticed at your next show. No matter what your need maybe, we have a solution that will amaze you and your audience.  </p>
+</div>
+<?php /*?><div class="box_content">
+<div style=" margin-top:0px;" class="text-wrapper"> <img class="left" src="<?php echo $this->getSkinUrl()?>images/low-price.png" alt="">
+              <div class="right"> <span class="title"><?php echo __('Low-Price Guarantee')?></span>
+                <p class="content"><?php echo __('We are here to offer you, our client the finest trade show displays at the lowest possible prices. If you do happen to find a lower price for one of our products anywhere else, submit their quote and we will beat it with a smile. No worries mate !.')?><br /><br /> </p>
+              </div>
+            </div>
+            <div class="text-wrapper"> <img class="left" src="<?php echo $this->getSkinUrl()?>images/shipping.png" alt="">
+              <div class="right"> <span class="title"><?php echo __('Fast, Reliable Shipping')?></span>
+                <p class="content">We know that to you deadline is not just a task, it is a lifeline ! We've worked with hundreds of individuals like you and we will ensure we are extremely punctual with getting your display's to you. RIGHT ON TIME ! <br /><br /><br />
+
+</p>
+              </div>
+            </div>
+            <div class="text-wrapper"> <img class="left" src="<?php echo $this->getSkinUrl()?>images/process.png" alt="">
+              <div class="right"> <span class="title"><?php echo __('Easy Setup Process')?></span>
+                <p class="content"> We work with busy individuals like you all year long and we know time is money to you ! <br >From your first enquiry to the final delivery, we've  streamlined our process and made it crystal clear for you, so you do not waste a Millie-second of your price-less time ! 
+ </p>
+              </div>
+            </div>
+
+
+</div><?php */?>
+<?php /*?><div class="cate_listing" style="margin-top:-20px;">
+<?php $_helper = $this->helper('catalog/category')?>
+<?php $j=1?>
+<ul class="products-container">
+ <?php foreach ($_helper->getStoreCategories() as $_category) { ?>
+<?php 
+$catId = $_category->getId();
+$category = Mage::getModel('catalog/category')->load($catId); 
+$catUrl = $category->getUrl();
+$catThumb = $category->getThumbnail();
+$catName =  $category->getName();
+$catDes = $category->getDescription();
+			$_img_path = Mage::getBaseUrl('media').'catalog/category/'; 
+			$mypath = $_img_path.'' .$catThumb;
+      		$minPrice=Mage::getSingleton('catalog/layer')
+			->setCurrentCategory($catId)
+			->getProductCollection()
+			->getMinPrice();
+?>
+<li class="products-wrapper <?php if($j%3==0) {?> last-wrapper<?php }?>">
+				<a href="<?php echo $catUrl?>" class="b-link-flip b-animate-go">
+			    <img src="<?php echo $mypath?>"/>
+				  <div class="b-wrapper">
+				  	<h2 class="b-scale b-animate b-delay03"><?php echo $catName; ?></h2>
+            <p class="b-opacity b-animate b-delay03"><?php echo  substr($catDes,0,150)."..."; ?></p>
+				  </div>
+				</a>
+</li>
+	   <? $j++;?>
+   <?php } ?>
+    </ul>
+    		</div><?php */?>
+<div class="cate_listing" style="margin-top:-5px;padding:0px !important;">
+  <?php $_helper = $this->helper('catalog/category') ?>
+  <?php $j=1;?>
+  <ul class="products-grid">
+    <?php foreach ($_helper->getStoreCategories() as $_category) { ?>
+    <?php 
+$catId = $_category->getId();
+$category = Mage::getModel('catalog/category')->load($catId); 
+$catUrl = $category->getUrl();
+$catThumb = $category->getThumbnail();
+$catName =  $category->getName();
+$catDes = $category->getDescription();
+			$_img_path = Mage::getBaseUrl('media').'catalog/category/'; 
+if(!$catThumb){
+			$mypath = $_img_path.'ijaz ali testing here' .$catThumb;	
+	} else{			
+			$mypath = $_img_path.'' .$catThumb;
+	}
+      		$minPrice=Mage::getSingleton('catalog/layer')
+			->setCurrentCategory($catId)
+			->getProductCollection()
+			->getMinPrice();
+			$collection = Mage::getSingleton('catalog/category')->load($catId)
+            ->getProductCollection()
+            ->addAttributeToSelect('*');
+//var_dump($collection);
+//echo count($collection);
+if(count($collection)>=1){$minimumPrice = $minPrice; 
+foreach ($collection as $_product){
+
+	 $specialPrice =  $_product->getSpecialPrice();
+	if($specialPrice){
+	 if($minimumPrice > $specialPrice){
+		$minimumPrice = $specialPrice;
+		}
+	  }
+	 $price = $_product->getPrice();
+	 if($minimumPrice > $price){
+		$minimumPrice = $price;
+		}
+}
+$minimumPrice = $minPrice; 
+} 
+
+?>
+<div style="display:none;"><?php echo $minimumPrice; echo "<br>"; echo $price; echo "<br>"; echo $specialPrice;?></div>
+    <li class="hover_pro item<?php if($j%3==0){ ?> last<?php } ?>">
+      <div class="mask-product">
+        <div class="pro-det-con"> <a href="<?php echo $catUrl; ?>" title="<?php echo $catName; ?>" class="product-image"> <img src="<?php echo $mypath; ?>" width="220" height="252" alt="<?php echo $catName; ?>" /> </a>
+          <div style="top:0;" class="product-detail-content">
+            <div class="product-detail-description"> <?php echo  substr($catDes,0,150)."..."; ?> </div>
+            <p class="product-detail-read-more"> <a href="<?php echo $catUrl; ?>">Read More</a> </p>
+          </div>
+        </div>
+        <h2 class="product-name"><a href="<?php echo $catUrl; ?>" title="<?php echo $catName; ?>"> <?php echo $catName;// substr($catName,0,35)."...";?> </a></h2>
+      </div>
+      <div class="btn-bg">
+        <div class="pric-btn" style=" text-align: center; color: #fff; font: 12px 'Raleway'; text-decoration: none; height:26px; width:134px; float:left; line-height:26px;"> <?php echo 'From AUD '.ceil($minimumPrice).".00";
+		//			  echo Mage::helper('core')->currency($_product->getPrice());
+					  ?> </div>
+        <div class="browse-btn"> <a class="category-browse" title="<?php echo $catName; ?>" href="<?php echo $catUrl; ?>"> <span>More Info</span> </a> </div>
+      </div>
+      <?php //echo $this->getPriceHtml($_product, true) ?>
+    </li>
+    <? $j++;?>
+    <?php } ?>
+  </ul>
+  <div class="banner" style="padding:10px 0">
+	<h2 style="float:left;padding:10px;margin:0; font-size:16px; font-weight:bold;">
+  <?php
+		$catId = $_category->getId();
+		$category = Mage::getModel('catalog/category')->load($catId); 
+		$curent_metaTitle = Mage::getSingleton('cms/page')->getMeta_title();
+		$current_metaDescription =  Mage::getSingleton('cms/page')->getMeta_description();
+?>
+<?php 
+      if(strlen($curent_metaTitle)>230){ echo substr($curent_metaTitle,0,230).".." ;	  
+	  } else{		 
+	   echo $curent_metaTitle;	  
+	   }
+?>
+      </h2>
+      <p style="font-size:14px; color:#fff; line-height:15px; text-align:justify; width:98%; float:left; margin:0">
+        <?php
+	//echo $current_category->getMeta_description();
+    // $headBlock = $this->getLayout()->getBlock('head'); echo $description=$headBlock->getDescription();
+      if(strlen($current_metaDescription)>380){ 
+	  	echo substr($current_metaDescription,0,380).".." ;	  
+	  }else{		  
+	  	echo $current_metaDescription;	 
+	  }
+  ?>
+  </p>
+    <p style="font-size:14px; color:#fff; line-height:17px; text-align:justify; width:98%; float:left;margin:0;">
+      <?php //echo $catDes; ?>
+      We cater to busy business owners and energetic event coordinators by providing comprehensive trade show solutions that transform empty booth spaces into exhibits worthy of center stage. From pop-up displays to custom displays, our expansive online catalog features an array of exhibits to allure and impress your audience. </p>
+    <p style="font-size:14px; color:#fff; line-height:17px; text-align:justify; width:98%; float:left;margin:0;">
+      <?php //echo $catDes; ?>
+     Of course, we can’t forget the motor that drives our exceptional products and services: our Vivid team. Everyone here—from sales to the seamstresses—is dedicated to delivering the trade show solutions you need to succeed. </p>
+         <p style="font-size:14px; color:#fff; line-height:17px; text-align:justify; width:98%; float:left;margin:0;">
+      We love what we do. And when you love what you do, great things happen. As we passionately strive to evolve our brand, we have witnessed substantial growth since our inception in 2006  Here at Vivid Ads, we promise to continue improving our products and services for the benefit of our customers.
+      </p>
+  </div>
+  <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('external-block')->toHtml() ?>
+ <?php /*?> <div id="quoteLoader"></div><?php */?>
+  <!-- <iframe src='http://usedbooths.com.au/index.php/externalform/?store_id=166' height='1450' width='930'></iframe>--> 
+</div>
+<script language="javascript">
+<!--
+ //Loading external quotatoin form
+ // ajax call for external form
+	//jQuery(document).ready(function(e) {
+//		 var quoteUrl = '<?php echo $this->getUrl();?>index.php/externalform/?store_id=166';
+//		 var formVars = { quoteUrl:'<?php echo $this->getUrl();?>index.php/externalform/?store_id=166',
+//		 				  form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey();?>',
+//							};
+//		// console.log(formVars);
+//		 jQuery.ajax({
+//			 url:quoteUrl,
+//			 dataType:"html",
+//			 data:formVars,
+//			 type:'POST',
+//			 beforeSend: function(xError){
+//				 //console.log(xError);
+//				 html = 'Please wait form is loading...';
+//				 html +='<img src="<?php echo Mage::getBaseUrl().'media/loading.gif'?>" />';
+//				  jQuery('#quoteLoader').html();
+//				 },
+//			 success: function(response){
+//				  //console.log(response);
+//				//  jQuery('#quoteLoader').html(html);
+//				  jQuery('#quoteLoader').html(response);
+//				 },
+//			 error: function(error){
+//				  console.log(error);
+//				 },
+//			 });
+//    });
+-->
+// ajax call for external form end.
+</script>

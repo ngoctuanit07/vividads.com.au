@@ -1,0 +1,469 @@
+app/code/local/AsiaConnect/Gallery/etc/adminhtml.xml:2: 
+<config>
+       ^
+app/code/local/AsiaConnect/Gallery/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/AsiaConnect/Gallery/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Altima/Lookbook/etc/config.xml:24: 
+<config>
+       ^
+app/code/local/Altima/Lookbook/etc/config (copy).xml:24: 
+<config>
+       ^
+app/code/local/Altima/Lookbook/etc/system.xml:24: 
+<config>
+       ^
+app/code/local/MD/QuickView/etc/adminhtml.xml:1: 
+<config>
+       ^
+app/code/local/MD/QuickView/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/MD/QuickView/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/HM/Testimonial/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/HM/Testimonial/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/HM/QuickContact/etc/config.xml:3: 
+<config>
+       ^
+app/code/local/HM/QuickContact/etc/system.xml:28: 
+<config>
+       ^
+app/code/local/Amasty/Label/etc/adminhtml.xml:9: 
+<config>
+       ^
+app/code/local/Amasty/Label/etc/config.xml:9: 
+<config>
+       ^
+app/code/local/Amasty/Label/etc/system.xml:9: 
+<config>
+       ^
+app/code/local/Amasty/Base/etc/adminhtml.xml:2: 
+<config>
+       ^
+app/code/local/Amasty/Base/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Amasty/Base/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Amasty/Zoom/etc/adminhtml.xml:2: 
+<config>
+       ^
+app/code/local/Amasty/Zoom/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Amasty/Zoom/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Fishpig/Proofs/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/WP_BK/CustomMenu/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/WP_BK/CustomMenu/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Kanavan/Searchautocomplete/etc/config.xml:10: 
+<config>
+       ^
+app/code/local/Kanavan/Searchautocomplete/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Fishpig1/Customtabs1/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/IWD/OnepageCheckout/etc/adminhtml.xml:2: 
+<config>
+       ^
+app/code/local/IWD/OnepageCheckout/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/IWD/OnepageCheckout/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Hm/Testimonial/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Hm/Testimonial/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Inchoo/EmptyCart/etc/config.xml:1: 
+<config>
+       ^
+app/code/local/Mico/Mupload/Helper/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Mico/Mupload/controllers/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Mico/Mupload/Model/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Mico/Mupload/Model/Product/Option/Type/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Mico/Mupload/Model/System/Config/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Mico/Mupload/Block/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Mico/Mupload/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Mico/Mupload/etc/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Mico/Mupload/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Mico/Core/Model/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Mico/Core/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Mico/Core/etc/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Mico/Core/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Vinagento/Vpager/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Balanced/MassCategories/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Balanced/MassCategories/etc/system.xml:3: 
+<config>
+       ^
+app/code/local/Vividads/Tnt/Helper/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/controllers/Adminhtml/Sales/Order/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/controllers/Adminhtml/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/controllers/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/Tntservices/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/Routingc/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/Typec/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/Typed/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/Tnt/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/Typea/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/Typeh/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/Typef/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/Typee/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Mysql4/Typeb/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Model/Carrier/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Block/Adminhtml/Sales/Order/View/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Block/Adminhtml/Tnt/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Block/Adminhtml/Tnt/Edit/Tab/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Block/Adminhtml/Tnt/Edit/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Block/Adminhtml/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/Block/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Vividads/Tnt/etc/response.xml:2: 
+                        <enquiry xmlns="http://www.tntexpress.com.au">
+                                                                     ^
+app/code/local/Vividads/Tnt/etc/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Tnt/etc/system.xml:2: 
+    <config>
+           ^
+app/code/local/Vividads/Tnt/sql/tnt_setup/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Helper/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/controllers/Adminhtml/Sales/Order/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/controllers/Adminhtml/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/controllers/Adminhtml/Order/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/controllers/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Model/Convert/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Model/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Model/Mysql4/Shipmentitem/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Model/Mysql4/Shipment/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Model/Mysql4/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Model/Mysql4/Multishipping/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Model/Type/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Block/Adminhtml/Sales/Order/View/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Block/Adminhtml/Sales/Order/Shipment/Create/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Block/Adminhtml/Sales/Order/Shipment/View/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Block/Adminhtml/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Block/Adminhtml/Multishipping/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Block/Adminhtml/Multishipping/Edit/Tab/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Block/Adminhtml/Multishipping/Edit/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/Block/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Vividads/Multishipping/etc/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/etc/config - Copy.xml:2: 
+<config>
+       ^
+app/code/local/Vividads/Multishipping/sql/multishipping_setup/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/Vividads/Multishipping/sql/tntservices_setup/_notes/dwsync.xml:2: 
+<dwsync>
+       ^
+app/code/local/MW/FollowUpEmail/etc/adminhtml.xml:3: 
+<config>
+       ^
+app/code/local/MW/FollowUpEmail/etc/config.xml:3: 
+<config>
+       ^
+app/code/local/MW/FollowUpEmail/etc/system.xml:3: 
+<config>
+       ^
+app/code/local/MW/FollowUpEmail/sql/followupemail_setup/emailtemplates/emailtemplates.xml:2: 
+<templates>
+          ^
+app/code/local/MW/Mwcore/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/MW/Mwcore/etc/system.xml:2: 
+                        <config>
+                               ^
+app/code/local/MW/Mcore/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/MW/Mcore/etc/system.xml:2: 
+                        <config>
+                               ^
+app/code/local/Artis/Permissions/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Artis/Partialpayment/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Artis/Eventcalendar/etc/config_bk_08_08_2013.xml:2: 
+<config>
+       ^
+app/code/local/Artis/Eventcalendar/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Artis/Eventcalendar/etc/config (copy).xml:2: 
+<config>
+       ^
+app/code/local/Artis/Eventcalendar/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Artis/Timeline/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Artis/Calendar/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Artis/Designer/etc/config_bk_30_09_2013.xml:2: 
+<config>
+       ^
+app/code/local/Artis/Designer/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/MageWorx/InstantCart/etc/adminhtml.xml:38: 
+<config>
+       ^
+app/code/local/MageWorx/InstantCart/etc/config.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/InstantCart/etc/system.xml:38: 
+<config>
+       ^
+app/code/local/MageWorx/OrdersPro/etc/adminhtml.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/OrdersPro/etc/config.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/OrdersPro/etc/system.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/Downloads/etc/adminhtml.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/Downloads/etc/config.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/Downloads/etc/system.xml:38: 
+<config>
+       ^
+app/code/local/MageWorx/SocialBooster/etc/adminhtml.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/SocialBooster/etc/config.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/SocialBooster/etc/system.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/Adminhtml/etc/config.xml:38: 
+<config>
+       ^
+app/code/local/MageWorx/Adminhtml/etc/system.xml:38: 
+<config>
+       ^
+app/code/local/MageWorx/MultiFees/etc/adminhtml.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/MultiFees/etc/config.xml:33: 
+<config>
+       ^
+app/code/local/MageWorx/MultiFees/etc/system.xml:33: 
+<config>
+       ^
+app/code/local/Magestore/Webpos/etc/adminhtml.xml:23: 
+<config>
+       ^
+app/code/local/Magestore/Webpos/etc/config.xml:23: 
+<config>
+       ^
+app/code/local/Magestore/Webpos/etc/system.xml:23: 
+<config>
+       ^
+app/code/local/Magestore/Magenotification/etc/adminhtml.xml:2: 
+<config>
+       ^
+app/code/local/Magestore/Magenotification/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Magestore/Magenotification/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Webspeaks/Productbook/etc/adminhtml.xml:2: 
+<config>
+       ^
+app/code/local/Webspeaks/Productbook/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Webspeaks/Productbook/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/Excellence/Ajax/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Excellence/AjaxWishlist/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/Emjainteractive/AdminPaymentmethod/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/EmjaInteractive/Accountreceivable/etc/adminhtml.xml:2: 
+<config>
+       ^
+app/code/local/EmjaInteractive/Accountreceivable/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/EmjaInteractive/PurchaseorderManagement/etc/adminhtml.xml:2: 
+<config>
+       ^
+app/code/local/EmjaInteractive/PurchaseorderManagement/etc/config.xml:2: 
+<config>
+       ^
+app/code/local/EmjaInteractive/PurchaseorderManagement/etc/system.xml:2: 
+<config>
+       ^
+app/code/local/EmjaInteractive/AdminPaymentmethod/etc/config.xml:2: 
+<config>
+       ^
+

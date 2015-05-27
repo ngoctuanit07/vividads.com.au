@@ -1,0 +1,2543 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     base_default
+
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+
+
+/**
+
+ * @see Mage_Page_Block_Template_Links
+
+ */
+
+	 $sliders = Mage::getStoreConfig('youamaslider');
+     $images = Mage::getBaseUrl('media') . 'youama/slider/';
+	 $control =0;
+	 $totalImages = count($sliders['image']);
+	 /////////////////////////////////fetching main categories///////////////////////
+	 $storeId    = Mage::app()->getStore()->getId();
+	 $_store_cats = Mage::getModel('catalog/category')->load(1460);
+	 $_categories = $_store_cats->getChildrenCategories();
+	 $baseUrl = $this->getUrl();
+?>
+<script type="text/javascript" src="<?php echo $this->getBaseUrl();?>js/bannershop/category_instantbox.js"></script>
+<script type="text/javascript" src="<?php echo $this->getBaseUrl();?>js/bannershop/printreadyform.js"></script>
+<script type="text/javascript">
+ 
+ 
+
+ function ftTOin() {
+
+	var major = document.getElementById('major').value;
+	if(major == 'm')
+	{
+	//	document.getElementById('size_w').value = document.getElementById('size_w').value * 12;
+	//	document.getElementById('size_h').value = document.getElementById('size_h').value * 12;
+		if(isFloat(document.getElementById('size_h').value * 12))	
+		{
+		document.getElementById('size_h').value = (document.getElementById('size_h').value * 12).toFixed(2);
+		}
+		else
+		{
+		document.getElementById('size_h').value = (document.getElementById('size_h').value * 12);
+		}
+
+		
+
+		if(isFloat(document.getElementById('size_w').value * 12))	
+
+		{
+
+			document.getElementById('size_w').value = (document.getElementById('size_w').value * 12).toFixed(2);
+
+		}
+
+		else
+
+		{
+
+			document.getElementById('size_w').value = (document.getElementById('size_w').value * 12);
+
+		}
+
+		
+
+	}
+
+	if(major == 'cm')
+
+	{	
+
+		if(isFloat(document.getElementById('size_h').value / 12))	
+
+		{
+
+			document.getElementById('size_h').value = (document.getElementById('size_h').value / 12).toFixed(2);
+
+		}
+
+		else
+
+		{
+
+			document.getElementById('size_h').value = (document.getElementById('size_h').value / 12);
+
+		}
+
+		
+
+		if(isFloat(document.getElementById('size_w').value / 12))	
+
+		{
+
+			document.getElementById('size_w').value = (document.getElementById('size_w').value / 12).toFixed(2);
+
+		}
+
+		else
+
+		{
+
+			document.getElementById('size_w').value = (document.getElementById('size_w').value / 12);
+
+		}
+
+	}
+
+	getPrice();
+
+}
+
+ 
+
+function qty_disc()
+
+	{
+
+		var dperc = 0;
+
+		
+
+		var disc = new Array();
+
+		disc[0]='3:5';
+
+			disc[1]='7:8';
+
+			disc[2]='15:12';
+
+			disc[3]='25:17';
+
+			disc[4]='49:20';
+
+			disc[5]='100:25';
+
+			disc[6]='250:30';
+
+			disc[7]='500:35';
+
+			disc[8]='750:40';
+
+			disc[9]='1000:45';
+
+			disc[10]='1000000:50';
+
+			dperc = 30;
+
+			
+
+			var total=parseFloat(document.getElementById("total").value);
+
+			 
+
+			var shipping = document.getElementById("shipping").value;
+
+			var qty;
+
+			if(document.getElementById("qty").value == "More") {
+
+				qty=document.getElementById("qtyText").value;				
+
+			}
+
+			else {
+
+				qty=document.getElementById("qty").value;
+
+			}
+
+ 			
+
+			var major = document.getElementById('major').value;
+
+			var width;
+
+			var height;
+
+			if(major == 'in')
+
+			{
+
+				 width = document.getElementById('size_w').value / 12;
+
+				 height = document.getElementById('size_h').value / 12;
+
+			}
+
+			if(major == 'ft')
+
+			{
+
+				width = document.getElementById('size_w').value;
+
+				height = document.getElementById('size_h').value;
+
+			}
+
+
+
+			
+
+		
+
+		var totalsize = Math.ceil(height)*Math.ceil(width);
+
+		var size = Math.ceil(height)+'x'+Math.ceil(width);
+
+		var grand_total;
+
+		var cateid = document.getElementById('product').value;
+
+		var categoryid = cateid.split(":"); 
+
+		var cat_id = categoryid[0];
+
+		var subcatid = categoryid[1];
+
+ 		
+
+		
+
+		
+
+		
+
+		if(cat_id == 37) {
+
+			totalsize = (Math.ceil(height)/12)*(Math.ceil(width)/12);
+
+		}
+
+		if(cat_id == 37) {
+
+			totalsize = (Math.ceil(height)/12)*(Math.ceil(width)/12);
+
+		}
+
+		
+
+		 
+
+		if((size == '2x3' || size == '3x4' || size == '2x5') && (cat_id==30 || cat_id==43) )
+
+		{ 
+
+			document.getElementById("qty_discount").value=0;
+
+			document.getElementById('discountprice').style.display = 'none';
+
+			grand_total=((parseFloat(total) + parseFloat(shipping)));
+
+			roundNumbergt(grand_total,2);
+
+			return;
+
+		}
+
+		else if(qty == 1)
+
+		{
+
+			document.getElementById("qty_discount").value=0;
+
+			document.getElementById('discountprice').style.display = 'none';
+
+			 grand_total=((parseFloat(total) + parseFloat(shipping)));
+
+						roundNumbergt(grand_total,2);
+
+						return;
+
+		}
+
+		else if(totalsize > 200) {
+
+			document.getElementById("qty_discount").value=0;
+
+			document.getElementById('discountprice').style.display = 'none';
+
+			 grand_total=((parseFloat(total) + parseFloat(shipping)));
+
+			roundNumbergt(grand_total,2);
+
+			return;
+
+		}
+
+ 		else
+
+		{
+
+		    
+
+ 		 	if(disc.length !== 0)
+
+			{	
+
+				for(i=0; i<disc.length;i++)
+
+				{
+
+					var disc_value=disc[i].split(":");
+
+					if(parseInt(qty) <= parseInt(disc_value[0]))
+
+					{
+
+						var disc_total_rate = disc_value[1];
+
+  						var disc_total = parseFloat(total * disc_total_rate / 100);
+
+						roundNumberdc(disc_total,2);
+
+						
+
+						document.getElementById('discountprice').style.display = 'block';
+
+						document.getElementById('qtydiscountprice').innerHTML = '$' + parseFloat(disc_total).toFixed(2);
+
+ 					    grand_total=((parseFloat(total) + parseFloat(shipping)) - parseFloat(disc_total));
+
+					    
+
+						
+
+						roundNumbergt(grand_total,2);
+
+						return;
+
+					}	
+
+				}
+
+			}
+
+			else
+
+			{
+
+			    document.getElementById("qty_discount").value=0;
+
+			    
+
+ 				roundNumbergt(parseFloat(total),2);
+
+			}
+
+			
+
+		}
+
+	}
+
+
+
+ 	function Shipping()
+
+	{	
+
+		var sperc = 0;
+
+		var ship=new Array();
+
+ 		if (document.getElementById("shipping_method").value == 'expedited')
+
+		{
+
+			ship[0]='99:12.95';
+
+ship[1]='199:12.95';
+
+ship[2]='299:14.95';
+
+ship[3]='399:16.95';
+
+							sperc = 8;
+
+			 	
+
+			 
+
+			
+
+		}
+
+		else if(document.getElementById("shipping_method").value == 'standard')
+
+		{
+
+ 			ship[0]='99:7.95';
+
+ship[1]='199:0.00';
+
+ship[2]='299:0.00';
+
+ship[3]='399:0.00';
+
+							sperc = 0;
+
+				
+
+		 
+
+		}
+
+		else if(document.getElementById("shipping_method").value == 'priority')
+
+		{
+
+			ship[0]='99:17.95';
+
+ship[1]='199:29.95';
+
+ship[2]='299:44.95';
+
+ship[3]='399:54.95';
+
+						sperc = 14;
+
+					}
+
+		else if(document.getElementById("shipping_method").value == 'priority overnight')
+
+		{
+
+		   ship[0]='99.99:49.99';
+
+ship[1]='199.99:89.99';
+
+ship[2]='299.99:139.99';
+
+ship[3]='399.99:179.99';
+
+			sperc = 43;
+
+		}
+
+		else if(document.getElementById("shipping_method").value === '')
+
+		{
+
+			sperc = 0;
+
+			document.getElementById("shipping").value = 0;
+
+				document.getElementById("shipping_display").value = "$0.00";
+
+				roundNumbergt(parseFloat(document.getElementById("total").value),2);
+
+			return false;
+
+		}
+
+		var total=parseFloat(document.getElementById("total").value);
+
+		var qty_discount=document.getElementById("qty_discount").value;
+
+ 		var qty;
+
+		if(document.getElementById("qty").value == "More") {
+
+			qty=document.getElementById("qtyText").value;				
+
+		}
+
+		else {
+
+			qty=document.getElementById("qty").value;
+
+		}
+
+ 		
+
+ 	    if(qty > 1 && qty_discount != 0)
+
+		{
+
+			var disc = new Array();
+
+			disc[0]='3:5';
+
+disc[1]='7:8';
+
+disc[2]='15:12';
+
+disc[3]='25:17';
+
+disc[4]='49:20';
+
+disc[5]='100:25';
+
+disc[6]='250:30';
+
+disc[7]='500:35';
+
+disc[8]='750:40';
+
+disc[9]='1000:45';
+
+disc[10]='1000000:50';
+
+			 
+
+			if(disc.length !== 0)
+
+			{	
+
+				for(i=0; i<disc.length;i++)
+
+				{
+
+					var disc_value=disc[i].split(":");
+
+					if(parseInt(qty) <= parseInt(disc_value[0]))
+
+					{ 
+
+						var disc_total_rate = disc_value[1];
+
+  						var disc_total = parseFloat(total * disc_total_rate / 100);
+
+						qty_discount = disc_total;
+
+					 	break;	
+
+					}	
+
+			 }
+
+		} 
+
+	    }
+
+		// minus qty_discount in to base price (product price)
+
+ 		total = total - qty_discount;
+
+		var ship_total;
+
+		var grand_total;
+
+   		if(total >= 400)
+
+		{	
+
+ 			ship_total = parseFloat(total * sperc / 100);
+
+ 			roundNumbersc(ship_total,2);
+
+			grand_total=((parseFloat(document.getElementById("shipping").value)+parseFloat(total)) - parseFloat(qty_discount));
+
+			roundNumbergt(grand_total,2);
+
+			return true;
+
+		}
+
+		else
+
+		{
+
+		 if(ship.length !== 0)
+
+			{	for(i=0; i<ship.length;i++)
+
+				{
+
+					var ship_value=ship[i].split(":");
+
+ 					if(total <= ship_value[0])
+
+					{	
+
+						ship_total = ship_value[1];
+
+						var shipmethod = document.getElementById("shipping_method").value;
+
+					       						roundNumbersc(ship_total,2);
+
+						grand_total=((parseFloat(document.getElementById("shipping").value)+parseFloat(total)) - parseFloat(qty_discount));
+
+						roundNumbergt(grand_total,2);
+
+						return true;
+
+					}	
+
+				}
+
+			}
+
+			else
+
+			{
+
+				document.getElementById("shipping").value = 0;
+
+ 				document.getElementById("shipping_display").value = "$0.00";
+
+				roundNumbergt(parseFloat(total),2);
+
+				return true;
+
+			}
+
+		}
+
+		
+
+		return true;
+
+	}
+
+  
+
+function include(arr, obj) {
+
+    for(var i=0; i<arr.length; i++) {
+
+        if (arr[i] == obj) return true;
+
+    }
+
+}	
+
+
+
+function getPrice()
+
+{
+
+    document.getElementById('categoryid').value = document.getElementById('product').value;
+
+	
+
+	var categoryid = document.getElementById('categoryid').value.split(":"); 
+
+	var catid = categoryid[0];
+
+	
+
+		
+
+     var major = document.getElementById('major').value;
+
+	var width;
+
+	var height;
+
+	if(major == 'm')
+
+	{
+
+		width = document.getElementById('size_w').value;
+
+		height = document.getElementById('size_h').value;
+
+	}
+
+	if(major == 'cm')
+
+	{
+
+		width = document.getElementById('size_w').value/100;
+
+		height = document.getElementById('size_h').value/100;
+
+	}
+
+	
+
+	if(major == 'mm')
+
+	{
+
+		width = document.getElementById('size_w').value/1000;
+
+		height = document.getElementById('size_h').value/1000;
+
+	}
+
+
+
+ 	
+
+	
+
+	//alert(width*height);
+
+     
+
+	var bid = document.getElementById('bannerid').value;
+
+	var accessoriesPrice = document.getElementById('accessories').value;
+
+	
+
+ 	//var strURL ='fetchbannerprice.php?w='+width+'&h='+height+'&bid='+bid;
+
+	var qty = document.getElementById('qty').value;	
+
+	var price = document.getElementById('price').value;
+
+	var nPrice = width*height*qty*price;
+
+	
+
+	nPrice = nPrice+parseFloat(accessoriesPrice);
+
+	
+
+	//document.getElementById('total_display').value=price;
+
+	
+
+	
+
+		
+
+}
+
+
+
+
+
+
+
+
+
+function setshippinginfo()
+
+{
+
+    var cateid = document.getElementById('product').value;
+
+	var categoryid = cateid.split(":"); 
+
+	var cid = categoryid[0];
+
+	var country = '';
+
+ 	if(cid == 30 && (country == 'United States' || country == ''))
+
+	{
+
+	   var shipdrp = "<select id='shipping_method' name='shipping_method' class='textfield' onchange='javascript:quantity(), bprice(),Shipping(),qty_disc();'> <option value=''>Select Shipping</option><option value='priority overnight'>Priority Overnight (Delivery by 10-16-2013 for Print Ready File) </option>  <option value='priority'>Priority (Delivery by 10-18-2013 from proof)</option> <option value='expedited'>Express (Delivery by 10-23-2013 from proof)</option> <option value='standard' >Standard (Delivery by 10-29-2013 from proof)</option> </select>";
+
+				  
+
+	}
+
+	else
+
+	{
+
+	     var shipdrp = "<select id='shipping_method' name='shipping_method' class='textfield' onchange='javascript:quantity(), bprice(),Shipping(),qty_disc();'> <option value=''>Select Shipping</option><option value='priority'>Priority (Delivery by 10-18-2013 from proof)</option> <option value='expedited'>Express (Delivery by 10-23-2013 from proof)</option> <option value='standard' >Standard (Delivery by 10-29-2013 from proof)</option> </select>";
+
+	}
+
+	 
+
+	document.getElementById('shippingmethods').innerHTML = shipdrp; 
+
+}
+
+
+
+ </script>
+<script type="text/javascript" src="<?php echo $this->getBaseUrl();?>js/bannershop/instantbox.js"></script>
+<script type="text/javascript">
+
+	  
+
+	   document.getElementById('major').value = 'm'; 
+
+  loadqtycombo();
+
+
+
+ </script>
+
+<!--Form Info-->
+
+<div class="formInfo">
+  <form action="http://outdoorbannershop.com.au/ajaxcontacts/index/calculatorPost/" id="contactForm" method="post">
+    <div class="no-display">
+      <input type="hidden" name="related_product" id="related-products-field" value="" />
+    </div>
+    <input type="hidden" name="sessid" id="sessid" value="" />
+    <div id="instantBox" class="clearfix">
+      <div class="lable"></div>
+      <div class="lable lable2"></div>
+      
+      <!--<div class="topbg"></div>-->
+      
+      <div class="instantBox-body clearfix">
+        <div class="instantPrice float-L">
+          <div>
+            <div class="msg-sprite error msg" id="appsize" style="display:none;">For special low price on sizes over 100ft. wide and 30ft. height contact us on sales@outdoorbannershop.com.au.</div>
+            <div class="msg-sprite error msg" id="vinylsize" style="display:none;">Please enter width upto 100ft. & height upto 20ft. for Vinyl Signs/Decals(Posters).</div>
+            <div class="msg-sprite error msg" id="vinylsize2" style="display:none;">Please enter width upto 100ft. & height upto 20ft. for Perforated Window Signs.</div>
+            <div class="msg-sprite error msg" id="clothmsg" style="display:none;"> Please enter width upto 8ft or height upto 8ft.</div>
+            <div class="msg-sprite error msg" id="billboarderr" style="display:none;">For special low price on sizes over 100ft. wide and 30ft. height contact us on sales@outdoorbannershop.com.au.</div>
+            <div class="msg-sprite error msg" id="megnaticsign" style="display:none;"> Please enter width upto 2ft and height upto 5ft.</div>
+            <div class="msg-sprite error msg" id="canvasbanner" style="display:none;"> Please enter width upto 5ft or height upto 5ft.</div>
+          </div>
+          <script language="javascript">
+
+	 <!--
+
+	 	///function load selcted product///
+
+		function loadProduct2(Id){					
+
+				//alert(Id);
+
+				
+
+				var formData={
+
+					crAction:'products2',
+
+					category_id:Id,					
+
+				        }				
+
+			//alert(productId);
+
+				jQuery.ajax({
+
+				 url:"<?=$baseUrl;?>ajax/bannershopajax.php",
+
+				 type:"POST",
+
+				 data:formData,
+
+				 daType:"html",
+
+				 beforeSend:function(obj){
+
+					 jQuery('#loaderp2').show();
+
+					 
+
+					  jQuery('#mainProduct2').hide();
+
+					 },
+
+				 success: function(data){
+
+					// alert(data);
+
+					
+
+					
+
+					jQuery('#mainProduct2').show();
+
+					 jQuery('#mainProduct2').html(data);
+
+					 
+
+					
+
+					 },
+
+				 complete: function(obj){
+
+					 jQuery('#loaderp2').hide(); 
+
+					 
+
+					 },
+
+				 error: function(xError, objerror, xMessage){
+
+					 alert(objerror);
+
+					 },
+
+				
+
+				});
+
+			        }		
+
+	 
+
+	 
+
+		
+
+		///function load selcted product///
+
+		function loadProduct(Id){					
+
+			
+
+				/*reset rest of the values*/
+
+				document.getElementById('size_w').value=1;
+
+				document.getElementById('size_h').value=1;
+
+				document.getElementById('qty').value=1;
+
+				document.getElementById('major').value='m';
+
+				document.getElementById('total_display').innerHTML = '$0.00';
+
+				document.getElementById('qtydiscountprice').innerHTML = '$0.00';
+
+				document.getElementById('qtydiscountprice').innerHTML = '$0.00';
+
+				document.getElementById('shipping_display').innerHTML = '$0.00';
+
+				
+
+				
+
+				/*sending produts attributes*/
+
+				var formData={
+
+					crAction:'products',
+
+					category_id:Id,					
+
+				        }				
+
+	
+
+	//alert(productId);
+
+		jQuery.ajax({
+
+				 url:"<?=$baseUrl;?>ajax/bannershopajax.php",
+
+				 type:"POST",
+
+				 data:formData,
+
+				 daType:"html",
+
+				 beforeSend:function(obj){
+
+					  jQuery('#unitBox').hide();
+
+					  
+
+					  jQuery('#sizeBox').hide();
+
+					 jQuery('#loader').show();
+
+					 jQuery('#finishBox').hide();
+
+					  jQuery('#mainProduct').hide();
+
+					   jQuery('#baseBox').hide();
+
+					 },
+
+				 success: function(data){
+
+					// alert(data);
+
+					
+
+					
+
+					 jQuery('#mainProduct').show();
+
+					 jQuery('#mainProduct').html(data);
+
+					 jQuery('#finishBox').hide();
+
+					 jQuery('#fittingBox').hide();
+
+					 jQuery('#spacingBox').hide();
+
+					
+
+					 },
+
+				 complete: function(obj){
+
+					 jQuery('#loader').hide(); 
+
+					 
+
+					 },
+
+				 error: function(xError, objerror, xMessage){
+
+					 alert(objerror);
+
+					 },
+
+				
+
+				});
+
+			        
+
+		   }		
+
+	 
+
+	 
+
+	 ///function load selcted product///
+
+		
+
+		function loadCustomOptions(productId){					
+
+				
+//alert(productId);
+				var p_id = productId.split(':');
+
+				
+
+				//alert(p_id[1]);
+
+				var formData={
+
+					crAction:'customOptions',
+
+					category_id:p_id[0],	
+
+					product_id:p_id[1],					
+
+				        }	
+
+			//fetch categoryId
+
+			var category_id=p_id[0];	
+
+			var product_id = p_id[1];	   					   			
+
+			//alert(product_id);
+
+					jQuery.ajax({
+
+				 url:"<?=$baseUrl;?>ajax/bannershopajax.php",
+
+				 type:"POST",
+
+				 data:formData,
+
+				 daType:"html",
+
+				 beforeSend:function(obj){
+
+					  jQuery('#unitBox').hide();
+
+					  
+
+					  jQuery('#sizeBox').hide();
+
+					 jQuery('#finishLoader').show();
+
+					  jQuery('#baseBox').hide();					  
+
+					 },
+
+				 success: function(data){
+
+					// alert(data);
+
+					
+
+					if(data != 0){
+
+					
+
+					if(category_id==1477){
+
+						
+
+					
+
+					  jQuery('#quantityBox').show();
+
+					  
+
+					
+
+					jQuery('#finishBox').hide();
+
+					jQuery('#baseBox').show();
+
+					 jQuery('#fittingBox').hide();
+
+					  jQuery('#finishSelectBox').hide;
+
+					  jQuery('#baseSelectBox').html(data);
+
+					  jQuery('#spacingBox').hide();
+
+						
+
+						}else{
+
+					
+
+					jQuery('#unitBox').show();
+
+					  jQuery('#quantityBox').show();
+
+					  jQuery('#sizeBox').show();
+
+					jQuery('#finishBox').show();
+
+					 jQuery('#fittingBox').show();
+
+					  jQuery('#finishSelectBox').html(data);
+
+					  jQuery('#spacingBox').hide();
+
+					  jQuery('#baseBox').hide();
+
+						
+
+						}
+
+					    }
+
+					 },
+
+				 complete: function(obj){
+
+					 jQuery('#finishLoader').hide();
+
+					 },
+
+				 error: function(xError, objerror, xMessage){
+
+					 alert(objerror);
+
+					 },
+
+				
+
+				});
+
+			        
+
+			/*product price*/ 
+
+			var formDataPrice={
+
+					crAction:'productPrice',
+
+					category_id:p_id[0],	
+
+					product_id:p_id[1],					
+
+				 }	
+
+			
+
+		/*get price message*/
+
+		
+
+		jQuery.ajax({
+
+				 url:"<?=$baseUrl;?>ajax/bannershopajax.php",
+
+				 type:"POST",
+
+				 data:formDataPrice,
+
+				 daType:"html",
+
+				 beforeSend:function(obj){
+
+					 			  
+
+					 },
+
+				 success: function(data){
+
+					// alert(data);
+
+					//alert(data);						
+
+					  document.getElementById('realPrice').value = parseFloat(data);	
+
+					  accessoriesVal = document.getElementById('accessories').value;	
+
+					  document.getElementById('price').value = parseFloat(data);
+// bprice starts 
+
+
+
+// bprice ends					  
+					  
+					  
+
+					  quantity();
+
+					  bprice();
+
+					  Shipping();
+
+					  qty_disc();				
+
+					
+
+					 },
+
+				 complete: function(obj){
+
+					
+
+					 },
+
+				 error: function(xError, objerror, xMessage){
+
+						 alert(objerror);
+
+					 },
+
+				
+
+				});
+
+				   
+
+		   }	
+
+	/*function bprice*/ 
+
+	function bprice()
+
+		{
+			 
+
+		   productId=document.getElementById('product').value;
+		    
+		   accessoryValue = document.getElementById('accessories').value;
+
+		   
+
+		    var p_id = productId.split(':');
+
+		    
+
+		    /*getting widht * height of the atom and quantity*/
+
+		    
+
+		   
+
+		    var total_value;
+
+		    var width = document.getElementById('size_w').value;
+
+		    var height = document.getElementById('size_h').value;
+
+		    var quantity = document.getElementById('qty').value;
+
+		    
+
+		    var area = width*height;
+
+		    
+
+		    var areaDiscount = area * quantity;
+
+				
+
+		//alert(p_id[1]);
+
+		var formDataPrice={
+
+					crAction:'discountPrice',
+
+					category_id:p_id[0],	
+
+					product_id:p_id[1],	
+
+					area:areaDiscount,				
+
+				        }	
+
+			//fetch categoryId
+
+			var category_id=p_id[0];	
+
+		    
+
+		    ///fetching prices of product and discounts ////
+
+		    
+
+		    jQuery.ajax({
+
+						 url:"<?=$baseUrl;?>ajax/bannershopajax.php",
+
+						 type:"POST",
+
+						 data:formDataPrice,
+
+						 daType:"html",
+
+						 beforeSend:function(obj){
+
+										  
+
+							 },
+
+						 success: function(data){
+
+							
+
+							//  document.getElementById('realPrice').value = parseFloat(data);	
+
+							 // document.getElementById('price').value = parseFloat(data);
+
+						jQuery('#discountprice').show();
+
+					     jQuery('#qtydiscountprice').html('$'+data);
+
+						
+
+						 totalPrice = document.getElementById('total').value;
+
+						 totalPrice = (totalPrice*28)/100;
+
+						jQuery('#savedAmountValue').html('$'+totalPrice.toFixed(2));
+
+						jQuery('#discountprice').hide();
+
+							 // alert(data);			
+
+							
+
+							 },
+
+						 complete: function(obj){
+
+							
+
+							 },
+
+						 error: function(xError, objerror, xMessage){
+
+								 alert(objerror);
+
+							 },
+
+						
+
+						});    
+
+		    
+
+		    
+
+		     var accessoryPrice = areaDiscount * accessoryValue;		    
+
+			//alert(accessoryPrice);
+
+			
+
+			if(document.getElementById('qty').value !== '')
+
+			{
+
+				if(document.getElementById('qty').value == "More") {
+
+					
+
+					total_value = parseFloat(document.getElementById('price').value) * document.getElementById('qtyText').value;
+
+					
+
+				}
+
+				else {
+
+					
+
+					
+
+					total_value = parseFloat(document.getElementById('price').value) * document.getElementById('qty').value;
+
+					
+
+				}
+
+				if(document.getElementById('side').checked)
+
+				{
+
+					total_value = total_value * 1.75;
+
+					total_value = total_value * area;					
+
+					
+
+					roundNumbertc(total_value,2);
+
+				}
+
+				else
+
+				{
+
+					total_value = total_value * area;					
+
+					roundNumbertc(total_value,2);
+
+				}
+
+			}
+
+			else
+
+			{				
+
+				document.getElementById('total').value = 0;
+
+				document.getElementById("total_display").innerHTML = "$0.00";
+
+			}
+
+			
+
+			total_value = total_value+accessoryPrice;
+
+			document.getElementById('total').value=total_value;
+
+			
+
+			var priceVal = document.getElementById('price').value;
+
+			var savedPrice = (priceVal*28)/100
+
+			
+
+			document.getElementById('savedAmountValue').innerHTML = '$'+savedPrice.toFixed(2);
+
+		
+
+			
+
+		return true;
+
+		} 
+
+///function load selcted product///
+
+		
+
+		function loadCustomFinishOptions(finishOption){					
+
+				//var p_id = productId.split(':');
+
+				jQuery(document).ready(function(e) {
+
+				
+
+				var p_id = finishOption;
+
+				
+
+				//alert(p_id[1]);
+
+				var formData={
+
+					crAction:'customFinishOptions',
+
+					product_id:p_id,					
+
+				        }	
+
+					   
+
+			//alert(p_id);
+
+				
+
+                            if(p_id=='HE'){							
+
+						jQuery('#finishSubBox').hide();
+
+						 						
+
+						jQuery('#topSelectBox').hide();
+
+						jQuery('#leftSelectBox').hide();
+
+						jQuery('#rightSelectBox').hide();
+
+						jQuery('#bottomSelectBox').hide();
+
+						
+
+						jQuery('#fittingBox').show();
+
+						jQuery('#spacingBox').show();
+
+						
+
+						}else{
+
+							//*hiding fitting & Spacing*//
+
+						jQuery('#fittingBox').hide();
+
+						jQuery('#spacingBox').hide();
+
+							}
+
+						
+
+						if(p_id=='1PT'){
+
+							 
+
+						jQuery('#finishSubBox').show();				
+
+						 
+
+						
+
+						jQuery('#topSelectBox').show();
+
+						jQuery('#leftSelectBox').hide();
+
+						jQuery('#rightSelectBox').hide();
+
+						jQuery('#bottomSelectBox').hide();
+
+						
+
+						 
+
+						}
+
+						
+
+						 
+
+						if(p_id=='2PLR'){
+
+							 
+
+						jQuery('#finishSubBox').show();						
+
+						
+
+						jQuery('#topSelectBox').hide();
+
+						jQuery('#leftSelectBox').show();
+
+						jQuery('#rightSelectBox').show();
+
+						jQuery('#bottomSelectBox').hide();
+
+						}
+
+						
+
+						if(p_id=='2PTB'){
+
+							 	
+
+						jQuery('#finishSubBox').show();	
+
+						
+
+						jQuery('#topSelectBox').show();
+
+						jQuery('#leftSelectBox').hide();
+
+						jQuery('#rightSelectBox').hide();
+
+						jQuery('#bottomSelectBox').show();
+
+						}
+
+						 
+
+	/*update the price on change */
+
+	//alert(p_id[1]);
+
+		
+
+		productId=document.getElementById('product').value;
+
+		accessoriesVal = document.getElementById('finish_sel').value;		   
+
+		var p_id = productId.split(':');	
+
+		
+
+		var formDataPrice={
+
+					crAction:'accessories',
+
+					category_id:p_id[0],	
+
+					product_id:p_id[1],	
+
+					accessory_id:accessoriesVal,
+
+		             }
+
+			//fetch categoryId
+
+			var category_id=p_id[0];	
+
+		    
+
+		    ///fetching prices of product and discounts ////
+
+		    
+
+		    jQuery.ajax({
+
+						 url:"<?=$baseUrl;?>ajax/bannershopajax.php",
+
+						 type:"POST",
+
+						 data:formDataPrice,
+
+						 daType:"html",
+
+						 beforeSend:function(obj){
+
+										  
+
+							 },
+
+						 success: function(data){
+
+						  document.getElementById('accessories').value=data;
+
+						 getPrice();quantity();checkNumeric();bprice();Shipping();qty_disc();loadqtycombo();
+
+						 newPrice = document.getElementById('price').value;
+
+						 accessoriesVal = document.getElementById('accessories').value=data;
+
+						 
+
+						 
+
+					     //jQuery('#qtydiscountprice').html('$'+data);
+
+						 },
+
+						 complete: function(obj){
+
+							
+
+							 },
+
+						 error: function(xError, objerror, xMessage){
+
+								 alert(objerror);
+
+							 },
+
+						
+
+						});					
+
+                      });
+
+			   }	
+
+
+
+
+
+///function load loadCustomFittingOptions///
+
+		
+
+		function loadCustomFittingOptions(finishOption){					
+
+				//var p_id = productId.split(':');
+
+				jQuery(document).ready(function(e) {
+
+				
+
+				var p_id = finishOption;				
+
+					jQuery('#spacingBox').show();
+
+	 		
+
+                      });
+
+			   }	
+
+	 -->
+
+	 
+
+	 /*function addToCart button*/
+
+	 
+
+	 function addToCart(categoryId, productId, qty){
+
+		 
+
+		 /*add to cart*/
+
+		 //alert(categoryId+'='+productId+'='+qty);	 
+
+		 
+
+		 var product_ids = productId.split(':');
+
+		 
+
+		 var product_id =product_ids[1];
+
+		 var quantity = qty;
+
+		 var grandTotal=document.getElementById('grand_total').value;
+
+		 
+
+		 /*collecting variables from the form*/
+
+		  
+
+		 var selected_attrib={
+
+			 unitsize		:'major',
+
+			 width		:'size_w',
+
+			 height		:'size_h',
+
+			 quantity		:'qty',
+
+			 finish_options:'finish_sel',
+
+			 fitting		:'fittings_sel',
+
+			 shipping		:'shipping_method',
+
+			 totalPrice	:'grand_total',			 		 
+
+			 top			:'size_top_sel',
+
+			 left		:'size_left_sel',
+
+			 right		:'size_right_sel',
+
+			 bottom		:'size_bottom_sel',
+
+			 spacing		:'spacing_sel',
+
+			 discount		:'qty_discount',
+
+			 shipping		:'shipping',
+
+			 accessories	:'accessories',
+
+			 price		:'price',
+
+			 realPrice	:'realPrice'			 
+
+			 
+
+			 }
+
+	///creating URL for the cart to add elements to the cart//
+
+		var url='';
+
+	
+
+	   for(var key in selected_attrib){
+
+			var objVal=selected_attrib[key];
+
+			url +='/'+key+'/'+document.getElementById(selected_attrib[key]).value;
+
+			}
+
+		url +='/';	
+
+		//alert(url);	
+
+			
+
+		//var url = 'checkout/cart/add?product='+product_id+'&qty;='+quantity+'';
+
+		//setLocation('http://outdoorbannershop.com.au/checkout/icart/add/uenc/aHR0cDovL291dGRvb3JiYW5uZXJzaG9wLmNvbS5hdS9mbGFncy9mZWF0dXJlLWZsYWdzLmh0bWw,/product/'+product_id+'/price/'+grandTotal+'/');
+
+		 	 
+
+		setLocation('<?=$this->getUrl();?>checkout/icart/add/uenc/aHR0cDovL291dGRvb3JiYW5uZXJzaG9wLmNvbS5hdS9mbGFncy9mZWF0dXJlLWZsYWdzLmh0bWw,/product/'+product_id+url);
+
+		
+
+		/*
+
+		 alert(url);
+
+		 
+
+		var url ='checkout/cart/add/product/'+product_id+'/qty/'+quantity+'/?bundle_option[28]=6&bundle_option[26]=9&bundle_option[24]=12';
+
+		
+
+		document.location.href=url;
+
+		*/
+
+		
+
+		// document.location.href='/checkout/cart/add?product='+product_id+'@qty;='+quantity+'';
+
+		 
+
+		 //productId = categoryIdsplit(',');		
+
+		 //document.location.href = 'checkout/cart/add?product='+productId+'&qty='+qty;
+
+		 
+
+	}
+
+	 
+
+	 
+
+	 
+
+	 /*function add to cart while on other popup right side*/
+
+	 
+
+	 /*function addToCart button*/
+
+	 
+
+	 function addToCartPr(categoryId, productId, qty){
+
+		 
+
+		 /*add to cart*/
+
+		 //alert(categoryId+'='+productId+'='+qty);	 
+
+		 
+
+		
+
+		 
+
+		 /*collecting variables from the form*/
+
+		  
+
+		 var selected_attrib={
+
+			 unitsize		:'sizeUnit',
+
+			 width		:'w_size_w',
+
+			 height		:'w_size_h',
+
+			 quantity		:'quantity_pr',
+
+			 finish_options:'finish_sel_pr',
+
+			 fitting		:'fittings_sel_pr',
+
+			 shipping		:'shipping_method_pr',
+
+			 totalPrice	:'grand_total_pr',			 		 
+
+			 top			:'size_top_sel_pr',
+
+			 left		:'size_left_sel_pr',
+
+			 right		:'size_right_sel_pr',
+
+			 bottom		:'size_bottom_sel_pr',
+
+			 spacing		:'spacing_sel_pr',
+
+			 discount		:'quantity_discount_pr',
+
+			 accessories	:'accessories_pr',
+
+			 price		:'price_pr',
+
+			 realPrice	:'realPrice_pr',
+
+			 description   : 'description_pr'			 
+
+			 
+
+			 }
+
+	///creating URL for the cart to add elements to the cart//
+
+		var url='';
+
+	
+
+	   for(var key in selected_attrib){
+
+			//alert(key);
+
+			var objVal=selected_attrib[key];
+
+			 url +='/'+key+'/'+document.getElementById(selected_attrib[key]).value;
+
+			}
+
+		url +='/';	
+
+		  //alert(url);	
+
+			//alert(productId);
+
+		//var url = 'checkout/cart/add?product='+product_id+'&qty;='+quantity+'';
+
+		//setLocation('http://outdoorbannershop.com.au/checkout/icart/add/uenc/aHR0cDovL291dGRvb3JiYW5uZXJzaG9wLmNvbS5hdS9mbGFncy9mZWF0dXJlLWZsYWdzLmh0bWw,/product/'+product_id+'/price/'+grandTotal+'/');
+
+		 	 
+
+		setLocation('<?=$this->getUrl();?>checkout/icart/add/uenc/aHR0cDovL291dGRvb3JiYW5uZXJzaG9wLmNvbS5hdS9mbGFncy9mZWF0dXJlLWZsYWdzLmh0bWw,/product/'+productId+url);
+
+				
+
+		 
+
+	} 
+
+	
+
+	
+	 // window.onload=loadProduct('1538');
+	  window.onload=loadCustomOptions('1538:610');
+//	  window.onload=sidebanner();
+//	  window.onload=setshippinginfo();
+//	  window.onload=getPrice();
+//	  window.onload=checkNumeric();
+//	  window.onload=qty_disc();
+//	  window.onload=loadqtycombo();
+	 
+	 
+
+	 
+
+	 </script>
+          <?php 
+
+                   $is_homepage = Mage::getBlockSingleton('page/html_header')->getIsHomePage();
+
+			    $requestUrl=$this->getRequest()->getRequestString();
+
+			    
+
+			    /*if calculator is not loaded at home page*/
+
+			    
+
+			    if(!$is_homepage){
+
+				   
+
+				 $_urlKey = explode('/',$requestUrl);
+
+				 
+
+				 if(count($_urlKey) > 3){
+
+					  $_categoryKey = $_urlKey[2];				 
+
+				 $_prodUrlKey =$_urlKey[3];
+
+					 }else{
+
+						 
+
+						  $_categoryKey = $_urlKey[1];				 
+
+				 $_prodUrlKey =$_urlKey[2];
+
+						 
+
+						 }
+
+				 
+
+				
+
+				 /*load category*/
+
+				 $_category = Mage::getModel('catalog/category')->loadByAttribute('url_key', $_categoryKey);		    	
+
+				 
+
+				 //load product////				 
+
+				 $_productKey = substr($_prodUrlKey,0,strpos($_prodUrlKey,'.'));				  
+
+			      $_product = Mage::getModel('catalog/product')->loadByAttribute('url_key', $_productKey);
+
+			    			    			 
+
+			    }
+
+			    
+
+			///check if calculator is loaded at home page////
+
+			
+
+		if($is_homepage){
+
+								
+
+				?>
+          <dl class="clearfix">
+            <dt>Category</dt>
+            <dd id="mainCategories">
+              <select name="category" class="textfield" id="category" onchange="javascript:loadProduct(this.value)" >
+                <option value="0">--Please select--</option>
+               
+                <?php
+
+				  //fetching all categories////
+
+                  		
+
+					if(count($_categories)>0){	
+
+						foreach($_categories as $_category){
+							$mycat = $_category->getId();
+							if($mycat!=1538){
+
+				  ?>
+                <option value="<?php echo $_category->getId();?>" title="<?php echo basename($_category->getUrl());?>" >&nbsp;&nbsp;<b><?php echo $_category->getName();?></b></option>
+                <?php
+
+							} else { ?>
+								
+	         <option value="<?php echo $_category->getId();?>" selected="selected" title="<?php echo basename($_category->getUrl());?>" >&nbsp;&nbsp;<b><?php echo $_category->getName();?></b></option>							
+								
+				<?php				}
+				
+						} //end of maincategoires foreach loop		
+
+					}//end of main if
+
+				?>
+              </select>
+            </dd>
+          </dl>
+          <?php }else{?>
+          <input type="hidden" name="category" class="textfield" id="category" value="<?php echo $_category->getId();?>" />
+          <?php 
+
+				}
+
+				?>
+          <input type="hidden" name="realPrice" id="realPrice" value="1" />
+          <input type="hidden" id="grand_total" name="grand_total" value="1" style="width:60px;" />
+          <input type="hidden" name="price" id="price" value="1" />
+          <input type="hidden" name="bannerid" id="bannerid" value="1" />
+          <?php 
+
+			   		if($is_homepage){
+
+			   ?>
+          <dl class="clearfix">
+            <dt>Product</dt>
+            <dd>
+              <div id="mainProduct">
+                <select class="textfield" id="product" name="product" onchange="javascript:loadCustomOptions(this.value),sidebanner(),setshippinginfo(),getPrice(),checkNumeric(),qty_disc(),loadqtycombo()" >
+                  <option value="0">--Please select--</option>
+                  <option selected="selected" value="1538:610">Custom Mesh Banner</option>
+                </select>
+              </div>
+              <div id="loader" style="display:none; margin-left:100px;"> <img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/> </div>
+            </dd>
+          </dl>
+          <?php 
+
+					}else{
+
+			   ?>
+          <input type="hidden" name="product" class="textfield" id="product" value="<?php echo $_category->getId().':'.$_product->getId();?>" />
+          <?php 
+
+					}
+
+			   ?>
+          <!--<dl class="clearfix" id="unitBox" style="display:none;">-->
+            <dl class="clearfix" id="unitBox" >
+          
+            <dt>Unit</dt>
+            <dd>
+              <input name="size" id="size" type="hidden" value="x" />
+              <select name="major" id="major" onchange="ftTOin();" class="textfield dropdown-s">
+                <option value="m">m.</option>
+                <option value="cm">cm.</option>
+                <option value="mm">mm.</option>
+              </select>
+            </dd>
+          </dl>
+         <!-- <dl class="clearfix" id="sizeBox"  style="display:none;">-->
+         <dl class="clearfix" id="sizeBox" >
+            <dt>Size</dt>
+            <dd id="main_size">
+              <div class="sizes-block">
+                <input name="size_w" id="size_w" type="text" class="textfield" value="1" onchange="loadqtycombo();checkNumeric();quantity();getPrice();bprice();Shipping();qty_disc();" />
+                <div class="float-L"> <a href="javascript:void(0);" class="arrowTop" onclick="increaseCounter('size_w'),getPrice(),quantity(),checkNumeric(),bprice(),Shipping();qty_disc();loadqtycombo();" ></a> <a href="javascript:void(0);" class="arrowbtm" onclick="decreaseCounter('size_w'),getPrice(),checkNumeric(),bprice(),Shipping(),qty_disc(),loadqtycombo();"></a> </div>
+              </div>
+              <span>width</span>
+              <div class="sizes-block">
+                <input name="size_h" id="size_h" type="text" class="textfield" value="1" onchange="loadqtycombo();checkNumeric();quantity();getPrice();bprice();Shipping();qty_disc();" />
+                <div class="float-L"> <a href="javascript:void(0);" class="arrowTop" onclick="increaseCounter('size_h'),getPrice(),quantity(),checkNumeric(),bprice(),Shipping();qty_disc();loadqtycombo();" ></a> <a href="javascript:void(0);" class="arrowbtm" onclick="decreaseCounter('size_h'),getPrice(),checkNumeric(),bprice(),Shipping(),qty_disc(),loadqtycombo();"></a> </div>
+              </div>
+              <span>height</span> </dd>
+          </dl>
+          <input type="hidden" name="categoryid" id="categoryid" value=""/>
+          <dl class="clearfix" id="quantityBox">
+            <dt>Quantity</dt>
+            <dd>
+              <div id="qtydrp" class="float-L">
+                <?php 
+
+			    		if(!$is_homepage){
+
+			    ?>
+                <input type="text" value="1" name="qty" id="qty" class="textfield float-L" style="width:40px; " />
+                <?php
+
+					}
+
+                   ?>
+              </div>
+              <div id="QtyTextBox" style="display:none;" class="mrg-T1">
+                <input type="text" id="qtyText" name="qtyText" class="textfield float-L" style="width:40px; margin-left:7px;text-align:center" value="1" onchange="quantity(),bprice(),Shipping(),qty_disc();" />
+              </div>
+              <div class="float-R">Two Side Banner
+                <input type="checkbox" id="side" name="side" value=""  onclick="javascript: sidebannerprice(),bprice(),Shipping();qty_disc();" />
+              </div>
+            </dd>
+          </dl>
+          <dl class="clearfix" id="finishBox"  >
+          
+            <dt>Finish</dt>
+            <dd>
+              <div id="finishSelectBox">
+                <select class="textfield" id="finish_sel">
+                  <option value="0">--Please select--</option>
+                </select>
+              </div>
+              <div id="finishSubBox" class="sub_attributes_box" style="display:none;">
+                <div id="topSelectBox" style="display:none;">
+                  <div   class="sub_attrib sub_attrib_lable">Top:</div>
+                  <select class="textfield sub_attrib" id="size_top_sel" style="width:59px;">
+                    <option value="0">--Please Select--</option>
+                    <option value="12mm">12mm &Oslash;</option>
+                    <option value="15mm">25mm &Oslash;</option>
+                    <option value="50mm">50mm &Oslash;</option>
+                    <option value="75mm">75mm &Oslash;</option>
+                    <option value="100mm">100mm &Oslash;</option>
+                  </select>
+                </div>
+                <!--<div id="leftSelectBox" style="display:none;">-->
+                 <div id="leftSelectBox" style="display:none;">
+                  <div class="sub_attrib sub_attrib_lable">Left:</div>
+                  <select class="textfield sub_attrib" id="size_left_sel" style="width:59px;">
+                    <option value="0">--Please Select--</option>
+                    <option value="12mm">12mm &Oslash;</option>
+                    <option value="15mm">25mm &Oslash;</option>
+                    <option value="50mm">50mm &Oslash;</option>
+                    <option value="75mm">75mm &Oslash;</option>
+                    <option value="100mm">100mm &Oslash;</option>
+                  </select>
+                </div>
+                <div id="rightSelectBox" style="display:none;">
+                  <div   class="sub_attrib sub_attrib_lable">Right:</div>
+                  <select class="textfield sub_attrib" id="size_right_sel" style="width:59px;">
+                    <option value="0">--Please Select--</option>
+                    <option value="12mm">12mm &Oslash;</option>
+                    <option value="15mm">25mm &Oslash;</option>
+                    <option value="50mm">50mm &Oslash;</option>
+                    <option value="75mm">75mm &Oslash;</option>
+                    <option value="100mm">100mm &Oslash;</option>
+                  </select>
+                </div>
+                <div id="bottomSelectBox" style="display:none;" >
+                  <div  class="sub_attrib sub_attrib_lable">Bottom:</div>
+                  <select class="textfield sub_attrib" id="size_bottom_sel" style="width:59px;">
+                    <option value="0">--Please Select--</option>
+                    <option value="12mm">12mm &Oslash;</option>
+                    <option value="15mm">25mm &Oslash;</option>
+                    <option value="50mm">50mm &Oslash;</option>
+                    <option value="75mm">75mm &Oslash;</option>
+                    <option value="100mm">100mm &Oslash;</option>
+                  </select>
+                </div>
+              </div>
+              <div id="finishLoader" style=" margin-left:100px; display:none;"> <img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/> </div>
+            </dd>
+          </dl>
+          <dl class="clearfix" id="fittingBox" >
+            <dt>Fittings</dt>
+            <dd>
+              <div id="fittingSelectBox">
+                <select class="textfield" id="fittings_sel" onchange="loadCustomFittingOptions(this.value)">
+                  <?php 
+
+			   		/*options of values of finish select box*/
+
+				$_fitting_vals=array(
+
+							'0'=>'None',
+
+							'top_right_bottom_left'=>'Top, Right, Bottom, Left',
+
+							'top_only'=>'Top Only',
+
+							'top_bottom'=>'Top & Bottom',
+
+							'left_right'=>'Left & Right',
+
+							'left_right_bottom'=>'Left, Right, Bottom',
+
+							'corners_only'=>'Corners Only'
+
+							
+
+							);
+
+				foreach($_fitting_vals as $key=>$_fitting){						
+
+			   ?>
+                  <option value="<?php echo $key?>"><?php echo $_fitting?></option>
+                  <?php
+
+				}
+
+                  ?>
+                </select>
+              </div>
+              <div id="fittingLoader" style="display:none; margin-left:100px;"> <img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/> </div>
+            </dd>
+          </dl>
+          <dl class="clearfix" id="spacingBox"  >
+            <dt>Spacing</dt>
+            <dd>
+              <div id="spacingSelectBox">
+                <select class="textfield" id="spacing_sel">
+                  <?php 
+
+			   		/*options of values of finish select box*/
+
+				$_spacing_vals=array(
+
+							'0'=>'--Please select--',
+
+							'1000'=>'1000 mm',
+
+							'500'=>'500 mm',
+
+							'300'=>'300 mm'
+
+							);
+
+				foreach($_spacing_vals as $key=>$_spacing){						
+
+			   ?>
+                  <option value="<?php echo $key;?>"><?php echo $_spacing;?></option>
+                  <?php
+
+				}
+
+                  ?>
+                </select>
+              </div>
+              <div id="spacingLoader" style="display:none; margin-left:100px;"> <img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/> </div>
+            </dd>
+          </dl>
+          <dl class="clearfix" id="baseBox"  style="display:none;">
+            <dt>Base / Hardware</dt>
+            <dd>
+              <div id="baseSelectBox">
+                <select class="textfield" id="base_sel">
+                  <option value="0">--Please Select--</option>
+                </select>
+              </div>
+              <div id="baseLoader" style="display:none; margin-left:100px;"> <img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/> </div>
+            </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>Shipping</dt>
+            <dd>
+              <div id="shippingmethods">
+                <select id="shipping_method" name="shipping_method" class="textfield" onchange="javascript:quantity(), bprice(),Shipping(),qty_disc();">
+                  <option value="0">Select Shipping</option>
+                  <option value="priority overnight">Priority Overnight (Delivery by 10-16-2013 for Print Ready File) </option>
+                  <option value="priority">Priority (Delivery by 10-18-2013 from proof)</option>
+                  <option value="expedited">Express (Delivery by 10-23-2013 from proof)</option>
+                  <option value="standard" >Standard (Delivery by 10-29-2013 from proof)</option>
+                </select>
+              </div>
+            </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>Price</dt>
+            <dd class="price">
+              <div id="total_display" class="float-L">$0.00</div>
+              <input type="hidden" id="total" name="total" class="textfield" value="0" style="width:60px;" />
+              <div class="float-R"> <a href="javascript:void(0);" class="qty-link" title="Bulk Quantity Discount" onmouseout="ajax_hideTooltip()" onmouseover="ajax_showTooltip(window.event,'discount_tooltip.php',this);return false">Bulk Quantity Discount</a></div>
+            </dd>
+          </dl>
+          <dl class="clearfix" id="discountprice" style="display:none;">
+            <dt>Discount</dt>
+            <dd class="price">
+              <div id="qtydiscountprice" class="float-L"></div>
+            </dd>
+          </dl>
+          <dl class="clearfix" id="savedAmount" style="display:block;">
+            <dt>Saved </dt>
+            <dd class="price">
+              <div id="savedAmountValue" class="float-L"> $00.00</div>
+            </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>Shipping</dt>
+            <dd class="price" id="shipping_display">$0.00</dd>
+          </dl>
+          
+          <!--Add to cart--> 
+          
+          <span style="height:0px">
+          <input name="getprice" title="Start Order" type="button" class="startOrder-btn" value="start order" onclick="javascript: return addToCart(categoryid.value, product.value,qty.value);" style="color:transparent;" />
+          </span> 
+          
+          <!--end of Add to cart-->
+          
+          <dl class="totalprice blue-clr">
+            <div class="pricetopbg"></div>
+            <span id="grandtotaldisplay"> TOTAL PRICE : $0.00 </span>
+            <div class="pricebtmbg"></div>
+          </dl>
+          <dl class="smalltext">
+            &nbsp;
+          </dl>
+        </div>
+        <input type="hidden" id="accessories" name="accessories" class="textfield" value="" style="width:60px;" />
+        <input type="hidden" id="shipping" name="shipping" class="textfield" value="" style="width:60px;" />
+        <input type="hidden" name="qty_dicount" id="qty_discount" class="textfield" style="width:60px;" />
+        <input type="hidden" name="getpriceclick" value="1" />
+        <div class="instant-separator float-L">
+          <div class="ortext"></div>
+        </div>
+        
+        <!--start of 3 Easy Ways to order-->
+        
+        <?php
+
+            			/*fetching categories */
+
+			?>
+        <div class="quickStart-Order float-L">
+          <div class="title blue-clr">3 Easy ways to order</div>
+          <?php 
+
+		    		if($is_homepage){
+
+		    ?>
+            <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+
+
+    <div class="fieldset">
+       
+        <ul class="form-list">
+            <li class="fields">
+                <div class="field" style="float: left; margin-bottom: 25px;">
+                    <label for="name" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Name') ?></label>
+                    <div class="input-box">
+                        <input name="name" id="name" title="<?php echo Mage::helper('contacts')->__('Name') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserName()) ?>" class="input-text required-entry" type="text" />
+                    </div>
+                </div>
+                <div class="field" style="float: left; margin-bottom: 25px;">
+                    <label for="email" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Email') ?></label>
+                    <div class="input-box">
+                        <input name="email" id="email" title="<?php echo Mage::helper('contacts')->__('Email') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserEmail()) ?>" class="input-text required-entry validate-email" type="text" />
+                    </div>
+                </div>
+            </li>
+            <li>
+            <div class="field" style="float: left; margin-bottom: 25px;">
+                <label for="telephone"><?php echo Mage::helper('contacts')->__('Telephone') ?></label>
+                <div class="input-box">
+                    <input name="telephone" id="telephone" title="<?php echo Mage::helper('contacts')->__('Telephone') ?>" value="" class="input-text" type="text" />
+                </div>
+               </div>
+            </li>
+            <li class="wide">
+            <div class="field" style="float: left; margin-bottom: 25px;">
+                <label for="comment" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Comment') ?></label>
+                <div class="input-box">
+                    <textarea name="comment" id="comment" title="<?php echo Mage::helper('contacts')->__('Comment') ?>"
+                    style="height: 74px; width: 254px; resize: none;" class="required-entry input-text" cols="5" rows="3"></textarea>
+                </div>
+                   </div>
+            </li>
+        </ul>
+    </div>
+    <div style="float: right; width: 100%;" class="buttons-set">
+        <p class="required"><?php echo Mage::helper('contacts')->__('* Required Fields') ?></p>
+        <input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+        <button type="submit" title="<?php echo Mage::helper('contacts')->__('Submit') ?>" class="button"><span><span><?php echo Mage::helper('contacts')->__('Submit') ?></span></span></button>
+    </div>
+       <!--<div class="align-C">Category:
+            <select name="3wayproduct" class="textfield dropdown" style="width:215px;" id="3wayproduct" onchange="javascript:loadProduct2(this.value),threeasywayorder(0);">
+              <option value="0">--Please select--</option>
+              <?php
+
+				  //fetching all categories////
+
+                  		
+//
+//					if(count($_categories)>0){	
+//
+//						foreach($_categories as $_category){
+//
+//				  ?>
+//              <option value="<?php //echo $_category->getId();?>" title="<?php echo basename($_category->getUrl());?>" >&nbsp;&nbsp;<b><?php echo $_category->getName();?></b></option>
+//              <?php
+//
+//						} //end of maincategoires foreach loop		
+//
+//					}//end of main if
+
+				?>
+            </select>
+          </div>-->
+          <!--<div id="mainProduct2"> Product:
+            <select class="textfield" name="porduct_sel" id="product_sel" style="width:215px; margin-left:8px;">
+              <option value="0">--Please select--</option>
+            </select>
+          </div>-->
+          <div id="loaderp2" style="display:none; margin-left:100px;"> <img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/> </div>
+          <?php 
+
+				}else{
+
+				?>
+          <input type="hidden" name="product2" class="textfield" id="product2" value="<?php echo $_category->getId().':'.$_product->getId();?>" />
+          <?php	
+
+					}
+
+			  
+
+			  ?>
+          <!--<div class="StartorderButtons">
+            <input name="submit-prt-ready" type="button" value="print ready" title="Submit Print Ready Design" class="buttons" id="printreadybtn" onclick="loadWindow()" style="color:transparent;" />
+            <input name="order-form" value="design tool" type="button" title="Design Your Own Banner" class="buttons designYour-banner" id="prdbtn" onclick="return threeasywayorder(2);" style="color:transparent;" />
+            <input name="product-details" type="button" value="letusdesign" title="Let us Design Your Banner" class="buttons letus-design-banner" id="letusbtn" onclick="return threeasywayorder(3);" style="color:transparent;" />
+          </div>-->
+        </div>
+      </div>
+      
+      <!--<div class="bottombg"></div>
+
+          <div class="shadowSprite shadow720"></div>--> 
+      
+    </div>
+  </form>
+</div>
+
+<!--forminfo ends--> 
+
+<script type="text/javascript">
+//<![CDATA[
+    var contactForm = new VarienForm('contactForm', true);
+//]]>
+</script>

@@ -1,0 +1,22 @@
+<?php 
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2013 Amasty (http://www.amasty.com)
+* @package Amasty_Zoom
+*/  
+?>
+<?php
+$zoomerEnable   = Mage::getStoreConfig('amzoom/zoom_on_category_grid/enable');
+$productCollection = Mage::getModel('catalog/product')->getCollection();
+
+$images = $ids = $titles = '';
+foreach ($productCollection as $product) {
+	continue; //disabled 
+    $products = Mage::getModel('catalog/product')->load($product->getId());
+    $ids    .= $product->getId() . ';';
+    $images .= Mage::helper('catalog/image')->init($products, 'small_image') . ';';
+    $titles .= $products->getImageLabel() . ';';
+}
+?>
+
+         

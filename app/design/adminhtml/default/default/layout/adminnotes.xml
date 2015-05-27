@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <default>
+    	<reference name="head">
+			<action method="addCss"><script>iceberg/adminnotes/styles.css</script></action>
+			<action method="addJs"><script>iceberg/adminnotes/adminnotes.js</script></action>
+        </reference>
+        <reference name="notifications">
+            <block type="adminnotes/page" name="adminnotes" as="admin_notes" template="iceberg/adminnotes/notes.phtml" />
+        </reference>
+    </default>
+    <adminhtml_adminnotes_index_index>
+        <reference name="content">
+            <block type="adminnotes/list" name="adminnotes_list" as="adminnotes_list"  />
+        </reference>
+    </adminhtml_adminnotes_index_index>
+</layout>

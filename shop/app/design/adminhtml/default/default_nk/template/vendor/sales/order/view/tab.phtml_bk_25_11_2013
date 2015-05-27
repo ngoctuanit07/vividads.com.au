@@ -1,0 +1,268 @@
+ <?php
+ $_order = $this->getOrder();
+ 
+ $items = $_order->getAllItems();
+   
+  foreach($items as $item)
+  {
+    $_product = Mage::getModel('catalog/product')->load($item->getProductId());
+    $proofItem[$item->getId()] = $_product->getName();
+  }
+  
+    $url = Mage::helper("adminhtml")->getUrl("designer/adminhtml_designer/addcomment");
+        $url = str_replace('p//s','p/admin/s',$url);
+
+ ?>
+     <script type="text/javascript">
+    
+    
+    
+    function close1()
+    {
+        jQuery('.editform').slideUp();
+        jQuery('.closediv').hide();
+        jQuery('.adddiv').show();
+    };
+    
+    function open1()
+    {
+        jQuery('.editform').slideDown();
+        jQuery('.adddiv').hide();
+        jQuery('.closediv').show();
+    };
+    </script>
+
+ <div class="designermain">
+     
+        <div class="order-additional order-comments">
+            <table class="data-table" id="design_tab" cellspacing="0">
+                <tr class="headcls">
+                    <th> Item </th>
+		    <?php
+		      
+		      $roleId = implode('', Mage::getSingleton('admin/session')->getUser()->getRoles());
+            
+		      //Get the role name
+		      $roleName1 = Mage::getModel('admin/roles')->load($roleId)->getRoleName();
+		      if($roleName1 == 'Administrators')
+		      {
+		    ?>
+		    <th> Assign To </th>
+		    <?php
+		      }
+		    ?>
+                </tr>
+                <?php
+                    $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+                    $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+                   
+                    foreach($proofItem as $key=>$value)
+                    {
+                        
+                        $temptableItem=Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
+                        //$sqlItem="SELECT * FROM  ".$temptableItem." WHERE item_id ='".$key."'  ";
+                        $sqlItem = $connectionRead->select()
+					->from($temptableItem, array('*'))
+					->where('item_id=?', $key);
+                        $chkItem = $connectionRead->fetchAll($sqlItem);
+			
+			$temptableService=Mage::getSingleton('core/resource')->getTableName('vendor_order');
+			//$sqlService="SELECT * FROM  ".$temptableService." WHERE order_id ='".$_order->getId()."' AND item_id = '".$key."' ";
+			$sqlService = $connectionRead->select()
+					->from($temptableService, array('*'))
+					->where("order_id ='".$_order->getId()."' AND item_id = '".$key."'");
+			$chkService = $connectionRead->fetchAll($sqlService);
+		       
+                        
+                        //$_Product = Mage::getModel('catalog/product')->load($chkItem['product_id']);
+			
+			if($roleName1 == 'Administrators' or Mage::getSingleton('admin/session')->getUser()->getId() == $chkService[0]['assign_to'])
+			{
+                ?>
+                <tr>
+                    <td><?php echo $chkItem[0]['name'];?></td>
+		    <?php
+		      if($roleName1 == 'Administrators')
+		      {
+		    ?>
+		    <td>
+		     <select name="ot_author_user" id="ot_author_user" onchange="assignto1('<?php echo $key?>','<?php echo $_order->getId()?>',this.value);">
+		      <option value="">Assign To</option>
+		       <?php
+		       
+			   
+			   $adminUserModel = Mage::getModel('admin/user');
+			   $userCollection = $adminUserModel->getCollection()->load();
+			   foreach($userCollection as $user)
+			   {
+				$roleId = implode('', $user->getRoles());
+				$roleName = Mage::getModel('admin/roles')->load($roleId)->getRoleName();
+				if($roleName == 'Vendor')
+				{
+				    $selected = '';
+				    if($user->getId() == $chkService[0]['assign_to'])
+				    $selected = 'selected';
+				    
+				    echo '<option value="'.$user->getId().'" '.$selected.' >'.$user->getUsername().'</option>';
+				}
+			   }
+		       ?>
+		    </select>
+		    </td>
+		    <?php
+		    
+		      }
+		      
+		      ?>
+                </tr>
+                <?php
+			}
+		}
+		
+		
+		?>
+            </table>
+        </div>
+    </div>
+
+ 
+<script type="text/javascript">
+
+   
+   function assignto1(itemid,orderid,userid)
+   {
+       
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	       //alert(xmlhttp.responseText);
+	       
+	       location.reload();
+	       
+	   }
+	 }
+       form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/vendor/adminhtml_vendor/assignto/?itemid="+itemid+"&orderid="+orderid+"&userid="+userid+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+
+</script>
+
+
+<?php
+/*********************************** showing the vendor shipping details ********************************************************/
+?>
+<br/>
+<br/>
+<div class="designermain">
+  <div class="shipp_head"> <strong>Shipping Docket Information</strong> </div>
+     
+    <div class="order-additional order-comments">
+	<table class="data-table" id="design_tab" cellspacing="0">
+	  <tr class="headcls">
+		<th> Item </th>
+		<th>Supplier Invoice</th>
+		<th>Con Note Number</th>
+		<th>Carton</th>
+		<th>Barcode</th>
+		<th>Status</th>
+	    </tr>
+
+
+
+<?php
+$temptableDocket=Mage::getSingleton('core/resource')->getTableName('vendor_docket');
+$temptableItem=Mage::getSingleton('core/resource')->getTableName('vendor_item');
+
+//$sqlItem="SELECT * FROM  ".$temptableItem." WHERE order_id = '".$_order->getId()."' ";
+$sqlItem = $connectionRead->select()
+		  ->from($temptableItem, array('*'))
+		  ->where('order_id =?', $_order->getId());
+$chkItem = $connectionRead->fetchAll($sqlItem);
+
+
+
+foreach($chkItem as $item)
+{
+  //$sqlDocket="SELECT * FROM  ".$temptableDocket." WHERE vendor_list_id = '".$item['entity_id']."' ";
+  $sqlDocket = $connectionRead->select()
+		  ->from($temptableDocket, array('*'))
+		  ->where('vendor_list_id =?', $item['entity_id']);
+  $chkDocket = $connectionRead->fetchAll($sqlDocket);
+  
+  $product=Mage::getModel('catalog/product')->load($item['product_id']);
+  
+  $urlcode = Mage::helper('adminhtml')->getUrl('BarcodeLabel/Admin/LabelPreviewOrder/order_id/'.$_order->getId().'/product_id/'.$item['product_id']);
+  ?>
+	  <tr >
+		<th> <?php echo $product->getName();?> </th>
+		<th><?php echo $chkDocket[0]['supplier_invoice'];?></th>
+		<th><?php echo $chkDocket[0]['connote_number'];?></th>
+		<th><?php echo $chkDocket[0]['carton'];?></th>
+		<th><img src="<?php echo $urlcode ;?>" border="1"/></th>
+		<th><?php echo $chkDocket[0]['status'];?></th>
+	    </tr>
+  <?php
+}
+
+?>
+	</table>
+    </div>
+</div>
+<?php
+/********************************** showing the vendor shipping details *********************************************************/
+?>
+
+<!--------------------------22-11-2013 SOC By GC Starts Here----------------------->
+<br/>
+<br/>
+<div class="designermain">
+  <div class="shipp_head"> <strong>Uploaded Image By Vendor</strong> </div>
+     
+    <div class="order-additional order-comments">
+	<table class="data-table" id="design_tab" cellspacing="0">
+	  <tr class="headcls">
+		<th> Item</th>
+		<th> Image</th>
+		
+	    </tr>
+
+<?php
+$sentImage=Mage::getSingleton('core/resource')->getTableName('vendor_sent_image');
+foreach($chkItem as $item)
+{
+  $sqlImage="SELECT * FROM  ".$sentImage." WHERE vendor_list_id = '".$item['entity_id']."' ";
+  $chkIamge = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlImage);
+  
+  $product=Mage::getModel('catalog/product')->load($item['product_id']);
+  
+  $urlcode = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); 
+   foreach( $chkIamge as $img){
+  ?>
+	  
+	  
+	  <tr >
+		<td> <?php echo $product->getName();?> </td>
+		<td align="center"> <img src="<?php echo $urlcode ?>/vendor/<?php echo $img['image'] ?>" height="250" width="350" align="center" /></td>
+		
+	    </tr>
+  <?php }
+}
+
+?>
+	</table>
+    </div>
+</div>
+<!--22-11-2013 SOC By GC Ends Here-->

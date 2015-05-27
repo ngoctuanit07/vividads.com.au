@@ -1,0 +1,370 @@
+<?php
+
+$currentUrl = "";
+if (!in_array(Mage::app()->getFrontController()->getAction()->getFullActionName(), array('cms_index_noRoute', 'cms_index_defaultNoRoute'))) {
+    $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+    $currentUrl = basename($currentUrl);
+	$curUrl = $currentUrl;
+}
+//echo $currentUrl;
+
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+$getItemCount=Mage::helper("checkout/cart")->getItemsCount();
+if(Mage::helper('checkout/cart')->getSummaryCount() == "")
+{
+    $cartCount = "0";
+}else{
+    $cartCount = Mage::helper('checkout/cart')->getSummaryCount();
+}
+$quote = Mage::getSingleton('checkout/cart')->getQuote();
+if(Mage::helper('checkout/cart')->getSummaryCount() == "")
+{
+    $subTotal = Mage::helper('core')->currency(0.00);
+}else{
+    $subTotal = Mage::helper('core')->currency(number_format($quote->getSubtotal(),2));
+}
+$customerData = Mage::getSingleton('customer/session')->getCustomer();
+?>
+<link rel="stylesheet" type="text/css"   href="<?php echo $this->getSkinUrl()?>css/quote.css" />
+
+
+
+
+<!-- Start Visual Website Optimizer Asynchronous Code -->
+<script type='text/javascript'>
+    var _vwo_code=(function(){
+        var account_id=31823,
+                settings_tolerance=2000,
+                library_tolerance=2500,
+                use_existing_jquery=false,
+// DO NOT EDIT BELOW THIS LINE
+            f=false,d=document;return{use_existing_jquery:function(){return use_existing_jquery;},library_tolerance:function(){return library_tolerance;},finish:function(){if(!f){f=true;var a=d.getElementById('_vis_opt_path_hides');if(a)a.parentNode.removeChild(a);}},finished:function(){return f;},load:function(a){var b=d.createElement('script');b.src=a;b.type='text/javascript';b.innerText;b.onerror=function(){_vwo_code.finish();};d.getElementsByTagName('head')[0].appendChild(b);},init:function(){settings_timer=setTimeout('_vwo_code.finish()',settings_tolerance);this.load('//dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&r='+Math.random());var a=d.createElement('style'),b='body{opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important;}',h=d.getElementsByTagName('head')[0];a.setAttribute('id','_vis_opt_path_hides');a.setAttribute('type','text/css');if(a.styleSheet)a.styleSheet.cssText=b;else a.appendChild(d.createTextNode(b));h.appendChild(a);return settings_timer;}};}());_vwo_settings_timer=_vwo_code.init();
+</script>
+
+
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="http://localhost/outbanners/skin/frontend/default/outdoorbannershop/css/iestyles.css" media="all" />
+<![endif]-->
+<!--[if lt IE 7]>
+<link rel="stylesheet" type="text/css" href="http://localhost/outbanners/skin/frontend/default/outdoorbannershop/css/ie7.css" media="all" />
+<![endif]-->
+<!--[if IE 8]>
+<link rel="stylesheet" type="text/css" href="http://localhost/outbanners/skin/frontend/default/outdoorbannershop/css/ie8.css" media="all" />
+<![endif]-->
+
+<script type="text/javascript">if (typeof(Translate) === "function") {var Translator = new Translate([])};</script>
+<!--[if IE]>
+        <script type="text/javascript" src="http://localhost/outbanners/js/jquery/disable_ie.js"></script>
+<![endif]-->
+
+<script type="text/javascript">
+    var detectIE = /*@cc_on!@*/false;
+
+    // First level of IE detection:
+    if (detectIE) {
+        // Second level of IE detection, IE6 specifically:
+        if (typeof document.body.style.maxHeight == "undefined") {
+            window.location = "upgrade-your-browser.html";
+        }
+    }
+	
+	
+	
+</script>
+
+
+
+<script>
+<!--
+//var $ = jQuery.noConflict();
+//$(document).ready(function(e) {
+  // $('#downloads_video_overlay').hide(); 
+//});
+
+
+-->
+</script>
+
+<div class="wrapper">
+        <!-- start header -->
+        <div class="header">
+            
+<div class="header-top-container">
+    <div class="header-top">
+        <div class="keep-updated">
+            <h2><span id="keep_updated" >Keep Updated</span></h2>
+            <a class="social-link" href="http://twitter.com/HypeDC" target="_blank">
+    <img src="<?php echo $this->getSkinUrl(); ?>images/twitter.png" alt="" />
+</a>
+<a class="social-link" href="http://facebook.com/HypeDCshoes" target="_blank">
+    <img src="<?php echo $this->getSkinUrl(); ?>images/facebook.png" alt="" />
+</a>
+            <div class="box base-mini mini-newsletter">
+    <div class="head">
+        <span id="newsletter_sprite" class="">Newsletter</span>
+    </div>
+    <?php 
+	
+	///newsletter subscribtions///
+	echo $this->getLayout()->createBlock('newsletter/subscribe')->setTemplate('newsletter/subscribe.phtml')->toHtml(); ?>
+   
+</div>
+        </div>
+        
+         <?php 
+		 /*search form*/
+		 echo $this->getChildHtml('topSearch') 
+		 /*end of search*/
+		 
+		 ?>
+        
+        <div class="quick-access">
+           <div class="shop-access">
+                  <div>
+        <ul>
+            <li class="first">
+                <a class="login-dropdown" title="" rel="customer/account/login/" href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>">
+                <span id="my_account_sprite">MY ACCOUNT</span></a>
+            </li>
+            <li class="last">
+                <a class="basket-dropdown" title="MY BASKET" rel="hype/dc/ajaxtemplate/page/cart/" href="<?php echo $this->getUrl('checkout/cart')?>">
+                 
+                <span id="my_basket_sprite">MY BASKET (<?php $totalItems = Mage::getModel('checkout/cart')->getQuote()->getItemsCount(); 
+                      if(!empty($totalItems)){
+				  echo $totalItems;
+				  }else{ echo "0";}
+                    ?>)</span></a>
+            </li>
+        </ul>
+   </div>
+           </div>
+        </div>
+    </div>
+</div>
+
+        </div>
+        <!-- end header -->
+
+        <!-- start middle -->
+        <div class="middle-container">
+	    <div class="header-nav-container">
+    <div class="header-nav">
+	<a href="<?php echo $this->getUrl('') ?>">
+		<div class="splash-link-relative">
+							<h1 class="splash-link-absolute">OUTBANNERS - Net Banner Trends</h1>
+					</div>
+	</a>
+    
+    <?php 
+	
+		$storeId    = Mage::app()->getStore()->getId();
+			
+			//Get category model
+			$_category = Mage::getModel('catalog/category')->setStoreId($storeId);
+			
+			$_categoryCollection = $_category->getCollection();
+			$_categoryCollectionIds = $_categoryCollection->getAllIds();
+			
+			//Remove root category from array
+			unset($_categoryCollectionIds[0], $_categoryCollectionIds[1]);
+			
+			//var_dump($_categoryCollectionIds);
+			
+	
+	 echo $this->getChildHtml('topMenu'); 
+	
+	
+	?> 
+    
+        <?php /*?><ul id="nav">
+		<li class="level0 nav-mens ">
+			<a href="<?php echo $this->getUrl('men');?>">Mens</a>
+		</li>
+		<li class="level0 nav-womens ">
+			<a href="<?php echo $this->getUrl('women');?>">Womens</a>
+		</li>
+		<li class="level0 nav-sale">
+			<a href="<?php echo $this->getUrl('sale');?>">Sale</a>
+		</li>
+		<li class="level0 nav-news">
+			<a href="<?php echo $this->getUrl('news');?>">News</a>
+		</li>
+		<li class="level0 nav-stores">
+			<a href="<?php echo $this->getUrl('stores');?>">Stores</a>
+		</li>
+		<li class="level0 nav-faq">
+			<a href="<?php echo $this->getUrl('faq');?>">FAQ</a>
+		</li>
+        <li class="level0 nav-jobs">
+			<a href="<?php echo $this->getUrl('jobs');?>">Jobs</a>
+		</li>
+        </ul><?php */?>
+    </div>
+  
+  <div id="header-description">
+          If you're looking for unique shoes, sneakers or joggers, here at HypeDC you can express your individuality with the latest from Converse, Vans, Nike, Onitsuka Tiger, Adidas &amp; many other brands.</p>
+
+<p>To ensure your look is kept fresh and up to date, all of our online shoes, sneakers &amp joggers are short run and limited edition – you won’t find most of these shoes anywhere else!</p>
+
+<p>We’re already Australia’s leading fashion footwear retailer and have 40 retail outlets across NSW, VIC, QLD, SA and WA. You can also buy shoes, sneakers &amp joggers online with the latest and rare styles of men’s and women’s shoes with a click of the mouse.</p></p>
+        </div>
+        </div>
+        
+        <div class="header-links">
+    <a href="<?php echo 'http://outdoorbanner.com.au/shipping/?___store=en4';?>" class="show-shipping">Free, Fast Delivery</a>
+    <span>|</span>
+    <a href="<?php echo 'http://outdoorbanner.com.au/t-g/?___store=en4';?>">Terms & Conditions</a>
+    <span>|</span>
+    <a href="<?php echo 'http://outdoorbanner.com.au/returns/?___store=en4';?>" class="show-shipping">30 Day Return Policy</a>
+</div>
+        
+        
+<?php 
+	 /* if that is not header*/
+	 if($this->getIsHomePage()){ 
+?>
+
+
+
+
+	  <div class="spec-middle-container">
+            <div class="middle col-1-layout">
+                            <!-- start center -->
+                <div id="main" class="col-main">
+
+                <!-- start content -->
+                    <p><div style="clear: both;"></div>
+<?php /*top featurd slider here*/	
+		echo $this->getLayout()->createBlock('catalog/product')->setTemplate('catalog/product/top_slider.phtml')->toHtml();   
+	 /*top Brands here*/	
+		echo $this->getLayout()->createBlock('catalog/product')->setTemplate('catalog/product/top_brands.phtml')->toHtml();  
+		/*top Brands here*/	
+		echo $this->getLayout()->createBlock('catalog/product')->setTemplate('catalog/product/new_arrivals.phtml')->toHtml();
+   /* Shop by category here*/	
+		echo $this->getLayout()->createBlock('catalog/product')->setTemplate('catalog/category/shop_by.phtml')->toHtml();
+   /* news slider here*/	
+		echo $this->getLayout()->createBlock('catalog/product')->setTemplate('catalog/category/news.phtml')->toHtml();
+   
+?>
+
+<div class="banner">
+	<a href="<?php echo 'http://outdoorbanner.com.au/shipping/?___store=en4';?>" class="show-shipping">
+    <img src="<?php echo $this->getSkinUrl(); ?>images/free-shipping-banner.png" alt="" /></a>
+</div>
+</p>                <!-- end content -->
+
+                </div>
+            <!-- end center -->
+
+            
+            </div>
+          </div>
+        </div>
+        <!-- end middle -->
+</div>
+       
+  <?php 
+	 } //end of if this is home page
+  ?>
+
+</div>
+
+
+
+
+<?php /*
+<div class="header-container">
+
+
+        <div class="header">
+            <?php if ($this->getIsHomePage()):?>
+        <div class="logo"><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></div>
+        <?php else:?>
+            <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+        <?php endif?>                 
+        <?php echo $this->getChildHtml('topSearch') ?>
+    	<div class="header-right">
+            <div class="top-link">
+                <ul>										
+                    <li><a  href="/customer/account/login/">Login</a></li>
+                    <li><a  href="/customer/account/create/">Register</a></li>											
+                    <li><a id="getqute" onclick="getQuote(<?php echo $getItemCount; ?>)" href="javascript:void(0)">Contact</a></li>
+                </ul>
+            </div>
+            <div id="boxes">
+                <div style="display: none;" id="dialog" class="window">
+                    <div style="font:normal 14px/20px Arial, Helvetica, sans-serif; padding:8px;">
+                    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('getquote')->toHtml() ?>
+                    </div>
+                </div>
+                <!-- Mask to cover the whole screen -->
+                <div style="width: 1478px; height: 602px; display: none; opacity: 0.8;" id="mask"></div>
+            </div>
+            <!--<div class="phone"><p align="right"><img src="<?php// echo $this->getSkinUrl(); ?>images/icon-phone.png" /><b> 1300 72 14 16 </b> </p> </div>-->
+            <div class="cart1">
+                <p align="left">
+                    <a href="/checkout/cart/">
+                        <img src="<?php echo $this->getSkinUrl(); ?>images/icon-cart.png" />
+                    </a>
+                    <strong>My Cart:</strong>
+                    <?php $totalItems = Mage::getModel('checkout/cart')->getQuote()->getItemsCount(); 
+                      if(!empty($totalItems)){
+				  echo $totalItems;
+				  }else{ echo "0";}
+                    ?>
+                Items <!--<input type="submit" class="cart1-button" value="View Cart" />-->
+                <br/><a  href="/checkout/">Checkout</a>    
+                </p>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="quick-access">
+            <?php echo $this->getChildHtml('store_language') ?>
+            <?php //echo $this->getChildHtml('topMenu') ?>             
+            <?php //echo $this->getChildHtml('topLinks') ?>
+            <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('topmenu')->toHtml();?>
+            <div class="quick-access">
+                <ul>
+                    <li class="<?php if($currentUrl == "tablethrows.com.au" || $currentUrl == "index.php"){echo "quick-access_selected";} ?>"><a title="Home" href="<?php echo Mage::getBaseUrl();?>">Home</a></li>
+                    <li class="<?php if($currentUrl == "artwork-guide"){echo "quick-access_selected";} ?>"><a title="Artwork Guide" href="<?php echo Mage::getBaseUrl();?>artwork-guide">Artwork Guide</a></li>
+                    <li class="<?php if($currentUrl == "gallery"){echo "quick-access_selected";} ?>"><a title="Gallery" href="<?php echo Mage::getBaseUrl();?>gallery">Gallery</a></li>
+                    <li class="<?php if($currentUrl == "our-clients.html"){echo "quick-access_selected";} ?>"><a title="Our Clients" href="<?php echo Mage::getBaseUrl();?>our-clients.html">Our Clients</a></li>
+                    <li class="<?php if($currentUrl == "services"){echo "quick-access_selected";} ?>"><a href="<?php echo Mage::getBaseUrl();?>services">Services</a></li>
+                    <li class="<?php if($currentUrl == "offers.html"){echo "quick-access_selected";} ?> offer"><a title="Vendor Section" href="<?php echo Mage::getBaseUrl();?>offers.html/">Offers</a></li>
+                    <li class="<?php if($currentUrl == "contact-us"){echo "quick-access_selected";} ?>"><a title="Log In" href="http://tablethrows.co.nz/contact-us">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <?php echo $this->getChildHtml('topBar') ?>
+        <div class="ad1"><img src="<?php echo $this->getSkinUrl(); ?>images/ribbon.jpg" /></div>
+        <?php echo $this->getChildHtml('topContainer'); ?>
+        <?php if($currentUrl == "tablethrows.com.au" || $currentUrl == "index.php"){echo $this->getChildHtml('youamaslider');} ?>
+    </div>
+</div> */ ?>

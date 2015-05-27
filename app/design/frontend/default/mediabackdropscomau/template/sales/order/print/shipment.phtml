@@ -1,0 +1,147 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /* @var $this Mage_Sales_Block_Order_Print_Shipment */?>
+<?php $order = $this->getOrder(); ?>
+<link href="<?php echo $this->getSkinUrl('css/invoices.css')?>" rel="stylesheet" type="text/css" />
+
+<?php /*?><div class="Order-Number pull-left" style="width:98%; height:20px;">
+ 
+<h1 style="font-size:12px;"><?php echo $this->__('Order #%s', $this->getObjectData($order, 'real_order_id')); ?></h1>
+<span class="pull-right" style="margin-top:-20px;"><?php echo $this->__('Order Date: %s', $this->formatDate($this->getObjectData($order, 'created_at_store_date'), 'long')) ?></span></div><?php */?>
+<?php if (!$this->getObjectData($order, 'is_virtual')): ?>
+<?php foreach ($this->getShipmentsCollection() as $shipment): ?>
+<?php /*?>    <h2 class="h2"><?php echo $this->__('Shipment #%s', $this->getObjectData($shipment, 'increment_id')); ?></h2>
+<?php */?>   <div id="Shipping-Comments" class="pull-left" style="width:100%;">
+            	<div class="Shipment" style="width:98%;">
+                <li class="Order-Number pull-left" style="list-style:none; background-color:#dcdcdc !important; width:99% !important;"><?php echo $this->__('Order #%s', $this->getObjectData($order, 'real_order_id')); ?><span class="pull-right"><?php echo $this->__('Order Date: %s', $this->formatDate($this->getObjectData($order, 'created_at_store_date'), 'long')) ?></span>
+                        </li>
+               	  <ul style="width:100%; border-right:1px solid #dcdcdc;">
+					<li class="Shipping-Number pull-left" style="width:99% !important; background-color:#dceef6 !important;">Shipment <?php echo $this->__('Shipment #%s', $this->getObjectData($shipment, 'increment_id')); ?></li>
+                        <li class="Shipment-Detail pull-left" style="width:100% !important;">
+                      	<div class="Shipping-Address pull-left" style="width:48%;"><strong><?php echo $this->__('Shipping Address')?></strong><br />
+               			  <?php echo $this->getShipmentAddressFormattedHtml($shipment); ?></div>
+                       	<div class="Billing-Address" style="border-left:none 0px; margin:0px; padding:5px 0px 0px 13px; float:left;"><strong><?php echo $this->__('Billing Address')?></strong><br />
+                       	  <?php echo $this->getBillingAddressFormattedHtml($order); ?> </div>
+                   	  </li>
+                    <li class="Billing pull-left" style="background-color:#dceef6 !important; width:100% !important;">
+                      	<div class="Billing-Method pull-left" style="width:48% !important; float:left;"><strong>Shipping Method</strong><br />
+                   	      <?php echo $this->escapeHtml($this->getObjectData($order, 'shipping_description')); ?>
+             <?php $tracks = $this->getShipmentTracks($shipment); 
+                if ($tracks): ?>
+                <table class="data-table" id="my-shipment-tracking">
+                    <col />
+                    <col />
+                    <thead>
+                        <tr>
+                            <th><?php echo Mage::helper('sales')->__('Title')?></th>
+                            <th><?php echo Mage::helper('sales')->__('Number')?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($tracks as $track): ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($this->getObjectData($track, 'title')); ?></td>
+                                <td><?php echo $this->escapeHtml($this->getObjectData($track, 'number')); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <script type="text/javascript">decorateTable('my-shipment-tracking');</script>
+            <?php endif; ?>  </div>
+                       	<div class="Billing-Address pull-right" style="margin:0px; padding:5px 0px 0px 17px !important; border-left:1px #b5d6e5 solid; float:left; position:relative;"><strong>Payment Method</strong><br />
+                   	    <?php echo $this->getPaymentInfoHtml() ?></div>
+                   	  </li>
+       	  		  </ul>
+                
+               	</div>
+</div>
+   
+    <?php /*?><div class="col2-set">
+        <div class="col-1">
+            <h3><?php echo $this->__('Shipping Address') ?></h3>
+            <address><?php echo $this->getShipmentAddressFormattedHtml($shipment); ?></address>
+        </div>
+        <div class="col-2">
+            <h3><?php echo $this->__('Billing Address') ?></h3>
+            <address><?php echo $this->getBillingAddressFormattedHtml($order); ?></address>
+        </div>
+    </div>
+    <div class="col2-set">
+        <div class="col-1">
+            <h3><?php echo $this->__('Shipping Method') ?></h3>
+             <?php echo $this->escapeHtml($this->getObjectData($order, 'shipping_description')); ?>
+             <?php $tracks = $this->getShipmentTracks($shipment); 
+                if ($tracks): ?>
+                <table class="data-table" id="my-shipment-tracking">
+                    <col />
+                    <col />
+                    <thead>
+                        <tr>
+                            <th><?php echo Mage::helper('sales')->__('Title')?></th>
+                            <th><?php echo Mage::helper('sales')->__('Number')?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($tracks as $track): ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($this->getObjectData($track, 'title')); ?></td>
+                                <td><?php echo $this->escapeHtml($this->getObjectData($track, 'number')); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <script type="text/javascript">decorateTable('my-shipment-tracking');</script>
+            <?php endif; ?>
+        </div>
+        <div class="col-2">
+            <h3><?php echo $this->__('Payment Method') ?></h3>
+            <?php echo $this->getPaymentInfoHtml() ?>
+        </div>
+    </div><?php */?>
+      
+    <h3 class="Shipping-Number" style="float:left; margin-top:10px; background-color:#dceef6 !important;"><?php echo $this->__('Items Shipped') ?></h3>
+    <table class="data-table" id="my-shipment-table-<?php echo $this->getObjectData($shipment, 'id') ?>" style="width:99%;">
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+            <tr>
+                <th class="Products-Descrption" style="border-left: 1px solid #d8d8d8 !important; width: 443px  !important; margin: 0px  !important; padding: 10px  !important; border-bottom: 1px solid #d8d8d8  !important;	border-right: 1px solid #d8d8d8  !important; background-color: #ededed  !important; font-weight: bold; text-align:center;"><?php echo $this->__('Product Name') ?></th>
+                <th  class="Sku-Number" style="width: 159px !important; margin: 0px !important; padding: 10px !important; font-size: 12px !important; background-color: #ededed !important; border-bottom: 1px solid #d8d8d8 !important; border-right: 1px solid #d8d8d8!important;	font-weight: bold!important;	text-align: center !important;"><?php echo $this->__('SKU') ?></th>
+                <th  class="Quantity-Products" style="font-size: 12px; font-weight: bold; color: #000 !important; text-decoration: none !important; text-align: center !important; border-bottom: 1px solid #d8d8d8 !important;	background-color: #ededed !important; padding: 10px !important;"><?php echo $this->__('Qty Shipped') ?></th>
+            </tr>
+        </thead>
+        <?php foreach ($this->getShipmentItems($shipment) as $item): ?>
+        <tbody>
+            <?php echo $this->getItemHtml($item) ?>
+        </tbody>
+        <?php endforeach; ?>
+    </table>
+    <script type="text/javascript">decorateTable('my-shipment-table-<?php echo $this->getObjectData($shipment, 'id')?>', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>
+<?php endforeach; ?>
+<?php endif; ?>
+<script type="text/javascript">window.print();</script>

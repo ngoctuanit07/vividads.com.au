@@ -1,0 +1,115 @@
+<!--@subject {{var store.getFrontendName()}}: Shipment # {{var shipment.increment_id}} update @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+"var logo_alt":"Email Logo Image Alt",
+"htmlescape var=$billing.getName()":"Guest Customer Name",
+"var order.increment_id":"Order Id",
+"var order.getStatusLabel()":"Order Status",
+"var comment":"Order Comment",
+"var store.getFrontendName()":"Store Name"}
+@-->
+<!--@styles
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+@-->
+<body style="background:#fff; font-family:Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;"><div style="background:#fff; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<table cellspacing="0" cellpadding="0" border="0" height="100%" width="100%">
+<tr>
+    <td align="center" valign="top" style="padding:20px 0 20px 0">
+      
+      <table width="1200" border="0" cellspacing="0" cellpadding="10">
+  <tr>
+    <td><table width="1200" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td><img src="{{skin url=images/invoice/order_info.png}}" /></td>
+        <td><a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px; text-align:right; float:right;" border="0"/></a></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="38" bgcolor="#D9DBD9" style="font-size:15px; text-align:center; font-weight:bold;" >Your Order # {{var order.increment_id}} has been </td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; line-height:30px;"><span style="color:#ea0809; font-weight:normal;">Dear {{htmlescape var=$billing.getName()}},</span><br>
+              {{var order.getStatusLabel()}}</strong>.<br>
+              {{var comment}}</span></td>
+          </tr>
+          <tr>
+            <td height="15"></td>
+          </tr>
+          <tr height="35"><td><img src="{{skin url=images/invoice/need_info.jpg}}"></td></tr>
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;"><table cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tbody>
+                <tr>
+                  <td valign="top" style="font-size:12px; padding:7px 0px; "> If you have any questions, please feel free to contact us at
+                    <a href="mailto:{{config path='trans_email/ident_support/email'}}" style="color:#ea0809;">{{config path='trans_email/ident_support/email'}}</a>
+                    or by phone at {{config path='general/store_information/phone'}}.
+                    </td>
+                  </tr>
+                </tbody>
+              </table></td>
+          </tr>
+             <tr>
+            <td height="35" valign="middle"><img src="{{skin url=images/invoice/upload_artwork.jpg}}"   alt=""/></td>
+          </tr>
+              <tr>
+                <td valign="top" style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;"><span style="color:#ea0809; font-weight:bold;"></span>For us to attach your artwork with the right order and right account we need you to enter your Quote/Invoice/Order number. Your Quote / Invoice / Order number is located in the Quote / Invoice / Order email(s) sent to you. If you have not already requested a Quote or placed your order please do so to receive your number.Please goto our website and add product to the cart to place your order or request a quote / Invoice</td>
+              </tr>
+          <tr>
+            <td height="35" valign="middle"><img src="{{skin url=images/invoice/how_did_we_do.jpg}}" width="132" height="20"  alt=""/></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="left" valign="top" style="font-size:12px; padding:7px  0px; line-height:20px; ">We aim to ensure that whatever you are looking to buy, we make your search a success. If we've failed in any way please contact us here and let us know; <br>
+we prefer feedback via <a href="mailto:{{config path='trans_email/ident_support/email'}}" style="color:#ea0809;">{{config path='trans_email/ident_support/email'}}</a> or <span style="font-size:12px; padding:7px 0px; "> by phone at {{config path='general/store_information/phone'}}. </span> Thanks again for shopping with us.</td>
+              </tr>
+              <tr>
+                <td align="left" valign="top" style="font-size:12px; padding:10px  0px; line-height:20px;"><a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}"  style="margin-bottom:10px; text-align:right; float:left;" border="0"/></a></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="15"></td>
+          </tr>
+          <tr>
+            <td valign="top" style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;"><span style="color:#ea0809; font-weight:bold;">Please Carefully Check the Details on This Invoice</span><br>
+              We attempt to process all orders as fast as possible and as a result we may not be able to change this order. If you do notice an error or need to change an order it is essential that you contact us by phone on 1300 72 16 14 urgently during our business hours (Mon-Fri, 9am-5pm Australian Eastern Time) so we can try make your change before the order is processed.<br>
+              <span style="color:#ea0809; font-weight:bold;">No Questions Asked Money Back Policy</span><br>
+              At {{var store.getFrontendName()}} you can shop with total peace of mind. For most things, if you change your mind when you receive your order, you can send it back to us for your money back. No questions asked and no hard feelings. More here Click here<br>
+              <span style="color:#ea0809; font-weight:bold;">Damaged or Faulty Items</span><br>
+              All items are sold with a Warranty that ensures what you ordered is received by you in good working order and is able to be used as intended by the manufacturer and / or as specified by us.<br>
+              {{var store.getFrontendName()}} is a division of  Vivid Ads Pty. Ltd. (ABN 49210655341)
+              302 Bridge Street, Port Melbourne, Victoria 3207 Australia</td>
+          </tr>
+          </table></td>
+        <td width="10">&nbsp;</td>
+        <td width="300" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><img src="{{skin url=images/invoice/recomendid.png}}"></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:7px 3px 7px 3px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td height="10"></td>
+          </tr>
+          <tr>
+            <td><img src="{{skin url=images/invoice/joinus.png}}"></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td bgcolor="#EAEAEA" align="center" style="background:#EAEAEA; text-align:center;"><center><p style="font-size:12px; margin:0;">Thank you again, <strong style="color:#ea0809;">{{var store.getFrontendName()}}</strong></p></center></td>
+  </tr>
+      </table></td>
+</tr>
+</table>
+</div></body>

@@ -1,0 +1,86 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Category left navigation
+ *
+ * @see Mage_Catalog_Block_Navigation
+ */
+?>
+
+<?php 
+	
+//if (!Mage::registry('current_category')) return ?>
+
+
+
+
+<?php 
+     // getCategory Id/
+	$_category_id = 1588;
+	$_category = Mage::getModel('catalog/category')->load($_category_id);
+	$_products = Mage::getModel('catalog/product');
+	$_store_id  = Mage::app()->getStore()->getId();
+    
+    $_product_collection = Mage::getResourceModel('catalog/product_collection');	 
+ //  $_product_collection->addCategoryFilter($_output_category); //category filter	 
+   $_product_collection->addAttributeToFilter('status',1); //only enabled product	 
+   //$_product_collection->addAttributeToSelect(array('name','url','small_image')); //add product attribute to be fetched
+    $_product_collection->addAttributeToSelect(array('name','url','url_path','small_image'));  //add product attribute to be fetched
+  // $_product_collection->addAttributeToSelect('*');
+     $_product_collection->addStoreFilter($store_id);
+  //$_product_collection->getSelect()->order('rand()'); //uncomment to get products in random order     
+	 
+ $_product_count =   is_array($_product_collection)?count($_product_collection):$_product_collection->count();
+ 
+?>
+
+<?php if($_product_count): ?>
+
+<div class="catgHeader"><?php echo $this->__('OUT DOOR BANNERS') ?></div><!--catgHeader-->
+            <div class="clear"></div>
+            <div class="menuLinks">
+            	<ul>
+                	<?php foreach ($_product_collection as $_product): ?>
+                  
+                    <li><div class="iconSmall"></div>
+                    <?php  //var_dump($_product->getData());?>
+                        <a href="<?php echo $_product->getUrl_path(); ?>" >
+				    <?php echo $this->escapeHtml($_product->getName());?>&nbsp;&nbsp;</a> 
+                    </li>
+                    
+                <?php endforeach ?>
+                    
+                </ul>
+            </div><!--menuLinks-->
+        <div class="clear"></div>
+
+
+                
+                
+        <script type="text/javascript">decorateDataList('narrow-by-list2')</script>
+   
+<?php endif; ?>

@@ -1,0 +1,44 @@
+/******************************** 06-11-2013 *****************************************/
+.totaldiv{overflow:hidden;padding-top: 2px;}
+.totaldiv .tabclass{margin-bottom:8px; width:450px; }
+.totaldiv .tabclass .item_class{margin-left:6%;}
+
+/******************************** 07-11-2013 *****************************************/
+.systemalert-adminhtml-systemalert-index .file_class{text-align:right;}
+.systemalert-adminhtml-systemalert-index .tabclass2 .item_class{margin-left: 12%;}
+.systemalert-adminhtml-systemalert-index .tabclass2 {text-align: right;width: 450px;margin-bottom: 8px;}
+.systemalert-adminhtml-systemalert-index .total_proof tr td{padding:0 !important;}
+
+/* ====================== 08-11-2013 ====================== */
+
+#dvFile .tabclass{margin-bottom:6px; overflow:hidden;}
+#dvFile {width:130%; margin-top:10px;}
+
+/**************************** 27_11_2013 ****************************************/
+
+.totaltask{position: fixed; margin-left:-12%; top: 176px; background-color: white; width: 437px; min-height: 255px; box-shadow: 0 2px 4px rgba(0,0,0,.2); border: 1px solid #CCC; z-index: 9999; left:50%;}
+.taskclose{float: right;margin:10px 13px 0 0; font-weight: bold;cursor:pointer;}
+.taskbody{margin-left: 20px;margin-top: 20px;}
+.taskbody textarea{width: 246px;height: 83px;} 
+.calendar{position: fixed;left: 660px;top: 228px;}
+
+.totalcondition{position: fixed;margin-left: 225px;top: 176px;background-color: white;width: 970px;min-height: 108px;box-shadow: 0 2px 4px rgba(0,0,0,.2);border: 1px solid #CCC; z-index: 9999;}
+.conditionclose{float: right; margin:15px 13px 0 0; font-weight: bold;cursor:pointer;}
+.conditionbody{margin: 40px 0 0 20px;}
+
+.totaldiv .tabclass { margin-bottom: 8px; width: 85% !important;}
+
+.total_proof .totaldiv .criteriadiv{float:left; padding-left:10px; width:475px; word-break:break-all; text-align:left;}
+
+/*************************** 04_11_2013 ******************************/
+
+#layout{width: 100%;position: fixed;background-color: black;height: 100%;top: 0px;left: 0px;z-index: 999;opacity: 0.5;}
+
+
+
+.taskbody table tr{margin-bottom:6px;}
+.taskbody table tr td.edittask{text-align:center; margin-left:50%;}
+
+.totalcondition .conditionbody table{margin:15px 0 20px;}
+.totalcondition .conditionbody table td select.attributecss{width:170px;}
+.totaltask table{margin:35px 0 15px;}
