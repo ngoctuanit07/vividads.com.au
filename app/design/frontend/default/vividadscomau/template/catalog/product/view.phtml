@@ -550,6 +550,8 @@ Please call us on 1300721614 for a quote.</p>')?>
             </div>
              
             </div>
+            
+            <div class="email_quote"><a href="#quoteLoader"><img src="<?php echo $this->getSkinUrl()?>images/get_quote.jpg" alt="<?php echo __('Email Quotation')?>"/></a></div>
             <div class="box-containers" style="background-color:white;">
                
                 <div class="help">NEED HELP ?</div>
@@ -643,7 +645,7 @@ Please call us on 1300721614 for a quote.</p>')?>
               <?php } ?>
               
               <div class="box-container"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
-              <?php if (!$_product){?>
+     
                 <div class="pro-options">
                   <?php 
                   if($_product->getOptions()){
@@ -654,7 +656,7 @@ Please call us on 1300721614 for a quote.</p>')?>
                   }
                   ?>
                 </div>
-               <?php }?>
+             
               </div>
               
               <div>
