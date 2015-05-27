@@ -952,6 +952,12 @@ box-shadow:        0 1px 1px 0 rgba(84, 84, 84, 0.50);}
 .catalog-product-view .video_section{background-color:#fff;float:left;margin-bottom:20px;margin-left:0;padding:0;width:900px}
 .video-player{margin:0 auto;position:relative;top:0;width:920px}
 .video-player h2{color:#888!important;display:block;font-family:"Raleway", sans-serif;font-size:15px;text-align:center}
+
+.row_details .box-containers{border:3px solid #cdcdcd;margin-bottom:10px;padding:10px; float:left; width:423px; background-color:#f6f6f6;}
+.row_details .box-containers .payment-logo{width:423px; float:left; margin:10px 0px 10px 0px; padding:0px;}
+.row_details .box-containers .note-text{ width:423px; margin:0px; padding:0px;}
+.row_details .box-containers .note-text p{font-family:"Raleway", sans-serif;font-size:12px;  color:#4b4a4a;}
+.row_details .box-containers .note-text p strong{font-family:"Raleway", sans-serif;font-size:12px;  color:#b00; font-weight:bold;}
 .row_details .tabs-wrapper{width:445px;margin-top:0}
 .row_details .tabs-wrapper.floated{margin-top:52px}
 .row_details .box-container{border:2px solid #f1f1f1;margin-bottom:10px;padding:10px; float:left; width:425px;}
@@ -973,11 +979,11 @@ box-shadow:        0 1px 1px 0 rgba(84, 84, 84, 0.50);}
 .row_details .downloads h4{color:#555;font-size:14px;font-weight:500}
 .row_details .downloads a.btn-link{border:1px solid #ddd;color:#000;font-size:12px;font-weight:700;text-transform:uppercase;line-height:1;padding:10px 24px;display:inline-block;margin-left:23px}
 .row_details .downloads a.link{font-weight:700;color:#5bbf21;font-size:14px;background:url(../images/arrow_tab_link.png) no-repeat scroll 0 3px transparent;padding-left:18px;margin-top:21px;display:block}
-.row_details .tabs-actions{border:2px solid #f1f1f1;margin-top:0;overflow:hidden;padding:5px;width:97%}
+.row_details .tabs-actions{/*border:2px solid #f1f1f1;*/ margin-top:0;overflow:hidden;/*padding:5px;*/width:97%; padding:0px;}
 .row_details .help{float:left;color:#000;font-size:18px;text-transform:uppercase;font-weight:700;margin-top:4px;line-height:30px}
 .row_details .help span{color:#000;font-size:16px;text-transform:uppercase;font-weight:700;margin-top:4px}
 .row_details .tabs-actions span{float:left;color:#000;font-size:18px;text-transform:uppercase;font-weight:700;margin-top:4px}
-.row_details .tabs-actions .btn-tabs{color:#000;font-size:14px;text-transform:uppercase;line-height:1;font-weight:500;border:1px solid #5bbf21;padding:11px 9px;display:block;float:right;margin-left:6px}
+.row_details .tabs-actions .btn-tabs{color:#fff;font-size:14px;text-transform:uppercase;line-height:1;font-weight:500;border:1px solid darkorange;padding:11px 9px;display:block;float:right;margin-left:6px; background:orange;}
 .row_details .tabs-actions .btn-tabs:first-child{margin-left:0}
 .product-box .tabs-actions .btn-tabs:hover{text-decoration:none;border:2px solid #5bbf21;padding:10px 8px}
 .catalog-product-view .row-view .review-container{width:100%;margin:0;padding:0}
