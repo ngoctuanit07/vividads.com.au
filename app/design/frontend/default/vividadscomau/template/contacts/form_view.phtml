@@ -63,6 +63,34 @@
     padding: 0;
     text-align: center;
 }
+ .smart-forms .form-body {
+    padding: 40px 30px 0;
+}
+.progress-bar {
+    background-color: whiteSmoke;
+    border-radius: 2px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25) inset;
+    display: block;
+    height: auto;
+    margin-left: 0px;
+    position: relative;
+    width: auto;
+}
+
+.smart-forms .progress-bar .percent {
+    color: #93a2aa;
+    display: inline-block;
+    font-size: 9px;
+    position: absolute;
+    right: -18px;
+    top: 0px;
+}
+ 
+.smart-forms .form-footer {
+    overflow: hidden;
+    padding: 0 10px 20px;
+    text-align: right;
+}
  </style>
 
 <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
@@ -111,7 +139,7 @@
             <input type="text" name="hideit" id="hideit" value="<?php echo $this->getUrl('');?>" style="display:none !important;" />
             <input type="text" name="isAjax" id="isAjax" value="isAjax" style="display:none !important;" />
           </div>
-          <div class="frm-row" style="margin-top:20px;">
+          <div class="frm-row" style="margin-top:0px; margin-bottom:0;">
             <div class="section">
               <?php 
 			$words  = "abcdefghijlmnopqrstuvwyz";
