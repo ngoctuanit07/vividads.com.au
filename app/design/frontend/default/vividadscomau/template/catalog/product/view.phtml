@@ -508,7 +508,7 @@ Apply*). ")?></p>
               </div>
             </div>  
             <div class="right tabs-wrapper">
-            <div class="box-container">
+            <div class="box-containers">
             <div class="add_cart_option">
                   <?php if($_product->price==0):?>
                   <div class="price-section"> <?php echo "<h1>Call To Enquire</h1>";?> </div>
@@ -534,13 +534,37 @@ Apply*). ")?></p>
                   <?php echo $this->getChildHtml('addtocart')?>
                   <?php endif ;?>
                 </div>
+            <div class="payment-logo">
+                <img src="<?php echo $this->getSkinUrl()?>images/payment-logo.png" alt="<?php echo $this->__('Payment Method')?>" title="<?php echo $this->__('Payment Method')?>" />
+                </div>
+            <div class="note-text">
+            <?php echo $this->__('<p> 
+<strong>Payment:</strong> Credit card payment is NOT mandatory in checkout process.
+Available Checkout Payment Options (Buy Now Pay Later):
+Purchase Order; Direct Deposit; Bank Cheque; Credit Card; PayPal; <br /><br />
+<strong>Design File:</strong> When placing an order you will have the opportunity to upload your artwork after checkout process. 
+If your artwork is not quite ready but you would like to place an order, it is possible to upload your artwork 
+at a later date.<br /><br />
+<strong>Shipping:</strong> Cost of shipping will be quoted on order page. Your goods will be shipped with our Regular TNT Road Express Service. If you require your delivery urgently we can use a priority service. 
+Please call us on 1300721614 for a quote.</p>')?>
             </div>
-            <div class="box-container">
+             
+            </div>
+            
+            <div class="email_quote"><a href="#quoteLoader"><img src="<?php echo $this->getSkinUrl()?>images/get_quote.jpg" alt="<?php echo __('Email Quotation')?>"/></a></div>
+            <div class="box-containers" style="background-color:white;">
                
                 <div class="help">NEED HELP ?</div>
                 <div class="tabs-actions"> 
                   <!-- <a href="javascript:void(0)" title="<?php echo $this->__('Add to Quote') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" id="quoteImage" data-url="<?php echo $this->getAddToCartUrl($_product); ?>" data-id="<?php echo $_product->getId(); ?>" style="margin-left:13px;">--> 
-                  <a  title="<?php echo $this->__('Add to Quote') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" style="margin-left:13px;" href="<?php echo $this->getUrl('get_a_quote');?>" > <img src="<?php echo $this->getSkinUrl('images/addQuote.jpg');?>" alt="add Quote" title="add Quote Image" /> </a> <a style="float: right; position: relative; left: -15px;" class="btn-tabs live-chat" href="javascript:void(0)">Call Us: 1300721614</a> <a class="btn-tabs live-chat" onclick="LC_API.show_full_view();return false;" href="" style="float:left;">LIVE CHAT</a> </div>
+                  <?php /*?><a  title="<?php echo $this->__('Add to Quote') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" style="margin-left:13px;" href="<?php echo $this->getUrl('get_a_quote');?>" > <img src="<?php echo $this->getSkinUrl('images/addQuote.jpg');?>" alt="add Quote" title="add Quote Image" /> </a><?php */?>  
+                  <a class="btn-tabs live-chat" onclick="LC_API.show_full_view();return false;" href="" style="float:left;">LIVE CHAT</a> 
+                  <a style="float: left; position: relative; " class="btn-tabs live-chat" href="javascript:void(0)">Call Us: 1300721614</a>
+                   <a class="btn-tabs live-chat" href="mailto:sales@vividads.com.au" target="_blank" style="float:left; width:90px; text-align:center;">Email</a> 
+                  
+                  </div>
+                      </div>
+                 <div class="box-containers" style="background-color:white;">
                 <div class="help">Downloads</div>
                 <div class="tabs-actions">
                   <div class="button_container">
@@ -579,7 +603,7 @@ Apply*). ")?></p>
           <?php */?>
                   </div>
                 </div>
-              </div>
+          			</div>
               <?php   
 		  $product = Mage::registry('current_product');
             if($product->getTypeID() == 'bundle')
@@ -621,6 +645,7 @@ Apply*). ")?></p>
               <?php } ?>
               
               <div class="box-container"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
+     
                 <div class="pro-options">
                   <?php 
                   if($_product->getOptions()){
@@ -631,7 +656,7 @@ Apply*). ")?></p>
                   }
                   ?>
                 </div>
-               
+             
               </div>
               
               <div>
