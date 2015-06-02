@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Emjainteractive_AdminPaymentmethod>
+            <version>1.0.0</version>
+        </Emjainteractive_AdminPaymentmethod>
+    </modules>
+
+    <global>
+        <models>
+            <emjainteractive_adminpaymentmethod>
+                <class>Emjainteractive_AdminPaymentmethod_Model</class>
+            </emjainteractive_adminpaymentmethod>
+        </models>
+    </global>
+
+    <adminhtml>
+        <events>
+            <payment_method_is_active>
+                <observers>
+                    <emjainteractive_adminpaymentmethod_is_active>
+                        <class>emjainteractive_adminpaymentmethod/observer</class>
+                        <method>paymentMethodIsActive</method>
+                    </emjainteractive_adminpaymentmethod_is_active>
+                </observers>
+            </payment_method_is_active>
+        </events>
+    </adminhtml>
+    
+</config>

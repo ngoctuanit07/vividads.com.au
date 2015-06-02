@@ -1,0 +1,20 @@
+a:4:{s:4:"data";s:645:"<block type="rss/catalog_category" output="toHtml" name="rss.catalog.category"/>
+<reference name="rss.catalog.category">
+   <action method="addPriceBlockType">
+      <type>bundle</type>
+      <block>bundle/catalog_product_price</block>
+      <template>bundle/rss/catalog/product/price.phtml</template>
+   </action>
+</reference>
+<reference name="top.links">
+   <action method="addLink" translate="label title" module="customer">
+      <label>Log In</label>
+      <url helper="customer/getLoginUrl"/>
+      <title>Log In</title>
+      <prepare/>
+      <urlParams/>
+      <position>100</position>
+   </action>
+</reference>
+<remove name="reorder"/>
+";s:8:"lifetime";N;s:6:"expire";i:11428396967;s:8:"priority";i:8;}

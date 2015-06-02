@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * MD_Quotemail.
+ * Company: Vivid Ads Inc Australia
+ * Author: AShfaq Ahmed
+ * 
+ *
+ * NOTICE OF LICENSE
+ *
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.vividads.com.au
+ *
+ * @category   MD
+ * @package    Quotemail
+ * @copyright  Copyright (c) 2014 Vivid Ads Ashfaq Ahmed (http://www.vividads.com.au)
+ */
+-->
+
+<config>
+    <modules>
+        <MD_Quotemail>
+            <version>0.1.0</version>
+        </MD_Quotemail>
+    </modules>
+    <frontend>
+        <routers>
+            <quotemail>
+                <use>standard</use>
+                <args>
+                    <module>MD_Quotemail</module>
+                    <frontName>quotemail</frontName>
+                </args>
+            </quotemail>
+        </routers>
+        <layout>
+            <updates>
+                <quotemail>
+                    <file>quotemail.xml</file>
+                </quotemail>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+            <quotemail>
+                <use>admin</use>
+                <args>
+                    <module>MD_Quotemail</module>
+                    <frontName>quotemail</frontName>
+                </args>
+            </quotemail>
+        </routers>
+    </admin>
+    <adminhtml>
+       <menu>
+            <quotemail module="quotemail">
+                <title>Pre-Defined Emails</title>
+                <sort_order>72</sort_order>               
+                <children>
+                    <items module="quotemail">
+                        <title>Manage Email Templates</title>
+                        <sort_order>0</sort_order>
+                        <action>quotemail/adminhtml_quotemail</action>
+                    </items>
+                </children>
+            </quotemail>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <MD_Quotemail>
+                            <title>MD Quote Emails Module</title>
+                            <sort_order>10</sort_order>
+                        </MD_Quotemail>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <quotemail translate="title" module="quotemail">
+                                            <title>MD Quote Emails</title>
+                                        </quotemail>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <quotemail>
+                    <file>quotemail.xml</file>
+                </quotemail>
+            </updates>
+        </layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <quotemail>
+                <class>MD_Quotemail_Model</class>
+                <resourceModel>quotemail_mysql4</resourceModel>
+            </quotemail>
+            <quotemail_mysql4>
+                <class>MD_Quotemail_Model_Mysql4</class>
+                <entities>
+                    <quotemail>
+                        <table>quotemail</table>
+                    </quotemail>
+                    <quotemail_category>
+                        <table>quotemail_category</table>
+                    </quotemail_category>                    
+                    <quotemail_store>
+                        <table>quotemail_store</table>
+                    </quotemail_store>
+                </entities>
+            </quotemail_mysql4>
+        </models>
+        <resources>
+            <quotemail_setup>
+                <setup>
+                    <module>MD_Quotemail</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </quotemail_setup>
+            <quotemail_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </quotemail_write>
+            <quotemail_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </quotemail_read>
+        </resources>
+        <blocks>
+            <quotemail>
+                <class>MD_Quotemail_Block</class>
+            </quotemail>
+        </blocks>
+        <helpers>
+            <quotemail>
+                <class>MD_Quotemail_Helper</class>
+            </quotemail>
+        </helpers>
+    </global>
+    <default>
+        <quotemail>
+            <general>               
+                <emailtitle>Emails</emailtitle>        
+            </general>       
+        </quotemail>
+    </default>
+</config>

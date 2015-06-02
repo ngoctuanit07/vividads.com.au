@@ -1,0 +1,30 @@
+<?php
+/**
+ * Email Template Manager
+ *
+ * @category:    Aitoc
+ * @package:     Aitoc_Aitemails
+ * @version      2.0.13
+ * @license:     POwWoRanFs2vVHb6wy050abrHO3ftlyCeMSf01dXU3
+ * @copyright:   Copyright (c) 2013 AITOC, Inc. (http://www.aitoc.com)
+ */
+?>
+<div class="content-header">
+	<table cellspacing="0">
+		<tr>
+			<td style="width:50%;"><h3 class="icon-head head-system-email-template"><?php echo $this->getHeaderText() ?></h3></td>
+			<td class="form-buttons">
+                <button class="scalable add" onclick="window.location='<?php echo $this->getMassCreateUrl() ?>'"><span><?php echo $this->__('Generate Templates'); ?></span></button>
+                <button class="scalable" onclick="window.location='<?php echo $this->getMassReplaceUrl() ?>'"><span><?php echo $this->__('Replace In Templates'); ?></span></button>
+            </td>
+		</tr>
+	</table>
+</div>
+
+<div>
+    <?php echo $this->getChildHtml('store_switch') ?>
+</div>
+
+<div>
+    <?php  echo $this->getChildHtml('grid') ?>
+</div>

@@ -1,0 +1,18 @@
+<?php if ($this->getReviewsCount()): ?>
+    <div class="ratings" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+      <?php if ($this->getRatingSummary()):?>
+		<meta itemprop="bestRating" content="5">
+		<meta itemprop="worstRating" content="0">
+        <div class="rating-box">
+          <div class="rating" itemprop="ratingValue" content="<?php echo $this->getRatingSummary() / 20 ?>" style="width:<?php echo $this->getRatingSummary() ?>%"></div>
+        </div>
+      <?php endif;?>
+        <p class="rating-links">
+          <a href="<?php echo $this->getReviewsUrl() ?>"><span itemprop="reviewCount"><?php echo $this->__('%d', $this->getReviewsCount()) ?></span> <?php echo $this->__('Review(s)') ?></a>
+          <span class="separator">|</span>
+          <a href="<?php echo $this->getReviewsUrl() ?>#review-form"><?php echo $this->__('Add Your Review') ?></a>
+        </p>
+    </div>
+<?php elseif ($this->getDisplayIfEmpty()): ?>
+    <p class="no-rating"><a href="<?php echo $this->getReviewsUrl() ?>#review-form"><?php echo $this->__('Be the first to review this product') ?></a></p>
+<?php endif; ?>

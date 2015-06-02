@@ -1,0 +1,325 @@
+<?php
+/**
+* Magento
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE_AFL.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@magentocommerce.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+** Do not edit or add to this file if you wish to upgrade Magento to newer
+* versions in the future. If you wish to customize Magento for your
+* needs please refer to http://www.magentocommerce.com for more information.
+*
+* @category    design
+* @package     base_default
+* @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+* @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*/
+?>
+<?php
+/**
+* Product list template
+*
+* @see Mage_Catalog_Block_Product_List
+*/
+?>
+<div class="intro">
+  <h2>Welcome to <span style="color:#ec761c;">Vivid Exhibition Displays - Unleash Your Brand</span></h2>
+  <p style="width:96%;"><span style="color:#f37d4b;">We know who you are and we know exactly what </span>
+you need to unleash your brand at your next event. Vivid Ads helps you create displays that are eye catching as well as vivid so you do not go unnoticed at your next show. No matter what your need maybe, we have a solution that will amaze you and your audience.  </p>
+</div>
+<div class="box_content">
+<div style=" margin-top:0px;" class="text-wrapper"> <img class="left" src="<?php echo $this->getSkinUrl()?>images/low-price.png" alt="">
+              <div class="right"> <span class="title"><?php echo __('Low-Price Guarantee')?></span>
+                <p class="content"><?php echo __('We are here to offer you, our client the finest trade show displays at the lowest possible prices. If you do happen to find a lower price for one of our products anywhere else, submit their quote and we will beat it with a smile. No worries mate !.')?><br /><br /> </p>
+              </div>
+            </div>
+            <div class="text-wrapper"> <img class="left" src="<?php echo $this->getSkinUrl()?>images/shipping.png" alt="">
+              <div class="right"> <span class="title"><?php echo __('Fast, Reliable Shipping')?></span>
+                <p class="content">We know that to you deadline is not just a task, it is a lifeline ! We've worked with hundreds of individuals like you and we will ensure we are extremely punctual with getting your display's to you. RIGHT ON TIME ! <br /><br /><br />
+
+</p>
+              </div>
+            </div>
+            <div class="text-wrapper"> <img class="left" src="<?php echo $this->getSkinUrl()?>images/process.png" alt="">
+              <div class="right"> <span class="title"><?php echo __('Easy Setup Process')?></span>
+                <p class="content"> We work with busy individuals like you all year long and we know time is money to you ! <br >From your first enquiry to the final delivery, we've  streamlined our process and made it crystal clear for you, so you do not waste a Millie-second of your price-less time ! 
+ </p>
+              </div>
+            </div>
+
+
+</div>
+<div class="box_wrap">
+<h1><?php echo __('Our Clients')?></h1>
+<ul class="logo_wrap">
+	<li><img src="<?php echo $this->getSkinUrl('images/bond_universty.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/bmw.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/ferari.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/corrective_service.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/paypal_logo.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/western_sydney.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/iiba_australia.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/australian_gob.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/tasmania.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/netball_nsw.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/victoria_police.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/sydney_hospital.png')?>" alt="Our Clients" /></li>
+	<li><img src="<?php echo $this->getSkinUrl('images/nsw_police.png')?>" alt="Our Clients" /></li>    
+	<li><img src="<?php echo $this->getSkinUrl('images/acma_australian.png')?>" alt="Our Clients" /></li>    
+	<li><img src="<?php echo $this->getSkinUrl('images/australia_war.png')?>" alt="Our Clients" /></li>    
+	<li><img src="<?php echo $this->getSkinUrl('images/energy_climatechange.png')?>" alt="Our Clients" /></li>    
+	<li><img src="<?php echo $this->getSkinUrl('images/litch_field.png')?>" alt="Our Clients" /></li>    
+	<li><img src="<?php echo $this->getSkinUrl('images/cenitex.png')?>" alt="Our Clients" /></li>    
+    
+	</ul>
+
+</div>
+<div class="scrolling-wrapper">
+<h1><?php echo __('Featured Products')?></h1>
+<div class="scroll-wrap">
+  <div id="ca-container" class="ca-container">
+			  <div class="ca-wrapper">
+              
+              <?php
+				$catid = 4178;
+				$category = new Mage_Catalog_Model_Category();
+				$category->load($catid); //My category id is 4178
+				$prodCollection = $category->getProductCollection();
+				foreach ($prodCollection as $product) {
+				$prdIds[] = $product->getId(); //Array to store all the product ids
+				
+				?>
+                <?php 
+				
+				foreach($prdIds as $product_id); {
+						$obj = Mage::getModel('catalog/product');
+						$_product = $obj->load($product_id);
+						// get Product's name
+						//echo "<pre>";
+					    //echo $_product->getName();
+						//echo "</pre>";
+						//get product's short description
+						$catDes = $_product->getShortDescription();
+						//get Product's Long Description
+						//echo $_product->getDescription();
+						//get Product's Regular Price
+						//echo $_product->getPrice();
+						//get Product's Special price
+						//echo $_product->getSpecialPrice();
+						//get Product's Url
+						 $catUrl = $_product->getProductUrl();
+						//get Product's image Url
+						//echo $_product->getImageUrl();
+						
+						?>
+                                              
+              <div class="hover_pro item ca-item ca-item-<?php echo $_product->getId();?>">
+				  <div class="ca-item-main">
+					  <div class="ca-icon"><img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getThumbnail()); ?>
+                      " width="268" height="252" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></div>
+					 <div style="top:0;" class="product-detail-content">
+            <div class="product-detail-description"> <?php echo  substr($catDes,0,150)."..."; ?> </div>
+            <p class="product-detail-read-more"> <a href="<?php echo $catUrl; ?>">Read More</a> </p>
+          </div>
+                      <h2 class="product-name" style="background-color:#d8d8d8;">
+					  <?php $name = $_product->getName();?>
+					  <?php echo substr($name,0,30)."..."?>
+                      
+                      </h2>
+					  
+				    <div class="btn-bg">
+        <div class="pric-btn" style=" text-align: center; color: #fff; font: 12px 'Raleway'; text-decoration: none; height:26px; width:134px; float:left; line-height:26px;"> <?php //echo 'From AUD '.ceil($minimumPrice).".00";
+		 			  echo Mage::helper('core')->currency($_product->getPrice());
+					  ?> </div>
+        <div class="browse-btn"> <a class="category-browse" title="<?php echo $name; ?>" href="<?php echo $catUrl; ?>">  <span>More Info</span></a> </div>
+      </div>
+				  </div>
+			  </div>
+               
+			  <?php }}?>
+              </div>
+              
+              </div>
+
+</div>
+
+</div>
+<div class="testimonial-wrapper">
+<h1><?php echo __('Testimonials')?></h1>
+<div class="testimonial_wrap">
+<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial_home')->toHtml() ?>
+</div>
+</div>
+<div class="our_order_process">
+               <script language="javascript">
+	var active_circle = '.step1';
+	var mobile_width = 480;
+	jQuery(document).ready(function(e) {
+	jQuery('#order_process').find(active_circle).addClass('active');
+	jQuery('#order_process  .step').hover(
+			function(){
+					 jQuery('#order_process  .step').each(function(){jQuery(this).removeClass('active')});
+			},
+			function(){
+					 jQuery('#order_process').find(active_circle).addClass('active');
+			});
+	jQuery('#order_process  .step').on('touchstart', function () {
+		jQuery('#order_process  .step').each(function(){
+			if(jQuery(window).width() > 480)
+			{
+				jQuery(this).removeClass('active');
+				jQuery('#order_process').find('.caption').hide();
+			}
+		});
+		jQuery(this).addClass('active');
+		jQuery(this).find('.caption').show();
+	});
+	});
+	function hideOrderProcess(){
+		  jQuery('.order_process_wrapper').fadeOut('slow');
+		  jQuery("#hide_button").text('View More');
+		  jQuery('html, body').animate({
+		        scrollTop: parseInt(jQuery("#order_process").offset().top)
+		    }, 1000);
+	}
+	function showOrderProcess(){
+		jQuery('.order_process_wrapper').fadeIn('slow');
+		jQuery("#hide_button").text('Hide');
+	}
+	jQuery("#hide_button").click(function() { 
+		  return (this.tog = !this.tog) ? hideOrderProcess() : showOrderProcess();
+	});
+	jQuery(window).resize(function(){
+		if(jQuery(window).width() > 480)
+			showOrderProcess();
+	});
+</script>
+            <h1><?php echo __('Our Order Process')?></h1>
+       
+            <div id="order_process">
+              <div class="order_process_wrapper">
+                <div class="step1 step active"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step1.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step1_hover.png" alt=""></a> <span class="caption"><span class="step_number">step # 1</span> <span class="step_title">Choose your display</span>&nbsp;Trade
+                  show displays come in a slew of styles, shapes and sizes, and we offer 
+                  only the best of them to set you up for success at your next event. Once
+                  you find the right trade show display and add some useful accessories, 
+                  you’re ready to upload your artwork to truly make it your own.</span></div>
+                <div class="step2 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step2.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step2_hover.png" alt=""></a> <span class="caption"><span class="step_number">step # 2</span> <span class="step_title">Place Order</span>&nbsp;It’s
+                  time to check your shopping cart to make sure you haven’t forgot 
+                  anything. Trade show display? Check. Uploaded artwork? Check. LED 
+                  lights? Got it. Once everything is good to go, just fill in your billing
+                  information and shipping destination to finalize your order.</span></div>
+                <div class="step3 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step3.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step3_hover.png" alt=""></a> <span class="caption"> <span class="step_number">step # 3</span> <span class="step_title">Upload &amp; Approve Artwork</span>&nbsp;Now
+                  comes the fun part. Place your artwork on your product’s graphic 
+                  template, and upload it into our Artwork Upload and Graphic Proofing 
+                  System. Here, you have free reign to work with your display to achieve 
+                  the look you envision before approving it for production. </span></div>
+                <div class="step4 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step4.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step4_hover.png" alt=""></a> <span class="caption"><span class="step_number">step # 4</span> <span class="step_title">Proofe Approved</span>&nbsp;Now
+                  that we know what you want, we’re ready to give you what you need. Our 
+                  skilled production team moves into action, working with speed and 
+                  precision to print the most accurate shades and hues and to stitch the 
+                  strongest seams for one impressive display.</span></div>
+                <div class="step5 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step5.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step5_hover.png" alt=""></a> <span class="caption"><span class="step_number">step # 5</span> <span class="step_title">Production begins</span>&nbsp;Now
+                  that we know what you want, we’re ready to give you what you need. Our 
+                  skilled production team moves into action, working with speed and 
+                  precision to print the most accurate shades and hues and to stitch the 
+                  strongest seams for one impressive display.</span> </div>
+                <div class="step6 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step6.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step6_hover.png" alt=""></a> <span class="caption"> <span class="step_number">step # 6</span> <span class="step_title">Order ships</span>&nbsp;Before
+                  shipping your customized exhibit, our quality assurance team rigorously
+                  inspects your trade show display to make sure that everything is 
+                  flawless and primed for your upcoming event. As soon we get the green 
+                  light, your order is immediately shipped to your specified destination.</span></div>
+                <div class="step7 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step7.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step7_hover.png" alt=""></a> <span class="caption"><span class="step_number">step # 7</span> <span class="step_title">Production begins</span>&nbsp;Now
+                  that we know what you want, we’re ready to give you what you need. Our 
+                  skilled production team moves into action, working with speed and 
+                  precision to print the most accurate shades and hues and to stitch the 
+                  strongest seams for one impressive display.</span> </div>
+                <div class="step8 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step8.png" alt=""> <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step8_hover.png" alt=""></a> <span class="caption"> <span class="step_number">step # 8</span> <span class="step_title">Order ships</span>&nbsp;Before
+                  shipping your customized exhibit, our quality assurance team rigorously
+                  inspects your trade show display to make sure that everything is 
+                  flawless and primed for your upcoming event. As soon we get the green 
+                  light, your order is immediately shipped to your specified destination.</span></div>
+              </div>
+              <span id="hide_button">Hide</span></div>
+</div>
+<div class="cate_listing" style="margin-top:0px;padding:0px !important;">
+  
+  
+  <div class="banner" style="padding:10px 0">
+	<h2 style="float:left;padding:10px;margin:0">
+  <?php
+//		$catId = $_category->getId();
+		$category = Mage::getModel('catalog/category')->load($catId); 
+		$curent_metaTitle = Mage::getSingleton('cms/page')->getMeta_title();
+		$current_metaDescription =  Mage::getSingleton('cms/page')->getMeta_description();
+?>
+<?php 
+      if(strlen($curent_metaTitle)>230){ echo substr($curent_metaTitle,0,230).".." ;	  
+	  } else{		 
+	   echo $curent_metaTitle;	  
+	   }
+?>
+      </h2>
+      <p style="font-size:12px; color:#fff; line-height:25px; text-align:justify; width:97%; float:left;">
+        <?php
+	//echo $current_category->getMeta_description();
+    // $headBlock = $this->getLayout()->getBlock('head'); echo $description=$headBlock->getDescription();
+      if(strlen($current_metaDescription)>380){ 
+	  	echo substr($current_metaDescription,0,380).".." ;	  
+	  }else{		  
+	  	echo $current_metaDescription;	 
+	  }
+  ?>
+  </p>
+    <p style="font-size:12px; color:#fff; line-height:25px; text-align:justify; width:97%; float:left;">
+      <?php //echo $catDes; ?>
+      When it comes to trade shows & media backdrop banner walls, it’s all about catching the eye. The impact of your display can make or break your success at the show. Banner stands very popular because they’re portable, flexible, and not too expensive. One drawback is that everybody uses them. So how do you make sure your banner stand draws attention—and doesn’t make you blend in? Here are a few tips for using a banner stand effectively. </p>
+  </div>
+  <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('external-block')->toHtml() ?>
+ <?php /*?> <div id="quoteLoader"></div><?php */?>
+  <!-- <iframe src='http://usedbooths.com.au/index.php/externalform/?store_id=166' height='1450' width='930'></iframe>--> 
+</div>
+<script language="javascript">
+<!--
+ //Loading external quotatoin form
+ // ajax call for external form
+	//jQuery(document).ready(function(e) {
+//		 var quoteUrl = '<?php echo $this->getUrl();?>index.php/externalform/?store_id=166';
+//		 var formVars = { quoteUrl:'<?php echo $this->getUrl();?>index.php/externalform/?store_id=166',
+//		 				  form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey();?>',
+//							};
+//		// console.log(formVars);
+//		 jQuery.ajax({
+//			 url:quoteUrl,
+//			 dataType:"html",
+//			 data:formVars,
+//			 type:'POST',
+//			 beforeSend: function(xError){
+//				 //console.log(xError);
+//				 html = 'Please wait form is loading...';
+//				 html +='<img src="<?php echo Mage::getBaseUrl().'media/loading.gif'?>" />';
+//				  jQuery('#quoteLoader').html();
+//				 },
+//			 success: function(response){
+//				  //console.log(response);
+//				//  jQuery('#quoteLoader').html(html);
+//				  jQuery('#quoteLoader').html(response);
+//				 },
+//			 error: function(error){
+//				  console.log(error);
+//				 },
+//			 });
+//    });
+-->
+// ajax call for external form end.
+</script>
+		<script type="text/javascript">
+			$('#ca-container').contentcarousel();
+		</script>

@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <!-- declare module's version information -->
+    <Vividads_Tnt>
+      <!-- this version number will be used for database upgrades -->
+      <version>0.1.0</version>
+      <depends>
+        <Mage_Shipping />
+      </depends>
+    </Vividads_Tnt>
+  </modules>
+  <frontend>
+    <routers>
+      <tnt>
+        <use>standard</use>
+        <args>
+          <module>Vividads_Tnt</module>
+          <frontName>tnt</frontName>
+        </args>
+      </tnt>
+    </routers>
+  </frontend>
+  <global>
+    <models>
+      <tnt>
+        <class>Vividads_Tnt_Model</class>
+        <resourceModel>tnt_mysql4</resourceModel>
+      </tnt>
+      <tnt_mysql4>
+        <class>Vividads_Tnt_Model_Mysql4</class>
+        <entities>
+          <routingc>
+            <table>tnt_routingC</table>
+          </routingc>
+          <tntservices>
+            <table>tnt_services</table>
+          </tntservices>
+          <typea>
+            <table>tnt_typeA</table>
+          </typea>
+          <typeb>
+            <table>tnt_typeB</table>
+          </typeb>
+          <typec>
+            <table>tnt_typeC</table>
+          </typec>
+          <typed>
+            <table>tnt_typeD</table>
+          </typed>
+          <typee>
+            <table>tnt_typeE</table>
+          </typee>
+          <typef>
+            <table>tnt_typeF</table>
+          </typef>
+          <typeh>
+            <table>tnt_typeH</table>
+          </typeh>
+        </entities>
+      </tnt_mysql4>
+    </models>
+    <helpers>
+      <tnt>
+        <class>Vividads_Tnt_Helper</class>
+      </tnt>
+    </helpers>
+    <resources>
+      <tnt_setup>
+        <setup>
+          <module>Vividads_Tnt</module>
+        </setup>
+        <connection>
+          <use>core_setup</use>
+        </connection>
+      </tnt_setup>
+      <tnt_write>
+        <connection>
+          <use>core_write</use>
+        </connection>
+      </tnt_write>
+      <tnt_read>
+        <connection>
+          <use>core_read</use>
+        </connection>
+      </tnt_read>
+    </resources>
+    <blocks>
+      <tnt>
+        <class>Vividads_Tnt_Block</class>
+      </tnt>
+      <adminhtml>
+        <rewrite>
+          <sales_order_view_form>Vividads_Tnt_Block_Adminhtml_Sales_Order_View_Form</sales_order_view_form>        
+          <sales_order_view_tab_info>Vividads_Tnt_Block_Adminhtml_Sales_Order_View_Tab_Info</sales_order_view_tab_info>
+        </rewrite>
+      </adminhtml>
+      <tnt>
+        <class>Vividads_Tnt_Block</class>
+      </tnt>
+    </blocks>
+  </global>
+  <default>
+    <carriers>
+      <vividadstnt>
+        <active>1</active>
+        <allowed_methods>delivery</allowed_methods>
+        <methods>delivery</methods>
+        <sallowspecific>0</sallowspecific>
+        <model>Vividads_Tnt_Model_Carrier_LocalShippingMethod</model>
+        <name>Australia wide shipping</name>
+        <title>Local Delivery1</title>
+        <specificerrmsg>This shipping method is currently unavailable. If
+          you would like to ship using this shipping method, please contact
+          us.</specificerrmsg>
+        <handling_type>F</handling_type>
+      </vividadstnt>
+      <vividadsint>
+        <active>1</active>
+        <allowed_methods>delivery</allowed_methods>
+        <methods>delivery</methods>
+        <sallowspecific>0</sallowspecific>
+        <model>Vividads_Tnt_Model_Carrier_IntShippingMethod</model>
+        <name>International Shipping</name>
+        <title>Local Delivery1</title>
+        <specificerrmsg>This shipping method is currently unavailable. If
+          you would like to ship using this shipping method, please contact
+          us.</specificerrmsg>
+        <handling_type>F</handling_type>
+      </vividadsint>
+    </carriers>
+  </default>
+  <admin>
+    <routers>
+      <adminhtml>
+        <args>
+          <modules>
+            <Vividads_Tnt before="Mage_Adminhtml">Vividads_Tnt_Adminhtml</Vividads_Tnt>
+          </modules>
+        </args>
+      </adminhtml>
+    </routers>
+  </admin>
+</config>

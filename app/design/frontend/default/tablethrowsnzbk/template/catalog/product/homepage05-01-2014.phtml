@@ -1,0 +1,41 @@
+<div class="stretch-table">   
+    <h1>Categories</h1>
+</div>
+<div class="clear">&nbsp;</div>
+<ul class="products-grid first odd">
+<?php /*?><?php
+$_helper = $this->helper('catalog/output');
+$_category = Mage::getModel('catalog/category')->load(48);
+$_categories = $_category->getCollection()
+->addAttributeToSelect(array('name', 'url', 'image', 'description'))
+->addIdFilter($_category->getChildren());
+$catCouner= 0;
+foreach ($_categories as $_category):
+    $catCouner++;
+    ?>
+
+    <li class="item <?php if($catCouner == 1){echo "first";}else if($catCouner%3==0)echo "last";?> fadeIn animated"> 
+        <a class="product-image" href="<?php echo $_category->getUrl();?>">
+            <img src="<?php echo getImageUrl($_category);?>" width="310" height="250">
+        </a>
+
+        
+    </li>
+<?php
+endforeach; 
+function getImageUrl($category)
+    {
+        if ($category instanceof Mage_Catalog_Model_Category) {
+            $url = $category->getImageUrl();
+        } else {
+            $url = Mage::getModel('catalog/category')
+                ->setData($category->getData())
+                ->getImageUrl();
+        }
+        return $url;
+    }
+?><?php */?>
+ <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('list_cat')->toHtml() ?> 
+</ul>
+
+<div class="clear">&nbsp;</div>

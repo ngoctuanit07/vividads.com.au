@@ -1,0 +1,647 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <aptoplex module="aptoplex_easyuploader">
+            <label>Aptoplex</label>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+        </aptoplex>
+    </tabs>
+
+    <sections>
+        <aptoplex_easyuploader module="aptoplex_easyuploader">
+            <label>Easy Uploader</label>
+            <tab>aptoplex</tab>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <intro>
+                    <frontend_model>aptoplex_easyuploader/adminhtml_system_config_fieldset_intro</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </intro>
+
+                <general translate="label">
+                    <label>General Settings</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <frontend_uploader_url>
+                            <label>Frontend Uploader URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[<strong>Default:</strong> easyuploader<br/>This is what gets appended to the base URL of your store to form the full URL to the Easy Uploader. For example: "http://www.yourstore.com/<strong>easyuploader</strong>".<br/><strong>Tip:</strong> Try to follow SEO best practices where possible by using only the following characters: a-z, 0-9, or a hyphen(-).]]></comment>
+                            <tooltip><![CDATA[Changing this option will still allow you to access the uploader via it's original URL, for example: http://www.yourstore.com/easyuploader. This option merely provides you with a more convenient alternative URL that you can also use.]]></tooltip>
+                        </frontend_uploader_url>
+
+                        <add_link_to_menu translate="label comment">
+                            <label>Add Link to Navigation Menu</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[<strong>Default:</strong> Yes<br/>Adds a link to the Easy Uploader in the navigation menu. <strong>Note:</strong> May not work on all themes.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </add_link_to_menu>
+
+                        <menu_link_title translate="label">
+                            <label>Menu Link Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends>
+                                <add_link_to_menu>1</add_link_to_menu>
+                            </depends>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </menu_link_title>
+
+                        <runtime_fallback_order translate="label comment">
+                            <label>Uploader Fallback Order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[<strong>Default: </strong>html5,flash,silverlight,html4<br/>Comma separated list of file uploader runtimes that your web browser will try to enable. Your web browser will try each one in turn until it finds one that it can successfully load.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </runtime_fallback_order>
+
+                        <uploading_depends_on_order_status translate="label comment">
+                            <label>Limit uploading to selected order statuses</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[<strong>Default:</strong> No<br/>Allows you to restrict the uploading of files depending on the order's status. For example, you could permit files to be uploaded only if an order's status is set to 'Pending'.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </uploading_depends_on_order_status>
+
+                        <permitted_order_statuses translate="label comment tooltip">
+                            <label>Uploading allowed for selected order statuses</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>aptoplex_easyuploader/adminhtml_system_config_source_orderstatuses</source_model>
+                            <sort_order>90</sort_order>
+                            <validate>required-entry</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Select the order statuses that are permitted to upload files.]]></comment>
+                            <tooltip><![CDATA[Shift click to make a contiguous selection or Ctrl click (Windows / Linux) / Command click (Mac) to make a non-contiguous/detached selection.]]></tooltip>
+                            <depends>
+                                <uploading_depends_on_order_status>1</uploading_depends_on_order_status>
+                            </depends>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </permitted_order_statuses>
+
+                        <non_standard_order_number_format>
+                            <label>Allow support for third party 'Custom Order Number' modules</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[<strong>Default:</strong> No<br/>Magento by default has a 'numerical' order number system in the format of '100000000'. Enabling this option disables the number format validation check for the 'Order Number' field on the frontend of the Easy Uploader. This then allows the customer to enter anything into the Order Number field, such as ABC-123-DEF for example.]]></comment>
+                            <tooltip><![CDATA[This feature is currently EXPERIMENTAL due to the wide range of modules that allow custom order numbering and the work required to support them.]]></tooltip>
+                        </non_standard_order_number_format>
+                    </fields>
+                </general>
+
+                <file_settings translate="label">
+                    <label>File Settings</label>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <allowed_file_extensions translate="label comment">
+                            <label>Allowed File Extensions</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Comma-separated list of file types that the uploader will accept.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </allowed_file_extensions>
+
+                        <max_file_size translate="label comment">
+                            <label>Maximum File Size</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number required-entry</validate>
+                            <comment><![CDATA[<strong>Default: </strong>262144 (256 Mb)<br/>Maximum size of each file in <strong>kilobytes</strong> that can be uploaded. Set to <strong>0</strong> to remove limit.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </max_file_size>
+
+                        <file_chunk_size translate="label comment">
+                            <label>File Chunk Size</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number required-entry</validate>
+                            <comment>
+                                <model>aptoplex_easyuploader/adminhtml_system_config_source_comment</model>
+                            </comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </file_chunk_size>
+
+                        <upload_path translate="label comment">
+                            <label>Uploaded Files Path</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[<strong>Default: </strong>media/aptoplex_easyuploader/uploads/customer<br/>The location on the server where any NEW files will be uploaded to (relative to the root of where your Magento installation is located). Please ensure that this folder has full write access ('755' permissions).<br/><strong>NOTE:</strong> This will NOT move any existing uploads on your server. See below for more information.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </upload_path>
+
+                        <move_existing_uploaded_files>
+                            <label>Move existing uploaded files</label>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>aptoplex_easyuploader/adminhtml_system_config_form_button</frontend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Moves any existing uploads on the server to the new location that you specify in <strong>Uploaded Files Path</strong>.<br/><strong style="color:red;">IMPORTANT - PLEASE READ:</strong><br/><strong>1.</strong> After changing the <strong>Uploaded Files Path</strong> press the <strong>Save Config</strong> button.<br/><strong>2.</strong> Press the <strong>Move existing uploads</strong> button <strong>ONCE</strong>.<br/><strong>3.</strong> Wait a few minutes (depending on the number and size of uploads) for the files to be moved and the links to them in the database to be updated.<br/><strong>4.</strong> Confirm that all of the links to the files have been updated successfully in the <strong>Uploads</strong> manager - <br/>(menu option: <strong>Easy Uploader->Uploads</strong>).<br/><strong>Tip:</strong> To minimise disruption to your users and potentially reduce server load, we recommend that you try to perform this operation at an off-peak time.]]></comment>
+                        </move_existing_uploaded_files>
+                    </fields>
+                </file_settings>
+
+                <email_notification_settings translate="label">
+                    <label>E-Mail Notification Settings</label>
+                    <sort_order>25</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[This section allows you to configure the Easy Uploader to notify you by e-mail when a customer has uploaded some files to your store. Specifically, each time the file upload queue on the frontend completes.<br/><br/>]]></comment>
+
+                    <fields>
+                        <enable translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </enable>
+
+                        <use_custom_smtp>
+                            <label>Use custom SMTP server</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                            <comment><![CDATA[<strong>Default:</strong> No]]></comment>
+                            <tooltip><![CDATA[Support for using a custom SMTP server is currently EXPERIMENTAL and may not work on all store configurations.<br>Not using a custom SMTP server will make Easy Uploader default to using PHP's internal <strong>mail()</strong> function for dispatching notifications.]]></tooltip>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                        </use_custom_smtp>
+
+                        <connection_settings_heading translate="label">
+                            <label>SMTP Connection Settings</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                            <depends>
+                                <enable>1</enable>
+                                <use_custom_smtp>1</use_custom_smtp>
+                            </depends>
+                        </connection_settings_heading>
+
+                        <authentication_type translate="label">
+                            <label>Authentication Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>aptoplex_easyuploader/adminhtml_system_config_source_authentication</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                                <use_custom_smtp>1</use_custom_smtp>
+                            </depends>
+                        </authentication_type>
+
+                        <username translate="label">
+                            <label>Username</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <authentication_type separator=",">login,plain,crammd5</authentication_type>
+                                <enable>1</enable>
+                                <use_custom_smtp>1</use_custom_smtp>
+                            </depends>
+                        </username>
+
+                        <password translate="label">
+                            <label>Password</label>
+                            <frontend_type>password</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <authentication_type separator=",">login,plain,crammd5</authentication_type>
+                                <enable>1</enable>
+                                <use_custom_smtp>1</use_custom_smtp>
+                            </depends>
+                        </password>
+
+                        <host translate="label">
+                            <label>Hostname</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                                <use_custom_smtp>1</use_custom_smtp>
+                            </depends>
+                        </host>
+
+                        <port translate="label">
+                            <label>Port Number</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                                <use_custom_smtp>1</use_custom_smtp>
+                            </depends>
+                        </port>
+
+                        <ssl translate="label">
+                            <label>SSL Security</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>aptoplex_easyuploader/adminhtml_system_config_source_ssl</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                                <use_custom_smtp>1</use_custom_smtp>
+                            </depends>
+                        </ssl>
+
+                        <settings_heading translate="label">
+                            <label>E-Mail Settings</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                        </settings_heading>
+
+                        <sender_name translate="label">
+                            <label>Sender Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                        </sender_name>
+
+                        <sender_address translate="label">
+                            <label>Sender E-Mail Address</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                        </sender_address>
+
+                        <recipient_addresses translate="label">
+                            <label>Recipient E-Mail Addresses</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Comma separated list of e-mail addresses you would like to send notifications to.]]></comment>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                        </recipient_addresses>
+
+                        <subject translate="label">
+                            <label>Subject</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                        </subject>
+                    </fields>
+                </email_notification_settings>
+
+                <checkout_success_presentation translate="label comment">
+                    <label>Layout Settings - Checkout Success Page</label>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[The following settings deal with the presentation of the Easy Uploader section that appears on the order success page after an order has been placed.<br/><br/><strong>Note:</strong></span> It is assumed that by editing these settings that you have a basic understanding of HTML.<br/><br/>]]></comment>
+                    <fields>
+                        <enable translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </enable>
+
+                        <content_html translate="label">
+                            <label>Main Content HTML</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </content_html>
+
+                        <upload_button_title translate="label">
+                            <label>Upload Button Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </upload_button_title>
+
+                        <upload_button_css_class_name translate="label comment">
+                            <label>Upload Button CSS Class Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[<strong>Default: </strong>btn-upload<br/>Name of the CSS class that will style the button.]]></comment>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </upload_button_css_class_name>
+                    </fields>
+                </checkout_success_presentation>
+
+                <frontend_presentation translate="label comment">
+                    <label>Layout Settings - Easy Uploader Page</label>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[The following settings deal with the overall presentation of the Easy Uploader on it's self-contained page on the frontend of your site.<br/><br/><strong>Note:</strong></span> It is assumed that by editing these settings that you have a basic understanding of HTML.<br/><br/>]]></comment>
+                    <fields>
+
+                        <!-- MAIN CONTENT -->
+
+                        <main_content_heading translate="label">
+                            <label>Main Content</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </main_content_heading>
+
+                        <page_title translate="label comment">
+                            <label>Page Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[(Optional)]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </page_title>
+
+                        <intro_html translate="label comment">
+                            <label>Introduction HTML</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[(Optional) Content shown below the page title.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </intro_html>
+
+                        <terms_and_conditions_acceptance translate="label comment">
+                            <label>Customer required to accept Terms and Conditions</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[<strong>Default: </strong>Yes<br/>Whether the customer must accept your Terms and Conditions before being permitted to upload any files.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </terms_and_conditions_acceptance>
+
+                        <terms_and_conditions_html translate="label comment">
+                            <label>Terms and Conditions HTML</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Content shown in the Terms and Conditions section before the upload queue.]]></comment>
+                            <depends>
+                                <terms_and_conditions_acceptance>1</terms_and_conditions_acceptance>
+                            </depends>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </terms_and_conditions_html>
+
+                        <terms_and_conditions_acceptance_checkbox_label translate="label comment">
+                            <label>Terms and Conditions Checkbox Label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[<strong>Default: </strong>I agree to the above<br/>Text to be displayed next to the Terms and Conditions checkbox.]]></comment>
+                            <depends>
+                                <terms_and_conditions_acceptance>1</terms_and_conditions_acceptance>
+                            </depends>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </terms_and_conditions_acceptance_checkbox_label>
+
+                        <!-- UPLOAD QUEUE -->
+
+                        <upload_queue_heading translate="label">
+                            <label>Upload Queue</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </upload_queue_heading>
+
+                        <file_upload_queue_header_html translate="label comment">
+                            <label>File Upload Queue Header HTML</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>65</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[(Optional) Content shown in the File Upload Queue ABOVE the files list.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </file_upload_queue_header_html>
+
+                        <uploader_init_failure_html translate="label comment">
+                            <label>Uploader Initialisation Failure HTML</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[(Optional but recommended) Content that will be displayed in the file upload queue if the file uploader runtime failed to initialise.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </uploader_init_failure_html>
+
+                        <file_upload_queue_footer_html translate="label comment">
+                            <label>File Upload Queue Footer HTML</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>75</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[(Optional) Content shown in the File Upload Queue BELOW the files list.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </file_upload_queue_footer_html>
+
+                        <upload_button_heading translate="label">
+                            <label>Upload Button</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </upload_button_heading>
+
+                        <upload_button_title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>85</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </upload_button_title>
+
+                        <upload_button_css_class_name translate="label comment">
+                            <label>CSS Class Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[<strong>Default: </strong>btn-upload<br/>Name of the CSS class that will style the button.]]></comment>
+                            <backend_model>aptoplex_easyuploader/adminhtml_config_data</backend_model>
+                        </upload_button_css_class_name>
+                    </fields>
+                </frontend_presentation>
+            </groups>
+        </aptoplex_easyuploader>
+
+        <aptoplex_help module="aptoplex_easyuploader" translate="label">
+            <label>Help and Support</label>
+            <tab>aptoplex</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>20</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <about_us translate="label">
+                    <label>Help and Support</label>
+                    <frontend_model>aptoplex_easyuploader/help</frontend_model>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </about_us>
+            </groups>
+        </aptoplex_help>
+    </sections>
+</config>

@@ -1,0 +1,126 @@
+<?php
+ $roles = Mage::getModel('admin/roles')->getCollection();
+foreach($roles as $role):
+   //echo '<br/>Role : '.$role->getId()." | ".$role->getRoleName();
+    $select .= '<option value="'.$role->getId().'">'.$role->getRoleName().'</option>';
+     $roleid = $role->getId();
+   
+   
+endforeach;
+
+$taskall = array(1=>'task1',2=>'task2');
+foreach($taskall as $key=>$task1)
+{
+
+    $taskselect.= '<option value="'.$key.'" >'.$task1.'</option>';
+}
+
+ $url = Mage::helper("adminhtml")->getUrl("systemalert/adminhtml_systemalert/setalert");
+ 
+ $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+ $temptableAlert=Mage::getSingleton('core/resource')->getTableName('system_alert');
+?>
+<script type="text/javascript" src="<?php echo $this->getJsUrl()?>jquery/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->getJsUrl()?>jquery/jquery.noconflict.js"></script>
+<script type="text/javascript">
+    
+function add_another()
+{
+	i = document.getElementById('form_count').value;
+	i++;
+	var str = '<div id="tab_'+i+'" class="tabclass"><br><div class="file_class"><select name="task[]"><option>Select Task</option><?php echo $taskselect;?></select></div><div class="item_class"><select name="user[]"><option>Select User</option><?php echo $select ?><option value="0">Customer</option></select></div><span class="removeitem" onclick="div_remove('+i+')" id="rem_'+i+'" style="cursor:pointer;">Remove</span></div>';
+	jQuery("#content1").append(str);
+	document.getElementById('form_count').value = i;
+	
+}
+
+function div_remove(id)
+{
+	i = document.getElementById('form_count').value;
+	jQuery("#tab_"+id).remove();
+}
+</script>
+
+<div class="entry-edit">
+        <div class="entry-edit-head"><h4>Add System Alert</h4></div>
+        <div class="order-totals">
+         
+           <div class="total_proof">
+            <form action="<?php  echo str_replace('//s','/admin/s',$url);?>" method="post" enctype="multipart/form-data">
+             <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+                <table class="total_proof" style="width: 70%;">
+                     <tr>
+                        <td height="10" align="left" valign="middle" colspan="6">
+                        </td>
+                        <td valign="top">
+                         <span onclick="add_another();" style="cursor:pointer;" title="Add book suggetion" class="addanother">Add another</span><span class="submitclass"><input name="submit" id="submit" type="submit"  class="submit-img" /></span>
+                        </td>
+                    </tr>
+                    <tr class="txt">
+                        <td valign="top">
+                         <div id="dvFile" class="totaldiv">
+                    <?php
+                     $select = $connectionRead->select()
+                    ->from($temptableAlert, array('*'));
+                    
+                    $result = $connectionRead->fetchAll($select);
+                    $i = 1;
+                    foreach($result as $task)
+                    {
+                        
+                        ?>
+                        
+                            <div id="tab_<?php echo $i;?>" class="tabclass">
+                          <div class="file_class">
+                            
+                          <select name="task[]">
+                                <option>Select Task</option>
+                                <?php
+                                    foreach($taskall as $key=>$task1)
+                                    {
+                                        $selected = '';
+                                        if($task['task_id'] == $key)
+                                        $selected = 'selected';
+                                        echo '<option value="'.$key.'" '.$selected.'>'.$task1.'</option>';
+                                    }
+                                ?>
+                             </select>
+                          </div>
+                          <div class="item_class">
+                             <select name="user[]">
+                                <option>Select User</option>
+                                <?php  $roles = Mage::getModel('admin/roles')->getCollection();
+                                    foreach($roles as $role):
+                                        $selected = '';
+                                        if($task['user_id'] == $role->getId())
+                                        $selected = 'selected';
+                                       //echo '<br/>Role : '.$role->getId()." | ".$role->getRoleName();
+                                        echo '<option value="'.$role->getId().'" '.$selected.' >'.$role->getRoleName().'</option>';
+                                         $roleid = $role->getId();
+                                       
+                                       
+                                    endforeach; ?>
+                                <option value="0" <?php if($task['user_id'] == 0) echo 'selected';?>>Customer</option>
+                             </select>
+                          </div><span class="removeitem" onclick="div_remove('<?php echo $i;?>')" id="rem_<?php echo $i;?>" style="cursor:pointer;">Remove</span>
+                         </div>
+                         
+                        <?php
+                        $i++;
+                    }
+                    ?>
+                    </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="10" align="left" valign="middle" colspan="6">
+                        <div id="content1" class="tabclass"></div></td>
+                    </tr>
+                   
+                </table>
+                <input type="hidden" id="form_count" value="<?php echo $i;?>" />
+            </form>
+        </div>
+            
+        </div>
+    </div>

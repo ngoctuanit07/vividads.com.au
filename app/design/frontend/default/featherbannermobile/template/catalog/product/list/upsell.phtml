@@ -1,0 +1,113 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_iphone
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /* ?>
+<?php //if(count($this->getItemCollection()->getItems())): ?>
+<div class="box-collateral box-up-sell">
+    <div class="box-title">
+        <h2><?php echo $this->__('You May Also Like') ?></h2>
+    </div>
+    <ul class="products-grid" id="upsell-product-list"><!-
+    <?php $this->resetItemsIterator() ?>
+    <?php for($_i=0;$_i<$this->getRowCount();$_i++): ?>
+        <?php for($_j=0;$_j<$this->getColumnCount();$_j++): ?>
+            <?php if($_link=$this->getIterableItem()): ?>
+            -><li class="item">
+                <a href="<?php echo $_link->getProductUrl() ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_link, 'small_image')->resize(135) ?>" width="135" height="135" alt="<?php echo $this->escapeHtml($_link->getName()) ?>" title="<?php echo $this->escapeHtml($_link->getName()) ?>" /></a>
+                <h3 class="product-name"><a href="<?php echo $_link->getProductUrl() ?>"><?php echo $this->escapeHtml($_link->getName()) ?></a></h3>
+                <?php echo $this->getPriceHtml($_link, true, '-upsell') ?>
+            </li><!-
+            <?php endif; ?>
+        <?php endfor; ?>
+    <?php endfor; ?>
+    -></ul>
+</div>
+<?php endif ?>
+<?php */?>
+
+<script type="text/javascript" src="<?php echo $this->getJsUrl(); ?>jquery.1.7.js"></script>
+<script type="text/javascript">jQuery.noConflict();</script>
+<script type="text/javascript" src="<?php echo $this->getJsUrl(); ?>jquery.jcarousel.min.js"></script>
+
+
+                    <script type="text/javascript">
+                jQuery(document).ready(function(){
+                            jQuery('.jcarousel-list').jcarousel();
+
+                       }); 
+                    </script>
+    <?php
+        $_product = Mage::registry('product');
+       // $_carouselEnable = Mage::getStoreConfig('amzoom/carousel/enable');
+        
+    ?>
+    <?php if(count($_product->getUpSellProductCollection())):?>
+    <?php $upsell_product_collection = $_product->getUpSellProductCollection();?>
+                <h1 class="recomment"> We also recommend </h1>
+                 <div class="more-views">
+                <div class="more_view_scroller" style="position: relative;">
+                <?php if ($_carouselEnable): ?>
+                <div id="prevGallery" style="position: absolute; clear: both; float: none; top: 20px; left: -10px;" class="MagicScrollArrows MagicScrollArrowPrev"></div>
+                <?php endif; ?>
+                <div class="<?php echo ($_carouselEnable)? 'list_carousel' : '' ?>" style="<?php echo ($_carouselEnable)? 'padding-left: '. ((intval(Mage::getStoreConfig('amzoom/size/preview_width')) - ($_carouselWidth - 5*2))/2 + 5) .'px;' : ''?>">
+                <ul class="jcarousel-list">
+    <?php foreach($upsell_product_collection as $pdt):?>
+            <?php
+            
+            $pdt_id=$pdt->getId();
+            $model_upsell = Mage::getModel('catalog/product');
+            $_product_upsell = $model_upsell->load($pdt_id);
+            $upsell_name= $_product_upsell->getName();
+            $upsell_price= number_format($_product_upsell->getPrice(),2);
+            $upsell_img_url = $this->helper('catalog/image')->init($_product_upsell, 'image')->keepFrame(false)->resize(100,100);
+            //die($_product_upsell->getProductUrl());
+            
+            
+            
+            ?>
+       
+                            <li>
+                            <a href="<?php echo $_product_upsell->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product_upsell, 'small_image'), null, true) ?>">
+                            <div class="product-image">
+                              <img src="<?php echo $this->helper('catalog/image')->init($_product_upsell, 'small_image')->resize(130); ?>" width="65" height="65" alt="<?php echo $this->stripTags($this->getImageLabel($_product_upsell, 'small_image'), null, true) ?>" />
+                             </div>
+                            <?php echo $upsell_name; ?>
+                            
+                            </a>
+                            </li>
+                
+
+            <?php endforeach;?>
+                </ul>
+                </div>
+            <?php if ($_carouselEnable): ?>
+            <div id="nextGallery" style="position:absolute; top:20px; left: <?php echo (intval(Mage::getStoreConfig('amzoom/size/preview_width')) - 11) . 'px'?>" class="MagicScrollArrows"></div>
+            <?php endif; ?>
+            </div>
+         </div>
+<?php endif ?>
+
+

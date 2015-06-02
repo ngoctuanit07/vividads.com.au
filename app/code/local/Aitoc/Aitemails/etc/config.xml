@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Aitoc_Aitemails>
+            <version>2.0.13</version>
+            <platform>community</platform>
+        </Aitoc_Aitemails>
+    </modules>
+       
+    <admin>
+        <routers>
+            <aitemails>
+                <use>admin</use>
+                <args>
+                    <module>Aitoc_Aitemails</module>
+                    <frontName>aitemails</frontName>
+                </args>
+            </aitemails>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <events>
+            <controller_action_postdispatch>
+                <observers>
+                    <aitemails_observer_save>
+                        <type>singleton</type>
+                        <class>Aitoc_Aitemails_Model_Observer_Save</class>
+                        <method>process</method>
+                    </aitemails_observer_save>
+                </observers>
+            </controller_action_postdispatch>            
+        </events>
+        <translate>
+            <modules>
+                <Aitoc_Aitemails>
+                    <files>
+                        <default>Aitoc_Aitemails.csv</default>
+                    </files>
+                </Aitoc_Aitemails>
+            </modules>
+        </translate>
+    </adminhtml>
+    
+    <global>
+        <aitemails>
+            <email>
+                <template>
+                    <default>
+                        <entry1><value><![CDATA[Magento]]></value></entry1>
+                        <entry2><value><![CDATA[Demo Store]]></value></entry2>
+                        <entry3><value><![CDATA[magento@varien.com]]></value></entry3>
+                        <entry4><value><![CDATA[dummyemail@magentocommerce.com]]></value></entry4>
+                        <entry5><value><![CDATA[(800)DEMO-STORE]]></value></entry5>
+                        <entry6><value><![CDATA[(800)DEMO-NUMBER]]></value></entry6>
+                        <entry7><value><![CDATA[(555) 555-0123]]></value></entry7>
+                        <entry8><value><![CDATA[Monday - Friday, 8am - 5pm PST]]></value></entry8>
+                    </default>
+                    <replace>
+                        <default_cnt>5</default_cnt>
+                    </replace>
+                </template>
+            </email>
+        </aitemails>
+    
+        <models>
+            <aitemails>
+                <class>Aitoc_Aitemails_Model</class>
+                <resourceModel>aitemails_mysql4</resourceModel>
+            </aitemails>
+            <aitemails_mysql4>
+                <class>Aitoc_Aitemails_Model_Mysql4</class>
+                <entities>
+                    <aitattachment>
+                        <table>aitoc_aitemails_attachment</table>
+                    </aitattachment>
+                    <aitattachment_title>
+                        <table>aitoc_aitemails_attachment_title</table>
+                    </aitattachment_title>
+                    <store_ruler>
+                        <table>aitoc_aitemails_store_ruler</table>
+                    </store_ruler>
+                </entities>
+            </aitemails_mysql4>
+            
+            <core>
+                <rewrite>
+                    <email_template>Aitoc_Aitemails_Model_Rewrite_CoreEmailTemplate</email_template>
+                </rewrite>
+            </core>
+            
+            <core_mysql4>
+                <rewrite>
+                    <email_template>Aitoc_Aitemails_Model_Rewrite_CoreMysql4EmailTemplate</email_template>
+                    <config_data_collection>Aitoc_Aitemails_Model_Rewrite_CoreMysql4ConfigDataCollection</config_data_collection>
+                </rewrite>
+            </core_mysql4>
+            <newsletter>
+                <rewrite>
+                    <!--<subscriber>Aitoc_Aitemails_Model_Rewrite_NewsletterSubscriber</subscriber>-->
+                </rewrite>
+            </newsletter>
+            
+        </models>
+        <resources>
+            <aitemails_setup>
+                <setup>
+                    <module>Aitoc_Aitemails</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </aitemails_setup>
+            <aitemails_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </aitemails_write>
+            <aitemails_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </aitemails_read>
+        </resources>
+        <blocks>
+            <aitemails>
+                <class>Aitoc_Aitemails_Block</class>
+            </aitemails>
+            
+            <adminhtml>
+                <rewrite>
+                    <system_email_template_edit>Aitoc_Aitemails_Block_Rewrite_AdminSystemEmailTemplateEdit</system_email_template_edit>
+                    <system_email_template_preview>Aitoc_Aitemails_Block_Rewrite_AdminSystemEmailTemplatePreview</system_email_template_preview>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <helpers>
+            <aitemails>
+                <class>Aitoc_Aitemails_Helper</class>
+            </aitemails>
+        </helpers>
+    </global>
+
+</config>
+<!--
+/**
+ * Email Template Manager
+ *
+ * @category:    Aitoc
+ * @package:     Aitoc_Aitemails
+ * @version      2.0.13
+ * @license:     POwWoRanFs2vVHb6wy050abrHO3ftlyCeMSf01dXU3
+ * @copyright:   Copyright (c) 2013 AITOC, Inc. (http://www.aitoc.com)
+ */
+-->

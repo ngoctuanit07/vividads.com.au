@@ -1,0 +1,351 @@
+@charset "utf-8";
+/* CSS Document */
+@-webkit-keyframes pulse {
+    0% {
+      -webkit-transform: scale(1) rotate(0deg); 
+    }
+    50% {
+      -webkit-transform: scale(1.1) rotate(-5deg); 
+    }
+    100% {
+      -webkit-transform: scale(1) rotate(0deg); 
+    }
+}
+@-o-keyframes pulse {
+    0% {
+      -o-transform: scale(1) rotate(0deg); 
+    }
+    50% {
+      -o-transform: scale(1.1) rotate(-5deg); 
+    }
+    100% {
+      -o-transform: scale(1) rotate(0deg); 
+    }
+}
+@-moz-keyframes pulse {
+    0% {
+      -moz-transform: scale(1) rotate(0deg); 
+    }
+    50% {
+      -moz-transform: scale(1.1) rotate(-5deg); 
+    }
+    100% {
+      -moz-transform: scale(1) rotate(0deg); 
+    }
+}
+@keyframes pulse {
+    0% {
+      transform: scale(1) rotate(0deg); 
+    }
+    50% {
+      transform: scale(1.1) rotate(-5deg); 
+    }
+    100% {
+      transform: scale(1) rotate(0deg); 
+    }
+}
+@-webkit-keyframes bump {
+  0% {
+      top: 0;
+  }
+  5% {
+      top: 3px;
+  }
+  10% {
+      top:0;
+  }
+  100% {
+      top:0;
+  }
+}
+@-o-keyframes bump {
+  0% {
+      top: 0;
+  }
+  5% {
+      top: 3px;
+  }
+  10% {
+      top:0;
+  }
+  100% {
+      top:0;
+  }
+}
+@-moz-keyframes bump {
+  0% {
+      top: 0;
+  }
+  5% {
+      top: 3px;
+  }
+  10% {
+      top:0;
+  }
+  100% {
+      top:0;
+  }
+}
+@keyframes bump {
+  0% {
+      top: 0;
+  }
+  5% {
+      top: 3px;
+  }
+  10% {
+      top:0;
+  }
+  100% {
+      top:0;
+  }
+}
+.menuBall {
+    position: relative;
+    width: 119px;
+    height: 90px;
+	margin-right:-2px;
+    /*margin: 5px;*/
+	font-family:"Raleway",sans-serif;
+    display: inline-block;
+}
+.nav {
+    position:absolute;
+    width: 119px;
+    height: 90px;
+	text-align:center;
+	font-family:"Raleway",sans-serif;
+/*    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    border: 1px dotted #fff;*/
+  /*  margin: 10px;
+*/    text-decoration: none;
+}
+.nav:hover {
+    -webkit-animation: pulse 1s ease 0s infinite normal;
+    -o-animation: pulse 1s ease 0s infinite normal;
+    -moz-animation: pulse 1s ease 0s infinite normal;
+    animation: pulse 1s ease 0s infinite normal;
+	text-decoration:none;
+	transition: all 0.3s ease-in-out;
+	-webkit-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	text-decoration: none;
+	font-family:"Raleway",sans-serif;
+}
+.home_btn {
+    background-color: #a2be12;
+}
+.contact_btn {
+    background-color: #40b1ed;
+}
+.artwork_btn {
+    background-color: #fdc115;
+}
+.gallery_btn {
+    background-color: #ff6407;
+}
+.customer_btn {
+    background-color: #a2be12;
+}
+.portable_btn {
+    background-color: #8e44ad;
+}
+.clients_btn {
+    background-color: #ff7f00;
+}
+.upload_btn {
+    background-color: #1abc9c;
+}
+.who_we_are_btn{
+    background-color: #e74c3c;
+}
+.testimonial_btn{
+    background-color: #44aa00;
+}
+.faq_btn{
+    background-color: #a2be12;
+}
+.free_quote_btn{
+    background-color: #006606;
+}
+.menuText {
+    font-family:"Raleway",sans-serif;
+    font-size: 14px;
+	font-weight:normal;
+    color: #ffffff;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    top: 25%;
+	text-decoration:none;
+}
+.artworked {
+    font-family:"Raleway",sans-serif;
+    font-size: 14px;
+	/*	font-weight:bold;*/
+    color: #ffffff;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    top: 40%;
+	text-decoration:none;
+	
+}
+.customer_services {
+    font-family:"Raleway",sans-serif;
+    font-size: 14px;
+	/*	font-weight:bold;*/
+    color: #ffffff;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    top: 30%;
+	text-decoration:none;
+}
+.portable_expo {
+    font-family:"Raleway",sans-serif;
+    font-size: 14px;
+	/*	font-weight:bold;*/
+    color: #ffffff;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    top: 30%;
+	text-decoration:none;
+}
+.upload_artworks{
+    font-family:"Raleway",sans-serif;
+    font-size: 14px;
+	/*	font-weight:bold;*/
+    color: #ffffff;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    top: 40%;
+	text-decoration:none;
+}
+.free_quote{
+    font-family:"Raleway",sans-serif;
+    font-size: 16px;
+	/*	font-weight:bold;*/
+    color: #ffffff;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    top: 20%;
+	text-decoration:none;
+}
+.navi-description{font-size:12px; font-weight:normal; width:120px; text-align:center; color:white; 	font-family:"Raleway",sans-serif;}
+#menuBall1 {
+	text-decoration: none;
+  -webkit-animation: bump 6s linear 0s infinite normal;
+  animation: bump 6s linear 0s infinite normal;
+  -moz-animation: bump 6s linear 0s infinite normal;
+  -o-animation: bump 6s linear 0s infinite normal;
+}
+#menuBall2 {
+  -webkit-animation: bump 6s linear .5s infinite normal;
+  -moz-animation: bump 6s linear .5s infinite normal;
+   animation: bump 6s linear .5s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall3 {
+	animation: bump 6s linear 0s infinite normal;
+  -webkit-animation: bump 6s linear 1s infinite normal;
+  -moz-animation: bump 6s linear 1s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall4 {
+  -webkit-animation: bump 6s linear 1.5s infinite normal;
+  animation: bump 6s linear 0s infinite normal;
+  -moz-animation: bump 6s linear 1.5s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall5 {
+  -webkit-animation: bump 6s linear 2s infinite normal;
+  animation: bump 6s linear 0s infinite normal;
+  -moz-animation: bump 6s linear 2s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall6 {
+  -webkit-animation: bump 6s linear 2.5s infinite normal;
+  animation: bump 6s linear 0s infinite normal;
+  -moz-animation: bump 6s linear 2.5s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall7 {
+  -webkit-animation: bump 6s linear 3s infinite normal;
+  animation: bump 6s linear 0s infinite normal;
+  -moz-animation: bump 6s linear 3s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall8 {
+  -webkit-animation: bump 6s linear 3.5s infinite normal;
+  animation: bump 6s linear 0s infinite normal;
+  -moz-animation: bump 6s linear 3.5s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall9 {
+  -webkit-animation: bump 6s linear 4s infinite normal;
+  animation: bump 6s linear 0s infinite normal;
+  -moz-animation: bump 6s linear 4s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall10 {
+  -webkit-animation: bump 6s linear 4.5s infinite normal;
+  animation: bump 6s linear 0s infinite normal;
+  -moz-animation: bump 6s linear 4.5s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall11 {
+  -webkit-animation: bump 6s linear 5s infinite normal;
+  animation: bump 6s linear 0s infinite normal;
+  -moz-animation: bump 6s linear 5s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall12 {
+  -webkit-animation: bump 6s linear 5.5s infinite normal;
+  animation: bump 6s linear 0s infinite normal;
+  -moz-animation: bump 6s linear 5.5s infinite normal;
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+/*#menuBall1 {
+  -moz-animation: bump 6s linear 0s infinite normal;
+}
+#menuBall2 {
+  -moz-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall3 {
+  -moz-animation: bump 6s linear 1s infinite normal;
+}
+#menuBall4 {
+  -moz-animation: bump 6s linear 1.5s infinite normal;
+}
+#menuBall1 {
+  -o-animation: bump 6s linear 0s infinite normal;
+}
+#menuBall2 {
+  -o-animation: bump 6s linear .5s infinite normal;
+}
+#menuBall3 {
+  -o-animation: bump 6s linear 1s infinite normal;
+}
+#menuBall4 {
+  -o-animation: bump 6s linear 1.5s infinite normal;
+}
+#menuBall1 {
+  animation: bump 6s linear 0s infinite normal;
+}
+#menuBall2 {
+  animation: bump 6s linear .5s infinite normal;
+}
+#menuBall3 {
+  animation: bump 6s linear 1s infinite normal;
+}
+#menuBall4 {
+  animation: bump 6s linear 1.5s infinite normal;
+}
+*/

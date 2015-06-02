@@ -1,0 +1,165 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+ 
+  $is_homepage = Mage::getBlockSingleton('page/html_header')->getIsHomePage();
+  $stores = Mage::app()->getStores();
+
+  //Mage::app()->setCurrentStore(20);
+ 
+?>
+<script type="text/javascript">
+    	function NewWindow(page, name, w, h, location, scroll) { //alert(page);
+			var winl = (screen.width - w) / 2;
+			var wint = (screen.height - h) / 2;
+	
+			winprops = 'height='+h+',width='+w+',location='+location+',top='+wint+',left='+winl+',scrollbars='+scroll+',resizable';
+	
+			win = window.open(page, name, winprops);
+			//if (parseInt(navigator.appVersion) >= 4) { win.window.focus(); }
+			if ((navigator.appVersion) >= 4) { win.window.focus(); }
+    	}
+	
+    function check_header()
+	{
+		if(document.search_header.search_keyword.value === '' || document.search_header.search_keyword.value == 'Search customizable banners & signs')
+		{
+			document.search_header.search_keyword.value="Search customizable banners & signs";			
+			return false;
+		}
+		else
+		{
+			document.search_header.submit();
+			return true;
+		}
+	}
+	
+	function emp(val)
+	{
+				if(val.length === 0) 
+				{
+						document.search_header.search_keyword.value="Search customizable banners & signs";			
+						
+				}
+	}
+</script>	
+ <div style="position:absolute;top:5px; right:22%;">
+ <?php echo $this->getChildHtml('topBar');?></div>
+<div class="container">
+	<?php echo $this->getChildHtml('topLinks');?>
+    <div class="container-center">
+    	
+     <div class="topbar">
+     
+     
+        	<div class="topContent" style="padding-top:50px;" >
+         
+            	<div class="logo"><img src="<?php echo $this->getSkinUrl();?>images/logo.jpg" width="279" height="94" /></div><!--logo-->
+                <div class="cart"><a href="javascript:void(0);"><div class="cartIcon"></div>0 items  |  $0.00</a></div>
+                <div class="rightPanel">
+
+		                    	<div class="user-links">
+                    		<ul>
+                            	<li class="login"><span class="u-text">Login</span></li>
+                                <li class="login2"><span class="u-text">My Account</span></li>
+                                <li class="login3"><span class="u-text">Register</span></li>
+                                <li class="login4"><span class="u-text">Login</span></li>
+                            </ul>
+                    	</div><!--user-links-->
+        
+                </div><!--rightPanel-->
+            </div><!--topContent-->
+        	<div class="topMenu">
+          <?php 
+				/*top Menu integration*/
+			    //echo $this->getChildHtml('topBar'); 
+			    $_cms_pages = Mage::getModel('cms/page')->getCollection()->toOptionArray();
+			    //var_dump($_cms_pages);
+		?>
+          <?php   echo $this->getChildHtml('topMenu') ?>
+          <?php //echo $this->getChildHtml('topNav') ?>
+            	
+            </div><!--topMenu-->
+        </div><!--topbar-->
+        <div class="clear"></div>        
+        <div>
+        <!--banner -->
+        <?php
+	   	/*if that is a home page then it will show the banner*/
+		
+		//if($is_homepage){
+        ?>
+        <div class="banner">
+        <?php echo $this->getChildHtml('topbanner');?>
+        </div>
+        <div class="clear"></div>
+        <div>
+        
+        <div class="socialIcons">
+        	<ul>
+            	<li><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/face.png" width="20" height="20" /></a></li>
+                <li><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/twitt.png" width="20" height="20" /></a></li>
+                <li><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/youtube.png" width="20" height="20" /></a></li>
+                <li><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/in.png" width="20" height="20" /></a></li>
+            </ul>
+        </div><!--socialIcons-->
+        <div class="shadow2"></div><!--shadow2-->
+        <div class="Allas"></div>
+        </div>
+        </div>
+        <?php
+       // }  // end of banner only on home page
+	   ?>
+        <!--banner-->
+        <div class="clear"></div>      
+      
+              
+          
+      
+    
+<?php /*?><div class="header-container">
+    <div class="header">
+        <?php if ($this->getIsHomePage()):?>
+        <h1 class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php else:?>
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+        <?php endif?>
+        <p class="top-promo" title="<?php echo $this->__('Free Shipping on orders over 50$'); ?>"><?php echo $this->__('Free Shipping on orders over 50$'); ?></p>
+        <?php echo $this->getChildHtml('topMenu') ?>
+    </div>
+    <div class="quick-access">
+        <?php echo $this->getChildHtml('store_language') ?>
+        <p class="welcome-msg"><?php echo $this->getChildHtml('welcome') ?></p>
+        <?php echo $this->getChildHtml('topLinks') ?>
+    </div>
+    <?php echo $this->getChildHtml('topBar') ?>
+    <?php echo $this->getChildHtml('topContainer'); ?>
+</div>
+<?php 
+*/
+?></div></div></div>

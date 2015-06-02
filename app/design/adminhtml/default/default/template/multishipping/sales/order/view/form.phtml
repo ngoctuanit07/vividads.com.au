@@ -1,0 +1,199 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="entry-edit" id="sales_order_view"></div>
+<div>
+	<div class="clear"></div>
+<?php   echo "<br/>";  ?>
+	<div class="entry-edit">
+    	<div class="entry-edit-head" style="color:#ffffff">
+        	<h1 class="icon-head head-products"><div align="center"><?php echo "Saved Shipment"?></div></h1>
+        </div>
+	</div>
+	<div class="clear"></div>
+<?php   echo "<br/><br/>";
+$shipmentArr=$this->getShipments();
+foreach($shipmentArr as $shipment):
+$disabled="";
+
+if($shipment['shipment']['shipment_status'] == 9)
+$disabled="disabled";
+ ?>
+<form id="edit_form" method="post" action="<?php echo $this->getSaveUrl() ?>">
+    <?php echo $this->getBlockHtml('formkey')?>
+
+<div class="entry-edit">
+        <div class="entry-edit-head">
+            <h3 class="icon-head head-products"><?php echo "Shipping Address:".implode(" , ",array($shipment['address']['firstname'],$shipment['address']['lastname'],$shipment['address']['street'],$shipment['address']['postcode'],$shipment['address']['city'],$shipment['address']['country_id'],$shipment['address']['country_id']))?></h3>
+        </div>
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-products">Items to Ship </h4>
+        </div>
+    </div>
+<div id="ship_items_container">
+            <div class="grid np">
+  <div class="hor-scroll">
+    <table cellspacing="0" class="data order-tables">
+        <colgroup><col> </
+        <col width="1">
+        <col width="1">
+                </colgroup><thead>
+            <tr class="headings">
+                <th>Product</th>
+                <th class="last"><span class="nobr">Qty to Ship</span></th>               			
+            </tr>
+        </thead>
+                        <tbody class="odd">
+<?php
+foreach($shipment['items'] as $rowitem){
+if(empty($rowitem)) continue;
+?>
+
+            <tr class="border">
+    <td>
+    <h5 class="title"><span id="order_item_236_title"><?php echo $this->productName($rowitem['product_id']);?></span></h5>
+    <div><strong>SKU:</strong> <?php echo $this->productSku($rowitem['product_id']); ?></div>    
+        </td>
+        <td><input type="hidden" class="input-text" name="shipment[items][<?php echo $rowitem['order_item_id'];?>]" value="<?php echo $rowitem['qty'];?>"><strong><?php echo $rowitem['qty'];?></strong>
+        </td>        
+        </tr>
+<?
+}
+?>
+
+      </tbody>
+                 
+    </table>
+  </div>
+
+</div>
+<br>
+<div class="box-left entry-edit">
+    <div class="entry-edit-head"><h4>Shipment Comments</h4></div>
+    <fieldset>
+        <div id="order-history_form">
+            <span class="field-row">
+                <label class="normal" for="shipment_comment_text">Shipment Comments</label>
+                <textarea id="shipment_comment_text" name="shipment[comment_text]" rows="3" cols="5" style="height:6em; width:99%;"></textarea>
+            </span>
+            <div class="clear"></div>
+        </div>
+    </fieldset>
+</div>
+
+<div class="box-right entry-edit">
+    <div class="order-totals">
+        <div class="order-totals-bottom">
+        
+        <div align="right">
+        
+        <?php $tntServices = $this->getTntServices();						
+		 		echo ' Select Services	<select name="main">';
+				foreach ($tntServices as $serviceC) {
+						if($serviceC->status != 2){	?>
+							<option value ="<?php echo $serviceC->tnt_id ?>"><?php echo $serviceC->title; }?></option>
+      				<?php
+						}
+			echo '</select>';
+		?>
+			</div>
+       
+        
+                    <p>
+              <label class="normal" for="notify_customer">Append Comments</label>
+              <input id="notify_customer" name="shipment[comment_customer_notify]" value="1" type="checkbox" disabled="">
+          </p>
+                    <p>
+              <label class="normal" for="send_email">Email Copy of Shipment</label>
+              <input id="send_email" name="shipment[send_email]" value="1" type="checkbox">
+          </p>
+                    <div class="a-right">
+                    <?
+					if($disabled == "") { ?>
+          <button id="id_6eceae713e042473f72d1353a158d7cd" title="Submit Shipment" type="submit" class="scalable save submit-button" style="" ><span><span><span>Submit Shipment</span></span></span></button>          
+          <? } else{ ?>
+          	<a href="<?php echo Mage::helper('core/url')->getHomeUrl()."multishipping/label" ?>" target="_blank">Print Labels</a>
+            <? } ?>
+        <input type="hidden" class="input-text" name="saveid" value="<?=$shipment['shipment']['entity_id']?>">
+        <input type="hidden" class="input-text" name="addressid" value="<?=$shipment['shipment']['shipping_address_id']?>">
+			
+            
+			</div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+/*
+
+//<![CDATA[
+var sendEmailCheckbox = $('send_email');
+if (sendEmailCheckbox) {
+    var notifyCustomerCheckbox = $('notify_customer');
+    var shipmentCommentText = $('shipment_comment_text');
+    Event.observe(sendEmailCheckbox, 'change', bindSendEmail);
+    bindSendEmail();
+}
+function bindSendEmail()
+{
+    if (sendEmailCheckbox.checked == true) {
+        notifyCustomerCheckbox.disabled = false;
+        //shipmentCommentText.disabled = false;
+    }
+    else {
+        notifyCustomerCheckbox.disabled = true;
+        //shipmentCommentText.disabled = true;
+    }
+}
+function toggleCreateLabelCheckbox(){
+    var checkbox = $('create_shipping_label');
+    var submitButton = checkbox.up('.order-totals').select('.submit-button span')[0];
+    if (checkbox.checked) {
+        submitButton.innerText += '...';
+    } else {
+        submitButton.innerText = submitButton.innerText.replace(/\.\.\.$/, '');
+    }
+}
+//]]>*/
+function submitShipment(btn){
+    var checkbox = $(btn).up('.order-totals').select('#create_shipping_label')[0];
+    if (checkbox && checkbox.checked) {
+        packaging.showWindow();
+    } else if(editForm.submit()) {
+        disableElements('submit-button');
+    }
+}
+
+</script>
+    </div>
+
+
+
+</form>
+
+        <?php endforeach; 
+  ?>
+  </div>

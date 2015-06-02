@@ -1,0 +1,293 @@
+<?php
+/**
+ * Manufacturers extension
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * 
+ * @category   FME
+ * @package    Manufacturers
+ * @author     Kamran Rafiq Malik <kamran.malik@unitedsol.net>
+ * @copyright  Copyright 2010 © free-magentoextensions.com All right reserved
+ */
+?>
+<link rel="stylesheet" type="text/css"  href="<?php echo $this->getSkinUrl()?>externalform/css/smart-forms.css">
+<link rel="stylesheet" type="text/css"  href="<?php echo $this->getSkinUrl()?>externalform/css/font-awesome.min.css">
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/jquery.form.min.js"></script> 
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/jquery.validate.min.js"></script> 
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/additional-methods.min.js"></script> 
+<!--<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/smart-form.js"></script> -->
+<script type="text/javascript">
+///update captcha code and refresh page// 
+  function updateCaptcha(){
+		 var captchaurl = '<?php echo Mage::getBaseUrl() ?>index.php/externalform/index/refreshcpatcha';
+		 var params={form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey();?>',}
+		 jQuery.ajax({
+			 url: captchaurl,
+			type: "POST",
+			dataType:"JSON",					
+			data: params,
+			beforeSend: function(){
+				jQuery('#captcha_loader').show();
+				},
+			success: function(data){
+				//console.log(data.newtext);
+				document.getElementById('captcha_value').value = data.newtext;
+				 document.getElementById('captcha').src='<?php echo Mage::getBaseUrl(); ?>externalform/captcha.php?ts=<?php echo time(); ?>&text='+data.newtext; 
+				 document.getElementById('captcha-form').focus();
+				 jQuery('#captcha_loader').hide();
+				},			
+			 });
+		 }
+</script>
+
+<!--<script src="<?php echo $this->getJsUrl() ?>faqs/jquery-1.4.2.min.js" type="text/javascript"></script> 
+<script type="text/javascript" src="<?php echo $this->getSkinUrl(); ?>js/faqs/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl(); ?>js/faqs/jquery.js"></script>-->
+<script src="<?php echo $this->getJsUrl() ?>image/adminhtml/loader.js" type="text/javascript"></script>  
+<script type="text/javascript">
+jQuery(function(jQuery) {	
+	jQuery(".accordion3 h3").eq(2).addClass("active");
+	jQuery(".accordion3 #content").eq(2).show();
+	jQuery(".accordion3 h3").click(function(){
+		jQuery(this).next("#content").slideToggle("slow")
+		.siblings("#content:visible").slideUp("slow");
+		jQuery(this).toggleClass("active");
+		jQuery(this).siblings("h3").removeClass("active");
+
+	});
+
+});
+jQuery.noConflict();
+</script>
+
+<script type="text/javascript">
+jQuery(function(jQuery) {
+	jQuery(".btn-slide").click(function(){
+		jQuery("#panel").slideToggle("slow");
+		jQuery(this).toggleClass("active"); 
+		jQuery("#faqs_messages").html('');
+		return false;
+	});	 
+});
+jQuery.noConflict();
+</script>
+
+<?php  
+$faqs = $this->getFaqs();
+?>
+
+<div class="faq_wrapper" style="display:none;">
+<div id="faqs_messages"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div id="panel">
+    <div id="loadingmask" style="display: none;"> 
+            <div class="loader" id="loading-mask-loader"><img src="<?php echo str_replace("index.php/","",$this->getUrl()) ?>skin/adminhtml/default/default/images/ajax-loader-tr.gif" alt="<?php echo $this->__('Loading...') ?>"/><?php echo $this->__('Loading...') ?></div> 
+            <div id="loading-mask"></div> 
+	</div>
+<div class="smart-forms smart-container wrap-2">
+<div class="form-header header-primary">
+    <h4><i class="fa fa-comments"></i><?php echo Mage::helper('faqs')->__('Ask a Question') ?></h4>
+  </div>
+    <form method="post" id="faqformask"  >
+    <?
+        $value = 2;
+    ?>	   
+            <input name="status" id="status" value="<?php echo $value; ?>" type="hidden"  />
+            <input name="reply" id="reply" value="0" type="hidden"  />
+            <input name="type" id="type" value="General Question" type="hidden"  />
+            <input name="topic_id" id="topic_id" value="<?php echo $faqs[0]['topic_id']?>" type="hidden"  />
+    
+<!-- change started-->
+ <div class="smart-forms smart-container wrap-2">
+ <div class="form-body">
+      <div class="frm-row">
+        <div class="section colm12">
+          <label class="field prepend-icon">
+          <input type="text" name="contact_name" id="contact_name" class="gui-input" placeholder="Name">
+          <label class="field-icon"><i class="fa fa-user"></i></label>
+          </label>
+        </div>
+      </div>
+      <div class="frm-row">
+        <div class="section colm12">
+          <label class="field prepend-icon">
+          <input type="text" name="contact_email" id="contact_email" class="gui-input" placeholder="Email">
+          <label class="field-icon"><i class="fa fa-envelope"></i></label>
+          </label>
+        </div>
+      </div>
+      <div class="frm-row">
+        <div class="section colm12">
+          <label class="field prepend-icon ">
+          <input type="text" name="telephone" id="telephone" class="gui-input" placeholder="Phone">
+          <label class="field-icon"><i class="fa fa-phone-square"></i></label>
+          </label>
+        </div>
+      </div>
+      <div class="frm-row">
+        <label class="field prepend-icon">
+        <textarea class="gui-textarea" id="title" name="title" placeholder="Comments"></textarea>
+        <label class="field-icon"><i class="fa fa-comments"></i></label>
+        <span class="input-hint"> <strong>NOTE:</strong> Be as detailed as possible for better feedback.</span>
+        </label>
+          <input type="text" name="hideit" id="hideit" value="<?php echo $this->getUrl('');?>" style="display:none !important;" />
+          <input type="text" name="isAjax" id="isAjax" value="isAjax" style="display:none !important;" />          
+      </div>
+<div class="frm-row" style="margin-top:20px;">
+      <div class="section">
+        <?php 
+			$words  = "abcdefghijlmnopqrstuvwyz";
+                                    $vocals = "aeiou";                                
+                                    $text  = "";
+                                    $vocal = rand(0, 1);
+                                    $length = rand(3, 3);
+                                    for ($i=0; $i<$length; $i++) {
+                                        if ($vocal) {
+                                            $text .= substr($vocals, mt_rand(0, 3), 1);
+                                        } else {
+                                            $text .= substr($words, mt_rand(0, 3), 1);
+                                        }
+                                        $vocal = !$vocal;                        
+						            }
+		//	echo $text;			
+		Mage::getSingleton("core/session",array('name' => 'frontend'))->setCaptcha($text);
+	?>
+        <div class="smart-widget sm-left sml-120">
+          <label class="field">
+            <input type="text" name="security_code" id="security_code"  class="gui-input sfcode" placeholder="Enter code">
+            <img  id="captcha_loader" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/default/default/externalform/images/loading2.gif" style="display: none;  float: left;    left: -92px;  position: relative; top: -36px;  z-index: 9999;" /> </label>
+          <label for="securitycode" class="button captcode"> <img src="<?php echo Mage::getBaseUrl(); ?>externalform/captcha.php?ts=<?php echo time(); ?>&text=<?php echo $text; ?>"   style="height: 39px; background: none repeat scroll 0px 0px transparent;" id="captcha" /> 
+            <input  type="hidden" id="captcha_value" name="captchavalue" value="<?php echo $text; ?>" />
+            <span class="refresh-captcha" onClick="updateCaptcha();"> <i class="fa fa-refresh"></i> </span></label>
+        </div>
+        <!-- end .smart-widget section --> 
+   <div class="result spacer-b10"></div>
+      <!-- end .result  section -->
+      <div class="section progress-section">
+        <div class="progress-bar progress-animated bar-primary">
+          <div class="bar"></div>
+          <div class="percent">0%</div>
+        </div>
+      </div>
+      <!-- end progress section --> 
+      </div>
+      </div>
+ 	</div>
+</div>
+<div class="form-footer"> 
+<div class="section alert-success" id="alert-success" style="padding: 10px 10px 16px 30px; display:none;"> Success: Your inquiry was submitted and will be responded to as soon as possible. Thank you for contacting us.</div>    
+      <!--<button  onClick="submitOrder(this);" name="sub_cusord" type="submit" id="sub_cusord" class="button btn-primary">Get Free Quote</button>-->
+<div class="sButton">
+	  <input type="text" name="hideit" id="hideit" value="<?php echo $this->getUrl('');?>" style="display:none !important;" />
+      <button  name="sub_cusord" type="submit" id="sub_cusord" class="button btn-primary">Submit</button>
+</div>
+    </div>
+<!-- change ends    -->
+            <div class="fieldset">
+            <h2 class="legend"><?php echo Mage::helper('faqs')->__('Ask a Question') ?></h2>
+            <ul class="faqs-form">
+                <li class="fields">
+                    <div class="field">
+                        <label for="contact_name"><?php echo Mage::helper('faqs')->__('Name') ?></label>
+                        <div class="input-box">
+                        <input name="contact_name" id="contact_name" title="<?php echo Mage::helper('faqs')->__('Name') ?>" value="<?php echo $this->htmlEscape($this->helper('faqs')->getUserName()) ?>" class="input-text" type="text" />
+                        </div>
+                    </div>
+                    <div class="field">
+                       		<label for="contact_email" class="required"><em>*</em><?php echo Mage::helper('faqs')->__('Email') ?></label>
+                        <div class="input-box">
+                            <input name="contact_email" id="contact_email" title="<?php echo Mage::helper('faqs')->__('Email') ?>" value="<?php echo $this->htmlEscape($this->helper('faqs')->getUserEmail()) ?>" class="input-text required-entry" type="text" />
+                        </div>
+                    </div>
+                </li>
+                <li class="wide">
+                    <label for="faqs" class="required"><em>*</em><?php echo Mage::helper('faqs')->__('Question ?') ?></label>
+                    <div class="input-box">
+                        <textarea name="title" id="title" title="<?php echo Mage::helper('faqs')->__('Question ?') ?>" class="required-entry input-text" cols="5" rows="10"></textarea>
+                    </div>
+                </li>
+                
+                <li class="wide">
+                    <div id="captcha">
+                        <input name="captacha_code" type="hidden" id="captacha_code" value="<?php echo $code=Mage::helper('faqs')->getNewrandCode(6)?>" />
+                        <label for="image"><img src="<?php echo Mage::helper('faqs')->getSecureImageUrl() ?>CaptchaSecurityImages.php?width=180&height=40&code=<?php echo $code?>" /></label><br/>
+                        <div class="input-box">
+                        <label for="security_code" class="required"><em>*</em><b><?php echo Mage::helper('faqs')->__('Security Code Message:') ?></b></label><br />
+                        <input id="security_code" name="security_code" type="text" /> <br />
+                        <?php echo Mage::helper('faqs')->__('If you have difficulty in reading the image above then refresh your browser a few times until you see an image that is clear enough to copy.') ?>
+                        </div> 
+                    </div>
+				</li>
+                
+                    <button type="submit" title="<?php echo Mage::helper('faqs')->__('Submit') ?>" class="button"><span><span><?php echo Mage::helper('contacts')->__('Submit') ?></span></span></button>
+            </ul>
+            <div style="clear:both">&nbsp;</div>
+            </div>          
+    </form>
+</div>
+<p class="faqsquestionslide"><a href="#"   class="btn-slide"><?php echo Mage::helper('contacts')->__('Ask Question') ?></a></p>
+
+<?php if (!isset($faqs[0]['faqs_id'])) : ?>
+	<p><?php echo $this->__('No Faqs Found in this topic!'); ?></p>
+<?php else : ?>
+    <div class="accordion3">
+          <?php foreach ($faqs as $_faqs): ?>
+                <h3><?php echo $_faqs["title"]; ?></h3>
+               <div id="content"><?php echo Mage::helper('faqs')->getWysiwygFilter($_faqs["faq_answar"]); ?></div>
+          <?php endforeach; ?> 
+    </div>
+<?php endif; ?>
+</div>
+<script type="text/javascript">
+jQuery(function(jQuery) {
+	jQuery("#faqformask").submit(function(){
+		
+		console.log('you are here');
+
+		dataString = jQuery("#faqformask").serialize();
+		console.log(dataString);
+		return false;
+		element.show('loadingmask'); 
+		jQuery.ajax({
+		type: "POST",
+		url: "<?php echo $this->getUrl('faqs/index/add') ?>",
+		data: dataString,
+		dataType: "json",
+		complete : function(data) {
+				Element.hide('loadingmask'); 
+				if(data.responseText == "Success") {
+					refreshCaptcha();
+					jQuery("#faqs_messages").html('<ul class="messages"><li class="success-msg"><ul><li><?php echo Mage::helper('contacts')->__('Your Question was submitted and will be responded to you as soon as possible. Thank you for contacting us.') ?></li></ul></li><ul>');
+					jQuery('#contact_name').val('');
+					jQuery('#contact_email').val('');
+					jQuery('#title').val('');
+					
+					//Hide the Question Panel
+					jQuery("#panel").slideToggle("slow");
+					jQuery(this).toggleClass("active");
+					
+				} else {
+					jQuery("#faqs_messages").html(data.responseText);
+				}
+		}
+		});
+		return false;            
+	});
+	
+	function refreshCaptcha() { 
+		jQuery.ajax({
+		type: "GET",
+		url: "<?php echo $this->getUrl('faqs/index/refresh') ?>",
+		complete : function(data) {
+				jQuery("#captcha").html(data.responseText);  
+			}
+		});
+	}
+	
+});
+jQuery.noConflict();
+</script>

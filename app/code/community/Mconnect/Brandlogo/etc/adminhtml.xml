@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <system>
+            <children>
+                <brandlogo module="brandlogo">
+                    <title>Our client logos</title>
+                    <sort_order>71</sort_order>               
+                    <children>
+                        <categories module="brandlogo">
+                            <title>Manage Category</title>
+                            <sort_order>0</sort_order>
+                            <action>brandlogo/adminhtml_category</action>
+                        </categories>
+                        <items module="brandlogo">
+                            <title>Manage Logos</title>
+                            <sort_order>0</sort_order>
+                            <action>brandlogo/adminhtml_brandlogo</action>
+                        </items>
+                    </children>
+                </brandlogo>		
+            </children>
+        </system>
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <brandlogo translate="title" module="brandlogo">
+                                        <title>Mconnect Brand Logo</title>
+                                    </brandlogo>							
+                                </children>
+                            </config>
+                            <Mconnect_Brandlogo>
+                                <title>Brandlogo Module</title>
+                                <sort_order>10</sort_order>
+                            </Mconnect_Brandlogo>								
+                        </children>											
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>		
+</config>

@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @copyright  Copyright (c) 2011 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Social Booster extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @author     MageWorx Dev Team
+ */
+-->
+<layout>    
+    <mageworx_socialbooster_services_index>                
+        <reference name="content">
+            <block type="mageworx/socialbooster_services" name="socialbooster_services" template="socialbooster/services.phtml"></block>            
+        </reference>
+        <reference name="head">
+            <action method="addCss"><name>socialbooster/styles.css</name></action>
+        </reference>
+    </mageworx_socialbooster_services_index>        
+    
+    <mageworx_socialbooster_services_grid>
+        <update handle="formkey"/>
+        <block type="mageworx/socialbooster_services_grid" name="socialbooster_services.grid" output="toHtml"></block>
+    </mageworx_socialbooster_services_grid>
+
+    
+    <mageworx_socialbooster_services_view>                
+        <reference name="content">
+            <block type="mageworx/socialbooster_services_view" name="socialbooster_services.view" template="socialbooster/service-view.phtml"></block>            
+        </reference>
+        <reference name="head">
+            <action method="addCss"><name>socialbooster/styles.css</name></action>
+        </reference>
+    </mageworx_socialbooster_services_view>
+    
+    <mageworx_socialbooster_services_viewgrid>
+        <update handle="formkey"/>
+        <block type="mageworx/socialbooster_services_view_grid" name="socialbooster_services.view.grid" output="toHtml"></block>
+    </mageworx_socialbooster_services_viewgrid>
+    
+    
+    
+    
+    <mageworx_socialbooster_pages_index>                
+        <reference name="content">
+            <block type="mageworx/socialbooster_pages" name="socialbooster_pages" template="socialbooster/pages.phtml"></block>            
+        </reference>
+        <reference name="head">
+            <action method="addCss"><name>socialbooster/styles.css</name></action>
+        </reference>
+    </mageworx_socialbooster_pages_index>        
+    
+    <mageworx_socialbooster_pages_grid>
+        <update handle="formkey"/>
+        <block type="mageworx/socialbooster_pages_grid" name="socialbooster_pages.grid" output="toHtml"></block>
+    </mageworx_socialbooster_pages_grid>
+    
+    
+    <mageworx_socialbooster_pages_view>                
+        <reference name="content">
+            <block type="mageworx/socialbooster_pages_view" name="socialbooster_pages.view" template="socialbooster/page-view.phtml"></block>            
+        </reference>
+        <reference name="head">
+            <action method="addCss"><name>socialbooster/styles.css</name></action>
+        </reference>
+    </mageworx_socialbooster_pages_view>        
+    
+    <mageworx_socialbooster_pages_viewgrid>
+        <update handle="formkey"/>
+        <block type="mageworx/socialbooster_pages_view_grid" name="socialbooster_pages.view.grid" output="toHtml"></block>
+    </mageworx_socialbooster_pages_viewgrid>    
+   
+    
+</layout>

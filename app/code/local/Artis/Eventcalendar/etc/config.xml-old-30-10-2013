@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Artis_Eventcalendar>
+            <version>0.1.0</version>
+        </Artis_Eventcalendar>
+    </modules>
+    <stores>
+        <admin>
+            <!-- override default admin design package and theme -->
+            <design>
+                <package>
+                    <name>default</name>
+                </package>
+                <theme>
+                    <!-- this is the theme name -->
+                    <default>artis</default>
+                </theme>
+            </design>
+        </admin>
+    </stores>
+    <frontend>
+        <routers>
+            <eventcalendar>
+                <use>standard</use>
+                <args>
+                    <module>Artis_Eventcalendar</module>
+                    <frontName>eventcalendar</frontName>
+                </args>
+            </eventcalendar>
+        </routers>
+        <layout>
+            <updates>
+                <eventcalendar>
+                    <file>eventcalendar.xml</file>
+                </eventcalendar>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+			<eventcalendar>
+				<use>admin</use>
+				<args>
+					<module>Artis_Eventcalendar</module>
+					<frontName>eventcalendar</frontName>
+				</args>
+			</eventcalendar>
+        </routers>
+    </admin>
+    <adminhtml>
+		<menu>
+			<eventcalendar module="eventcalendar">
+				<title>Eventcalendar</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<items module="eventcalendar">
+						<title>Show Calendar</title>
+						<sort_order>0</sort_order>
+						<action>eventcalendar/adminhtml_eventcalendar</action>
+					</items>
+					<!--<comments module="eventcalendar">
+						<title>Upload Holidays List</title>
+						<sort_order>1</sort_order>
+						<action>calendar/adminhtml_calendar</action>
+					</comments>-->
+				</children>
+			</eventcalendar>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<eventcalendar>
+							<title>Eventcalendar Module</title>
+							<sort_order>10</sort_order>
+							<children>
+							    <items module="eventcalendar">
+								<title>Show Calendar</title>
+							    </items>
+							</children>
+						</eventcalendar>
+						<system>
+						    <children>
+							<config>
+							    <children>
+								<artis>
+								    <title>Artis - All</title>
+								</artis>
+							    </children>
+							</config>
+						    </children>
+						</system>
+					</children>
+					
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<eventcalendar>
+					<file>eventcalendar.xml</file>
+				</eventcalendar>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <eventcalendar>
+                <class>Artis_Eventcalendar_Model</class>
+                <resourceModel>eventcalendar_mysql4</resourceModel>
+            </eventcalendar>
+            <eventcalendar_mysql4>
+                <class>Artis_Eventcalendar_Model_Mysql4</class>
+                <entities>
+                    <eventcalendar>
+                        <table>eventcalendar</table>
+                    </eventcalendar>
+                </entities>
+            </eventcalendar_mysql4>	    
+        </models>
+        <resources>
+            <eventcalendar_setup>
+                <setup>
+                    <module>Artis_Eventcalendar</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </eventcalendar_setup>
+            <eventcalendar_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </eventcalendar_write>
+            <eventcalendar_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </eventcalendar_read>
+        </resources>
+        <blocks>
+            <eventcalendar>
+                <class>Artis_Eventcalendar_Block</class>
+            </eventcalendar>
+        </blocks>
+        <helpers>
+            <eventcalendar>
+                <class>Artis_Eventcalendar_Helper</class>
+            </eventcalendar>
+	    
+        </helpers>
+    </global>
+</config>

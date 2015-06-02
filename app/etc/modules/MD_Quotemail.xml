@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MD_Quotemail>
+            <active>true</active>
+            <codePool>local</codePool>
+        </MD_Quotemail>
+    </modules>
+</config> 

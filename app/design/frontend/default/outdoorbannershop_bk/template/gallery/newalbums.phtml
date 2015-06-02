@@ -1,0 +1,18 @@
+	<div class="gallery-container album">	
+    <div class="head">
+        <h4 style="display:none;"><?php echo $this->__('New Albums') ?></h4>
+    </div>
+
+	<?php 	$albums = $this->getAlbums(); ?>
+
+	<ul>
+	<?php	foreach ($albums as $item){?>
+			<li>				
+				<a href="<?php echo $item->getUrlRewrite()?>" alt="<?php echo $item->getTitle() ?>" ><img src="<?php echo $this->helper('gallery/image')->init($item->getFilename())->resize(200, 200) ?>"/></a>
+                <h5><?php echo $item->getTitle() ?></h5>
+			</li>		
+	<?php } ?>
+	</ul>	
+
+	<div class='view-all'><a href="<?php #echo $this->getUrl('gallery') ?>">View all</a></div>	
+</div>

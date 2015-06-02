@@ -1,0 +1,18 @@
+a:4:{s:4:"data";s:1688:"
+ <style type="text/css">
+    .nivo-caption, .nivo-caption *{
+        color:#ffffff;    }
+    .nivo-caption{
+                opacity:0.8;-moz-opacity:0.8;filter:alpha(opacity=8);        left:0;bottom:10%;        font-size:18px;    }
+    
+    .nivo-controlNav a{
+        background-color:#bbbbbb;background-image:linear-gradient(bottom, #bbbbbb 1%, #ffffff 100%);background-image:-o-linear-gradient(bottom, #bbbbbb 1%, #ffffff 100%);background-image:-moz-linear-gradient(bottom, #bbbbbb 1%, #ffffff 100%);background-image:-webkit-linear-gradient(bottom, #bbbbbb 1%, #ffffff 100%);background-image:-ms-linear-gradient(bottom, #bbbbbb 1%, #ffffff 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bbbbbb', endColorstr='#ffffff',GradientType=0 );    }
+    .nivo-controlNav a.active, .nivo-controlNav a:hover{
+        background-color:#ffffff;background-image:linear-gradient(bottom, #ffffff 1%, #bbbbbb 100%);background-image:-o-linear-gradient(bottom, #ffffff 1%, #bbbbbb 100%);background-image:-moz-linear-gradient(bottom, #ffffff 1%, #bbbbbb 100%);background-image:-webkit-linear-gradient(bottom, #ffffff 1%, #bbbbbb 100%);background-image:-ms-linear-gradient(bottom, #ffffff 1%, #bbbbbb 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#bbbbbb',GradientType=0 );    }
+    .nivo-controlNav{
+        right:10px;bottom:0;    }
+    .nivo-nextNav{
+        background-image:url('http://tablethrows.co.nz/media/youama/slider//nextprev/default/next-btn.png')    }
+    .nivo-prevNav{
+        background-image:url('http://tablethrows.co.nz/media/youama/slider//nextprev/default/previous-btn.png')    }
+</style>";s:8:"lifetime";i:99999;s:6:"expire";i:1428488901;s:8:"priority";i:8;}

@@ -1,0 +1,226 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+?>
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<div class="category-products">
+    <?php echo $this->getToolbarHtml() ?>
+    <?php // List mode ?>
+    <?php if($this->getMode()!='grid'): ?>
+    <?php $_iterator = 0; ?>
+    <ol class="products-list" id="products-list" style="padding:0px;">
+    <?php foreach ($_productCollection as $_product): ?>
+        <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+            <?php // Product Image ?>
+           <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(208); ?>" width="208" height="208" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+            <?php // Product description ?>
+            <div class="product-shop">
+                <div class="f-fix">
+                    <?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
+                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped; ?>"><?php echo $_helper->productAttribute($_product, $_product->getName() , 'name'); ?></a></h2>
+                    <?php if($_product->getRatingSummary()): ?>
+                    <?php echo $this->getReviewsSummaryHtml($_product) ?>
+                    <?php endif; ?>
+                    <?php echo $this->getPriceHtml($_product, true) ?>
+                    <?php if($_product->isSaleable()): ?>
+                        <p style="display:none;"><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                    <div class="desc std">
+                        <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a>
+                    </div>
+                    <ul class="add-to-links">
+                        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                            <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                        <?php endif; ?>
+                        <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                            <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    <?php endforeach; ?>
+    </ol>
+    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+    <?php else: ?>
+
+    <?php // Grid Mode ?>
+
+    <?php $_collectionSize = $_productCollection->count() ?>
+    <?php $_columnCount = $this->getColumnCount(); ?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <div class="row-products">
+        
+        <ul class="products-grid">
+        <?php endif ?>
+            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+                <div class="products-img">
+                <a href="<?php //echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(280,280); ?>" width="280" height="280" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a></div>
+                <div class="list-products">
+                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+               <div class="row-price">
+               <span>Price:</span>
+			   <?php if($_product->getRatingSummary()): ?>
+                <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                <?php endif; ?>
+                <?php echo $this->getPriceHtml($_product, true) ?></div>
+                <div class="desc std description-box" style="margin-bottom:10px;">
+                        <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                    </div>
+                <div class="actions">
+                    <?php if($_product->isSaleable()): ?>
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                    <ul class="add-to-links" style="display:none;">
+                        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                            <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                        <?php endif; ?>
+                        <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                            <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+                	<div class="icon-list">
+                    <ul>
+                    <li>
+                    <img src="<?php echo $this->getSkinUrl()?>images/single_sided.png" />
+                    <img src="<?php echo $this->getSkinUrl()?>images/light_easy.png" />
+                    <img src="<?php echo $this->getSkinUrl()?>images/weather_proof.png" />
+                    <img src="<?php echo $this->getSkinUrl()?>images/uv_outdoor.png" />
+                    <img src="<?php echo $this->getSkinUrl()?>images/cmyk_color.png" />
+                    <img src="<?php echo $this->getSkinUrl()?>images/australia_wide.png" />
+                    </li>
+                    </ul>
+                    </div>
+                	
+                </div>
+                
+            </li>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        
+        
+        </ul></div>
+        <?php endif ?>
+        <?php endforeach ?>
+        <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+    <?php endif; ?>
+
+    <div class="toolbar-bottom">
+        <?php echo $this->getToolbarHtml() ?>
+    </div>
+</div>
+<?php endif; ?>
+
+
+
+
+<div id="homeCategory-module" style="display:none;">
+        <section class="title">
+          <h1>Our Brands</h1>
+        </section>
+        <div id="homeCategory-Tab1" class="clearfix">
+          
+     <section class="category-module"> 
+          
+          <div class="productImage" >
+          <a href="<?php echo $this->getUrl()?>outdoor-builders-mesh-banner.html" class="category-img thumb">
+
+            <img src="<?php echo $this->getSkinUrl()?>images/building-ad-banner.jpg" width="207" height="209" /> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a href="<?php echo $this->getUrl()?>outdoor-builders-mesh-banner.html" class="blue-clr pro-title" title="<?php echo $this->__(' Builders Ad Mesh ™ ')?>">
+			<?php echo $this->__(' Builders Ad Mesh ™')?></a>
+            <p class="font11">
+			
+			
+			<?php echo $this->__('Builder mesh is used by hundreds of builders to advertise their brand on display sites ')?></p>
+            </div>
+          </section>
+        
+          <section class="category-module"> 
+          
+          <div class="productImage" >
+          <a href="<?php echo $this->getUrl()?>outdoor-construction-mesh-banner-1516.html" class="category-img thumb">
+
+            <img src="<?php echo $this->getSkinUrl()?>images/event-ad-banner_2.jpg" width="207" height="209" /> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a href="<?php echo $this->getUrl()?>outdoor-construction-mesh-banner-1516.html" class="blue-clr pro-title" title="<?php echo $this->__('Construction Ad Mesh ™')?>">
+			<?php echo $this->__('Construction Ad Mesh ™')?></a>
+            <p class="font11">
+			
+			
+			<?php echo $this->__('Our construction mesh banners are widely used on construction sites as tools for advertising')?></p>
+            </div>
+          </section>
+            <section class="category-module"> 
+          
+          <div class="productImage" >
+          <a href="<?php echo $this->getUrl()?>outdoor-fence-mesh-banner.html" class="category-img thumb">
+
+            <img src="<?php echo $this->getSkinUrl()?>images/fence-mesh-banner_1_2.jpg" width="207" height="209" /> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a href="<?php echo $this->getUrl()?>outdoor-fence-mesh-banner.html" class="blue-clr pro-title" title="<?php echo $this->__('Fence Ad Mesh ™')?>">
+			<?php echo $this->__('Fence Ad Mesh ™')?></a>
+            <p class="font11">
+			
+			
+			<?php echo $this->__('Fence mesh banner are used at outdoor events to advertise of fences and barricades')?></p>
+            </div>
+          </section>
+   
+
+        </div>
+      </div>

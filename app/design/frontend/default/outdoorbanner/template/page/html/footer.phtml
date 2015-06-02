@@ -1,0 +1,104 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+ $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+?>
+ <!-- start footer -->
+        <div class="footer-container">
+            <div class="footer">
+                
+<div class="informational">
+    <ul id="footer-links">
+<li><a href="<?php echo 'http://outdoorbanner.com.au/about-us/?___store=en4';?>">About Us</a></li>
+<li><a href="<?php echo 'http://outdoorbanner.com.au/contact-us/?___store=en4';?>">Contact Us</a></li>
+<li><a href="<?php echo 'http://outdoorbanner.com.au/jobs/?___store=en4';?>">Jobs</a></li>
+<li><a class="sizing-chart-footer-link" href="<?php echo 'http://outdoorbanner.com.au/size-chart/?___store=en4';?>">Sizing Chart</a></li>
+<li><a class="show-shipping" href="<?php echo 'http://outdoorbanner.com.au/shipping/?___store=en4';?>">Shipping</a> </li>
+<li><a class="show-shipping" href="<?php echo 'http://outdoorbanner.com.au/returns/?___store=en4';?>">Returns</a></li>
+<li><a href="<?php echo 'http://outdoorbanner.com.au/t-g/?___store=en4';?>">T&amp;C</a></li>
+<li class="last"><a href="<?php echo 'http://outdoorbanner.com.au/privacy-policy/?___store=en4';?>">privacy</a></li>
+</ul>    <div>
+        <ul>
+            <li class="first">
+                <a class="login-dropdown" title="" rel="hype/dc/ajaxtemplate/page/login/" href="customer/account/login/"><span id="my_account_sprite">MY ACCOUNT</span></a>
+            </li>
+            <li class="last">
+                <a class="basket-dropdown" title="MY BASKET" rel="hype/dc/ajaxtemplate/page/cart/" href="checkout/cart/">
+                <span id="my_basket_sprite">MY BASKET (<?php $totalItems = Mage::getModel('checkout/cart')->getQuote()->getItemsCount(); 
+                      if(!empty($totalItems)){
+				  echo $totalItems;
+				  }else{ echo "0";}
+                    ?>)</span></a>
+            </li>
+        </ul>
+   </div>
+<div class="box base-mini mini-newsletter">
+    <div class="head">
+        <span id="newsletter_sprite" class="">Newsletter</span>
+    <?php
+    ///newsletter subscribtions///
+	echo $this->getLayout()->createBlock('newsletter/subscribe')->setTemplate('newsletter/subscribe.phtml')->toHtml(); ?>
+   
+    </div>
+
+</div>
+<a class="social-link" href="http://twitter.com/HypeDC" target="_blank">
+    <img src="skin/frontend/default/hypedc/images/twitter.png" alt="" />
+</a>
+<a class="social-link" href="http://facebook.com/HypeDCshoes" target="_blank">
+    <img src="skin/frontend/default/hypedc/images/facebook.png" alt="" />
+</a>
+
+</div>
+
+
+<script>
+    var base_url = 'http://outdoorbanner.com.au/';
+</script>
+<div id="shopping-info" style="display: none">
+</div>
+
+<script>
+	var footer = true;
+</script>
+
+
+<p class="legality">Copyright &copy; Vivid Advertising 2013</p>
+
+<div id="hidden-chart" style="display: none;">
+</div>
+
+<div id="ajax-loader" style="display: none;">
+	<div class="loader-wrapper">
+		<div class="loader">
+		</div>
+	</div>
+</div>
+
+
+
+            </div>
+        </div>
+        <!-- end footer -->

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<config>
+      <modules>
+            <Artis_Partialpayment>
+                  <version>0.1.0</version>
+            </Artis_Partialpayment>
+      </modules>
+      <admin>
+            <routers>
+                <adminhtml>
+                    <args>
+                        <modules>
+                            <Artis_Partialpayment before="Mage_Adminhtml">Artis_Partialpayment_Adminhtml</Artis_Partialpayment>
+                        </modules>
+                    </args>
+                </adminhtml>
+            </routers>
+      </admin>
+      <global>
+            <blocks>
+            <partialpayment>
+                <class>Artis_Partialpayment_Block</class>
+            </partialpayment>
+        </blocks>
+        <models>
+            <partialpayment>
+                <class>Artis_Partialpayment_Model</class>
+                <resourceModel>Artis_Partialpayment_mysql4</resourceModel>
+            </partialpayment>
+            <Partialpayment_myslq4>
+                    <class>Artis_Partialpayment_Model_Mysql4</class>
+            </Partialpayment_myslq4> 
+        </models>
+        
+            <resources>
+                  <Partialpayment_setup>
+                        <setup>
+                              <module>Artis_Partialpayment</module>
+                        </setup>
+                        <connection>
+                              <use>core_setup</use>
+                        </connection>
+                  </Partialpayment_setup>
+                  <Partialpayment_write>
+                        <connection>
+                            <use>core_write</use>
+                        </connection>
+                    </Partialpayment_write>
+                    <Partialpayment_read>
+                        <connection>
+                            <use>core_read</use>
+                        </connection>
+                    </Partialpayment_read>
+            </resources>
+      </global>
+</config>

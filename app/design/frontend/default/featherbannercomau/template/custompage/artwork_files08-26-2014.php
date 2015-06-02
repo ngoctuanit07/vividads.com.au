@@ -1,0 +1,420 @@
+<?php
+
+	
+
+	$temptable = Mage::getSingleton('core/resource')->getTableName('downloads_categories');
+
+	$temptable1 = Mage::getSingleton('core/resource')->getTableName('downloads_files');
+
+	$sql = "select * from ".$temptable." where is_active=1";
+
+	$chkcat = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sql);
+
+	
+
+	$subCatId = array();
+
+	$i = $j = $k = 1;
+
+	foreach ($chkcat as $_category) {
+
+		
+
+		$subCatId[$k][$i][$j] = $_category['title'];
+
+		
+
+		$temptable = Mage::getSingleton('core/resource')->getTableName('downloads_files');
+
+		$sql1 = "select * from ".$temptable1." WHERE category_id='".$_category['category_id']."'";
+
+		$chkFile = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sql1);
+
+		foreach($chkFile as $res_objects){
+
+			$i++;
+
+			$subCatId[$k][$i][$j] = $res_objects["file_id"]."##".$res_objects["filename"]."##".$res_objects["name"];
+
+		
+
+		
+
+			
+
+		}
+
+		if($j%4==0){
+
+			$k++;
+
+			$j=1;
+
+		}else{
+
+			$j++;	
+
+			
+
+		}
+
+		$i=1;
+
+		
+
+		
+
+	}?>
+
+	
+
+	
+
+	<h2><strong>Graphic Design Templates:</strong></h2>
+
+	<?php
+
+	foreach ($subCatId as $k=>$v ) {
+
+		
+
+		//echo $k;
+
+		//echo "<pre>";
+
+		//print_r($v);
+
+		
+
+		echo '<table border="0" cellpadding="0" width="100%" class="artworktable">';
+
+		foreach($v as $k1=>$s)
+
+		{
+
+			//$n++;
+
+			$style ='';
+
+			$style1 ='';
+
+			if($k1==1)
+
+			{
+
+				$style = 'style="background-color: #f0f0f0; line-height:30px"';
+
+				$style1 = 'style="text-align: center; font-family: Arial, Helvetica, sans-serif; color: #000; font-size: 12px; font-weight:bold;"';
+
+			
+
+			}
+
+			//else 
+
+			?>
+
+			
+
+			<tr <?php echo $style ?>>
+
+			<?php
+
+			{
+
+				for($m=1;$m<=4;$m++)
+
+				{
+
+					if($subCatId[$k][$k1][$m] != '')
+
+					{
+
+					
+
+					if($k1==1){ ?>
+
+					
+
+					<td <?php echo $style1 ?> >
+
+						
+
+						<?php echo $subCatId[$k][$k1][$m] ?>
+
+					</td>
+
+					
+
+					
+
+					<?php	
+
+					}else{							
+
+					$ar = explode("##",$subCatId[$k][$k1][$m]);
+
+					?>
+
+					<td <?php echo $style1 ?>  class="art_work">
+
+					<a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$ar[0].'/'.$ar[1]; ?>" title="<?php echo $ar[2]; ?>" target="_blank">
+
+					<?php echo $ar[2]?>
+
+					</a></td>
+
+					<?
+
+					}
+
+					
+
+					
+
+					}
+
+					else
+
+					{echo '<td></td>';}
+
+					//if($m ==3) $n=0;
+
+				}
+
+			}
+
+			echo '</tr>';
+
+			
+
+			
+
+			
+
+		}
+
+		echo '</table>';
+
+		
+
+	}
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	/*
+
+	//echo '<h2><strong>Graphic Design Templates:</strong></h2>';
+
+	$i = $j = 0;
+
+	?>
+
+	<table border="0" cellpadding="2" width="874">
+
+	<tr style="background-color: #464646;">
+
+	<?php
+
+	foreach ($subCatId as $k=>$v) {
+
+		$i++;
+
+		?>
+
+		<td style="text-align: center; font-family: Arial, Helvetica, sans-serif; color: #9cbd17; font-size: 12px;"><strong><?php echo $v; ?></strong> </td>
+
+		<?php
+
+		$temptable = Mage::getSingleton('core/resource')->getTableName('downloads_files');
+
+		$sql1 = "select * from ".$temptable1." WHERE category_id='".$k."'";
+
+		
+
+		$chkFile = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sql1);
+
+		
+
+		if(count($chkFile) > 0)
+
+		{
+
+			/*
+
+			foreach($chkFile as $res_objects){
+
+				$j++;
+
+				?>
+
+			
+
+			   <tr>
+
+			   
+
+			   <td><a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$res_objects["file_id"].'/'.$res_objects["filename"]; ?>" title="<?php echo $res_objects["filename"]; ?>" target="_blank"><?php echo strtoupper($res_objects["filename"]);?></a></td>
+
+			    
+
+			   
+
+			   
+
+			   
+
+			   
+
+			   
+
+			   </tr>
+
+			   
+
+			   <?php
+
+			  
+
+			}
+
+		
+
+		
+
+		}
+
+		
+
+	
+
+	
+
+	if($i==4){?></tr><tr style="background-color: #464646;"><?php $i=0;}
+
+	} ?>
+
+	</tr></table>
+
+	<?php
+
+	*/
+
+	//echo "<pre>";print_r($subCatId);echo "<pre>";
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	/*
+
+	$productid=Mage::registry('product')->getId();
+
+	$temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_relation');
+
+	$sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE product_id='".$productid."'";
+
+	try {
+
+	$chkSaleOrderGrid = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+
+	} catch (Exception $e){
+
+	//echo $e>getMessage();
+
+	}
+
+	?>
+
+	<!--<h2><strong>Files Attached:</strong></h2>-->
+
+	<h2><strong>Graphic Design Templates:</strong></h2><!--14_02_2014-->
+
+	<?php
+
+	if(count($chkSaleOrderGrid) > 0)
+
+	{
+
+	?>                        
+
+	<ul>
+
+	<?php foreach($chkSaleOrderGrid as $res_objects) :
+
+	
+
+	    $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_files');
+
+	    $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE file_id='".$res_objects["file_id"]."'";
+
+	    try {
+
+	    $chkSaleOrderGrid2 = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+
+	    } catch (Exception $e){
+
+	    //echo $e>getMessage();
+
+	    }
+
+	    foreach($chkSaleOrderGrid2 as $res_objects2) 
+
+	    {
+
+	    ?>    
+
+	    <li><a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$res_objects2["file_id"].'/'.$res_objects2["filename"]; ?>" title="<?php echo $res_objects2["filename"]; ?>" target="_blank"><?php echo strtoupper($res_objects2["filename"]); ?></a></li>
+
+	    <?php                         
+
+	    }
+
+	endforeach; 
+
+	?></ul>
+
+	<?php 
+
+	}
+
+	else
+
+	{
+
+	    echo "<ul><li>No Files attached with this product.</li></ul>";
+
+	}*/
+
+
+
+?>
+
+
+

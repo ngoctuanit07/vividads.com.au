@@ -1,0 +1,41 @@
+<?php
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @copyright  Copyright (c) 2011 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Social Booster extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @author     MageWorx Dev Team
+ */
+?>
+<?php $_product = $this->getProduct() ?>
+<ul class="add-to-links">
+<?php if ($this->helper('wishlist')->isAllow()) : ?>
+    <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+<?php endif; ?>
+<?php if($_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product) ): ?>
+    <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+<?php endif; ?>
+</ul>
+<?php echo $this->getChildHtml('socialbooster'); ?>

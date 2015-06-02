@@ -1,0 +1,43 @@
+<div><!--<h4></h4>-->
+                        
+            <div class="test-image"><img title="" alt="" src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/tab.jpg"></div>
+            
+            <div class="photogallery">
+                <div class="upperfactory">
+                            
+                            <a href="javascript:window.history.back();"><img border="0" width="112" height="104" src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/arrow-left.png"></a>
+                            
+                            <div class="indoor">
+                                <img border="0" width="63" height="19" src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/logo-small-banners.png">
+                                <img border="0" width="63" height="19" src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/logo-small-fence.png">
+                                <img border="0" width="63" height="19" src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/logo-small-sports.png"><br>
+                                Indoor and Outdoor Signage Supplies
+                            </div>
+			<a href="http://192.168.0.55/tablethrows/mesh_banners/signs2"><img border="0" width="112" height="104" src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/arrow-right.png"></a>
+	</div>
+                <?php
+			    $collection = Mage::getModel('factoryphotos/factoryphotos')->getCollection();
+			    foreach ($collection as $item) { //print_r($item);	
+			    if($item->getstatus()==1){
+				?>
+			    
+				<?php /*if($item->geturl()!=''){?>
+				<a href="<?php echo $item->geturl(); ?>"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) .$item->getfilename()?>" alt="" /></a>
+				<?php } else {?>
+				<a href="<?php echo $item->geturl(); ?>"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) .$item->getfilename()?>" alt="" /></a>
+				<?php }*/?>
+				
+				
+            			    <h1 class="title"><?php echo $item->gettitle(); ?></h1>
+                            
+				        <div class="photocontent">
+                                            <?php echo $item->getcontents(); ?>
+                                        </div>
+            
+            <?php } }?>
+            <div class="upperfactory"><a href="javascript:window.history.back();"><img src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/arrow-left.png" alt="" width="112" height="104" border="0" /></a>
+<div class="indoor"><img src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/logo-small-banners.png" alt="" width="63" height="19" border="0" /> <img src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/logo-small-fence.png" alt="" width="63" height="19" border="0" /> <img src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/logo-small-sports.png" alt="" width="63" height="19" border="0" /><br /> Indoor and Outdoor Signage Supplies</div>
+<a href="http://192.168.0.55/tablethrows/mesh_banners/signs2"><img src="http://192.168.0.55/tablethrows/skin/frontend/default/durabanners/images/arrow-right.png" alt="" width="112" height="104" border="0" /></a></div>
+            </div>
+            
+</div>

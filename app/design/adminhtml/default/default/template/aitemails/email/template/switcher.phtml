@@ -1,0 +1,32 @@
+<?php
+/**
+ * Email Template Manager
+ *
+ * @category:    Aitoc
+ * @package:     Aitoc_Aitemails
+ * @version      2.0.13
+ * @license:     POwWoRanFs2vVHb6wy050abrHO3ftlyCeMSf01dXU3
+ * @copyright:   Copyright (c) 2013 AITOC, Inc. (http://www.aitoc.com)
+ */
+?>
+<div class="switcher">
+    <label for="store_switcher"><?php echo $this->__('Current Configuration Scope:') ?></label>
+    <select id="store_switcher" class="system-config-store-switcher" onchange="location.href=this.options[this.selectedIndex].getAttribute('url')">
+    <?php foreach ($this->getStoreSelectOptions() as $_value=>$_option): ?>
+    <?php if (isset($_option['is_group'])): ?>
+        <?php if ($_option['is_close']): ?>
+            </optgroup>
+        <?php else: ?>
+            <optgroup label="<?php echo $_option['label'] ?>" style="<?php echo $_option['style'] ?>">
+        <?php endif; ?>
+        <?php continue ?>
+    <?php endif; ?>
+      <option value="<?php echo $_value ?>" url="<?php echo $_option['url'] ?>" <?php echo $_option['selected']?'selected="selected"':'' ?> style="<?php echo $_option['style'] ?>">
+          <?php echo $_option['label'] ?>
+      </option>
+    <?php endforeach ?>
+    </select>
+    <span style="padding-left: 10px;">
+        <?php echo $this->__('Locale: ') ?> <?php echo $this->getScopeLocale(); ?>
+    </span>
+</div>

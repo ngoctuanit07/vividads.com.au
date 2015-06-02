@@ -1,0 +1,67 @@
+<?php
+    
+    // Get app_id in configuration page
+    $app_id = $this->getAppId ();
+    
+    // Url response to client site
+    $is_shipping = $this->getRequest()->getParam('is_shipping');
+    $is_billing = $this->getRequest()->getParam('is_billing');
+    $is_address_book = $this->getRequest()->getParam('is_address_book');
+    $my_url_params = array (
+        'is_billing' => $is_billing,
+        'is_shipping' => $is_shipping,
+        'is_address_book' => $is_address_book
+    );
+    $my_url = $this->getUrl('auspost/data/getCustomerAddress', $my_url_params);
+    
+    // Auspost Auth url
+    $auth_url = $this->getAuthUrl();
+    
+    // Auspost Auth url
+    $token_url = $this->getTokenUrl();
+	
+    $code = isset($_REQUEST["code"]) ? $_REQUEST["code"] : null;
+    $state = isset($_REQUEST["state"]) ? $_REQUEST["state"] : null;
+
+    if(empty($code))
+    {
+        // Redirect to login dialog
+        $_SESSION['state'] = md5(uniqid(rand(), TRUE)); // CSRF protection
+        $dialog_url = $auth_url."?client_id=".$app_id."&redirect_uri=".urlencode($my_url)."&state=".$_SESSION['state']."&response_type=code";
+        echo("<script> window.location.href='" . $dialog_url . "'</script>");
+    }
+
+	if(!empty($code) && $state == $_SESSION['state'])
+	{
+		$token_url = $token_url."?grant_type=authorization_code"."&client_id=".$app_id."&redirect_uri=".urlencode($my_url)."&code=".$code;
+        $api = Mage::getModel('auspost/api');
+        //echo $token_url.'<br />'; 
+        $access_token = $api->getAccessToken($token_url); 
+        //echo $access_token . '<br />';
+        $customer = $api->getCustomerDetails($access_token);
+        $customer = json_encode($customer);
+        
+        // print_r ($customer); exit;
+        // Set customer info and close popup
+        if (!empty($customer))
+        {
+            echo ("<script>");
+            echo ("var customer = $customer;");
+            if ($is_shipping)
+                echo ("top.setShippingInfo(customer);");
+            if ($is_billing)
+                echo ("top.setBillingInfo(customer);");
+            if ($is_address_book)
+                echo ("top.setCustomerInfo(customer);");
+            echo ("top.jQuery.fancybox.close();");
+            echo ("</script>");
+        } else
+        {
+            echo "The last request was interrupted!";
+        }
+	}
+	else
+	{
+		echo("The state does not match. You may be a victim of CSRF.");
+	}
+?>

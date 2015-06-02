@@ -1,0 +1,57 @@
+
+
+<?php $reviews = $this->getReviews() ?> 
+<?php if ($reviews && $reviews->count() > 0) : ?>
+<div class="block block-review">
+    <div class="block-title">
+        <strong><span><?php echo $this->__("Recent Reviews") ?></span></strong>
+    </div>
+    <div class="block-content">
+        <?php foreach ($reviews as $review): ?>
+        <div class="reviewsplus-sidebar">
+        <div class="product-images"> 
+            <a href="<?php echo $review->getUrl()?>"><img src="<?php echo $this->helper('catalog/image')->init($review, 'thumbnail')->resize(50) ?>" alt="<?php echo $this->htmlEscape($review->getName()) ?>" width="50" height="50" /></a>
+        </div>  
+        <h5><a href="<?php echo $this->getUrl('review/product/view',array('id'=>$review->getReviewId()))?>"><?php echo $this->htmlEscape($review->getName())?></a></h5>
+        <?php echo $this->__('Review by %s', $this->htmlEscape($review->getNickname()))?>
+        <?php if (count($review->getRatingVotes())): ?>
+        <table class="ratings-list" cellspacing="0">
+            <tbody>
+                <?php foreach ($review->getRatingVotes() as $_vote): ?>
+                <tr>
+                    <td class="label"><strong><?php echo $_vote->getRatingCode() ?></strong>:</td>
+                    <td>
+                        <div class="rating-box">
+                            <div class="rating" style="width: <?php echo $_vote->getPercent() ?>%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+        <?php else: ?>
+        <br />
+        <?php endif;?>
+        <strong><?php echo $this->htmlEscape($review->getTitle())?></strong>.<br/>
+        <?php echo $this->htmlEscape($review->getDetail())?>
+         <!-- AddThis Button BEGIN -->
+                <div class="addthis_toolbox addthis_default_style ">
+                <a class="addthis_button_preferred_1"></a>
+                <a class="addthis_button_preferred_2"></a>
+                <a class="addthis_button_preferred_3"></a>
+                <a class="addthis_button_preferred_4"></a>
+                <a class="addthis_button_compact"></a>
+                <a class="addthis_counter addthis_bubble_style"></a>
+                </div>
+                <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-536cd00825bd77d1"></script>
+                <!-- AddThis Button END -->
+        </div>
+        <br />
+       
+        <br />
+        <?php endforeach ?>
+    </div>
+</div>
+<div class="clear"></div>
+<?php endif ?>  

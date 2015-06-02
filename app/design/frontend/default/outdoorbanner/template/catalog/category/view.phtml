@@ -1,0 +1,201 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Category view template
+ *
+ * @see Mage_Catalog_Block_Category_View
+ */
+?>
+<?php
+    $_helper    = $this->helper('catalog/output');
+    $_category  = $this->getCurrentCategory();
+    $_imgHtml   = '';
+	$thumb = $_category->getImageUrl();
+	
+    if ($_imgUrl = $_category->getImageUrl()) {       
+		
+		$_imgHtml = '<p class="category-image">
+		   <img src="'.$_imgUrl.'" alt="'.$this->htmlEscape($_category->getName()).'" title="'.$this->htmlEscape($_category->getName()).'" /></p>';
+        $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
+    }
+?>
+
+<div class="spec-middle-container" >
+        <div class="middle col-2-left-layout"> 
+          <!-- start left -->
+          <div class="col-left side-col" style="float:left;width:144px;">
+            <div class="box">
+              <form id="category-filter" name="filter" action="http://www.outdoorbanner.com/layer/filter/filter" method="post">
+                <input type="hidden" name="url" value="http://www.outdoorbanner.com/products?cat=4" />
+                <input type="hidden" name="cat[]" id="cat4" value="4" />
+                <dl>
+                  <dt>Category:<span class="arrow-down">&#9660;</span><span class="arrow-up">&#9650;</span></dt>
+                  
+                  <?php
+                  		/*fetching all categories*/
+					
+					$storeId    = Mage::app()->getStore()->getId();
+			
+			//Get category model
+			//$_category = Mage::getModel('catalog/category')->setStoreId($storeId);
+			$categories = Mage::getModel('catalog/category')->load(49)->getChildren();
+			$catIds = explode(',',$categories);
+			
+	
+		foreach($catIds as $catId){
+				  
+				  $category = Mage::getModel('catalog/category')->load($catId);
+				  
+				  ?>
+                  <dd class="accordion shapes"> <span>
+                    <a href="<?php echo $category->getUrl_path();?>">
+                    <label for="shape35"><?php 
+					 
+            echo $category->getName();
+					
+					?></label>
+                    </a>
+                    </span><span>
+                <?php
+						}
+				?>
+                </dl>
+                <div class="filter-button">
+                  <button type="submit" class="form-button clear-filters yesscript"><span>Clear</span></button>
+                  <a href="http://www.outdoorbanner.com/products/" class="form-button clear-filters noscript"><span>Clear</span></a>
+                  <button type="submit" class="form-button run-filters"><span>Filter</span></button>
+                </div>
+                <div class="clear"></div>
+              </form>
+            </div>
+            <a href='http://outdoorbanner.com.au/shipping/?___store=en4' target='_top'>
+            <img src='http://www.hypedc.com/openx/www/images/71e22522d39f41392ed3553a3c1456bd.png' width='158' height='141' alt='' title='' border='0' /></a>
+            <div id='beacon_c576cb7689' style='position: absolute; left: 0px; top: 0px; visibility: hidden;'><img src='http://www.outdoorbanner.com/openx/www/delivery/lg.php?bannerid=128&amp;campaignid=1&amp;zoneid=8&amp;loc=http%3A%2F%2Fwww.outdoorbanner.com%2Fwomens%2F&amp;referer=http%3A%2F%2Fwww.outdoorbanner.com%2F&amp;cb=c576cb7689' width='0' height='0' alt='' style='width: 0px; height: 0px;' /></div>
+            &nbsp; </div>
+          <div id="main" class="col-main" style="float:left;"> 
+            <!-- start global messages --> 
+            <!-- end global messages --> 
+            <!-- start content -->
+            
+            <div class="category-rss"> 
+            <?php if($this->IsRssCatalogEnable() && $this->IsTopCategory()): ?>
+        <a href="<?php echo $this->getRssLink() ?>" class="link-rss">
+		<?php echo $this->__('Subscribe to RSS Feed') ?></a>
+    <?php endif; ?> </div>
+            <p>
+            
+            <div class="category-head">
+              <h1><?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></h1>
+            </div>
+            <a href='http://outdoorbanner.com.au/shipping/?___store=en4' target='_top'>
+            
+            <div class="category_img_bg" style="background:url(<?php if($_imgUrl): ?>
+    				<?php echo $thumb ?>
+			<?php endif; ?>) no-repeat; background-position:right; ">
+            <div style="background-color: #000000;
+    height: 120px;
+    margin: -10px;
+    opacity: 0.5;
+    width: 809px; ">
+            	
+				<?php if($_description=$this->getCurrentCategory()->getDescription()): ?>    
+        <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>    
+    <?php endif; ?>
+            </div>
+            </div>            
+            </a>
+                  
+            
+            </p>
+            
+            
+            <!-- [ends] .browse-by // -->
+            
+                         
+                    
+                   <?php if($this->isContentMode()): ?>
+						<?php echo $this->getCmsBlockHtml() ?>
+                    
+                    <?php elseif($this->isMixedMode()): ?>
+                        <?php echo $this->getCmsBlockHtml() ?>
+                        <?php echo $this->getProductListHtml() ?>
+                    
+                    <?php else: ?>
+                        <?php echo $this->getProductListHtml() ?>
+                    <?php endif; ?>
+             
+              
+            
+            <script type="text/javascript">
+		var paginated = true;
+	</script> 
+            <script type="text/javascript">
+	var catalogPage = true;
+	
+</script> 
+            
+            <!-- end content --> 
+          </div>
+          <ul id="brand_footer">
+  <li> <a href="http://outdoorbanner.com.au/adidas" title="View shoes from adidas"> <img src="http://www.hypedc.com/media/brands/adidas.png" alt="adidas Logo" /> <span>adidas</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/asics" title="View shoes from Asics"> <img src="http://www.hypedc.com/media/brands/asics.png" alt="Asics Logo" /> <span>Asics</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/birkenstock" title="View shoes from Birkenstock"> <img src="http://www.hypedc.com/media/brands/birkenstock.png" alt="Birkenstock Logo" /> <span>Birkenstock</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/clae" title="View shoes from Clae"> <img src="http://www.hypedc.com/media/brands/clae.png" alt="Clae Logo" /> <span>Clae</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/clarks-originals" title="View shoes from Clarks Originals"> <img src="http://www.hypedc.com/media/brands/clarks-originals.png" alt="Clarks Originals Logo" /> <span>Clarks Originals</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/converse" title="View shoes from Converse"> <img src="http://www.hypedc.com/media/brands/converse.png" alt="Converse Logo" /> <span>Converse</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/dr-martens" title="View shoes from Dr Martens"> <img src="http://www.hypedc.com/media/brands/dr-martens.png" alt="Dr Martens Logo" /> <span>Dr Martens</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/lacoste" title="View shoes from Lacoste"> <img src="http://www.hypedc.com/media/brands/lacoste.png" alt="Lacoste Logo" /> <span>Lacoste</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/le-coq-sportif" title="View shoes from Le Coq Sportif"> <img src="http://www.hypedc.com/media/brands/le-coq-sportif.png" alt="Le Coq Sportif Logo" /> <span>Le Coq Sportif</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/merrell" title="View shoes from Merrell"> <img src="http://www.hypedc.com/media/brands/merrell.png" alt="Merrell Logo" /> <span>Merrell</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/new-balance" title="View shoes from New Balance"> <img src="http://www.hypedc.com/media/brands/new-balance.png" alt="New Balance Logo" /> <span>New Balance</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/nike" title="View shoes from Nike"> <img src="http://www.hypedc.com/media/brands/nike.png" alt="Nike Logo" /> <span>Nike</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/onitsuka-tiger" title="View shoes from Onitsuka Tiger"> <img src="http://www.hypedc.com/media/brands/onitsuka-tiger.png" alt="Onitsuka Tiger Logo" /> <span>Onitsuka Tiger</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/pointer" title="View shoes from Pointer"> <img src="http://www.hypedc.com/media/brands/pointer.png" alt="Pointer Logo" /> <span>Pointer</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/puma" title="View shoes from Puma"> <img src="http://www.hypedc.com/media/brands/puma.png" alt="Puma Logo" /> <span>Puma</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/saucony" title="View shoes from Saucony"> <img src="http://www.hypedc.com/media/brands/saucony.png" alt="Saucony Logo" /> <span>Saucony</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/shubar" title="View shoes from Shubar"> <img src="http://www.hypedc.com/media/brands/shubar.png" alt="Shubar Logo" /> <span>Shubar</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/supra" title="View shoes from Supra"> <img src="http://www.hypedc.com/media/brands/supra.png" alt="Supra Logo" /> <span>Supra</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/timberland" title="View shoes from Timberland"> <img src="http://www.hypedc.com/media/brands/timberland.png" alt="Timberland Logo" /> <span>Timberland</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/toms" title="View shoes from TOMS"> <img src="http://www.hypedc.com/media/brands/toms.png" alt="TOMS Logo" /> <span>TOMS</span> </a> </li>
+
+  <li> <a href="http://outdoorbanner.com.au/vans" title="View shoes from Vans"> <img src="http://www.hypedc.com/media/brands/vans.png" alt="Vans Logo" /> <span>Vans</span> </a> </li>
+  <li> <a href="http://outdoorbanner.com.au/wolverine" title="View shoes from Wolverine"> <img src="http://www.hypedc.com/media/brands/wolverine.png" alt="Wolverine Logo" /> <span>Wolverine</span> </a> </li>
+</ul>
+        </div>
+      </div>
+      <!-- end center --> 
+
+  
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+
+
+
+
+

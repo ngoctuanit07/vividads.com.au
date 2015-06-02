@@ -1,0 +1,76 @@
+<!--@subject {{var ct_subject}} {{var hashtag}} @-->
+<p><FONT COLOR="#FFFFFF">{{var responsetag}}</FONT></p>
+<div style="background:#fff; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<table cellspacing="0" cellpadding="0" border="0" height="100%" width="100%">
+<tr>
+    <td align="center" valign="top" style="padding:20px 0 20px 0">
+      
+      <table width="890" border="0" cellspacing="0" cellpadding="10">
+  <tr>
+    <td><table width="890" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td><img src="{{skin url=images/invoice/notify_customer.jpg}}" /></td>
+        <td><a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px; text-align:right; float:right;" border="0"/></a></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr valign="top">
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-top:1px solid #d9dbd9;  border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; line-height:30px;"><strong>Hello,</strong><br>
+              A new response of the ticket "<strong>{{var ct_subject}}</strong>" has been send, here are the main information :<br>
+              Ticket subject :<strong style="color:#ea0809;"> {{var ct_subject}}</strong><br>
+              Ticket Id : <a href="{{var url}}"><strong style="color:#ea0809;">{{var ct_ticket_id}}</strong></a><br>
+              Ticket created at : <a href="{{var url}}"><strong style="color:#ea0809;">{{var ctm_created_at}}</strong></a><br>
+              <span style="color:black; font-weight:bold;">Please log in your account to get more information</span><br>
+              <b style="color:#ea0809;">Previous Tickets:</b><br />
+{{var tickets_list}}                            <br>
+<span style="color:black; font-weight:bold;">Regards</span><br>
+<a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px; text-align:right; float:left;" border="0"/></a></td>
+            </tr>
+                <tr>
+            <td height="15"></td>
+            </tr>
+          <tr>
+            <td height="35" valign="middle"><img src="{{skin url=images/invoice/need_info.jpg}}"  alt=""/></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="left" valign="top" style="font-size:12px; padding:7px  0px; line-height:20px; ">If you have any questions about your order you can:<br>
+                  Check our help pages here <br>
+                  or call us on 1300 72 16 14 (9AM to 5PM Mon-Fri AET)<br>
+                  or email us <a href="mailto:{{config path='trans_email/ident_support/email'}}" style="color:#ea0809;">{{config path='trans_email/ident_support/email'}}</a></td>
+                </tr>
+              </table></td>
+            </tr>
+
+      
+          <tr>
+            <td height="15"></td>
+            </tr>
+          <tr>
+            <td height="35" valign="middle"><img src="{{skin url=images/invoice/how_did_we_do.jpg}}"  alt=""/></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="left" valign="top" style="font-size:12px; padding:7px  0px; line-height:20px; ">We aim to ensure that whatever you are looking to buy, we make your search a success. If we've failed in any way please contact us here and let us know; <br>
+we prefer feedback via <a href="mailto:{{config path='trans_email/ident_support/email'}}" style="color:#ea0809;">{{config path='trans_email/ident_support/email'}}</a> or <span style="font-size:12px; padding:7px 0px; "> by phone at {{config path='general/store_information/phone'}}. </span> Thanks again for shopping with us.</td>
+                </tr>
+              <tr>
+                <td align="left" valign="top" style="font-size:12px; padding:10px  0px; line-height:20px;"><a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px; text-align:right; float:left;" border="0"/></a></td>
+                </tr>
+              </table></td>
+            </tr>
+        </table></td>
+        </tr>
+    </table></td>
+  </tr>
+  </table></td>
+</tr>
+</table>
+</div>
+<p><FONT COLOR="#FFFFFF">{{var hashtag}}</FONT></p>

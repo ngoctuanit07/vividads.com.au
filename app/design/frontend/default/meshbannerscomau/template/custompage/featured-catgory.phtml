@@ -1,0 +1,180 @@
+<div class="display-list">
+<div class="display-list-top">
+    <div class="find-item">
+                       <img src="<?php echo $this->getSkinUrl();?>images/icon-magnifier.png" alt=""/><span class="find-heading">Find Your Perfect Outdoor</span> or mesh sign / banner below.
+    </div>
+</div>
+<div class="display-list-content" style="display:none;">
+    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+        <tbody>
+            
+            <tr>
+            
+            
+            <?php
+            
+            $store = Mage::app()->getStore()->getId();
+                
+                $rootId     = Mage::app()->getStore($store)->getRootCategoryId();
+                
+                $collection = Mage::getModel('catalog/category')->getCollection()
+                ->addFieldToFilter('path', array('like'=> "1/$rootId/%"))
+                ->addAttributeToSelect('name')
+                ->addAttributeToSelect('is_active')
+                ->addAttributeToSelect('thumbnail')
+                ->addAttributeToSelect('url')
+                ->addAttributeToSelect('description')
+                ->addAttributeToFilter('is_active', 1)
+                ->addAttributeToFilter('is_featured', 148)
+                ->setPage(0, 6)
+                ->load();
+                //echo "Count :".$collection->count();
+                $counteri = 0;
+                foreach ($collection as $_childCategory){
+                    $counteri++;
+                    $_img= $_childCategory->getThumbnail();
+                    $catName=$_childCategory->getName();
+                    $getCatUrl=$_childCategory->getUrl();
+                    $cur_category=Mage::getModel('catalog/category')->load($_childCategory->getId());
+                    // echo $getCatUrl;
+					// exit;
+            ?>
+            
+            <td class="<?php if($counteri==6){ echo 'last'; }?>">
+            <div class="display-list-category-img"> 
+            <a onmousemove="onHover(this);" title="<?php echo $catName; ?>" href="<?php echo $getCatUrl; ?>">
+                <img width="153" height="136" onmousemove="onHover(this);" src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$cur_category->getThumbnail()  ?>" alt="<?php echo $catName; ?>">
+                
+                <span class="display-list-category-details" style="display:none;">
+                    <span class="display-list-category-details-top"></span>
+                      <span class="display-list-category-details-content">
+                        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td width="210">
+                                        <img width="210" height="187" src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$cur_category->getThumbnail()  ?>" alt="<?php echo $catName; ?>"></td>
+                                    <td width="5">
+                                    </td>
+                                    <td class="description-td">
+                                        <p><strong><?php echo $catName; ?></strong></p>
+                                        <p></p><p style="font-size:14px; padding-top:8px; line-height:22px;">
+                                        <?php //echo $cur_category->getShortDescription(); ?>
+                                        <?php echo $cur_category->getDescription(); ?>
+                                        </p><p></p>	
+                                        <p><button class="browse" onclick="setLocation('<?php echo $getCatUrl; ?>');" title="Browse"><span>Browse</span></button></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </span>
+                      <span class="display-list-category-details-bottom"></span>
+                </span>
+                
+            </a>
+            </div>
+            <div class="display-list-category-button">
+                <span class="forfetcatname" onclick="setLocation('<?php echo $getCatUrl; ?>');"><?php echo $catName; ?></span><span class="forcartimg"></span>
+            </div>
+            &nbsp;
+            </td>
+            <?php } ?>
+            
+            </tr>
+            
+            
+        </tbody>
+    </table>
+</div>
+<div class="display-list-content" >
+<div id="homeCategory-module">
+                <div class="clearfix" id="homeCategory-Tab1">
+          <section class="category-module"> 
+          
+          <div class="productImage">
+          <a class="category-img thumb" href="<?php echo $this->getUrl()?>mesh-banners.html">
+
+            <img width="207" height="209" src="<?php echo $this->getSkinUrl()?>images/event-ad-banner_2.jpg"> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a title="Construction Ad Mesh &trade;" class="blue-clr pro-title" href="<?php echo $this->getUrl()?>mesh-banners.html">
+			Mesh Ad Banners &trade;</a>
+            <p class="font11">
+			
+			
+			Mesh Banners are widely used as outdoor signs to advertise. They are printed in 1400dpi full color . Click to Browse !</p>
+            </div>
+          </section>
+     <section class="category-module"> 
+          
+          <div class="productImage">
+          <a class="category-img thumb" href="<?php echo $this->getUrl()?>construction-mesh-banner.html">
+
+            <img width="207" height="209" src="<?php echo $this->getSkinUrl()?>images/construction_ads_banner.jpg"> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a title=" Builders Ad Mesh &trade; " class="blue-clr pro-title" href="<?php echo $this->getUrl()?>outdoor-construction-mesh-banner.html">
+			Construction Ad Mesh &trade;</a>
+            <p class="font11">
+			
+			
+			Our construction mesh banners are widely used on construction sites as tools for advertising</p>
+            </div>
+          </section>
+     <section class="category-module"> 
+          
+          <div class="productImage">
+          <a class="category-img thumb" href="<?php echo $this->getUrl()?>builders-mesh-banner.html">
+
+            <img width="207" height="209" src="<?php echo $this->getSkinUrl()?>images/building-ad-banner.jpg"> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a title=" Builders Ad Mesh &trade; " class="blue-clr pro-title" href="<?php echo $this->getUrl()?>builders-mesh-banner.html">
+			 Builders Ad Mesh &trade;</a>
+            <p class="font11">
+			
+			
+			Builder mesh is used by hundreds of builders to advertise their brand on display sites </p>
+            </div>
+          </section>
+        
+          
+            <section class="category-module"> 
+          
+          <div class="productImage">
+          <a class="category-img thumb" href="<?php echo $this->getUrl()?>fence-mesh-banner.html">
+
+            <img width="207" height="209" src="<?php echo $this->getSkinUrl()?>images/fence-mesh-banner_1_2.jpg"> 
+            </a>
+          </div>
+          
+            <!--<div class="shadowSprite shadow195"></div>-->
+            <div class="descTxt">
+            <a title="Fence Ad Mesh &trade;" class="blue-clr pro-title" href="<?php echo $this->getUrl()?>fence-mesh-banner.html">
+			Fence Ad Mesh &trade;</a>
+            <p class="font11">
+			
+			
+			Fence mesh banner are used at outdoor events to advertise of fences and barricades</p>
+            </div>
+          </section>
+   
+
+        </div>
+      </div>
+</div>
+<!--<div class="display-list-bottom"></div>-->
+</div>
+<div class="display-list-top" style="display:none;">
+    <div class="find-item">
+                       <span class="find-heading">Our Products</span>     </div>
+</div>
+                        <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('allproducts_13expo')->toHtml() ?>

@@ -1,0 +1,189 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE     
+ * 
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<link rel="stylesheet" type="text/css"  href="<?php echo $this->getSkinUrl()?>externalform/css/smart-forms.css">
+<link rel="stylesheet" type="text/css"  href="<?php echo $this->getSkinUrl()?>externalform/css/font-awesome.min.css">
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/jquery.form.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/additional-methods.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/smart-form.js"></script>
+<script type="text/javascript">
+///update captcha code and refresh page// 
+  function updateCaptcha(){
+		 var captchaurl = '<?php echo Mage::getBaseUrl() ?>index.php/externalform/index/refreshcpatcha';
+		 var params={form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey();?>',}
+		 jQuery.ajax({
+			 url: captchaurl,
+			type: "POST",
+			dataType:"JSON",					
+			data: params,
+			beforeSend: function(){
+				jQuery('#captcha_loader').show();
+				},
+			success: function(data){
+				//console.log(data.newtext);
+				document.getElementById('captcha_value').value = data.newtext;
+				 document.getElementById('captcha').src='<?php echo Mage::getBaseUrl(); ?>externalform/captcha.php?ts=<?php echo time(); ?>&text='+data.newtext; 
+				 document.getElementById('captcha-form').focus();
+				 jQuery('#captcha_loader').hide();
+				},			
+			 });
+		 }
+</script>
+
+ <style type="text/css">
+ .smart-forms .form-header h4 {
+    font-family: "Roboto",Arial,Helvetica,sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+ .smart-forms .form-body {
+    padding: 40px 30px 0;
+}
+.progress-bar {
+    background-color: whiteSmoke;
+    border-radius: 2px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25) inset;
+    display: block;
+    height: auto;
+    margin-left: 0px;
+    position: relative;
+    width: auto;
+}
+
+.smart-forms .progress-bar .percent {
+    color: #93a2aa;
+    display: inline-block;
+    font-size: 9px;
+    position: absolute;
+    right: -18px;
+    top: 0px;
+}
+ 
+.smart-forms .form-footer {
+    overflow: hidden;
+    padding: 0 10px 20px;
+    text-align: right;
+}
+ </style>
+
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<?php /*?><div class="page-title">
+    <h1><?php echo Mage::helper('contacts')->__('Contact Us') ?></h1>
+</div><?php */?>
+
+<div style="float: left; margin-left: 1%; width: 98%;" id="quoteLoader">
+  <div class="smart-forms smart-container wrap-2">
+    <div class="form-header header-primary">
+      <h4><i class="fa fa-comments"></i>Contact Us</h4>
+    </div>
+    <form action="<?php echo $this->getUrl('');?>ajaxcontacts/index/NzPost/" id="contactForm" method="post" onSubmit="return false;">
+      <div class="smart-forms smart-container wrap-2">
+        <div class="form-body">
+          <div class="frm-row">
+            <div class="section colm12">
+              <label class="field prepend-icon">
+              <input type="text" name="name" id="name" class="gui-input" placeholder="Name">
+              <label class="field-icon"><i class="fa fa-user"></i></label>
+              </label>
+            </div>
+          </div>
+          <div class="frm-row">
+            <div class="section colm12">
+              <label class="field prepend-icon">
+              <input type="text" name="email" id="email" class="gui-input" placeholder="Email">
+              <label class="field-icon"><i class="fa fa-envelope"></i></label>
+              </label>
+            </div>
+          </div>
+          <div class="frm-row">
+            <div class="section colm12">
+              <label class="field prepend-icon ">
+              <input type="text" name="telephone" id="telephone" class="gui-input" placeholder="Phone">
+              <label class="field-icon"><i class="fa fa-phone-square"></i></label>
+              </label>
+            </div>
+          </div>
+          <div class="frm-row">
+            <label class="field prepend-icon">
+            <textarea class="gui-textarea" id="comment" name="comment" placeholder="Comments"></textarea>
+            <label class="field-icon"><i class="fa fa-comments"></i></label>
+            <span class="input-hint"> <strong>NOTE:</strong> Be as detailed as possible for better feedback.</span>
+            </label>
+            <input type="text" name="hideit" id="hideit" value="<?php echo $this->getUrl('');?>" style="display:none !important;" />
+            <input type="text" name="isAjax" id="isAjax" value="isAjax" style="display:none !important;" />
+          </div>
+          <div class="frm-row" style="margin-top:0px; margin-bottom:0;">
+            <div class="section">
+              <?php 
+			$words  = "abcdefghijlmnopqrstuvwyz";
+                                    $vocals = "aeiou";                                
+                                    $text  = "";
+                                    $vocal = rand(0, 1);
+                                    $length = rand(3, 3);
+                                    for ($i=0; $i<$length; $i++) {
+                                        if ($vocal) {
+                                            $text .= substr($vocals, mt_rand(0, 3), 1);
+                                        } else {
+                                            $text .= substr($words, mt_rand(0, 3), 1);
+                                        }
+                                        $vocal = !$vocal;                        
+						            }
+		//	echo $text;			
+		Mage::getSingleton("core/session",array('name' => 'frontend'))->setCaptcha($text);
+	?>
+           
+              <!-- end .smart-widget section -->
+              <div class="result spacer-b10"></div>
+              <!-- end .result  section -->
+              <div class="section progress-section">
+                <div class="progress-bar progress-animated bar-primary">
+                  <div class="bar"></div>
+                  <div class="percent">0%</div>
+                </div>
+              </div>
+              <!-- end progress section --> 
+            </div>
+          </div>
+        </div>
+      </div>   
+      <!-- end .form-body section -->
+      <div class="form-footer"> 
+        <div class="section alert-success" id="alert-success" style="padding: 10px; display:none; text-align:center;"> Success: Your inquiry was submitted and will be responded to as soon as possible. Thank you for contacting us.</div>
+        <!--<button  onClick="submitOrder(this);" name="sub_cusord" type="submit" id="sub_cusord" class="button btn-primary">Get Free Quote</button>-->
+        <div class="sButton">
+          <input type="text" name="hideit" id="hideit" value="<?php echo $this->getUrl('');?>" style="display:none !important;" />
+          <button  name="sub_cusord" type="submit" id="sub_cusord" class="button btn-primary">Submit</button>
+        </div>
+      </div>
+      <!-- end .form-footer section -->
+    </form>
+  </div>
+</div>
+

@@ -1,0 +1,102 @@
+<!--@subject Products back in stock alert @-->
+<!--@vars
+{"var customerName":"Customer Name",
+"var alertGrid":"Alert Data Grid"}
+@-->
+<body style="background:#fff; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<div style="background:#fff; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<table bgcolor="#FFFFFF" width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><!-- ---------    START - M A I N  B O D Y    --------- -->
+      
+      <table width="640" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td><span style="border-bottom: 1px solid #DDDDDD;"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="10" alt=""></span></td>
+        </tr>
+        <tr>
+          <td><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/body-top.jpg" width="640" height="33" alt="Top"></td>
+        </tr>
+        <tr>
+          <td><table width="640" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="20" valign="top"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/body-left.jpg" width="20" height="360" alt="Left"></td>
+                <td valign="top" bgcolor="#ffffff"><table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td bgcolor="#fbe7bc"><!-- ---------    START - H E A D E R    --------- -->
+                        
+                        <table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="10" alt=""></td>
+                          </tr>
+                          <tr>
+                            <td><table width="550" border="0" align="center" cellpadding="0" cellspacing="0">
+                                <tr>
+                                  <td width="52"><img src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/picto-cart.jpg" width="52" height="54" alt="Cart"></td>
+                                  <td width="10"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="10" alt=""></td>
+                                  <td align="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 20px; color: #d80351;">Products Stock Alert</td>
+                                  <td align="right"><a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px;" border="0"/></a></td>
+                                </tr>
+                              </table></td>
+                          </tr>
+                          <tr>
+                            <td><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="30" alt=""></td>
+                          </tr>
+                        </table>
+                        
+                        <!-- ---------    END - H E A D E R    --------- --></td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#fff9ec"><!-- ---------    START - T E X T  1    --------- -->
+                        
+                        <table width="550" border="0" align="center" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; color:#555555; line-height:25px;">Hello <span style="color:#d80351">{{var customerName}},</span>
+
+                              <br>
+                              {{var alertGrid}}<br /><br /></td>
+                          </tr>
+                          </table>
+                        
+                        <!-- ---------    END - T E X T  1    --------- --></td>
+                    </tr>
+                    <tr>
+                      <td align="left" bgcolor="#FFF9EC"  style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:10px 20px 0px 20px; color:#555;"><!-- ---------    START - P R O D U C T S    --------- --><!-- ---------    END - P R O D U C T S    --------- --></td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#fbe7bc"  style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:7px 0px; color:#555;"><!-- ---------    START - F O O T E R    --------- -->
+                        
+                        <table width="550" border="0" align="center" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td><span style="border-bottom: 1px solid #f1a91b;"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="20" alt=""></span></td>
+                            </tr>
+                          <tr>
+                            <td align="center" style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; color: #757575;"><p style="margin-top: 0; margin-bottom: 12px;">Retain for your records<br>
+                              See below Terms and Conditions of this command.</p>
+                              <p style="margin-top: 0; margin-bottom: 12px;"><strong>Your Webstore</strong><br>
+                                For terms and  Conditions in the Your Webstore, click <a href="{{store url="terms-condition"}}" style="color:#ea0809; text-decoration:none; font-weight:bold;">Terms &amp; Conditions</a></p>
+                              <p style="margin-top: 0; margin-bottom: 12px;">Answers to frequently asked questions regarding the Your Webstore issues are available on <strong>{{var store.getFrontendName()}}</strong></p></td>
+                            </tr>
+                          <tr>
+                            <td><span style="border-bottom: 1px solid #DDDDDD;"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="20" alt=""></span></td>
+                            </tr>
+                          </table>
+                        
+                        <!-- ---------    END - F O O T E R    --------- --></td>
+                    </tr>
+                  </table></td>
+                <td width="20" valign="bottom"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/body-right.jpg" width="20" height="360" alt="Right"></td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/body-bottom.jpg" width="640" height="33" alt="Bottom"></td>
+        </tr>
+        <tr>
+          <td><span style="border-bottom: 1px solid #DDDDDD;"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="10" alt=""></span></td>
+        </tr>
+        </table>
+      
+      <!-- ---------    END - M A I N  B O D Y    --------- --></td>
+  </tr>
+</table>
+</div></body>

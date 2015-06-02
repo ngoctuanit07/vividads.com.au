@@ -1,0 +1,146 @@
+
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     base_default
+
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+?>
+
+<?php
+
+/**
+
+ * Product list template
+
+ *
+
+ * @see Mage_Catalog_Block_Product_List
+
+ */
+
+?>
+
+<div class="heads">
+<h2>Trade Show Table Covers, Tablecloths &amp; Runners - Factory Direct</h2></div>
+<div id="TabbedPanels1" class="TabbedPanels">
+  <ul class="TabbedPanelsTabGroup">
+    <li class="TabbedPanelsTab" tabindex="0">How To Order</li>
+    <li class="TabbedPanelsTab" tabindex="0">why choose us</li>
+  </ul>
+  <div class="TabbedPanelsContentGroup">
+    <div class="TabbedPanelsContent"><div class="row-order">
+  <div class="place-order">
+         <h3>Place Your Order</h3>
+    <p>Client places an order and 
+order detail's are received 
+by tablethrows.com.au 
+and registered in our 
+systems. </p>
+  </div>
+        
+        <div class="artwork">
+         <h3>Artwork Designing</h3>
+         <p>If the client selected an artwork design service, one of our design team consultants will be in touch shortly to discuss project requirements e.g colours, text, information etc. Drafts are emailed to client and once approved the design is sent to 
+printing . </p>
+        </div>
+        <div class="e-proofs">
+         <h3>E-Proofs</h3>
+         <p>However if you would like to upload your print ready artwork you can do so by clicking upload artwork. To ensure your throws get printed the way you want we generate E-Proofs for your approval before we can begin printing . Your artwork is analysed to check if it is up to the mark and only then a proof is issued . </p>
+        </div>
+        <div class="printing">
+         <h3>Printing</h3>
+         <p>Your product is printed in our state of the art production facility, and then checked for any defects/colour variations etc. Products  are then packed and moved to the dispatch department.
+
+ </p>
+        </div>
+        <div class="delivery">
+         <h3>Delivery</h3>
+         <p>Your throws are shipped once they are ready for a speedy delivery to your doorstep. We use TNT express to ensure your get your throws on time however other cost effective services are also available.
+
+ </p>
+        </div>
+        
+        
+        
+</div></div>
+    <div class="TabbedPanelsContent"><div class="row-why-choose-us">
+<div class="content-choose-us">
+	<ul>
+    
+    <li>
+    <span><img src="<?php echo $this->getSkinUrl('images/price-icon.png')?>"  alt="Our Price"/></span>
+    <h3>Price Match Guarantee!</h3>
+    <p>We guarantee that we will match any price and give a further 10% OFF for any like for like quote. Your quote needs to be advertised on a website and cannot be part of a special promotion. Price match cannot be offered on deals which have expired or out of stock quotes.</p>
+    </li>
+    <li>
+    <span><img src="<?php echo $this->getSkinUrl('images/artwork-icon.png')?>" alt="Artwork " /></span>
+    <h3>Colour Match Guarantee!</h3>
+    <p>Unlike many other small scale printing companies, we understand the true importance of your brand colours. Hence, we offer a colour match guarantee on all our product's. The primary purpose of our throw's is to give you brand a charming and vivid look and we do not compromise even a tiny bit on that ! </p>
+    </li>
+    <li>
+    <span><img src="<?php echo $this->getSkinUrl('images/service-icon.png')?>" alt="On Time Delivery" /></span>
+    <h3>On Time Delivery!</h3>
+    <p>Timeliness creates a unique value in our industry for our massive client base. Our product's are as good as nothing if they do not arrive on time. To overcome this, our seamless production and delivery process ensures you receive your product's on time, every time. Let us know if you have a deadline so we give your order that needed bit of extra attention.</p>
+    </li>
+    </ul>
+
+</div>
+</div></div>
+  </div>
+</div>
+
+                <?php  echo $this->getLayout()->createBlock('cms/block')->setBlockId('featured')->toHtml() ?>
+	<div class="Column-About">
+    <h1>About Us</h1>
+                    <?php  echo $this->getLayout()->createBlock('cms/block')->setBlockId('abouttablethrowscomau')->toHtml() ?>
+                   
+               <div class="ReadMore"><button type="button" title="<?php echo $this->__('Read More') ?>" class="button readmore" onclick="setLocation('<?php echo $this->getUrl('about-us')?>"><span><span><?php echo $this->__('Read More') ?></span></span></button></div>
+    
+    </div>
+                
+                

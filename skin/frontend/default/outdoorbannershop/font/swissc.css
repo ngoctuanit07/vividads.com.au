@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Swis721CnBTRoman';
+    src: url('swissc.eot');
+    src: url('swissc.eot') format('embedded-opentype'),
+         url('swissc.woff2') format('woff2'),
+         url('swissc.woff') format('woff'),
+         url('swissc.ttf') format('truetype'),
+         url('swissc.svg#Swis721CnBTRoman') format('svg');
+}

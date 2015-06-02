@@ -1,0 +1,1213 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+  //Zend_debug::dump($this);exit;
+?>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<?php 
+   //$_cr_product = $_product->getEntity_id();
+  $_cr_product = Mage::registry('current_product')->getEntity_id();
+   //var_dump($_cr_product);
+   
+   
+   $cart = Mage::getSingleton('checkout/session')->getQuote();
+   $cartItems = $cart->getAllVisibleItems();
+   
+   	foreach($cartItems as $_item){ 			
+			$_product = Mage::getModel('catalog/product')->load($_item->getProduct_id());
+			/*
+			if($_item->getProduct_id()==$_cr_product){
+				echo '<script> window.location.href="'.Mage::getUrl('checkout/cart/').'"; </script>';
+				}
+			*/				
+       }
+   ?>
+<?php 
+$productCount = $_product->getProductCount();
+if(!$_product->getProductCount()){
+		$productCount = rand(30000, 50000);
+}
+/*echo $_product->getName();
+echo '<pre>';
+//var_dump
+print_r($_product);
+echo '</pre>'; */
+?>
+<?php $_product = $this->getProduct();
+		$product = Mage::registry('current_product');
+        if ($product->getId()) {
+            $relatedIds = $product->getRelatedProductIds();
+        }
+?>
+<script type="text/javascript">
+		/*updating and covering script conflict*/
+   <!--
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+	 -->
+</script>
+
+<div class="product-view">
+  <div itemscope itemtype="http://schema.org/Product">
+    <div class="product-essential">
+      <form action="<?php echo $this->getSubmitUrl($_product) ?>" name="product_addtocart_form" method="post" 
+    id="product_addtocart_form"<?php if($_product->getOptions()): ?> 
+    enctype="multipart/form-data"<?php endif; ?> 
+    style="float: left; width: 100%;">
+        <div class="no-display">
+          <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+          <input type="hidden" name="related_product" id="related-products-field" value="" />
+        </div>
+        <div class="product-img-box">
+          <div class="sale_history" style="float: left; z-index: 1000; position: absolute; width: 325px; left: 12px;"> 
+            <!--starts here-->
+            <?php
+	$arr_status = array('complete','processing');
+	// Getting current productid
+	$product_id = $this->getProduct()->getId();
+	//$sku=$this->getProduct()->getSku();
+	$customer_order_flag=0;
+	if(Mage::getSingleton('customer/session')->getCustomerId()){
+		$orderCollection = Mage::getModel('sales/order')->getCollection(); 
+		$orders = $orderCollection->addAttributeToFilter("customer_id", Mage::getSingleton('customer/session')->getCustomerId())->addAttributeToFilter('status',array('in' => $arr_status));
+		$purchased = array(); // will contain IDs of purchased items
+		foreach($orders as $order){
+    		$items = $order->getAllItems();
+    		foreach($items as $item){
+				$purchased[] = $item->getProductId();
+			}
+		}
+	if(in_array($product_id,$purchased)){
+		$customer_order_flag=1;	
+	}
+	else{
+		$customer_order_flag=0;
+	}
+}
+$items = Mage::getModel('sales/order_item')->getCollection()->addFieldToFilter('product_id', $product_id);
+//$cnt = 0;
+$order_arr = array();
+foreach($items as $item){
+	$order_arr[] =  $item->order_id;
+	//$cnt += $item->getQtyOrdered() - $item->getQtyCanceled() - $item->getQtyRefunded();
+}
+$collection = Mage::getModel('sales/order')->getCollection()->addFieldToFilter('status',array('in' => $arr_status));
+$collection->addAttributeToFilter('entity_id',array('in' => $order_arr));
+$cnt = count($collection); ?>
+            <?php /*?><ul style="float:left; width:300px;background:#fdc85e;padding:5px; margin-top:5px; text-align:left; font-family:Arial; font-size:12px;">
+<?php
+if($cnt > 0){
+	if($customer_order_flag==1)
+	   {
+		$cnt = $productCount -1;
+//		$cnt=$cnt-1;
+		//Displaying the total no of customers purchased this product
+		echo '<li style="float:left; width:100%;">';
+		echo $this->__($cnt.' Units Sold');	
+		echo '</li>';
+       }else {
+		//Displaying the total no of customers purchased this product
+		$cnt = $productCount + $cnt;
+		echo '<li style="float:left; width:100%;">';
+		echo $this->__($cnt.' Units Sold');
+		echo '</li>';
+	  }
+  } else {
+	$cnt = $productCount;
+		echo '<li style="float:left; width:100%;">';	
+		echo $this->__($cnt.' Units Sold');
+		echo '</li>';
+}
+		echo '<li style="float:left; width:100%;">';	
+		echo rand(1, 10).' People Viewing This Product';
+		echo '</li>';
+?>
+</ul><?php */?>
+            <?php
+$_product = $this->getProduct();
+
+//Getting the current productid
+$productId = $_product->getId();
+$catThumb = $_product->getThumbnail();
+$short_desc = $_product->getShortDescription();
+$_img_path = Mage::getBaseUrl('media').'catalog/product/'; 
+$mypath = $_img_path.'' .$catThumb;
+//Getting the current productname
+$productName = $_product->getName();
+$stock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product);
+$childProducts = Mage::getModel('catalog/product_type_configurable')->getUsedProducts('null', $_product);
+$outofstock_instock = 0;
+$getIsInStock = array();
+if(!empty($childProducts)){
+	foreach($childProducts as $childVal){
+		$availability = (int) $childVal->isAvailable();
+		$getIsInStock[] = (int) $childVal->getIsInStock();
+		if($availability == 0){
+			$outOfStock = true;
+			break;
+		}
+	}
+	//    }die;
+	if(in_array("1", $getIsInStock)){
+		$outofstock_instock = 1;
+	}
+	//          if (!in_array("1", $getIsInStock)) {
+	//
+	//              $outofstock_instock = "0";
+	//          }
+}
+$crtlPageUrl = '';
+$productUrl = $_product->getUrlInStore();
+$crtlPageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . '/outofstocknotification/index/storeNotificationProductData';
+?>
+            <!--ends here--> 
+          </div>
+          <?php echo $this->getChildHtml('media') ?> </div>
+        <div style="float:right;margin-top:30px; width:100% !important; padding:0px; margin-bottom:20px;" class="pro_left wide"> 
+         <!--<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"> <span itemprop="ratingValue">4.4</span> stars, based on <span itemprop="reviewCount">89 </span> reviews </span>-->
+         
+          <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+          <div class="main-floating">
+            <?php //echo $this->getReviewsSummaryHtml($_product, false, true)?>
+            <div class="product-shop"> 
+              <!--<div class="shopheader"></div>-->
+              <input id="currentid" type="hidden"/>
+              <?php
+        /***********************************************************************
+        ?>
+      <?php echo $this->getChildHtml('other');?>
+      <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+      <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+      <?php endif;*/?>
+            </div>
+          </div>
+          <div class="right_float" >
+            <?php
+                     $upsp1 = Mage::getModel('catalog/product')->load($product->getId());
+                        $upsell_product = $upsp1->getUpSellProductCollection();
+                        //print_r($upsell_product);
+                        foreach($upsell_product as $_upsell)
+                        {
+                            $upsp = Mage::getModel('catalog/product')->load($_upsell->getId());
+                            ?>
+            <div id="related_<?php echo $_upsell->getId()?>" class="mini-upsell-ite" > <a href="<?php echo $upsp->getProductUrl();?>">
+              <div><img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($upsp->getSmallImage()); ?>" width="85" height="85" alt="" /></div>
+              <div><?php echo $upsp->getName();?></div>
+              </a> </div>
+            <?php
+                       }
+                    ?>
+          </div>
+          <script src="<?php echo $this->getJsUrl();?>rcarousel/jquery.bxslider.js"></script>
+          <link rel="stylesheet" href="<?php echo $this->getSkinUrl();?>css/jquery.bxslider.css" type="text/css" />
+          <script type="text/javascript">
+function linkto(url)
+{
+    jQuery('.waitdiv').show();
+    //jQuery('.overlay').show();
+    location.href=url;
+}
+  jQuery(document).ready(function(){
+jQuery('.right_float').bxSlider({
+  mode: 'vertical',
+  slideMargin: 5
+});
+  jQuery(window).scroll(function(){
+    //alert(jQuery(this).scrollTop());
+    ;
+    //alert(jQuery('body').css('top')+'================'+jQuery('.product-shop').css('top'));
+    var height = jQuery('.product-shop').css('height').split('px');
+    if(parseInt(height) < 600)
+    {    
+        if(jQuery(this).scrollTop() > 200 && jQuery(this).scrollTop() < 500)
+        jQuery('.product-shop').css('top',jQuery(this).scrollTop()-220);
+    }
+	
+});
+  jQuery(".bx-wrapper").css('left','830px');
+    jQuery(".bx-wrapper").css('top','-670px');
+    jQuery(".bx-wrapper").delay(1500).animate({'left':'-9px'},1200);
+    jQuery(".bx-viewport").css('height','481px !important');
+  });
+</script> 
+          <?php echo $this->getChildHtml('alert_urls') ?>
+          <?php /*?>       <?php if ($_product->getDescription()):?>
+        <?php endif;?><?php */?>
+          <!---SKU Begins--->
+          <div class="row-view" style="margin-top:10px;">
+            <div style="margin: 0px; padding: 0px; height: 50px; float: left; width: 100%;">
+              <h2 class="sku_new"  style="float:left; width:360px;"> Model # :<span itemprop="mpn"><?php echo $_product->getSku(); ?></span></h2>
+              <h3 class="in_stock" style="float:right; width:360px;">
+                <?php $shipping = $_product->getData('shipsindays'); ?>
+                <?php echo $shipping ;?></h3>
+            </div>
+            <div class="review-container">
+              <?php #echo $this->getReviewsSummaryHtml($_product, false, true)?>
+              <!-- Go to www.addthis.com/dashboard to customize your tools --> 
+              <!--            <div class="addthis_native_toolbox"></div>-->
+              <div style="width:100%; float:left;">
+                <div style="float:left;margin-bottom:10px;" class="socialaddthis"> <?php echo $this->getLayout()->createBlock('sharingtool/share')->setBlockId('addthis_sharetool')->toHtml(); ?> </div>
+                <div style="width:360px; float:right; text-align:center;">
+                  <?php if($_product->price==0):?>
+                  <?php else:?>
+                  <div style="border-radius:3px; font-size:28px; font-weight:bold; font-family:'Raleway',sans-serif; color:#fff; text-align:center; background-color:#e81f25;"> <?php echo $this->__('Reduced')?></div>
+                  <?php endif?>
+         
+          <?php 
+		    $specialPrice = round($_product->getSpecialPrice(),2);
+			$_price = round($_product->getPrice(),2);
+			$date_time = $_product->getSpecial_to_date();
+			
+				if($specialPrice>0)
+			 
+				 { ?>
+          <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+          <div style="border-right: 1px solid rgb(232, 31, 37); width: 46%; padding: 5px; font-size: 13px; text-align:center; float:left">
+          From AUD :  
+           <span itemprop="price">
+             <?php echo $_price ?>
+           
+<?php /*?>           From: <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?><?php */?>
+           </span>
+           
+          </div>
+          <meta itemprop="priceCurrency" content="AUD" />
+          <div style="width: 48%; padding: 5px; text-align:center; font-size: 13px; float:left;" >To AUD : 
+          <span itemprop="price"> 
+           <?php echo ($specialPrice) ?>
+<?php /*?>          To :<?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?>
+ <?php */?>         
+          
+          </span> </div>
+          <br/>
+          <meta itemprop="priceValidUntil" datetime="<?php echo  substr($date_time,0,10); ?>" />
+        
+          <?php }?>
+          <meta itemprop="seller" content="Vivid Displays" />
+          Condition:
+          <link itemprop="itemCondition" href="http://schema.org/NewCondition" />
+          <?php echo $this->__('New')?>
+          <link itemprop="availability" href="http://schema.org/InStock"/>
+          <?php $stock = $_product->getStockItem();
+		if ($stock->getIsInStock()) {
+			echo "In stock! Order now!";
+		} else {
+			echo "Out of Stock";
+		}
+		
+		?>
+          </span>
+         </span>
+          <?php /*?>        <?php 
+		    $specialPrice = round($_product->getSpecialPrice(),2);
+				if($specialPrice>0) { ?>
+                  <div style="border-right: 1px solid rgb(232, 31, 37); width: 46%; padding: 5px; font-size: 13px; text-align:center; float:left"> From : <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST</div>
+                  <div style="width: 48%; padding: 5px; text-align:center; font-size: 13px; float:left;" > To : <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?> + GST </div>
+                  <?php    } ?><?php */?>
+                </div>
+              </div>
+              <div style="margin: 0px; padding: 0px; float: left; width: 100%;">
+                <h2 class="sku_new"  style="float:left; width:100%; font-weight:500; text-transform:uppercase; margin-bottom:20px; margin-top:25px;"> <span itemprop="name"><?php echo $productName?></span><br />
+                <meta itemprop="brand" content="Vivid Displays" />
+                  <!--<span itemprop="brand">Vivid Displays</span>--> </h2>
+              </div>
+              <div class="head">
+                <h2><span>PRODUCT DETAILS</span></h2>
+              </div>
+              <div class="std"  style="margin-top:5px;"> 
+              <span itemprop="description"><?php echo $short_desc;?></span> </div>
+            </div>
+          </div>
+          <!---SKU End--->
+          <div class="row_details">
+            <div class="head">
+              <h2><span>THE DIFFERENCE</span></h2>
+            </div>
+            <div class="span6">
+              <p style="margin-bottom:21px; display:none;">SKU:&nbsp;<?php echo Mage::app()->getStore()->getId();?>-<?php echo $_product->getSku();?></p>
+              <p> </p>
+              <?php if ($_product->getDescription()):?>
+              <div class="std"   style="margin-top:5px;"> <?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?> </div>
+              <?php endif;?>
+				 
+            <?php $flag =0;
+			
+			$attributes_array =array( 'economic_heading',
+									  'economic_desc',
+									  'quick_heading',
+									  'quick_desc',
+									  'light_heading',
+									  'light_desc',
+									  'env_heading',
+									  'env_desc',
+									  'warranty_heading',
+									  'warranty_desc');
+				foreach ($attributes_array as $attrib){
+					$attr = $_product->getData($attrib);
+					if($attr){
+						$flag =1;
+						}
+					} 
+
+			
+			?>
+            <?php if ($flag ==1){?>
+            <div class="attribute-section">
+           	
+            
+		<?php $economic_heading = $_product->getData('economic_heading'); ?>
+        <?php if ($economic_heading !=null){?>
+            <div class="attrib-eco">
+             <div class="attrib-heading"><h1><span>
+                <?php  
+					echo $economic_heading	;
+				 
+					?>
+				
+                </span></h1></div>
+             <div class="attrib_des"><p>
+             <?php $economic_desc = $_product->getData('economic_desc')?>
+             <?php 
+				 echo $economic_desc;
+				   ?>
+				 
+             
+             
+             </p></div>
+            </div>
+      <?php }?>
+      <?php $quick_heading = $_product->getData('quick_heading'); ?>
+            <?php if ($quick_heading !=null){?>
+            <div class="attrib-q">
+             <div class="attrib-heading"><h1><span>
+             			 
+                <?php 
+					echo $quick_heading;
+					 
+					?>
+
+             </span></h1></div>
+             <div class="attrib_des"><p>
+              <?php $quick_desc = $_product->getData('quick_desc')?>
+             <?php  				 echo $quick_desc;
+				   ?>
+				 
+             </p></div>
+            </div>
+            <?php }?>
+            
+             <?php $light_heading = $_product->getData('light_heading')?>
+             <?php if($light_heading !=null){?>
+        	  <div class="attrib-w">
+             <div class="attrib-heading"><h1><span>
+            
+             <?php  
+				 echo $light_heading;
+				  ?>
+				 
+             
+             
+             </span></h1></div>
+             <div class="attrib_des"><p>
+             <?php $light_desc = $_product->getData('light_desc')?>
+             <?php  
+				 echo $light_desc ;
+				  ?>
+             
+             </p></div>
+            </div>
+            <?php }?>
+             <?php 
+			 $env_heading = $_product->getData('env_heading')?>
+             <?php if($env_heading !=null){?>
+            <div class="attrib-e">
+             <div class="attrib-heading"><h1><span>
+            
+             <?php 
+			  echo $env_heading 
+			 ?>
+             
+             </span></h1></div>
+             <div class="attrib_des"><p>  <?php 
+			 $env_desc = $_product->getData('env_desc')?>
+             <?php echo $env_desc;?></p></div>
+            </div>
+            <?php }?>
+            <?php  $warranty_heading = $_product->getData('warranty_heading');
+			if($warranty_heading !=null){
+			?>
+            <div class="attrib-war">
+             <div class="attrib-heading"><h1><span><?php 
+						 
+				 echo $warranty_heading;
+			 ?></span></h1></div>
+             <div class="attrib_des"><p><?php 
+			 $warranty_desc = $_product->getData('warranty_desc')?>
+             <?php  echo $warranty_desc	 ?>
+             </p></div>
+            </div>
+            <?php }?>
+           </div>
+           <?php }?>
+    
+           <div class="attribute-section" style="margin-top:10px; margin-bottom:30px;">
+              <div class="text-wrapper"> 
+                <div class="right"> <span class="artwork-heading"><?php echo $this->__('General Artwork Guide:')?></span>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; color:#4b4a4a; font-size:12px;"> <?php echo $this->__('All files must be supplied as Press Ready PDF with trim marks included and 5mm bleed on all edges. CMYK color; Minimum of 150dpi resolution; Fonts – embedded / curves;')?>
+
+<?php echo $this->__("If you don't have print-ready artwork... no problem! We will create print-ready design for you (Charges 
+Apply*). ")?></p>
+                </div>
+              </div>
+              <div class="text-wrapper" > 
+                <div class="right"> <span class="design-heading"><?php echo $this->__('Free Graphic Design Check:')?></span>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px; color:#4b4a4a;"> <?php echo $this->__('Unsure how your artwork will print? We offer a FREE artwork checking service where we will check,Resolution, Bleed, Size, Legibility (thin text) & Alignment on your design file/s.')?>
+ </p>
+                </div>
+              </div>  
+              <div class="text-wrapper" > 
+                <div class="right"> <span class="digital-heading"><?php echo $this->__('Free Digital Graphic Proof:')?></span>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px; color:#4b4a4a;"> <?php echo $this->__('Before we place your order into production, you will receive a FREE e-mail proof of your imprint for final approval. This step in our ordering process ensures that your order will be produced accurately.')?> </p>
+                </div>
+              </div>
+              <div class="text-wrapper" > 
+                <div class="right"> <span class="send-art-heading"><?php echo $this->__('Sending Artwork File:')?></span>
+                  <p class="content" style="padding:20px 10px 20px 10px; width:95%; font-size:12px; color:#4b4a4a;"> <?php echo $this->__('When placing an order you will have the opportunity to upload your artwork online before making payment.If your artwork is not quite ready but you would like to place an order, it is possible to upload your artwork at a later date.')?> </p>
+                </div>
+              </div>
+              
+              </div>
+            </div>  
+            <div class="right tabs-wrapper">
+            <div class="box-containers">
+            <div class="add_cart_option">
+                  <?php if($_product->price==0):?>
+                  <div class="price-section"> <?php echo "<h1>Call To Enquire</h1>";?> </div>
+                  <?php else:?>
+                  <div class="price-section">
+                    <?php 
+                $specialPrice = round($_product->getSpecialPrice(),2);
+                $_price = round($_product->getPrice(),2);
+                if($specialPrice>0) { ?>
+                    <h1 >
+                    <?php echo ('AUD : '.$specialPrice.'');?>  + GST
+					<?php /*?><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?> + GST <?php */?></h1>
+                    <?php	} else{ ?>
+                    <h1>
+					<?php echo ('AUD : '.$_price.'');?>+GST
+					<?php /*?><?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST<?php */?></h1>
+                    <?php }?>
+                  </div>
+                  <?php endif;?>
+                  <?php if($_product->price==0):?>
+                  <?php //echo $this->getChildHtml('addtocart')?>
+                  <?php else:?>
+                  <?php echo $this->getChildHtml('addtocart')?>
+                  <?php endif ;?>
+                </div>
+            <div class="payment-logo">
+                <img src="<?php echo $this->getSkinUrl()?>images/payment-logo.png" alt="<?php echo $this->__('Payment Method')?>" title="<?php echo $this->__('Payment Method')?>" />
+                </div>
+            <div class="note-text">
+            <?php echo $this->__('<p> 
+<strong>Payment:</strong> Credit card payment is NOT mandatory in checkout process.
+Available Checkout Payment Options (Buy Now Pay Later):
+Purchase Order; Direct Deposit; Bank Cheque; Credit Card; PayPal; <br /><br />
+<strong>Design File:</strong> When placing an order you will have the opportunity to upload your artwork after checkout process. 
+If your artwork is not quite ready but you would like to place an order, it is possible to upload your artwork 
+at a later date.<br /><br />
+<strong>Shipping:</strong> Cost of shipping will be quoted on order page. Your goods will be shipped with our Regular TNT Road Express Service. If you require your delivery urgently we can use a priority service. 
+Please call us on 1300721614 for a quote.</p>')?>
+            </div>
+             
+            </div>
+            
+            <div class="email_quote"><a href="#quoteLoader"><img src="<?php echo $this->getSkinUrl()?>images/get_quote.jpg" alt="<?php echo __('Email Quotation')?>"/></a></div>
+            <div class="box-containers" style="background-color:white;">
+               
+                <div class="help">NEED HELP ?</div>
+                <div class="tabs-actions"> 
+                  <!-- <a href="javascript:void(0)" title="<?php echo $this->__('Add to Quote') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" id="quoteImage" data-url="<?php echo $this->getAddToCartUrl($_product); ?>" data-id="<?php echo $_product->getId(); ?>" style="margin-left:13px;">--> 
+                  <?php /*?><a  title="<?php echo $this->__('Add to Quote') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" style="margin-left:13px;" href="<?php echo $this->getUrl('get_a_quote');?>" > <img src="<?php echo $this->getSkinUrl('images/addQuote.jpg');?>" alt="add Quote" title="add Quote Image" /> </a><?php */?>  
+                  <a class="btn-tabs live-chat" onclick="LC_API.show_full_view();return false;" href="" style="float:left;">LIVE CHAT</a> 
+                  <a style="float: left; position: relative; " class="btn-tabs live-chat" href="javascript:void(0)">Call Us: 1300721614</a>
+                   <a class="btn-tabs live-chat" href="mailto:sales@vividads.com.au" target="_blank" style="float:left; width:90px; text-align:center;">Email</a> 
+                  
+                  </div>
+                      </div>
+                 <div class="box-containers" style="background-color:white;">
+                <div class="help">Downloads</div>
+                <div class="tabs-actions">
+                  <div class="button_container">
+                    <?php
+    $productid=Mage::registry('product')->getId();
+                $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_relation');
+                $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE product_id='".$productid."'";
+                try {
+                $chkSaleOrderGrid = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                } catch (Exception $e){
+                //echo $e>getMessage();
+                }
+                ?>
+                    <?php
+                if(count($chkSaleOrderGrid) > 0)
+                {
+                ?>
+                    <?php foreach($chkSaleOrderGrid as $res_objects) :
+                    $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_files');
+                    $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE file_id='".$res_objects["file_id"]."'";
+                    try {
+                    $chkSaleOrderGrid2 = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                    } catch (Exception $e){
+                    //echo $e>getMessage();
+                    }
+                    foreach($chkSaleOrderGrid2 as $res_objects2)
+						{	//var_dump($res_objects2) ?>
+                    <a class="btn-tabs" href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$res_objects2["file_id"].'/'.$res_objects2["filename"]; ?>" title="<?php echo $res_objects2["filename"]; ?>" target="_blank" style="margin:0 5px 5px 0px; float:left;">Download Template</a>
+                    <?php } 
+			endforeach;?>
+                    <?php } ?>
+                    <?php /*?>else {
+?>
+<a class="btn-tabs" title="<?php echo ("No Attachments Found "); ?>">No File</a>
+<?php }?>
+          <?php */?>
+                  </div>
+                </div>
+          			</div>
+              <?php   
+		  $product = Mage::registry('current_product');
+            if($product->getTypeID() == 'bundle')
+            {
+            $bundle_item = array();
+            $bundled_product = Mage::getModel('catalog/product')->load($product->getId());
+            $selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
+                $bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
+            );
+		$check = count ($bundled_product);
+		if($check >=1){
+		?>
+              <div class="box-container">
+                <div class="box-heading">
+                  <h1><?php echo ("Package Includes")?></h1>
+                </div>
+                <?php  $optionCollection =  $bundled_product
+			  							->getTypeInstance(true)
+										->getOptions($bundled_product);
+			foreach($optionCollection as $val)
+            {
+				?>
+                <div  class="tabs-items" >
+                  <div class="packages tab-item-block">
+                    <ul>
+                      <?php foreach($selectionCollection as $option)
+                                {
+                                if($val->getId() == $option->getOptionId())
+                                    {
+                                     echo '<li>'.round($option->getSelectionQty()).' - '.$option->getName().'</li>';
+                                    }
+                                }?>
+                    </ul>
+                  </div>
+                </div>
+                <?php }?>
+                <?php  }      ?>
+              </div>
+              <?php } ?>
+              
+              <div class="box-container"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
+     
+                <div class="pro-options">
+                  <?php 
+                  if($_product->getOptions()){
+					  
+					
+                     // echo '<h2>Product Options</h2>';
+                        echo getProductOptions($_product) ; 
+                  }
+                  ?>
+                </div>
+             
+              </div>
+              
+              <div>
+                <?php
+            $gallery1 =    $_product->getGalleryOne();
+            $gallery2 =   $_product->getGalleryTwo();
+            $gallery3 =    $_product->getGalleryThree();
+           
+            $gallery = array($gallery1,$gallery2,$gallery3);
+            echo  $gallery[0],  $gallery[1],  $gallery[2]  ;
+                ?>
+              </div>
+              <div class="pro-img-right" style="position:relative; right:25px; float:left;">
+                <?php if($_product->getPackage_image() !='')
+		{
+			$filePaths=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getPackage_image()
+	   ?>
+                <img src="<?php echo $filePaths;?>" width="490"  />
+                <?php }?>
+              </div>
+              <?php if($_product->getWire_frame() !='')
+		{
+		   $filePath=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getWire_frame()
+	 ?>
+              <div class="image-sketch" style=" text-align:center;"> <img src="<?php echo $filePath;?>" width="400"/> </div>
+              <?php } ?>
+              <div class="thumbnail_img">
+                <ul>
+                  <?php
+              $product = Mage::getModel('catalog/product')->load($productId);//product id here
+              foreach ($product->getMediaGalleryImages() as $image) {
+              if($image->getPosition()>100 && $image->getPosition()<200)  {
+              echo '<li class="'.$image->getPosition().'"><img src="'.$image->getUrl().'" alt =""/></li>';
+              //echo $image->getPosition();
+              //	var_dump($image);
+                }   }     ?>
+                </ul>
+              </div>
+              <div class="large_thumbnail_img">
+                <ul>
+                  <?php
+    	 $product = Mage::getModel('catalog/product')->load($productId);//product id here
+
+			foreach ($product->getMediaGalleryImages() as $image) {
+				if($image->getPosition()>200 && $image->getPosition()<300)  {
+					echo '<li><img src="'.$image->getUrl().'" alt =""/></li>';
+					//echo $image->getPosition();
+					//	var_dump($image);
+			}   }    ?>
+                </ul>
+              </div>
+            </div>
+            <div class="clearer" style="clear:both !important;"></div>
+            <!--- Start New Section For Addorns --->
+            <?php $related_product_collection = $_product->getRelatedProductCollection();
+ $chk =  count($related_product_collection);
+$count=1;
+$related_product_collection->AddStoreFilter();
+if($chk >=1){
+ ?>
+            <div class="category-products" style="float:left;">
+              <ul class="products-grid">
+                <div class="head">
+                  <h2><span>Addons...</span></h2>
+                </div>
+                <?php  
+foreach($related_product_collection as $pdt)
+{
+    $pdt_id=$pdt->getId();
+    $model_rel = Mage::getModel('catalog/product'); //getting product model
+    $_product_rel = $model_rel->load($pdt_id); //getting product object for particular product id
+    $rel_name= $this->getName();
+	$sku=$_product_rel->getSku();
+    $rel_price= number_format($_product_rel->getPrice(),2);
+?>
+                <li class="hover_pro item<?php if($count%3==0): ?> last<?php endif; ?>">
+                  <div class="mask-product">
+                    <div class="pro-det-con"> <a href="<?php echo $_product_rel->getProductUrl(); ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product_rel, 'small_image'), null, true) ?>" class="product-image"> <img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product_rel->getThumbnail()); ?>" width="220" height="252" alt="<?php echo $this->stripTags($this->getImageLabel($_product_rel, 'small_image'), null, true) ?>" /> </a>
+                      <?php
+                /**************For assign to promotion product************************/
+                if($_product->getPromotionicon() !='')
+                {
+                    $filePath=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product_rel->getPromotionicon()
+                ?>
+                      <div class="promoicon-image"> <img width="75" height="75.5" style="position:absolute;  right:0;  top:0; " src="<?php echo $filePath; ?>" /> </div>
+                      <?php
+                }
+                /**************End assign to promotion product************************/
+                ?>
+                      <?php if($_product_rel->isSaleable()): ?>
+                      <?php else: ?>
+                      <div style="height: 110px; width: 110px; margin-top: 50px; margin-left: 75px;" class="out-of-stock"><img style="position: absolute; left: 75px; opacity:.75;" src="<?php echo $this->getSkinUrl(); ?>images/sold.png" class="promoicon-image"></div>
+                      <?php endif; ?>
+                      <div style="top:0;" class="product-detail-content">
+                        <div class="product-detail-description">
+                          <?php 
+							$desc_Size=$_product_rel->getDescriptionSize();
+							$productDescription=$_product_rel->getShortDescription();
+							if(!($desc_Size)){?>
+                          <?php echo  substr($productDescription,0,150)."..."; ?>
+                          <?php }else { ?>
+                          <?php echo  substr($desc_Size,0,150)."..."; ?>
+                          <?php }?>
+                        </div>
+                      </div>
+                    </div>
+                    <h2 class="product-name"><a href="<?php echo $_product_rel->getProductUrl() ?>" 
+        title="<?php echo $this->stripTags($_product_rel->getName(), null, true) ?>"> <?php echo substr(($_helper->productAttribute($_product_rel, $_product_rel->getName(), 'name')),0,35)."...";?> </a></h2>
+                  </div>
+                  <?php 
+							$related = Mage::getModel('catalog/product')->load($_product_rel->getId());
+	   ?>
+                  <div class="addon-sku">Model # <?php echo $related->getSku() ?></div>
+                  <div class="btn-bg">
+                    <div class="pric-btn addon-price" >
+                      <?php //echo $this->getPriceHtml($_product, true);
+					  echo Mage::helper('core')->currency($_product_rel->getSpecialPrice());
+					  ?>
+                    </div>
+                    <div style="width:30px; float:left; margin-left:-10px;"> <a href="<?php echo str_replace('icart','cart', $this->getAddToCartUrl($_product_rel) ); ?>"> 
+                      <!--<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span>
+	 
+	 <?php // echo $this->__('Add to Cart') ?></span></span></button>--> 
+                      
+                      <img height="27" title="Click to Add to Cart '<?php echo $_product->getName();?>' "  src="<?php echo $this->getSkinUrl()?>images/minishoppingcart.png"/> </a> </div>
+                    <div class="browse-btn"> <a href="javascript:void(0)" title="<?php echo $this->__('Add to Cart') ?>" class="btn-cart ajax-cart btn-add-cart quoteImage" id="quoteImage"  data-url="<?php echo $this->getAddToCartUrl($_product_rel); ?>" data-id="<?php echo $_product_rel->getId(); ?>" style="margin-left:-15px;"> <span>Add to Quote</span> </a> </div>
+                  </div>
+                  <?php //echo $this->getPriceHtml($_product, true) ?>
+                </li>
+                <?php $count++; }?>
+              </ul>
+            </div>
+            <?php } ?>
+            <!--- End New Section For Addorns ---> 
+            <!--- Start Video Section--->
+            <?php $product_video = $_product->getData('introvideo'); 
+		if($product_video !=null){ ?>
+            <div class="video_section">
+              <div class="head">
+                <h2><span>Product Video</span></h2>
+              </div>
+              <div class="video-player">
+                <iframe width="900" height="356" frameborder="0" allowfullscreen="" mozallowfullscreen="" webkitallowfullscreen="" src="//player.vimeo.com/video/<?php echo $product_video;?>"></iframe>
+              </div>
+            </div>
+            <?php } ?>
+            <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('contactform')->toHtml() ?>
+            <!---End Video Section---> 
+            <!---Related Products Start--->
+            <?php $crossselll_product_collection = $_product->getCrossSellProducts(); ?>
+            <?php if(count($crossselll_product_collection) >=1) {?>
+            <div class="category-products" style="float:left; margin-bottom:-10px;">
+              <ul class="products-grid">
+                <div class="head">
+                  <h2><span>PEOPLE WHO VIEWED THIS ALSO VIEWED...</span></h2>
+                </div>
+                <?php
+$i=1;
+$store_id = $this->helper('core')->getStoreId();
+foreach($crossselll_product_collection as $pdt)
+{
+    $pdt_id=$pdt->getId();
+    $model_crosssell = Mage::getModel('catalog/product');
+    $_product_crosssell = $model_crosssell->load($pdt_id);
+    $crosssell_name= $_product_crosssell->getName();
+    $crosssell_price= number_format($_product_crosssell->getPrice(),2);
+	// $Imgs = $pdt->getSmallImage();
+	//$crosssell_img_url = Mage::getBaseUrl('media').'catalog/product/'.$Imgs; 
+	//$crosssell_img_url = $this->helper('catalog/image')->init($_product_crosssell, 'image')->keepFrame(false)->resize(100,100);
+?>
+                <li class="hover_pro item<?php if($i%3==0): ?> last<?php endif; ?>">
+                  <div class="mask-product">
+                    <div class="pro-det-con"> <a href="<?php echo $_product_crosssell->getProductUrl(); ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product_crosssell, 'small_image'), null, true) ?>" class="product-image"> 
+                      <!--<img src="<?php echo $this->helper('catalog/image')->init($_product_crosssell, 'small_image')->resize(220); ?>" width="220" height="252" alt="<?php  echo $this->stripTags($this->getImageLabel($_product_crosssell, 'small_image'), null, true) ?>" />--> 
+                      <img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product_crosssell->getThumbnail()); ?>" width="220" height="252" alt="<?php echo $this->stripTags($this->getImageLabel($_product_crosssell, 'small_image'), null, true) ?>" /> </a>
+                      <?php
+                /**************For assign to promotion product************************/
+                if($_product->getPromotionicon() !='')
+                {
+                    $filePath=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product_crosssell->getPromotionicon()
+                ?>
+                      <div class="promoicon-image"> <img width="75" height="75.5" style="position:absolute;  right:0;  top:0; " src="<?php echo $filePath; ?>" /> </div>
+                      <?php
+                }
+                /**************End assign to promotion product************************/
+                ?>
+                      <?php if($_product_crosssell->isSaleable()): ?>
+                      <?php else: ?>
+                      <div style="height: 110px; width: 110px; margin-top: 50px; margin-left: 75px;" class="out-of-stock"><img style="position: absolute; left: 75px; opacity:.75;" src="<?php echo $this->getSkinUrl(); ?>images/sold.png" class="promoicon-image"></div>
+                      <?php endif; ?>
+                      <div style="top:0;" class="product-detail-content">
+                        <div class="product-detail-description">
+                          <?php 
+		    $desc_Size=$_product_crosssell->getDescriptionSize();
+			$productDescription=$_product_crosssell->getShortDescription();
+			if(!($desc_Size)){?>
+                          <?php echo  substr($productDescription,0,150)."..."; ?>
+                          <?php }else { ?>
+                          <?php echo  substr($desc_Size,0,150)."..."; ?>
+                          <?php }?>
+                        </div>
+                        <p class="product-detail-read-more"> <a href="<?php echo $_product_crosssell->getProductUrl() ?>">Read More</a> </p>
+                      </div>
+                    </div>
+                    <h2 class="product-name" ><a href="<?php echo $_product_crosssell->getProductUrl() ?>" title="<?php echo $this->stripTags($_product_crosssell->getName(), null, true) ?>"> <?php echo  ($_helper->productAttribute($_product_crosssell, $_product_crosssell->getName(), 'name')) ;?> </a></h2>
+                  </div>
+                  <?php 
+		$product_crosssell = Mage::getModel('catalog/product')->load($_product_crosssell->getId());
+	   ?>
+                  <div class="addon-sku">Model # <?php echo $product_crosssell->getSku() ?></div>
+                  <div class="btn-bg">
+                    <div class="pric-btn addon-price">
+                      <?php 
+					$specialPrice = round($_product->getSpecialPrice(),2);
+					if($specialPrice>0) { ?>
+                      <?php echo $_formattedActualPrice = Mage::helper('core')->currency($product_crosssell->getSpecialPrice(),true,false);?>
+                      <?php	} else{ ?>
+                      <?php echo $_formattedActualPrice = Mage::helper('core')->currency($product_crosssell->getPrice(),true,false);?>
+                      <?php }?>
+                      <?php //echo $this->getPriceHtml($_product, true);
+					  echo Mage::helper('core')->currency($product_crosssell->getPrice());
+					  ?>
+                    </div>
+                    <div style="width:30px; float:left; margin-left:-10px;"> <a href="<?php echo str_replace('icart','cart', $this->getAddToCartUrl($product_crosssell) ); ?>"> 
+                      <!--<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span>
+	 
+	 <?php // echo $this->__('Add to Cart') ?></span></span></button>--> 
+                      
+                      <img height="27" title="Click to Add to Cart '<?php echo $product_crosssell->getName();?>' "  src="<?php echo $this->getSkinUrl()?>images/minishoppingcart.png"/> </a> </div>
+                    <div class="browse-btn"> <a class="category-browse" title="<?php echo $this->stripTags($product_crosssell->getName(), null, true) ?>" href="<?php echo $product_crosssell->getProductUrl() ?>"> <span>More Info</span> </a> </div>
+                  </div>
+                  <?php //echo $this->getPriceHtml($_product, true) ?>
+                </li>
+                <?php $i++; }?>
+              </ul>
+              <div class="pro_upselling">
+                <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('cross_selling')->toHtml() ?>
+              </div>
+            </div>
+            <?php } ?>
+            <!--- Related Produts End---> 
+            <!----Start Download Section--->
+            <?php		$productid=Mage::registry('product')->getId();
+                    $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_relation');
+                    $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE product_id='".$productid."'";
+                    try {
+                    $chkSaleOrderGrid = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                    } catch (Exception $e){
+                        //echo $e>getMessage();
+                    }
+                    if(count($chkSaleOrderGrid) > 0)
+                      {  ?>
+            <?php /*?><div class="products_download">
+            <div class="head"  style="display:none;">
+              <h2><span>Download Design Template(s)</span></h2>
+            </div>
+            <div class="products_download_desc"  style="display:none;"> <span>
+              <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('downloads')->toHtml() ?>
+              </span>
+              <?php foreach($chkSaleOrderGrid as $res_objects) :
+                            $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_files');
+                            $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE file_id='".$res_objects["file_id"]."'";
+                            try {
+                            $chkSaleOrderGrid2 = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                            } catch (Exception $e){
+                            //echo $e>getMessage();
+                            }
+                            foreach($chkSaleOrderGrid2 as $res_objects2)
+                            {
+								//var_dump($res_objects2)
+                            ?>
+              <div class="down"> <a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$res_objects2["file_id"].'/'.$res_objects2["filename"]; ?>" title="<?php echo $res_objects2["filename"]; ?>" target="_blank" style="position: relative; z-index: 1000;">Download</a>
+                <p class="top" style="position: relative; z-index: -11;">click to begin</p>
+                <p class="bottom" style="z-index: -100; position: relative;">
+                  <?php $filesize = ($res_objects2['size']/1024)/1024; echo round($filesize)."MB";?>
+                </p>
+              </div>
+              <?php } 
+	endforeach;?>
+            </div>
+            <?php } ?>
+            <?php 
+	 $reviewCount = $_product->getRatingSummary()->getReviewsCount() ? $_product->getRatingSummary()->getReviewsCount(): 0;
+	 if($reviewCount >=1) {
+?>
+            <div class="head">
+              <h2><span>Customer Reviews</span></h2>
+            </div>
+          </div><?php */?>
+            <?php } ?>
+            <?php 
+		  		// echo $this->getReviewsSummaryHtml($_product, false, true);
+		  ?>
+            
+            <!----End Download Section---> 
+          </div>
+        </div>
+        <div class="mybundle" style="display:block; position:relative; float:left;">
+          <?php
+	/*$bundled_product = new Mage_Catalog_Model_Product();		
+	$bundled_product->load($product_id);
+		$selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
+		$bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
+	);
+	$bundled_items = array();
+	$bundle =	array();
+	$bundle_opt ='';
+    $bundle = 'product='.$product_id.'&related_product=&qty=1&';
+	$b=0;
+	if($selectionCollection){
+	foreach($selectionCollection as $option) 
+	{
+	$bundled_items[] = $option->product_id;
+	$pId = $option->product_id;
+    $bundle .= 'bundle_option['.$b.']='.$pId.'&';
+	$b++;
+	}
+	}*/
+/**
+ * In Magento Models or database schema level, the product's Custom Options are
+ * executed & maintained as only "options". So, when checking whether any product has
+ * Custom Options or not, we should check by using this method "hasOptions()" only.
+ */
+//product=163&related_product=&qty=1&bundle_option%5B10%5D=25&bundle_option%5B9%5D=23&bundle_option%5B8%5D=19&bundle_option%5B4%5D=&isAjax=1
+?>
+          <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+          <?php //echo $this->getChildChildHtml('container1', '', true, true) ?>
+          <?php //echo $this->getChildChildHtml('container2', '', true, true) ?>
+          <?php endif;?>
+        </div>  
+      </form>
+                  <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('contactform')->toHtml() ?>
+
+    </div>
+  </div>
+</div>   
+<!--<div id="quoteLoader" style="float:left; clear:both"></div>--> 
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script> 
+<!-- <iframe src='http://usedbooths.com.au/index.php/externalform/?store_id=166' height='1450' width='930'></iframe>-->
+<?php $quoteurl =  $this->getUrl().'index.php/externalform/?'.$store_id ?>
+<script language="javascript">
+ //<![CDATA[
+<!--
+ //Loading external quotatoin form
+//	jQuery(document).ready(function(e) {
+//		 var quoteUrl = '<?php echo $quoteurl;?>';
+//		 var formVars = { quoteUrl:'<?php echo $quoteurl;?>',
+//		 				  form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey();?>',
+//							};
+//		 //console.log(formVars);
+//		 jQuery.ajax({
+//			 url:quoteUrl,
+//			 dataType:"html",
+//			 data:formVars,
+//			 type:'POST',
+//			 beforeSend: function(xError){
+//				 //console.log(xError);
+//				 html = 'Please wait form is loading...';
+//				  jQuery('#quoteLoader').html();
+//				 },
+//			 success: function(response){
+//				  //console.log(response);
+//				  jQuery('#quoteLoader').html(html);
+//				  jQuery('#quoteLoader').html(response);
+//				 },
+//			 error: function(error){
+//				  console.log(error);
+//				 },
+//			 });
+//    });
+-->
+jQuery(function($) {
+	  jQuery('.btn-add-cart').on('click', function () {
+        var cart = jQuery('.contacts_button');
+        var imgtodrag = jQuery('#quoteImage').find("img").eq(0);
+		//console.log(imgtodrag);
+        if (imgtodrag) {
+            var imgclone = imgtodrag.clone()
+                .offset({
+                top:parseInt(imgtodrag.offset().top),
+                left: imgtodrag.offset().left
+            })
+                .css({
+                'opacity': '0.5',
+                    'position': 'absolute',
+                    'height': '25px',
+                    'width': '45px',
+                    'z-index': '100'
+            })
+                .appendTo(jQuery('body'))
+                .animate({
+                'top': cart.offset().top + 10,
+                    'left': cart.offset().left + 10,
+                    'width': 75,
+                    'height': 75
+            }, 1000, 'easeInOutExpo');
+          setTimeout(function () {
+                cart.effect("shake", {
+                    times: 2
+                }, 200);
+            }, 1500);
+            imgclone.animate({
+                'width': 0,
+                    'height': 0
+            }, function () {
+                jQuery(this).detach()
+            });
+        }
+    });
+});
+//called from quick view iframe
+function setAjaxData(data,iframe){
+    //showMessage(data.message);
+    if (data.status != 'ERROR' && jQuery('.cart-top-container').length) {
+        jQuery('.cart-top-container').replaceWith(data.cart_top);
+    }
+}
+function showMessage(message){
+   
+    jQuery('body').append('<div class="alert"></div>');
+    
+	var $alert = jQuery('.alert');
+    $alert.slideDown(400);
+    $alert.html(message).append('<button></button>');
+    jQuery('button').click(function () {
+        $alert.slideUp(400);
+    });
+    $alert.slideDown('400', function () {
+        setTimeout(function () {
+            $alert.slideUp('400', function () {
+                $(this).slideUp(400, function(){ $(this).detach(); })
+            });
+        }, 7000)
+    });
+}
+	jQuery(function($) {
+    	jQuery('.ajax-cart').live('click', function(){
+        setLocationAjax($(this).attr('data-url'), $(this).attr('data-id'));
+        return false;
+    });
+    function setLocationAjax(url, id)
+    {
+		var dataSource = url+id;
+		//console.log(dataSource);
+        url = url.replace("checkout/cart", "ajax/index");
+		qty = document.getElementById('quantity').value;
+     //   url = url.replace("add", "myadd");
+        url += 'qty/'+qty+'/isAjax/1/';
+		//console.log(url);
+		var data = '<?php echo $bundle;?>';
+     //console.log(data);
+//		return false;
+	    if ('https:' == document.location.protocol) {
+		    url = url.replace('http:', 'https:');
+	    }
+        jQuery('#ajax_loading' + id).css('display', 'block');
+        try {
+            $.ajax({
+                url:url,
+				data: data,
+                dataType:'json',
+                success:function (data) {
+					// console.log(data); 
+					// console.log(data.qty);
+                  //  $('#ajax_loading' + id).css('display', 'none');
+				   jQuery('#quote_items_qty').html('('+data.qty+')');
+                  //   showMessage(data.message);
+				//	alert('Product add to cart.');
+                   if (data.status != 'ERROR' && $('.cart-top-container').length) {
+                        $('.cart-top-container').replaceWith(data.cart_top);
+						//alert('Product add to cart.');
+                     }
+                }
+            });
+        } catch (e) {
+        }
+    }
+});
+<!--	ending ajax add to cart button code-->
+</script>
+<?php 
+function getProductOptions(&$product)
+{
+  $options = array();
+   if($product->hasOptions)
+            		{
+                $optionsArr = $product->getOptions();
+                 foreach ($optionsArr as  $optionKey => $optionVal)
+                	{
+				    $optStr .='<h3 class="optionHeadings">'.$optionVal->getTitle().'</h3>';
+					$optStr .= "<select style='display:block; clear:both;' name='options[".$optionVal->getId()."]'>";    
+				  foreach($optionVal->getValues() as $valuesKey => $valuesVal)
+						{
+							  $optStr.= "<option value='".$valuesVal->getId()."'>".$valuesVal->getTitle()."</option>";
+						}
+                    $optStr.= "</select>";
+                    }
+						// echo($optStr ); 
+           			 }
+  if ($addOptions = $product->getOptionByCode('additional_options')) {
+      $options = array_merge($options, unserialize($addOptions->getValue()));
+  }
+  return $optStr;
+} 
+?>
+<script type="text/javascript">
+    //<![CDATA[
+	 
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+        productAddToCartForm.submit = function(button, url) {
+            if (this.validator.validate()) {
+                var form = this.form;
+                var oldUrl = form.action;
+				console.log(oldUrl);
+                if (url) {
+                   form.action = url;
+                }
+                var e = null;
+                try {
+                    this.form.submit();
+                } catch (e) {
+                }
+                this.form.action = oldUrl;
+                if (e) {
+                    throw e;
+                }
+                if (button && button != 'undefined') {
+                    button.disabled = true;
+                }
+            }
+        }.bind(productAddToCartForm);
+        
+		productAddToCartForm.submitLight = function(button, url){
+            if(this.validator) {
+                var nv = Validation.methods;
+                delete Validation.methods['required-entry'];
+                delete Validation.methods['validate-one-required'];
+                delete Validation.methods['validate-one-required-by-name'];
+                // Remove custom datetime validators
+                for (var methodName in Validation.methods) {
+                    if (methodName.match(/^validate-datetime-.*/i)) {
+                        delete Validation.methods[methodName];
+                    }
+                }
+                if (this.validator.validate()) {
+                    if (url) {
+                        this.form.action = url;
+                    }
+                    this.form.submit();
+                }
+                Object.extend(Validation.methods, nv);
+            }
+        }.bind(productAddToCartForm);
+    //]]>
+    </script> 

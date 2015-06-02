@@ -1,0 +1,681 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     default_modern
+
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+/**
+
+ * @var Mage_Page_Block_Html_Header $this
+
+ */
+
+  $is_homepage = Mage::getBlockSingleton('page/html_header')->getIsHomePage();
+
+  $stores = Mage::app()->getStores();
+
+
+
+Mage::app()->setCurrentStore(20);
+
+  
+
+?>
+
+<script type="text/javascript">
+
+    	function NewWindow(page, name, w, h, location, scroll) { //alert(page);
+
+			var winl = (screen.width - w) / 2;
+
+			var wint = (screen.height - h) / 2;
+
+	
+
+			winprops = 'height='+h+',width='+w+',location='+location+',top='+wint+',left='+winl+',scrollbars='+scroll+',resizable';
+
+	
+
+			win = window.open(page, name, winprops);
+
+			//if (parseInt(navigator.appVersion) >= 4) { win.window.focus(); }
+
+			if ((navigator.appVersion) >= 4) { win.window.focus(); }
+
+    	}
+
+	
+
+    function check_header()
+
+	{
+
+		if(document.search_header.search_keyword.value === '' || document.search_header.search_keyword.value == 'Search customizable banners & signs')
+
+		{
+
+			document.search_header.search_keyword.value="Search customizable banners & signs";			
+
+			return false;
+
+		}
+
+		else
+
+		{
+
+			document.search_header.submit();
+
+			return true;
+
+		}
+
+	}
+
+	
+
+	function emp(val)
+
+	{
+
+				if(val.length === 0) 
+
+				{
+
+						document.search_header.search_keyword.value="Search customizable banners & signs";			
+
+						
+
+				}
+	
+	}
+
+	
+
+	 
+
+    /** uploading artwork popup*/
+
+	
+
+	jQuery(document).ready(function(e) {
+
+		
+
+		/*temperaory hidden video display later that has to be fixed*/
+
+		
+
+		jQuery('#downloads_video_overlay').hide();
+
+		
+
+		/*--------------------------------*/
+
+		
+
+		
+
+        jQuery('#close_button').click(function(){
+
+			 //jQuery('#uploadArtWorkPopup').hide();
+
+			 jQuery('#uploadArtWorkPopup').hide();
+
+			  jQuery('div#topbar').show('slide');
+
+			});
+
+	
+
+		
+
+    });
+
+	
+
+	 </script>
+
+
+
+
+<!-- main div start-->
+
+<div class="main-wrapper" id="top">
+
+<?php // echo $this->getChildHtml('topMenu') ?>
+
+<header>
+
+  <div class="wrapper950">
+
+    <div class="clearfix wrapper950">
+
+      <?php if ($this->getIsHomePage()){?>
+
+      <div class="logo float-L"> <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"> <img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" width="233" height="80" /></a> </div>
+
+      <?php }else{?>
+
+      <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"> <img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" width="233" height="80" /></a>
+
+      <?php }?>
+
+      <script>
+
+	  <!--
+
+	  	  var isShown =0;
+
+		  jQuery(document).ready(function(e){
+
+			  			    
+
+			   jQuery('.cartBox').click(function(){			  
+
+				
+
+				if(isShown==0){  	
+
+					jQuery('#cartPopup').show('fade');
+
+					isShown=1;
+
+				  }else{
+
+					  jQuery('#cartPopup').hide('fade');
+
+					  isShown=0;					  
+
+					  }
+
+				});
+
+			   
+
+			   
+
+			  });
+
+	  -->
+
+	</script>
+
+      <div class="topLogo">
+<div class="headertags">
+<h1>SUPPLYING FACTORY DIRECT MESH TO HUNDRED'S OF BUILDERS, RETAILER'S, CAR RETAILER'S . BUY FACTORY DIRECT NOW . AMAZINGLY QUICK TURNAROUND TIME'S .</h1>
+
+</div>
+        
+
+        <!--Cart-Search-->
+
+        <div class="help" > ASK OUR EXPERTS <br />
+
+          <span class="num" ><?php echo Mage::getStoreConfig('general/store_information/phone');?></span> <br />
+<div class="help2">
+
+          <ul>
+
+            
+
+            <li>
+
+              <div><a target="_blank" href="mailto:sales@outdoorbannershop.com.au<?php //echo Mage::getStoreConfig('trans_email/ident_general');?>">Send Us Email</a>
+
+                <div class="iconHelp2"></div>
+
+                <img src="<?php echo $this->getSkinUrl();?>images/email.png" width="36" height="30"  alt=""/></div>
+
+            </li>
+
+          </ul>
+
+        </div>
+           </div>
+
+        <!--help-->
+
+        
+
+      </div>
+
+      <!--topLogo-->
+
+      <div class="clean"></div>
+
+      <!--<div class="headerSearch float-L">	  
+
+        <div class="headerFreeshipping-icon"></div>
+
+        </span>        
+
+        <div class="searchModule">
+
+         <?php   //echo $this->getChildHtml('topBar') ?>         
+
+        </div>
+
+      </div>--> 
+
+      
+
+    </div>
+
+  </div>
+
+</header>
+
+<script type="text/javascript">
+
+	var root = (("https:" == document.location.protocol) ? "" : ""); 
+
+</script>
+
+<?php 
+
+		/*Nevigation should be here///*/
+
+		
+
+			$storeId    = Mage::app()->getStore()->getId();
+
+			
+
+			$_store = Mage::getModel('catalog/category')->load(1460);
+
+			$_main_categories = $_store->getChildrenCategories();
+
+					
+
+?>
+
+<div class="wrapper950">
+
+<div class="clearfix">
+
+<nav>
+
+  <div id="nav">
+
+    <ul id="header-nav1">
+
+      <li class="navItem_1"> <a href="<?php echo $this->getBaseUrl();?>" class="navHome-icon"></a></li>
+
+      <?php 
+
+		  /*fetching main categories */
+
+		  $i=0;
+
+		  $j=1;
+
+		  
+
+		  $bgImages = array(array('spriteImg','spriteImg vbanners'),
+
+		  			        'spriteImg bannerstand',
+
+							'spriteImg flag',
+
+							'spriteImg windowSign',
+
+							'spriteImg decals',
+
+							'spriteImg lettering',
+
+							array('spriteImg magneticSign','spriteImg otherSign'),
+
+		  
+
+		  					);
+
+		  
+
+		  
+
+		 
+
+		  //main categories////
+
+		  	foreach($_main_categories as $_category){
+
+			
+
+			if($_category->getId()!=1546){	
+
+				
+
+				
+
+		/*sub categories///*/
+
+			$_sb_category = Mage::getModel('catalog/category')->load($_category->getId());
+
+			$_sub_categories = $_sb_category->getChildrenCategories();
+
+			
+
+			$totalCats = count($_sub_categories);
+
+							
+
+			$limit = 8;
+
+			$secondCol=false;
+
+			
+
+			if($totalCats < $limit){$secondCol=false;}else{ $secondCol=true;}
+
+			
+
+		  ?>
+
+      <li class="navItem_<?php echo $j+1;?>"> 
+
+      
+
+      <?PHP 
+
+	 		/*GET PRODUCTS INSIDE THAT CATEGORY*/
+
+			if($totalCats < 1){
+
+				
+
+			  $_childProducts = $_sb_category->getProductCollection()
+
+			                    ->addAttributeToSelect('*')
+
+							    ;
+
+			  foreach($_childProducts as $_child_product){
+
+				  
+
+				  $_produtLink = $_category->getUrl_key().'/'.$_child_product->getUrl_path();
+
+				  $_produtLink =$this->getUrl($_produtLink);
+
+				  }	
+
+				
+
+				}
+
+			
+
+	 ?>
+
+      
+
+      
+
+     <!-- <a href="<?php // if($totalCats < 1){ echo $_produtLink; }else{ echo $_category->getUrl();}?>" title="<?php echo $_category->getName();?>">-->
+
+	
+
+     <a href="<?php echo $_category->getUrl();?>" title="<?php echo $_category->getName();?>">
+
+      <?php echo $_category->getName();?></a>
+
+      
+
+        <div class="navRollover" >
+
+          <ul class="innerWrap" >
+
+            <li class="col float-L" >
+
+              <?php
+
+                  		
+
+						
+
+						if(is_array($bgImages[$i])){
+
+				  ?>
+
+              <p class="<?php echo $bgImages[$i][0]?>"></p>
+
+              <?php
+
+						}else{
+
+				  ?>
+
+              <p class="<?php echo $bgImages[$i];?>"></p>
+
+              <?php
+
+						}
+
+				  ?>
+
+              <?php 
+
+				$counter = 0;
+
+						/*first row of menu*/
+
+						
+
+				foreach($_sub_categories as $_sub_category){
+
+					$counter++;
+
+					if($counter<$limit ){		
+
+				?>
+
+              <a href="<?php echo $_sub_category->getUrl();?>" title="<?php echo $_sub_category->getName();?>"> <?php echo $_sub_category->getName();?> </a>
+
+              <?php
+
+						}
+
+					}
+
+				  ?>
+
+            </li>
+
+            <?php
+
+				
+
+				 if($secondCol==true) {
+
+				  ?>
+
+            <li class="col float-L" style="width:230px">
+
+              <?php
+
+                  		if(is_array($bgImages[$i])){
+
+				  ?>
+
+              <p class="<?php echo $bgImages[$i][1]?>"></p>
+
+              <?php
+
+						}else{
+
+				  ?>
+
+              <p class="<?php echo $bgImages[$i];?>"></p>
+
+              <?php
+
+						}
+
+				  ?>
+
+              <?php 
+
+					$counter = 0;	
+
+						/*second row of menu*/
+
+			   foreach($_sub_categories as $_sub_category){
+
+					$counter++;
+
+					if($counter >$limit && $counter <20){
+
+				?>
+
+              <a href="<?php echo $_sub_category->getUrl();?>" title="<?php echo $_sub_category->getName();?>"> <b><?php echo $_sub_category->getName();?> </b></a>
+
+              <?php
+
+						}
+
+					}
+
+				 ?>
+
+            </li>
+
+            <?php
+
+				}
+
+			  ?>
+
+          </ul>
+
+        </div>
+
+      </li>
+
+      <?php
+
+			
+
+			$i++;
+
+			$j++;
+
+			
+
+		 	
+
+			}
+
+			}
+
+			//echo $j;
+
+			
+
+			 ///end of main foreach main category
+
+				  ?>
+
+    </ul>
+
+  </div>
+
+  <!--<div class="nav-shadow"></div>-->
+
+  <div class="free"> 
+
+    <ul>
+
+        	<li><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/button1.jpg" width="155" height="50" /></a></li>
+
+            <li><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/button2.jpg" width="154" height="50" /></a></li>
+
+            <li><img src="<?php echo $this->getSkinUrl();?>images/divider.jpg" width="33" height="50" /></li>
+
+            <li><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/button3.jpg" width="123" height="50" /></a></li>
+
+            <li><img src="<?php echo $this->getSkinUrl();?>images/divider.jpg" width="33" height="50" /></li>
+
+            <li><a href="<?php echo $this->getUrl('artwork')?>" title="<?php echo $this->__('Upload Your Artwork')?>"><img src="<?php echo $this->getSkinUrl();?>images/button4.jpg" width="158" height="50" /></a></li>
+
+            <li><img src="<?php echo $this->getSkinUrl();?>images/divider.jpg" width="33" height="50" /></li>
+
+            <li><a href="<?php echo $this->getUrl('checkout/cart')?>" title="<?php echo $this->__('Add To Cart')?>"><img src="<?php echo $this->getSkinUrl();?>images/button5.jpg" width="121" height="50" /></a></li>
+
+            <li><img src="<?php echo $this->getSkinUrl();?>images/divider2.jpg" width="32" height="50" /></li>
+
+            <li><a href="#"><img src="<?php echo $this->getSkinUrl();?>images/button6.jpg" width="108" height="50" /></a></li>
+
+        </ul> 
+
+  </div>
+
+</nav>
+
+<div class="clear" style="height:0px;">&nbsp;</div>
+
+<!-- Main_page //--> 
+
+
+
+</div></div></div>
+
+
+
+<div style="clear:both;">
+
+	<?php
+
+     	/*catalog search*/
+
+		echo $this->getLayout()->createBlock('core/template')->setTemplate('page/html/breadcrumbs.phtml')->toHtml();  
+
+	
+
+     ?>
+
+</div>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <vendor_adminhtml_vendor_index>
+        <reference name="content">
+            <block type="vendor/adminhtml_vendor" name="vendor" />
+        </reference>
+    </vendor_adminhtml_vendor_index>
+    
+    <!--<adminhtml_catalog_product_edit>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>my_custom_tab5</name>
+                <block>vendor/adminhtml_catalog_product_tab</block>
+            </action>
+        </reference>
+    </adminhtml_catalog_product_edit>-->
+    
+    <adminhtml_catalog_product_edit>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>my_custom_warehouse</name>
+                <block>vendor/adminhtml_catalog_product_warehouse</block>
+            </action>
+        </reference>
+    </adminhtml_catalog_product_edit>
+    
+    <adminhtml_catalog_product_edit>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>my_custom_instraction</name>
+                <block>vendor/adminhtml_catalog_product_instraction</block>
+            </action>
+        </reference>
+    </adminhtml_catalog_product_edit>
+    
+    <adminhtml_sales_order_view>
+        <reference name="sales_order_tabs">
+            <action method="addTab">
+                <name>my_custom_tab6</name>
+                <block>vendor/adminhtml_sales_order_view_tab</block>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+    
+</layout>

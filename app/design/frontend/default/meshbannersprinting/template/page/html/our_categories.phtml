@@ -1,0 +1,88 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Category left navigation
+ *
+ * @see Mage_Catalog_Block_Navigation
+ */
+?>
+
+<?php 
+	
+//if (!Mage::registry('current_category')) return ?>
+
+
+
+
+<?php $_categories = $this->getCurrentChildCategories(); 
+
+	
+?>
+<?php  $_count = is_array($_categories)?count($_categories):$_categories->count(); ?>
+<?php if($_count): ?>
+<!--Start of ourCategories Section-->
+          
+        	<div class="ourProduct">
+            	<h1><b><?php echo __('OUR CATEGORIES'); ?></b></h1>
+                <ul>
+                	<li><div class="iamgeBox"><img src="<?php echo $this->getSkinUrl();?>images/img1.png" width="218" height="240" /></div><h2><a href="#">Fence Banners</a></h2></li>
+                    <li><div class="iamgeBox"><img src="<?php echo $this->getSkinUrl();?>images/img1.png" width="218" height="240" /></div><h2><a href="#">Fence Banners</a></h2></li>
+                    <li><div class="iamgeBox"><img src="<?php echo $this->getSkinUrl();?>images/img1.png" width="218" height="240" /></div><h2><a href="#">Fence Banners</a></h2></li>
+				<li><div class="iamgeBox"><img src="<?php echo $this->getSkinUrl();?>images/img1.png" width="218" height="240" /></div><h2><a href="#">Fence Banners</a></h2></li>
+                    <li><div class="iamgeBox"><img src="<?php echo $this->getSkinUrl();?>images/img1.png" width="218" height="240" /></div><h2><a href="#">Fence Banners</a></h2></li>
+                    <li><div class="iamgeBox"><img src="<?php echo $this->getSkinUrl();?>images/img1.png" width="218" height="240" /></div><h2><a href="#">Fence Banners</a></h2></li>               
+                </ul>
+            </div><!--end of ourCategories Section-->
+
+ 
+
+<?php /*?><div class="catgHeader"><?php echo $this->__('CATEGORIES') ?></div><!--catgHeader-->
+            <div class="clear"></div>
+            <div class="menuLinks">
+            	<ul>
+                	<?php foreach ($_categories as $_category): ?>
+                    <?php 
+				      $_category = $_category->load();
+				?>
+                    
+                    <?php if($_category->getIsActive() && $_category->getInclude_in_menu()!=1): ?>
+                    <li><div class="iconSmall"></div>
+                        <a href="<?php echo $this->getCategoryUrl($_category) ?>"<?php if ($this->isCategoryActive($_category)): ?> class="current"<?php endif; ?>><?php echo $this->escapeHtml($_category->getName()) ?>&nbsp;&nbsp;(<?php echo $_category->getProductCount() ?>)</a> 
+                    </li>
+                    <?php endif; ?>
+                <?php endforeach ?>
+                    
+                </ul>
+            </div><!--menuLinks-->
+        <div class="clear"></div>
+<?php */?>
+
+                
+                
+        <script type="text/javascript">decorateDataList('narrow-by-list2')</script>
+   
+<?php endif; ?>

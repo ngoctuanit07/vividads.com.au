@@ -1,0 +1,18 @@
+<div>
+    <ul class="products-grid first odd">
+        <?php
+        $Media = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+        $objLogos = new Mconnect_Brandlogo_Model_Brandlogo();
+        $logos = $objLogos->getAllLogos();
+        $i = 1;
+        foreach ($logos as $logo) {
+            ?>    
+            <li class='item <?php if ($i == 1) echo "first";if($i%3 == 0)echo "last"; ?> fadeIn animated' style="min-height: 100px;padding: 25px 5px 0;margin: 0 25px 10px 0;">
+                <span class="product-image"><img src='<?php echo $Media ?>brandlogo<?php echo $logo['filename'] ?>' title='<?php echo $logo['title'] ?>' alt='<?php echo $logo['title'] ?>' /></span>
+            </li>    
+            <?php
+            $i++;
+        }
+        ?>
+    </ul>    
+</div>

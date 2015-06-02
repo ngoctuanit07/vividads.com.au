@@ -1,0 +1,177 @@
+<?php 
+    $shipping = $this->getRequest()->getParam('shipping');
+    $billing = $this->getRequest()->getParam('billing');
+    
+    if (empty($shipping) && !empty($billing))
+        $data = $billing;
+    else if (!empty($shipping) && empty($billing))
+        $data = $shipping;
+    
+    if (!empty($data) && is_array($data))
+    {
+        $street = $data['street'];
+        $addressLine1 = $street[0];
+        $addressLine2 = $street[1];
+        $suburb = $data['city'];
+        $state = $data['region'];
+        $postcode = $data['postcode'];
+        $country = $data['country_id'];
+    } 
+    else
+    {
+        $street = $this->getRequest()->getParam('street');
+        $addressLine1 = $street[0];
+        $addressLine2 = $street[1];
+        $suburb = $this->getRequest()->getParam('city');
+        $state = $this->getRequest()->getParam('region');
+        $postcode = $this->getRequest()->getParam('postcode');
+        $country = $this->getRequest()->getParam('country_id');
+    }
+    $result = $this->getAddressValidate ($addressLine1, $addressLine2, $suburb, $state, $postcode, $country);
+    
+    // combine current address
+    $entered_address = array ($addressLine1.' '.$addressLine2,$suburb,$state,$postcode,$country);
+    foreach ($entered_address as $i => $item)
+        if (empty($item))
+            unset($entered_address[$i]); 
+?>
+
+<?php if ($result['IsValid'] == 1) : ?>
+    <table width="400" border="0" id="address_table">
+      <tr>
+        <td>
+            <h2><?php echo $this->__('Validate Your Address')?></h2>
+        </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr>
+        <td><?php echo $this->__('Keep my entered address')?>:</td>
+      </tr>
+      <tr>
+        <td>
+            <?php if (!empty($result['SuggestedAddress'])) : ?>
+                <input type="radio" name="address_confirm" id="entered" />
+            <?php endif; ?>
+            <?php echo implode(', ', $entered_address);  ?>
+        </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+      <?php if (!empty($result['SuggestedAddress'])) : ?>
+          <tr>
+            <td><?php echo $this->__('Use our suggestion. Did you mean?') ?></td>
+          </tr>
+          <tr>
+            <td>
+                <input type="radio" name="address_confirm" id="suggested" checked="true" />
+                <?php echo $result['SuggestedAddress']['AddressLine1'].' '.$result['SuggestedAddress']['AddressLine2'].', '.$result['SuggestedAddress']['Suburb'].', '.$result['SuggestedAddress']['State'].', '.$result['SuggestedAddress']['PostCode'].', '.$result['SuggestedAddress']['CountryName']?>
+            </td>
+          </tr>
+          <tr><td>&nbsp;</td></tr>
+      <?php endif; ?>
+      <tr>
+        <td align="right"><button onclick="confirm_valid()" class="button"><span><span>Confirm Address</span></span></button></td>
+      </tr>
+    </table>
+    <br />
+<?php elseif ($result['IsValid'] == 2) : ?>
+    <table width="400" border="0">
+      <tr>
+        <td>
+            <h2><?php echo $this->__('Validate Your Address') ?></h2>
+        </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr>
+        <td><?php echo $this->__('Your Entered Addrress') ?></td>
+      </tr>
+      <tr>
+        <td>
+            <?php echo implode(', ', $entered_address); ?>
+        </td>
+      </tr>
+      <tr>
+        <td><?php echo $this->__('Saving your address ...') ?></td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+    </table>
+    <br />
+    <script>
+        jQuery(document).ready(function () {
+            jQuery.fancybox.close();
+            form_submit();
+        });
+    </script>
+<?php else : ?>
+    <table width="400" border="0">
+      <tr>
+        <td>
+            <h2><?php echo $this->__('Validate Your Address')?></h2>
+        </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr>
+        <td>
+            <?php if (!empty($result['ErrorMessage'])) : ?>
+                <span style="color: red;"><?php echo $result['ErrorMessage'] ?></span>
+            <?php else: ?>
+                <span style="color: red; display: block"><?php echo $this->__('Invalid Australian Address') ?></span>
+            <?php endif; ?>
+        </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr>
+        <td><?php echo $this->__('Keep my entered address')?>:</td>
+      </tr>
+      <tr>
+        <td>
+            <input type="radio" name="address_confirm_address" id="address_confirm_address" checked="checked" />
+            <?php echo implode(', ', $entered_address);  ?>
+        </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+        <tr>
+        <td align="right">
+            <button onclick="confirm_valid()" class="button"><span><span><?php echo $this->__('Confirm') ?></span></span></button>
+            <button onclick="confirm_fail()" class="button"><span><span><?php echo $this->__('Close') ?></span></span></button>
+        </td>
+      </tr>
+    </table>
+    <br />
+<?php endif; ?>
+<script>
+    function confirm_fail(){
+        jQuery.fancybox.close();
+    }
+    function confirm_valid ()
+    {
+        if (jQuery('#suggested').attr('checked')) {
+            var customer = <?php if (!empty($result['SuggestedAddress'])) echo json_encode($result['SuggestedAddress']); else echo '{}'; ?>;
+            <?php 
+                if (empty($shipping) && !empty($billing))
+                    echo "setBillingInfo(customer);";
+                else if (!empty($shipping) && empty($billing))
+                    echo "setShippingInfo(customer);";
+                else    
+                    echo "setCustomerInfo(customer);"
+            ?>
+            jQuery.fancybox.close();
+            form_submit();
+        } else
+        {
+            jQuery.fancybox.close();
+            form_submit();
+        }
+        
+    }
+    function form_submit ()
+    {
+        <?php 
+            if (empty($shipping) && !empty($billing))
+                echo "billing_form_submit();";
+            else if (!empty($shipping) && empty($billing))
+                echo "shipping_form_submit();";
+            else
+                echo "address_book_form_submit()";
+        ?>
+    }
+</script>

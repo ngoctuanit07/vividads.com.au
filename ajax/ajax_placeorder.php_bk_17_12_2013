@@ -1,0 +1,212 @@
+<?php
+    ob_start();
+    include_once '../app/Mage.php';
+    Mage::setIsDeveloperMode(true);
+    umask(0);
+    Mage::app();
+ 
+        
+        if(isset($_POST['shipaddress']))
+        {
+            $check_shipp_addr=1;
+        }
+        else
+        {
+            $check_shipp_addr=0;
+        }
+        
+        
+    //Get Customer Billing Address Data
+    
+        $fname_bill=$_POST['fnamebill'];
+        $lname_bill=$_POST['lnamebill'];
+        $comp=$_POST["comp_val"];
+        
+        $email_bill=$_POST['emailbill'];
+        $addr_bill1=$_POST['add1bill'];
+        $addr_bill2=$_POST['add2bill'];
+        $city_bill=$_POST['citybill'];
+        $state_bill=$_POST['statebill'];
+        $zip_bill=$_POST['zipbill'];
+        $country_bill="AU";//$_POST['countrybill'];
+        $phone_bill=$_POST['phonebill'];
+ 
+        $skuu=$_POST["products"];
+    
+        $billingAddress = array(
+            'firstname' => $fname_bill,
+            'lastname' => $lname_bill,
+            'company' => $comp,
+            'email' =>  $email_bill,
+            'street' => array($addr_bill1,$addr_bill2),
+            'city' => $city_bill,
+            'region_id' => '',
+            'region' => $state_bill,
+            'postcode' => $zip_bill,
+            'country_id' => $country_bill,
+            'telephone' =>  $phone_bill,
+            'fax' => '',
+            'customer_password' => '',
+            'confirm_password' =>  '',
+            'save_in_address_book' => '0',
+            'use_for_shipping' => '1',
+        );
+    
+    
+    
+    //Get Customer Shipping Address Data
+    
+        $fname_ship=$_POST['fnameship'];
+        $lname_ship=$_POST['lnameship'];
+        //$email_bill=$_POST['emailbill'];
+        $addr_ship1=$_POST['add1ship'];
+        $addr_ship2=$_POST['add2ship'];
+        $city_ship=$_POST['cityship'];
+        $state_ship=$_POST['stateship'];
+        $zip_ship=$_POST['zipship'];
+        $country_ship="AU";//$_POST['countryship'];
+        $phone_ship=$_POST['phoneship'];
+    
+    
+        $shippingAddress = array(
+            'firstname' => $fname_ship,
+            'lastname'  => $lname_ship,
+            'street'    => array($addr_ship1,$addr_ship2),
+            'city'      => $city_ship,
+            'region'    => $state_ship,
+            'region_id' => '',
+            'postcode'  => $zip_ship,
+            'country_id' => $country_ship,
+            'telephone' => $phone_ship,
+        );
+    
+    
+    //Get Credit Card Details
+    
+        //$card_verNum=$_POST['ccVerNum'];
+        //$card_Number=$_POST['creditcardNum'];
+        //$card_type=$_POST['creditcardtype'];
+        //$card_exp_year=$_POST['creditcardYear'];
+        //$card_exp_month=$_POST['creditcardmonth'];
+        //
+        
+        
+        
+        $quote = Mage::getModel('sales/quote')->setStoreId(Mage::app()->getStore('tablethrows_com_au')->getId());
+    
+    //Load Product and add to cart
+        
+        $qty=$_POST['quantity'];
+        
+        $productid = Mage::getModel('catalog/product')->getIdBySku(trim($skuu));
+        $product = Mage::getModel('catalog/product')->load($productid);
+        $buyInfo = array('qty' => $qty);
+        
+        $quote->addProduct($product, new Varien_Object($buyInfo));
+
+    
+ 
+    // Add Billing Address
+        
+        $quote->getBillingAddress()
+              ->addData($billingAddress);
+
+    
+    //Add Shipping Address and set shipping method and payment method
+    
+    
+    
+        if($check_shipp_addr==1)
+        {
+            $quote->getShippingAddress()
+                ->addData($shippingAddress)
+                ->setShippingMethod('flatrate_flatrate')
+                ->setCollectShippingRates(true)
+                ->collectTotals();
+            
+        }
+        else
+        {
+            $quote->getShippingAddress()
+                ->addData($billingAddress)
+                ->setShippingMethod('flatrate_flatrate')
+                ->setCollectShippingRates(true)
+                ->collectTotals();
+        }
+    
+
+    
+    //Set Customer group As Guest Customer 
+    
+        $quote->setCheckoutMethod('guest')
+            ->setCustomerId(null)
+            ->setCustomerEmail($quote->getBillingAddress()->getEmail())
+            ->setCustomerIsGuest(true)
+            ->setCustomerGroupId(Mage_Customer_Model_Group::NOT_LOGGED_IN_ID);
+ 
+ 
+    //Set Card Details
+ 
+        //$paymentMethod =array(
+        //    'method' => 'ccsave',
+        //    'cc_cid' => $card_verNum,
+        //    'cc_owner' => '',
+        //    'cc_number' => $card_Number,
+        //    'cc_type' => $card_type,
+        //    'cc_exp_year' => $card_exp_year,
+        //    'cc_exp_month' => $card_exp_month
+        //);
+    
+    //Set Payment method and payment details
+    
+        $payment = $quote->getPayment();
+        $payment->importData(array('method' => 'checkmo'));
+        $quote->getBillingAddress()->setPaymentMethod($payment->getMethod());
+        $quote->getShippingAddress()->setPaymentMethod($payment->getMethod());
+        $quote->setPayment($payment);
+        $quote->collectTotals()->save();
+
+        
+        
+    //For MoneyOrder Payment Method Only
+     
+        //$quote->getPayment()->importData( array('method' => 'checkmo'));
+        //$quote->save();
+ 
+ 
+ 
+    //Save Order With All details
+    
+ 
+        $service = Mage::getModel('sales/service_quote', $quote);
+         //$service->submitAll()
+        $service->submitAll();
+        
+        $increment_id = $service->getOrder()->getIncrementId();
+
+        // Resource Clean-Up
+        echo "order___";
+        echo $increment_id;
+        
+        Mage::app()->getStore()->setConfig(Mage_Sales_Model_Order::XML_PATH_EMAIL_ENABLED, "1");
+    
+        $order_mail = new Mage_Sales_Model_Order();
+        $order_mail->loadByIncrementId($increment_id);
+        $order_mail->sendNewOrderEmail();
+      
+         $quote = $customer = $service = null;       
+        
+        // Mage::app()->getStore()->setConfig(Mage_Sales_Model_Order::XML_PATH_EMAIL_ENABLED, "1");
+        //$newOrder = $service->getOrder();
+        //$order = new Mage_Sales_Model_Order();
+        //$incrementId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+        //$_order = Mage::getModel('sales/order')->load($increment_id);
+        //$_order->sendNewOrderEmail();
+        
+       //$order->sendNewOrderEmail();
+ 
+       
+        
+
+
+?>

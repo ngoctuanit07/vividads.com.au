@@ -1,0 +1,47 @@
+
+
+  
+<div class="news slideshow">
+  <div class="slides">
+    <div class="overlay">
+      <h2>Outdoor News</h2>
+      <p>In Hype news this week:</p>
+      <a class="form-button" href="<?php $this->getUrl('h-news.html');?>">View All News</a> </div>
+    <div class="frame">
+      <div class="slide">
+       <?php 
+   		 /*fetching products from the category featured*/
+		  $_helper = Mage::helper('catalog/output');
+           $category = Mage::getModel('catalog/category')->load(1459);  
+		   $product_collection = $category->getProductCollection()->addAttributeToSelect('*');
+				/*fetching products from the given category that is featured category*/							   
+		 foreach($product_collection as $_product){
+			 
+			 $product = Mage::getModel('catalog/product')->load($_product->getId());
+			$full_path_url = Mage::helper('catalog/image')->init($product, 'image')->resize(203,101);
+   ?>
+      
+      
+        <div class="item">
+          <div class="image"> 
+          <a href="<?php echo $_product->getUrl_path();?>"> 
+          <img src="<?php echo $full_path_url;?>" alt="<?php echo $_product->getName();?>"></a> </div>
+          <div class="description">
+            <h3><a href="<?php echo $_product->getUrl_path();?>">
+			<?php echo $_product->getName();?></a></h3>
+            <div class="excerpt">
+              <p><?php echo substr($_product->getDescription(),0,50);?></p>
+            </div>
+            <a class="read-more" href="<?php echo $_product->getUrl_path();?>">read more</a> </div>
+        </div>
+        
+        
+    
+      
+      <?php 
+		 }
+	  ?>
+       </div>
+    </div>
+  </div>
+</div>

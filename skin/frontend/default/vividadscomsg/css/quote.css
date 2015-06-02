@@ -1,0 +1,198 @@
+.quote_details .data-table, .quote_details .data-table th, .quote_details .data-table td {border: none;}
+.quote_details #my-quotations-table{margin-bottom:0;}
+.quote_details #my-quotations-table tr{background:white}
+.quote_details #my-quotations-table td {border-bottom: 1px solid #D9DDE3; padding:15px 12px; text-align:left;}
+.quote_details #quote-totals-table table, .quote_details #my-quotations-table{border-style: none solid solid solid;border-color: #747474;border-width: 1px;font-size: 12px; width:98%; margin:10px 0px 0px 10px}
+.quote_details #quote-items-table .product-name, .quote_details #my-quotations-table .product-name a {font-size: 13px;font-weight: bold;}
+.quote_details #my-quotations-table td dl dt{background:url(../images/bkg_bulletsm.gif) 0 .8em no-repeat; color:#4C4C4C; font-weight:bold; font-size:12px;}
+.quote_details #my-quotations-table td dl dd select {width: 225px;}
+
+.quote_details #quote-totals-table td strong{font-size:12px; color:#000;}
+.quote_details #quote-totals-table tfoot td {padding:3px 10px; height:26px;}
+
+.quote_details .edit-qty {border-width: 1px; border-color: #AAA #C8C8C8 #C8C8C8 #AAA; border-style: solid; width: 25px; text-align: center;}
+
+
+.quote_details th, .quote_details th a, .quote_details th a:hover {color: #ef781e;}
+.quote_details th {font-weight: bold; text-transform: none; font-size: 13px; line-height: 1em; padding: 6px 9px 6px; vertical-align: middle;}
+.quote_details th .change-link {font-size: 11px; text-decoration: none; position: absolute; right: 5px;}
+.quote_details th div {position: relative;}
+.quote-_details th, .quote_details th a, .quote_details th a:hover {color: #ef781e;}
+
+#my-quotations-table thead{font-size: 11px;background: none;}
+.quote_details  thead th, .quote_details #my-quotations-table  thead th{background-color: #2B2B2B; padding: 5px 12px; white-space: nowrap; height: 26px;  color: #fff !important;  border:0; font-weight:bold; text-transform:none; font-size:12px !important;}
+.quote_details .form-list li input.input-text{width:88px;}
+.quote_details .form-list li input.street1{width:auto;}
+.quote_details .form-list li input.street2{float:right;}
+
+
+.quote_details .form-list li.fields input.input-text{width:390px;}
+.quote_details .form-list li.fields select {width: 390px;}
+.quote_details .form-list li.fields select.billing-country, .quote_details .form-list li.fields select.shipping-country {width:390px;}
+
+.quote_details .form-list li.fields input.zipcode{width:390px;}
+.quote_details .form-list li.fields input.telephone {width: 390px;}
+.quote_details .form-list li label{width:225px;}
+
+.quote_details .two-column td {font-size: 13px;padding: 7px 9px 9px 9px;border-left: 1px solid #747474;border-bottom: 1px solid #747474;border-right: 1px solid #747474; background-color:white}
+.quote_details table{border:0;}
+
+/*timeline-table*/
+
+.quote_details .one-column th {text-align: center;}
+.quote_details .timeline-table tr.request_delivery {background-color: #CECECE;}
+.quote_details .timeline-table {border-left: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black;}
+.quote_details .timeline-table td{border:0; color:#000;}
+.quote_details .timeline-table td.left {text-align: right; font-weight: bold; width: 170px;}
+.timeline-table {width: 380px;margin: 0 auto;}
+.quote_details .timeline-table tr.request_delivery td.right {color: red;}
+.quote_details .timeline-table td .tip, #timeline-table-wrapper p {color: red;}
+.quote_details p {font-size: 12px; margin:0 auto; width:100%; color:#787878}
+.quote_details .data-table {margin: 0px auto; width:100%; float:left;}
+#timeline-table-wrapper{margin-top:10px;}
+
+/*quote-comment-history*/
+.quote_details #quote-comment-history{margin:25px auto 0px auto; width:98%;}
+.quote_details #quote-comment-history .head,#quote-comment-history li{border:1px solid #E2E2E2; /* width:100%; */ margin-top:5px;}
+.quote_details #quote-comment-history .head{background-color:#EEEEEE;padding:8px 15px;}
+.quote_details #quote-comment-history li{border-top:none}
+
+.quote_details#quote-comment-history .comment-additional{background-color:#9FC01A}
+.quote_details #quote-comment-history tr.customer-comment .comment-additional{background-color:#747474;color:#fff}
+ .comt-customer{ background-color:#99bb1e !important;color:#fff}
+.quote_details #quote-comment-history table td{padding:15px 22px; vertical-align: middle;font-size:12px;}
+.quote_details #quote-comment-history .comment-additional{width:35%;}
+.quote_details #quote-comment-history textarea{margin:10px auto; background: none repeat scroll 0 0 #f3f3f3; border: 1px solid #dadada; border-radius: 3px;
+    font-family: Arial; width:100% !important}
+.quote_details #quote-comment-history button {float:right;
+    background: url("../images/send_comments.jpg") no-repeat scroll center top rgba(0, 0, 0, 0);
+	height:30px;
+	width:135px;
+}
+.my-account #quote-comment-history button {float:right;
+    background: url("../images/send_comments.jpg") no-repeat scroll center top rgba(0, 0, 0, 0);
+	height:30px;
+	width:135px;
+}
+.crmticket-front-ticket-viewticket #submit-comment-button{float:right;
+    background: url("../images/send_comments.jpg") no-repeat scroll center top rgba(0, 0, 0, 0);
+	height:30px;
+	width:135px;
+}
+
+
+.quotation-quote-view .quote_details #quote-comment-history textarea{margin:10px auto; background: none repeat scroll 0 0 #f3f3f3; border: 1px solid #dadada; border-radius: 3px;
+    font-family: Arial; width:98% !important}
+.quotation-quote-view .input-box input.input-text {
+    background: none repeat scroll 0 0 #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    padding: 4px 9px;
+    width: 390px !important;
+}
+/**/
+button.downpdf{}
+button.downpdf span{background:none; padding:0;}
+button.downpdf span span{background:none; padding:0; color:#000; font-weight:normal; text-decoration:underline; color:#444;}
+button.downpdf span span:hover{text-decoration:none;}
+.generic-box{overflow:hidden; font-size:12px; padding: 10px 0 10px 0;}
+.generic-box div p.print-link, .generic-box div button.downpdf{float:left;}
+.generic-box div p.print-link{padding: 2px 15px 0 0;}
+
+.quote_details .quote_number h1 {font-size: 16px; font-weight: bold; color: black; margin-bottom: 8px;}
+
+/**/
+#my-quotations-table tr{background:white url(../images/data_table_tr_bg.png) repeat-x 0 bottom;}
+#my-quotations-table  thead th{background-color: #747474; padding: 5px 12px; white-space: nowrap; height: 26px;  color: #fff;  border:0; font-weight:bold; text-transform:uppercase; border-right:1px solid #5a5a5a; font-size:12px;}
+#my-quotations-table tbody td:first-child{font-size:11px; padding:15px 12px; border-left:1px solid #ccc !important;}
+#my-quotations-table tbody td{font-size:11px; padding:15px 12px; border-right:1px solid #ccc !important; border-bottom:1px solid #ccc !important; }
+#my-quotations-table .view-link {color: #000; text-decoration:none;}
+
+/**/
+.quote_page{float: left; line-height: 20px; width: 72%; text-align: center;}
+.quote_page span{padding-right:5px;}
+.quote-edit-button span{ background:url(../images/quote-edit-btn.png) no-repeat !important; height: auto !important; padding: 15px 56px !important;}
+.quote-edit-button span span{ padding: 0 !important; display: none !important;}
+
+.quote-edit-button{margin-bottom:15px;}
+/**/
+.quote-checkout-wrapper span{background:url(../images/quote-checkout-button.jpg) no-repeat 0 0 !important;  height: auto !important; padding: 15px 56px !important;}
+.quote-checkout-wrapper span span{display: none;}
+
+
+#quote-comment-history h3.head{ background-color:#eeeeee; color:#000; padding:10px; width:98% !important; margin:0px; border:1px solid #d7d7d7}
+.sales-order-view tr.customer-comment td.comment-additional{background-color:#747474; color:#fff; }
+.sales-order-view tr.customer-comment td.comment-content{background-color:#f6f6f6; color:#929292;}
+.sales-order-view .uploader_artwork{display:none;}
+.sales-order-view #quote-comment-history .head, #quote-comment-history li {
+    border: 1px solid #E2E2E2;
+    margin-top: 5px;
+    width: 100%;
+}
+.sales-order-invoice .my-account {
+    margin-left: 10px;
+    width: 928px;
+}
+
+.sales-order-invoice tr.customer-comment td.comment-additional{background-color:#747474; color:#fff; }
+.sales-order-invoice tr.customer-comment td.comment-content{background-color:#f6f6f6; color:#929292;}
+.sales-order-invoice .uploader_artwork{display:none;}
+.sales-order-invoice #quote-comment-history .head, #quote-comment-history li {
+    border: 1px solid #E2E2E2;
+    margin-top: 5px;
+    width: 100%;
+}
+/*crmTicket view starts*/
+.ticket-messages-table tr.customer-comment td.comment-additional{background-color:#747474; color:#fff; }
+.ticket-messages-table tr.customer-comment td.ticket-message-customer{background-color:#f6f6f6; color:#929292;}
+.ticket-messages-table tr.customer-comment td.ticket-message-admin{background-color:#f6f6f6 !important; color:#929292;}
+.ticket-messages-table .uploader_artwork{display:none;}
+.ticket-messages-table #quote-comment-history .head, #quote-comment-history li {
+    border: 1px solid #E2E2E2;
+    margin-top: 5px;
+    width: 100%;
+}
+/*.sales-order-invoice .my-account {
+    margin-left: 10px;
+    width: 928px;
+}
+
+.sales-order-invoice tr.customer-comment td.comment-additional{background-color:#747474; color:#fff; }
+.sales-order-invoice tr.customer-comment td.comment-content{background-color:#f6f6f6; color:#929292;}
+.sales-order-invoice .uploader_artwork{display:none;}
+.sales-order-invoice #quote-comment-history .head, #quote-comment-history li {
+    border: 1px solid #E2E2E2;
+    margin-top: 5px;
+    width: 100%;
+}*/
+
+
+/*crmTicket view ends*/
+
+.quotation-quote-view #quote-comment-history h3.head{ background-color:#eeeeee; color:#000; padding:10px; width:97.8% !important; margin:0px; border:1px solid #d7d7d7}
+.quotation-quote-view tr.customer-comment td.comment-additional{background-color:#747474; color:#fff; }
+.quotation-quote-view tr.customer-comment td.comment-content{background-color:#f6f6f6; color:#929292; border-top:1px solid #e2e2e2;}
+.quotation-quote-list #my-quotations-table tr.odd { background-image:none !important; background-color:#e9e9e9 !important;}
+.quotation-quote-list #my-quotations-table tr.even { background-image:none !important; background-color:#fff !important; }
+.quotation-quote-list .uploader_artwork{display:none;}
+.quotation-quote-view .uploader_artwork{display:none;}
+.sales-order-history .uploader_artwork{display:none;}
+.quotation-quote-view .item_box table.quote_view tr{border:none 0px !important;}
+.quotation-quote-view .item_box table.quote_view tr{border:none 0px !important;}
+.price {color:#000 !important;}
+.prices {color:#000 !important;}
+#quote-totals-table .data-table tfoot tr {
+    background-color: #fff !important;
+    border-top: 1px solid #ccc;
+}
+.acceptorder {
+    background: url("../images/accept_order.jpg") no-repeat scroll center top rgba(0, 0, 0, 0);
+    border: 0 none;
+    cursor: pointer;
+    height: 29px;
+    text-indent: -9999em;
+    width: 110px;
+}
+#my-quotations-table {width:98%; margin:0px auto;}
+

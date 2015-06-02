@@ -1,0 +1,45 @@
+/*body {
+font-family:verdana;
+font-size:15px;
+}
+
+a {color:#333; text-decoration:none}
+a:hover {color:#ccc; text-decoration:none}*/
+
+#mask1 {
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:9000;
+  background-color:#000;
+  display:none; opacity:0.5 !important;
+}  
+#boxes1 .window {
+  position:absolute;
+  left:0;
+  top:10px !important;
+  width:440px;
+  height:200px;
+  display:none;
+  z-index:9999;
+  padding:20px;
+}
+#boxes1 #dialog1 {
+  width:536px;
+  /*height:203px;*/
+  height:auto;
+  padding:0px;
+  background-color:transparent;
+}
+
+.magento_close{
+background: url(../images/button_close.png) no-repeat left top;
+width: 52px;
+height: 52px;
+position: absolute;
+z-index: 99;
+cursor: pointer;
+right: -34px;
+top: -35px;
+
+}

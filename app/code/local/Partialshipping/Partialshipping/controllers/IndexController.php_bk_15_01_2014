@@ -1,0 +1,47 @@
+<?php
+class Partialshipping_Partialshipping_IndexController extends Mage_Core_Controller_Front_Action
+{
+    public function indexAction()
+    {
+    	
+    	/*
+    	 * Load an object by id 
+    	 * Request looking like:
+    	 * http://site.com/partialshipping?id=15 
+    	 *  or
+    	 * http://site.com/partialshipping/id/15 	
+    	 */
+    	/* 
+		$partialshipping_id = $this->getRequest()->getParam('id');
+
+  		if($partialshipping_id != null && $partialshipping_id != '')	{
+			$partialshipping = Mage::getModel('partialshipping/partialshipping')->load($partialshipping_id)->getData();
+		} else {
+			$partialshipping = null;
+		}	
+		*/
+		
+		 /*
+    	 * If no param we load a the last created item
+    	 */ 
+    	/*
+    	if($partialshipping == null) {
+			$resource = Mage::getSingleton('core/resource');
+			$read= $resource->getConnection('core_read');
+			$partialshippingTable = $resource->getTableName('partialshipping');
+			
+			$select = $read->select()
+			   ->from($partialshippingTable,array('partialshipping_id','title','content','status'))
+			   ->where('status',1)
+			   ->order('created_time DESC') ;
+			   
+			$partialshipping = $read->fetchRow($select);
+		}
+		Mage::register('partialshipping', $partialshipping);
+		*/
+
+			
+		$this->loadLayout();     
+		$this->renderLayout();
+    }
+}

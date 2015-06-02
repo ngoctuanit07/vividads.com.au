@@ -1,0 +1,28 @@
+
+
+
+
+<div class="brand slideshow">
+    <div class="slides">
+        <div class="frame hover">
+        <ul class="slide" style="height:65px; overflow:hidden;">
+<?php 
+		$bLogo = Mage::getStoreConfig('brandlogo/general/brandlogoenabled');         
+        $brandLogos = Mage::getModel('brandlogo/brandlogo')->getCollection()->addFieldToFilter('status', 1);
+		$imageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . "brandlogo";
+		
+		
+		
+		foreach($brandLogos as $brandLogo){
+?>
+
+<li class="item" style="border:0px;">
+<a style="border:0px;" title="<?php echo $brandLogo->getTitle(); ?>" href="<?php echo $this->getUrl('catalogsearch/result/?q="'.$brandLogo->getTitle().'"');?>">
+<img style="border:0px;" src="<?php echo $imageUrl . $brandLogo->getFilename(); ?>" width="70" height="45" alt="<?php echo $brandLogo->getTitle(); ?>" /></a>
+</li>
+<?php
+}
+?>
+
+</ul>    </div>
+</div>

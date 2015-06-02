@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+  <clientlogos_adminhtml_category_index>
+	<reference name="content">
+	  <block type="clientlogos/adminhtml_category" name="category" />
+	</reference>
+  </clientlogos_adminhtml_category_index>
+  <clientlogos_adminhtml_clientlogos_index>
+	<reference name="content">
+	  <block type="clientlogos/adminhtml_clientlogos" name="clientlogos" />
+	</reference>
+  </clientlogos_adminhtml_clientlogos_index>
+</layout>

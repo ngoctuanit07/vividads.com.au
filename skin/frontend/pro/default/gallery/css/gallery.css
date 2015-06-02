@@ -1,0 +1,358 @@
+/* For gallery */
+/* Style by Mage-World.com*/
+/* 
+.breadcrumbs{display:none;}
+*/
+#mw_gallery p {
+	margin:0 0 10px;
+}
+#mw_gallery .head_title,#mw_gallery .head_title p{
+	margin:0; padding:0;
+}
+#mw_gallery .head_title label{
+	font-size:11px; color:#888787;
+}
+#mw_gallery .head_title h2{
+	/*text-transform: capitalize;*/
+}
+#mw_gallery .head_title .teaser{
+	padding:15px 0px 30px 0px;
+}
+.disp_none{
+	display:none;
+}
+.clear_both{
+	clear:both; height:1px; overflow:hidden;
+}
+.main{
+	padding:25px 30px 80px; width:891px;
+}
+.gallery-container ul{
+	padding:0 0 0 0px; margin:0px;
+}
+.gallery-container ul li{
+	list-style-type:none;text-align:center;float: left;padding:10px 41px 20px 0px;
+}
+.gallery-container ul li.last{
+	padding-right:0px;
+}
+.gallery-container .width_img{}
+.gallery-container ul li a{
+	color:#000000;text-decoration:none;	font-weight:bold;
+}
+.gallery-container ul li a:hover{
+	color:#000000;
+	text-decoration:underline;
+	font-weight:bold;
+}
+.gallery-container label{
+	font-size:11px;color:#888787;
+}
+.gallery-container h5{
+	margin:0px;padding:0px;
+}
+.gallery-container img {
+	border:1px solid #d0d0d0;
+	/*height:131px;
+	width:175px;
+	margin-top:10px;
+	*/
+	padding:9px 9px 15px 9px;
+}
+
+#mw_gallery  .toolbar {background:url(../images/icon_dot.gif) repeat-x top;padding:13px 0 15px 0 ; }
+
+/* insert style */
+
+#mw_gallery  strong {
+font-weight:bold;
+}
+#mw_gallery  .pager {
+font-size:11px;
+text-align:center;
+}
+#mw_gallery  .toolbar .pager {
+border-bottom:1px solid #FFFFFF;
+padding:3px 8px;
+}
+#mw_gallery  .pager .amount {
+float:left;
+margin:0;
+}
+#mw_gallery  .pager .limiter {
+float:right;
+}
+#mw_gallery  .pager .limiter label {
+vertical-align:middle;
+}
+#mw_gallery  .sorter {
+background:#FFFFFF url(../images/bkg_toolbar.gif) repeat-x scroll 0 100%;
+border-top:1px solid #E2E2E2;
+font-size:11px;
+padding:3px 8px;
+}
+#mw_gallery  .toolbar .sorter {
+border-bottom:1px solid #FFFFFF;
+}
+#mw_gallery  .sorter .view-mode {
+float:left;
+margin:0;
+}
+#mw_gallery  .sorter .sort-by {
+float:right;
+padding-right:36px;
+}
+#mw_gallery  .sorter .sort-by label {
+vertical-align:middle;
+}
+#mw_gallery  .v-middle {
+vertical-align:middle;
+}
+#mw_gallery  .sorter .view-mode .detail .icon_mw,#mw_gallery  .sorter .view-mode .detail_icon{
+vertical-align:middle;
+}
+/* insert style */
+
+#mw_gallery  .pager{background:none;border-right:1px solid #dedede;border-left:1px solid #dedede;border-top:none;}
+#mw_gallery  .sorter{background:none;border:1px solid #dedede;border-bottom:none;}
+#mw_gallery  .pager .amount strong{color:#333;}
+#mw_gallery  .show_img{float:left; padding-left: 15px;}
+#mw_gallery  .show_img a{color:#333;font-size:11px;text-decoration:none;display:block;background:url(../images/icon_show.gif) no-repeat left;padding:0 5px 0 22px}
+#mw_gallery  .show_img a:hover{color:#333;}
+#mw_gallery  .sorter .view-mode .detail{font-weight:normal;color:#999999;}
+#mw_gallery  .sorter .view-mode a.detail{font-weight:normal;color:#333;}
+#mw_gallery  .view_us{padding-right:13px;}
+#mw_gallery  .detail_icon{padding:0 0 0 5px;}
+#mw_gallery  .sorter .view-mode a{color:#333;text-decoration:none;}
+#mw_gallery  .simple{font-weight:normal;color:#999999;}
+#mw_gallery  .sorter .sort-by {padding:0px;}
+#mw_gallery  .sorter .sort-by label{padding-right:5px;}
+#mw_gallery  .sorter .sort-by span{color:#999;}
+#mw_gallery  .sorter .sort-by .line_sortby{padding:0px 3px 0px 3px;color:#999999;}
+#mw_gallery  .sorter .sort-by a{color:#333;text-decoration:none;}
+#mw_gallery  .pager .limiter{}
+#mw_gallery  .pager .limiter a{color:#333;text-decoration:none;}
+#mw_gallery  .pager .limiter span{color:#999999;}
+#mw_gallery  .pager .limiter .line_limiter{padding:0px 3px 0px 3px;color:#999999;}
+.bg_img_allbum{background-image:url(../images/line_gallery.gif);background-repeat:repeat-x;background-position:center bottom;}
+.album ul li {float: left;	display:block;}
+
+.simple_photo ul li {/*width:190px;*/padding:10px 0px 5px 0;width:auto;}
+.simple_photo ul li img{border:none;padding:10px 0px 10px 11px;display:block;float:left;}
+.simple_photo ul li a{font-weight:normal;}
+
+
+.photo ul li {padding:10px 43px 20px 0;}
+.photo ul li a{font-weight:normal;}
+.photo ul li img {
+border:medium none;
+padding:10px;
+}
+
+.photo_info{text-align:left;}
+.toolbar_bottom .toolbar{background:none;}
+.upload_photos{float:left;padding:10px;}
+.back_gallery{padding:15px 0;text-align:right;}
+.back_gallery a.link_backgallery{color:#333;text-decoration:none;border-bottom:1px dotted #999;padding-bottom:2px;}
+
+.tootbar_slider{position:relative;text-align:center;padding-bottom:5px;}
+.content_slider{text-align: center; overflow: hidden; position: relative;}
+#image img{padding:10px;background:#EDEDED;}
+#image label{font-weight:normal;color:#999999;font-size:11px;}
+
+/* photo_bar */
+.photo_bar{margin:0 auto;width:460px;padding-bottom:13px;}
+.photo_bar_left{float:left;width:35%;color:#333333;padding-top:8px;}
+.photo_bar_left label{color:#333333;}
+.photo_bar_left a{color:#0187c5;text-decoration:none;}
+
+.photo_bar_right{float:right;width:65%;text-align:right;}
+.photo_bar_right a{text-decoration:none;}
+
+/* photo_gallery */
+.photo_gallery{text-align: center; overflow: hidden; position: relative;}
+.photo_gallery p.des_photo{text-align:justify;color:#333333;line-height:25px;margin-top:10px;}
+
+
+
+.new-albums ul li {
+	float: left;
+	padding: 5px;
+}
+
+.new-albums .view-all {
+	clear: both;
+	padding-right:5px;
+	text-align:right;
+}
+
+.new-albums img {
+	border:1px solid #d0d0d0;
+}
+.photo_info{
+	
+}
+.photo_info ul li{
+	padding:0;
+	height:auto;
+	width:100%;
+	text-align: left;
+}
+
+div.gphoto-comment {
+	padding:0;margin-bottom:15px;
+	width:100%;
+}
+div.gphoto-comment ul li{
+background:transparent url(../images/icon_dot.gif) repeat-x scroll 0 62px;
+height:50px;
+padding-top:10pt;
+width:100%;
+}
+
+div.gphoto-comment span{
+float :left;
+}
+.gphoto-comment .div_comment{
+float :left;
+}
+.gphoto-comment h5{color:#0187c5;font-weight:bold;}
+.gphoto-comment h5 span{font-weight:normal;color:#333;float:none;}
+.gphoto-comment label{font-weight:normal;color:#999;font-size:11px;}
+
+div.gphoto-comment-header{
+	height: 20px;
+	font-size:18px;
+	padding-bottom:10px;
+	margin:0px 0 10px 0;
+	border-bottom:1px solid #333;
+	display:block;
+	cursor:pointer;
+	background:url(../images/icon_slip.gif) no-repeat scroll 99% 70%;
+}
+
+div.gphoto-write_review{
+	width:100%;
+	position: relative;
+}
+
+
+div.gphoto-write_review{
+	padding-left: 15px;
+	width:100%;
+}
+
+div.gphoto-comment textarea,div.gphoto-comment select{
+	width: 300px;
+}
+.gphoto-write_review-table-row{
+	padding-top :10px;
+	width: 100%;
+	clear: both;
+}
+.gphoto-write_review-table-row label{width:90px;display:block;float:left;}
+.gphoto-write_review-table-row label.lab_rate{float: left;}
+
+.gphoto-write_review-table-column{
+	float:left;
+	width: 600px;
+}
+.gphoto-write_review-table-column div{
+	float:left;
+	width: 100px;
+}
+.gphoto-write_review-table-column span{
+	width: 100px;
+}
+
+#lhid_comments {
+margin:5px 30px 5px 0;
+}
+.loading {
+    float:right;
+    background:#FF0000;
+    top:0px;
+    right:40px;
+    position:absolute;
+    padding:1px;
+    color:#FFFFFF;
+}
+
+#star{width: 300px;}
+#star ul.star { LIST-STYLE: none; MARGIN: 0; PADDING: 0; WIDTH: 85px; HEIGHT: 20px;line-height:21px; LEFT: 0px; TOP: -5px; POSITION: relative; FLOAT: left; BACKGROUND: url('../images/stars.gif') repeat-x; CURSOR: pointer; }
+#star li { PADDING: 0; MARGIN: 0; FLOAT: left; DISPLAY: block; WIDTH: 85px; HEIGHT: 20px;line-height:21px; TEXT-DECORATION: none; text-indent: -9000px; Z-INDEX: 20; POSITION: absolute; PADDING: 0; }
+#star li.curr { BACKGROUND: url('../images/stars.gif') left 25px; FONT-SIZE: 1px; }
+#star div.user { LEFT: 15px; POSITION: relative; FLOAT: left; FONT-SIZE: 13px; FONT-FAMILY: Arial; COLOR: #888; }
+
+#photo-view-page input,#photo-view-page select,#photo-view-page textarea,#photo-view-page button{border:1px solid #b6b6b6;padding:2px;}
+.gphoto-write_review-table-row input{width: 135px;}
+.gphoto-write_review-table-row input.inp_submit{cursor:pointer;padding:2px;line-height:16px;}
+.gphoto-write_review-table-row input:focus{background:#fff;}
+.gphoto-write_review-table-row select{}
+.gphoto-write_review-table-row textarea,.gphoto-write_review-table-row textarea:focus{background:#fff;}
+
+.star_1{display:block;padding-top:15px;background:transparent url(../images/icon_dot.gif) repeat-x scroll 0px -1px;margin:20px 0 15px 0;}
+.star_1 .star { LIST-STYLE: none; MARGIN: 0; PADDING: 0; WIDTH: 85px; HEIGHT: 20px; LEFT: 0px; TOP: -5px; POSITION: relative; FLOAT: left; BACKGROUND: url('../images/stars.gif') repeat-x; CURSOR: pointer; }
+.star_1 li { PADDING: 0; MARGIN: 0; FLOAT: left; DISPLAY: block; WIDTH: 85px; HEIGHT: 20px; TEXT-DECORATION: none; text-indent: -9000px; Z-INDEX: 20; POSITION: absolute; PADDING: 0; }
+.star_1 .curr { BACKGROUND: url('../images/stars.gif') left 25px; FONT-SIZE: 1px; height: 20px;}
+.star_1 .user { LEFT: 15px; POSITION: relative; FLOAT: left; FONT-SIZE: 13px; FONT-FAMILY: Arial; COLOR: #888; }
+.star_1 .totalrate{padding-left: 10px;color:#999;font-size:11px;}
+
+
+.form-list {
+border:0 none !important;
+width:auto;
+}
+.form-list td.label, .form-list td.value, .form-list td.note, .form-list td.scope-label, .form-list td.use-default {
+background:none repeat scroll 0 50% transparent !important;
+border:0 none !important;
+padding-bottom:5px !important;
+padding-left:5px !important;
+padding-top:5px !important;
+}
+.form-list td.hidden {
+background:none repeat scroll 0 50% transparent !important;
+border:0 none !important;
+padding:0 !important;
+}
+.form-list td.label {
+width:200px;
+}
+.form-list td.label label {
+display:block;
+padding-right:15px;
+width:185px;
+}
+.form-list td.value input.input-text, .form-list td.value textarea {
+width:274px;
+}
+.form-list td.value textarea {
+height:15em;
+}
+.form-list td.value select {
+width:280px;
+}
+.form-list td.note {
+background:url("images/note_cell_bg.gif") no-repeat scroll 6px 10px transparent !important;
+padding-left:18px;
+}
+.form-list td.scope-label {
+color:#6F8992;
+font-size:0.9em;
+padding-left:5px;
+}
+.form-list p.note {
+background:url("images/note_bg.gif") no-repeat scroll 1px 6px transparent;
+font-size:11px;
+margin:0;
+padding:0 0 0 13px;
+}
+
+/* For search */
+.search_container{
+	float:right;
+	padding-top:5px;
+}
+.gallery-form-search{}
+.gallery-form-search input{}
+.gallery-form-search button{}

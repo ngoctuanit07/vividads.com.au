@@ -1,0 +1,1640 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     base_default
+
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+
+
+/**
+
+ * Product view template
+
+ *
+
+ * @see Mage_Catalog_Block_Product_View
+
+ * @see Mage_Review_Block_Product_View
+
+ */
+
+?>
+
+<?php $_helper = $this->helper('catalog/output'); ?>
+
+<?php $_product = $this->getProduct();
+
+
+
+$product = Mage::registry('current_product');
+
+        if ($product->getId()) {
+
+            
+
+             /******************* Start for filter category 12_01_2014 ***************************/
+
+            //$store_root_id = Mage::app()->getStore()->getRootCategoryId();
+
+            //
+
+            ////get category IDs from product
+
+            //$ids = $product->getCategoryIds();        
+
+            //
+
+            ////load full cateogires
+
+            //$categories = Mage::getModel('catalog/category')
+
+            //->getCollection()
+
+            //->addIdFilter($ids);
+
+            //
+
+            ////filter out categories with different root
+
+            //$categoryIds = array();
+
+            //foreach($categories as $cat)
+
+            //{
+
+            //    //path property is 1/root_id/id/id
+
+            //    $parts      = explode('/', $cat->getPath());
+
+            //    $one        = array_shift($parts);
+
+            //    $root_id    = array_shift($parts);
+
+            //
+
+            //    if($root_id == $store_root_id)
+
+            //    {
+
+            //        $categoryIds[] = $cat->getId();    
+
+            //    }            
+
+            //}
+
+            
+
+            
+
+            
+
+            $relatedIds = $product->getRelatedProductIds();
+
+            
+
+            //print_r($categoryIds);
+
+            
+
+            /******************* End for filter category 12_01_2014 ***************************/
+
+            
+
+            //$categoryIds = $product->getCategoryIds();
+
+            //foreach($categoryIds as $categoryId)
+
+            //{
+
+            //    $category = new Mage_Catalog_Model_Category();
+
+            //    $category->load($categoryId);
+
+            //    $cat_name = $category->getName();
+
+            //}
+
+        }
+
+?>
+
+
+
+
+
+<div class="waitdiv" style="display:none;">
+
+    <div><img src="<?php echo $this->getSkinUrl()?>images/zoomloader.gif" /><span>Please wait...</span></div>
+
+</div>
+
+<div class="overlay" style="display:none;"></div>
+
+
+
+<script type="text/javascript">
+
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+
+</script>
+
+<div id="messages_product_view"><?php echo $message = $this->getMessagesBlock()->getGroupedHtml() ?></div>
+
+<div class="product-view">
+
+    <span itemscope itemtype="http://schema.org/Product">
+
+    <div class="product-essential">
+
+    <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+
+        <div class="no-display">
+
+            <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+
+            <input type="hidden" name="related_product" id="related-products-field" value="" />
+
+        </div>
+
+
+
+        <div class="product-shop">
+
+            <!--<div class="shopheader"></div>-->
+
+            <div class="product-name">
+
+                <h1 ><?php //echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?><?php echo $_product->getName();?> <br>
+
+<span style="font-size:14px; color:#fff">(Product Model # :</span><span style="font-size:14px; color:#fff"><?php echo Mage::app()->getStore()->getId(); ?>-<?php echo $_product->getSku(); ?>)</span></h1>
+
+            </div>
+
+
+
+            <?php /*if ($this->canEmailToFriend()): ?>
+
+                <p class="email-friend"><a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><?php echo $this->__('Email to a Friend') ?></a></p>
+
+            <?php endif;*/ ?>
+
+
+
+            <?php /*echo $this->getReviewsSummaryHtml($_product, false, true)?>
+
+            <?php echo $this->getChildHtml('alert_urls') */?>
+
+            
+
+			
+
+			<?php //echo $this->getChildHtml('product_type_data') ?>
+
+            
+
+            <?php //echo $this->getTierPriceHtml() ?>
+
+            <?php /*echo $this->getChildHtml('extrahint') ?>
+
+
+
+            <?php if (!$this->hasOptions()):?>
+
+                <div class="add-to-box">
+
+                    <?php if($_product->isSaleable()): ?>
+
+                        <?php echo $this->getChildHtml('addtocart') ?>
+
+                        <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+
+                            <span class="or"><?php echo $this->__('OR') ?></span>
+
+                        <?php endif; ?>
+
+                    <?php endif; ?>
+
+                    <?php echo $this->getChildHtml('addto') ?>
+
+                </div>
+
+                <?php echo $this->getChildHtml('extra_buttons') ?>
+
+            <?php elseif (!$_product->isSaleable()): ?>
+
+                <div class="add-to-box">
+
+                    <?php echo $this->getChildHtml('addto') ?>
+
+                </div>
+
+            <?php endif; ?>
+
+
+
+            <?php if ($_product->getShortDescription()):?>
+
+                <div class="short-description">
+
+                    <h2><?php echo $this->__('Quick Overview') ?></h2>
+
+                    <div class="std"><?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?></div>
+
+                </div>
+
+            <?php endif;*/?>
+
+            
+
+            <div class="total_float">
+
+                <div class="main_float">
+
+                    <div class="productmodel"><?php /*?><span class="prodmoddet"><span>Product Model # :</span><span><?php echo $_product->getSku(); ?></span></span><?php */?>
+
+                   <span class="prodmoddet"><span>
+
+                    <?php echo $this->getChildHtml('product_type_data') ?>
+
+					<?php echo $this->getTierPriceHtml() ?>
+
+                    </div>
+
+                    <div class="display_heading">Display Options</div>
+
+            <?php
+
+        /************************************************************************/
+
+//        $_helper = $this->helper('catalog/output');
+
+//	$_category_detail=Mage::registry('current_category');
+
+//        print_r($_category_detail['entity_id']);
+
+
+
+        $product = Mage::registry('current_product');
+
+        
+
+        
+
+        
+
+        if ($product->getId()) {
+
+            
+
+            /******************* Start for filter category 12_01_2014 ***************************/
+
+            //$store_root_id = Mage::app()->getStore()->getRootCategoryId();
+
+            //
+
+            ////get category IDs from product
+
+            //$ids = $product->getCategoryIds();        
+
+            //
+
+            ////load full cateogires
+
+            //$categories = Mage::getModel('catalog/category')
+
+            //->getCollection()
+
+            //->addIdFilter($ids);
+
+            //
+
+            ////filter out categories with different root
+
+            //$categoryIds = array();
+
+            //foreach($categories as $cat)
+
+            //{
+
+            //    //path property is 1/root_id/id/id
+
+            //    $parts      = explode('/', $cat->getPath());
+
+            //    $one        = array_shift($parts);
+
+            //    $root_id    = array_shift($parts);
+
+            //
+
+            //    if($root_id == $store_root_id)
+
+            //    {
+
+            //        $categoryIds[] = $cat->getId();    
+
+            //    }            
+
+            //}
+
+            
+
+          //print_r($relatedIds);
+
+            
+
+            /******************* End for filter category 12_01_2014 ***************************/
+
+            
+
+            //$categoryIds = $product->getCategoryIds();
+
+           // print_r($category_ids);
+
+            //foreach($categoryIds as $categoryId)
+
+            //{
+
+            //    //echo 'used :'.$categoryId;
+
+            //    $category = new Mage_Catalog_Model_Category();
+
+            //    $category->load($categoryId);
+
+            //    $collection = $category->getProductCollection();
+
+            //    $collection->addAttributeToSelect('*');
+
+            
+
+            /***************** Start for related product 13_02_2014 *************************/
+
+           ?> 
+
+            <div class="itempro">
+
+                        
+
+                        <div class="itemtotal">
+
+                            <span class="itemcheck"><input onclick="linkto('<?php echo $product->getProductUrl();?>')" <?php if($product->getId() == $product->getId()){echo 'checked';}?> type="radio" name="subproduct"/></span>
+
+                            <span class="itemimage"><img src="<?php echo $this->helper('catalog/image')->init($product, 'small_image')->resize(85 ,85); ?>" width="85" height="85" alt=""  /></span>
+
+                            <div class="itemoption">
+
+                            <span class="itemname"><?php echo $product->getName();?></span>
+
+                            
+
+                    <?php
+
+                        if($product->getId() == $product->getId()){
+
+                        ?>
+
+                        <div class="itemoption_drop">
+
+                            <?php if ($product->isSaleable() && $this->hasOptions()):?>
+
+                                <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+
+                            <?php endif;?>
+
+                                <?php
+
+                                /*
+
+                                $product = Mage::getModel('catalog/product');
+
+                                
+
+                                $product->load($cat_product->getId());
+
+    
+
+                                 foreach ($product->getOptions() as $option) { 
+
+                                
+
+                                // Getting Values if it has option values, case of select,dropdown,radio,multiselect
+
+                                $values = $option->getValues();
+
+                                
+
+                                
+
+                                ?>
+
+                                <dl class="last">
+
+                
+
+                                    <dt>
+
+                                        <label class="required"><em>*</em><?php echo $option->getTitle();?></label>
+
+                                    </dt>
+
+                                    <dd class="last">
+
+                                    <div class="input-box">
+
+                                        <select class="listing_dropdown required-entry" id="select_<?php echo $option->getId() ?>" name='options[<?php echo $option->getId() ?>]'>
+
+                                        <option price="" value="">Select Option</option>
+
+                                        <?php foreach ($values as $value) : ?>
+
+                                        
+
+                                        <option price="<?php echo $value->getPrice(); ?>" value="<?php echo $value->getId(); ?>"><?php echo $value->getTitle(); ?></option>
+
+                                        <?php endforeach; ?>
+
+                                        </select>
+
+                                        </div>
+
+                                    </dd>
+
+                                </dl>
+
+                                <?php
+
+                                $i++;
+
+                                }
+
+                                */
+
+                                ?>
+
+                            </div>
+
+                    <?php }?>
+
+                            </div>
+
+                        </div>
+
+                       
+
+                    </div>
+
+            
+
+               <?php
+
+               
+
+               /***************** Start for related product 13_02_2014 *************************/
+
+                foreach ($relatedIds as $cat_id) {
+
+                    
+
+                    $cat_product = Mage::getModel('catalog/product')->load($cat_id);
+
+                    ?>
+
+                    <div class="itempro">
+
+                        
+
+                        <div class="itemtotal">
+
+                            <span class="itemcheck"><input onclick="linkto('<?php echo $cat_product->getProductUrl();?>')" <?php if($cat_product->getId() == $product->getId()){echo 'checked';}?> type="radio" name="subproduct"/></span>
+
+                            <span class="itemimage"><img src="<?php echo $this->helper('catalog/image')->init($cat_product, 'small_image')->resize(85 ,85); ?>" width="85" height="85" alt=""  /></span>
+
+                            <div class="itemoption">
+
+                            <span class="itemname"><?php echo $cat_product->getName();?></span>
+
+                            
+
+                    <?php
+
+                        if($cat_product->getId() == $product->getId()){
+
+                        ?>
+
+                        <div class="itemoption_drop">
+
+                            <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+
+                                <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+
+                            <?php endif;?>
+
+                                <?php
+
+                                /*
+
+                                $product = Mage::getModel('catalog/product');
+
+                                
+
+                                $product->load($cat_product->getId());
+
+    
+
+                                 foreach ($product->getOptions() as $option) { 
+
+                                
+
+                                // Getting Values if it has option values, case of select,dropdown,radio,multiselect
+
+                                $values = $option->getValues();
+
+                                
+
+                                
+
+                                ?>
+
+                                <dl class="last">
+
+                
+
+                                    <dt>
+
+                                        <label class="required"><em>*</em><?php echo $option->getTitle();?></label>
+
+                                    </dt>
+
+                                    <dd class="last">
+
+                                    <div class="input-box">
+
+                                        <select class="listing_dropdown required-entry" id="select_<?php echo $option->getId() ?>" name='options[<?php echo $option->getId() ?>]'>
+
+                                        <option price="" value="">Select Option</option>
+
+                                        <?php foreach ($values as $value) : ?>
+
+                                        
+
+                                        <option price="<?php echo $value->getPrice(); ?>" value="<?php echo $value->getId(); ?>"><?php echo $value->getTitle(); ?></option>
+
+                                        <?php endforeach; ?>
+
+                                        </select>
+
+                                        </div>
+
+                                    </dd>
+
+                                </dl>
+
+                                <?php
+
+                                $i++;
+
+                                }
+
+                                */
+
+                                ?>
+
+                            </div>
+
+                    <?php }?>
+
+                            </div>
+
+                        </div>
+
+                       
+
+                    </div>
+
+                    
+
+                    <?
+
+                }
+
+                
+
+               // break;//11_02_2014
+
+
+
+            }
+
+       // }
+
+        ?>
+
+        <div class="add-to-box">
+
+            <?php if($_product->isSaleable()): ?>
+
+                <?php echo $this->getChildHtml('addtocart') ?>
+
+                <?php /*if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+
+                    <span class="or"><?php echo $this->__('OR') ?></span>
+
+                <?php endif; */?>
+
+            <?php endif; ?>
+
+            <?php //echo $this->getChildHtml('addto') ?>
+
+        </div>
+
+                </div>
+
+                
+
+            </div>
+
+       
+
+ 
+
+        <script src="<?php echo $this->getJsUrl();?>rcarousel/jquery.bxslider.js"></script>
+
+<link rel="stylesheet" href="<?php echo $this->getJsUrl();?>rcarousel/jquery.bxslider.css" type="text/css" />
+
+<script type="text/javascript">
+
+
+
+var idarray = Array();
+
+function linkto(url)
+
+{
+
+    jQuery('.waitdiv').show();
+
+    jQuery('.overlay').show();
+
+    location.href=url;
+
+}
+
+  jQuery(document).ready(function(){
+
+    
+
+//jQuery('.right_float').bxSlider({
+
+//  mode: 'vertical',
+
+//  slideMargin: 5
+
+//});
+
+
+
+
+
+
+
+  jQuery(window).scroll(function(){
+
+    //alert(jQuery(this).scrollTop());
+
+    ;
+
+    //alert(jQuery('body').css('top')+'================'+jQuery('.product-shop').css('top'));
+
+    var height = jQuery('.product-shop').css('height').split('px');
+
+    if(parseInt(height) < 550)
+
+    {    
+
+        if(jQuery(this).scrollTop() > 200 && jQuery(this).scrollTop() < 480)
+
+        jQuery('.product-shop').css('top',jQuery(this).scrollTop()-220);
+
+    }
+
+});
+
+  
+
+  jQuery(".bx-wrapper").css('left','0px');
+
+  jQuery(".bx-wrapper").delay(1500).animate({'left':'350px'},1200);
+
+  
+
+jQuery('.mini-upsell-ite').click(function(){
+
+   
+
+    jQuery('.total_div').find("li").css('display','none');
+
+    
+
+    
+
+        var currentid = jQuery(this).attr('id');
+
+        var splitval = currentid.split('_');
+
+        var tergetid = '#details_'+splitval[1];
+
+        jQuery("#currentid").val(splitval[1]);
+
+        
+
+        var nowid = idarray.indexOf(jQuery("#currentid").val());
+
+        if(!idarray[nowid-1])
+
+        jQuery(".addprev").css('display','none');
+
+        else
+
+        jQuery(".addprev").css('display','block');
+
+        
+
+        if(!idarray[nowid+1])
+
+        jQuery(".addnext").css('display','none');
+
+        else
+
+        jQuery(".addnext").css('display','block');
+
+        
+
+        jQuery(tergetid).css('display','block');
+
+        jQuery('.total_div').css('display','block');
+
+        
+
+        jQuery('.overlay').css('display','block');
+
+    });
+
+
+
+jQuery(".close_div").click(function(){
+
+    jQuery('.total_div').css('display','none');
+
+    jQuery('.overlay').hide();
+
+    });
+
+
+
+jQuery(".addnext").click(function(){
+
+    
+
+    var nowid = idarray.indexOf(jQuery("#currentid").val());
+
+    nowid++;
+
+    var val = idarray[nowid];
+
+    
+
+    if(idarray[nowid-1])
+
+    jQuery(".addprev").css('display','block');
+
+    
+
+    if(val)
+
+    {
+
+        jQuery('#details_'+jQuery("#currentid").val()).css('display','none');
+
+        var tergetid = '#details_'+val;
+
+        jQuery("#currentid").val(val);
+
+        
+
+        jQuery(tergetid).css('display','block');
+
+        nowid++;
+
+        if(!idarray[nowid])
+
+        jQuery(".addnext").css('display','none');
+
+    }
+
+    
+
+    
+
+    });
+
+
+
+jQuery(".addprev").click(function(){
+
+    
+
+    var nowid = idarray.indexOf(jQuery("#currentid").val());
+
+    nowid--;
+
+    var val = idarray[nowid];
+
+    
+
+    if(idarray[nowid+1])
+
+    jQuery(".addnext").css('display','block');
+
+    
+
+    if(val)
+
+    {
+
+        jQuery('#details_'+jQuery("#currentid").val()).css('display','none');
+
+        var tergetid = '#details_'+val;
+
+        jQuery("#currentid").val(val);
+
+        
+
+        jQuery(tergetid).css('display','block');
+
+        nowid--;
+
+        if(!idarray[nowid])
+
+        jQuery(".addprev").css('display','none');
+
+    }
+
+    
+
+    
+
+    });
+
+});
+
+  
+
+  
+
+  jQuery('.bound-menu-image').hide();
+
+  
+
+function getNextVal(array1, val) {
+
+    // omit the next line if the array is always sorted:
+
+    array1 = array1.slice(0).sort(function(a,b){return a-b;});
+
+
+
+    for (var i=0; i < array1.length; i++)
+
+        if (array1[i] >= val)
+
+            return array1[i];
+
+
+
+    // return default value when val > all values in array
+
+}
+
+
+
+<?php
+
+/***************** Start open for cart tooltip 27_02_2014 **********************/
+
+if($message != '')
+
+{
+
+?>
+
+    if(document.getElementById('topCartContent').style.display=="none")
+
+    {
+
+        jQuery('#topCartContent').slideDown('200', function() {
+
+        // Animation complete.
+
+        
+
+        }).delay( '8000' ).slideUp('200' );
+
+    }else{
+
+        jQuery('#topCartContent').slideUp('200', function() {
+
+        // Animation complete.
+
+        });
+
+    }
+
+<?php
+
+}
+
+/***************** Start open for cart tooltip 27_02_2014 **********************/
+
+?>
+
+  
+
+
+
+  
+
+</script>
+
+
+
+<input id="currentid" type="hidden"/>
+
+
+
+        <?php
+
+        
+
+        /************************************************************************/
+
+        ?>
+
+        
+
+
+
+
+
+            <?php echo $this->getChildHtml('other');?>
+
+
+
+            <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+
+                <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+
+            <?php endif;?>
+
+            <div class="closingimg"></div>
+
+			<div class="Testimonial" style="display:none;">
+
+            
+
+                        <?php //echo $this->getLayout()->createBlock('testimonial/testimonialmain')->setTemplate('testimonial/list.phtml')->toHtml(); ?>      
+
+
+
+            </div>
+
+        </div>
+
+
+
+        <div class="product-img-box">
+
+            <?php echo $this->getChildHtml('media') ?>
+
+        </div>
+
+        
+
+
+
+           
+
+        
+
+        <?php /*if ($_product->isSaleable() && $this->hasOptions()):?>
+
+            <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+
+        <?php endif;*/?>
+
+        
+
+    </form>
+
+    <div class="proadditional">
+
+        <?php echo $this->getChildHtml('product_additional_data') ?>
+
+        
+
+        </div>
+
+           <?php if ($_product->getDescription()):?>
+
+                <div class="description" style="float:left; font-size:13px; padding:10px; color:#555; line-height:20px;">
+
+       
+
+                    <div class="std"><?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?></div>
+
+                </div>
+
+            <?php endif;?>
+
+    <div class="clearer"></div>
+
+<div class="total_div" style="display:none;" >
+
+  
+
+    <div class="header_div">
+
+        <div class="miniupsell_nw top_draggable">
+
+        </div>
+
+        <div class="miniupsell_n">
+
+            <div class="miniupsell_title"> <?php echo $cat_name;?> - Recommended Products</div>
+
+        </div>
+
+        <div class="miniupsell_ne top_draggable">
+
+        </div>
+
+    </div>
+
+    <div class="mid">
+
+        <div class="miniupsell_w">            
+
+        </div>
+
+        <div class="miniupsell_content">
+
+             <div class="close_div">close</div>
+
+    <div class="addprev">Prev</div>
+
+    <ul class="all_div">
+
+    <?php
+
+    $upsp1 = Mage::getModel('catalog/product')->load($product->getId());
+
+    $upsell_product = $upsp1->getUpSellProductCollection();
+
+    //print_r($upsell_product);
+
+    
+
+    foreach($upsell_product as $_upsell)
+
+    {
+
+        $upsp = Mage::getModel('catalog/product')->load($_upsell->getId());
+
+        ?>
+
+        <li id="details_<?php echo $_upsell->getId()?>" style="display:none;" >
+
+         <form action="<?php echo $this->getSubmitUrl($upsp) ?>" method="post" id="product_addtocart_form_<?php echo $_upsell->getId();?>"<?php if($upsp->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+
+        <div  class="mini-upsell-popup" >
+
+            <div class="no-display">
+
+            <input type="hidden" name="product" value="<?php echo $_upsell->getId() ?>" />
+
+            <input type="hidden" name="related_product" id="related-products-field" value="" />
+
+        </div>
+
+            <div>
+
+                <div class="popup_name"><span><?php echo $upsp->getName();?></span></div>
+
+                <input type="hidden" id="popup_price" value="<?php echo $upsp->getPrice();?>"/>
+
+                <div class="popup_price"><?php echo $upsp->getPrice();?></div>
+
+                <div class="popup_image"><img id="popup_image_<?php echo $_upsell->getId()?>" src="<?php echo $this->helper('catalog/image')->init($upsp, 'small_image')->resize(300 ,300); ?>" alt="" /></div>
+
+                <div class="small-images-mask"></div>
+
+                <div class="small-images-div">
+
+                    <ul>
+
+                    <?php
+
+                       /*
+
+                         foreach ($upsp->getMediaGalleryImages() as $_image):
+
+                     
+
+                    ?>
+
+                    <li>
+
+                        <a href="<?php echo $this->helper('catalog/image')->init($upsp->getProduct(), 'thumbnail', $_image->getFile())->resize(88); ?>" onclick="document.getElementById('popup_image_<?php echo $_upsell->getId()?>').src = this.href;return false;"><img src="<?php echo $this->helper('catalog/image')->init($upsp->getProduct(), 'thumbnail', $_image->getFile())->resize(66); ?>" alt="<?php echo $this->htmlEscape($_image->getLabel()) ?>" title="<?php echo $this->htmlEscape($_image->getLabel()) ?>" /></a>
+
+                    </li>
+
+                    
+
+                    <?php
+
+                    endforeach;
+
+                       */
+
+                    ?>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="popupdetails">
+
+                <div class="popup_details">
+
+                    <p class="product-features-p"><strong class="product-features-title"><?php echo $upsp->getShortDescription();?></strong></p>
+
+                <br/><a style=" color:#B8DD2E; text-decoration:none; font-size:14px;  font-weight:bold; font-family:Arial, Helvetica, sans-serif;" href="<?php echo $upsp->getProductUrl()?>">Read More</a></div>
+
+                <div class="popup_option">
+
+                <?php
+
+               // $product_pop = Mage::getModel('catalog/product')->load($_upsell->getId());
+
+               
+
+                                
+
+    //print_r($upsp->getOptions());
+
+    
+
+                                 foreach ($upsp->getOptions() as $option) { 
+
+                                
+
+                                // Getting Values if it has option values, case of select,dropdown,radio,multiselect
+
+                                $values = $option->getValues();
+
+                                
+
+                                //print_r($option[is_require]);
+
+                                if($option[is_require] == 1)
+
+                                $required = 'required-entry';
+
+                                else
+
+                                $required = '';
+
+                                
+
+                                ?>
+
+                                <dl class="last">
+
+                
+
+                                    <dt>
+
+                                        <label class="required"><em>*</em><?php echo $option->getTitle();?></label>
+
+                                    </dt>
+
+                                    <dd class="last">
+
+                                    <div class="input-box">
+
+                                        <select class="listing_dropdown <?php echo $required;?>" id="select_<?php echo $option->getId() ?>" name='options[<?php echo $option->getId() ?>]' onchange="changePrice(this);">
+
+                                        <option price="" value="">Select Option</option>
+
+                                        <?php foreach ($values as $value) : ?>
+
+                                        
+
+                                        <option price="<?php echo $value->getPrice(); ?>" value="<?php echo $value->getId(); ?>"><?php echo $value->getTitle(); ?></option>
+
+                                        <?php endforeach; ?>
+
+                                        </select>
+
+                                        </div>
+
+                                    </dd>
+
+                                </dl>
+
+                                <?php
+
+                                $i++;
+
+                                }
+
+                                ?>
+
+                </div>
+
+                <div class="popup-action">
+
+                    <div class="add-to-cart">
+
+                            <div class="qtyclass">
+
+                                <label for="qty">Qty:</label>
+
+                                <!--<input type="text" name="qty" id="qty" maxlength="12" value="" title="" class="input-text qty" />-->
+
+                                <input type="text" name="qty"  maxlength="12" value="" title="Qty" class="input-text qty" />
+
+                                
+
+                                 <div class="cartclass">
+
+                                <button type="button" title="Add to Cart" class="button btn-cart" onclick="productAddToCartForm<?php echo $_upsell->getId();?>.submit(this)"><span><span>Add to Cart</span></span></button>
+
+                                </div>
+
+                            </div>
+
+                </div>
+
+            </div>
+
+            
+
+        </div>
+
+        </form>
+
+        <script type="text/javascript">
+
+  idarray.push('<?php echo $_upsell->getId();?>');
+
+    //<![CDATA[
+
+        var productAddToCartForm<?php echo $_upsell->getId();?> = new VarienForm('product_addtocart_form_<?php echo $_upsell->getId();?>');
+
+        productAddToCartForm<?php echo $_upsell->getId();?>.submit = function(button, url) {
+
+            if (this.validator.validate()) {
+
+                var form = this.form;
+
+                var oldUrl = form.action;
+
+
+
+                if (url) {
+
+                   form.action = url;
+
+                }
+
+                var e = null;
+
+                try {
+
+                    this.form.submit();
+
+                } catch (e) {
+
+                }
+
+                this.form.action = oldUrl;
+
+                if (e) {
+
+                    throw e;
+
+                }
+
+
+
+                if (button && button != 'undefined') {
+
+                    button.disabled = true;
+
+                }
+
+            }
+
+        }.bind(productAddToCartForm);
+
+
+
+        productAddToCartForm<?php echo $_upsell->getId();?>.submitLight = function(button, url){
+
+            if(this.validator) {
+
+                var nv = Validation.methods;
+
+                delete Validation.methods['required-entry'];
+
+                delete Validation.methods['validate-one-required'];
+
+                delete Validation.methods['validate-one-required-by-name'];
+
+                // Remove custom datetime validators
+
+                for (var methodName in Validation.methods) {
+
+                    if (methodName.match(/^validate-datetime-.*/i)) {
+
+                        delete Validation.methods[methodName];
+
+                    }
+
+                }
+
+
+
+                if (this.validator.validate()) {
+
+                    if (url) {
+
+                        this.form.action = url;
+
+                    }
+
+                    this.form.submit();
+
+                }
+
+                Object.extend(Validation.methods, nv);
+
+            }
+
+        }.bind(productAddToCartForm);
+
+    //]]>
+
+    </script>
+
+        </li>
+
+        <?php
+
+    }
+
+    ?>
+
+    
+
+    </ul>
+
+    
+
+
+
+    <div class="addnext">next</div>
+
+        </div>
+
+        <div class="miniupsell_e"></div>
+
+    </div>
+
+    
+
+     <div class="bot">
+
+        <div class="miniupsell_sw">            
+
+        </div>
+
+        <div class="miniupsell_s">
+
+        </div>
+
+        <div class="miniupsell_se"></div>
+
+    </div>
+
+   
+
+</div>
+
+    <script type="text/javascript">
+
+    
+
+
+
+    
+
+    //<![CDATA[
+
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+
+        productAddToCartForm.submit = function(button, url) {
+
+            if (this.validator.validate()) {
+
+                var form = this.form;
+
+                var oldUrl = form.action;
+
+
+
+                if (url) {
+
+                   form.action = url;
+
+                }
+
+                var e = null;
+
+                try {
+
+                    this.form.submit();
+
+                } catch (e) {
+
+                }
+
+                this.form.action = oldUrl;
+
+                if (e) {
+
+                    throw e;
+
+                }
+
+
+
+                if (button && button != 'undefined') {
+
+                    button.disabled = true;
+
+                }
+
+            }
+
+        }.bind(productAddToCartForm);
+
+
+
+        productAddToCartForm.submitLight = function(button, url){
+
+            if(this.validator) {
+
+                var nv = Validation.methods;
+
+                delete Validation.methods['required-entry'];
+
+                delete Validation.methods['validate-one-required'];
+
+                delete Validation.methods['validate-one-required-by-name'];
+
+                // Remove custom datetime validators
+
+                for (var methodName in Validation.methods) {
+
+                    if (methodName.match(/^validate-datetime-.*/i)) {
+
+                        delete Validation.methods[methodName];
+
+                    }
+
+                }
+
+
+
+                if (this.validator.validate()) {
+
+                    if (url) {
+
+                        this.form.action = url;
+
+                    }
+
+                    this.form.submit();
+
+                }
+
+                Object.extend(Validation.methods, nv);
+
+            }
+
+        }.bind(productAddToCartForm);
+
+    //]]>
+
+    </script>
+
+    </div>
+
+    
+
+
+
+    <div class="product-collateral">
+
+<?php foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html):?>
+
+        <div class="box-collateral <?php echo "box-{$alias}"?>">
+
+            <?php if ($title = $this->getChildData($alias, 'title')):?>
+
+            <h2><?php echo $this->escapeHtml($title); ?></h2>
+
+            <?php endif;?>
+
+            <?php echo $html; ?>
+
+        </div>
+
+<?php endforeach;?>
+
+        <?php //echo $this->getChildHtml('upsell_products') ?>
+
+        <?php //echo $this->getChildHtml('product_additional_data') ?>
+
+    </div>
+
+    </span>
+
+
+
+                        <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('bottom_category')->toHtml() ?>
+
+</div>
+
+<div class="main_right_float">
+                    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('vertical_categories')->toHtml() ?>
+	                <!--<div class="right_float" >
+    
+					</div>-->
+            </div>

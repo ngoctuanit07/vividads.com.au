@@ -1,0 +1,119 @@
+<?php
+/**
+ * @category    Fishpig
+ * @package     Fishpig_Wordpress
+ * @license     http://fishpig.co.uk/license.txt
+ * @author      Ben Tideswell <help@fishpig.co.uk>
+ */
+?>
+<?php
+ $p = $this->getRequest()->getParam('p');
+
+if($p){
+$recentPost = Mage::getModel('wordpress/post')->getCollection()
+    ->addIsPublishedFilter();
+ ?>
+
+                <?php foreach($recentPost as $mypost): ?>
+				  <?php //echo $mypost->getId();?>
+				  <?php //echo $mypost->getPostTitle();?>
+
+                  <?php if($mypost->getId()==$p) {  ?>
+ <div class="blog-home" style="float:left;width:700px !important;">
+<div style="float: left; background: none repeat scroll 0% 0% white; margin: 10px; width: 660px; padding:25px 10px 0 10px;	" class="post-list">
+ <ul id="post-list">
+	<li class="item ">
+	<div class="post-list-item">
+	<h2 style="color:#000;"><?php echo $mypost->getPostTitle();?></h2>
+	<div class="post-entry entry">
+    <?php echo $mypost->getPostContent(); ?>
+	</div>
+	</div>
+  </li>
+						
+					</ul>
+		<script type="text/javascript">decorateList($('post-list'));</script>
+    
+	</div>
+</div>
+                  
+<?php			  }		  ?>
+                  
+                <?php endforeach; ?>
+<div class="sidebar-container" style="float: left;width: 240px !important;z-index: 1;background:#F9F8EE;margin:10px 0;">
+<?php echo Mage::getSingleton('core/layout')
+    ->createBlock('wordpress/sidebar_widget_categories')
+    ->setTemplate('wordpress/sidebar/widget/categories.phtml')
+    ->toHtml(); ?>
+<?php 
+$numPostsToShow = 10;
+$categoryId = 1; //Replace with your category id
+$recentPostCollection = Mage::getModel('wordpress/post')->getCollection()
+    ->addIsPublishedFilter()
+    ->addCategoryIdFilter($categoryId)
+    ->setOrder('post_date', 'desc')
+    ->setPageSize($numPostsToShow)
+;
+$posts = $recentPostCollection;
+if (count($posts) > 0): ?>
+    <div class="block block-blog block-recent-posts" style="margin-top:10px;">
+
+            <div class="block-title">
+                <strong><span><?php echo "Recent Posts" ?></span></strong>
+            </div>
+        <div class="block-content" style="float:left;">
+            <ul id="<?php echo $this->getListId() ?>" style="float:left;">
+                <?php foreach($posts as $post): ?>
+				  <li style="float:left;">
+                  <a href="<?php echo $this->getUrl();?>wordpress/?p=<?php echo $post->getId();?> ">
+				  <?php echo $post->getPostTitle();?></a></li>
+                <?php endforeach; ?>
+           </ul>
+           <script type="text/javascript">decorateList('<?php echo $this->getListId() ?>')</script>
+        </div>
+    </div>
+<?php endif; ?>
+    
+</div>
+
+<?php } else {?>
+<div style="float:left;width:700px !important;" class="blog-home">
+	<?php echo $this->getPostListHtml() ?>
+</div>
+<div class="sidebar-container" style="float: left;width: 240px !important;z-index: 1;background:#F9F8EE;margin:10px 0;">
+<?php echo Mage::getSingleton('core/layout')
+    ->createBlock('wordpress/sidebar_widget_categories')
+    ->setTemplate('wordpress/sidebar/widget/categories.phtml')
+    ->toHtml(); ?>
+<?php 
+$numPostsToShow = 10;
+$categoryId = 1; //Replace with your category id
+$recentPostCollection = Mage::getModel('wordpress/post')->getCollection()
+    ->addIsPublishedFilter()
+    ->addCategoryIdFilter($categoryId)
+    ->setOrder('post_date', 'desc')
+    ->setPageSize($numPostsToShow)
+;
+$posts = $recentPostCollection;
+if (count($posts) > 0): ?>
+    <div class="block block-blog block-recent-posts" style="margin-top:10px;">
+
+            <div class="block-title">
+                <strong><span><?php echo "Recent Posts" ?></span></strong>
+            </div>
+        <div class="block-content" style="float:left;">
+            <ul id="<?php echo $this->getListId() ?>" style="float:left;">
+                <?php foreach($posts as $post): ?>
+				  <li style="float:left;">
+                  <a href="<?php echo $this->getUrl();?>wordpress/?p=<?php echo $post->getId();?> ">
+				  <?php echo $post->getPostTitle();?></a></li>
+                <?php endforeach; ?>
+           </ul>
+           <script type="text/javascript">decorateList('<?php echo $this->getListId() ?>')</script>
+        </div>
+    </div>
+<?php endif; ?>
+    
+</div>
+<?php }?>
+

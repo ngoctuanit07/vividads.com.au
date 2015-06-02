@@ -1,0 +1,610 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<script src="<?php echo $this->getJsUrl();?>extjs/jquery-1.9.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl().'css/designer.css'?>"  />
+<div class="order-items order-details">
+    <?php if ($this->helper('giftmessage/message')->getIsMessagesAvailable('items', $this->getOrder())): ?>
+    <script type="text/javascript">
+    //<![CDATA[
+    function giftMessageToogle(giftMessageIdentifier)
+    {
+        var link = $('order-item-gift-message-link-'+giftMessageIdentifier);
+        var container = $('order-item-gift-message-'+giftMessageIdentifier);
+        var row = $('order-item-row-'+giftMessageIdentifier);
+        if(link.expanded) {
+            link.expanded = false;
+            link.removeClassName('expanded');
+            if(container.hasClassName('last')) {
+                row.addClassName('last');
+            }
+            container.hide();
+        } else {
+            link.expanded = true;
+            link.addClassName('expanded');
+            if(container.hasClassName('last')) {
+                row.removeClassName('last');
+            }
+            container.show();
+        }
+
+        return false;
+    }
+    //]]>
+    </script>
+    <?php endif; ?>
+    <?php $_order = $this->getOrder() ?>
+    
+    <!--12-11-2013 SOC-->
+   <?php 
+    $ordId=$_order->getId();
+    $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+    $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+    
+    $tableName = Mage::getSingleton('core/resource')->getTableName('partialshipping_details');
+    
+    $select = $connectionRead->select()->from($tableName, array('*'))->where('order_id=?',$ordId);
+    $row = $connectionRead->fetchAll($select);
+    $countRow=count($row);
+    //if($countRow > 0){ ?>
+    <h2 class="table-caption"><?php echo $this->__('Items Partially shipped') ?>
+    
+    
+    <div class="order-additional order-comments">
+            <table class="data-table">
+                <tbody><tr>
+                    <th>Product</th><th >Quantity</th><th>Shipped Address</th><th>Shipping method</th>
+                    </tr>
+                    <?php
+                        foreach($row as $rowdata) {
+                            $obj = Mage::getModel('catalog/product');
+                            $_product = $obj->load($rowdata['product_id']);
+                            
+                            $addressLoadId = Mage::getModel('customer/address')->load($rowdata['shipping_address_id']);
+                            $country_name=Mage::app()->getLocale()->getCountryTranslation($addressLoadId['country_id']);
+                            $Name = $addressLoadId['firstname'].' '.$addressLoadId['lastname'];
+                            $AdrInfo='';
+                            if($addressLoadId['city']) $AdrInfo .= $addressLoadId['city'];
+                            if($addressLoadId['region']) $AdrInfo .= ", ".$addressLoadId['region'];
+                            if($addressLoadId['postcode']) $AdrInfo .= ", ".$addressLoadId['postcode'];
+                            $addr=$Name."<br>".$AdrInfo."<br>".$country_name;
+                            
+                            $tableName1 = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
+                            
+                            $select1 = $connectionRead->select()->from($tableName1, array('*'))->where("order_id = '".$rowdata['order_id']."' AND product_id = '".$rowdata['product_id']."'");
+                            $row1 = $connectionRead->fetchrow($select1);
+                            $qtyOrdered=round($row1['qty_ordered']);
+                            $qtyInvoiced=round($row1['qty_invoiced']);
+                            
+                                
+                    ?>
+                    
+                    <tr>
+                    <td><?php echo $_product->getName(); ?></td>
+                    <td>
+                        <table class="data-table" >
+                        <tbody>
+                        <tr>
+                                <td>
+                                        <strong>Ordered</strong>
+                                </td>
+                                <td>
+                                        <strong><?php echo $qtyOrdered ?></strong>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td>
+                                        <strong>Invoiced</strong>
+                                </td>
+                                <td>
+                                        <strong><?php echo $qtyInvoiced ?></strong>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td>
+                                        <strong>Shipped</strong>
+                                </td>
+                                <td>
+                                        <strong><?php echo $rowdata['product_qty']?></strong>
+                                </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </td>
+                    <td><?php echo $addr ?></td>
+                    <td>
+                       <?php echo $rowdata['shipping_method']." $".number_format($rowdata['shiping_price'],2)?>
+                    </td>
+                    
+                    </tr>
+                    <?php  } ?>
+                </tbody></table>
+        </div>
+     <?php //} ?>
+    
+    
+    <!--12-11-2013 EOC-->
+    
+    <h2 class="table-caption"><?php echo $this->__('Items Ordered') ?>
+        <?php if ($_order->getTracksCollection()->count()) : ?>
+            <span class="separator">|</span> <a href="#" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_order) ?>','trackorder','top=0,left=0,width=800,height=600,resizable=yes,scrollbars=yes'); return false;" title="<?php echo $this->__('Track your order') ?>"><?php echo $this->__('Track your order') ?></a>
+        <?php endif; ?>
+    </h2>
+
+    <?php echo $this->getChildHtml('order_items') ?>
+
+    <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order', $_order) && $_order->getGiftMessageId()): ?>
+    <div class="order-additional order-gift-message">
+        <h2 class="sub-title"><?php echo $this->__('Gift Message for This Order') ?></h2>
+        <?php $_giftMessage=$this->helper('giftmessage/message')->getGiftMessageForEntity($_order); ?>
+        <dl class="gift-message">
+            <dt><strong><?php echo $this->__('From:') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?></dt>
+            <dt><strong><?php echo $this->__('To:') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?></dt>
+            <dd><?php echo $this->helper('giftmessage/message')->getEscapedGiftMessage($_order) ?></dd>
+        </dl>
+    </div>
+    <?php endif; ?>
+    <?php $_history = $this->getOrder()->getVisibleStatusHistory() ?>
+    <?php if (count($_history)): ?>
+    <div class="order-additional order-comments">
+        <h2 class="sub-title"><?php echo $this->__('About Your Order') ?></h2>
+        <dl class="order-about">
+            <?php foreach ($_history as $_historyItem): ?>
+                <dt><?php echo $this->formatDate($_historyItem->getCreatedAtStoreDate(), 'medium', true) ?></dt>
+                <dd><?php echo $this->escapeHtml($_historyItem->getComment()) ?></dd>
+            <?php endforeach; ?>
+        </dl>
+    </div>
+    <?php endif; ?>
+    
+    <?php
+    /************************** Start by dev ***********************************/
+    
+    /************************* Start for designer module **********************************/
+    
+    $_order = $this->getOrder();
+    $url = Mage::helper('adminhtml')->getUrl('admin/sales_order/proofs');
+    
+    $url2 = Mage::helper('adminhtml')->getUrl('designer/index/download');
+    
+    $temptableCount=Mage::getSingleton('core/resource')->getTableName('task_designer_comment');
+    $temptableDesign=Mage::getSingleton('core/resource')->getTableName('task_designer');
+    $temptableService=Mage::getSingleton('core/resource')->getTableName('design_service');
+    
+    $items = $_order->getAllItems();
+   
+    foreach($items as $item)
+    {
+        $_product = Mage::getModel('catalog/product')->load($item->getProductId());
+      
+        if($connectionWrite->isTableExists($temptableCount))
+        {
+            $sqlCount="SELECT * FROM  ".$temptableCount." WHERE parent_id IN(SELECT entity_id FROM ".$temptableDesign." WHERE order_quote_id = '".$_order->getId()."' AND item_id = '".$item->getId()."' ) AND file != '' AND user_type = 'customer'  ";
+            
+           // //$sqlOrder = "SELECT entity_id FROM ".$temptableDesign." WHERE order_quote_id = '".$_order->getId()."' AND item_id = '".$item->getId()."'";
+           // $sqlOrder = $connectionRead->select()
+           //                 ->from($temptableDesign, array('entity_id'))
+           //                 ->where("order_quote_id = '".$_order->getId()."' AND item_id = '".$item->getId()."'");
+           // $rowOrder =$connectionRead->fetchRow($sqlOrder);
+           //
+           ////$sqlCount="SELECT * FROM  ".$temptableCount." WHERE parent_id = ".$rowOrder['entity_id']."  AND file != '' AND user_type = 'customer'  ";
+           // $sqlCount = $connectionRead->select()
+           //                 ->from($temptableCount, array('*'))
+           //                 ->where("parent_id = ".$rowOrder['entity_id']."  AND file != '' AND user_type = 'customer'");
+            
+            $chkCount = $connectionRead->fetchAll($sqlCount);
+        }
+        
+        if($connectionRead->isTableExists($temptableService))
+        {
+            //$sqlService="SELECT SUM(revision_number) AS r_number FROM  ".$temptableService." WHERE order_id ='".$_order->getId()."' AND item_id = '".$item->getId()."'  ";
+            $sqlService = $connectionRead->select()
+                            ->from($temptableService, array('SUM(revision_number) AS r_number'))
+                            ->where("order_id ='".$_order->getId()."' AND item_id = '".$item->getId()."'");
+            $chkService = $connectionRead->fetchAll($sqlService);
+        }
+        
+        if(count($chkCount) < $chkService[0]['r_number'])
+        {
+        
+            $proofItem[$item->getId()] = $_product->getName();
+        }
+    }
+    
+    function getdrop($arrayproofs)
+    {
+      foreach($arrayproofs as $key=>$arrayproof)
+      {
+        echo '<option value="'.$key.'">'.addslashes($arrayproof).'</option>';
+      }
+    }
+    
+   ?>
+    <script type="text/javascript">
+    
+    function add_another()
+    {
+            i = document.getElementById('form_count').value;
+            i++;
+            var str = '<div class="tabdesign" id="tab_'+i+'"><br><div class="file_class"><input type="file" name="item_file[]"></div><div class="item_class"><select name="item[]"><option>Select Item</option><?php stripslashes(getdrop($proofItem));?></select></div><div class="item_comment"><textarea name="comment[]"></textarea></div><span class="removeitem" onclick="div_remove('+i+')" id="rem_'+i+'" style="cursor:pointer;">Remove</span></div>';
+            
+            jQuery("#content1").append(str);
+            document.getElementById('form_count').value = i;
+            
+    }
+    
+    function div_remove(id)
+    {
+            i = document.getElementById('form_count').value;
+            jQuery("#tab_"+id).remove();
+    }
+    
+    function close2()
+    {
+        jQuery('.editform').slideUp();
+        jQuery('.closediv').hide();
+        jQuery('.adddiv').show();
+    };
+    
+    function open1()
+    {
+        jQuery('.editform').slideDown();
+        jQuery('.adddiv').hide();
+        jQuery('.closediv').show();
+    };
+    
+    
+    </script>
+    <div class="designermain">
+    <h2 class="sub-title">Your Design</h2>
+    <?php
+    if(!empty($proofItem))
+    {
+    ?>
+        <div class="order-additional order-comments">
+            <div class="desedit">
+                <div class="closediv" onclick="close2();" style="display:none;">Close</div>
+                <div class="adddiv" onclick="open1();">Add Design</div>
+            </div>
+            <div class="editform" style="display:none;">
+                <form method="post" id="customerquote-customer-form" action="<?php echo $this->getUrl()?>designer/index/save/" enctype="multipart/form-data">
+                <input type="hidden" name="order_id" value="<?php echo $_order->getId();?>"/>
+                <table class="total_proof" style="width: 100%;">
+                    <tr class="txt"><input type="hidden" id="form_count" />
+                        <input type="hidden" name="type" value="order" />
+                        <td valign="top" class="fromclass">
+                         <div id="dvFile">
+                          <div class="file_class">
+                          <input type="file" name="item_file[]">
+                          </div>
+                          <div class="item_class">
+                             <select name="item[]"><option value="">Select Item</option><?php getdrop($proofItem);?></select>
+                          </div>
+                        <div class="item_comment">
+                             <textarea name="comment[]"></textarea>
+                          </div>
+                         </div>
+                        </td>
+                        <td valign="top" class="addnew">
+                         <span onclick="add_another();" style="cursor:pointer;" title="Add book suggetion" class="addanother">Add another</span><span class="submitclass"><input name="submit" id="submit" type="submit"  class="submit-img" /></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="10" align="left" valign="middle" colspan="6">
+                        <div id="content1"></div></td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+        </div>
+    <?php
+    }
+    ?>
+        <div class="order-additional order-comments">
+            <table class="data-table">
+                <tr>
+                    <th> Date </th>
+                    <th> Item </th>
+                    <th> Comment</th>
+                    <th> Design File</th>
+                    <th> Status </th>
+                    <th> Action </th>
+                </tr>
+                <?php
+                    $temptableDesign=Mage::getSingleton('core/resource')->getTableName('task_designer');
+                    if($connectionWrite->isTableExists($temptableDesign))
+                    {
+                        //$sqlDesign="SELECT *,DATE_FORMAT(postdate,'%D %M, %Y') AS p_date FROM  ".$temptableDesign." WHERE order_quote_id ='".$_order->getId()."' AND proof_type = 'order' ORDER BY item_id ";
+                        $sqlDesign = $connectionRead->select()
+                                        ->from($temptableDesign, array("*,DATE_FORMAT(postdate,'%D %M, %Y') AS p_date"))
+                                        ->where("order_quote_id ='".$_order->getId()."' AND proof_type = 'order'")
+                                        ->order('item_id');
+                        $chkDesigns = $connectionRead->fetchAll($sqlDesign);
+                    }
+                    
+                    foreach($chkDesigns as $chkDesign)
+                    {
+                        
+                        $temptableItem=Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
+                        //$sqlItem="SELECT * FROM  ".$temptableItem." WHERE item_id ='".$chkDesign['item_id']."'  ";
+                        $sqlItem = $connectionRead->select()
+                                        ->from($temptableItem, array('*'))
+                                        ->where('item_id=?',$chkDesign['item_id']);
+                        $chkItem = $connectionRead->fetchAll($sqlItem);
+                        
+                        //$_Product = Mage::getModel('catalog/product')->load($chkItem['product_id']);
+                ?>
+                <tr>
+                    <td><?php echo $chkDesign['p_date']?></td>
+                    <td><?php echo $chkItem[0]['name'];?></td>
+                    <td><?php echo $chkDesign['comment']?></td>
+                    <td>
+                    <?php if($chkDesign['file'] != ''){?>
+                    <img style="width: 104px; height: 100px;" src="<?php echo  $this->getBaseUrl().'media/design/'.$chkDesign['file'];?>" /><a href="<?php echo str_replace('//s','/admin/s',$url2).'file/'.$chkDesign['file'].'/';?>"><img title="Download Now" style="width: 20px;height: 15px;float: right;" src="<?php echo  $this->getSkinUrl().'images/load.png';?>"/></a>
+                    <?php }?>
+                    </td>
+                    <td><?php echo $chkDesign['status']?></td>
+                    <td> <a class="shoedetails" onclick="allcomment('<?php echo $chkDesign['entity_id']?>','<?php echo $_order->getId()?>')">Show Details</a> </td>
+                </tr>
+                <?php }?>
+            </table>
+        </div>
+    </div>
+    <div class="tooltip" id="tooltip" style="display:none;">
+  <div class="close" onclick="close1();">X</div>
+  <div class="tooltipbody" id="tooltipbody">
+   
+  </div>
+ 
+ </div>
+    <script type="text/javascript">
+   function allcomment(id,orderid)
+   {
+       //document.getElementById('entity_id').value = id;
+       //document.getElementById('dorderid').value = orderid;
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	      // alert(xmlhttp.responseText);
+	       
+	       document.getElementById('tooltipbody').innerHTML = xmlhttp.responseText;
+                document.getElementById('tooltip').style.display = 'block';
+	       
+	   }
+	 }
+	 form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>designer/index/allcomment/?id="+id+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   function close1()
+   {
+    document.getElementById('tooltip').style.display = 'none';
+   }
+</script>
+
+    <?
+    /************************* End for designer module **********************************/
+    
+    /************************* Start for proof module **********************************/
+    ?>
+    <div class="order-additional order-comments">
+        <h2 class="sub-title"><?php echo $this->__('About Your Proofs') ?></h2>
+        <table class="data-table" id="my-orders-table" summary="Items Ordered">
+           <thead>
+                <tr class="first last">
+                    <th>Proofs file</th>
+                    <th>Product Name</th>
+                    <th>Status</th>
+                    <th>Quantity</th>
+                    <th>Comment</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody class="odd">
+                <?php
+                   $tableName = Mage::getSingleton('core/resource')->getTableName('proofs');
+                   if($connectionWrite->isTableExists($tableName))
+                   {
+                        //$sqlProofsSystem="SELECT *,DATE_FORMAT(postdate,'%D %M, %Y') AS p_date FROM ".$tableName."  WHERE  order_id = '".$_order->getId()."' AND proof_type = 'order' ORDER BY entity_id DESC";
+                        $sqlProofsSystem = $connectionRead->select()
+                                        ->from($tableName, array("*,DATE_FORMAT(postdate,'%D %M, %Y') AS p_date"))
+                                        ->where("order_id = '".$_order->getId()."' AND proof_type = 'order'")
+                                        ->order('entity_id DESC');
+                        $chkSystem = $connectionRead->query($sqlProofsSystem);
+                        $resultsSystem = $chkSystem->fetchall();
+                   }
+                   
+                   foreach($resultsSystem as $proof)
+                   {
+                 ?>
+                    <tr class="border first last" id="order-item-row-4">
+                            <td><h3 class="product-name"><a href="<?php echo $this->getUrl().'sales/order/download/file/'.$proof['file'].'/';?>"><?php echo $proof['file'];?></a></h3></td>
+                            <td >
+                                <?php
+                                
+                                $tableName = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
+                                //$sqlProofsSystem="SELECT * FROM ".$tableName."  WHERE  item_id = '".$proof['item_id']."'";
+                                $sqlProofsSystem = $connectionRead->select()
+                                                    ->from($tableName, array('*'))
+                                                    ->where('item_id=?',$proof['item_id']);
+                                $chkSystem = $connectionRead->query($sqlProofsSystem);
+                                $resultsSystem = $chkSystem->fetch();
+                                
+                                   $_product = Mage::getModel('catalog/product')->load($resultsSystem['product_id']);
+                                   echo $_product->getName();
+                                ?>
+                            </td>
+                            <td><?php echo $proof['status'];?></td>
+                            <td><?php echo $proof['quantity'];?></td>
+                            <td ><?php echo $proof['comment'];?></td>
+                            <td ><?php echo $proof['p_date'];?></td>
+                            <td ><?php if($proof['status'] != 'Approved'){?><span style="cursor:pointer;" onclick="div_show('<?php echo $proof['entity_id']?>');">Update</span><?php }?></td>
+                    </tr>
+                <?php
+                   }
+                 ?>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="total_payment" id="total_payment" style="display:none;">
+        <div class="close_div" onclick="div_hide();">Close</div>
+        <div class="block_div">
+            <table>
+                <tr>
+                    <td>Status</td>
+                    <td>
+                        <input type="hidden" id="proof_id"/>
+                        <input type="hidden" id="proof_type" value="order"/>
+                        <select id="status" >
+                            <option value="">Select Status</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Disapproved">Disapproved</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Qty</td>
+                    <td><input type="text" name="qty" id="qty"/></td>
+                </tr>
+                <tr>
+                    <td>Comment</td>
+                    <td><textarea id="comment"></textarea></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button onclick="all_save();" type="button" name="submit" class="button"><span><span>Submit</span></span></button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="overlay" class="overlay_proof" style="display:none;"></div>
+    <style>
+    .total_payment{position: fixed;top: 8%;left: 30%;background-color: white;width: 521px;height: 300px;}
+    .close_div{position: fixed;top: 24%;left: 66%;background-color: white;width: 21px;height: 30px;}
+    .block_div{text-align: left;margin-top: 16px;}
+    .overlay_proof{position: fixed;width: 100%;height: 100%;background-color: black;top: 0px;left: 0px;opacity: 0.5;z-index: 99999;}
+    
+    .calendar{position: fixed !important;  left: 668px !important; top: 168px !important;}
+    
+    .total_payment{border:1px solid #ccc; box-shadow:0px 0px 6px 0px #333;width: 361px !important;height: auto !important;padding: 20px;left: 50% !important;margin-left: -130px;z-index: 100000;}
+    .total_payment .offline_payment table{width:100%;}
+    .total_payment .offline_payment table td{text-align:left;padding: 2px 5px;}
+    .total_payment .offline_payment table td.lebelall{text-align:right;}
+    .total_payment .offline_payment table td input[type="text"]{width:100px;}
+    .close_div{left: 360px !important;position: absolute !important;top: 7px !important;cursor: pointer;width: 33px;height: 32px}
+    .openpay{float:right; color:#fff; text-decoration:underline; cursor:pointer;}
+    
+    .order-tables thead th{font-weight:bold; padding:3px 20px 3px 10px;}
+    .order-tables thead th, .order-tables tbody td{text-align:left;}
+    
+    .total_payment .block_div table{width:100%;}
+    .total_payment .block_div table tr td{padding:5px;}
+    .total_payment .block_div table select, .total_payment .block_div table textarea{width:200px;}
+
+    </style>
+    <script type="text/javascript">
+        
+        function div_show(id)
+        {
+            document.getElementById('total_payment').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('proof_id').value = id;
+        }
+        
+        function div_hide()
+        {
+            document.getElementById('total_payment').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+        
+        function all_save(){
+   
+            var status = document.getElementById('status').value;
+            var qty = document.getElementById('qty').value;
+            var comment = document.getElementById('comment').value;
+            var proof_id = document.getElementById('proof_id').value;
+            var proof_type = document.getElementById('proof_type').value;
+           
+          if(status == '')
+          {
+            alert("Please select the status");
+            return false;
+          }
+          else{
+          
+                if (window.XMLHttpRequest)
+                {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp=new XMLHttpRequest();
+                }
+                else
+                {// code for IE6, IE5
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange=function()
+                {
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                    {
+                            //alert(xmlhttp.responseText);
+                        
+                            location.reload();
+                             
+                    }
+                }
+                //alert(str);
+                
+                form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+        xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/sales/order/proofcomment/?status="+status+"&qty="+qty+"&comment="+comment+"&proof_id="+proof_id+"&proof_type="+proof_type+"&form_key="+form_key+"&isAjax=true",true);
+        
+               // xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/set_proofedit.php?status="+status+"&comment="+comment+"&proof_id="+proof_id+"&proof_type="+proof_type,true);
+                xmlhttp.send(null);
+          }
+      }
+    </script>
+    
+    <?php
+    /************************* End for proof module **********************************/
+    
+    /************************** End by dev ***********************************/
+    ?>
+    
+    <div class="buttons-set">
+        <p class="back-link"><a href="<?php echo $this->getBackUrl() ?>"><small>&laquo; </small><?php echo $this->getBackTitle() ?></a></p>
+    </div>
+</div>

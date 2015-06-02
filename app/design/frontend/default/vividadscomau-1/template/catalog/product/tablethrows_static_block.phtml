@@ -1,0 +1,100 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('top_menu_slider')->toHtml() ?>
+<!--<div class="contact_info"><img src="<?php //echo $this->getSkinUrl('images/phone_info.png');?>" alt="contact info"/></div>-->
+<?php  $catName = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getName(); ?>
+<?php  $curCatId = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId(); ?>
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');?>
+
+<?php  $imageUrl = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getImageUrl();?>
+<?php if(!$_productCollection->count()): ?>
+<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('external-block')->toHtml() ?>
+
+<!--<p class="note-msg"><?php //echo $this->__('There are no products matching the selection.') ?></p>-->
+
+<?php else: ?>
+<div class="cate_listing">
+  <?php // List mode ?>
+  <?php $_iterator = 0; ?>
+  <?php ?>
+  <?php foreach ($_productCollection as $_product):    ?>
+  <?php  $productId =  $_product->getId(); ?>
+  <?php //$p_sku = $product->getSku();?>
+  <?php  
+//		if($productId == 697 && $productId == 1390 && $productId == 1392 && $productId == 1398 && $productId == 1399 && $productId ==1463 && $productId == 1464) {
+//		1391 1393 1394 1395 1396 1397 1400 1401 1402 1403 1404 	
+		if($productId != 1591 ) {
+			$product = Mage::getModel('catalog/product')->load($_product->getId());
+		//print_r($_product->getId());
+			
+
+			   
+
+	   ?>
+  <?php  $imageName =  $_product->getData('small_image');?>
+  <?php //echo '<pre>'; print_r($_product); echo '</pre>';?>
+  <?php  $imageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $imageName; 	?>
+  <?php //echo $imageUrl = Mage::getModel('catalog/product_media_config')->getMediaUrl($_product>getThumbnail()); ?>
+  <div class="pro_left wide">
+    <div class="banner" style="width:99%;"> 
+    <div class="p_detail" style="margin-bottom:10px;">
+        <h4 style="margin:0;"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h4>
+       
+      <?php  $product = Mage::getModel('catalog/product')->load($_product->getId());
+$store_id = $this->helper('core')->getStoreId(); ?>
+<h3 style="line-height:20px;"><?php echo "Product Model : ".$store_id."-".$product->getSku() ?></h3>
+<h3 style="line-height:20px;"><?php echo "Price : ".$_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?></h3>
+<?php //echo $_formattedSpecialPrice = Mage::helper('core')->currency($_product->getFinalPrice(),true,false); ?>
+        <?php if($_product->isSaleable()): ?>
+                      
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+<p>                    
+     <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+</p>     
+ 
+            
+            </div>
+<img style="width:100%; height:auto !important; " src="<?php echo $imageUrl; ?>"  alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />  </div>
+  </div>
+  <?php // Product Image ?>
+  <?php // Product description ?>
+  <?php } ?>
+  <?php endforeach; ?>
+  <script type="text/javascript">decorateList('products-list', 'none-recursive')</script> 
+</div>
+<?php endif; ?>

@@ -1,0 +1,185 @@
+<?php
+/**
+ * Custom tab template
+ */
+?>
+
+<!--script type="text/javascript" src="<?php echo $this->getJsUrl()?>jquery/jquery-1.8.2.min.js"></script-->
+<!--script type="text/javascript" src="<?php echo $this->getJsUrl()?>jquery/jquery.noconflict.js"></script-->
+
+<?php
+ $_order = $this->getOrder();
+ $url = Mage::helper('adminhtml')->getUrl('admin/sales_order/proofs');
+ 
+ $items = $_order->getAllItems();
+
+ foreach($items as $item)
+ {
+   $_product = Mage::getModel('catalog/product')->load($item->getProductId());
+   $proofItem[$item->getId()] = $_product->getName();
+ }
+ 
+ function getdrop($arrayproofs)
+ {
+   foreach($arrayproofs as $key=>$arrayproof)
+   {
+     echo '<option value="'.$key.'">'.addslashes($arrayproof).'</option>';
+   }
+ }
+ 
+?>
+<script type="text/javascript">
+    
+function add_another()
+{
+	i = document.getElementById('form_count').value;
+	i++;
+	var str = '<div id="tab_'+i+'"><br><div class="file_class"><input type="file" name="item_file[]"></div><div class="item_class"><select name="item[]"><option>Select Item</option><?php stripslashes(getdrop($proofItem));?></select></div><span class="removeitem" onclick="div_remove('+i+')" id="rem_'+i+'" style="cursor:pointer;">Remove</span></div>';
+	jQuery("#content1").append(str);
+	document.getElementById('form_count').value = i;
+	
+}
+
+function div_remove(id)
+{
+	i = document.getElementById('form_count').value;
+	jQuery("#tab_"+id).remove();
+}
+</script>
+<div class="entry-edit">
+        <div class="entry-edit-head"><h4>Add Proof</h4></div>
+        <div class="order-totals">
+         
+           <div class="total_proof"><input type="hidden" id="form_count" />
+            <form action="<?php  echo str_replace('//s','/admin/s',$url);?>" method="post" enctype="multipart/form-data">
+             <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+             <input name="orderid" id="orderid" value="<?php echo $_order->getId();?>"  type="hidden">
+                <table class="total_proof" style="width: 100%;">
+                    <tr class="txt">
+                        <td valign="top">
+                         <div id="dvFile">
+                          <div class="file_class">
+                          <input type="file" name="item_file[]">
+                          </div>
+                          <div class="item_class">
+                             <select name="item[]"><option>Select Item</option><?php getdrop($proofItem);?></select>
+                          </div>
+                         </div>
+                        </td>
+                        <td valign="top">
+                         <span onclick="add_another();" style="cursor:pointer;" title="Add book suggetion" class="addanother">Add another</span><span class="submitclass"><input name="submit" id="submit" type="submit"  class="submit-img" /></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="10" align="left" valign="middle" colspan="6">
+                        <div id="content1"></div></td>
+                    </tr>
+                </table>
+                
+            </form>
+        </div>
+            
+        </div>
+    </div>
+<br/>
+<?php
+$url = Mage::helper('adminhtml')->getUrl('admin/sales_order/quantityupdate');
+$url2 = Mage::helper('adminhtml')->getUrl('admin/sales_order/download');
+
+?>
+<form action="<?php  echo str_replace('//s','/admin/s',$url);?>" method="post" enctype="multipart/form-data">
+<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+<input name="orderid" id="orderid" value="<?php echo $_order->getId();?>"  type="hidden">
+<div class="entry-edit">
+        <div class="entry-edit-head"><h4>Proofs List</h4><div style="float: right;"><button type="submit" name="updatequantity">Save</button></div></div>
+        
+        <div class="order-totals">
+           <table cellspacing="0" class="data order-tables" style="width:100%;">
+             
+               <thead>
+                   <tr class="headings">
+                       <th class="a-center">Proofs File</th>
+                       <th class="a-center"><span class="nobr">Product Name</span></th>
+                       <th class="a-center"><span class="nobr">Status</span></th>
+                       <th class="a-center"><span class="nobr">Quantity</span></th>
+                       <th class="a-center"><span class="nobr">Comments</span></th>
+		       <th class="a-center"><span class="nobr">Date</span></th>
+		       <th class="a-center"><span class="nobr">Approval Date</span></th>
+                   </tr>
+               </thead>
+               <tbody class="even">
+                <?php
+                   $tableName = Mage::getSingleton('core/resource')->getTableName('proofs');  
+                   $sqlProofsSystem="SELECT *,DATE_FORMAT(postdate,'%D %M, %Y') AS p_date,DATE_FORMAT(approve_date,'%D %M, %Y') AS a_date FROM ".$tableName."  WHERE  order_id = '".$_order->getId()."' AND proof_type = 'order' ORDER BY entity_id DESC";
+                   $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlProofsSystem);
+                   $resultsSystem = $chkSystem->fetchall();
+                   
+                   foreach($resultsSystem as $proof)
+                   {
+                 ?>
+                       <tr class="border">
+                          <td class="a-center"><a href="<?php echo str_replace('//s','/admin/s',$url2).'file/'.$proof['file'].'/';?>"><?php echo $proof['file'];?></a></td>
+                          <td class="a-center">
+                          <?php
+                          
+                          $tableName = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
+                          $sqlProofsSystem="SELECT * FROM ".$tableName."  WHERE  item_id = '".$proof['item_id']."'";
+                          $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlProofsSystem);
+                          $resultsSystem = $chkSystem->fetch();
+                          
+                             $_product = Mage::getModel('catalog/product')->load($resultsSystem['product_id']);
+                             echo $_product->getName();
+                          ?>
+                          </td>
+                          <td class="a-center"><?php echo $proof['status'];?></td>
+                          <td class="a-center"><input type="hidden" name="item[<?php echo $proof['entity_id'];?>]" value="<?php echo $proof['item_id'];?>"/><input type="text" style="width: 30px;" name="quantity[<?php echo $proof['entity_id'];?>]" value="<?php echo $proof['quantity'];?>"/></td>
+                          <td class="a-center"><?php echo $proof['comment'];?></td>
+			  <td class="a-center"><?php echo $proof['p_date'];?></td>
+			  <td class="a-center"><?php echo $proof['a_date'];?></td>
+                       </tr>
+                 <?php
+                   }
+                 ?>
+                </tbody>
+              
+             </table>
+        </div>
+</div>
+ </form>
+  <style>
+  .removeitem, .addanother, .submit-img {
+    background: none repeat scroll 0 0 #ED6502;
+    border: 1px solid #A04300;
+    color: white;
+    font-weight: bold;
+    margin-left: 5px;
+    padding: 1px 10px;
+}
+.submitclass {
+    padding: 10px 20px;
+}
+.total_proof {
+    padding: 0 20px;
+    width: 70%;
+}
+.total_proof tr td {
+    padding: 3px 0 !important;
+}
+.file_class {
+float: left;
+width: 190px;
+}
+.removeitem, .addanother, .submit-img {
+background: none repeat scroll 0 0 #ED6502;
+border: 1px solid #A04300;
+color: white;
+font-weight: bold;
+margin-left: 5px;
+padding: 1px 10px;
+border-image: initial;
+}
+
+.item_class {
+float: left;
+}
+ </style>

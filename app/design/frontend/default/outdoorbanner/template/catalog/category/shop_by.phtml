@@ -1,0 +1,41 @@
+<?php 
+   		 /*fetching products from the category featured*/
+		  $_helper = Mage::helper('catalog/output');
+		  
+		  $categories = Mage::getModel('catalog/category')->load(49)->getChildren();
+						
+			$catIds = explode(',',$categories);
+			
+			asort($catIds);
+			
+?>
+
+<div class="shop-by">
+	
+    <?php 
+	$i=0;
+	foreach($catIds as $catId){ ?>
+   
+        <?php
+		$i++;
+            $category = Mage::getModel('catalog/category')->load($catId);
+            $imageUrl = Mage::getBaseUrl('media').'catalog/category/'.$category->getImage();
+			
+			if($i<4){
+		?>
+    
+    <div class="shop-by-section">
+		<a href="<?php echo $category->getUrl_path();?>">
+			<img src="<?php echo $imageUrl;?>" alt="<?php echo $category->getName();?>" width="330" height="141" />
+            	
+            <h2><?php echo $category->getName();?></h2>
+			<span class="next"><span>&gt;</span></span>
+			<span class="gradient-background"><span></span></span>
+		</a>
+	</div>
+    <?php 
+		}
+	}
+	?>
+    
+</div>

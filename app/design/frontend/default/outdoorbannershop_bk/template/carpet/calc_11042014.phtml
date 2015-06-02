@@ -1,0 +1,135 @@
+<?php
+$arr = $this->getBoSuaCarpetJsonConfig();
+//echo "<pre>";print_r($arr);echo "<pre>";
+?>
+
+<?php if(Mage::getStoreConfig('bs_carpet/general/active')==1 && $this->getProduct()->getIsCarpetProduct()==1): ?>
+<div class="calculator-wrapper">
+<div class="block block-calculator">
+    <?php /*
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Calculator')?></span></strong>
+    </div>
+    */ ?>
+    <div class="block-content">
+       
+	<dl style="" id="unitBox" class="clearfix">
+            <dt>Unit</dt>
+            <dd>
+		<input type="hidden" name="cnvunit" id="cnvunit" value="m"/>
+		<select class="textfield dropdown-s" id="major" name="major" onchange="ca.conversionMeter(this.value)">
+		    <option value="m">m.</option>
+		    <option value="cm">cm.</option>
+		    <option value="mm">mm.</option>
+                </select> 
+            </dd>
+        </dl>
+	
+	<dl style="" id="sizeBox" class="clearfix">
+	    <dt>Size (m)</dt>
+	    
+	    <dd id="main_size">
+		  <div class="sizes-block">
+		    <input type="text" size="5" value="1" name="room_width" id="room_width" onkeyup="ca.numberOnly(this,false);">
+		    <div class="float-L">
+			<a onclick="ca.increaseCounter('room_width');" class="arrowTop" href="javascript:void(0);">I</a>
+			<a onclick="ca.decreaseCounter('room_width');" class="arrowbtm" href="javascript:void(0);">D</a>
+		    </div>
+		    <span>width</span>
+		  </div>		  
+		  
+		  <div class="sizes-block last">
+		    <input type="text" size="5" value="1" name="room_length" id="room_length" onkeyup="ca.numberOnly(this,false);">
+		    <div class="float-L">
+			<a onclick="ca.increaseCounter('room_length');" class="arrowTop" href="javascript:void(0);">I</a>
+			<a onclick="ca.decreaseCounter('room_length');" class="arrowbtm" href="javascript:void(0);">D</a>
+		    </div>
+		    <span>height</span> 
+		  </div>
+		                  
+		  
+	    </dd>
+
+	    
+	</dl>
+	
+
+	
+        <?php /* 
+	       <div class="inneri">
+	       		<div class="inputi">
+		        	<p class="inputi-f"><?php echo $this->__('Width (m)')?></p>
+		        	<p class="inputi-f-s">&nbsp;</p>
+		        	<p class="inputi-f"><?php echo $this->__('Length (m)')?></p>
+		        </div>
+		        <div class="inputi">
+		        	<p class="inputi-f"><input type="text" size="5" value="1" name="room_width" id="room_width" onkeyup="ca.numberOnly(this,false);"></p>
+		        	<p class="inputi-f-s">X</p>
+		        	<p class="inputi-f"><input type="text" size="5" value="1" name="room_length" id="room_length" onkeyup="ca.numberOnly(this,false);"></p>
+		        </div>
+		        <?php  ?>
+		        <div class="buttoni">
+		        	<button type="button"  onclick="ca.calcRoom();" class="button"><span><span><?php echo $this->__('Calculate')?></span> </span> </button>
+		        </div>
+		        <?php  ?>
+	       </div> 
+	       */ ?>
+	        <div class="inneri" style="margin-top: -5px; display: none">
+		    <p><b><?php echo $this->__('Floor area:')?></b> <span id="room_area">0.00</span> m<sup><font size="2">2</font></sup></p>
+		    <p><b><?php echo $this->__('Wall length:')?></b> <span id="room_circum">0.00</span> m</p>
+				
+	        </div> 
+	        
+	        <div class="inneri" style="text-align: left;display: none;"> 
+		    <div id="large_result" style="display: none;">
+			    <p><b><?php echo $this->__('Current product:')?></b> <font color="#FF0066"><span id="carpet_width">0</span>m</font> x <font color="#FF0066"><span id="carpet_length">0</span>m</font></p>
+			    <p style="margin-top: -5px;"><b><?php echo $this->__('Actual product area:')?></b> <span id="actual_area">0.00</span> m<sup><font size="2">2</font></sup></p>
+			    <p><b><?php echo $this->__('Total price:')?></b> <span id="total_price"></span></p>
+		    </div>
+		    
+		    
+		    <span id="large_message" style="display: none;">
+			    <p><font color="#FF0000"><?php echo $this->__('Please contact one of our sales advisors about purchasing larger sizes than are available on our web site.')?></font></p>
+		    </span>
+				
+	        </div>
+       <?php /*   */ ?>
+    </div>
+    
+</div>
+
+
+<div class="block block-calculator" style="display: none">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Conversion')?></span></strong>
+    </div>
+    <div class="block-content">
+        <p><?php echo $this->__('Convert feet and/or inches into meters:')?></p>
+        <div class="inneri">
+	        <div class="inputi">
+	        	<div class="inputi-f"><?php echo $this->__('Feet')?></div>
+	        	<div class="inputi-f-s">&nbsp;</div>
+	        	<div class="inputi-f"><?php echo $this->__('Inches')?></div>
+	        </div>
+	        <div class="inputi">
+	        	<div class="inputi-f"><input type="text" size="5" value="1" name="feet" id="calc_feet" onkeyup="ca.numberOnly(this,false);"></div>
+	        	<div class="inputi-f-s">&nbsp;</div>
+	        	<div class="inputi-f"><input type="text" size="5" value="1" name="inches" id="calc_inches" onkeyup="ca.numberOnly(this,false);"></div>
+	        </div>
+	        <div class="buttoni">
+	        	<button type="button"  onclick="ca.conversion();" class="button"><span><span><?php echo $this->__('Convert')?></span> </span> </button>
+	        </div>
+        </div>
+        <div class="inneri">
+	        <div class="texti">
+		    <p><b><?php echo $this->__('Result:')?></b> <br>
+		    <font color="#FF0066"><span id="calc_metres">0</span> <?php echo $this->__('meters')?></font>
+		    </p>
+		</div>
+        </div>
+        
+    </div>
+</div>
+</div>
+
+<?php endif;?>

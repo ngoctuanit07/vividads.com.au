@@ -1,0 +1,2107 @@
+ <?php
+ 
+ /*order object get all detail of order*/
+ 
+ $_order = $this->getOrder();
+ 
+ $_store_id = $_order->getStore_id();
+ $_store_info = Mage::getModel('core/store')->load( $_order->getStore_id());
+ $_c_store_name =$_store_info->getCode();
+  
+ 
+ $_order_number = $_order->getIncrement_id();
+ $_short_order_id = $this->getRequest()->getParam('order_id');
+ $_user = Mage::getSingleton('admin/session')->getUser();
+ $_user_id = $_user->getId();
+ 
+ /*user type either designer or developer*/
+ /*controller main */
+ $_m_controller = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+ 
+ 
+ if($_user_id==2){
+ 	$_user_type = 'admin';
+ }else{
+	$_user_type = 'designer'; 
+	 }
+ 
+ 
+ 
+ $items = $_order->getAllItems();
+ $_customer_id = $_user_id;
+   
+  foreach($items as $item)
+  {
+    $_product = Mage::getModel('catalog/product')->load($item->getProductId());
+    $proofItem[$item->getId()] = $_product->getName();
+  }
+  
+  function getdrop1($arrayproofs)
+ {
+   foreach($arrayproofs as $key=>$arrayproof)
+   {
+     echo '<option value="'.$key.'">'.addslashes($arrayproof).'</option>';
+   }
+ }
+    
+    $url = Mage::helper("adminhtml")->getUrl("designer/adminhtml_designer/addcomment");
+        $url = str_replace('p//s','p/admin/s',$url);
+
+	
+
+ ?>
+
+<script src="<?php echo $this->getJsUrl('upload/jquery.form.js');?>"></script>
+
+ 
+<script type="text/javascript">
+    
+function add_another1()
+{
+	i = document.getElementById('form_count').value;
+	i++;
+	var str = '<div id="tab_'+i+'" class="alltab"><br><div class="file_class"><input type="file" name="item_file[]"></div><div class="item_class"><select name="item[]"><option>Select Item</option><?php stripslashes(getdrop1($proofItem));?></select></div><div class="comment_class"><textarea name="comment[]"></textarea></div><span class="removeitemsales" onclick="div_remove1('+i+')" id="rem_'+i+'" style="cursor:pointer;">Remove</span></div>';
+	jQuery("#content2").append(str);
+	document.getElementById('form_count').value = i;
+	
+}
+
+function div_remove1(id)
+{
+	i = document.getElementById('form_count').value;
+	jQuery("#tab_"+id).remove();
+}
+
+ function openFileOption(id)
+{
+  document.getElementById(id).click();
+  
+ }	
+
+
+///opening after changeing the file conetns
+function changeImg(id){
+	
+  
+	}
+	/*changing options*/
+jQuery(function(){	 
+	
+	 /*hiding progress info*/
+	// jQuery('.upload_progress_info').hide();
+	 
+	 jQuery('.uploadFile').change(function(event){
+		 
+		 
+		 //console.log(event.target.id);
+		 var previewClass = event.target.id;
+		 var idStart = previewClass.indexOf('[');
+		 var idEnd = previewClass.indexOf(']');
+		 var currentId =previewClass.substring(idStart+1,idEnd);		 
+		
+		// console.log(currentId);
+		 
+		// alert(currentId);
+		
+		//$rowCounter = document.getElementById('rowCounter_'+currentId);
+		/*fetch value of the input box*/		
+		//$counter = $rowCounter.value;
+		//$rowCounter.value = parseInt($counter)+1;
+		
+		//$newCounter = parseInt($rowCounter.value);
+		
+		 jQuery('#upload_proof_icon_'+currentId).hide();
+		 jQuery('#preview_'+currentId).show();
+		 
+		 var preview = jQuery('#preview_'+currentId+' img');
+		 
+		 var input = jQuery(event.currentTarget);
+   		 var file = input[0].files[0];
+   		 var reader = new FileReader();
+   		
+		 reader.onload = function(e){
+       	 image_base64 = e.target.result;       	
+		 preview.attr("src", image_base64);
+		 
+		  var fileType = file['type'];
+		  
+		  //base_path = <?php //echo $_SERVER['DOCUMENT_URI'].'/tablethrows/';?> ;
+		  base_path = '<?php echo $_SERVER['DOCUMENT_URI'].'/';?>' ;
+			
+			/*images loading for if not jpg or png*/
+		 var file_icons = {
+			              zip_icon:base_path+'media/upload/fileicons/rar_icon.png',
+						  xlxs_icon:base_path+'media/upload/fileicons/xlxs_icon.png',
+						  docx_icon:base_path+'media/upload/fileicons/docx_icon.png',
+						  pdf_icon:base_path+'media/upload/fileicons/pdf_icon.png',
+						  ttf_icon:base_path+'media/upload/fileicons/ttf_icon.png',
+						  psd_icon:base_path+'media/upload/fileicons/psd_icon.png',
+						  ai_icon:base_path+'media/upload/fileicons/ai_icon.png',
+						  fla_icon:base_path+'media/upload/fileicons/fla_icon.png',
+						  txt_icon:base_path+'media/upload/fileicons/txt_icon.png',
+						  
+		 				   
+						  }
+		
+			//console.log(file);
+			if(fileType=='application/zip'){
+			
+			 preview.attr("src", file_icons['zip_icon']);
+			//console.log(file_icons);
+			
+			}else if(fileType=='application/rar'){
+			
+			 preview.attr("src", file_icons['zip_icon']);
+				//console.log(preview);
+			}else if(fileType=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+			
+			 preview.attr("src", file_icons['xlxs_icon']);
+				//console.log(preview);
+			}else if(fileType=='application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+				preview.attr("src", file_icons['docx_icon']);				
+			}else if(fileType=='application/pdf'){
+					preview.attr("src", file_icons['pdf_icon']);
+					 
+			}else if(fileType=='application/plain'){
+					preview.attr("src", file_icons['txt_icon']);
+			
+			}else if(fileType==''){
+					
+					 file_name = file['name'];					
+					 file_ext = file_name.split('.');					
+					 total_ext=file_ext.length;
+					 var file_extension = file_ext[total_ext-1];
+					 					
+					 // console.log(file_extension);
+					  
+					 if(file_extension == 'psd'){					
+						preview.attr("src", file_icons['psd_icon']);
+					 }
+					 if(file_extension == 'ai'){					
+						preview.attr("src", file_icons['ai_icon']);
+					 }
+					 if(file_extension == 'fla'){					
+						preview.attr("src", file_icons['psd_icon']);
+					 }
+					 if(file_extension == 'rar'){					
+						preview.attr("src", file_icons['rar_icon']);
+					 }
+					 if(file_extension == 'zip'){					
+						preview.attr("src", file_icons['rar_icon']);
+					 }
+		}else{
+				preview.attr({src:image_base64,
+							  style:'display:block',
+							  });
+				
+			} 
+			console.log(file);
+		 
+		
+		 };
+		 
+		 
+		 
+		 
+		 
+   		 reader.readAsDataURL(file);		
+		  //console.log(currentId);
+		 // console.log(jQuery('#upload_progress_'+currentId));		
+		/*upload the files and show the progress info*/		 
+		
+		cFileSize = parseInt(file['size']);
+		kb = 1024;
+		mb = 1024*kb;
+		cFileSize = cFileSize/mb;
+		
+		jQuery('#filename_'+currentId).html('<b>File:</b>'+file['name']);
+		jQuery('#fileSize_'+currentId).html('<b>File Size:</b>'+cFileSize.toFixed(2)+' MB');
+		
+		/*fileDataVars*/
+		//cFile = jQuery('.cfile'+currentId);
+		
+		var items = currentId.split('_');
+		var item_id = items[0];
+		var file_id = items[1];
+		
+		xform_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+		
+		//console.log(file);
+		
+		var fileDataVars = {
+							
+							fileid:file_id,
+							filename:file['name'],
+							file_type:file['type'],
+							file_size:file['size'],
+							fullPath:file['mozFullPath'],
+							short_order_id:<?php echo $_short_order_id;?>,	
+							order_id:<?php echo $_order_number;?>,
+							store_id:<?php echo $_store_id;?>,
+							proof_type:'proof',
+							user_id:<?php echo $_user_id;?>,
+							user_type:'<?php echo $_user_type;?>',
+							item_id:item_id,
+							form_key:xform_key,
+							isAjax:true,					
+							
+						}
+							
+		/*writing chat data to file via ajax*/
+			  //designer/adminhtml_designer/uploadfile
+			  
+			  
+			  jQuery.ajax(
+			     { 
+				  url:'<?php echo $_m_controller;?>designer/adminhtml_designer/uploadfile', 
+				  type:'POST',
+				  data: fileDataVars,
+				  dataType:"HTML",
+                  beforeSend: function(xhr) { 
+   						 //console.log(xhr);						
+						},
+				  success: function(data){					  	
+					  },
+					  
+				 }
+			  );
+		   console.log('#submit_'+item_id+'_'+file_id);
+		 
+		 ////uplaoding files////
+			jQuery('.upload_proof_icon_ren_'+item_id+'_'+file_id).hide();
+			
+			console.log(item_id+'_'+file_id);
+			 
+		 	jQuery('#progress_bar_'+item_id+'_'+file_id).width(0);
+			jQuery('#submit_'+item_id+'_'+file_id).ajaxSubmit(
+			{
+				
+				uploadProgress: function(event, position, total, percentComplete) {
+					
+					console.log(percentComplete);
+					jQuery('#progress_bar_'+item_id+'_'+file_id).show();
+					jQuery('#progress_bar_'+item_id+'_'+file_id).width(percentComplete+'%');
+				},
+				complete:function(d){
+					//console.log(jQuery('#progress_bar_'+item_id+'_'+file_id));
+				}
+				});
+		 
+		 var formId = 'filesUpload_'+currentId;
+   
+   		//var params={filename:}
+		//var sb = jQuery('#'+formId).submit();
+		
+		//console.log(sb);
+		var cDate ='<?php echo date('dM-Y h:i:s');?>';
+		var fSize = Math.round(cFileSize*1024);
+		
+		jQuery('#file_info_name_'+item_id+'_'+file_id).html('<b>File Name:</b>'+file['name']);
+		jQuery('#file_info_size_'+item_id+'_'+file_id).html('<b>Size:</b>'+cFileSize.toFixed(2)+'MB');
+	 	jQuery('#file_info_date_'+item_id+'_'+file_id).html('<b>Date:</b>'+cDate);
+		
+		
+		jQuery('#upload_progress_info_'+currentId).show();
+		//jQuery('.upload_proof_icon').hide();
+		
+		//console.log(file);
+		
+		
+		///update chat auto /// when chatting////
+		 var event_id = event.target.parentNode.parentNode.parentNode.id;
+		 event_id = event_id.substring(13);
+		 var chat_text = '<b>Designer has uploaded <br/>Proof(s) / Draft(s) </b>';
+		 chat_text+='<br/>&nbsp;&nbsp;<b>File Name:</b> '+file['name'];
+		 chat_text+='<br/>&nbsp;&nbsp;<b>Size:</b> '+cFileSize.toFixed(2)+'KB';
+		 chat_text+='<br/>&nbsp;&nbsp;<b>Upload Date:</b> '+cDate;
+		 
+		 /*chat add automatically text*/
+		 chatNow(event_id, chat_text);
+		
+		  
+		});
+	
+	
+	 jQuery('.upload_artwork_files_final').click(function(event){
+		 /*cloning object*/
+		 
+		/*getting new value*/
+		
+		current_obj = event.target.parentNode.id;
+		console.log(current_obj);
+		 
+		//alert(jQuery('.files_thumbnails_'+current_obj+' li:last').attr('id'));
+		
+		current_id = jQuery('.files_thumbnails_'+current_obj+' li:last').attr('id');
+	
+		//console.log(current_id);	
+		//alert(current_id);	
+		
+		
+		fileIds = current_id.split('_');		
+		
+		pCounter = fileIds[0];
+		cCounter=fileIds[1];		
+		nCounter = parseInt(cCounter)+1;
+		
+		////prepare clone for thumbnails///
+		$clonRow = jQuery('.files_thumbnails_'+current_obj+' li:last')
+		             .clone(true)
+				   .attr({class:'.clone_row_'+pCounter+'_'+nCounter,
+				          id:pCounter+'_'+nCounter,
+						  style:'display:block',
+						  });
+		
+		//fileUpload[12_7]
+		
+		$clonRow.find('.uploadFile').attr(
+		 							{id:'fileUpload['+pCounter+'_'+nCounter+']',
+									 name:'fileUpload['+pCounter+'_'+nCounter+']',
+									 onclick:'openFileOption("fileUpload['+pCounter+'_'+nCounter+']")',
+									});
+		
+		$clonRow.find('.submit_form').attr(
+		 							{ id:'submit_'+pCounter+'_'+nCounter,
+									});	
+		
+		$clonRow.find('.thumbnail_box').attr(
+		 							{ onclick:'openFileOption("fileUpload['+pCounter+'_'+nCounter+']")',
+									});	
+		$clonRow.find('.preview_thumb').attr(
+		 							{ id:'preview_'+pCounter+'_'+nCounter,
+									  style:'display:none',
+									});
+		$clonRow.find('.preview_image_clone').attr(
+		 							{ id:'preview_image_clone_'+pCounter+'_'+nCounter,
+									  src:'media/upload/fileicons/proof_icon.png',
+									  
+									});
+									
+		$clonRow.find('.proof_not_uploaded').attr(
+		 							{ id:'upload_proof_icon_'+pCounter+'_'+nCounter,
+									  style:'display:block',
+									});	
+		$clonRow.find('.upload_progress_info').attr(
+		 							{ id:'upload_progress_info_'+pCounter+'_'+nCounter,
+									  style:'display:none;',
+									});	
+		$clonRow.find('.progress_bar').attr(
+		 							{ id:'progress_bar_'+pCounter+'_'+nCounter,
+									});			
+		$clonRow.find('.file_info_name').attr(
+		 							{ id:'file_info_name_'+pCounter+'_'+nCounter,
+									});
+		$clonRow.find('.file_info_size').attr(
+		 							{ id:'file_info_size_'+pCounter+'_'+nCounter,
+									});																																								
+		$clonRow.find('.file_info_date').attr(
+		 							{ id:'file_info_date_'+pCounter+'_'+nCounter,
+									});								
+		// $('#clone_listing_'+currentId).append($clonRow);
+		 
+		 
+		//  document.getElementById('uploadArt['+currentId+']['+$newcounter+']').style.display='none';
+		 jQuery('#uploadedFiles'+current_obj).append($clonRow);
+		 
+		   //console.log('#uploadedFiles'+current_obj);//$clonRow.html());
+		 });
+		 
+	
+
+/*starting chatting with the client designer*/	
+		
+		/*expand chat button and extract as well*/	
+	jQuery('.expand_btn').click(function(event){
+		
+		var chatBoxId = event.target.id;
+		var chatBoxWidth = jQuery('#expand_btn_'+chatBoxId).width();
+		
+		
+		
+		console.log(chatBoxId);
+		
+		if(chatBoxWidth == 293){
+			jQuery('#expand_btn_'+chatBoxId).attr({style:'width:310%;right:213%; position:relative;'});
+		}else{
+			jQuery('#expand_btn_'+chatBoxId).attr({style:'width:293px;right:0px; position:relative;'});
+			}
+		
+		});	
+		
+		
+		jQuery('.sendButton').click(function(event){
+			
+			//alert(event);
+			var event_id = event.target.id;
+			var chat_text = '';
+			chatNow(event_id,chat_text);
+			});
+		jQuery('.input_text').keypress(function(event){
+				
+				if(event.keyCode==13){
+					
+					var event_id = event.target.id.substr(10);
+					var chat_text = '';
+					chatNow(event_id,chat_text);
+					//console.log(event_id.substr(10));
+					}
+			
+			});	
+		
+		/*function for chatting window*/
+		
+		function chatNow(event,chat_text){
+			
+			
+			///starting chat///			
+			
+		   $current_id = event;
+		   
+		   // console.log('current id : '+$current_id);
+		  if(chat_text !=''){
+		   $curr_msg = 'chat_text';
+		  }else{
+			$curr_msg = jQuery('#msg_input_'+$current_id).val();  
+			  }
+		   
+		  // console.log($curr_msg);
+		   
+		   
+		    var oldscrollHeight = jQuery('#chat_container_'+$current_id).prop('scrollHeight');
+			
+			//console.log('old height='+oldscrollHeight);
+		   
+		   if($curr_msg !=''){
+			   
+			   jQuery('#msg_input_'+$current_id).val('');
+			   
+			   if(chat_text !=''){
+			   
+			   $client_message = '<div class="designer_text"><div class="chat_heading_designer">You:(<?php echo date('dM,Y h:i a');?>)</div><div class="c_text_designer"> '+chat_text+' </div></div>'; 
+			   
+			   }else{
+				   
+				 $client_message = '<div class="designer_text"><div class="chat_heading_designer">You:(<?php echo date('dM,Y h:i a');?>)</div><div class="c_text_designer"> '+$curr_msg+' </div></div>';  
+				   }
+			 //  console.log($client_message);
+			  // console.log($current_id);
+			   
+			   jQuery('#chat_container_'+$current_id).append($client_message);
+			   
+			  /*saving the chat to file*/
+			   
+			  $chat_file = jQuery('#chat_file_path_'+$current_id).val();
+			  xform_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+			  
+			  $curr_ids = $current_id.split('_');
+			  $item_id = $curr_ids[0];
+			  
+			  
+			  
+			  /*get variables */ 
+			   $postVars = { file_path:$chat_file,
+			                 chat_data:$client_message,
+							 short_order_id:<?php echo $_short_order_id;?>,	
+							 order_id:<?php echo $_order_number;?>,
+							 store_id:<?php echo $_store_id;?>,
+							 proof_type:'proof',
+							 user_id:<?php echo $_user_id;?>,
+							 user_type:'<?php echo $_user_type;?>',
+							 item_id:$item_id,
+							 form_key:xform_key,
+							 isAjax:true,
+							 
+						   }
+			   
+			  
+			  /*writing chat data to file via ajax*/
+			  jQuery.ajax(
+			     { 
+				  url:'<?php echo $_m_controller;?>designer/adminhtml_designer/savechat',
+				  type:'POST',
+				  data: $postVars,
+				  dataType:'HTML',
+				  success: function(data){
+					  console.log(data);
+					  },
+					  
+				 }
+			  );
+			  			   
+			   
+			//Auto-scroll             
+           
+			var newscrollHeight = jQuery('#chat_container_'+$current_id).prop("scrollHeight")-70;
+			
+			//Scroll height after the request  
+             
+			
+			if(newscrollHeight > oldscrollHeight){  
+                
+				jQuery('#chat_container_'+$current_id).animate({ scrollTop: newscrollHeight }, 'normal'); 
+				
+				//Autoscroll to bottom of div  
+            } 
+			   
+		}else{
+				   alert('Please enter some text to resume chat...');
+				   jQuery('#msg_input_'+$current_id).focus();
+				   jQuery('#'+$current_id).prop('disabled',true);
+				   
+				   }
+			
+			
+			}
+	
+/*saving order with new additions*/
+	 
+	 
+		 jQuery('#saveOrder').click(function(event){			 
+			 jQuery('#breadCrumbs').html('<span>Your oder has saved successfully! </span>')
+			                  .show();			 			 
+			 });
+		jQuery('textarea').keypress(function(event){
+			jQuery('#breadCrumbs').hide();
+			}); 
+		 
+		
+		
+		///approving the design sent from the designer///
+	
+jQuery('.approve_dropdown').change(function(event){
+			
+			
+			
+			current_id = event.target.id;
+			 console.log(current_id);
+			$selectedVal = jQuery('#'+current_id).val(); 
+			
+			
+			if($selectedVal==0){
+				alert('Please approve or dis-approve from the list...');
+				return false;
+				}else{
+				/*if value is 1 then design is not approved*/
+				
+			/*
+			if($selectedVal==1){
+				confirmed = confirm('You are about dis-approve the design');
+					
+					if(confirmed){					
+						
+						var file_obj = {file_name:  jQuery('#cfileName_'+ids[2]+'_'+ids[3]).val(),
+								file_size:  jQuery('#cfileSize_'+ids[2]+'_'+ids[3]).val(),
+								file_id: 	curr_event,
+								file_path:	jQuery('#currFilePath').val(),
+								
+								};
+						
+						approve_it(file_obj,event.target.id,1);
+					}
+				return false;
+				}
+				*/	
+			
+			/*if value is 2 then the design is approved*/
+			
+			
+				
+				var current_selected_val = $selectedVal;				
+								
+				/*setting the values for the popup*/
+				
+				c_current_id = event.target.id;
+				ids = c_current_id.split('_');
+				item_id = ids[2];
+				
+				pName = jQuery('#itemName_'+item_id).val();
+				pModel = jQuery('#modelNo_'+item_id).val();
+				
+				productName = '<h2>'+pName+'</h2><div>( Model No. '+pModel+' )</div>';
+				//console.log(productName);
+			
+			jQuery('#product_heading').html(productName);
+			cFileName= jQuery('#cfileName_'+ids[2]+'_'+ids[3]).val();
+			cFileSize = jQuery('#cfileSize_'+ids[2]+'_'+ids[3]).val();
+			cPath = jQuery('#currFilePath').val();
+			
+			imgHtml ='<img width="135" height="93" alt="'+cFileName+'" src="'+cPath+cFileName+'" />';
+			
+			/* assigning the images sources*/
+			jQuery('#img_uploaded').html(imgHtml);
+			
+			var download_file = '<a href ="'+cPath+cFileName+'" target="_blank" >Download</a>';
+			
+			jQuery('.download_file_path').html(download_file);
+			
+			jQuery('#uploadedfileSize').html('File size: '+cFileSize);				
+			
+			jQuery('#input_quantity').attr({id:'input_quantity_'+ids[2]+'_'+ids[3],});			
+			
+			//update input quantity///			
+			var ordered_qty = jQuery('#ordered_qty_'+ids[2]+'_'+ids[3]).val();
+			//console.log(ordered_qty);
+			
+			
+			//changing or updating the quantity
+			
+			jQuery('#input_quantity_'+ids[2]+'_'+ids[3]).change(function(event){				
+				
+				
+				var new_quantity =event.target.value;				
+				
+				if(new_quantity > ordered_qty){
+					alert('Oops you entered the quantity more than the ordered quantity, that is ('+Math.round(ordered_qty)+')');
+					jQuery('#input_quantity_'+ids[2]+'_'+ids[3]).val(1).focus().select();
+					
+					return false;
+					
+				}else{
+					
+					jQuery('#quantity_'+ids[2]+'_'+ids[3]).val(event.target.value);
+				  //console.log(event.target.value);				
+				}//end of quantity box
+				});
+			////update signature////
+			jQuery('#cSignature').attr({id:'cSignature_'+ids[2]+'_'+ids[3],});
+			
+			//reseting the value of signatures
+			jQuery('.cSignature').val('');
+			jQuery('#cSignature_'+ids[2]+'_'+ids[3]).val('');
+			
+			jQuery('#signature_'+ids[2]+'_'+ids[3]).val(jQuery('#cSignature_'+ids[2]+'_'+ids[3]).val());
+			
+			
+			
+			jQuery('#cSignature_'+ids[2]+'_'+ids[3]).change(function(event){
+				
+				jQuery('#signature_'+ids[2]+'_'+ids[3]).val(event.target.value);
+				 //console.log(event.target.value);
+				
+				});	
+				
+		/*checking if the client has disapproved the design*/	
+		jQuery('.approval-text').attr({id:'approval_text_'+ids[2]+'_'+ids[3],
+									 }									
+									);
+		
+		/*if we are going to disapprove */
+		
+		if(current_selected_val==1){
+			
+			jQuery('#overlayPopup').show();
+			
+				console.log('disapproved');
+			
+			jQuery('#Print_Quantity').hide();
+			jQuery('.agreePrintBtn').hide();
+			jQuery('.disAgreeBtn').show();
+			
+			var text_area = '<textarea id="reason_txt_'+ids[2]+'_'+ids[3]+'" style="width:640px; height:168px; border:0px;font-size:14px;" ></textarea>';
+			
+			jQuery('#Disclaimer h2').html('Reason to disapprove');
+			jQuery('#approval_text_'+ids[2]+'_'+ids[3]).html(text_area);
+			jQuery('#disAgreeBtn').attr({id:'disAgreeBtn_'+ids[2]+'_'+ids[3]});;
+			
+			///clicking on agree button ///
+			
+			pre_id=0;
+			
+			if(pre_id < 1){	
+			jQuery('#disAgreeBtn_'+ids[2]+'_'+ids[3]).click(function(){
+				
+				c_current_id = event.target.id;
+				var curr_event = event.target.parentNode.parentNode.className;
+				
+				ids = c_current_id.split('_');
+				item_id = ids[2];
+				//call approve it if client click on approve button from the popup///
+				qty = jQuery('#quantity_'+ids[2]+'_'+ids[3]).val();
+				sign = jQuery('#cSignature_'+ids[2]+'_'+ids[3]).val();
+				reason = jQuery('#reason_txt_'+ids[2]+'_'+ids[3]).val();
+				 
+				if(reason==''){
+					alert('Please enter valid resaon for disapproval...');
+					jQuery('#reason_txt_'+ids[2]+'_'+ids[3]).focus();
+					return false;
+					}
+				
+				
+				if(sign==''){
+					alert('Please enter your signatures properly...');
+					jQuery('#cSignature_'+ids[2]+'_'+ids[3]).focus();
+					return false;
+					}
+				
+				//finally approve
+				//console.log(curr_event);
+				
+				var file_obj = { file_name: cFileName,
+								 file_size: jQuery('#cfileSize_'+ids[2]+'_'+ids[3]).val(),
+								   file_id: curr_event,
+								 file_path:	jQuery('#currFilePath').val(),
+						  		reason_txt: jQuery('#reason_txt_'+ids[2]+'_'+ids[3]).val(),
+							 signature_txt: sign,
+							 quantity	  :	0,
+								
+								};
+				
+				
+				pre_id++;
+				
+				//console.log('console'+pre_id);
+			if(pre_id==1){				
+				approve_it(file_obj,event.target.id,1);
+				//console.log('file_'+ids[2]+'_'+ids[3]);
+				
+				}
+					jQuery('#overlayPopup').hide();
+				
+				});
+			}
+			return false;
+			
+			
+			}	
+				
+		 
+		if(current_selected_val == 2){
+			
+			jQuery('#overlayPopup').show();
+			pre_id=0;
+			
+			if(pre_id < 1){
+				
+			
+			jQuery('#Print_Quantity').show();
+			jQuery('.agreePrintBtn').show();
+			jQuery('.disAgreeBtn').hide();
+			
+			var text_html ="<p>Artwork Approval</p><p>It is the customer's responsibility to ensure that the proof is correct in all areas. Please be sure to double-check spelling, grammar, layout and design before approving artwork.</p><p>If a proof containing errors is approved by the customer, customer is responsible for payment of all original costs of printing (screens, setup charges, any substrates), including corrections and reprints.</p><p>The customer is 100% responsible for approvals of Copyright, Trademark and Licensing Agreements of artwork.</p><p>Customer's signature on artwork approval is contractually binding for payment of all services rendered.</p><p>All artwork must be approved by the customer with an authorised signature before a job can be entered into production.</p>";
+
+		jQuery('#Disclaimer h2').html('Disclaimer');
+		jQuery('#approval_text_'+ids[2]+'_'+ids[3]).html(text_html);
+		jQuery('#agreePrintBtn').attr({id:'agreePrintBtn_'+ids[2]+'_'+ids[3]});;
+		
+		
+		jQuery('#agreePrintBtn_'+ids[2]+'_'+ids[3]).click(function(){
+				
+				c_current_id = event.target.id;
+				var curr_event = event.target.parentNode.parentNode.className;
+				
+				ids = c_current_id.split('_');
+				item_id = ids[2];
+				//call approve it if client click on approve button from the popup///
+				qty = jQuery('#quantity_'+ids[2]+'_'+ids[3]).val();
+				sign = jQuery('#cSignature_'+ids[2]+'_'+ids[3]).val();
+				total_qty = jQuery().val('#total_quantity_'+ids[2]+'_'+ids[3]).val();
+				 
+				
+				
+				if(sign==''){
+					alert('Please enter your signatures properly...');
+					jQuery('#cSignature_'+ids[2]+'_'+ids[3]).focus();
+					return false;
+					}
+				
+				//finally approve
+				//console.log(curr_event);
+				
+				var file_obj = {file_name:  cFileName,
+								file_size:  jQuery('#cfileSize_'+ids[2]+'_'+ids[3]).val(),
+								file_id: 	curr_event,
+								file_path:	jQuery('#currFilePath').val(),
+								signature_txt: sign,
+								total_quantity:total_qty,
+								
+								};
+				
+				pre_id ++;
+				
+				if(pre_id==1){				
+				approve_it(file_obj,event.target.id,2);
+				//console.log('file_'+ids[2]+'_'+ids[3]);
+				
+				}
+					jQuery('#overlayPopup').hide();
+				
+				});
+		
+			return false;
+	
+			
+		}
+	}		
+			 	
+			return false;
+						
+				}
+			});
+			
+		jQuery('#closeBtn').click(function(){
+			jQuery('#overlayPopup').hide();
+			});	
+		
+	
+	///function final approve the proof/////
+		
+	function approve_it(file_obj,$current_id,cVal){
+			
+			$idInfo =  current_id.split('_');
+			$item_id =$idInfo[2];
+			$entity_id = $idInfo[3];
+			
+			$approved_status = jQuery('#'+$current_id).val();
+			$quantity = jQuery('#quantity_'+$item_id+'_'+$entity_id).val();
+			$signature = jQuery('#signature_'+$item_id+'_'+$entity_id).val();
+			$order_quote_id = <?php echo $_short_order_id;?>;
+			$total_qty = jQuery('#total_quantity_'+$item_id+'_'+$entity_id).val();
+			$reason_txt = file_obj['reason_txt'];
+			$customer_id = <?php echo $_customer_id?>;			
+			$store_id = '<?php echo $_store_id?>';
+			$file = file_obj['file_name'];
+			$status='Approved';			
+			
+			//console.log($total_qty);	
+			//console.log(file_obj['file_id']);	
+		
+		///update chat auto /// when chatting////
+		 var event_id = file_obj['file_id'];
+			 
+		 event_id = event_id.substring(12);
+		 //console.log(event_id);
+		
+		if(cVal==1){
+			
+		$quantity = 0;	
+	var chat_text = '<h2>DISAPPROVED:</h2> <b style="color:#f00;">Client has disapproved the file</b>';
+	var reason_text ='<br/>&nbsp;&nbsp;<b><u>Reason: </u></b>'+file_obj['reason_txt'];
+	var qty =''; 
+	var approval_date ='<br/>&nbsp;&nbsp;<b><u>Disapproval Date:</u></b> '+'<?php echo date('dM-Y h:i:s'); ?>';
+	var signs='<br/>&nbsp;&nbsp;<b><u>Disapproved By: </u></b>'+file_obj['signature_txt'];
+		$status='Disapproved';  
+		}
+		if(cVal==2){
+			var chat_text = '<h2>APPROVED:</h2><b>Client has approved the file</b>';
+			var reason_text='';
+			var qty = '<br/>&nbsp;&nbsp;<b><u>Print Qty:</u></b> <u>'+$quantity+'</u>';
+			var approval_date ='<br/>&nbsp;&nbsp;<b><u>Approved Date:</u></b> '+'<?php echo date('dM-Y h:i:s'); ?>';
+			var signs='<br/>&nbsp;&nbsp;<b><u>Approved By: </u></b>'+file_obj['signature_txt'];
+			$status='Approved'; 
+			}
+		  
+		  chat_text+='<br/>&nbsp;&nbsp;<b><u>File Name:</u></b> <br/>&nbsp;&nbsp;<a href="'+file_obj['file_path']+file_obj['file_name']+'" target="_blank" style="color:#fff;" title="'+file_obj['file_name']+'"><u>'+file_obj['file_name']+'</u></a>';
+		 // chat_text+='<br/>&nbsp;&nbsp;<b>Size:</b> '+file_obj['file_size']+'MB';
+		  chat_text+=approval_date;
+		  chat_text+=qty;
+		  chat_text+=signs;
+		  chat_text+=reason_text;
+		  
+		 
+		 /*chat add automatically text*/
+		 chatNow(event_id, chat_text);
+			
+			console.log(event_id);
+			
+			var fileDataVars = {
+							approved_status	:$approved_status,
+							quantity		:$quantity,
+							signature		:$signature,
+							order_id		:$order_quote_id,
+							item_id			:$item_id,
+							entity_id 		:$entity_id,
+				total_ordered_quantity 		:$total_qty,
+							reason_txt		:$reason_txt,
+							store_id		:$store_id,
+							customer_id		:$customer_id,
+							file			:$file,
+							status			:$status,
+							
+							proof_type		:'order',								
+						}
+			console.log(fileDataVars);			
+							
+		/*writing chat data to file via ajax*/
+			  
+			  
+			  jQuery.ajax(
+			     { 
+				  url:'<?php echo Mage::getUrl('upload/index/approvedesign')?>', 
+				  type:'POST',
+				  data: fileDataVars,
+				  dataType:"HTML",
+                  beforeSend: function(xhr) { 
+   						 //console.log(xhr);
+						 jQuery('#loadingGif').show();
+						},
+				  success: function(data){
+					  		
+							jQuery('#not_approved_'+$item_id+'_'+$entity_id).hide();
+							jQuery('#approved_'+$item_id+'_'+$entity_id).hide();
+							jQuery('#loadingGif').hide();
+						if(cVal==1){
+							
+						jQuery('#not_approved_'+$item_id+'_'+$entity_id).show();
+						jQuery('#approved_'+$item_id+'_'+$entity_id).hide();
+						jQuery('#pending_'+$item_id+'_'+$entity_id).hide();
+						
+						/*hidding button on off*/
+						$('#approve_dropdown_'+$item_id+'_'+$entity_id).hide();
+
+						
+						//jQuery('#loadingGif').hide();
+						//console.log(data);
+						}
+						
+						if(cVal==2){
+						jQuery('#approved_'+$item_id+'_'+$entity_id).show();
+						jQuery('#not_approved_'+$item_id+'_'+$entity_id).hide();
+						jQuery('#pending_'+$item_id+'_'+$entity_id).hide();
+						///update approved quantity
+						
+						jQuery('#approved_quantity_'+$item_id+'_'+$entity_id).html('Qty: '+$quantity);
+						
+						/*assiginging the file name with print qty to the summary*/
+						
+						var newEntry = jQuery('#approved_files_label_'+$item_id+'_'+$entity_id+' li:first').clone();
+						newEntry.attr({style:'display:block'});
+						console.log(newEntry);
+						
+				newHtml = '<div class="file_name_label" id="file_name_lable_'+$item_id+'_'+$entity_id+'">'+file_obj['file_name']+'</div><div class="qty_label" id="qty_label_'+$item_id+'_'+$entity_id+'">x&nbsp;&nbsp;'+$quantity+'</div>';
+						newEntry.html(newHtml);
+						
+						
+						jQuery('#approved_files_label_'+$item_id+'_'+$entity_id).append(newEntry);
+						
+						/*hidding button on off*/
+						$('#approve_dropdown_'+$item_id+'_'+$entity_id).hide();
+						
+							//jQuery('#loadingGif').hide();
+							//console.log(data);
+							}
+						
+						
+						
+					  },
+					  
+				 }
+			  );	
+			
+			}	
+		
+		
+		
+		 
+		 });
+	 		
+
+/*uploading selected files*/
+	
+	function uploadFiles(upload_id){
+		
+		console.log(upload_id);
+		
+		}
+
+function submitData(obj){
+	
+	new Ajax.Updater(
+			{
+				success:'cost'
+				}, 
+			' <?php echo $_m_controller;?>index.php/designer/adminhtml_designer/uploadfile',
+			{
+				asynchronous:true, 
+				evalScripts:false, 
+				onComplete:function(request, json){
+					
+					console.log(request);
+				},
+			 onLoading:function(request, json){
+				 }, 
+				 parameters:Form.serialize(obj)
+		});
+		
+		
+	}
+ 
+
+</script>
+
+
+
+     <?php
+$url1 = Mage::helper("adminhtml")->getUrl("designer/adminhtml_designer/adddesign");
+$url1 = str_replace('p//s','p/admin/s',$url1);
+?>
+  
+     <!--Order grid starts here-->
+     <div class="entry-edit">
+        
+         <div class="entry-edit-head"><h4><?php echo __('Add Design');?></h4></div>
+        <!--start of breadcrum-->
+      
+      
+      <div class="productsIncluded"> 
+	  <?php echo __('Items Included in this order <span style="color:#f00;">( '.$_order->getTotal_item_count().' )</span>');?> 
+      </div>
+        
+        <div class="orderGrid" style="width:97.2%;">
+         <ul id="productGrid">
+        <?php
+			
+		/*creating folders for chat, files, proofs etc*/
+		$_media_url = Mage::getBaseDir('media');
+	//	$_current_store =  Mage::app()->getStore()->getGroup()->getName();;
+	    $_current_store = $_c_store_name;
+		$_current_year=date('Y');
+		$_current_month= strtolower(date('M-y'));
+		$_current_order_id = $_order_number;
+		
+		/*create directory if not exists*/
+		
+		
+		
+		$_path = $_media_url;
+		
+		/*if media/stores directory exists either create*/
+		if(!is_dir($_path.'/stores')){			
+				if(@mkdir($_path.'/stores',0777)){
+				$_stores = '/stores';
+				}
+			}else{	
+			$_stores = '/stores';	
+		}
+		/*stores path created */
+		$_path.=$_stores;
+		
+		/*if media/stores/current storename directory exists either create*/
+		if(!is_dir($_path.'/'.$_current_store)){
+			 /*if directory is created*/
+			 if(@mkdir($_path.'/'.$_current_store,0777)){
+			$_store_name = '/'.$_current_store;
+			 }
+		  }else{	
+			$_store_name = '/'.$_current_store;	
+		}
+		
+		/*current store directory created*/
+		$_path.= $_store_name;
+		
+				
+		/*if media/stores/storename/year directory exists either create*/
+		if(!is_dir($_path.'/'.$_current_year)){
+			if(@mkdir($_path.'/'.$_current_year,0777)){
+				$_year = '/'.$_current_year;
+			}
+		 }else{	
+			$_year = '/'.$_current_year;	
+		}		
+		/*current year directory created*/
+		$_path.= $_year;
+		
+		/*if media/stores/storename/year/month directory exists either create*/
+		if(!is_dir($_path.'/'.$_current_month)){
+			if(@mkdir($_path.'/'.$_current_month,0777)){
+				$_month = '/'.$_current_month;
+			}
+		 }else{	
+			$_month = '/'.$_current_month;	
+		}		
+		/*current year directory created*/
+		$_path.= $_month;
+		
+		/*if media/stores/storename/year/month/ordernumber directory exists either create*/
+		if(!is_dir($_path.'/'.$_current_order_id)){
+			if(@mkdir($_path.'/'.$_current_order_id,0777)){
+				$_order_number = '/'.$_current_order_id;
+			}
+		 }else{	
+			$_order_number = '/'.$_current_order_id;	
+		}		
+		/*current year directory created*/
+		$_path.= $_order_number;
+			 		  
+		  /*fetching items in order */
+		  $_total_items = count($items);	
+		  $i=0;
+		  $counter = 0;
+	/*start listing of rows*/	  
+	 foreach($items as $_item ){			  
+	 
+	 /*further create folder contaiing item sku name*/
+	  $_current_sku = $_item->getSku();
+	  
+	  /*if media/stores/storename/year/month/ordernumber/sku directory exists either create*/
+		if(!is_dir($_path.'/'.$_current_sku)){
+			if(@mkdir($_path.'/'.$_current_sku,0777)){
+				$_sku = '/'.$_current_sku;
+			}
+		 }else{	
+			$_sku = '/'.$_current_sku;	
+		}		
+	  /*if media/stores/storename/year/month/ordernumber/sku/chat directory exists either create*/
+		if(!is_dir($_path.$_sku.'/chat')){
+			if(@mkdir($_path.$_sku.'/chat',0777)){
+				$_chat = '/chat';
+			}
+		 }else{	
+			$_chat = '/chat';	
+		}
+	/*if media/stores/storename/year/month/ordernumber/sku/chat directory exists either create*/
+		if(!is_dir($_path.$_sku.'/chat')){
+			if(@mkdir($_path.$_sku.'/chat',0777)){
+				$_chat = '/chat';
+			}
+		 }else{	
+			$_chat = '/chat';	
+		}
+	/*if media/stores/storename/year/month/ordernumber/sku/draft_files directory exists either create*/
+		if(!is_dir($_path.$_sku.'/draft_files')){
+			if(@mkdir($_path.$_sku.'/draft_files',0777)){
+				$_draft_files = '/draft_files';
+			}
+		 }else{	
+			$_draft_files = '/draft_files';	
+		}			
+	/*if media/stores/storename/year/month/ordernumber/sku/client_sent_files directory exists either create*/
+		if(!is_dir($_path.$_sku.'/client_sent_files')){
+			if(@mkdir($_path.$_sku.'/client_sent_files',0777)){
+				$_sent_files = '/client_sent_files';
+			}
+		 }else{	
+			$_sent_files = '/client_sent_files';	
+		}
+		
+	/*if media/stores/storename/year/month/ordernumber/sku/print_ready_approved_files directory exists either create*/
+		if(!is_dir($_path.$_sku.'/print_ready_approved_files')){
+			if(@mkdir($_path.$_sku.'/print_ready_approved_files',0777)){
+				$_approved_files = '/print_ready_approved_files';
+			}
+		 }else{	
+			$_approved_files = '/print_ready_approved_files';	
+		}	
+	 	
+	/*opening file first time only if not created*/
+	
+		if(!is_file($_path.$_sku.$_chat.'/chat.txt')){
+			$_chat_file = @fopen($_path.$_sku.$_chat.'/chat.txt','w');
+			/*write to file*/
+		   $_data ='<div class="curr_date">'.date('d F Y').'</div>
+		   <div class="defaultText" > 
+			   Use this section to chat with your dedicated designer regarding your graphic design or digitals proofs for your printed goods.If you have any other questions related to this project leave a message on this chat screen below. We respond to all questions regularly. </div>
+               <div class="designer_text">
+          <div class="chat_heading_designer">Us:('.date('dM,Y h:i a').')</div>
+               <div class="c_text_designer"> How may I help you today! </div></div>';
+		   $_chat_text = fwrite($_chat_file,$_data);
+		   $_chat_text = fclose($_chat_file);
+	} //end of file writing
+	   
+	/*open chat file and reading data */
+	 
+	  $_cr_chat_file = $_path.$_sku.$_chat.'/chat.txt';
+	  $_chat_file = @fopen($_cr_chat_file,'r')or die('counl not open the file');
+	  
+	  /* fetching current chat data */
+	  $_chat_data = fread($_chat_file,filesize($_cr_chat_file));
+	 
+	
+	
+	$_f_path = $this->getMediaUrl();
+	//echo $_f_path;
+	
+	$_client_files_path='/client_sent_files/';
+	$_proof_files_path='/print_ready_approved_files/';
+	
+	/*further get products detail*/ 
+	
+	
+	 $_product = Mage::getModel('catalog/product')->load($_item->getProduct_id());
+	 $i++;
+	  $counter++;
+	  
+	  /*get customer files already uplaoded*/
+ 
+ $_customer_files = $this->getCustomer_files($_short_order_id, $_item->getId());
+ // print_r($_customer_files); 
+  
+  /*getting all proof files from the table*/
+  $_proof_files = $this->getProof_files($_short_order_id, $_item->getId());
+   // print_r($_proof_files);
+	
+	 $_is_printable = $_product->getIs_printable();
+	  // echo $_is_printable;
+	 //  echo $_product->getSku();
+	  // exit;
+	  if($_is_printable==165){
+	
+	 ?>
+            <li class="listingRow" >
+			
+			<?php 
+		 		$_heading_title = 'Design detail for ';
+				$_heading_title .= '" <span style="color:#4db6b2;">'.$_item->getName().' </span> " Only ';
+				$_heading_title .= '<span style="font-size:17px; color:#ff6606;"> ( Model No: ';
+			    $_heading_title .= $_store_id.'-'.$_item->getSku().')</span>';
+		 ?>
+               <div class="orderedItemHeadings">
+			<?php echo __('Ordered Item #'.$counter);?> 
+               </div>
+               <h1 class="itemHeadings"> <?php echo $_heading_title; ?> </h1>
+              <!--thumbnail listing box start here-->
+               <div class="thumbListing" style="background-color:#b3b3b3; height:160px; margin-top:5px; padding:5px;">
+                  <div class="thumbListingInner" style="height:160px; background-color:#b3b3b3;">
+                     <div class="smallThumb"> 
+                     <a  href="<?php echo $this->getUrl($_product->getUrlPath());?>"  target="_blank" title="<?php echo 'Click to open detail of "'.$_item->getName().' "';?>" > 
+              			<img class="smallThumb_image" align="left" style="padding:10px;"  src="<?php echo $this->helper('catalog/image')->init($_product, 'thumbnail')->resize(111, 134);?>"  alt="<?php echo $_item->getName();?>" /> </a> 
+                         </div>
+                     <div class="orderedLabel"> <?php echo __('Your Ordered Item requiring graphics');?> </div>
+                     <div class="forwardArrow"> </div>
+                     <div class="infoStepBox">
+                        <h3 class="stepsHeadings"><?php echo __('Using your own designer (Steps)');?></h3>
+                        <div class="stepsText">
+                        <ul>
+                           <li><?php echo __('Download Template')?></li>
+                           <li><?php echo __('Upload Print Ready Files')?></li>
+                           <li><?php echo __('Approve Proof(s)')?></li>
+                           <li><?php echo __('Update Print Quantity')?></li>
+                        </ul>
+                     </div>
+                     </div>                     
+                    <div class="infoStepBox">
+                        <h3 class="stepsHeadings"><?php echo __(' Let us Design for You (Steps)');?></h3>
+                        <div class="stepsText">
+                        <ul>
+                           <li><?php echo __('Upload your high resolution')?></li>
+                           <li><?php echo __('Type instructions for our designer(s) below')?></li>
+                           <li><?php echo __('Keep communicating with designer(s) until design gets approved')?></li>
+                           <li><?php echo __('Update Print Quantity')?></li>
+                        </ul>
+                     </div>
+                     </div>
+                     
+                  </div>
+                  </div>
+                  
+      <div class="clr"></div>                  
+                  
+                  <!--upload files box start here-->
+                  <div class="uploadFilesPanel">
+                     <div class="uploadFilesBox">
+                     <!--thumbnailbox-->
+    <ul class="uploaded_thumbnails ">                            
+		
+		<?php 
+		/*first some 9 items*/
+		/*getting customer files*/
+		
+		if(count($_customer_files)>0){
+		
+		foreach($_customer_files as $_customer_file){			       
+   		
+   ?>
+    <li style="height:150px;">                   
+   <?php  /* on click open the filebox*/		  ?>
+        <div class="thumbnail_box" > 
+         
+         <div class="artwork_not_uploaded" id="current_sel_artwork_<?php echo $_item->getId();?>_<?php echo $_customer_file['entity_id'];?>" >                    
+                    <div class="upload_artwork_icon" style="background:none;">                             
+           <?php
+          // 	$base_path = $_SERVER['DOCUMENT_URI'].'/tablethrows/media/' ;
+				$base_path = $_SERVER['DOCUMENT_URI'].'/media/' ;
+            $file_path = $_path.$_sku;
+			$abs_target = strpos($file_path, 'stores');
+		 	$target_path = $base_path.substr($file_path,$abs_target).'/';
+			
+			
+			/*finding file extension*/
+			$_file_src = $target_path.'/client_sent_files/'.$_customer_file['file'];
+			$_file = explode('.',$_customer_file['file']);
+			$_file_ext = $_file[count($_file)-1];
+			
+			$_known_file_icons=array('rar'=>$base_path.'upload/fileicons/rar_icon.png',
+									 'zip'=>$base_path.'upload/fileicons/rar_icon.png',
+									 'txt'=>$base_path.'upload/fileicons/txt_icon.png',
+									 'docx'=>$base_path.'upload/fileicons/docx_icon.png',
+									 'doc'=>$base_path.'upload/fileicons/docx_icon.png',
+									 'xlsx'=>$base_path.'upload/fileicons/xlxs_icon.png',
+									 'xls'=>$base_path.'upload/fileicons/xlxs_icon.png',
+									 'pdf'=>$base_path.'upload/fileicons/pdf_icon.png',
+									 'ai'=>$base_path.'upload/fileicons/ai_icon.png',
+									 'psd'=>$base_path.'upload/fileicons/psd_icon.png',
+									 'fla'=>$base_path.'upload/fileicons/fla_icon.png',
+									 
+									);
+				
+			foreach($_known_file_icons as $_key=>$_val){	
+				if($_file_ext==$_key){
+					$_file_src = $_val;
+					}
+			}
+			//echo $_file_ext;
+			
+			$download_src = $target_path.'/client_sent_files/'.$_customer_file['file'];
+			$download_path = $target_path.'/client_sent_files/';				
+			
+			
+			
+		   ?>
+           
+           <img width="140" height="100" src="<?php echo $_file_src;?>" alt="<?php echo $_customer_file['file'];?>"/>     
+                               </div>
+                               <div class="file_info">
+                               <!--<div><b>File Name: </b> <?php echo $_customer_file['file'];?></div>-->
+                               <div><b>Size: </b><?php 
+							   $_fSize =  $_customer_file['file_size'];
+							   $_mb =1024*1024;
+							   $_fSize = round($_fSize/$_mb,2);
+							   echo $_fSize;?>MB</div>
+         
+         <div><b>Date: </b><?php echo date('dM-Y h:i:s',strtotime($_customer_file['postdate']));?></div>
+         <div><a  target="_blank" href="<?php echo $target_path.'/client_sent_files/'.$_customer_file['file'];?>" class="file_info_download">Download File</a>
+                               </div>
+                   </div>
+            </div>
+                </div>
+     </li>
+  <?php 
+							
+		}//end of thumbnail
+			
+	}else{
+			echo '<li><div style="color: #FFFFFF;
+    text-shadow: 1px 1px #B4B4B4; margin:auto;
+    width: 700px;"><h1>Customer has not uplaoded any files against this Order yet!</h1></div></li>';
+			
+		} //end of if
+				?>
+                       </ul>
+  <!--end of thumbnailbox-->
+   
+                     
+                     </div>
+                     
+      <!--auto loading chat after some interval-->
+            <script>
+			<!--
+			  jQuery(function(){
+				  
+				  	var oldscrollHeight = jQuery('#chat_container_<?php echo $_item->getId();?>_<?php echo $counter;?>').prop('scrollHeight');
+					 // setInterval(updateChat,8000);
+					
+					function updateChat(){
+					
+					$chat_file = document.getElementById('chat_file_path_<?php echo $_item->getId();?>_<?php echo $counter;?>').value;
+					
+					 /*writing chat data to file via ajax*/
+			  /*get variables */ 			  
+			  
+			  var newscrollHeight = jQuery('#chat_container_<?php echo $_item->getId();?>_<?php echo $counter;?>').prop("scrollHeight")-70;			
+			//Scroll height after the request  
+			if(newscrollHeight > oldscrollHeight){ 
+                
+				jQuery('#chat_container_<?php echo $_item->getId();?>_<?php echo $counter;?>').animate({ scrollTop: newscrollHeight }, 'normal'); 
+				
+				//Autoscroll to bottom of div  
+            } 
+			   
+			    xform_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+			   
+			   $postVars = { file_path:$chat_file,
+			  				 order_id:<?php echo $_short_order_id;?>,	
+							 store_id:<?php echo $_store_id;?>,
+							 proof_type:'proof',
+							 user_id:<?php echo $_user_id;?>,
+							 user_type:'<?php echo $_user_type;?>',
+							 item_id:<?php echo $_item->getId();?>,
+							 form_key:xform_key,
+							 isAjax:true,
+			               }
+			  
+			  jQuery.ajax(
+			     { 
+				  url:'<?php echo $_m_controller;?>designer/adminhtml_designer/getChatStatus', 
+				  type:'POST',
+				  data: $postVars,
+				  dataType:'HTML',
+				  success: function(data){
+					  
+ if(data !=0){
+	//console.log(data);
+	jQuery('#chat_container_<?php echo $_item->getId();?>_<?php echo $counter;?>').html(data);
+						  
+						  //Auto-scroll             
+   var newscrollHeight = jQuery('#chat_container_<?php echo $_item->getId();?>_<?php echo $counter;?>').prop("scrollHeight")-70;
+			
+			//Scroll height after the request  
+ if(newscrollHeight > oldscrollHeight){  
+                
+				jQuery('#chat_container_<?php echo $_item->getId();?>_<?php echo $counter;?>').animate({ scrollTop: newscrollHeight }, 'normal'); 
+				
+				//Autoscroll to bottom of div  
+            } 
+						  
+				  } //end of if data is found
+						  
+						  },						  
+					 }
+				  );
+				
+					}///end of updatefunction
+				
+			    });
+			-->
+			</script>
+      <!--auto loading chat end-->         
+                     
+                     <!--chat box start here-->
+                     <div class="chatBoxPanel">
+                         <input type="hidden" id="chat_file_path_<?php echo $_item->getId();?>_<?php echo $counter;?>" name="chat_file_path_<?php echo $_item->getId();?>_<?php echo $counter;?>" value="<?php echo $_path.$_sku.$_chat.'/chat.txt';?>" />
+                         <div class="chatBox" id="expand_btn_<?php echo $_item->getId();?>_<?php echo $counter;?>">
+                         <div class="chat_panel_heading" ><?php echo __('Items\'s Message Box');?> <div id="<?php echo $_item->getId();?>_<?php echo $counter;?>" title="Click to expand or contract chatbox..." class="expand_btn"></div></div>
+                         
+                         <!--chat container-->
+                         <div class="chat_container" id="chat_container_<?php echo $_item->getId();?>_<?php echo $counter;?>" >                            
+                     <?php /*loading first time chat from the chat file*/
+						echo $_chat_data;
+					  ?>
+                         
+  <?php /*
+    <div class="chatWindow">	
+ 			 <div class="Chattophead"><div class="chat_heading">You:(<?php echo date('h:i a');?>)</div></div><!--Chattophead-->
+    		<div class="ChatbgImage">If we are doing your design project please enter complete graphics design specs.</div><!--bgImage-->    
+			</div><!--chatWindow--> 
+         
+         <div class="designer_text">
+            <div class="chat_heading">Us:(<?php echo date('h:i a');?>)</div>
+               <div class="cText"> If we are doing your design project please enter complete graphics design specs. </div>
+           </div>
+        <?php 
+		*/
+		?>              
+          </div> 
+                        <!--end of chat container-->
+      <div class="input_box">
+      <input class="input_text" id="msg_input_<?php echo $_item->getId();?>_<?php echo $counter;?>" name="msg_input_<?php echo $_item->getId();?>_<?php echo $counter;?>" type="text" placeholder="<?php echo __('Your message here...')?>" />
+      <input class="sendButton" type="button"  id="<?php echo $_item->getId();?>_<?php echo $counter;?>" name="<?php echo $_item->getId();?>_<?php echo $counter;?>"  value="Send" title="Type your message and hit send button"  />
+       </div> 
+       <div class="send_email"><label><input type="checkbox" value="0" checked /> 
+       <?php echo __('I want to send Email');?></label> </div>         
+           </div>
+                     </div>
+                     <!--end of chatbox here-->
+                  </div>
+                  <!--Uplod box files ends here-->
+                  
+                <div class="clr"></div>
+                  <!--upload files box start here-->
+                  <div class="artworkProofPanel" style="width:100%;">                 
+        <?php 
+		 		/*proof tilte*/
+				$_proof_title = 'Artwork Proof approval for ';
+				$_proof_title .= '" <span style="color:#4db6b2;">'.$_item->getName().' </span> " Only ';
+				$_proof_title .= '<span style="font-size:17px; color:#ff6606;"> ( Model No: ';
+			    $_proof_title .= $_order->getStore_id().'-'.$_item->getSku().')</span>';
+		 ?>
+                  
+                   <h1 class="itemProofHeadings"> <?php echo $_proof_title; ?> </h1>
+                     <div class="proofPanel" style="width:100%;">
+                     <input type="hidden" id="total_proofs_uploaded" name="total_proofs_uploaded" value="2"/>
+                     <!--thumbnailbox-->
+                        <ul class="uploaded_thumbnails files_thumbnails_<?php echo $_item->getId();?>_<?php echo $counter;?>" id="uploadedFiles<?php echo $_item->getId();?>_<?php echo $counter;?>">
+            <?php
+			
+			/*getting proof files if already uploaded*/
+			$i=0;
+			
+			if(count($_proof_files) >0){
+				
+				foreach($_proof_files as $_proof_file){
+					$i++;
+					$_id=$_proof_file['entity_id'];				
+					
+			?>
+            <form id="submit_<?php echo $_item->getId();?>_<?php echo $_id;?>" action="<?php echo $this->getUrl('upload/index/uploadImages');?>" onsubmit="return false"  method="post" enctype="multipart/form-data">
+            
+            <input type="hidden" id="client_files" name="client_files" value="<?php echo $_path.$_sku.'/print_ready_approved_files';?>" />
+            
+   <li class="clone_row_<?php echo $_item->getId();?>_<?php echo $_id;?>" id="<?php echo $_item->getId();?>_<?php echo $_id;?>">
+   
+  
+   
+     <input class="uploadFile cfile_<?php echo $_item->getId();?>_<?php echo $_id;?>" type="file" id="fileUpload[<?php echo $_item->getId();?>_<?php echo $_id;?>]" name="fileUpload[<?php echo $_item->getId();?>_<?php echo $_id;?>]"  style="display:none;"  />
+       
+ <?php 
+   	/*approved status is 0 then not approved will be showed*/
+		if($_proof_file['approved_status']==1){	  ?>       
+       <div class="not_approved" id="not_approved_<?php echo $_item->getId();?>_<?php echo $_id;?>"> <?php echo __('Not Approved'); ?> </div>
+        <?php }elseif($_proof_file['approved_status']==2){	?>       
+       <div class="approved" id="approved_<?php echo $_item->getId();?>_<?php echo $_id;?>"> <?php echo __('Approved'); ?> </div>    
+    <?php 
+		}else{
+			echo __('<div style="height:20px;"></div>');
+			}
+	?>
+       
+                              
+   <?php  /* on click open the filebox*/		  ?>
+        <div class="thumbnail_box" onClick="openFileOption('fileUpload[<?php echo $_item->getId();?>_<?php echo $_id;?>]')"> 
+         <div id="preview_<?php echo $_item->getId();?>_<?php echo $_id;?>" class="preview_thumb">
+           <img src="#"  alt="imagesource" width="130" height="95"/>
+        </div>
+            <?php
+		   	$base_path = $_SERVER['DOCUMENT_URI'].'/media/' ;
+            $file_path = $_path.$_sku;
+			$abs_target = strpos($file_path, 'stores');
+		 	$target_path = $base_path.substr($file_path,$abs_target).'/';
+			
+			//$n_file_path = str_replace('\\','/',$file_path);
+			
+			/*finding file extension*/
+			$_file_src = $target_path.'/print_ready_approved_files/'.$_proof_file['file'];
+			$_file = explode('.',$_proof_file['file']);
+			$_file_ext = $_file[count($_file)-1];
+			
+			$_known_file_icons=array('rar'=>$base_path.'upload/fileicons/rar_icon.png',
+									 'zip'=>$base_path.'upload/fileicons/rar_icon.png',
+									 'txt'=>$base_path.'upload/fileicons/txt_icon.png',
+									 'docx'=>$base_path.'upload/fileicons/docx_icon.png',
+									 'doc'=>$base_path.'upload/fileicons/docx_icon.png',
+									 'xlsx'=>$base_path.'upload/fileicons/xlxs_icon.png',
+									 'xls'=>$base_path.'upload/fileicons/xlxs_icon.png',
+									 'pdf'=>$base_path.'upload/fileicons/pdf_icon.png',
+									 'ai'=>$base_path.'upload/fileicons/ai_icon.png',
+									 'psd'=>$base_path.'upload/fileicons/psd_icon.png',
+									 'fla'=>$base_path.'upload/fileicons/fla_icon.png',
+									 
+									);
+				
+			foreach($_known_file_icons as $_key=>$_val){	
+				if($_file_ext==$_key){
+					$_file_src = $_val;
+					}
+			}
+			//echo $_file_ext;
+			
+			$download_src = $target_path.'/print_ready_approved_files/'.$_customer_file['file'];
+			$download_path = $target_path.'/print_ready_approved_files/';				
+			
+			
+			
+						?>                  
+                    <div class="proof_not_uploaded" id="upload_proof_icon_<?php echo $_item->getId();?>_<?php echo $_id;?>">
+                           <div class="upload_proof_icon_ren_<?php echo $_item->getId();?>_<?php echo $_id;?>" style="background:none;">
+                               	<img class="preview_image" style="border:0;" width="140" height="100" src="<?php echo $_file_src;?>" alt="<?php echo $_proof_file['file'];?>"/>
+                               </div>
+                              </div>
+                              </div>
+                              
+          <div class="upload_progress_info" id="upload_progress_info_<?php echo $_item->getId();?>_<?php echo $_id;?>" style="width:145px;">
+          
+             <div class="progress_bar" id="progress_bar_<?php echo $_item->getId();?>_<?php echo $_id;?>" style="width:150px; height:10px; background-color:#069; display:none;"></div>
+                 <div class="file_info_name" id="file_info_name_<?php echo $_item->getId();?>_<?php echo $_id;?>"><b>File: </b><span style="font-size:9px; color:#999;"> <?php echo $_proof_file['file'];?> </span></div>
+                         
+ <div class="file_info_date" id="file_info_date_<?php echo $_item->getId();?>_<?php echo $_id;?>">
+ <b>Updated:</b> <?php echo date('dM-Y h:i:s',strtotime($_proof_file['postdate']));?></div>
+                         
+ 
+ <div class="file_info_size" id="file_info_size_<?php echo $_item->getId();?>_<?php echo $_id;?>"><b>Size: </b><?php 
+							   
+							   $_last_id = $_id;
+							   $_fSize =  $_proof_file['file_size'];
+							   $_mb =1024*1024;
+							   $_fSize = round($_fSize/$_mb,2);
+							   echo $_fSize;?>MB</div>                              
+                   </div>
+     		
+            <?php
+  
+  $_approved_status = 0; 
+   	/*approved status is 0 then not approved will be showed*/
+	/*if admin logged in then can only update either*/
+		
+		if($_user_id==2){ 				
+	?>  
+        <div>
+<select id="approve_dropdown_<?php echo $_item->getId();?>_<?php echo $_id;?>" name="approve" id="approval" class="approve_dropdown">
+  
+  
+   <option value="0" <?php if($_proof_file['approved_status']==0)echo 'selected';?>><?php echo __('Please Approve');?></option>
+   <option value="2" <?php if($_proof_file['approved_status']==2)echo 'selected';?>><?php echo __('I approve to get the above design printed');?></option>
+   <option value="1" <?php if($_proof_file['approved_status']==1)echo 'selected';?>><?php echo __('I disapprove (Type your comments in the chatbox)');?></option>
+  
+  
+  </select>
+  <input type="hidden" value="1" id="quantity_<?php echo $_item->getId();?>_<?php echo $_id;?>" />
+  <input type="hidden" value="<?php echo round($_item->getQty_ordered());?>" id="total_quantity_<?php echo $_item->getId();?>_<?php echo $_id;?>" />
+  <input type="hidden" value="none" id="signature_<?php echo $_item->getId();?>_<?php echo $_id;?>" />
+  <input type="hidden" value="<?php echo $download_path;?>"  id="currFilePath" class="currFilePath" />                            
+                              
+                              </div>
+                              
+      <?php 
+		}
+	 ?>   
+            
+            </li>  
+            </form> 
+             <?php 
+					}//end of thumbnail
+			}else{
+					echo '<li><div class="notuploadedMsg">
+					<h1>You have not uplaoded any files yet.</h1></div></li>';
+			
+		
+		} //end of if
+			
+			$hi= $_last_id+1;
+			////New Item for addition////
+			for($i=$hi; $i<$hi+2; $i++){
+		 ?>         
+                
+ <li style="display:none" class="clone_row_<?php echo $_item->getId();?>_<?php echo $i;?>" id="<?php echo $_item->getId();?>_<?php echo $i;?>">
+   
+   <form class="submit_form" id="submit_<?php echo $_item->getId();?>_<?php echo $i;?>" action="<?php echo $this->getUrl('upload/index/uploadImages');?>" onsubmit="return false"  method="post" enctype="multipart/form-data">
+              <input type="hidden" id="client_files" name="client_files" value="<?php echo $_path.$_sku.'/print_ready_approved_files';?>" />
+   
+     <input class="uploadFile cfile_<?php echo $_item->getId();?>_<?php echo $i;?>" type="file" id="fileUpload[<?php echo $_item->getId();?>_<?php echo $i;?>]" name="fileUpload[<?php echo $_item->getId();?>_<?php echo $i;?>]"  style="display:none;"  />
+                              
+   <?php  /* on click open the filebox*/		  ?>
+        <div class="thumbnail_box" onClick="openFileOption('fileUpload[<?php echo $_item->getId();?>_<?php echo $i;?>]')"> 
+         <div id="preview_<?php echo $_item->getId();?>_<?php echo $i;?>" class="preview_thumb">
+           <img class="preview_image_clone" src="#" style="display:none;"  alt="imagesource" width="142" height="95"/>
+        </div>
+                              
+  
+  <div class="proof_not_uploaded" id="upload_proof_icon_<?php echo $_item->getId();?>_<?php echo $i;?>">
+                           <div class="upload_proof_icon">
+                               	<div class="upload_proof_icon_label">
+                                   <?php // echo __('File Size: 22MB <br/> Download File');?>
+                                   </div>
+                               </div>
+                              </div>
+                              </div>
+                              
+                              
+          <div class="upload_progress_info" id="upload_progress_info_<?php echo $_item->getId();?>_<?php echo $i;?>" style="width:150px; display:none">
+             <div class="progress_bar" id="progress_bar_<?php echo $_item->getId();?>_<?php echo $i;?>" style="width:1.5px; height:10px; background-color:#069"></div>
+                 <div class="file_info_name" id="file_info_name_<?php echo $_item->getId();?>_<?php echo $i;?>">File: -- </div>
+                 <div class="file_info_date" id="file_info_date_<?php echo $_item->getId();?>_<?php echo $i;?>">Updated: 0 MB</div> 
+                         <div class="file_info_size" id="file_info_size_<?php echo $_item->getId();?>_<?php echo $i;?>">File Size: 0 MB</div>                              
+                   </div>
+     		
+            </form>
+            
+            
+            </li>  
+            <?php 
+		}
+			?>     
+                      
+                       </ul>
+                     <!--end of thumbnailbox-->                  
+ 					  <div class="buttons_panel">
+   <div class="artwork_buttons upload_artwork_files_final" id="<?php echo $_item->getId();?>_<?php echo $counter;?>"> <input   type="button"  value="<?php echo __('Add Another File');?>"  class="artworkBtn" />
+    </div>
+     <!--<div class="artwork_buttons" id="send_files_<?php echo $_item->getId();?>_<?php echo $counter;?>">
+        <input   type="button" id="upload_files_<?php echo $_item->getId();?>_<?php echo $counter;?>"  value="<?php echo __('Send Files');?>" name="upload_files_<?php echo $_item->getId();?>_<?php echo $counter;?>"  value="<?php echo __('Send Files');?>" onclick="uploadFiles('<?php echo $_item->getId();?>_<?php echo $counter;?>');"  class="artworkBtn " />
+       </div>-->
+            </div>
+                     
+                     
+                  </div>
+                  <!--Uplod box files ends here-->
+                </div>
+                
+                </li> 
+                    
+        
+        <?php 
+	  } //end of printable
+				} ///end of grid 
+			?>
+        
+       </ul>
+       
+       
+       
+       <?php /*popup to show for dispaly*/ ?>
+
+<div id="loadingGif">
+<div id="imgloading">
+<img src="<?php echo $this->getUrl('media');?>/loading11.gif" alt="Loading..."/>
+</div>
+</div>
+ <div id="overlayPopup" class="overlayPopup">
+ <div id="approval_popup" >
+ <link rel="stylesheet" type="text/css" href=<?php echo $this->getSkinUrl('css/popup.css');?> media="all" />
+<!--Popup shows here-->
+ 
+<div id="Overlay">
+    	<div id="Popup">
+       	  <div id="Popupinner">
+            	<div id="overlay_top">
+                <h1>Artwork Approval & Print Quantity</h1>
+                <div class="close" id="closeBtn"><img src="<?php echo $this->getSkinUrl();?>images/close.jpg" width="43" height="46"  alt=""/></div>
+            </div>
+            <div id="images_wrapper">
+            	<div class="products-img">
+                	<div class="img_uploaded" id="img_uploaded">
+                    
+                    <img id="" src="<?php echo $this->getSkinUrl();?>images/toyota.jpg" width="135" height="93"  alt=""/>
+                    </div>
+                  <div class="uploaded_text" >
+                  <div class="download_file_path"> Download </div> 
+                  Print Ready Proof
+						<span id="uploadedfileSize" style="color:#aea8a8;clear:both;">File size: 00MB </span>
+                        
+                  </div>
+              </div>
+              	<div id="Quantity">
+                	<div id="product_heading"><h1>Mesh Custom <span>( Model No. 0000 )</span></h1></div>
+                    <div id="Print_Quantity">
+                   	  <label>Print Quantity</label>
+                        <input type="text" id="input_quantity" class="input-qty" value="01" />
+                        
+                    </div>
+                </div>
+                
+            </div>
+           	<div id="Disclaimer">
+                <h2>Disclaimer:</h2>
+                <div class="approval-text">
+                  <p>Artwork Approval</p>
+                  <p>It is the customer's responsibility to ensure that the proof is correct in all areas. Please be sure to double-check spelling, grammar, layout and design before approving artwork.</p>
+                  <p>If a proof containing errors is approved by the customer, customer is responsible for payment of all original costs of printing (screens, setup charges, any substrates), including corrections and reprints.</p>
+                  <p>The customer is 100% responsible for approvals of Copyright, Trademark and Licensing Agreements of artwork.</p>
+                  <p>Customer's signature on artwork approval is contractually binding for payment of all services rendered.</p>
+                  <p>All artwork must be approved by the customer with an authorised signature before a job can be entered into production.</p></div>
+              <div class="approve-terms">
+               	<div class="squaredThree">
+					  	<input type="checkbox" value="None" id="squaredThree" name="check" checked="" />
+						  <label for="squaredThree"></label>
+					  		</div>	
+        			<div class="read_terms">
+                    I confirm I wish to proceed with the printing of the above file and I confirm I have read the disclaimer
+                      <br>
+                I have updated the print quantity (  Please consider all approved proofs as printed ). </div>
+        
+           	  </div>
+              <div id="Signature">
+              	<div class="Signature">Digital Signature:</div>
+                <div class="upload_signature">
+                <input class="cSignature" type="text" value=""  placeholder="e.g John Doe" id="cSignature"  />
+                </div>
+               	</div>
+                 <div id="Agreement">
+                 <h1 id="current_date_time">Time Stamp:  <?php echo date('dM-Y h:i:s');?></h1>
+                <div class="print_agreement agreePrintBtn" id="agreePrintBtn">
+                <img src="<?php echo $this->getSkinUrl();?>images/agree_print.jpg" width="212" height="64"  alt=""/></div>
+                <div class="print_agreement disAgreeBtn" id="disAgreeBtn" style="display:none;">
+                <img src="<?php echo $this->getSkinUrl();?>images/dis_agree_disapprove.png" width="318" height="64"  alt=""/></div>
+              </div>
+            </div>
+       	  </div>
+        	</div>
+    </div>
+</div>
+</div>
+       
+      
+      <?php /*?> 
+       <div style="clear:both;"></div>
+       
+       
+        <!--old stuff here-->
+        
+        <div class="entry-edit-head"><h4>Add Design</h4></div>
+        <div class="order-totals filesUploadWindow">
+         
+           <div class="total_proof"><input type="hidden" id="form_count" />
+            <form action="<?php  echo str_replace('//s','/admin/s',$url1);?>" method="post" enctype="multipart/form-data">
+             <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+             <input name="orderid" id="orderid" value="<?php echo $_order->getId();?>"  type="hidden">
+	     <input name="type" value="order" type="hidden"/>
+                <table class="total_proof" style="width: 110%;">
+                    <tr class="txt">
+                        <td valign="top">
+                         <div id="dvFile">
+                          <div class="file_class">
+                          <input type="file" name="item_file[]">
+                          </div>
+                          <div class="item_class">
+                             <select name="item[]"><option>Select Item</option><?php getdrop1($proofItem);?></select>
+                          </div>
+			  <div class="comment_class">
+                             <textarea name="comment[]"></textarea>
+                          </div>
+                         </div>
+                        </td>
+                        <td valign="top">
+                         <span onclick="add_another1();" style="cursor:pointer;" title="Add book suggetion" class="addanother">Add another</span><span class="submitclass"><input name="submit" id="submit" type="submit"  class="submit-img" /></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="10" align="left" valign="middle" colspan="6">
+                        <div id="content2"></div></td>
+                    </tr>
+                </table>
+                
+            </form>
+            
+           
+            
+        </div>
+        
+        </div>
+        
+       
+        
+        
+    </div><br/>
+     
+            
+<div style="clear:both;"></div>
+ <div class="designermain">
+     
+        <div class="order-additional order-comments">
+            <table class="data-table" id="design_tab" cellspacing="0">
+                <tr class="headcls">
+                    <th> Date </th>
+                    <th> Item </th>
+                    <th> Comment</th>
+                    <th> Design File</th>
+                    <th> Status </th>
+		    <th> Action </th>
+		    <?php
+		      
+		      $roleId = implode('', Mage::getSingleton('admin/session')->getUser()->getRoles());
+            
+		      //Get the role name
+		      $roleName = Mage::getModel('admin/roles')->load($roleId)->getRoleName();
+		      if($roleName == 'Administrators')
+		      {
+		    ?>
+		    <th> Assign To </th>
+		    <?php
+		      }
+		    ?>
+                </tr>
+                <?php
+		    $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+		    $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+		    
+                    $temptableDesign=Mage::getSingleton('core/resource')->getTableName('task_designer');
+                    //$sqlDesign="SELECT *,DATE_FORMAT(postdate,'%D %M, %Y') AS p_date FROM  ".$temptableDesign." WHERE order_quote_id ='".$_order->getId()."'  AND proof_type = 'order' ORDER BY item_id ";
+                    $sqlDesign = $connectionRead->select()
+				->from($temptableDesign, array("*, DATE_FORMAT(postdate,'%D %M, %Y') AS p_date"))
+				->where("order_quote_id ='".$_order->getId()."'  AND proof_type = 'order'")
+				->order('item_id');
+		    $chkDesigns = $connectionRead->fetchAll($sqlDesign);
+                    
+		    $url2 = Mage::helper('adminhtml')->getUrl('designer/adminhtml_designer/download');
+		    
+                    foreach($chkDesigns as $chkDesign)
+                    {
+                        
+                        $temptableItem=Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
+                        //$sqlItem="SELECT * FROM  ".$temptableItem." WHERE item_id ='".$chkDesign['item_id']."'  ";
+                        $sqlItem = $connectionRead->select()
+				->from($temptableItem, array('*'))
+				->where('item_id=?',$chkDesign['item_id']);
+			$chkItem = $connectionRead->fetchAll($sqlItem);
+			
+			$temptableService=Mage::getSingleton('core/resource')->getTableName('design_service');
+			   //$sqlService="SELECT * FROM  ".$temptableService." WHERE order_id ='".$chkDesign['order_quote_id']."' AND item_id = '".$chkDesign['item_id']."' AND type = 'order' ";
+			   $sqlService = $connectionRead->select()
+				->from($temptableService, array('*'))
+				->where("order_id ='".$chkDesign['order_quote_id']."' AND item_id = '".$chkDesign['item_id']."' AND type = 'order'");
+			   $chkService = $connectionRead->fetchAll($sqlService);
+		       
+                        
+                        //$_Product = Mage::getModel('catalog/product')->load($chkItem['product_id']);
+			
+			if($roleName == 'Administrators' or Mage::getSingleton('admin/session')->getUser()->getId() == $chkService[0]['assign_to'])
+			{
+                ?>
+                <tr>
+                    <td><?php echo $chkDesign['p_date']?></td>
+                    <td><?php echo $chkItem[0]['name'];?></td>
+                    <td><?php echo $chkDesign['comment']?></td>
+                    <td><a href="<?php echo str_replace('//s','/admin/s',$url2).'file/'.$chkDesign['file'].'/';?>"><?php echo $chkDesign['file']?></a></td>
+                    <td><?php echo $chkDesign['status']?></td>
+		    <td> <a class="shoedetails" onclick="allcomment('<?php echo $chkDesign['entity_id']?>','<?php echo $_order->getId()?>')">Show Details</a>   <a onclick="deletedesign('<?php echo $chkDesign['entity_id']?>','<?php echo $_order->getId()?>')" style="cursor:pointer;">Delete</a> </td>
+		    <?php
+		      if($roleName == 'Administrators')
+		      {
+		    ?>
+		    <td>
+		     <select name="ot_author_user" id="ot_author_user" onchange="assignto('<?php echo $chkDesign['item_id']?>','<?php echo $chkDesign['order_quote_id']?>',this.value,'order');">
+		      <option value="">Assign To</option>
+		       <?php
+		       
+			   
+			   $adminUserModel = Mage::getModel('admin/user');
+			   $userCollection = $adminUserModel->getCollection()->load();
+			   foreach($userCollection as $user)
+			   {
+			       $selected = '';
+			       if($user->getId() == $chkService[0]['assign_to'])
+			       $selected = 'selected';
+			       
+			      $roleId = implode('', $user->getRoles());
+			      $roleName = Mage::getModel('admin/roles')->load($roleId)->getRoleName();
+			      if($roleName == 'Designer')
+			      {
+			       echo '<option value="'.$user->getId().'" '.$selected.' >'.$user->getUsername().'</option>';
+			      }
+			   }
+		       ?>
+		    </select>
+		    </td>
+		    <?php
+		    
+		      }
+		      
+		      ?>
+                </tr>
+                <?php
+			}
+		}
+		
+		
+		?>
+            </table>
+        </div>
+    </div>
+ 
+ 
+ 
+ <div class="tooltip" id="tooltip"style="display:none;">
+  <div class="close" onclick="close5();">X</div>
+  <div class="tooltipbody" id="tooltipbody">
+   
+  </div>
+  <div class="fromtool">
+<form enctype="multipart/form-data" name="form_planning" id="form_planning" method="POST" action="<?php echo $url?>">
+<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+   <table class="total_proof" style="width: 100%;">
+       <tr class="txt"><input type="hidden" id="form_count" />
+	   <td valign="top" class="fromclass">
+	    <input type="hidden" name="entity_id" id="entity_id"/>
+	    <input type="hidden" name="order_id" id="dorderid"/>
+	    <div id="dvFile">
+	     <div class="file_class">
+	     <input type="file" name="item_file">
+	     </div>
+	   <div class="item_comment">
+		<textarea name="comment"></textarea>
+	     </div>
+	    </div>
+	   </td>
+	   
+       </tr>
+       <tr><td class="clssubmit">
+	    <button class="submit" >Submit</button>
+	   </td></tr>
+   </table>
+   </form>
+  </div>
+ </div>
+ 
+<script type="text/javascript">
+   function allcomment(id,orderid)
+   {
+       document.getElementById('entity_id').value = id;
+       document.getElementById('dorderid').value = orderid;
+       
+       
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	      // alert(xmlhttp.responseText);
+	       
+	       document.getElementById('tooltipbody').innerHTML = xmlhttp.responseText;
+	       document.getElementById('tooltip').style.display = 'block';
+	       
+	   }
+	 }
+	 form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/designer/adminhtml_designer/allcomment/?id="+id+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   
+   function deletedesign(id,orderid)
+   {
+       
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	       //alert(xmlhttp.responseText);
+	       document.getElementById("design_tab").innerHTML=xmlhttp.responseText;
+	       
+	   }
+	 }
+	 form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/designer/adminhtml_designer/deletedesign/?id="+id+"&orderid="+orderid+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   
+   function assignto(itemid,orderid,userid,type)
+   {
+       
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	       //alert(xmlhttp.responseText);
+	       
+	       location.reload();
+	       
+	   }
+	 }
+       form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/designer/adminhtml_designer/assignto/?itemid="+itemid+"&orderid="+orderid+"&userid="+userid+"&type="+type+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   function close5()
+   {
+    document.getElementById('tooltip').style.display = 'none';
+   }
+</script><?php */?>
+

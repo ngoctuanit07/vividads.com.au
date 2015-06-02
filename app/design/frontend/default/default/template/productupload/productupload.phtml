@@ -1,0 +1,108 @@
+<?php
+  /**
+ * M-Connect Solutions.
+ *
+ * NOTICE OF LICENSE
+ *
+
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mconnectsolutions.com/lab/
+ *
+ * @category   M-Connect
+ * @package    M-Connect
+ * @copyright  Copyright (c) 2009-2010 M-Connect Solutions. (http://www.mconnectsolutions.com)
+ */ 
+?>
+<?php
+if(Mage::registry('product'))
+{
+  /*  if(Mage::getStoreConfig('productupload/general/enabled',Mage::app()->getStore()))
+    {
+                        $productupload_Model = Mage::getModel('productupload/mconnectuploadfile'); 
+                        $productupload_Collection = $productupload_Model->getCollection()                        
+                        ->addFilter('productid',Mage::registry('product')->getId())                        
+                        ->getData();
+                        ?>
+                        <!--<h2><strong>Files Attached:</strong></h2>-->
+                        <h2><strong>Graphic Design Templates:</strong></h2><!--14_02_2014-->
+                        <?php
+                        if(count($productupload_Collection) > 0)
+                        {
+                        ?>                        
+                        <ul>
+                        <?php foreach($productupload_Collection as $file): 
+                        if($file['filename'] != '' && file_exists(Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA).'/'.$file['filename']))
+                        {
+                            $filename_arr = explode('/',$file['filename']);
+                            $filename_str = $filename_arr[count($filename_arr)-1];
+                        ?>    
+                        <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).$file['filename']; ?>" title="<?php echo $filename_str; ?>" target="_blank"><?php echo strtoupper($filename_str); ?></a></li>
+                        <?php                         
+                        }
+                        endforeach; 
+                        ?></ul><br />
+                        <?php 
+                        }
+                        else
+                        {
+                            echo "<ul><li>No Files attached with this product.</li></ul><br />";
+                        }
+    }
+  */
+  
+  /************************** Start to bring the attch file  17_02_2014 ********************************************/
+  
+      if(Mage::getStoreConfig('productupload/general/enabled',Mage::app()->getStore()))
+    {
+                       $productid=Mage::registry('product')->getId();
+                        $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_relation');
+                        $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE product_id='".$productid."'";
+                        try {
+                        $chkSaleOrderGrid = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                        } catch (Exception $e){
+                        //echo $e>getMessage();
+                        }
+                        ?>
+                        <!--<h2><strong>Files Attached:</strong></h2>-->
+                        <h2><strong>Graphic Design Templates:</strong></h2><!--14_02_2014-->
+                        <?php
+                        if(count($chkSaleOrderGrid) > 0)
+                        {
+                        ?>                        
+                        <ul>
+                        <?php foreach($chkSaleOrderGrid as $res_objects) :
+                        
+                            $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_files');
+                            $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE file_id='".$res_objects["file_id"]."'";
+                            try {
+                            $chkSaleOrderGrid2 = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                            } catch (Exception $e){
+                            //echo $e>getMessage();
+                            }
+		
+                            foreach($chkSaleOrderGrid2 as $res_objects2) 
+                            {
+                            ?>    
+                            <li><a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$res_objects2["file_id"].'/'.$res_objects2["filename"]; ?>" title="<?php echo $res_objects2["filename"]; ?>" target="_blank"><?php echo strtoupper($res_objects2["filename"]); ?></a></li>
+                            <?php                         
+                            }
+                        endforeach; 
+                        ?></ul>
+                        <?php 
+                        }
+                        else
+                        {
+                            echo "<ul><li>No Files attached with this product.</li></ul>";
+                        }
+    }
+    
+    /************************** Start to bring the attch file  17_02_2014 ********************************************/
+}
+else
+{
+    echo "This is the public scope of usage of this Mconnect_Productupload extension. [if want to render the logic without any concern of extension.]<br />You will be redirected to Home page.";
+?>
+<script>setTimeout("setLocation('<?php echo Mage::getBaseUrl(); ?>')",10000);</script>
+    <?php
+}
+?>

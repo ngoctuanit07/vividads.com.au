@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MD_Vividslider>
+            <active>true</active>
+            <codePool>local</codePool>
+        </MD_Vividslider>
+    </modules>
+</config> 

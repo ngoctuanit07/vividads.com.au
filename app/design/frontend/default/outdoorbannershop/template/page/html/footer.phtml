@@ -1,0 +1,123 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+</div>
+</div>
+
+<footer>
+<div class="wrapper950">
+  <div class="row-fluid">
+    <div class="quick-link">
+      <h1>Quick Links</h1>
+      <ul>
+        <li><a href="<?php echo $this->getUrl('')?>"><?php echo $this->__('Home')?></a></li>
+        <li><a href="<?php echo $this->getUrl('testimonial')?>"><?php echo $this->__('Testimonials')?></a></li>
+        <li><a href="<?php echo $this->getUrl('outdoor-builders-mesh-banner.html')?>"><?php echo $this->__('Builder Ad Mesh')?></a></li>
+        <li><a href="<?php echo $this->getUrl('gallery/outdoor-mesh-fence-banners.html')?>"><?php echo $this->__('Gallery')?></a></li>
+        <li><a href="<?php echo $this->getUrl('order-now.hml')?>"><?php echo $this->__('Order Now')?></a></li>
+        <li><a href="<?php echo $this->getUrl('about-us')?>"><?php echo $this->__('About Us')?></a></li>
+        <li><a href="<?php echo $this->getUrl('our-clients')?>"><?php echo $this->__('Our Work')?></a></li>
+        <li><a href="<?php echo $this->getUrl('contacts')?>"><?php echo $this->__('Contact Us')?></a></li>
+      </ul>
+    </div>
+    <div class="newsletter-block">
+      <h1>Subscribe To Newsletter</h1>
+      <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('newsletter')->toHtml(); ?> </div>
+    <div class="store-location">
+      <h1>Store Location</h1>
+      <p><strong>Outdoor Banner Shop.(ABN 49210655341)</strong><br />
+        <span>302 Bridge Street, Port Melbourne Victoria 3207 Australia<br />
+        Tel: 1300 72 16 14 (Australia wide)<br />
+        Fax: 03 8456 6234</span></p>
+    </div>
+  </div>
+  </footer>
+  
+  <!-- footer end--> 
+  
+  <!-- main div end--> 
+  <script src="<?php echo $this->getSkinUrl()?>js/bannershop/prototype.js" type="text/javascript"></script> 
+  <script src="<?php echo $this->getSkinUrl()?>js/bannershop/livevalidation.js" type="text/javascript"></script> 
+  <script type="text/javascript">
+//var email = new LiveValidation( 'email' );
+//email.add( Validate.Presence );
+//email.add( Validate.Email );
+/*
+function sendRequest(){
+ 	if(LiveValidation.massValidate( [email] )){
+		new Ajax.Request('ajax.php',
+		{
+ 			method:'post',
+			parameters: $('my-form').serialize(true),
+			onLoading: function(){
+				$('update_div').show();
+				$('update_div').innerHTML = "Sending...";
+			},
+			onSuccess: function(transport){
+ 				var response = transport.responseText || "No response text";
+				if(transport.responseText == "You are successfully subscribed for newsletter."){
+					$('update_div').style.color='green';
+				}
+				$('update_div').innerHTML = response;
+			},
+			onFailure: function(){ 
+				$('update_div').innerHTML = "Something went wrong...";
+			}
+		});
+	}
+}
+*/
+</script> 
+</div>
+
+<!--Upload artwork should be here-->
+
+<div id="uploadArtWorkPopup">
+  <div id="uploadArtWork">
+    <div class="txtHeading"></div>
+    <div id="close_button" title="Click to close" >X</div>
+    <?php 
+	 echo $this->getLayout()->createBlock('catalog/product')->setTemplate('catalog/product/upload_artwork.phtml')->toHtml(); 
+   
+?>
+  </div>
+</div>
+<!--End of block artwork--> 
+
+<!--Live Chat--> 
+
+<script type="text/javascript">
+var __lc = {};
+__lc.license = 3920361;
+
+(function() {
+	var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+	lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+})();
+</script> 
+
+<!--End of Live Chat-->

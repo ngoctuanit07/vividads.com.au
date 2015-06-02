@@ -1,0 +1,13 @@
+<div class="adminnote-container">
+	<div class="notification-global adminnote-new adminnote-type-note">
+		<!--<input type="text" value="" />-->
+		<select onclick="adminNoteTypeChange(this)">
+			<?php foreach( $this->getTypes() as $k => $v ) :?>
+				<option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+			<?php endforeach; ?>
+		</select>
+		<textarea onkeyup="adminNoteUpdateText(this);"></textarea>
+		<button onclick="adminNoteAdd(this);"><span>Save Note</span></button>
+		<button onclick="adminNoteAddCancel(this);"><span>Cancel</span></button>
+	</div>
+</div>

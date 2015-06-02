@@ -1,0 +1,11 @@
+diff -aurBb review.phtml app/code/local/AdjustWare/Deliverydate/data/1.4.0.0/review.phtml  
+--- E:/Module/dd_0124/14/app/code/local/AdjustWare/Deliverydate/data/1.4.0.0/review.phtml
++++ E:/Module/dd_0124/14/app/code/local/AdjustWare/Deliverydate/data/1.4.0.0/reviewupd.phtml
+@@ -93,6 +93,7 @@
+                     </form>
+                     <?php endif; ?>
+                 <?php endif; ?>
++             </div><div class="box-content" id="shipping_method_dd"><?php echo $this->getChild('available')->toHtml(); ?> 
+             </div>
+         </div>
+     </div> 

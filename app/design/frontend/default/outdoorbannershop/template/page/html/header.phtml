@@ -1,0 +1,234 @@
+<?php
+/*** Magento** NOTICE OF LICENSE*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE_AFL.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@magentocommerce.com so we can send you a copy immediately.
+** DISCLAIMER ** 
+Do not edit or add to this file if you wish to upgrade Magento to newer
+* versions in the future. If you wish to customize Magento for your
+* needs please refer to http://www.magentocommerce.com for more information.
+*
+* @category    design
+* @package     default_modern
+* @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+* @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ *//**
+* @var Mage_Page_Block_Html_Header $this
+ */
+  $is_homepage = Mage::getBlockSingleton('page/html_header')->getIsHomePage();
+  $stores = Mage::app()->getStores();Mage::app()->setCurrentStore(20);?>
+<script type="text/javascript">
+function NewWindow(page, name, w, h, location, scroll) { //alert(page);
+var winl = (screen.width - w) / 2;
+var wint = (screen.height - h) / 2;
+winprops = 'height='+h+',width='+w+',location='+location+',top='+wint+',left='+winl+',scrollbars='+scroll+',resizable';
+win = window.open(page, name, winprops);
+//if (parseInt(navigator.appVersion) >= 4) { win.window.focus(); }
+if ((navigator.appVersion) >= 4) { win.window.focus(); }}
+function check_header()
+{if(document.search_header.search_keyword.value === '' || document.search_header.search_keyword.value == 'Search customizable banners & signs')
+{document.search_header.search_keyword.value="Search customizable banners & signs";
+return false;
+}else{document.search_header.submit();return true;
+}}function emp(val){if(val.length === 0) {document.search_header.search_keyword.value="Search customizable banners & signs";}
+}
+/** uploading artwork popup*/
+jQuery(document).ready(function(e) {
+	/*temperaory hidden video display later that has to be fixed*/
+
+jQuery('#downloads_video_overlay').hide();
+jQuery('#close_button').click(function(){
+	//jQuery('#uploadArtWorkPopup').hide();
+	jQuery('#uploadArtWorkPopup').hide();
+	jQuery('div#topbar').show('slide');
+	});
+	});
+    </script>
+
+<div id="topbar" class="wrapperFull grey-gredient-bg">
+  <div class="wrapper950 posi-rel">
+    <div class="col1 float-L">
+      <ul class="topQuicklinks">
+        <li> <span><img src="<?php echo $this->getSkinUrl()?>images/phone-img.png" /></span>
+          <h2>1300 72 16 14</h2>
+        </li>
+        <li> <span><img src="<?php echo $this->getSkinUrl()?>images/email-icon.png" /></span>
+          <h3><a href="mailto:sales@outdoorbannershop.com.au" target="_blank">sales@outdoorbannershop.com.au</a></h3>
+        </li>
+      </ul>
+    </div>
+    <div class="col2 float-R">
+      <?php // echo $this->getChildHtml('topBar') ?>
+      <ul class="Quicklinks">
+        <?php  echo $this->getChildHtml('topLinks') ?>
+      </ul>
+      <?php    /*get listed countries*/
+	 		$_countries = Mage::getModel('directory/country')->getResourceCollection()->loadByStore()->toOptionArray(true);
+			//var_dump($_countries);				 
+	 ?>
+      <ul id="countryFlag" style="display:none;">
+        <li class="homeSprite aus" id="mainselectedclass">
+          <div id="selectedcountry">Australia</div>
+          <div style="width:300px; float:left; position:absolute;left:-136px; background-image:none; z-index:-999">
+            <ul style="width:150px; float:left; border-top:1px solid #ccc;  margin-left:120px; z-index:9999999 !important; min-height:30px;">
+              <?php 
+		  		/*get allowed countries in this store*/
+				$counter=0;
+					foreach($_countries as $_country){
+			    		if($counter > 1){?>
+              <li class="flagSprite <?php echo $_country['value']?>" style="background-position:2px 2px;"> <a href="javascript:void(0);" class="flag-sprite suomi" title="<?php echo $_country['label'];?>"  >
+                <?php  echo $_country['label'];?>
+                </a></li>
+              <?php } $counter++;?>
+              <?php }?>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="main-wrapper" id="top">
+  <?php // echo $this->getChildHtml('topMenu') ?>
+  <header>
+    <div class="wrapper950">
+      <div class="clearfix wrapper950">
+        <?php if ($this->getIsHomePage()){?>
+        <div class="logo float-L"> <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"> <img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" width="233" height="80" /></a> </div>
+        <?php }else{?>
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"> <img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" width="233" height="80" /></a>
+        <?php }?>
+        <script>
+	  	  var isShown =0;
+		  jQuery(document).ready(function(e){
+			   jQuery('.cartBox').click(function(){			  
+				if(isShown==0){  	
+					jQuery('#cartPopup').show('fade');
+					isShown=1;
+				  }else{
+					  jQuery('#cartPopup').hide('fade');
+					  isShown=0;					  
+					  }});
+					  });</script>
+        <div class="topLogo">
+          <div class="headertags">
+            <h1><?php echo $this->__("Buy Australia's cheapest mesh banners and vinyl banner's factory.")?> </h1>
+          </div>
+          
+          <!--Cart-Search-->
+          
+          <div class="header-right">
+            <?php /*?><div class="help" > ASK OUR EXPERTS <br />
+              <span class="num" ><?php echo Mage::getStoreConfig('general/store_information/phone');?></span> <br />
+              <div class="help2">
+                <ul>
+                  <li>
+                    <div><a target="_blank" href="mailto:sales@outdoorbannershop.com.au<?php //echo Mage::getStoreConfig('trans_email/ident_general');?>">Send Us An Email</a>
+                      <div class="iconHelp2"></div>
+                      <img src="<?php echo $this->getSkinUrl();?>images/email.png" width="36" height="30"  alt=""/></div>
+                  </li>
+                </ul>
+              </div>
+            </div><?php */?>
+            <div class="Cart-Search">
+              <div class="cartBox" style="cursor:pointer;">
+                <div class="cartImg"></div>
+                <?php
+				  $cr_currency = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+				  	$quote = Mage::getSingleton('checkout/session')->getQuote(); 
+					$items = $quote->getAllVisibleItems(); 
+					foreach($items as $item){
+						$amount[] = $item->getPrice(); //ok
+						$quantity[] = $item->getQtyToInvoice(); // is empty...
+						$sku[] = $item->getSku(); // nothing either??
+						$description[] = $item->getName(); //this is working
+						}
+						if(is_array($amount)){
+							$totalPrice = $cr_currency. ' '.number_format(array_sum($amount),2);}?>
+                <h1><span class="la">Shopping Cart: </span> <br />
+                  <span class="cart-count">Item(s) - <?php echo count($items);?> <?php echo $totalPrice;?></span> </h1>
+                <div class="arrow"> <img src="<?php echo $this->getSkinUrl();?>images/cart-arrow.png" width="6" height="3"  alt=""/></div>
+                <div class="cartSection" id="cartPopup">
+                  <div class="cartCenter">
+                    <div class="headTop">
+                      <div class="cartButton"><a href="javascript:void(0)">Empty Cart</a></div>
+                      <div class="closeButton" id="closeBtn"><a href="javascript:void(0);">Close</a>
+                        <div class="closeIcon"> <a href="javascript:void(0);"><img src="<?php echo $this->getSkinUrl();?>images/chk_off.png" width="16" height="16"  id="closeBtn" style=" float: right; margin:-5px 10px 0 5px;" /></a></div>
+                      </div>
+                    </div>
+                    <div class="cartProduct" style="height:auto !important;">
+                      <ul>
+                        <?php  //getting the conents of the cart///
+
+
+
+		   			$cStore=Mage::app()->getStore();
+					 $storeId= $cStore->getWebsiteId();
+					 //exit;
+					  foreach ($items as $item) {
+						 $_product = Mage::getModel('catalog/product')->load($item->getId());
+						  $images = $_product->getMediaGalleryImages () ;
+						   $i=1;
+						   foreach($images as $image){if($i=0){$imageUrl = $image->getUrl();}}?>
+                        <li> <a href="<?php echo $this->getUrl($_product->getUrl());?>" target="_parent" >
+                          <?php if($imageUrl!=''){$imageUrl;}else{
+							$imageUrl= Mage::helper('catalog/image')->init($_product, 'image')->resize(60,60);}
+							// echo $imageUrl;?>
+                          <div class="imageBox"><img src="<?php echo $imageUrl;?>" width="56" height="56" /></div>
+                          <h1><?php echo $item->getName();?> </h1>
+                          <h2><?php echo $cr_currency. ' '.number_format($item->getPrice(), 2);?></h2>
+                          </a></li>
+                        <?php } 
+						//end of product row// ?>
+                      </ul>
+                    </div>
+                    <div class="totalSection">
+                      <div class="totalItems"> <a href="<?php echo $this->getUrl('checkout/cart/');?>"> <?php echo count($items);?> item(s)</a></div>
+                      <div class="TotalPrice"> <a href="<?php echo $this->getUrl('checkout/cart/');?>">Total: <?php echo $totalPrice;?> </a></div>
+                    </div>
+                  </div>
+                  <div class="shoppingCart"><a href="<?php echo $this->getUrl('checkout/cart/');?>">Shopping Cart</a></div>
+                  <div class="checkOut"><a href="<?php echo $this->getUrl('onepagecheckout');?>">Check out</a></div>
+                </div>
+              </div>
+              <div class="clean"></div>
+            </div>
+          </div>
+        </div>
+        <div class="clean"></div>
+      </div>
+    </div>
+  </header>
+  <div class="wrapper950">
+    <div class="clearfix">
+      <nav>
+        <div id="nav">
+          <ul id="header-nav1">
+            <li> <a href="<?php echo $this->getBaseUrl();?>" class="navHome-icon"></a></li>
+            <li><a title="<?php echo $this->__('Order Now')?>" href="<?php echo $this->getUrl()?>order-now.html"> <?php echo $this->__('Order Now')?> </a></li>
+            <li><a title="<?php echo $this->__('Builders Ad Mesh &trade;')?>" href="<?php echo $this->getUrl()?>outdoor-builders-mesh-banner.html"> <?php echo $this->__('Builders Ad Mesh &trade;')?> </a></li>
+            <li><a title="<?php echo $this->__('About Us')?>" href="<?php echo $this->getUrl()?>about-us"> <?php echo $this->__('About Us')?> </a></li>
+            <li><a title="<?php echo $this->__('Testimonials')?>" href="<?php echo $this->getUrl('testimonial')?>"> <?php echo $this->__('Testimonials')?> </a></li>
+            <li><a title="<?php echo $this->__('Our Clients')?>" href="<?php echo $this->getUrl('news/news-1.html')?>"> <?php echo $this->__('our clients')?> </a></li>
+            <li><a href="<?php echo $this->getUrl('gallery/outdoor-mesh-fence-banners.html')?>" title="<?php echo $this->__('Gallery')?>"><?php echo $this->__('Gallery')?></a></li>
+            <li><a href="<?php echo $this->getUrl('contacts')?>" title="<?php echo $this->__('Contact Us')?>"><?php echo $this->__('Contact Us')?></a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="clear" style="height:0px;">&nbsp;</div>
+      
+      <!-- Main_page //-->
+      <div class="slider-video"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('slider')->toHtml(); ?> </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both;">
+  <?php
+     	/*catalog search*/
+		echo $this->getLayout()->createBlock('core/template')->setTemplate('page/html/breadcrumbs.phtml')->toHtml();  
+     ?>
+</div>

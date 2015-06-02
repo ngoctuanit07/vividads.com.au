@@ -1,0 +1,101 @@
+body{ margin: 0; padding: 0; overflow-x:hidden; background:#fff;}
+.total-main { width:1000px; margin: 0px auto;background: #fff; font: normal 12px/16px Arial; color: #fff; padding: 0px; /*margin-top: 40px;*/}
+.top_area { margin: 0 auto; width: 1000px;background: #fff;}
+input { font: 12px Arial;}
+
+.all_bill { float: left; width: 50%; margin-top: 30px; position: relative;}
+#ship_info { float: left; width: 48%; margin-top: 30px; position:relative; left:20px;}
+.con { padding: 5px 0; width: 25%; float: left;}
+.im_con {width: 18%; float: left;}
+.lab { float: left; width: 100%; font: bold 16px/30px Arial; color:#000;}
+.inp { float: left; width: 100%;}
+#pro_qty { float: left; width: 25%; }
+#pro_qty input { width: 15%; text-align: center; height: 28px; border: 0; outline: none; }
+.desc-step3 { float: left; width: 100%; margin-top: 20px;}
+span.im { width: 100%; float: left; display: block;font: bold 16px/30px Arial; color:#000;}
+.im_con img { text-align: center;}
+.req-head {}
+.m_con { width: 100%; float: left; margin: 10px 0; position: absolute; top: -38px; left: 0; color:#000;}
+.pord-pic, .liveord-head, .req-head { width: 100%; float: left; padding: 5px 0; color:#000; font-family:Arial, serif, sans-serif; font-size:12px; position:relative; top:-35px;}
+.name-head, .bill-head, .loc-head, .coun-head, .ph-head, .email-head, .comp-head { width: 20%; float: left; clear: both; color:#000;}
+.name-data, .bill-data, .loc-data, .coun-data, .ph-data, .email-data, .comp-data, .inv-data { width: 351px; margin-left: 5%; float: left;}
+.def_cl { width: 88px; height: 88px; background: #fff; float: left; margin-left: 8px; border:1px solid #ccc; box-shadow:0px 2px 0px #bfbfbf; -webkit-box-shadow:0px 2px 0px #bfbfbf;-moz-box-shadow:0px 2px 0px #bfbfbf;}
+.im_con img { width: 88px; height: 88px; background: #fff; float: left; margin-left: 8px; border:1px solid #ccc; }
+
+.nam1, .nam2 {margin: 5px 0; display: block; line-height: 28px; float: left; width: 100%;}
+.nput2 { margin: 5px 0; display: block; float: left; width: 100%; /*border:1px solid #ccc;*/}
+.bill-data input { margin: 0 0 5px 0; display: block; width:99%; height: 28px; border:1px solid #ccc;margin: 5px 0; float: left;}
+span.nput1 input { width: 99%; height: 28px; border:1px solid #ccc;}
+span.nput2 input { width: 99%; height: 28px; border:1px solid #ccc;}
+.ph-data input { width: 99%; height: 28px;  float: left; margin: 5px 0; outline: 0;  border:1px solid #ccc;}
+.email-data input { width: 99%; height: 28px; float: left; margin: 5px 0; outline: 0; border:1px solid #ccc;}
+.comp-data input { width: 99%; height: 28px;  outline: 0; margin: 5px 0; border:1px solid #ccc;}
+.ship_add { margin: 10px 0; font: bold 16px/18px Arial; color:#000;}
+span.nput2 select.contenta { width:100%; /*border: 0 !important;*/ padding: 5px 0; font: 12px/14px Arial; background: #fff !important;}
+#pro_qty input { margin-left: 30px;}
+.nput1 input{ display: block;}
+.nput1 { display: block; width: 100%; float: left; margin: 5px 0; /*border:1px solid #ccc;*/}
+span.inp select { border:1px solid #ccc; outline: none; font: 12px/14px Arial; padding: 5px 0 !important; background: #fff !important; width:98%}
+.pord-pic input { border: 0; padding: 6px 15px; background: #fd0402; color: #fff; cursor: pointer; border-radius: 5px; font: 12px Arial; 	  
+transition-property: background;
+transition-duration: 1s;
+transition-timing-function: linear;
+margin-left:132px;
+border:1px solid #bb0100;
+ }
+.pord-pic input:hover { color: #fff; background:#fdc115; border:1px solid #d8a000;}
+span.fontRed { color:#b50000;}
+/*.req-head { margin-top: 20px;}*/
+.success { float: right; padding: 7px; font: bold 14px Arial; width: 26%; text-align: center; line-height: 25px; margin: -70px 0 0; }
+.inv-data{ float: left; width: 75%; margin-left: 0;}
+.inv-data select { border: 0 !important; margin: 5px 0; float: left; width: 80%; padding: 5px 0; background: #fff !important;}
+.inv-head .nam1{ line-height: normal;}
+.inv-head { width: 25%; float: left;}
+
+/*---------------------------13-12-13-----------------------------------*/
+.pro_qty { width: 15%; float: left;}
+.del_button { width: 10%; float: left;}
+.one_pro { width:98%; float: left; margin-bottom: 10px; padding:10px; background-color:#F1F1F1; border:1px dotted #bebebe; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px;-ms-border-radius:5px; -o-border-radius:5px; box-shadow:0px 2px 2px #b6b6bc; -moz-box-shadow:0px 2px 2px #b6b6bc; -webkit-box-shadow:0px 2px 2px #b6b6bc; margin-top:10px;}
+.pro_qty input.quantity { width: 30px; text-align: center; border:1px solid #ccc; outline: none; padding: 5px 0; background: #fff !important;}
+
+.del_button a.del_it { width: 62px; height: 27px; background: url(../images/delete.png) no-repeat 0 0; overflow: hidden; text-indent: 150px; margin: 35px auto 0; display: block;}
+
+.del_button a.del_it:hover { width: 62px; height: 27px; background: url(../images/delete_hover.png) no-repeat 0 0; overflow: hidden; text-indent: 150px; margin: 35px auto 0; display: block;}
+
+/*.add_more_con { width: 20%; float: left; background-color:#40b1ed; border:1px solid #0095e4; border-radius:5px; padding:5px; text-align:center; transition-property: background; transition-duration: 1s; transition-timing-function: linear; color:#fff; text-decoration:none;}*/
+.add_more_con { /*background:url(../images/add_more_products.jpg) no-repeat center top;*/ width:147px; height:28px; float:left;}
+/*.add_more_con a { font: bold 12px/16px Arial; text-decoration: underline; color: #fff; outline: none; text-decoration:none; display:block}
+.add_more_con:hover { text-decoration: none;  background: #0095e4; color:#fff; border:1px solid #40b1ed;}*/
+.total-main:after { clear: both; content: "."; display: block; font-size: 0; height: 0; line-height: 0; overflow: hidden;}
+
+
+.captcha_area { float: left; width:100%;}
+.captcha_area .captcha_img { margin:10px 0 10px 125px; width:200px; border:1px solid #ccc;}
+.reset_captcha { width: 12%; float: left;}
+.reset_captcha a { color: #fff; font-weight: bold; text-decoration: underline;}
+.reset_captcha a:hover { text-decoration: none;}
+.captcha_input input { border: 0; outline: none; height: 28px; width: 200px; margin: 10px 0 10px 125px; border:1px solid #ccc; position:relative; z-index:1000;}
+.captcha_text {color:#000; font-family:Arial, serif, sans-serif; font-size:12px; margin: -30px 0 10px 125px;}
+
+/*---------------------------24-12-13-----------------------------------*/
+.main_main { background: #fff; margin: 30px auto; float: left; }
+.thank_u { font: 20px/18px Arial; color: #0095e4; margin-top: 10px;   padding: 26px 0px 0px 55px; /*min-height: 200px;*/  display:none;}
+.email_icon { font: 20px/18px Arial; color: #0095e4; margin-top: 10px;   padding: 26px 0px 0px 55px; /*min-height: 200px;*/ background:url(../images/email_sent_mail.jpg) no-repeat left top; 	display:none; height:49px;  }
+
+.str_message{font: 20px/18px Arial; color: #0095e4; margin-top: 10px;   padding: 26px 0px 0px 55px; /*min-height: 200px;*/ background:url(../images/email_sent_mail.jpg) no-repeat left top; 	display:block; height:49px;}
+body { background: none !important;}
+.bo_docklink { display: none !important;}
+select#cat { width: 96% !important;}
+select.prod { width: 96% !important;}
+input.input-text, select, textarea { font: 12px/14px Arial;}
+
+.con.proddiv { width: 32%;}
+
+.refresh_captcha {height: 36px; left: 336px; position: relative; right: 0 !important; width: 144px;top: -60px;}
+
+.email_sent {background:url(../images/email_sent_ok.jpg) no-repeat center top;   height: 256px;
+    width: 100%;
+    margin: 80px 0px 80px 0px;
+    text-align: center;
+		display:none;
+}

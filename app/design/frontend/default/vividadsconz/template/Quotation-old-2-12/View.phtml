@@ -1,0 +1,1237 @@
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl().'css/designer.css'?>"  />
+<?php
+$countryCode = Mage::getStoreConfig('general/country/default');
+//echo "code :".$countryCode;
+$regionCollection = Mage::getModel('directory/region_api')->items($countryCode);
+
+$countryCollection = Mage::getModel('directory/country_api')->items();
+
+$quote = $this->getQuote(); ?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml();
+
+$total = 0;
+?>
+<style type="text/css">
+.quote_part {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	text-align: justify;
+}
+.quote_part ul {
+	margin-left: 30px;
+	list-style-type: square;
+}
+</style>
+
+<div class="quote_details" id="quote_details">
+<div class="print-head" id="print-head" style="display:none;"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('quote_print_head')->toHtml() ?> </div>
+<!--<div class="page-title">
+    <h1><?php //echo $this->__('Quote #%s - %s', $quote->getincrement_id(), $quote->getCaption()); ?></h1>
+</div>-->
+
+<div class="col2-set generic-box">
+  <div style="float: left"> 
+    <!--<b><?php //echo $this->__('Valid until : %s', $this->formatDate($quote->getValidEndTime(),'long')); ?></b>--> 
+    <a href="<?php echo $this->getBaseUrl()?>Quotation/Quote/List/"><small>« </small>Back to My Quotes</a> </div>
+  <div style="float: right">
+    <?php if ($quote->isValid()): ?>
+    <p align="right"> 
+      <!--<button type="button" onclick="document.location.href = '<?php echo $this->getCommitUrl() ?>'" title="Save" class="button"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>  &nbsp;-->
+    <p class="print-link"><a  class="" href="#;" onclick="printDiv();">Print Quote</a></p>
+    <?php if ($this->hasAttachment()): ?>
+    <button type="button" onclick="document.location.href = '<?php echo $this->getViewAttachmentUrl() ?>'" title="Save" class="button"><span><span><?php echo $this->__('Download %s', $quote->getadditional_pdf()); ?></span></span></button>
+    &nbsp;
+    <?php endif; ?>
+    <button type="button" onclick="document.location.href = '<?php echo $this->getPrintUrl() ?>'" title="Save" class="button downpdf"><span><span><?php echo $this->__('Download PDF') ?></span></span></button>
+    </p>
+    <?php else: ?>
+    <p><span style="color: red;"><?php echo $this->__('quotation expired'); ?></span></p>
+    <?php endif ?>
+  </div>
+</div>
+<div class="quote_number">
+  <h1 style="font-size: 16px;font-weight: bold;color: white;margin-bottom: 8px;"><?php echo $this->__('Quote # %s', $quote->getincrement_id()); ?></h1>
+</div>
+<form action="<?php echo $this->getUrl()?>Quotation/Quote/saverequest/id/<?php echo $quote->getId();?>/" method="post" enctype="multipart/form-data" id="edit-quote-form">
+  <table cellspacing="0" class="data-table" id="my-quotations-table" style="width:98%; margin:0px auto;">
+    <thead  style="border:1px solid #ff7c00;">
+      <tr>
+        <th class="headers"><?php echo $this->__('Product Image') ?></th>
+        <th class="headers" ><?php echo $this->__('Name') ?></th>
+        <!-- <th class="headers" ></th>-->
+        <th class="headers" style="text-align:center;"><?php echo $this->__('Sku') ?></th>
+        <th class="headers" style="text-align:center;"><?php echo $this->__('Qty') ?></th>
+        <!--<th><?php //echo $this->__('Discount') ?></th>
+            <th><?php //echo $this->__('Unit Price (excl tax)') ?></th>
+            <th><?php //echo $this->__('Total (excl tax)') ?></th>-->
+        <th class="headers" style="text-align:center;"><?php echo $this->__('Subtotal') ?></th>
+      </tr>
+    </thead>
+    <tbody style="border:1px solid #ff7c00; background-color:#ffa928;">
+      <?php $_odd = ''; ?>
+      <?php if ($quote->getshow_detail_price() == 0): ?>
+      <tr> 
+        <!--<td><?php //echo $quote->GetLinkedProduct()->getSku(); ?></td>-->
+        <td><b><?php echo $quote->GetLinkedProduct()->getName().'</b>'.$this->getSubItemsDescription(); ?></b></td>
+        <td><?php echo $item->getsku() ?></td>
+        <td>1</td>
+        <!--<td>&nbsp;</td>
+    		<td class="a-right"><?php //echo $quote->GetConfigFormatedPriceWithoutTaxes() ?> </td>
+    		<td class="a-right"><?php //echo $quote->GetConfigFormatedPriceWithoutTaxes() ?></td>-->
+        <td class="a-right"><?php echo $quote->GetConfigFormatedPriceWithTaxes() ?></td>
+      </tr>
+      <?php endif ?>
+      <?php foreach ($quote->getItems() as $item): ?>
+      <?php if (($item->getexclude() == 1) || ($quote->getshow_detail_price() == 1)):
+		
+		    $_product =Mage::getModel('catalog/product')->load($item->getproductId());
+		    $productOptions= $item->getOptions();
+		    $productOptions = Mage::helper('quotation/Serialization')->unserializeObject($productOptions);
+		
+		?>
+      <tr> 
+        <!--<td><?php //echo $item->getsku() ?></td>-->
+        <td style="width:125px; border-right:1px solid #ff7c00; "><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></td>
+        <td style="width:230px; border-right:1px solid #ff7c00;"><h2 class="product-name"><a style="font-size: 13px;font-weight: bold; color:#fff;" href="<?php echo $_product->getProductUrl();?>"><?php echo $item->getcaption() ?><br>
+            <?php //echo $value = $item->getOptionsValuesAsText(true);?>
+            </a></h2>
+          <?php
+			
+               
+                                 foreach ($_product->getOptions() as $option) { 
+                                
+                                // Getting Values if it has option values, case of select,dropdown,radio,multiselect
+                                $values = $option->getValues();
+                                
+                                //print_r($option[is_require]);
+                                if($option[is_require] == 1)
+                                $required = 'required-entry';
+                                else
+                                $required = '';
+				
+				$optionall .=  "'".$_product->getId()."_".$option->getId()."',";
+                                
+                                ?>
+          <dl class="last">
+            <dt>
+              <label class="required"><em>*</em><?php echo $option->getTitle();?></label>
+            </dt>
+            <dd class="last">
+              <div class="input-box">
+                <select class="listing_dropdown <?php echo $required;?>" id="select_<?php echo $_product->getId() ?>_<?php echo $option->getId() ?>" name='options[<?php echo $_product->getId();?>][<?php echo $option->getId() ?>]' >
+                  <option price="" value="">Select Option</option>
+                  <?php foreach ($values as $value) : ?>
+                  <option price="<?php echo $value->getPrice(); ?>" value="<?php echo $value->getId(); ?>" <?php if($productOptions[$option->getId()] == $value->getId())echo 'selected';?>><?php echo $value->getTitle().' +'.$quote->FormatPrice($value->getPrice()); ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </dd>
+          </dl>
+          <?php
+                                $i++;
+                                }
+				
+				$optionall = rtrim($optionall,',');
+                                
+			?></td>
+        <td style="border-right:1px solid #ff7c00;  text-align:center; color:#fff;"><?php echo $item->getsku() ?></td>
+        <td style="border-right:1px solid #ff7c00; text-align:center;"><input name="item[<?php echo $_product->getId() ?>]" id="qty_<?php echo $_product->getId() ?>" type="input-text" class="edit-qty quotation-input" value="<?php echo $item->getqty() ?>" onchange="editQuote.hasChange = true"></td>
+        <!--<td><?php //echo ($item->getdiscount_purcent() > 0 ? $item->getdiscount_purcent().'%' :  ''); ?></td>
+	                <td class="a-right"><?php //echo $quote->FormatPrice($item->GetUnitPriceWithoutTaxes($quote)); ?> </td>
+	                <td class="a-right"><?php //echo $quote->FormatPrice($item->GetTotalPriceWithoutTaxes($quote)); ?></td>-->
+        <td align="center" style="border-right:1px solid #ff7c00; text-align:center;"><?php echo $quote->FormatPrice($item->GetTotalPriceWithTaxes($quote)); $total += $item->GetTotalPriceWithTaxes($quote) ?></td>
+      </tr>
+      <?php endif ?>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+  <table class="data-table one-column" width="100%" id="quote-totals-table">
+    <thead>
+      <!--<tr>
+    			<th style="background-color: #2B2B2B;padding: 5px 12px;white-space: nowrap;height: 26px;color: #9BBC21;border: 0;font-weight: bold;text-transform: none;border-image: initial;height:15px;" width="100%">
+    				  Quote #Q2003403
+    			</th>
+    		</tr>-->
+    </thead>
+    <tbody>
+      <tr>
+        <td width="100%" style="padding:0"><table width="38%" style="float:right; margin-right:10px;">
+            <tbody>
+              <tr>
+                <td  colspan="1" style="width:44%; background-color:#fc9801; border-right:1px solid #ff7c00; border-bottom:1px solid #ff7c00;"><?php echo $this->__('Subtotal'); ?></td>
+                <td style="width:44%; background-color:#ff9900; border-right:1px solid #ff7c00; border-bottom:1px solid #ff7c00;"><span class="price"><?php echo $quote->FormatPrice($total);?></span></td>
+              </tr>
+              <tr>
+                <td colspan="1" style="width:44%; background-color:#fc9801; border-right:1px solid #ff7c00; border-bottom:1px solid #ff7c00;"><?php $carrierTitle =  end(explode('_',$quote->getShippingMethod()));$title = Mage::getStoreConfig('carriers/'.$carrierTitle.'/title');?>
+                  <?php echo $this->__('Shipping &amp; Handling'); ?> (<?php echo $title;?>) </td>
+                <td  style="width:44%; background-color:#ff9900; border-right:1px solid #ff7c00; border-bottom:1px solid #ff7c00;"><span class="price"><?php echo $quote->FormatPrice($quote->getShippingRate());?></span></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td  colspan="1" style="width:44%; background-color:#fc9801; border-right:1px solid #ff7c00; border-bottom:1px solid #ff7c00;"><strong><?php echo $this->__('Grand Total'); ?></strong></td>
+                <td  class="price" style="width:44%; background-color:#fc9801; border-right:1px solid #ff7c00; border-bottom:1px solid #ff7c00;"><strong><span class="price"><?php echo $quote->FormatPrice($total+$quote->getShippingRate());?></span></strong></td>
+              </tr>
+            </tfoot>
+          </table></td>
+      </tr>
+    </tbody>
+  </table>
+  <script type="text/javascript">decorateTable('my-quotations-table')</script>
+  <p>&nbsp;</p>
+  
+  <!-- totals --> 
+  <!--<div align="right">
+<table border="0">
+	<tr>
+		<td width="150" align="right"><h2><?php //echo $this->__('Sub total'); ?></h2></td>
+		<td width="30">&nbsp;</td>
+		<td align="right"><h2><?php //echo $quote->FormatPrice($quote->GetFinalPriceWithoutTaxes()); ?></h2></td>
+	</tr>
+	<tr>
+		<td align="right"><h2><?php echo $this->__('Tax'); ?></h2></td>
+		<td>&nbsp;</td>
+		<td align="right"><h2><?php echo $quote->FormatPrice($quote->GetTaxAmount()); ?></h2></td>
+	</tr>
+	<tr>
+		<td align="right"><h2><?php echo $this->__('Grand Total'); ?></h2></td>
+		<td>&nbsp;</td>
+		<td align="right"><h2><?php echo $quote->FormatPrice($quote->GetFinalPriceWithTaxes()); ?></h2></td>
+	</tr>
+        <?php if($quote->getreduction() != ''): ?>
+        <tr>
+            <td align="right"><h2><?php echo $this->__('Discount'); ?></h2></td>
+            <td>&nbsp;</td>
+            <td align="right"><h2><?php echo $quote->FormatDiscount($quote->getreduction()); ?></h2></td>
+        </tr>
+        <?php endif ?>
+</table>
+</div>
+-->
+  
+  <table class="data-table two-column" width="100%" style="margin:0px auto; width:98%">
+    <thead>
+      <tr>
+        <th style="background-color: #ff9900;padding: 5px 12px;" width="48%"> <div> Billing Information: <a class="change-link" href="javascript:void(0);" onclick="changeContent('billing_address');">Change</a> </div>
+        </th>
+        <th style="background-color: #ef781e"></th>
+        <th style="background-color: #ff9900;padding: 5px 12px;" width="48%"> <div> Shipping Information: <a class="change-link" href="javascript:void(0);" onclick="changeContent('shipping_address');">Change</a> </div>
+        </th>
+      </tr>
+    </thead>
+    <?php
+	
+	$tableBilling = Mage::getSingleton('core/resource')->getTableName('quotation_billing');
+	$sqlSystem="SELECT * FROM ".$tableBilling." WHERE quotation_id = '".$quote->getId()."' ";
+         
+         try {
+                 $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlSystem);
+		 $fetchSystem = $chkSystem->fetch();
+         } catch (Exception $e){
+         echo $e->getMessage();
+         }
+	 
+	?>
+    <tbody>
+      <tr>
+        <td valign="middle"><address class="box-content" id="quote-billing_address" >
+          <?php
+echo $fetchSystem['firstname'].' '.$fetchSystem['lastname']."<br/>";
+if($fetchSystem['street1'] != '')
+	echo $fetchSystem['street1']."<br/>";
+	
+	if($fetchSystem['street2'] != '')
+	echo $fetchSystem['street2']."<br/>";
+	
+	if($fetchSystem['city'] != '')
+	echo $fetchSystem['city'].",";
+	
+	if($fetchSystem['region'] != '')
+	echo $fetchSystem['region'].",";
+	
+	
+	if($fetchSystem['region_id'] != '')
+	echo $fetchSystem['region_id'].",";
+	
+	if($fetchSystem['postcode'] != '')
+	echo $fetchSystem['postcode']."<br/>";
+	
+	if($fetchSystem['country_id'] != '')
+	echo $fetchSystem['country_id']."<br/>";
+	
+	if($fetchSystem['telephone'] != '')
+	echo 'T:'.$fetchSystem['telephone'];
+	
+	?>
+          </address>
+          <div id="quote-edit-billing_address" class="edit-content" style="display: none; ">
+          <script type="text/javascript">editCountryRegions = {"US":{"1":{"code":"AL","name":"Alabama"},"2":{"code":"AK","name":"Alaska"},"3":{"code":"AS","name":"American Samoa"},"4":{"code":"AZ","name":"Arizona"},"5":{"code":"AR","name":"Arkansas"},"6":{"code":"AF","name":"Armed Forces Africa"},"7":{"code":"AA","name":"Armed Forces Americas"},"8":{"code":"AC","name":"Armed Forces Canada"},"9":{"code":"AE","name":"Armed Forces Europe"},"10":{"code":"AM","name":"Armed Forces Middle East"},"11":{"code":"AP","name":"Armed Forces Pacific"},"12":{"code":"CA","name":"California"},"13":{"code":"CO","name":"Colorado"},"14":{"code":"CT","name":"Connecticut"},"15":{"code":"DE","name":"Delaware"},"16":{"code":"DC","name":"District of Columbia"},"17":{"code":"FM","name":"Federated States Of Micronesia"},"18":{"code":"FL","name":"Florida"},"19":{"code":"GA","name":"Georgia"},"20":{"code":"GU","name":"Guam"},"21":{"code":"HI","name":"Hawaii"},"22":{"code":"ID","name":"Idaho"},"23":{"code":"IL","name":"Illinois"},"24":{"code":"IN","name":"Indiana"},"25":{"code":"IA","name":"Iowa"},"26":{"code":"KS","name":"Kansas"},"27":{"code":"KY","name":"Kentucky"},"28":{"code":"LA","name":"Louisiana"},"29":{"code":"ME","name":"Maine"},"30":{"code":"MH","name":"Marshall Islands"},"31":{"code":"MD","name":"Maryland"},"32":{"code":"MA","name":"Massachusetts"},"33":{"code":"MI","name":"Michigan"},"34":{"code":"MN","name":"Minnesota"},"35":{"code":"MS","name":"Mississippi"},"36":{"code":"MO","name":"Missouri"},"37":{"code":"MT","name":"Montana"},"38":{"code":"NE","name":"Nebraska"},"39":{"code":"NV","name":"Nevada"},"40":{"code":"NH","name":"New Hampshire"},"41":{"code":"NJ","name":"New Jersey"},"42":{"code":"NM","name":"New Mexico"},"43":{"code":"NY","name":"New York"},"44":{"code":"NC","name":"North Carolina"},"45":{"code":"ND","name":"North Dakota"},"46":{"code":"MP","name":"Northern Mariana Islands"},"47":{"code":"OH","name":"Ohio"},"48":{"code":"OK","name":"Oklahoma"},"49":{"code":"OR","name":"Oregon"},"50":{"code":"PW","name":"Palau"},"51":{"code":"PA","name":"Pennsylvania"},"52":{"code":"PR","name":"Puerto Rico"},"53":{"code":"RI","name":"Rhode Island"},"54":{"code":"SC","name":"South Carolina"},"55":{"code":"SD","name":"South Dakota"},"56":{"code":"TN","name":"Tennessee"},"57":{"code":"TX","name":"Texas"},"58":{"code":"UT","name":"Utah"},"59":{"code":"VT","name":"Vermont"},"60":{"code":"VI","name":"Virgin Islands"},"61":{"code":"VA","name":"Virginia"},"62":{"code":"WA","name":"Washington"},"63":{"code":"WV","name":"West Virginia"},"64":{"code":"WI","name":"Wisconsin"},"65":{"code":"WY","name":"Wyoming"}},"CA":{"66":{"code":"AB","name":"Alberta"},"67":{"code":"BC","name":"British Columbia"},"68":{"code":"MB","name":"Manitoba"},"69":{"code":"NL","name":"Newfoundland and Labrador"},"70":{"code":"NB","name":"New Brunswick"},"71":{"code":"NS","name":"Nova Scotia"},"72":{"code":"NT","name":"Northwest Territories"},"73":{"code":"NU","name":"Nunavut"},"74":{"code":"ON","name":"Ontario"},"75":{"code":"PE","name":"Prince Edward Island"},"76":{"code":"QC","name":"Quebec"},"77":{"code":"SK","name":"Saskatchewan"},"78":{"code":"YT","name":"Yukon Territory"}},"DE":{"79":{"code":"NDS","name":"Niedersachsen"},"80":{"code":"BAW","name":"Baden-W\u00fcrttemberg"},"81":{"code":"BAY","name":"Bayern"},"82":{"code":"BER","name":"Berlin"},"83":{"code":"BRG","name":"Brandenburg"},"84":{"code":"BRE","name":"Bremen"},"85":{"code":"HAM","name":"Hamburg"},"86":{"code":"HES","name":"Hessen"},"87":{"code":"MEC","name":"Mecklenburg-Vorpommern"},"88":{"code":"NRW","name":"Nordrhein-Westfalen"},"89":{"code":"RHE","name":"Rheinland-Pfalz"},"90":{"code":"SAR","name":"Saarland"},"91":{"code":"SAS","name":"Sachsen"},"92":{"code":"SAC","name":"Sachsen-Anhalt"},"93":{"code":"SCN","name":"Schleswig-Holstein"},"94":{"code":"THE","name":"Th\u00fcringen"}},"AT":{"95":{"code":"WI","name":"Wien"},"96":{"code":"NO","name":"Nieder\u00f6sterreich"},"97":{"code":"OO","name":"Ober\u00f6sterreich"},"98":{"code":"SB","name":"Salzburg"},"99":{"code":"KN","name":"K\u00e4rnten"},"100":{"code":"ST","name":"Steiermark"},"101":{"code":"TI","name":"Tirol"},"102":{"code":"BL","name":"Burgenland"},"103":{"code":"VB","name":"Voralberg"}},"CH":{"104":{"code":"AG","name":"Aargau"},"105":{"code":"AI","name":"Appenzell Innerrhoden"},"106":{"code":"AR","name":"Appenzell Ausserrhoden"},"107":{"code":"BE","name":"Bern"},"108":{"code":"BL","name":"Basel-Landschaft"},"109":{"code":"BS","name":"Basel-Stadt"},"110":{"code":"FR","name":"Freiburg"},"111":{"code":"GE","name":"Genf"},"112":{"code":"GL","name":"Glarus"},"113":{"code":"GR","name":"Graub\u00fcnden"},"114":{"code":"JU","name":"Jura"},"115":{"code":"LU","name":"Luzern"},"116":{"code":"NE","name":"Neuenburg"},"117":{"code":"NW","name":"Nidwalden"},"118":{"code":"OW","name":"Obwalden"},"119":{"code":"SG","name":"St. Gallen"},"120":{"code":"SH","name":"Schaffhausen"},"121":{"code":"SO","name":"Solothurn"},"122":{"code":"SZ","name":"Schwyz"},"123":{"code":"TG","name":"Thurgau"},"124":{"code":"TI","name":"Tessin"},"125":{"code":"UR","name":"Uri"},"126":{"code":"VD","name":"Waadt"},"127":{"code":"VS","name":"Wallis"},"128":{"code":"ZG","name":"Zug"},"129":{"code":"ZH","name":"Z\u00fcrich"}},"ES":{"130":{"code":"A Coru\u0441a","name":"A Coru\u00f1a"},"131":{"code":"Alava","name":"Alava"},"132":{"code":"Albacete","name":"Albacete"},"133":{"code":"Alicante","name":"Alicante"},"134":{"code":"Almeria","name":"Almeria"},"135":{"code":"Asturias","name":"Asturias"},"136":{"code":"Avila","name":"Avila"},"137":{"code":"Badajoz","name":"Badajoz"},"138":{"code":"Baleares","name":"Baleares"},"139":{"code":"Barcelona","name":"Barcelona"},"140":{"code":"Burgos","name":"Burgos"},"141":{"code":"Caceres","name":"Caceres"},"142":{"code":"Cadiz","name":"Cadiz"},"143":{"code":"Cantabria","name":"Cantabria"},"144":{"code":"Castellon","name":"Castellon"},"145":{"code":"Ceuta","name":"Ceuta"},"146":{"code":"Ciudad Real","name":"Ciudad Real"},"147":{"code":"Cordoba","name":"Cordoba"},"148":{"code":"Cuenca","name":"Cuenca"},"149":{"code":"Girona","name":"Girona"},"150":{"code":"Granada","name":"Granada"},"151":{"code":"Guadalajara","name":"Guadalajara"},"152":{"code":"Guipuzcoa","name":"Guipuzcoa"},"153":{"code":"Huelva","name":"Huelva"},"154":{"code":"Huesca","name":"Huesca"},"155":{"code":"Jaen","name":"Jaen"},"156":{"code":"La Rioja","name":"La Rioja"},"157":{"code":"Las Palmas","name":"Las Palmas"},"158":{"code":"Leon","name":"Leon"},"159":{"code":"Lleida","name":"Lleida"},"160":{"code":"Lugo","name":"Lugo"},"161":{"code":"Madrid","name":"Madrid"},"162":{"code":"Malaga","name":"Malaga"},"163":{"code":"Melilla","name":"Melilla"},"164":{"code":"Murcia","name":"Murcia"},"165":{"code":"Navarra","name":"Navarra"},"166":{"code":"Ourense","name":"Ourense"},"167":{"code":"Palencia","name":"Palencia"},"168":{"code":"Pontevedra","name":"Pontevedra"},"169":{"code":"Salamanca","name":"Salamanca"},"170":{"code":"Santa Cruz de Tenerife","name":"Santa Cruz de Tenerife"},"171":{"code":"Segovia","name":"Segovia"},"172":{"code":"Sevilla","name":"Sevilla"},"173":{"code":"Soria","name":"Soria"},"174":{"code":"Tarragona","name":"Tarragona"},"175":{"code":"Teruel","name":"Teruel"},"176":{"code":"Toledo","name":"Toledo"},"177":{"code":"Valencia","name":"Valencia"},"178":{"code":"Valladolid","name":"Valladolid"},"179":{"code":"Vizcaya","name":"Vizcaya"},"180":{"code":"Zamora","name":"Zamora"},"181":{"code":"Zaragoza","name":"Zaragoza"}},"FR":{"182":{"code":"01","name":"Ain"},"183":{"code":"02","name":"Aisne"},"184":{"code":"03","name":"Allier"},"185":{"code":"04","name":"Alpes-de-Haute-Provence"},"186":{"code":"05","name":"Hautes-Alpes"},"187":{"code":"06","name":"Alpes-Maritimes"},"188":{"code":"07","name":"Ard\u00e8che"},"189":{"code":"08","name":"Ardennes"},"190":{"code":"09","name":"Ari\u00e8ge"},"191":{"code":"10","name":"Aube"},"192":{"code":"11","name":"Aude"},"193":{"code":"12","name":"Aveyron"},"194":{"code":"13","name":"Bouches-du-Rh\u00f4ne"},"195":{"code":"14","name":"Calvados"},"196":{"code":"15","name":"Cantal"},"197":{"code":"16","name":"Charente"},"198":{"code":"17","name":"Charente-Maritime"},"199":{"code":"18","name":"Cher"},"200":{"code":"19","name":"Corr\u00e8ze"},"201":{"code":"2A","name":"Corse-du-Sud"},"202":{"code":"2B","name":"Haute-Corse"},"203":{"code":"21","name":"C\u00f4te-d'Or"},"204":{"code":"22","name":"C\u00f4tes-d'Armor"},"205":{"code":"23","name":"Creuse"},"206":{"code":"24","name":"Dordogne"},"207":{"code":"25","name":"Doubs"},"208":{"code":"26","name":"Dr\u00f4me"},"209":{"code":"27","name":"Eure"},"210":{"code":"28","name":"Eure-et-Loir"},"211":{"code":"29","name":"Finist\u00e8re"},"212":{"code":"30","name":"Gard"},"213":{"code":"31","name":"Haute-Garonne"},"214":{"code":"32","name":"Gers"},"215":{"code":"33","name":"Gironde"},"216":{"code":"34","name":"H\u00e9rault"},"217":{"code":"35","name":"Ille-et-Vilaine"},"218":{"code":"36","name":"Indre"},"219":{"code":"37","name":"Indre-et-Loire"},"220":{"code":"38","name":"Is\u00e8re"},"221":{"code":"39","name":"Jura"},"222":{"code":"40","name":"Landes"},"223":{"code":"41","name":"Loir-et-Cher"},"224":{"code":"42","name":"Loire"},"225":{"code":"43","name":"Haute-Loire"},"226":{"code":"44","name":"Loire-Atlantique"},"227":{"code":"45","name":"Loiret"},"228":{"code":"46","name":"Lot"},"229":{"code":"47","name":"Lot-et-Garonne"},"230":{"code":"48","name":"Loz\u00e8re"},"231":{"code":"49","name":"Maine-et-Loire"},"232":{"code":"50","name":"Manche"},"233":{"code":"51","name":"Marne"},"234":{"code":"52","name":"Haute-Marne"},"235":{"code":"53","name":"Mayenne"},"236":{"code":"54","name":"Meurthe-et-Moselle"},"237":{"code":"55","name":"Meuse"},"238":{"code":"56","name":"Morbihan"},"239":{"code":"57","name":"Moselle"},"240":{"code":"58","name":"Ni\u00e8vre"},"241":{"code":"59","name":"Nord"},"242":{"code":"60","name":"Oise"},"243":{"code":"61","name":"Orne"},"244":{"code":"62","name":"Pas-de-Calais"},"245":{"code":"63","name":"Puy-de-D\u00f4me"},"246":{"code":"64","name":"Pyr\u00e9n\u00e9es-Atlantiques"},"247":{"code":"65","name":"Hautes-Pyr\u00e9n\u00e9es"},"248":{"code":"66","name":"Pyr\u00e9n\u00e9es-Orientales"},"249":{"code":"67","name":"Bas-Rhin"},"250":{"code":"68","name":"Haut-Rhin"},"251":{"code":"69","name":"Rh\u00f4ne"},"252":{"code":"70","name":"Haute-Sa\u00f4ne"},"253":{"code":"71","name":"Sa\u00f4ne-et-Loire"},"254":{"code":"72","name":"Sarthe"},"255":{"code":"73","name":"Savoie"},"256":{"code":"74","name":"Haute-Savoie"},"257":{"code":"75","name":"Paris"},"258":{"code":"76","name":"Seine-Maritime"},"259":{"code":"77","name":"Seine-et-Marne"},"260":{"code":"78","name":"Yvelines"},"261":{"code":"79","name":"Deux-S\u00e8vres"},"262":{"code":"80","name":"Somme"},"263":{"code":"81","name":"Tarn"},"264":{"code":"82","name":"Tarn-et-Garonne"},"265":{"code":"83","name":"Var"},"266":{"code":"84","name":"Vaucluse"},"267":{"code":"85","name":"Vend\u00e9e"},"268":{"code":"86","name":"Vienne"},"269":{"code":"87","name":"Haute-Vienne"},"270":{"code":"88","name":"Vosges"},"271":{"code":"89","name":"Yonne"},"272":{"code":"90","name":"Territoire-de-Belfort"},"273":{"code":"91","name":"Essonne"},"274":{"code":"92","name":"Hauts-de-Seine"},"275":{"code":"93","name":"Seine-Saint-Denis"},"276":{"code":"94","name":"Val-de-Marne"},"277":{"code":"95","name":"Val-d'Oise"}},"RO":{"278":{"code":"AB","name":"Alba"},"279":{"code":"AR","name":"Arad"},"280":{"code":"AG","name":"Arge\u015f"},"281":{"code":"BC","name":"Bac\u0103u"},"282":{"code":"BH","name":"Bihor"},"283":{"code":"BN","name":"Bistri\u0163a-N\u0103s\u0103ud"},"284":{"code":"BT","name":"Boto\u015fani"},"285":{"code":"BV","name":"Bra\u015fov"},"286":{"code":"BR","name":"Br\u0103ila"},"287":{"code":"B","name":"Bucure\u015fti"},"288":{"code":"BZ","name":"Buz\u0103u"},"289":{"code":"CS","name":"Cara\u015f-Severin"},"290":{"code":"CL","name":"C\u0103l\u0103ra\u015fi"},"291":{"code":"CJ","name":"Cluj"},"292":{"code":"CT","name":"Constan\u0163a"},"293":{"code":"CV","name":"Covasna"},"294":{"code":"DB","name":"D\u00e2mbovi\u0163a"},"295":{"code":"DJ","name":"Dolj"},"296":{"code":"GL","name":"Gala\u0163i"},"297":{"code":"GR","name":"Giurgiu"},"298":{"code":"GJ","name":"Gorj"},"299":{"code":"HR","name":"Harghita"},"300":{"code":"HD","name":"Hunedoara"},"301":{"code":"IL","name":"Ialomi\u0163a"},"302":{"code":"IS","name":"Ia\u015fi"},"303":{"code":"IF","name":"Ilfov"},"304":{"code":"MM","name":"Maramure\u015f"},"305":{"code":"MH","name":"Mehedin\u0163i"},"306":{"code":"MS","name":"Mure\u015f"},"307":{"code":"NT","name":"Neam\u0163"},"308":{"code":"OT","name":"Olt"},"309":{"code":"PH","name":"Prahova"},"310":{"code":"SM","name":"Satu-Mare"},"311":{"code":"SJ","name":"S\u0103laj"},"312":{"code":"SB","name":"Sibiu"},"313":{"code":"SV","name":"Suceava"},"314":{"code":"TR","name":"Teleorman"},"315":{"code":"TM","name":"Timi\u015f"},"316":{"code":"TL","name":"Tulcea"},"317":{"code":"VS","name":"Vaslui"},"318":{"code":"VL","name":"V\u00e2lcea"},"319":{"code":"VN","name":"Vrancea"}},"FI":{"320":{"code":"Lappi","name":"Lappi"},"321":{"code":"Pohjois-Pohjanmaa","name":"Pohjois-Pohjanmaa"},"322":{"code":"Kainuu","name":"Kainuu"},"323":{"code":"Pohjois-Karjala","name":"Pohjois-Karjala"},"324":{"code":"Pohjois-Savo","name":"Pohjois-Savo"},"325":{"code":"Etel\u00e4-Savo","name":"Etel\u00e4-Savo"},"326":{"code":"Etel\u00e4-Pohjanmaa","name":"Etel\u00e4-Pohjanmaa"},"327":{"code":"Pohjanmaa","name":"Pohjanmaa"},"328":{"code":"Pirkanmaa","name":"Pirkanmaa"},"329":{"code":"Satakunta","name":"Satakunta"},"330":{"code":"Keski-Pohjanmaa","name":"Keski-Pohjanmaa"},"331":{"code":"Keski-Suomi","name":"Keski-Suomi"},"332":{"code":"Varsinais-Suomi","name":"Varsinais-Suomi"},"333":{"code":"Etel\u00e4-Karjala","name":"Etel\u00e4-Karjala"},"334":{"code":"P\u00e4ij\u00e4t-H\u00e4me","name":"P\u00e4ij\u00e4t-H\u00e4me"},"335":{"code":"Kanta-H\u00e4me","name":"Kanta-H\u00e4me"},"336":{"code":"Uusimaa","name":"Uusimaa"},"337":{"code":"It\u00e4-Uusimaa","name":"It\u00e4-Uusimaa"},"338":{"code":"Kymenlaakso","name":"Kymenlaakso"},"339":{"code":"Ahvenanmaa","name":"Ahvenanmaa"}},"EE":{"340":{"code":"EE-37","name":"Harjumaa"},"341":{"code":"EE-39","name":"Hiiumaa"},"342":{"code":"EE-44","name":"Ida-Virumaa"},"343":{"code":"EE-49","name":"J\u00f5gevamaa"},"344":{"code":"EE-51","name":"J\u00e4rvamaa"},"345":{"code":"EE-57","name":"L\u00e4\u00e4nemaa"},"346":{"code":"EE-59","name":"L\u00e4\u00e4ne-Virumaa"},"347":{"code":"EE-65","name":"P\u00f5lvamaa"},"348":{"code":"EE-67","name":"P\u00e4rnumaa"},"349":{"code":"EE-70","name":"Raplamaa"},"350":{"code":"EE-74","name":"Saaremaa"},"351":{"code":"EE-78","name":"Tartumaa"},"352":{"code":"EE-82","name":"Valgamaa"},"353":{"code":"EE-84","name":"Viljandimaa"},"354":{"code":"EE-86","name":"V\u00f5rumaa"}},"LV":{"355":{"code":"LV-DGV","name":"Daugavpils"},"356":{"code":"LV-JEL","name":"Jelgava"},"357":{"code":"J\u0113kabpils","name":"J\u0113kabpils"},"358":{"code":"LV-JUR","name":"J\u016brmala"},"359":{"code":"LV-LPX","name":"Liep\u0101ja"},"360":{"code":"LV-LE","name":"Liep\u0101jas novads"},"361":{"code":"LV-REZ","name":"R\u0113zekne"},"362":{"code":"LV-RIX","name":"R\u012bga"},"363":{"code":"LV-RI","name":"R\u012bgas novads"},"364":{"code":"Valmiera","name":"Valmiera"},"365":{"code":"LV-VEN","name":"Ventspils"},"366":{"code":"Aglonas novads","name":"Aglonas novads"},"367":{"code":"LV-AI","name":"Aizkraukles novads"},"368":{"code":"Aizputes novads","name":"Aizputes novads"},"369":{"code":"Akn\u012bstes novads","name":"Akn\u012bstes novads"},"370":{"code":"Alojas novads","name":"Alojas novads"},"371":{"code":"Alsungas novads","name":"Alsungas novads"},"372":{"code":"LV-AL","name":"Al\u016bksnes novads"},"373":{"code":"Amatas novads","name":"Amatas novads"},"374":{"code":"Apes novads","name":"Apes novads"},"375":{"code":"Auces novads","name":"Auces novads"},"376":{"code":"Bab\u012btes novads","name":"Bab\u012btes novads"},"377":{"code":"Baldones novads","name":"Baldones novads"},"378":{"code":"Baltinavas novads","name":"Baltinavas novads"},"379":{"code":"LV-BL","name":"Balvu novads"},"380":{"code":"LV-BU","name":"Bauskas novads"},"381":{"code":"Bever\u012bnas novads","name":"Bever\u012bnas novads"},"382":{"code":"Broc\u0113nu novads","name":"Broc\u0113nu novads"},"383":{"code":"Burtnieku novads","name":"Burtnieku novads"},"384":{"code":"Carnikavas novads","name":"Carnikavas novads"},"385":{"code":"Cesvaines novads","name":"Cesvaines novads"},"386":{"code":"Ciblas novads","name":"Ciblas novads"},"387":{"code":"LV-CE","name":"C\u0113su novads"},"388":{"code":"Dagdas novads","name":"Dagdas novads"},"389":{"code":"LV-DA","name":"Daugavpils novads"},"390":{"code":"LV-DO","name":"Dobeles novads"},"391":{"code":"Dundagas novads","name":"Dundagas novads"},"392":{"code":"Durbes novads","name":"Durbes novads"},"393":{"code":"Engures novads","name":"Engures novads"},"394":{"code":"Garkalnes novads","name":"Garkalnes novads"},"395":{"code":"Grobi\u0146as novads","name":"Grobi\u0146as novads"},"396":{"code":"LV-GU","name":"Gulbenes novads"},"397":{"code":"Iecavas novads","name":"Iecavas novads"},"398":{"code":"Ik\u0161\u0137iles novads","name":"Ik\u0161\u0137iles novads"},"399":{"code":"Il\u016bkstes novads","name":"Il\u016bkstes novads"},"400":{"code":"In\u010dukalna novads","name":"In\u010dukalna novads"},"401":{"code":"Jaunjelgavas novads","name":"Jaunjelgavas novads"},"402":{"code":"Jaunpiebalgas novads","name":"Jaunpiebalgas novads"},"403":{"code":"Jaunpils novads","name":"Jaunpils novads"},"404":{"code":"LV-JL","name":"Jelgavas novads"},"405":{"code":"LV-JK","name":"J\u0113kabpils novads"},"406":{"code":"Kandavas novads","name":"Kandavas novads"},"407":{"code":"Kokneses novads","name":"Kokneses novads"},"408":{"code":"Krimuldas novads","name":"Krimuldas novads"},"409":{"code":"Krustpils novads","name":"Krustpils novads"},"410":{"code":"LV-KR","name":"Kr\u0101slavas novads"},"411":{"code":"LV-KU","name":"Kuld\u012bgas novads"},"412":{"code":"K\u0101rsavas novads","name":"K\u0101rsavas novads"},"413":{"code":"Lielv\u0101rdes novads","name":"Lielv\u0101rdes novads"},"414":{"code":"LV-LM","name":"Limba\u017eu novads"},"415":{"code":"Lub\u0101nas novads","name":"Lub\u0101nas novads"},"416":{"code":"LV-LU","name":"Ludzas novads"},"417":{"code":"L\u012bgatnes novads","name":"L\u012bgatnes novads"},"418":{"code":"L\u012bv\u0101nu novads","name":"L\u012bv\u0101nu novads"},"419":{"code":"LV-MA","name":"Madonas novads"},"420":{"code":"Mazsalacas novads","name":"Mazsalacas novads"},"421":{"code":"M\u0101lpils novads","name":"M\u0101lpils novads"},"422":{"code":"M\u0101rupes novads","name":"M\u0101rupes novads"},"423":{"code":"Nauk\u0161\u0113nu novads","name":"Nauk\u0161\u0113nu novads"},"424":{"code":"Neretas novads","name":"Neretas novads"},"425":{"code":"N\u012bcas novads","name":"N\u012bcas novads"},"426":{"code":"LV-OG","name":"Ogres novads"},"427":{"code":"Olaines novads","name":"Olaines novads"},"428":{"code":"Ozolnieku novads","name":"Ozolnieku novads"},"429":{"code":"LV-PR","name":"Prei\u013cu novads"},"430":{"code":"Priekules novads","name":"Priekules novads"},"431":{"code":"Prieku\u013cu novads","name":"Prieku\u013cu novads"},"432":{"code":"P\u0101rgaujas novads","name":"P\u0101rgaujas novads"},"433":{"code":"P\u0101vilostas novads","name":"P\u0101vilostas novads"},"434":{"code":"P\u013cavi\u0146u novads","name":"P\u013cavi\u0146u novads"},"435":{"code":"Raunas novads","name":"Raunas novads"},"436":{"code":"Riebi\u0146u novads","name":"Riebi\u0146u novads"},"437":{"code":"Rojas novads","name":"Rojas novads"},"438":{"code":"Ropa\u017eu novads","name":"Ropa\u017eu novads"},"439":{"code":"Rucavas novads","name":"Rucavas novads"},"440":{"code":"Rug\u0101ju novads","name":"Rug\u0101ju novads"},"441":{"code":"Rund\u0101les novads","name":"Rund\u0101les novads"},"442":{"code":"LV-RE","name":"R\u0113zeknes novads"},"443":{"code":"R\u016bjienas novads","name":"R\u016bjienas novads"},"444":{"code":"Salacgr\u012bvas novads","name":"Salacgr\u012bvas novads"},"445":{"code":"Salas novads","name":"Salas novads"},"446":{"code":"Salaspils novads","name":"Salaspils novads"},"447":{"code":"LV-SA","name":"Saldus novads"},"448":{"code":"Saulkrastu novads","name":"Saulkrastu novads"},"449":{"code":"Siguldas novads","name":"Siguldas novads"},"450":{"code":"Skrundas novads","name":"Skrundas novads"},"451":{"code":"Skr\u012bveru novads","name":"Skr\u012bveru novads"},"452":{"code":"Smiltenes novads","name":"Smiltenes novads"},"453":{"code":"Stopi\u0146u novads","name":"Stopi\u0146u novads"},"454":{"code":"Stren\u010du novads","name":"Stren\u010du novads"},"455":{"code":"S\u0113jas novads","name":"S\u0113jas novads"},"456":{"code":"LV-TA","name":"Talsu novads"},"457":{"code":"LV-TU","name":"Tukuma novads"},"458":{"code":"T\u0113rvetes novads","name":"T\u0113rvetes novads"},"459":{"code":"Vai\u0146odes novads","name":"Vai\u0146odes novads"},"460":{"code":"LV-VK","name":"Valkas novads"},"461":{"code":"LV-VM","name":"Valmieras novads"},"462":{"code":"Varak\u013c\u0101nu novads","name":"Varak\u013c\u0101nu novads"},"463":{"code":"Vecpiebalgas novads","name":"Vecpiebalgas novads"},"464":{"code":"Vecumnieku novads","name":"Vecumnieku novads"},"465":{"code":"LV-VE","name":"Ventspils novads"},"466":{"code":"Vies\u012btes novads","name":"Vies\u012btes novads"},"467":{"code":"Vi\u013cakas novads","name":"Vi\u013cakas novads"},"468":{"code":"Vi\u013c\u0101nu novads","name":"Vi\u013c\u0101nu novads"},"469":{"code":"V\u0101rkavas novads","name":"V\u0101rkavas novads"},"470":{"code":"Zilupes novads","name":"Zilupes novads"},"471":{"code":"\u0100da\u017eu novads","name":"\u0100da\u017eu novads"},"472":{"code":"\u0112rg\u013cu novads","name":"\u0112rg\u013cu novads"},"473":{"code":"\u0136eguma novads","name":"\u0136eguma novads"},"474":{"code":"\u0136ekavas novads","name":"\u0136ekavas novads"}},"LT":{"475":{"code":"LT-AL","name":"Alytaus Apskritis"},"476":{"code":"LT-KU","name":"Kauno Apskritis"},"477":{"code":"LT-KL","name":"Klaip\u0117dos Apskritis"},"478":{"code":"LT-MR","name":"Marijampol\u0117s Apskritis"},"479":{"code":"LT-PN","name":"Panev\u0117\u017eio Apskritis"},"480":{"code":"LT-SA","name":"\u0160iauli\u0173 Apskritis"},"481":{"code":"LT-TA","name":"Taurag\u0117s Apskritis"},"482":{"code":"LT-TE","name":"Tel\u0161i\u0173 Apskritis"},"483":{"code":"LT-UT","name":"Utenos Apskritis"},"484":{"code":"LT-VL","name":"Vilniaus Apskritis"}}}</script> 
+          <!--  <span class="control">
+<input type="checkbox" name="quote[billing_address][same_as_shipping]" id="edit_billing:same_as_shipping" value="1" title="Same as Shipping Address" onclick="editQuote.setSameAsBilling(this.checked)" class="checkbox" /><label for="edit_billing:same_as_shipping">Same as Shipping Address</label>
+</span>-->
+          
+          <fieldset class="">
+            <div class="address-control"> &nbsp; </div>
+            <!--  <input type="hidden" name="billing_address_id" value="" id="edit_billing_address_id" />-->
+            <input type="hidden" name="quote[billing_address][address_id]" value="382911" id="edit_billing:address_id">
+            <ul class="form-list">
+              <li>
+                <label for="edit_billing:street1" class="required"><em>*</em>Address</label>
+                <div class="input-box">
+                  <input type="text" title="Street Address" name="quote[billing_address][street][0]" id="edit_billing:street1" value="<?php echo $fetchSystem['street1'];?>" class="input-text required-entry street1" onchange="editQuote.setSameAsBilling(false);">
+                </div>
+                <label> </label>
+                <div class="input-box">
+                  <input type="text" title="Street Address 2" name="quote[billing_address][street][1]" id="edit_billing:street2" value="<?php echo $fetchSystem['street2'];?>" class="input-text street2" onchange="editQuote.setSameAsBilling(false);">
+                </div>
+              </li>
+              <li class="fields">
+              <div class="field">
+                <label for="edit_billing:city" class="required"><em>*</em>City</label>
+                <div class="input-box">
+                  <input type="text" title="City" name="quote[billing_address][city]" value="<?php echo $fetchSystem['city'];?>" class="input-text required-entry billing-city" id="edit_billing:city" onchange="editQuote.setSameAsBilling(false);">
+                </div>
+              </div>
+              <div class="field" id="">
+              <label for="edit_billing:region" class="required"><em>*</em>State/Province</label>
+              <div class="input-box" id="">
+              <select id="edit_billing:region_id" name="quote[billing_address][region_id]" title="State/Province" class="validate-select billing-region-id" style="" onchange="editQuote.setSameAsBilling(false);" defaultvalue="13">
+                <option value="">Please select region, state or province</option>
+                <?php
+                                foreach($regionCollection as $region) {
+                                ?>
+                <option value="<?php echo $region['name'] ?>" <?php if($fetchSystem['region_id'] == $region['name']) echo 'selected';?> ><?php echo $region['name'] ?></option>
+                <?php
+                                }
+                                ?>
+                <script type="text/javascript">
+                                //<![CDATA[
+                                    //$('edit_billing:region_id').setAttribute('defaultValue',  "13");
+                                //]]>
+                                </script>
+                <input type="text" id="edit_billing:region" name="quote[billing_address][region]" value="Colorado" title="State/Province" class="input-text billing-region" style="display: none; ">
+                </div>
+                </div>
+                </li>
+                <li class="fields">
+                <div class="field">
+                <label for="edit_billing:postcode" class="required" id="">
+                <em>*</em>Zip/Postal Code
+                </label>
+                <div class="input-box">
+                <input type="text" title="Zip/Postal Code" name="quote[billing_address][postcode]" id="edit_billing:postcode" value="<?php echo $fetchSystem['postcode'];?>" class="input-text validate-zip-international required-entry zipcode" onchange="editQuote.setSameAsBilling(false);">
+                </div>
+                </div>
+                <div class="field">
+                <label for="edit_billing:country_id" class="required">
+                <em>*</em>Country
+                </label>
+                <div class="input-box">
+                <select name="billing[country_id]" id="edit_billing:country_id" class="validate-select billing-country" title="Country" onchange="updateEditBillingRegion()">
+                <option value=""> </option>
+                <option value=""> </option>
+                <?php
+                                        foreach($countryCollection as $country) {
+                                        ?>
+                <option value="<?php echo $country['country_id'] ?>" <?php if($fetchSystem['country_id'] == $country['country_id']) echo 'selected';?> ><?php echo $country['name'] ?></option>
+                <?php
+                                        }
+                                        ?>
+              </select>
+              </div>
+              </div>
+              </li>
+              <li class="fields">
+                <div class="field">
+                  <label for="billing:telephone" class="required"><em>*</em>Telephone</label>
+                  <div class="input-box">
+                    <input type="text" name="quote[billing_address][telephone]" value="<?php echo $fetchSystem['telephone'];?>" title="Telephone" class="input-text required-entry telephone" id="edit_billing:telephone" onchange="editQuote.setSameAsBilling(false);">
+                  </div>
+                </div>
+              </li>
+              <li class="no-display">
+                <input type="hidden" name="quote[billing_address][save_in_address_book]" id="top_billing_save_in_address_book" value="0">
+              </li>
+            </ul>
+            <script type="text/javascript">
+//<![CDATA[
+	function updateEditBillingRegion(){
+    	billingRegionUpdater = new RegionUpdater('edit_billing:country_id', 'edit_billing:region', 'edit_billing:region_id', editCountryRegions, undefined, 'edit_billing:postcode');
+    	billingRegionUpdater.update();
+    }
+	var editBillingRegionUpdater = new RegionUpdater('edit_billing:country_id', 'edit_billing:region', 'edit_billing:region_id', editCountryRegions, undefined, 'edit_billing:postcode');
+	//]]>
+</script>
+          </fieldset>
+          </div>
+          <?php
+	
+	$tableBilling = Mage::getSingleton('core/resource')->getTableName('quotation_shipping');
+	$sqlSystem="SELECT * FROM ".$tableBilling." WHERE quotation_id = '".$quote->getId()."' ";
+         
+         try {
+                 $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlSystem);
+		 $fetchSystem = $chkSystem->fetch();
+         } catch (Exception $e){
+         echo $e->getMessage();
+         }
+	 
+	?></td>
+        <td width="10" style="border:none" class="no-bg"></td>
+        <td valign="middle"><input type="hidden" name="is_ship" id="is_ship" value ="0"/>
+          <input type="hidden" name="is_bill" id="is_bill" value ="0"/>
+          <address class="box-content" id="quote-shipping_address">
+          <?php
+echo $fetchSystem['firstname'].' '.$fetchSystem['lastname']."<br/>";
+if($fetchSystem['street1'] != '')
+	echo $fetchSystem['street1']."<br/>";
+	
+	if($fetchSystem['street2'] != '')
+	echo $fetchSystem['street2']."<br/>";
+	
+	if($fetchSystem['city'] != '')
+	echo $fetchSystem['city'].",";
+	
+	if($fetchSystem['region'] != '')
+	echo $fetchSystem['region'].",";
+	
+    
+	if($fetchSystem['region_id'] != '')
+	echo $fetchSystem['region_id'].",";
+	
+	if($fetchSystem['postcode'] != '')
+	echo $fetchSystem['postcode']."<br/>";
+	
+	if($fetchSystem['country_id'] != '')
+	echo $fetchSystem['country_id']."<br/>";
+	
+	if($fetchSystem['telephone'] != '')
+	echo 'T:'.$fetchSystem['telephone'];
+	
+	?>
+          </address>
+          <div id="quote-edit-shipping_address" class="edit-content" style="display:none">
+          <fieldset>
+            <!--  <input type="hidden" name="shipping_address_id" value="" id="edit_shipping_address_id" />-->
+            <div class="address-control">
+              <input type="checkbox" onclick="same_billing1(this.checked)" name="shipping_same_as_billing" id="quote-edit-shipping_same_as_billing">
+              <label for="edit_billing:same_as_shipping">Same as Billing Address</label>
+            </div>
+            <input type="hidden" name="quote[shipping_address][address_id]" value="382910" id="edit_shipping:address_id">
+            <ul class="form-list">
+              <li>
+                <label for="edit_shipping:street1" class="required"><em>*</em>Address</label>
+                <div class="input-box">
+                  <input type="text" title="Street Address" name="quote[shipping_address][street][0]" id="edit_shipping:street1" value="<?php echo $fetchSystem['street1'];?>" class="input-text required-entry street1" onchange="editQuote.checkSameAsBilling();">
+                </div>
+                <label> </label>
+                <div class="input-box">
+                  <input type="text" title="Street Address 2" name="quote[shipping_address][street][1]" id="edit_shipping:street2" value="<?php echo $fetchSystem['street2'];?>" class="input-text street2" onchange="editQuote.checkSameAsBilling();">
+                </div>
+              </li>
+              <li class="fields">
+              <div class="field">
+                <label for="edit_shipping:city" class="required"><em>*</em>City</label>
+                <div class="input-box">
+                  <input type="text" title="City" name="quote[shipping_address][city]" value="<?php echo $fetchSystem['city'];?>" class="input-text required-entry shipping-city" id="edit_shipping:city" onchange="editQuote.checkSameAsBilling();">
+                </div>
+              </div>
+              <div class="field" id="">
+              <label for="edit_shipping:region" class="required"><em>*</em>State/Province</label>
+              <div class="input-box" id="">
+              <select id="edit_shipping:region_id" name="quote[shipping_address][region_id]" title="State/Province" class="validate-select shipping-region-id" style="" defaultvalue="15">
+                <option value="">Please select region, state or province</option>
+                <?php
+                                foreach($regionCollection as $region) {
+                                ?>
+                <option value="<?php echo $region['name'] ?>" <?php if($fetchSystem['region_id'] == $region['name']) echo 'selected';?> ><?php echo $region['name'] ?></option>
+                <?php
+                                }
+                                ?>
+                <script type="text/javascript">
+                                //<![CDATA[
+                                    $('edit_shipping:region_id').setAttribute('defaultValue',  "15");
+                                //]]>
+                                </script>
+                <input type="text" id="edit_shipping:region" name="quote[shipping_address][region]" value="Delaware" title="State/Province" class="input-text shipping-region" style="display: none; " onchange="editQuote.checkSameAsBilling();">
+                </div>
+                </div>
+                </li>
+                <li class="fields">
+                <div class="field">
+                <label for="edit_shipping:postcode" class="required" id="">
+                <em>*</em>Zip/Postal Code
+                </label>
+                <div class="input-box">
+                <input type="text" title="Zip/Postal Code" name="quote[shipping_address][postcode]" id="edit_shipping:postcode" value="<?php echo $fetchSystem['postcode'];?>" class="input-text validate-zip-international required-entry zipcode" onchange="editQuote.checkSameAsBilling();">
+                </div>
+                </div>
+                <div class="field">
+                <label for="edit_shipping:country_id" class="required">
+                <em>*</em>Country
+                </label>
+                <div class="input-box">
+                <select name="shipping[country_id]" id="edit_shipping:country_id" class="validate-select shipping-country" title="Country" onchange="updateEditShippingRegion()">
+                <option value=""> </option>
+                <?php
+                                        foreach($countryCollection as $country) {
+                                        ?>
+                <option value="<?php echo $country['country_id'] ?>" <?php if($fetchSystem['country_id'] == $country['country_id']) echo 'selected';?> ><?php echo $country['name'] ?></option>
+                <?php
+                                        }
+                                        ?>
+              </select>
+              </div>
+              </div>
+              </li>
+              <li class="fields">
+                <div class="field">
+                  <label for="shipping:telephone" class="required"><em>*</em>Telephone</label>
+                  <div class="input-box">
+                    <input type="text" name="quote[shipping_address][telephone]" value="<?php echo $fetchSystem['telephone'];?>" title="Telephone" class="input-text required-entry telephone" id="edit_shipping:telephone" onchange="editQuote.checkSameAsBilling();">
+                  </div>
+                </div>
+              </li>
+              <li class="no-display">
+                <input type="hidden" name="quote[shipping_address][save_in_address_book]" id="edit_shipping_save_in_address_book" value="0">
+              </li>
+            </ul>
+            <script type="text/javascript">
+//<![CDATA[
+	function updateEditShippingRegion(){
+    	shippingRegionUpdater = new RegionUpdater('edit_shipping:country_id', 'edit_shipping:region', 'edit_shipping:region_id', editCountryRegions, undefined, 'edit_shipping:postcode');
+    	shippingRegionUpdater.update();
+    }
+	var editShippingRegionUpdater = new RegionUpdater('edit_shipping:country_id', 'edit_shipping:region', 'edit_shipping:region_id', editCountryRegions, undefined, 'edit_shipping:postcode');
+	//]]>
+</script>
+          </fieldset>
+          </div></td>
+      </tr>
+    </tbody>
+  </table>
+  <!----------------------------------------- delevery date in below ------------------------------------------------------------->
+  <table class="data-table two-column" width="100%" style="width:98%; margin:0px auto;">
+    <thead>
+      <tr>
+        <th style="background-color: #ff9900;padding: 5px 12px;" width="48%"> <div> Requested Delivery Date: <a class="change-link" href="javascript:void(0);" onclick="changeContent('inhanddate');">Update</a> </div>
+        </th>
+        <th style="background-color: #ef781e;padding: 5px 12px;" width="10"  ></th>
+        <th style="background-color: #ff9900;padding: 5px 12px;" width="48%"> <div> Shipping Method: <a class="change-link" href="javascript:void(0);" onclick="changeContent('shipping_method');">Change</a> </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td valign="top"><div id="quote-inhanddate"> <?php echo $this->formatDate($fetchSystem['inhand']);?> </div>
+          <div id="quote-edit-inhanddate" class="edit-content" style="display:none">
+            <div class="inhanddate-select">
+              <div class="date-input">
+                <input type="text" name="quote[in_hand_date]" id="edit_inhanddate" value="<?php echo date('m/d/Y',strtotime($fetchSystem['inhand']));?>" class="input-text validate-date" style="margin-right:5px;">
+                <img src="http://www.aceexhibits.com/skin/frontend/enterprise/aceexhibits/images/grid-cal.gif" alt="Select Date" class="v-middle" title="Select Date" id="edit_inhanddate_trig"></div>
+            </div>
+            <script type="text/javascript">
+        //<![CDATA[
+            Calendar.setup({
+                inputField  : "edit_inhanddate",
+                ifFormat    : "%m/%e/%Y",
+                button      : "edit_inhanddate_trig",
+                //align       : "Bl",
+                singleClick : true
+            });
+        //]]>
+        </script> </div></td>
+        <td width="10" style="border:none" class="no-bg"></td>
+        <td valign="top" class=""><div id="quote-shipping_method">
+            <?php $carrierTitle =  end(explode('_',$quote->getShippingMethod()));echo Mage::getStoreConfig('carriers/'.$carrierTitle.'/title');?>
+          </div>
+          <div id="quote-edit-shipping_method" class="edit-content" style="display:none">
+            <div id="quote-edit-shipping-method-choose">
+              <input type="hidden" name="hidden_input" id="hidden_input" value="1374120150">
+              <!--  <table width="100%" bquote="0" cellpadding="3"  cellspacing="3">
+	  <tr>
+	    <td width="50%"><label for="s_method_use_my_own_shipping_account"><b>Use my FedEx account</b></label>&nbsp;</td>
+	    <td>&nbsp;<input onclick="
+	    $('hidden_input').value=1+parseInt($('hidden_input').value);
+	    if(Boolean(this.checked)){
+		$('shipping_account_number_tr').style.display='';
+		    $$('#quote-shipping-method-info .price').each(
+	
+		    function(item){
+		       item.setAttribute('rel',item.innerHTML);
+	               item.innerHTML='$0.00';
+		    }
+		    
+		    );
+	    }
+	    else{
+		$('shipping_account_number_tr').style.display='none';
+		    $$('#quote-shipping-method-info .price').each(
+	
+		    function(item){
+		       item.innerHTML=item.getAttribute('rel');
+		    }
+		    );
+	    }
+	
+	    "   type="checkbox" class="" id="use_my_own_shipping_account" name="use_my_own_shipping_account" /></td>
+	  </tr>
+	  <tr id="shipping_account_number_tr"  style="display:none;"  >
+	    <td width="50%"><label for="s_method_shipping_account_number"><b>Shipping Account Number</b> </label><span class="required">*</span>&nbsp;</td>
+	    <td>&nbsp;<input type="text" class="input-text" id="shipping_account_number" name="shipping_account_number" value="" /></td>
+	  </tr>
+	</table>
+	<br/>-->
+              
+              <dl class="shipment-methods" id="edit-shipment-methods-dl">
+                <!--<dt><strong>FedEx</strong></dt>-->
+                <dd>
+                  <ul>
+                    <?php
+		$zipcode =  $fetchSystem['postcode'];
+		$country =  $fetchSystem['country_id'];
+		
+		// Update the cart's quote.
+		$cart = Mage::getSingleton('checkout/cart');
+		$address = $cart->getQuote()->getShippingAddress();
+		$address->setCountryId($country)
+			->setPostcode($zipcode)
+			->setCollectShippingrates(true);
+		$cart->save();
+		
+		// Find if our shipping has been included.
+		$rates = $address->collectShippingRates()
+				 ->getGroupedAllShippingRates();
+		
+		foreach ($rates as $carrier) {
+		    foreach ($carrier as $rate) {
+		       // print_r($rate->getData());
+			$allData = $rate->getData();
+			echo '<li><input type="radio" name="ship_method" id="'.$allData['code'].'" value="'.$allData['code'].'-'.$allData['price'].'"/><label class="normal" for="s_method_fedex_FEDEX_GROUND">'. $allData['carrier_title'].' <strong><span class="price">'.$allData['price'].'</span></strong></lebel></li>';
+		    }
+		}
+		?>
+                  </ul>
+                </dd>
+              </dl>
+            </div>
+            
+            <!--  <div id="quote-shipping-method-info">
+            <strong>Store Pick Up</strong><br/>
+            Pick Up (Cerritos, CA) -
+            <strong>
+                                
+                <span class="price">$0.00</span>                            </strong>
+            <br/>
+            <a href="#" onclick="$('quote-shipping-method-info').hide();$('quote-shipping-method-choose').show();return false">
+                Click to change shipping method            </a>
+        </div>--> 
+            <!--  <script type="text/javascript">$('quote-shipping-method-choose').show();</script>-->
+            <div style="display: none; position: absolute; background-color: rgb(153, 153, 153); opacity: 0.8; width: 343px; height: 34px; top: 983px; left: 792px; " id="shipping-method-overlay" class="overlay"><span>Shipping method selection is not applicable</span></div>
+            <script type="text/javascript">
+editQuote.overlay('shipping-method-overlay', true);
+editQuote.overlay('address-shipping-overlay', true);
+</script> 
+          </div></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="quote-edit-button" style="text-align:right">
+    <button type="submit"  title="Save" class="button update"><span><span><?php echo $this->__('Update') ?></span></span></button>
+  </div>
+</form>
+<?php
+$temptablePlanning=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+$sqlPlanning="SELECT * FROM ".$temptablePlanning." WHERE quote_id = '".$quote->getId()."' AND planning_type = 'quote' ";
+$chkPlanning = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchALL($sqlPlanning);
+        
+?>
+<p style="margin:0px auto; width:98%;"> Below is your Project Timeline.  Please note that these dates are based on the product(s) with the longest lead time, are tentative and can change depending on actual date of artwork submission and when proof approval is received. </p>
+<div id="timeline-table-wrapper">
+  <table cellspacing="0" cellpadding="0" border="0" class="data-table one-column timeline-table" style="width:98%; margin:0px auto;">
+    <thead>
+      <tr>
+        <th style="background-color: #ff9900;padding: 5px 12px;white-space: nowrap; " align="center" width="325" colspan="2">Project Timeline</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="request_delivery">
+        <td class="left" align="right" valign="top" style="font-size:12px; "><strong>Requested Delivery Date:</strong></td>
+        <td class="right" valign="top" style="font-size:12px;"><?php if($fetchSystem['inhand'] != '0000-00-00')echo date('d/m/Y',strtotime($fetchSystem['inhand']));else echo 'N/A';?></td>
+      </tr>
+      <?php
+		foreach($chkPlanning as $planning)
+		{
+		    $Product = Mage::getModel('catalog/product')->load($planning['product_id']);
+	      ?>
+      <tr class="order_placed_by">
+        <td class="request_delivery" align="center" valign="top" style="font-size:12px; " colspan="2"><strong><?php echo $Product->getName();?></strong></td>
+      </tr>
+      <tr class="order_placed_by">
+        <td class="left" align="right" valign="top" style="font-size:12px; "><strong>Order Placed By:</strong></td>
+        <td class="right" valign="top" style="font-size:12px;"><?php echo date('d/m/Y',strtotime($planning['order_placed_date']))?></td>
+      </tr>
+      <tr class="artwork_submitted_by">
+        <td class="left" align="right" valign="top" style="font-size:12px; "><strong>Artwork Submitted By:</strong></td>
+        <td class="right" valign="top" style="font-size:12px;"><?php echo date('d/m/Y',strtotime($planning['artwork_date']));?> <span class="tip">*</span></td>
+      </tr>
+      <tr class="proof_approval">
+        <td class="left" align="right" valign="top" style="font-size:12px; "><strong>Proof Approval Date:</strong></td>
+        <td class="right" valign="top" style="font-size:12px;"><?php echo date('d/m/Y',strtotime($planning['proof_date']));?> <span class="tip">**</span></td>
+      </tr>
+      <tr class="production_start">
+        <td class="left" align="right" valign="top" style="font-size:12px; "><strong>Production Start:</strong></td>
+        <td class="right" valign="top" style="font-size:12px;"><?php echo date('d/m/Y',strtotime($planning['start_date']));?></td>
+      </tr>
+      <tr class="shipping_on">
+        <td class="left" align="right" valign="top" style="font-size:12px; "><strong>Shipping On:</strong></td>
+        <td class="right" valign="top" style="font-size:12px;"><?php echo date('d/m/Y',strtotime($planning['shipping_date']));?></td>
+      </tr>
+      <tr class="delivery_on">
+        <td class="left" align="right" valign="top" style="font-size:12px; "><strong>Delivery On:</strong></td>
+        <td class="right" valign="top" style="font-size:12px;"><?php echo date('d/m/Y',strtotime($planning['delivery_date']));?></td>
+      </tr>
+      <?php }?>
+    </tbody>
+  </table>
+  
+
+  
+  <p style="margin:0px auto; width:98%;">  * You will receive proofs within 24 hours of submitting artwork to us. </p>
+  <p style="margin:0px auto; width:98%;">  ** Proof approval must be received by 5pm PST to be considered approved “that day” and for production to begin the following business day. </p>
+</div>
+<div class="quote-checkout-wrapper" style="text-align:right">
+  <button type="button" onclick="document.location.href = '<?php echo $this->getCommitUrl() ?>'" title="Save" class="button"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+</div>
+<div id="quote-comment-history">
+  <h3 class="head" id="discuss"> Discussion About Your Quote <a href="javascript:location.reload(true)" style="float:right"><img src="https://www.aceexhibits.com/skin/frontend/enterprise/default/customerquote/images/refresh-btn.png"></a> </h3>
+  <ul class="comment-list">
+    <?php
+    $quote_id = $quote->getId();
+    $tableHistory = Mage::getSingleton('core/resource')->getTableName('quotation_history');
+    
+    $sqlHistorySystem="SELECT * FROM  ".$tableHistory."  WHERE  qh_quotation_id = '".$quote_id."' AND qh_message != 'Created' ORDER BY qh_id DESC";
+    
+    try {
+    $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlHistorySystem);
+    $fetchHistory = $chkSystem->fetchall();
+    } catch (Exception $e){
+    echo $e->getMessage();
+    }
+   
+    foreach($fetchHistory as $history)
+    {
+    ?>
+    <li class="clearer odd">
+      <table width="100%">
+        <tbody>
+          <tr class="customer-comment">
+            <td class="comment-additional" width="35%" style="padding:10px 22px"><?php
+												if($history['qh_user'] == 'customer')
+												echo $quote->getCustomerName();
+												else
+												echo $history['qh_user'];
+												?>
+              <span class="separator">|</span> <?php echo date_format(date_create($history['qh_date']), 'm/d/Y H:i A');?></td>
+            <td class="comment-content" style="padding:10px 22px"><?php echo nl2br($history['qh_message']);?></td>
+          </tr>
+        </tbody>
+      </table>
+    </li>
+    <?php
+    }
+    ?>
+  </ul>
+  <script type="text/javascript">decorateGeneric($$('ul.comment-list li'), ['odd','even'])</script>
+  <form method="post" name="comment-history-form" id="comment-form" action="<?php echo $this->getUrl()?>Quotation/Quote/addcomment/id/<?php echo $quote->getId();?>/">
+    <textarea rows="5" cols="20" style="width:95.5%;height:68px;margin-left:10px;" class="required-entry" name="history[comment]"></textarea>
+    <button type="submit" title="Submit Comment" class="submit button submit-comment" id="submit-comment-button" value="Submit Comment"><span><span>Submit Comment</span></span></button>
+    <script type="text/javascript">
+	    		var commentHistoryFrom = new VarienForm('comment-form');
+	    	</script>
+  </form>
+</div>
+
+<!--<form id="form_request" name="form_request" method="POST" action="http://192.168.0.56/aceexhibits/Quotation/Quote/SendTextualRequest/">
+<center>
+<textarea cols="110" rows="10" id="description" name="description"></textarea>
+<p>&nbsp;</p>
+<br><button type="submit" title="Save" class="button"><span><span>Submit</span></span></button> 
+</center>
+</form>-->
+
+</div>
+<script type="text/javascript">
+    function changeContent(type)
+    {
+	if(type == 'inhanddate')
+	{
+	    document.getElementById('quote-edit-inhanddate').style.display = 'block';
+	    document.getElementById('quote-inhanddate').style.display = 'none';
+	}
+	else if(type == 'shipping_method')
+	{
+	    document.getElementById('quote-edit-shipping_method').style.display = 'block';
+	    document.getElementById('quote-shipping_method').style.display = 'none';
+	}
+	else if(type == 'billing_address')
+	{
+	    document.getElementById('quote-edit-billing_address').style.display = 'block';
+	    document.getElementById('quote-billing_address').style.display = 'none';
+	    document.getElementById('is_bill').value = 1;
+	}
+	else if(type == 'shipping_address')
+	{
+	    document.getElementById('quote-edit-shipping_address').style.display = 'block';
+	    document.getElementById('quote-shipping_address').style.display = 'none';
+	    document.getElementById('is_ship').value = 1;
+	}
+    }
+    
+    function same_billing1(check)
+    {
+	if(check)
+	{
+	   document.getElementById('edit_shipping:telephone').value = document.getElementById('edit_billing:telephone').value;
+	   document.getElementById('edit_shipping:postcode').value = document.getElementById('edit_billing:postcode').value;
+	   document.getElementById('edit_shipping:city').value = document.getElementById('edit_billing:city').value;
+	   document.getElementById('edit_shipping:street1').value = document.getElementById('edit_billing:street1').value;
+	   document.getElementById('edit_shipping:street2').value = document.getElementById('edit_billing:street2').value;
+	   
+	   var idx1= document.getElementById('edit_billing:country_id').selectedIndex;
+	   var idx2= document.getElementById('edit_billing:region_id').selectedIndex;
+	   
+	   document.getElementById('edit_shipping:region_id').options[idx2].selected = true;
+	   document.getElementById('edit_shipping:country_id').options[idx1].selected = true;
+	}
+	
+     }
+     
+    function printDiv()
+    {
+	    document.getElementById('comment-form').style.display = 'none';
+	    document.getElementById('print-head').style.display = 'block';
+	    var elements = document.getElementsByTagName('button');
+	    for(var i = 0, length = elements.length; i < length; i++) {
+	    
+	    elements[i].style.display = 'none';
+	    
+	    }
+	    var elements1 = document.getElementsByClassName('col2-set generic-box');
+	    for(var i = 0, length = elements1.length; i < length; i++) {
+	    
+	    elements1[i].style.display = 'none';
+	    
+	    }
+	    var divToPrint=document.getElementById('quote_details');
+	    //var divToPrint2=document.getElementById('details');
+	    newWin= window.open("");
+	    newWin.document.write(divToPrint.outerHTML);
+	    newWin.print();
+	    newWin.close();
+	    document.getElementById('comment-form').style.display = 'block';
+	    for(var i = 0, length = elements.length; i < length; i++) {
+	    
+	    elements[i].style.display = '';
+	    
+	    }
+	    
+	    for(var i = 0, length = elements1.length; i < length; i++) {
+	    
+	    elements1[i].style.display = '';
+	    
+	    }
+	    document.getElementById('print-head').style.display = 'none';
+    } 
+
+
+</script>
+<?php
+    /************************* Start for designer module **********************************/
+    
+    
+    $url = Mage::helper('adminhtml')->getUrl('admin/sales_order/proofs');
+    
+    $url2 = Mage::helper('adminhtml')->getUrl('designer/index/download');
+    
+    $temptableCount=Mage::getSingleton('core/resource')->getTableName('task_designer_comment');
+    $temptableDesign=Mage::getSingleton('core/resource')->getTableName('task_designer');
+    $temptableService=Mage::getSingleton('core/resource')->getTableName('design_service');
+    
+    $items = $quote->getItems();
+   
+    foreach($items as $item)
+    {
+        $_product = Mage::getModel('catalog/product')->load($item->getProductId());
+      
+        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableCount))
+        {
+            $sqlCount="SELECT * FROM  ".$temptableCount." WHERE parent_id IN(SELECT entity_id FROM ".$temptableDesign." WHERE order_quote_id = '".$quote->getId()."' AND item_id = '".$item->getId()."' AND proof_type = 'quote' ) AND file != '' AND user_type = 'customer'  ";
+            $chkCount = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlCount);
+        }
+        
+        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableService))
+        {
+            $sqlService="SELECT SUM(revision_number) AS r_number FROM  ".$temptableService." WHERE order_id ='".$quote->getId()."' AND item_id = '".$item->getId()."' AND type='quote'  ";
+            $chkService = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlService);
+        }
+        
+        if(count($chkCount) < $chkService[0]['r_number'])
+        {
+        
+            $proofItem[$item->getId()] = $_product->getName();
+        }
+    }
+   
+    function getdrop($arrayproofs)
+    {
+      foreach($arrayproofs as $key=>$arrayproof)
+      {
+        echo '<option value="'.$key.'">'.addslashes($arrayproof).'</option>';
+      }
+    }
+    
+   ?>
+<script type="text/javascript">
+    
+    function add_another()
+    {
+            i = document.getElementById('form_count').value;
+            i++;
+            var str = '<div class="tabdesign" id="tab_'+i+'"><br><div class="file_class"><input type="file" name="item_file[]"></div><div class="item_class"><select name="item[]"><option>Select Item</option><?php stripslashes(getdrop($proofItem));?></select></div><div class="item_comment"><textarea name="comment[]"></textarea></div><span class="removeitem" onclick="div_remove('+i+')" id="rem_'+i+'" style="cursor:pointer;">Remove</span></div>';
+            
+            jQuery("#content1").append(str);
+            document.getElementById('form_count').value = i;
+            
+    }
+    
+    function div_remove(id)
+    {
+            i = document.getElementById('form_count').value;
+            jQuery("#tab_"+id).remove();
+    }
+    
+    function close2()
+    {
+        jQuery('.editform').slideUp();
+        jQuery('.closediv').hide();
+        jQuery('.adddiv').show();
+    };
+    
+    function open1()
+    {
+        jQuery('.editform').slideDown();
+        jQuery('.adddiv').hide();
+        jQuery('.closediv').show();
+    };
+    </script>
+<div class="designermain">
+  <h2 class="sub-title" style="font-size:14px;">Your Design</h2>
+  <?php
+    
+    if(!empty($proofItem))
+    {
+    ?>
+  <div class="order-additional order-comments">
+    <div class="desedit">
+      <div class="closediv" onclick="close2();" style="display:none;">Close</div>
+      <div class="adddiv" onclick="open1();">Add Design</div>
+    </div>
+    <div class="editform" style="display:none;">
+      <form method="post" id="customerquote-customer-form" action="<?php echo $this->getUrl()?>designer/index/save/" enctype="multipart/form-data">
+        <input type="hidden" name="order_id" value="<?php echo $quote->getId();?>"/>
+        <table class="total_proof" style="width: 100%;">
+          <tr class="txt">
+            <input type="hidden" id="form_count" />
+            <input type="hidden" name="type" value="quote" />
+            <td valign="top" class="fromclass"><div id="dvFile">
+                <div class="file_class">
+                  <input type="file" name="item_file[]">
+                </div>
+                <div class="item_class">
+                  <select name="item[]">
+                    <option value="">Select Item</option>
+                    <?php getdrop($proofItem);?>
+                  </select>
+                </div>
+                <div class="item_comment">
+                  <textarea name="comment[]"></textarea>
+                </div>
+              </div></td>
+            <td valign="top"><span onclick="add_another();" style="cursor:pointer;" title="Add book suggetion" class="addanother">Add another</span><span class="submitclass">
+              <input name="submit" id="submit" type="submit"  class="submit-img" />
+              </span></td>
+          </tr>
+          <tr>
+            <td height="10" align="left" valign="middle" colspan="6"><div id="content1"></div></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+  <?php
+    }
+    ?>
+  <div class="order-additional order-comments">
+    <table class="data-table">
+      <tr>
+        <th> Date </th>
+        <th> Item </th>
+        <th> Comment</th>
+        <th> Design File</th>
+        <th> Status </th>
+        <th> Action </th>
+      </tr>
+      <?php
+                    $temptableDesign=Mage::getSingleton('core/resource')->getTableName('task_designer');
+                    if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableDesign))
+                    {
+                        $sqlDesign="SELECT *,DATE_FORMAT(postdate,'%D %M, %Y') AS p_date FROM  ".$temptableDesign." WHERE order_quote_id ='".$quote->getId()."' AND proof_type = 'quote' ORDER BY item_id ";
+                        $chkDesigns = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlDesign);
+                    }
+                    
+                    foreach($chkDesigns as $chkDesign)
+                    {
+                        
+                        $tableName = Mage::getSingleton('core/resource')->getTableName('quotation_items');
+			$sqlProofsSystem="SELECT * FROM ".$tableName."  WHERE  quotation_item_id = '".$chkDesign['item_id']."'";
+			$chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlProofsSystem);
+			$resultsSystem = $chkSystem->fetch();
+			
+			   $_product = Mage::getModel('catalog/product')->load($resultsSystem['product_id']);
+                        
+                        //$_Product = Mage::getModel('catalog/product')->load($chkItem['product_id']);
+                ?>
+      <tr>
+        <td><?php echo $chkDesign['p_date']?></td>
+        <td><?php echo $_product->getName();?></td>
+        <td><?php echo $chkDesign['comment']?></td>
+        <td><?php if($chkDesign['file'] != ''){?>
+          <img style="width: 104px; height: 100px;" src="<?php echo  $this->getBaseUrl().'media/design/'.$chkDesign['file'];?>" /><a href="<?php echo str_replace('//s','/admin/s',$url2).'file/'.$chkDesign['file'].'/';?>"><img title="Download Now" style="width: 20px;height: 15px;float: right;" src="<?php echo  $this->getSkinUrl().'images/load.png';?>"/></a>
+          <?php }?></td>
+        <td><?php echo $chkDesign['status']?></td>
+        <td><a class="shoedetails" onclick="allcomment('<?php echo $chkDesign['entity_id']?>','<?php echo $quote->getId()?>')">Show Details</a></td>
+      </tr>
+      <?php }?>
+    </table>
+  </div>
+</div>
+<div class="tooltip" id="tooltip" style="display:none;">
+  <div class="close" onclick="close1();">X</div>
+  <div class="tooltipbody" id="tooltipbody"> </div>
+</div>
+<script type="text/javascript">
+   function allcomment(id,orderid)
+   {
+       //document.getElementById('entity_id').value = id;
+       //document.getElementById('dorderid').value = orderid;
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	 xmlhttp=new XMLHttpRequest();
+	 }
+       else
+	 {// code for IE6, IE5
+	 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+       xmlhttp.onreadystatechange=function()
+	 {
+	 if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	   {
+	       //document.getElementById("sc_cal_out").innerHTML=xmlhttp.responseText;
+	      // alert(xmlhttp.responseText);
+	       
+	       document.getElementById('tooltipbody').innerHTML = xmlhttp.responseText;
+                document.getElementById('tooltip').style.display = 'block';
+	       
+	   }
+	 }
+	 form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+       xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>designer/index/allcomment/?id="+id+"&form_key="+form_key+"&isAjax=true",true);
+       xmlhttp.send();
+       
+   }
+   function close1()
+   {
+    document.getElementById('tooltip').style.display = 'none';
+   }
+</script>
+<?
+    /************************* End for designer module **********************************/
+    /************************** Start by dev ***********************************/
+    ?>
+<div class="order-additional order-comments">
+  <h2 class="sub-title" style="font-size:14px;"><?php echo $this->__('About Your Proofs') ?></h2>
+  <table class="data-table" id="my-orders-table" summary="Items Ordered" style="margin:0px auto; width:98%;">
+    <thead>
+      <tr class="first last">
+        <th>Proofs file</th>
+        <th>Product Name</th>
+        <th>Status</th>
+        <th>Quantity</th>
+        <th>Comment</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody class="odd">
+      <?php
+                   $tableName = Mage::getSingleton('core/resource')->getTableName('proofs');  
+                   $sqlProofsSystem="SELECT *,DATE_FORMAT(postdate,'%D %M, %Y') AS p_date FROM ".$tableName."  WHERE  order_id = '".$quote->getId()."' AND proof_type='quote' ORDER BY entity_id DESC";
+                   $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlProofsSystem);
+                   $resultsSystem = $chkSystem->fetchall();
+                   
+                   foreach($resultsSystem as $proof)
+                   {
+                 ?>
+      <tr class="border first last" id="order-item-row-4">
+        <td><h3 class="product-name"><a href="<?php echo $this->getUrl().'sales/order/download/file/'.$proof['file'].'/';?>"><?php echo $proof['file'];?></a></h3></td>
+        <td ><?php
+                                
+                                $tableName = Mage::getSingleton('core/resource')->getTableName('quotation_items');
+                                $sqlProofsSystem="SELECT * FROM ".$tableName."  WHERE  quotation_item_id = '".$proof['item_id']."'";
+                                $chkSystem = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlProofsSystem);
+                                $resultsSystem = $chkSystem->fetch();
+                                
+                                   $_product = Mage::getModel('catalog/product')->load($resultsSystem['product_id']);
+                                   echo $_product->getName();
+                                ?></td>
+        <td><?php echo $proof['status'];?></td>
+        <td><?php echo $proof['quantity'];?></td>
+        <td ><?php echo $proof['comment'];?></td>
+        <td ><?php echo $proof['p_date'];?></td>
+        <td ><?php if($proof['comment'] == ''){?>
+          <span onclick="div_show('<?php echo $proof['entity_id']?>');">Update</span>
+          <?php }?></td>
+      </tr>
+      <?php
+                   }
+                 ?>
+    </tbody>
+  </table>
+</div>
+<div class="total_payment" id="total_payment" style="display:none;">
+  <div class="close_div" onclick="div_hide();">Close</div>
+  <div class="block_div">
+    <table>
+      <tr>
+        <td>Status</td>
+        <td><input type="hidden" id="proof_id"/>
+          <input type="hidden" id="proof_type" value="quote"/>
+          <select id="status" >
+            <option value="">Select Status</option>
+            <option value="Approved">Approved</option>
+            <option value="Disapproved">Disapproved</option>
+          </select></td>
+      </tr>
+      <tr>
+        <td>Comment</td>
+        <td><textarea id="comment"></textarea></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button onclick="all_save();" type="button" name="submit" class="button"><span><span>Submit</span></span></button></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div id="overlay" class="overlay_proof" style="display:none;"></div>
+<style>
+    .total_payment{position: fixed;top: 8%;left: 30%;background-color: white;width: 521px;height: 300px;}
+    .close_div{position: fixed;top: 24%;left: 66%;background-color: white;width: 21px;height: 30px;}
+    .block_div{text-align: left;margin-top: 16px;}
+    .overlay_proof{position: fixed;width: 100%;height: 100%;background-color: black;top: 0px;left: 0px;opacity: 0.5;z-index: 99999;}
+    
+    .calendar{position: fixed !important;  left: 668px !important; top: 168px !important;}
+    
+    .total_payment{border:1px solid #ccc; box-shadow:0px 0px 6px 0px #333;width: 361px !important;height: auto !important;padding: 20px;left: 50% !important;margin-left: -130px;z-index: 100000;}
+    .total_payment .offline_payment table{width:100%;}
+    .total_payment .offline_payment table td{text-align:left;padding: 2px 5px;}
+    .total_payment .offline_payment table td.lebelall{text-align:right;}
+    .total_payment .offline_payment table td input[type="text"]{width:100px;}
+    .close_div{left: 360px !important;position: absolute !important;top: 7px !important;cursor: pointer;width: 33px;height: 32px}
+    .openpay{float:right; color:#fff; text-decoration:underline; cursor:pointer;}
+    
+    .order-tables thead th{font-weight:bold; padding:3px 20px 3px 10px;}
+    .order-tables thead th, .order-tables tbody td{text-align:left;}
+    
+    
+    .total_payment .block_div table{width:100%;}
+    .total_payment .block_div table tr td{padding:5px;}
+    .total_payment .block_div table select, .total_payment .block_div table textarea{width:200px;}
+
+    </style>
+<script type="text/javascript">
+        
+        function div_show(id)
+        {
+            document.getElementById('total_payment').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('proof_id').value = id;
+        }
+        
+        function div_hide()
+        {
+            document.getElementById('total_payment').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+        
+        function all_save(){
+   
+            var status = document.getElementById('status').value;
+            var comment = document.getElementById('comment').value;
+            var proof_id = document.getElementById('proof_id').value;
+	    var proof_type = document.getElementById('proof_type').value;
+           
+           
+          if(status == '')
+          {
+            alert("Please select the status");
+            return false;
+          }
+          else{
+          
+                if (window.XMLHttpRequest)
+                {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp=new XMLHttpRequest();
+                }
+                else
+                {// code for IE6, IE5
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange=function()
+                {
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                    {
+                            //alert(xmlhttp.responseText);
+                        
+                          location.reload();
+                             
+                    }
+                }
+                //alert(str);
+		
+		form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+        xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>index.php/sales/order/proofcomment/?status="+status+"&comment="+comment+"&proof_id="+proof_id+"&proof_type="+proof_type+"&form_key="+form_key+"&isAjax=true",true);
+               // xmlhttp.open("POST","<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ajax/set_proofedit.php?status="+status+"&comment="+comment+"&proof_id="+proof_id+"&proof_type="+proof_type,true);
+                xmlhttp.send(null);
+          }
+      }
+    </script>
+<?php
+    /************************** End by dev ***********************************/
+    ?>
+<?php
+
+Mage::register("isSecureArea", 1);
+$product =  Mage::getModel('catalog/product')->loadByAttribute('sku','quotation_'.$quote->getId());
+if($product)
+{
+    $product_id = $product->getId(); //use your own product id
+    try{
+	Mage::getModel("catalog/product")->load($product_id)->delete();
+    }catch(Exception $e){
+	echo "Delete failed";
+    }
+}
+?>

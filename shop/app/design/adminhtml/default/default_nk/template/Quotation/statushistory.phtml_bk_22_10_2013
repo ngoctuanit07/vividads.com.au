@@ -1,0 +1,60 @@
+<div style="clear:both"></div>
+
+<div id="order_history_block">
+<div class="entry-edit">
+<div class="entry-edit-head">
+                                <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('sales')->__('Add Order Comments') ?></h4>
+                            </div>    <?php if ($this->canAddComment()):?>
+    <div id="history_form" class="order-history-form">
+ <span class="field-row">
+
+<input type="file" value="" name="send_file" id="send_file" style="float:right;display:none" />     </span>
+   <span class="field-row">
+            <label class="normal" for="history_comment"><?php echo Mage::helper('sales')->__('Comment') ?></label>
+            <textarea name="history[comment]" rows="3" cols="5" style="height:6em; width:99%;" id="history_comment"></textarea>
+        </span>
+        <div class="f-left">
+            <?php if ($this->canSendCommentEmail()): ?>
+                <input name="history[is_customer_notified]" type="checkbox" id="history_notify" value="1" /><label class="normal" for="history_notify"> <?php echo Mage::helper('sales')->__('Notify Customer by Email') ?></label><br />
+            <?php endif; ?>
+            <input name="history[is_visible_on_front]" type="checkbox" id="history_visible" value="1" /><label class="normal" for="history_visible"> <?php echo Mage::helper('sales')->__('Visible on Frontend') ?></label>
+        </div>
+        <div class="f-right">
+            <?php echo $this->getChildHtml('submit_button') ?>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="divider"></div>
+    <?php endif;?>
+    <ul class="note-list">
+    <?php foreach ($this->getQuote()->getStatusHistoryCollection(true) as $_item): ?>
+        <li>
+            <strong><?php echo $this->helper('core')->formatDate($_item->getCreatedAtDate(), 'medium') ?></strong>
+            <?php echo $this->helper('core')->formatTime($_item->getCreatedAtDate(), 'medium') ?><span class="separator">|</span><strong><?php echo $_item->getStatusLabel() ?></strong><br/><small><?php echo $this->helper('sales')->__('Customer') ?>
+            <strong class="subdue">
+                <?php if ($this->isCustomerNotificationNotApplicable($_item)): ?>
+                <?php echo $this->helper('sales')->__('Notification Not Applicable') ?>
+                <?php elseif ($_item->getIsCustomerNotified()): ?>
+                <?php echo $this->helper('sales')->__('Notified') ?>
+                <img src="<?php echo $this->getSkinUrl('images/ico_success.gif') ?>" width="16" height="16" alt="" />
+                <?php else: ?>
+                <?php echo $this->helper('sales')->__('Not Notified') ?>
+                <?php endif; ?>
+            </strong></small>
+            <?php if ($_item->getComment()): ?>
+                <br/><?php echo $this->escapeHtml($_item->getComment(), array('b','br','strong','i','u')) ?>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+</div>
+    <script type="text/javascript">
+
+        function submitHistoryAndReload(area, url) {
+            if ($('send_file').value) {
+                $('order_history_form').submit();
+            } else {
+                submitAndReloadArea(area, url);
+            }
+        }
+</script>

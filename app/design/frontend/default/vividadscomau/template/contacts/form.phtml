@@ -1,0 +1,213 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE     
+ * 
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<link rel="stylesheet" type="text/css"  href="<?php echo $this->getSkinUrl()?>externalform/css/smart-forms.css">
+<link rel="stylesheet" type="text/css"  href="<?php echo $this->getSkinUrl()?>externalform/css/font-awesome.min.css">
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/jquery.form.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/additional-methods.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>externalform/js/smart-form.js"></script>
+<script type="text/javascript">
+///update captcha code and refresh page// 
+  function updateCaptcha(){
+		 var captchaurl = '<?php echo Mage::getBaseUrl() ?>index.php/externalform/index/refreshcpatcha';
+		 var params={form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey();?>',}
+		 jQuery.ajax({
+			 url: captchaurl,
+			type: "POST",
+			dataType:"JSON",					
+			data: params,
+			beforeSend: function(){
+				jQuery('#captcha_loader').show();
+				},
+			success: function(data){
+				//console.log(data.newtext);
+				document.getElementById('captcha_value').value = data.newtext;
+				 document.getElementById('captcha').src='<?php echo Mage::getBaseUrl(); ?>externalform/captcha.php?ts=<?php echo time(); ?>&text='+data.newtext; 
+				 document.getElementById('captcha-form').focus();
+				 jQuery('#captcha_loader').hide();
+				},			
+			 });
+		 }
+</script>
+
+ 
+
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<?php /*?><div class="page-title">
+    <h1><?php echo Mage::helper('contacts')->__('Contact Us') ?></h1>
+</div><?php */?>
+<div class="intro">
+  <p>
+    <?php  echo (Mage::getStoreConfig('general/store_information/address'));?>
+    <?php /*?><span>Vivid Ads Pty. Ltd. (ABN 49210655341)</span><br />
+<span>302 Bridge Street, Port Melbourne, Victoria 3207 Australia</span><br />
+<span>Tel: 1300 72 16 14;   Fax: 03 8456 6234</span><br />
+<span>Opening Hours:   Monday - Friday (9.00am - 5.00pm)</span><br />
+Please call us to book your appointment!  We are 3km's from Melbourne Convention and Exhibition Centre (South Wharf).
+<?php */?>
+<div data-id="8dd164f879" class="livechat_button" style="float: right; margin: -90px 10px 0px 0px ;padding: 0;"><a href="http://www.livechatinc.com/?partner=lc_3920361&amp;utm_source=chat_button">live chat software</a></div>
+  </p>
+</div>
+<p>
+  <?php /*?><iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3151.465535825048!2d144.921775!3d-37.82598599999999!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad6678b9d1835c9%3A0xd50b11f70336a921!2sVivid+Ads!5e0!3m2!1sen!2sau!4v1425263882839" width="900" height="600" frameborder="0" style="border:0; margin-left:20px;"></iframe><?php */?>
+<div style="float: left; margin-left: 1%; width: 98%;" id="quoteLoader">
+  <div class="smart-forms smart-container wrap-2">
+    <div class="form-header header-primary">
+      <h4><i class="fa fa-comments"></i>Contact Us</h4>
+    </div>
+    <form action="<?php echo $this->getUrl('');?>ajaxcontacts/index/NzPost/" id="contactForm" method="post" onSubmit="return false;">
+      <div class="smart-forms smart-container wrap-2">
+        <div class="form-body">
+          <div class="frm-row">
+            <div class="section colm12">
+              <label class="field prepend-icon">
+              <input type="text" name="name" id="name" class="gui-input" placeholder="Name">
+              <label class="field-icon"><i class="fa fa-user"></i></label>
+              </label>
+            </div>
+          </div>
+          <div class="frm-row">
+            <div class="section colm12">
+              <label class="field prepend-icon">
+              <input type="text" name="email" id="email" class="gui-input" placeholder="Email">
+              <label class="field-icon"><i class="fa fa-envelope"></i></label>
+              </label>
+            </div>
+          </div>
+          <div class="frm-row">
+            <div class="section colm12">
+              <label class="field prepend-icon ">
+              <input type="text" name="telephone" id="telephone" class="gui-input" placeholder="Phone">
+              <label class="field-icon"><i class="fa fa-phone-square"></i></label>
+              </label>
+            </div>
+          </div>
+          <div class="frm-row">
+            <label class="field prepend-icon">
+            <textarea class="gui-textarea" id="comment" name="comment" placeholder="Comments"></textarea>
+            <label class="field-icon"><i class="fa fa-comments"></i></label>
+            <span class="input-hint"> <strong>NOTE:</strong> Be as detailed as possible for better feedback.</span>
+            </label>
+            <input type="text" name="hideit" id="hideit" value="<?php echo $this->getUrl('');?>" style="display:none !important;" />
+            <input type="text" name="isAjax" id="isAjax" value="isAjax" style="display:none !important;" />
+          </div>
+          <div class="frm-row" style="margin-top:20px;">
+            <div class="section">
+              <?php 
+			$words  = "abcdefghijlmnopqrstuvwyz";
+                                    $vocals = "aeiou";                                
+                                    $text  = "";
+                                    $vocal = rand(0, 1);
+                                    $length = rand(3, 3);
+                                    for ($i=0; $i<$length; $i++) {
+                                        if ($vocal) {
+                                            $text .= substr($vocals, mt_rand(0, 3), 1);
+                                        } else {
+                                            $text .= substr($words, mt_rand(0, 3), 1);
+                                        }
+                                        $vocal = !$vocal;                        
+						            }
+		//	echo $text;			
+		Mage::getSingleton("core/session",array('name' => 'frontend'))->setCaptcha($text);
+	?>
+              <?php /*?><div class="smart-widget sm-left sml-120">
+                <label class="field">
+                  <input type="text" name="captcha" id="captcha-form"  class="gui-input sfcode" placeholder="Enter code" style="width:40%;" />
+                  <img  id="captcha_loader" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/default/default/externalform/images/loading2.gif" style="display: none;  float: left;    left: -92px;  position: relative; top: -36px;  z-index: 9999;" /> </label>
+                <label for="securitycode" class="button captcode"> 
+                <img src="<?php echo Mage::getBaseUrl(); ?>externalform/captcha.php?ts=<?php echo time(); ?>&text=<?php echo $text; ?>"   style="height: 39px; background: none repeat scroll 0px 0px transparent;" id="captcha" />
+                  <input readonly  type="text" id="captcha_value" name="captchavalue" value="<?php echo $text; ?>" style=" background-color: #c4c4c4; border: 0 none;color: #fff; font-size: 21px; width: 70px; cursor:pointer;" />
+                  <span class="refresh-captcha" onClick="updateCaptcha();"> <i class="fa fa-refresh"></i> </span>
+                  </label>
+              </div><?php */?>
+              <!-- end .smart-widget section -->
+              <div class="result spacer-b10"></div>
+              <!-- end .result  section -->
+              <div class="section progress-section">
+                <div class="progress-bar progress-animated bar-primary">
+                  <div class="bar"></div>
+                  <div class="percent">0%</div>
+                </div>
+              </div>
+              <!-- end progress section --> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end .form-body section -->
+      <div class="form-footer">
+        <div class="section alert-success" id="alert-success" style="padding: 10px 10px 16px 30px; display:none;"> Success: Your inquiry was submitted and will be responded to as soon as possible. Thank you for contacting us.</div>
+        <!--<button  onClick="submitOrder(this);" name="sub_cusord" type="submit" id="sub_cusord" class="button btn-primary">Get Free Quote</button>-->
+        <div class="sButton">
+          <input type="text" name="hideit" id="hideit" value="<?php echo $this->getUrl('');?>" style="display:none !important;" />
+          <button  name="sub_cusord" type="submit" id="sub_cusord" class="button btn-primary">Submit</button>
+        </div>
+      </div>
+      <!-- end .form-footer section -->
+    </form>
+  </div>
+</div>
+<?php /*?><div class="content">
+<form action="<?php echo $this->getFormAction(); ?>" id="contactForm" method="post">
+    <div class="fieldset">
+        <h2 class="legend"><?php echo Mage::helper('contacts')->__('Contact Information') ?></h2>
+        <ul class="form-list">
+            <li class="fields">
+                <div class="field">
+                    <label for="name" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Name') ?></label>
+                    <div class="input-box">
+                        <input name="name" id="name" title="<?php echo Mage::helper('contacts')->__('Name') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserName()) ?>" class="input-text required-entry" type="text" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="email" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Email') ?></label>
+                    <div class="input-box">
+                        <input name="email" id="email" title="<?php echo Mage::helper('contacts')->__('Email') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserEmail()) ?>" class="input-text required-entry validate-email" type="text" />
+                    </div>
+                </div>
+            </li>
+            <li>
+                <label for="telephone"><?php echo Mage::helper('contacts')->__('Telephone') ?></label>
+                <div class="input-box">
+                    <input name="telephone" id="telephone" title="<?php echo Mage::helper('contacts')->__('Telephone') ?>" value="" class="input-text" type="text" />
+                </div>
+            </li>
+            <li class="wide">
+                <label for="comment" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Comment') ?></label>
+                <div class="input-box">
+                    <textarea name="comment" id="comment" title="<?php echo Mage::helper('contacts')->__('Comment') ?>" class="required-entry input-text" cols="5" rows="3"></textarea>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="buttons-set">
+        <p class="required"><?php echo Mage::helper('contacts')->__('* Required Fields') ?></p>
+        <input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+        <button type="submit" title="<?php echo Mage::helper('contacts')->__('Submit') ?>" class="button"><span><span><?php echo Mage::helper('contacts')->__('Submit') ?></span></span></button>
+    </div>
+</form>
+</div><?php */?>

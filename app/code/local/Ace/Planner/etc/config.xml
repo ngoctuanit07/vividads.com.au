@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ace_Planner>
+            <version>0.1.0</version>
+        </Ace_Planner>
+    </modules>
+    <stores>
+        <admin>
+            <!-- override default admin design package and theme -->
+            <planner>
+                <package>
+                    <name>default</name>
+                </package>
+                <theme>
+                    <!-- this is the theme name -->
+                    <default>artis</default>
+                </theme>
+            </planner>
+        </admin>
+    </stores>
+    <global>
+        <blocks>
+            <planner>
+                <class>Ace_Planner_Block</class>
+            </planner>
+        </blocks>
+        <models>
+            <planner>
+                <class>Ace_Planner_Model</class>
+            </planner>
+        </models>
+    </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <planner>
+                    <file>planner.xml</file>
+                </planner>
+            </updates>
+        </layout>
+        <events>
+            <catalog_product_save_after>
+                <observers>
+                    <ace_save_product_data>
+                        <type>singleton</type>
+                        <class>planner/observer</class>
+                        <method>saveProductTabData</method>
+                    </ace_save_product_data>
+                </observers>
+            </catalog_product_save_after>
+        </events>
+    </adminhtml>
+</config>

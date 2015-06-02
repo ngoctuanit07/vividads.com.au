@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * FMA_Popupscreen extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       FMA
+ * @package        FMA_Popupscreen
+ * @copyright      Copyright (c) 2014
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<layout>
+    <default>
+    <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>popup/js/jquery.fancybox.pack.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>popup/js/jquery.fancybox.js</name></action>
+            <!-- <action method="addItem"><type>skin_js</type><name>popup/js/jquery.fancybox.js</name></action> -->
+              
+              <action method="addCss"><stylesheet>popup/css/jquery.fancybox.css</stylesheet></action>
+        </reference>
+    <reference name="after_body_start">   
+      <block type="fma_popupscreen/popup" name="popupscreen_popup" as="popupscreenpopup" template="fma_popupscreen/popup.phtml"/> 
+     <!--  <block type="fma_popupscreen/catalog_product_list_popup" name="product.info.popups" as="product_popups" template="fma_popupscreen/catalog/product/list/popup.phtml"/>  --> 
+      <!--  <block type="fma_popupscreen/catalog_category_list_popup" name="category.info.popups" as="category_popups" template="fma_popupscreen/catalog/category/list/popup.phtml" 
+        
+        /> -->
+    </reference> 
+   
+  </default>
+    
+    <fma_popupscreen_popup_view translate="label" module="fma_popupscreen">
+        <label>Popup view page</label>
+        <update handle="page_empty" />
+       <!--  <reference name="content">
+            <block type="fma_popupscreen/popup_view" name="popup_view" template="fma_popupscreen/popup/view.phtml" />
+        </reference> -->
+    </fma_popupscreen_popup_view>
+    <catalog_product_view>
+         <reference name="after_body_start">   
+          <block type="fma_popupscreen/catalog_product_list_popup" name="product.info.popups" as="product_popups" template="fma_popupscreen/catalog/product/list/popup.phtml"/>  
+           <!--  <block type="fma_popupscreen/catalog_product_list_popup" name="product.info.popups" as="product_popups" template="fma_popupscreen/catalog/product/list/popup.phtml">
+                <action method="addToParentGroup"><group>detailed_info</group></action>
+                <action method="setTitle" translate="value" module="fma_popupscreen"><value>Popups</value></action>
+            </block> -->
+        </reference>
+    </catalog_product_view>
+    
+        
+    
+    <catalog_category_default>
+         <reference name="after_body_start"> 
+          <block type="fma_popupscreen/catalog_product_list_popup" name="product.info.popups" as="product_popups" template="fma_popupscreen/catalog/product/list/popup.phtml"/>   
+           <!--  <block type="fma_popupscreen/catalog_category_list_popup" name="category.info.popups" as="category_popups" template="fma_popupscreen/catalog/category/list/popup.phtml" after="-" /> -->
+        </reference>
+    </catalog_category_default>
+    <catalog_category_layered>
+        <reference name="after_body_start">  
+           <block type="fma_popupscreen/catalog_product_list_popup" name="product.info.popups" as="product_popups" template="fma_popupscreen/catalog/product/list/popup.phtml"/>  
+           <!--  <block type="fma_popupscreen/catalog_category_list_popup" name="category.info.popups" as="category_popups" template="fma_popupscreen/catalog/category/list/popup.phtml" after="-" /> -->
+        </reference>
+    </catalog_category_layered>
+</layout>

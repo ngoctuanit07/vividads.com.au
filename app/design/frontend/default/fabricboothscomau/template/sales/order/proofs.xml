@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <proofs_index_index>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/2columns-left.phtml</template>
+            </action>
+        </reference>
+        <update handle="customer_account"/>
+        <reference name="content">
+            <block type="proofs/proofs" name="proofs" template="proofs/proofs.phtml" />
+        </reference>
+    </proofs_index_index>
+    
+    <!-- Add my quotes tab in customer account-->
+<!--    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="proofs">
+                <name>proofs</name>
+                <path>sales/order/history/type/2/</path>
+                <label>My Proofs</label>
+            </action>
+        </reference>
+    </customer_account>-->
+
+
+</layout> 

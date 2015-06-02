@@ -1,0 +1,217 @@
+<!--@subject {{var store.getFrontendName()}}: Quote # {{var quote}} @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+"var logo_alt":"Email Logo Image Alt",
+"htmlescape var=$order.getCustomerName()":"Customer Name",
+"var store.getFrontendName()":"Store Name",
+"var var order.subtotal,
+"store url=\"customer/account/\"":"Customer Account Url",
+"var order.increment_id":"Order Id",
+"var order.getCreatedAtFormated('long')":"Order Created At (datetime)",
+"var order.getBillingAddress().format('html')":"Billing Address",
+"var payment_html":"Payment Details",
+"var order.getShippingAddress().format('html')":"Shipping Address",
+"var order.getShippingDescription()":"Shipping Description",
+"layout handle=\"sales_email_order_items\" order=$order":"Order Items Grid",
+"var order.getEmailCustomerNote()":"Email Order Note"}
+@-->
+<!--@styles
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+@-->
+
+<body style="background:#fff; font-family:Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;"><div style="background:#fff; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<table bgcolor="#FFFFFF" width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><!-- ---------    START - M A I N  B O D Y    --------- -->
+      
+      <table width="640" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td><span style="border-bottom: 1px solid #DDDDDD;"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="10" alt=""></span></td>
+        </tr>
+        <tr>
+          <td><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/body-top.jpg" width="640" height="33" alt="Top"></td>
+        </tr>
+        <tr>
+          <td><table width="640" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="20" valign="top"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/body-left.jpg" width="20" height="360" alt="Left"></td>
+                <td valign="top" bgcolor="#FBE7BC"><table width="600" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td bgcolor="#fbe7bc"><!-- ---------    START - H E A D E R    --------- -->
+                        
+                        <table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="10" alt=""></td>
+                          </tr>
+                          <tr>
+                            <td><table width="550" border="0" align="center" cellpadding="0" cellspacing="0">
+                                <tr>
+                                  <td width="52" height="63"><img src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/picto-cart.jpg" width="52" height="54" alt="Cart"></td>
+                                  <td width="10"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="10" alt=""></td>
+                                  <td align="left" style="font-family: Arial, Helvetica, sans-serif; font-size:18px; color: #d80351;">You new quotation #{{var quote}} {{var caption}} is available.</td>
+                                  <td align="left"><a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px; text-align:right; float:right;" border="0"/></a></td>
+                                </tr>
+                              </table></td>
+                          </tr>
+                          <tr>
+                            <td><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="30" alt=""></td>
+                          </tr>
+                        </table>
+                        
+                        <!-- ---------    END - H E A D E R    --------- --></td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#fff9ec"><!-- ---------    START - T E X T  1    --------- -->
+                        
+                        <table width="550" border="0" align="center" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; color:#555555; line-height:25px; padding:5px;"><p>Dear {{var customer}}</span>,<br>
+                                <br>
+                                First of all, we thank you for requesting a quote from Vivid  Ads . We are here to offer you, our client the highest quality products at the  lowest possible prices. We are so confident that if you do happen to find a  similar product at a lesser price we will be glad to beat it.Please find attached an amazing value price estimate for  your requested products valid for 2 weeks. If you have any further questions, concerns or  comments we are right here for your assistance.<br>
+                                You can also view your formal estimate online by clicking  this <a href="{{var athuloginurl}}" style="color:#ea0809;">link</a> to the {{var store.getFrontendName()}} Portal. <br>
+                                <strong>                                <br>
+                                What&rsquo;s Next ? <br>
+                                </strong>1) Confirm Order.<br>
+                                2) Upload finalized artwork for printed products 
+                                OR Get us to  design your artwork.<br>
+                                3) Approve digital e-proofs <br>
+                                <br> 
+                                Best Regards
+<br>
+                                <strong>{{var store.getFrontendName()}}</strong></p>
+<p>&nbsp; </p></td>
+                          </tr>
+                          <tr>
+                            <td style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; color:#555555; line-height:25px; padding:5px;"><table cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tbody>
+                <tr>
+                  <td valign="top" bgcolor="#FBE7BC" style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:7px; color:#ea0809;"><strong>Shipping Address</strong></td>
+                  <td valign="top" bgcolor="#FBE7BC" style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:7px; color:#ea0809;"><strong>Shipping Method</strong></td>
+                </tr>
+                <tr>
+                  <td width="325" valign="top" style="font-size:12px; padding:7px 0px; color:#555"> {{var shipping}} </td>
+                  <td width="325" valign="top" style="font-size:12px; padding:7px 0px; color:#555;"> {{var shipping_method}} </td>
+                </tr>
+              </tbody>
+            </table></a></td>
+                          </tr>
+                          <tr>
+                            <td style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; color:#555555; line-height:25px; padding:0px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr align="center" valign="middle" style="background-color:#d9dbd9; border:1px solid #d3d3d3;">
+                <td height="32" style="font-family:Arial, serif, sans-serif; font-size:12px; border-right:1px solid #d3d3d3; text-align:left; font-weight:bold; text-indent:10px; width:146px;">Item</td>
+                <td height="32" style="font-family:Arial, serif, sans-serif; font-size:12px; border-right:1px solid #d3d3d3; text-align:left; font-weight:bold; text-indent:10px; width:243px;">Name</td>
+                <td height="32" style="font-family:Arial, serif, sans-serif; font-size:12px; border-right:1px solid #d3d3d3; text-align:left; font-weight:bold; text-indent:10px; width:60px;">Sku</td>
+                <td height="32" style="font-family:Arial, serif, sans-serif; font-size:12px; border-right:1px solid #d3d3d3; text-align:center; font-weight:bold; width:24px;">Qty</td>
+                <td height="32" style="font-family:Arial, serif, sans-serif; font-size:12px; text-align:left; font-weight:bold; text-indent:10px;">Price</td>
+              </tr>
+            </table></td>
+                          </tr>
+                              <!--<tr>
+            <td height="15"></td>
+          </tr>-->
+         <!-- <tr>
+            <td style="padding:10px; font-family:Arial, serif, sans-serif; font-size:12px; border:1px solid #d3d3d3;"> -->
+              {{var itemHtml}}
+<!--              </td>
+          </tr>-->
+                          <tr>
+                            <td>
+                              
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="340" align="center" valign="top">&nbsp;</td>
+                                  <td width="160" align="center" valign="top"  style=" border-top:none 0px; border-bottom:none 0px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                      <!--19-2-2014 S-->
+                                      <td width="50%" align="left" valign="top" style="padding:5px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; border-style: solid; background-color: #FBE7BC;border-color: #F4D28A;border-width: 1px 0px 0px 1px;padding: 10px;">Subtotal</td>
+                                      <td width="50%" align="left" valign="top" style="padding:5px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; border-style: solid; background-color: #FBE7BC;border-color: #F4D28A;border-width: 1px 1px 0px 1px;padding: 10px;">{{var subtotal}} </td>
+                                      </tr>
+                                    
+                                    <tr>
+                                      <td width="50%" align="left" valign="top" style="padding:5px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; border-style: solid; background-color: #FBE7BC;border-color: #F4D28A;border-width: 1px 0px 0px 1px;padding: 10px;" >Shipping &amp; Handling</td>
+                                      <td width="50%" align="left" valign="top" style="padding:5px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; border-style: solid; background-color: #FBE7BC; border-color: #F4D28A;border-width: 1px 1px 0px 1px;padding: 10px;">{{var shipprice}}</td>
+                                      </tr>
+                                    
+                                    <tr>
+                                      <td width="50%" align="left" valign="top" style="padding:5px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; border-style: solid; background-color: #FBE7BC;border-color: #F4D28A;border-width: 1px 0px 0px 1px;padding: 10px;">Tax</td>
+                                      <td width="50%" align="left" valign="top" style="padding:5px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; border-style: solid; background-color: #FBE7BC;border-color: #F4D28A;border-width: 1px 1px 0px 1px;padding: 10px;">{{var tax}}</td>
+                                      </tr>
+                                    
+                                    <tr>
+                                      <td width="50%" align="left" valign="top" style="padding:5px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; border-style: solid; background-color: #FBE7BC;border-color: #F4D28A;border-width: 1px 0px 0px 1px;padding: 10px;"><strong>Grand Total</strong></td>
+                                      <td width="50%" align="left" valign="top" style="padding:5px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; border-style: solid; background-color: #FBE7BC;border-color: #F4D28A;border-width: 1px 1px 0px 1px;padding: 10px;"><strong>{{var grandtotal}}</strong></td>
+                                      
+                                      <!--19-2-2014 E-->
+                                      </tr>
+                                    </table></td>
+                                  </tr>
+                                </table>
+                              
+                              </td>
+                          </tr>
+                      <tr>
+                        <td align="center" bgcolor="#FFF9EC"  style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:7px 10px; color:#555;"><b>PDF Templates</b></td>
+                      </tr>
+                      <tr>
+                        <td align="left" bgcolor="#FFF9EC"  style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:4px 10px; color:#555;">{{var attach}}</td>
+                      </tr>
+                      <tr>
+                        <td align="center" bgcolor="#FFF9EC"  style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:7px 10px; color:#555;"><b>Your Quote in PDF Format</b></td>
+                      </tr>
+                      <tr>
+                        <td align="left" bgcolor="#FFF9EC"  style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:7px 10px; color:#555;">
+                        <div><span style="text-align:left;float:left;">{{var pdfquotelink}}</span>
+                         Above attached is your Quote in PDF printable format.You can find details in this <b>PDF</b> of How to Upload Your artwork and Modes of payment with your Quote Price.   </div></td>
+                      </tr>
+                      <tr>
+                        <td align="left" bgcolor="#FFF9EC"  style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:7px 10px; color:#555;"> </td>
+                      </tr>
+                      <tr>
+                        <td align="left" bgcolor="#FFF9EC"  style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:7px 10px; color:#555;">
+                        
+                        You can click on the link below to view your quote and directly communicate with us<br/>
+                      <a href="{{var athuloginurl}}" style="color:#ea0809;">Click here</a> to view your Quote
+                      
+                      
+                      
+                        </td>
+                      </tr>
+                     
+                          </table>
+                        
+                        <!-- ---------    END - T E X T  1    --------- --></td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#fbe7bc"  style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; padding:7px 0px; color:#555;"><!-- ---------    START - F O O T E R    --------- -->
+                        
+                        <table width="550" border="0" align="center" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td align="center" style="font-family: Tahoma, Geneva, sans-serif; font-size: 12px; color: #757575;"><p style="margin-top: 0; margin-bottom: 12px;">Retain for your records<br>
+                              <strong>{{var store.getFrontendName()}}</strong><br>
+                              See below Terms and Conditions of this command.</p>
+                              <p style="margin-top: 0; margin-bottom: 12px;"><strong>{{config path="general/store_information/name"}}</strong><br>
+                                For terms and  Conditions in the {{config path="general/store_information/name"}}, click <a href="{{store url="terms-condition"}}" style="color:#ea0809; text-decoration:none; font-weight:bold;">Terms &amp; Conditions</a></p>
+                              <p style="margin-top: 0; margin-bottom: 12px;">Answers to frequently asked questions regarding the {{config path="general/store_information/name"}} issues are available on <strong>{{var store.getFrontendName()}}</strong></p></td>
+                          </tr>
+                            
+                          </table>
+                        
+                        <!-- ---------    END - F O O T E R    --------- --></td>
+                    </tr>
+                  </table></td>
+                <td width="20" valign="bottom"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/body-right.jpg" width="20" height="360" alt="Right"></td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/body-bottom.jpg" width="640" height="33" alt="Bottom"></td>
+        </tr>
+        <tr>
+          <td><span style="border-bottom: 1px solid #DDDDDD;"><img style="display: block;" border="0" src="http://tablethrows.co.nz/skin/adminhtml/default/artis/images/email_templates/spacer.gif" width="10" height="10" alt=""></span></td>
+        </tr>
+      </table></td></tr></table></div>
+      
+      
+      <!-- ---------    END - M A I N  B O D Y    --------- -->
+</body>

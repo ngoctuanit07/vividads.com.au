@@ -1,0 +1,29 @@
+
+<?php
+$mod_info = (array)Mage::getConfig()->getNode('modules/Onesaas_Connect')->children();
+$os_version = $mod_info['version'];
+$helper = Mage::helper('osconnect');
+$key = $helper->getKey();
+$ApiUrl = Mage::getUrl('osconnect/index'); 
+$os_url = $helper->getUrl();
+$magento_store = Mage::app()->getStore();
+$CompanyName = $magento_store->getName();
+$ContactName = '';
+$ContactEmail = Mage::getStoreConfig('contacts/email/recipient_email');
+$ContactPhone = Mage::getStoreConfig('general/store_information/phone');
+$os_link = $os_url. "?servicetype=magento&c_ApiUrl=" . urlencode($ApiUrl) . "&c_ApiVersion=" . $os_version . "&c_ApiToken=" . urlencode($key) . "&CompanyName=" . urlencode($CompanyName) . "&ContactName=" . urlencode($ContactName) . "&ContactEmail=" . urlencode($ContactEmail) . "&ContactPhone=" . urlencode($ContactPhone);
+$data = array('ApiUrl' => $ApiUrl, 'ApiToken' => $key);
+$jsondata = json_encode($data);
+$base64data = base64_encode($jsondata);
+?>
+
+<div class="content-header">
+    <table cellspacing="0" class="grid-header">
+        <tr>
+            <td><h3><?php echo $this->__('OneSaas Connect') . ' (v. ' . $os_version .')'; ?></h3></td>
+        </tr>
+    </table>
+</div>
+
+<p>Please copy the following Configuration Key into <a href="https://auth.app.onesaas.com/" title="OneSaas">OneSaas</a> configuration to get connected</p>
+<textarea cols="200" rows="4" readonly><?php echo $base64data ?></textarea>

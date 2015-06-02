@@ -1,0 +1,77 @@
+<?php
+/**
+ * Mico Solutions EULA
+ * http://www.micosolutions.com/
+ * Read the license at http://www.micosolutions.com/license.txt
+ *
+ * Do not edit or add to this file, please refer to http://www.micosolutions.com for more information.
+ *
+ * @category    Mico
+ * @package     Mico_Mupload
+ * @copyright   Copyright (c) 2011 Mico Solutions (http://www.micosolutions.com)
+ * @license     http://www.micosolutions.com/license.txt
+ */
+ 
+/**
+ * Mico Mupload module
+ *
+ * @author		Pham Tri Cong <phtcong@micosolutions.com>
+ */
+?><?php
+global $_MICO_MUPLOAD_PRODUCT_HTML ;
+if ($_MICO_MUPLOAD_PRODUCT_HTML) return ;
+$_MICO_MUPLOAD_PRODUCT_HTML = 1;
+?><?php
+$uploader = $this->getUploader();
+$config = $this->getConfig();
+if (!$config) return "";
+$buttonSelect = $config['uploader']['selectImage'] ? 
+				sprintf('<img src="%s" />',$config['uploader']['selectImage'])
+				: $config['uploader']['selectText'];
+$buttonUpload = $config['uploader']['uploadImage'] ? 
+				sprintf('<img src="%s" />',$config['uploader']['uploadImage'])
+				: $config['uploader']['uploadText'];				
+//unset($config['folder']['upload']);
+//unset($config['folder']['orderFolder']);
+//unset($config['folder']['orderFilename']);
+$config['okey'] = $this->formToken();
+$translate = $this->getUploader()->getTranslate();
+$templateItem = '<div id="mico-mupload-uploader-container-{optionId}" class="mico-mupload-uploader-container">
+				<input type="hidden" name="options_{optionId}_file" id="mico-mupload-uploader-item-{optionId}" value="" />
+				<button class="button mico-mupload-btn" id="mico-mupload-uploader-pickfiles-{optionId}"><span><span>' .$buttonSelect. '</span></span></button>
+				<button class="button mico-mupload-btn" id="mico-mupload-uploader-uploadfiles-{optionId}"><span><span>' .$buttonUpload. '</span></span></button>
+				<div class="clear-both"></div>
+				<div id="mico-mupload-preview-{optionId}" class="mico-mupload-preview"></div>
+				<div class="clear-both"></div>
+				<div id="mico-mupload-uploader-filelist-{optionId}">' .$this->__('No runtime found.'). '</div>
+			</div>';
+/*$_thumbnailWidth = $config['uploader']['thumbnailWidth'];
+if($_thumbnailWidth){
+	$optionImg = "<img src=\"{optionThumbnail}\" width=\"{$_thumbnailWidth}px\" class=\"mico-mupload-thumbnail\"/>";
+}else{
+	$optionImg = "<img src=\"{optionThumbnail}\" class=\"mico-mupload-thumbnail\"/>";
+}*/
+
+$optionImg = "<img src=\"{optionThumbnail}\" class=\"mico-mupload-thumbnail\" alt=\"" . $this->__('Preview') . "\"/>";
+$templatePreview = '<div class="mico-mupload-uploaded-preview">%s</div>';
+$templatePreviewNoThumnail = '{optionSelect} <a href="{optionLink}" target=\"_blank"\>{optionName}</a>'	;				
+$templatePreviewThumbnail = $optionImg  . '<div class="clear-both"></div>{optionResolution}' . $templatePreviewNoThumnail;
+$templatePreviewNoThumnail = sprintf($templatePreview,$templatePreviewNoThumnail);
+$templatePreviewThumbnail = sprintf($templatePreview,$templatePreviewThumbnail);
+
+$templatePreviewMulti = '<div id="{optionId}-{optionHash}" class="mico-mupload-item-preview">{content}</div>';
+$templatePreviewCheckbox = '<input class="mico-mupload-uploaded-select mico-mupload-uploaded-select-{optionId}" type="checkbox" checked=true value="{optionHash}" onclick="micoUploadUltimate.onSelectUploadedItem(this,\'{optionId}\',\'{optionHash}\');"/>';
+$config['templateItem'] = $templateItem;
+$config['templatePreviewThumbnail'] = $templatePreviewThumbnail;
+$config['templatePreviewNoThumnail'] = $templatePreviewNoThumnail;
+$config['templatePreviewMulti'] = $templatePreviewMulti;
+$config['templatePreviewCheckbox'] = $templatePreviewCheckbox;
+$config['productId'] = $this->getProduct()->getId();
+?><div id="mico-mupload-log"></div>
+<script type="text/javascript">
+micoUploadUltimateTranslate = <?php echo json_encode($translate);?>;
+micoUploadUltimateUpload = '<?php echo $this->getUrl('mupload/uploader/save');?>';
+micoUploadUltimateFlash = '<?php echo $this->getSkinUrl('mico/js/uploader/mupload.flash.swf');?>';
+micoUploadUltimateSilverlight = '<?php echo $this->getSkinUrl('mico/js/uploader/mupload.silverlight.xap');?>';
+micoUploadUltimate = new MicoUploadUltimate(<?php echo json_encode($config);?>);
+</script>

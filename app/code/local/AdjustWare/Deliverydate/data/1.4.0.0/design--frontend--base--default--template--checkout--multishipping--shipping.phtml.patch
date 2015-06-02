@@ -1,0 +1,16 @@
+diff -aurBb shipping140.phtml m140/app/design/frontend/base/default/template/adjdeliverydate/shipping.phtml 
+--- shipping140.phtml	2010-02-20 02:42:30.000000000 +0200
++++ m140/app/design/frontend/base/default/template/adjdeliverydate/shipping.phtml	2010-12-09 12:58:20.539931107 +0200
+@@ -89,6 +89,12 @@
+                             <?php endforeach; ?>
+                         </dl>
+                         <?php endif; ?>
++                        
++                          <?php
++	                        $oBlock = $this->getLayout()->createBlock('adjdeliverydate/container');
++							echo $oBlock->getForms($_address->getId());
++						?>
++						
+                     </div>
+                 </div>
+             </div>

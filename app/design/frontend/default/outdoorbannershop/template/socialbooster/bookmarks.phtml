@@ -1,0 +1,104 @@
+<?php
+/**
+ * MageWorx
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MageWorx EULA that is bundled with
+ * this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.mageworx.com/LICENSE-1.0.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extension
+ * to newer versions in the future. If you wish to customize the extension
+ * for your needs please refer to http://www.mageworx.com/ for more information
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @copyright  Copyright (c) 2011 MageWorx (http://www.mageworx.com/)
+ * @license    http://www.mageworx.com/LICENSE-1.0.html
+ */
+
+/**
+ * Social Booster extension
+ *
+ * @category   MageWorx
+ * @package    MageWorx_SocialBooster
+ * @author     MageWorx Dev Team
+ */
+
+$_helper = Mage::helper('socialbooster');
+$_bookmarksHlp = Mage::helper('socialbooster/bookmarks');
+$addButtons = $_helper->getAdditionalButtons();
+if($prod = Mage::registry('current_product')){
+    $_product = MAge::getModel('catalog/product')->load($prod->getId());
+    $_imgUrl = $this->helper('catalog/image')->init($_product, 'image')->resize(150);
+}
+?>
+<div class="socialbooster">
+    <?php foreach ($_helper->getBookmarks() as $name):?>
+        <?php if ($blockJs = $_bookmarksHlp->addBookmarkJs($name)) {
+            echo $blockJs;
+        } ?>
+     <?php endforeach ?>
+
+    <span class="f-heading"><span onclick="$$('ul.bookmarks').each(function(el){el.toggle();});"><?php echo $this->__('Find Us on:') ?></span><ul class="bookmarks"><?php foreach ($_helper->getFeaturedBookmarks() as $name):?><li class="sb-<?php echo $name ?>" onclick="saveClick('<?php echo $name ?>');">
+                <?php if ($_bookmarksHlp->getBookmarkHTML($name)) { ?>
+                    <?php echo $_bookmarksHlp->getBookmarkHTML($name) ?>
+                <?php } else { ?>
+                    <a title="<?php echo $_bookmarksHlp->getBookmarkShare($name)?>" rel="nofollow" href="<?php echo $_bookmarksHlp->getBookmarkUrl($name)?>" target="_blank" alt="<?php echo $_bookmarksHlp->getBookmarkTitle($name)?>"><?php echo $_bookmarksHlp->getBookmarkTitle($name)?></a>
+                <?php } ?>
+            </li><?php endforeach ?><!--<li class="and-more" onclick="$$('ul.bookmarks').each(function(el){el.toggle();});"><?php echo $this->__('and more...') ?></li>--></ul></span>
+
+    <ul style="display: none;"><!--<ul class="bookmarks" style="display: none;">-->
+        <?php foreach ($_helper->getBookmarks() as $name):?><li class="sb-<?php echo $name?>" onclick="saveClick('<?php echo $name ?>');">
+            <?php if ($_bookmarksHlp->getBookmarkHTML($name)) { ?>
+                <?php  $_bookmarksHlp->addBookmarkJs($name);  echo $_bookmarksHlp->getBookmarkHTML($name); ?>
+            <?php } else { ?>
+                <a title="<?php echo $_bookmarksHlp->getBookmarkShare($name)?>" rel="nofollow" href="<?php echo $_bookmarksHlp->getBookmarkUrl($name)?>" target="_blank" alt="<?php echo $_bookmarksHlp->getBookmarkTitle($name)?>"><?php echo $_bookmarksHlp->getBookmarkTitle($name)?></a>
+            <?php } ?>
+        </li><?php endforeach ?>
+    </ul>
+</div>
+<div class="clearer" style="height:15px;"></div>
+<?php if(in_array('pinit', $addButtons) && $prod): ?>
+    <br><br>
+    <div id="pinit" style="float:left; padding-top: 2px; padding-right: 10px">
+        <a href="http://pinterest.com/pin/create/button/?url=<?php echo trim($prod->getProductUrl()) ?>&media=<?php echo $_imgUrl ?>&description=<?php echo $prod->getName(); ?>" class="pin-it-button" count-layout="none">Pin It</a>
+    </div>
+<?php endif; ?>
+
+<?php if(in_array('fb_like', $addButtons)): ?>
+    <div class="fb-like" data-href="<?php echo $this->helper('core/url')->getCurrentUrl(); ?>" data-send="false" data-width="250" data-show-faces="true"></div>
+<?php endif; ?>
+
+<script type="text/javascript">
+//<![CDATA[
+    function plusOnedPublicly(callbackData){
+        if (!callbackData || !callbackData.state) {
+            return;
+        }
+
+        if (callbackData.state == "on") {
+            saveClick('googleplusone');
+        }
+
+    }
+
+    function saveClick(itemName) {
+        origUrl = "<?php echo $_bookmarksHlp->getOrigUrl() ?>";
+        new Ajax.Request("<?php echo $this->getUrl('socialbooster/ajax/', (Mage::getStoreConfigFlag('web/secure/use_in_frontend')?array('_secure'=>true):array()) ) ?>saveClick/?item_name="+itemName+"&url="+encodeURIComponent(origUrl), {
+            method: 'get',
+            onSuccess: function(transport) {
+                //alert(transport.responseText);
+            }
+        });
+    }
+
+//]]>
+
+</script>
+
+<div style="clear: both;">&nbsp;</div>

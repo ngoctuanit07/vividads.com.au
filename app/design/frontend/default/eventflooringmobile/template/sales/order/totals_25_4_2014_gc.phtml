@@ -1,0 +1,126 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var $this Mage_Sales_Block_Order_Totals
+ * @see Mage_Sales_Block_Order_Totals
+ */
+?>
+<?php
+/*************** dev code by start ********************/
+$_order   = $this->getOrder();
+$order = Mage::getModel('sales/order')->load($_order->getId());
+/*************** dev code by end ********************/
+
+//Start for installment 14_04_2014
+$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+$temptableInstallment = Mage::getSingleton('core/resource')->getTableName('itweb_installments');
+$select = $connectionRead->select()
+->from($temptableInstallment, array('*'))
+->where('order_id=?',$_order->getId());
+$row =$connectionRead->fetchRow($select);   //return rows
+
+//$Installment = Mage::getModel('installments/installments')->load($row['installment_id']);
+//End for installment 14_04_2014
+    
+    ?>
+<?php foreach ($this->getTotals() as $_code => $_total): ?>
+    <?php if ($_total->getBlockName()): ?>
+        <?php echo $this->getChildHtml($_total->getBlockName(), false); ?>
+    <?php else:?>
+    <tr>
+	<td colspan="4">
+
+    </td>
+    <td style="background-color:#dceef6; border-width: 1px 0px 0px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px;">
+	  <?php if ($_total->getStrong()):?>
+    <?php echo $this->escapeHtml($_total->getLabel());?>
+    <?php else:?>
+    <?php echo $this->escapeHtml($_total->getLabel());?>
+    <?php endif?>
+    </td>
+
+    <td  style="background-color:#dceef6; border-width: 0px 0px 1px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px;">
+	   <?php if ($_total->getStrong()):?>
+            <?php echo $this->formatValue($_total) ?>
+            <?php else:?>
+            <?php echo $this->formatValue($_total) ?>
+            <?php endif?>
+    </td>
+    </tr>
+    <?php endif?>
+	<?php endforeach?>
+<?php /*?><?php foreach ($this->getTotals() as $_code => $_total): ?>
+    <?php if ($_total->getBlockName()): ?>
+        <?php echo $this->getChildHtml($_total->getBlockName(), false); ?>
+    <?php else:?>
+    <tr class="<?php echo $_code?>">
+
+        <td <?php echo $this->getLabelProperties()?>>
+            <?php if ($_total->getStrong()):?>
+            <strong><?php echo $this->escapeHtml($_total->getLabel());?></strong>
+            <?php else:?>
+            <?php echo $this->escapeHtml($_total->getLabel());?>
+            <?php endif?>
+        </td>
+        <td <?php echo $this->getValueProperties()?>>
+            <?php if ($_total->getStrong()):?>
+            <strong><?php echo $this->formatValue($_total) ?></strong>
+            <?php else:?>
+            <?php echo $this->formatValue($_total) ?>
+            <?php endif?>
+        </td>
+    </tr>
+    <?php endif?>
+	<?php endforeach?><?php */?>
+	
+	<?php /**************************** Start by Dev ***************************************/?>
+
+<tr>
+	<td colspan="4">
+
+    </td>
+    <td style="background-color:#dceef6; border-width: 1px 0px 0px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px;">
+	 <?php echo $this->__('Total Paid');?>
+    </td>
+
+    <td  style="background-color:#dceef6; border-width: 1px 0px 0px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px;" >
+	  <?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($order->getTotalPaid(),2,'.','') ?>
+    </td>
+    </tr>
+<tr>
+	<td colspan="4">
+
+    </td>
+    <td style="background-color:#dceef6; border-width: 1px 0px 1px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px;" >
+	 <?php echo $this->__('Total Due');?>
+    </td>
+
+    <td  style="background-color:#dceef6; border-width: 1px 0px 1px 1px; border-style: solid; border-color: #cfe6f0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; padding: 10px; text-align:left !important;" <?php echo $this->getValueProperties()?>>
+		<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($order->getTotalDue(),2,'.','') ?> <?php /*?><a href="Javascript:void(0)" onclick="$('payments<?php echo $Installment->getId();?>').toggle();">Paynow</a><?php */?>    </td>
+    </tr>
+
+    
+<?php /**************************** End by dev ***************************************/?>

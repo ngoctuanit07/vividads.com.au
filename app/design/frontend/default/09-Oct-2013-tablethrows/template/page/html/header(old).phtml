@@ -1,0 +1,137 @@
+<?php
+
+/**
+
+ * Magento
+
+ *
+
+ * NOTICE OF LICENSE
+
+ *
+
+ * This source file is subject to the Academic Free License (AFL 3.0)
+
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+
+ * It is also available through the world-wide-web at this URL:
+
+ * http://opensource.org/licenses/afl-3.0.php
+
+ * If you did not receive a copy of the license and are unable to
+
+ * obtain it through the world-wide-web, please send an email
+
+ * to license@magentocommerce.com so we can send you a copy immediately.
+
+ *
+
+ * DISCLAIMER
+
+ *
+
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+
+ * versions in the future. If you wish to customize Magento for your
+
+ * needs please refer to http://www.magentocommerce.com for more information.
+
+ *
+
+ * @category    design
+
+ * @package     default_modern
+
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+
+ */
+
+/**
+
+ * @var Mage_Page_Block_Html_Header $this
+
+ */
+
+?>
+
+<div class="header-container">
+
+
+
+
+        <div class="header">
+
+        <?php if ($this->getIsHomePage()):?>
+
+        <div class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></div>
+
+        <?php else:?>
+
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+
+        <?php endif?>
+
+    		       <div class="quick_search">
+	            	<form name="searchform" action="http://tablethrows.com.au/search" method="get">
+						<fieldset>
+							<input type="text" class="search-text" id="search-id" autocomplete="off" name="w" placeholder="Search ">
+							<input type="submit" value="Go" id="btn_search" class="btn_search">
+						</fieldset>
+					</form>
+	
+				</div>
+                   
+
+    	<div class="header-right">
+
+        	<div class="phone"><p align="right"><img src="<?php echo $this->getSkinUrl(); ?>images/icon-phone.png" /><b> 1300 72 14 16 </b> </p> </div>
+
+            <div class="cart1"><p align="right"><img src="<?php echo $this->getSkinUrl(); ?>images/icon-cart.png" /><strong>My Cart:</strong>
+
+             0 Items <input type="submit" class="cart1-button" value="View Cart" /></p>
+
+        </div>
+
+            
+
+    </div>
+
+    <div class="clear"></div>
+
+    <div class="quick-access">
+
+ 
+        <?php echo $this->getChildHtml('store_language') ?>
+
+        <?php // echo $this->getChildHtml('topMenu') ?>             
+
+		<?php echo $this->getChildHtml('topLinks') ?>
+
+        <?php echo $this->getChildHtml('topSearch') ?>
+
+		
+
+    </div>
+
+    <div class="clear"></div>
+
+
+
+       
+
+    <?php echo $this->getChildHtml('topBar') ?>
+
+     <div class="ad1"><img src="<?php echo $this->getSkinUrl(); ?>images/ribbon.jpg" /></div>
+
+    <?php echo $this->getChildHtml('topContainer'); ?>
+
+    <?php echo $this->getChildHtml('youamaslider'); ?>
+
+</div>
+
+
+
+</div>
+

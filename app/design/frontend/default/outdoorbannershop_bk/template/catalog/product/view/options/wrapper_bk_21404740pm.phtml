@@ -1,0 +1,228 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+?>
+
+<script type="text/javascript">
+
+function getartWorkgc(pid,cid){
+    form_key = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+    url= '<?php echo Mage::getBaseUrl();?>carpet/index/getartwork';
+    
+    if(pid != ''){
+        jQuery("#ajaxloader").css('display','block');
+        jQuery.ajax({
+            url:url,
+            data: { form_key: form_key, prodId: pid, catId: cid},  
+            success:function(result){
+                ret = result.split('##');
+                jQuery("#instantPriceId").html('');
+                jQuery("#ajaxloader").css('display','none');
+                jQuery("#uploadArtWorkPopup").css('display','block');
+                jQuery("#artworkreturn_1").html(ret[0]);
+                jQuery("#artworkreturn_2").html(ret[1]);
+                jQuery("#artworkreturn_3").html(ret[2]);
+								jQuery('.arrowbtm').trigger('click');
+								jQuery('.arrowtop').trigger('click');
+            }
+	});
+        
+        
+    }
+}
+function changLimit(valu){
+    lgth = valu.length;
+    allgth = 255-lgth;
+    jQuery("#tWords").html(allgth);
+    
+}
+function addToCartGc(pid){
+    
+    url= '<?php echo Mage::getBaseUrl();?>carpet/index/addcartartwork';
+    var selArray = new Array();
+    var optArray = new Array();
+    var selStr = '';
+    var optStr = '';
+    var notes = jQuery('#description_pr').val();
+    
+    
+    price = jQuery('#productcustomprice').val();
+    jQuery('#artworkreturn .option select').each(function() {
+        selid = this.id.split('_');
+        optVal = jQuery( "#"+this.id+" option:selected" ).val();
+        //opId = selid[1];
+        
+        if(selid[1] != "" && optVal !=""){
+            selArray.push(selid[1]);
+            optArray.push(optVal);
+            
+            selStr +=selid[1]+"##";
+            optStr +=optVal+"##";
+            
+        }
+        
+       
+        
+    });
+   
+    
+    seloptstr = selStr+"**"+optStr;
+    jQuery('#cusprice').val(price);
+    jQuery('#optarr').val(seloptstr);
+    jQuery('#cusnote').val(notes);
+    
+    var form = new FormData(jQuery('#form-validate')[0]);
+    if(optArray.length > 0){
+        
+        jQuery.ajax({
+            type:'POST',
+            xhrFields: {
+                withCredentials: true
+            },
+            async: true,
+            cache: true,
+            contentType: false,
+            processData: false,
+            url:url,
+            data:form ,
+            //data: { form_key: form_key, prodId: pid, optarr: seloptstr, cusprice: price, file: artfile},  
+            success:function(result){
+                jQuery('#subret').css('display','block');
+                jQuery('#subret').html(result);
+                //jQuery("#subret").fadeOut(5000);
+            }
+	});
+        
+    }else{
+        
+        alert("Please select product options");
+    }
+   
+    
+}
+
+
+
+jQuery(document).ready(function(e) {
+    jQuery('#close_button').click(function(){
+        
+        var htmlv = jQuery('<div>').append(jQuery("#artworkreturn").clone()).html();
+        jQuery("#instantPriceId").html(htmlv);
+        jQuery('#uploadArtWorkPopup').hide();
+        window.location.reload(true);
+        
+    });
+		var artHtml=jQuery('#art-dummy1').html();
+		//jQuery('#art-dummy1').remove();
+});
+function getSizeVal(size){
+		var Sizearr=size.split('_');
+		var name=Sizearr[1];
+		var size=jQuery("#"+size).val();
+		var unit=jQuery("#major option:selected").text();
+		jQuery('#'+name).val(name+"="+size+""+unit);
+		jQuery('#dimension').val(jQuery('#width').val()+" "+jQuery('#length').val());
+			
+}
+</script>
+<?php
+if(Mage::getModel('catalog/layer')->getCurrentCategory()){
+    $catId = Mage::getModel('catalog/layer')->getCurrentCategory()->getId();   
+}else{
+    $catId=0;
+}
+?>
+<?php $productId = $this->getProduct()->getId(); ?>
+<div class="ajaxloader" id="ajaxloader" style="display: none">LOADER</div>
+<div class="formInfo">
+	<div id="instantBox" class="clearfix">
+		<div class="lable"></div>
+		<div class="lable lable2"></div>
+		<div class="instantBox-body clearfix">
+			<!---------Left Starts ---------->
+			<div class="instantPrice float-L" id="instantPriceId">
+				
+			    <?php echo $this->getChildHtml('', true, true);?>
+                                
+			</div>
+			<!------------Left Ends------- -->
+			<div class="instant-separator float-L">
+			    <div class="ortext"></div>
+		        </div>
+			
+			
+			<!--Right Starts -->
+			<div class="quickStart-Order float-L">
+				<div class="quickStart-Order float-L">
+			                   
+					<div id="loaderp2" style="display:none; margin-left:100px;">
+					    <img src="<?php echo $this->getSkinUrl();?>images/loading.gif" alt="loading"/>
+					</div>
+					
+					<div class="StartorderButtons">
+                                            <input name="submit-prt-ready" type="button" value="print ready" title="Submit Print Ready Design" class="buttons" id="printreadybtn" onclick="getartWorkgc(<?php echo $productId ?>,<?php echo $catId ?>)" style="color:transparent;" />
+                                            <input name="order-form" value="design tool" type="button" title="Design Your Own Banner" class="buttons designYour-banner" id="prdbtn" style="color:transparent;" />
+                                            <input name="product-details" type="button" value="letusdesign" title="Let us Design Your Banner" class="buttons letus-design-banner" id="letusbtn"  style="color:transparent;" />
+					</div>
+				</div>
+			</div>
+			
+			<!--Right Ends -->		
+		</div>
+	</div>
+</div>
+<?php /*
+<div class="product-options" id="product-options-wrapper">
+    <?php //echo $this->getChildHtml('', true, true);?>
+    <?php if ($this->hasRequiredOptions()):?>
+        <!--<p class="required"><?php //echo $this->__('* Required Fields') ?></p>-->
+    <?php endif;?>
+</div>
+*/ ?>
+<script type="text/javascript">decorateGeneric($$('#product-options-wrapper dl'), ['last']);</script>
+
+<div id="art-dummy"></div>
+<div id="art-dummy1">
+<div id="uploadArtWorkPopup" style="display: none">
+    <div id="uploadArtWork">
+        
+        <div class="txtHeading"></div>
+        <div id="close_button" title="Click to close" >X</div>
+        <div id="liveFormData">
+            <div class="liveFormData_1">
+            <div id="artworkreturn_1"></div>
+            
+            <div id="artworkreturn">
+                <?php echo $this->getChildHtml('', true, true);?>
+            </div>
+            <div id="artworkreturn_2"></div>
+            </div>
+        </div>
+        <div id="artworkreturn_3"></div>
+    </div>
+    
+</div>
+</div>

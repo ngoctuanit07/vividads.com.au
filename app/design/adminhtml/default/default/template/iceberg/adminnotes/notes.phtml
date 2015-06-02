@@ -1,0 +1,32 @@
+<?php 
+	$hidden = 0;
+?>
+<div id="adminnotes">
+
+<div class="notes" id="notesContainer">
+<?php foreach( $this->getNotes() as $_note ): ?>
+	<?php if($_note->isHidden() ) $hidden++; ?>
+	
+	<div class="adminnote-container">
+		<?php echo $this->getNoteHtml( $_note ); ?>
+	</div>
+<?php endforeach; ?>
+</div>
+
+	<input type="hidden" value="<?php echo $this->getPath(); ?>" id="adminNotePath" />
+	<input type="hidden" value="<?php echo $this->getPathId(); ?>" id="adminNotePathId" />
+
+    <span class="f-right adminnote-control">
+    	<?php if( $this->canWrite() ) : ?><a href="#" class="f-left add-button" onclick="return adminNoteAddNewForm();"><?php echo $this->__('+ Add Page Note'); ?></a><?php endif; ?>
+    	<a <?php if( $hidden == 0 ): ?>style="display:none"<?php endif;?> id="show-hidden-notes-button" href="#" class="f-left show-hidden-button" onclick="return adminNotesShowAll();"><?php echo $this->__('Hidden Notes'); ?> (<span id="hidden-notes-count"><?php echo $hidden; ?></span>)</a>
+    </span>
+
+</div>
+
+<script>
+var global_adminnote_statusurl = '<?php echo $this->getStatusUrl(); ?>';
+var global_adminnote_deleteurl = '<?php echo $this->getDeleteUrl(); ?>';
+var global_adminnote_newurl    = '<?php echo $this->getNewUrl(); ?>';
+var global_adminnote_saveurl   = '<?php echo $this->getSaveUrl(); ?>';
+var global_adminnote_hidden_count = '<?php echo $hidden; ?>';
+</script>

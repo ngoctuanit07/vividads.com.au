@@ -1,0 +1,89 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="footer-container">
+    <div class="footer">    
+    	<div class="footer-top">
+        <div class="footer-phone">
+        <div class="footer-contact">
+        	
+            <span class="f-heading">Contact:</span> Have questions or comments? Send us an <span class="orange">email</span> or call <span class="f-heading"><?php echo $storePhone = Mage::getStoreConfig('general/store_information/phone');?></span>
+            <!--<img src="<?php echo $this->getSkinUrl('images/footer-contact.png'); ?>" alt="" />-->    </div>
+        <div class="find-us">        
+        	<!--<img src="<?php echo $this->getSkinUrl('images/find-us.png'); ?>" alt="" />-->      	
+            <?php
+				echo $this->getLayout()->createBlock('socialbooster/bookmarks')->toHtml();			?>
+            
+        </div></div></div>
+        <div class="clear"></div>
+        <div class="footer_links_container">
+        <div class="footer-link">
+        <div class="links">
+<div class="footer-links">
+<ul >
+<li ><a href="<?php echo $this->getUrl('')?>" title="Home">Home</a></li>
+<li ><a href="<?php echo $this->getUrl('about-us')?>" title="About Us">About Us</a></li>
+<li ><a href="<?php echo $this->getUrl('site-map')?>" title="Site Map">Site map</a></li>
+<li ><a href="<?php echo $this->getUrl('forum')?>" title="Forum">Forum</a></li>
+<li ><a href="<?php echo $this->getUrl('terms-condition')?>" title="Terms &amp; Conditions">Terms &amp; Conditions</a></li>
+<li ><a href="<?php echo $this->getUrl('contact-us')?>" title="Contact Us">Contact Us</a></li>
+</ul>
+  <ul style="margin-left:20px; width:220px;">            
+            <?php $_helper = $this->helper('catalog/category') ?>
+<?php foreach ($_helper->getStoreCategories() as $_category): ?> 
+   <li> <a href="<?php echo Mage::getModel('catalog/category')->setData($_category->getData())->getUrl(); ?>" title="<?php echo $_category->getName() ?>"><?php echo $_category->getName() ?></a>
+
+            </li><?php endforeach ?>
+            </ul>
+
+<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('landingpages')->toHtml();?>
+
+</div>
+<div class="newsletter-block"><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('newsletter-tablethrows')->toHtml(); ?></div>
+</div></div></div>
+<div class="clear">&nbsp;</div>
+<div class="absoultefooter">
+<div class="copy-right">
+<div class="copyright">&copy; Copyright 2014 Table Throws Australia . All rights reserved</div>
+<div class="locations">All Locations &gt; ACT &gt; NSW &gt; NT &gt; QLD &gt; SA &gt; TAS &gt; VIC &gt; WA</div>
+</div></div>
+    </div>
+</div>
+
+<!--Live Chat-->
+
+<script type="text/javascript">
+var __lc = {};
+__lc.license = 3920361;
+
+(function() {
+	var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+	lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+})();
+</script>
+
+<!--End of Live Chat-->

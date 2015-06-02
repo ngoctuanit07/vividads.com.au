@@ -1,0 +1,179 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<style>
+iframe{
+	float:left;
+	border:none;
+}
+</style>
+<?php /*?> <div class="contact_info"><img src="<?php echo $this->getSkinUrl('images/phone_info.png');?>" alt="contact info"/></div>
+<?php */?><div class="intro"><h2>Contact <span style="color:#ec761c;">Us</span></h2>
+<p style="color:#666">
+<span>Vivid Ads Pty. Ltd. (ABN 49210655341)</span><br />
+<span>1/2 Phillip Court,, Port Melbourne, Victoria 3207 Australia</span><br />
+<span>Tel: 1300 72 16 14;   Fax: 03 8456 6234</span><br />
+<span>Opening Hours:   Monday - Friday (9.00am - 5.00pm)</span><br />
+Please call us to book your appointment!  We are 3km's from Melbourne Convention and Exhibition Centre (South Wharf).
+ </p>
+</div>
+<div class="cate_listing">
+<div class="cate_listing_left">
+						<div>
+							<p>
+							<font face="Arial" size="2"><font color="#FFFFFF">
+							Vivid Ads Pty Ltd (Australia) is Australian owned and operated, specializing in the sale and distribution of innovative banners, portable displays, retail signage, graphic design and wide format printing.</font><br>
+							&nbsp;<br>
+							&nbsp;</font></p>
+							<p>
+							<font face="Arial" color="#FFFFFF" size="2">We cater for tradeshows, exhibitions and corporate events. Graphics and displays are one of the most powerful marketing tools you can utilize to promote your company. For over 7 years we have created graphics and displays of all types and sizes, from banners to displays, to floor and window graphics, we make your image pop. Our team of talented designers can take your ideas from the concept stage right through to the completed graphic application. The result is vivid, sharp, eye popping digital graphics that get your company noticed and more business through your door. Our commitment to customer service starts the minute we answer the phone. The ability to respond to your project needs, from project design, image proofs, and on time product delivery to one on one project consulting. At Vivid Ads, we are not just looking for a sale, but also the opportunity to build a relationship as your preferred digital print and signage solutions provider.<br>
+							&nbsp;</font></p>
+							<p>
+							 <font color="#FFFFFF"> 
+                             We have been in exhibition displays business for a long time and we're still here because of the quality of our products and the standard of our service. We have continued to invest in the latest production technology to give you, our customer, the complete advertising, graphic design & display solution.
+We welcome you to try our services and experience the difference in quality and service!
+							</font></p>
+<font color="#FFFFFF"> 
+                             We have been in exhibition displays business for a long time and we're still here because of the quality of our products and the standard of our service. We have continued to invest in the latest production technology to give you, our customer, the complete advertising, graphic design & display solution.
+We welcome you to try our services and experience the difference in quality and service!
+							</font></p>                            
+                            </div>
+					</div>
+<div class="cate_listing_right">
+<div class="super">
+<img width="295" src="<?php echo $this->getSkinUrl('images/vividads-vivid-ads-exhibition-services.jpg');?>" alt="category image" /> 
+</div>
+<div class="cate_gallary">
+<img src="<?php echo $this->getSkinUrl('images/Gallery.jpg');?>" alt="gallery image" /> 
+</div>
+</div>    
+<div class="clearer" style="clear:both;">
+</div>
+<?php  //$iframe = $this->getUrl('').'index.php/externalform/?store_id=166';?>
+<!--<div class="bottom_form">
+<iframe src='<?php echo $iframe;?>' height='860' width='930'></iframe>
+</div> -->
+  <div id="quoteLoader"></div>
+<?php
+$root_cat=4073;
+$_category = Mage::getModel('catalog/category')->load($root_cat);
+$_subcategories = $_category->getChildrenCategories();
+        //gets all sub categories of parent category 'Brands'
+        $cats = Mage::getModel('catalog/category')->load($root_cat)->getChildren();
+        $catIds = explode(',',$cats);
+        $categories = array();
+        foreach($catIds as $catId) {
+            $category = Mage::getModel('catalog/category')->load($catId); 
+            $categories[$category->getName()] = array(
+                'url' => $category->getUrl(),
+                'img' => $category->getImageUrl()
+            );
+        }
+        ksort($categories, SORT_STRING);
+    ?>
+        <?php $j=1;?>
+            <?php foreach($categories as $name => $data):
+		if($j<=8){	
+		if($j%4==0) {    ?>
+      <div class="cate_detail mwide">          
+                    <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_a">
+                    <?php if($data['img']){ ?>
+                        <img width="281" height="241" class="cat-image" src="<?php echo $data['img']; ?>" alt="category image"/>
+                        <?php } else { ?>
+		            	 <img width="281" height="241" class="cat-image" src="<?php echo $this->getSkinUrl('images/noimage.png'); ?>" alt="category image"/>  
+						<?php	} ?>
+                    </a>
+                    <a href="<?php echo $data['url']; ?>" class="cate_detail_h">
+                    <h3><?php echo $name //substr($name,0,30).".." ?> </h3>
+                    </a>
+                    <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_i">
+                        <img class="cat-image" src="<?php echo $this->getSkinUrl('images/btn_detail.png');?>" alt="category image"/>
+                    </a>
+      </div>
+	  <?php }  else { ?>
+	  <div class="cate_detail">          
+                    <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_a">
+                    <?php if($data['img']){ ?>
+                        <img width="188" height="241" class="cat-image" src="<?php echo $data['img']; ?>" alt="category image"/>
+                        <?php } else { ?>
+			           <img width="188" height="241" class="cat-image" src="<?php echo $this->getSkinUrl('images/noimage.png'); ?>" alt="category image"/>
+						<?php	} ?>
+                    </a>
+                    <a href="<?php echo $data['url']; ?>" class="cate_detail_h">
+                    <h3><?php echo $name //substr($name,0,15).".." ?> </h3>
+                    </a>
+                    <a href="<?php echo $data['url']; ?>" title="<?php echo $name; ?>" class="cate_detail_i">
+                        <img class="cat-image" src="<?php echo $this->getSkinUrl('images/btn_detail.png');?>" alt="category image"/>
+                    </a>
+      </div>  
+	  <?php } }   $j++; ?>       
+            <?php endforeach; ?>
+<div class="banner">
+<p> In addition to exhibitions, corporate events and marketing signs, our range includes flags & banners for the following:
+<br/>
+Retail Sale Signs, Shop Signs, Sale Posters, Sale Banners, Sale Products, Retail Signage, Shop Point of Sale (POS) Signs, Store Policy Signs & Retail Store Marketing Signage, Visual Merchandising Signage, Sale Promotion Signs, Sales Signs, Retail Sign Ideas, Seasonal Shop Signs, Retail Shop Supplies, Sale Posters, Sale Products, Poster Hanging Systems, Sale Marketing Signs, Shop Policy Signs, POS Signs, Shop Window Signage, Retail Signage, Sale Decals, Sale Banners, A-Frame Shop Signs, Point Of Sale (POS) Merchandising, Open Flags, Sale Flags, Sale Promotion Ideas, Budget Sale Signs. Our range of Sale Posters, Retail Signage and Retail Cards include the following - Buy Sale Signs, Clearance Sale Signage, Christmas Sale Sign, New Year Sale Sign, Boxing Day Sale Sign, Half Yearly Sale Signage, End of Season Clearance Sign, Xmas Signs, Catalogue Sale, End of Lease Sale, Liquidation Sale Sign,50 Percent off Sale Signs, Final Clearance Sign, For Sale, Shop Window Signs and Posters, Long Weekend Sale, Weekend Sale Signage, New Season Stock Sign, Moving Sale Sign, Under New Management Signage, Massive Sale Sign, Sale Promotion Products, Furniture Sale Sign, Prices Slashed Storewide, Prices As Marked Sign, Closing Down Sale Sign, 15%-70% Off Signs, 50% off Sign, Buy One Get Second Item Half Price Sale, Mother's Day Sign, Stock take Sale Signs, For Sale Signs, Father's Day Sign, Merry Christmas, New Season Stock Sign, Seven Day Sale, Ideas, Valentines Day Sign, Up To Half Price Sale Sign, 50% Off Sale Signs, New Arrivals Sign, For Sale Signs, Now Open Sign, Up to 50% off Sign, Catalogue Sale Sign, 50 Percent off Signs, Grand Opening Sign and many more. We print Australia's largest range of Retail Sale Signs, Shop Window Signs and Retail Signage ideas. We supply POS Signs, Shop Signs and Retail Shop Signage Supplies to the Fashion and Clothing Industry, Bedding, Furniture and Home wares Industry, Lighting, Footwear, Sporting Goods, Optometrists, Jewelers, Automotive Industry, and many more Australian retailers. Our Retail Signage product range leads the market in Sydney, Melbourne, Perth, Brisbane, Gold Coast, Adelaide, Hobart, Newcastle, Sunshine Coast and Central Coast and Noosa. Our brand new range of Retail Policy Signage and general Shop Signage out now !</p>
+<p><font face="Arial" color="#FFFFFF" size="2">We offer Portable 
+				Banner Display &amp; Trade Show Displays, Banner Stands, PopUp / Pop 
+				Up Wall Displays, Brochure Stands, Sign Holders, Promotional 
+				Banners, Pull Up / Roll Up Banners, Crowd Control Barriers, 
+				Display Boards.</font></p>
+</div>
+</div>
+<script language="javascript">
+ //Loading external quotatoin form
+	jQuery(document).ready(function(e) {
+		 var quoteUrl = '<?php echo $this->getUrl();?>index.php/externalform/?store_id=166';
+		 var formVars = { quoteUrl:'<?php echo $this->getUrl();?>index.php/externalform/?store_id=166',
+		 				  form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey();?>',
+							};
+		// console.log(formVars);
+		 jQuery.ajax({
+			 url:quoteUrl,
+			 dataType:"html",
+			 data:formVars,
+			 type:'POST',
+			 beforeSend: function(xError){
+				 //console.log(xError);
+				 html = 'Please wait form is loading...';
+				  jQuery('#quoteLoader').html();
+				 },
+			 success: function(response){
+				  //console.log(response);
+				  jQuery('#quoteLoader').html(response);
+				 },
+			 error: function(error){
+				  console.log(error);
+				 },
+			 });
+    });
+</script>        

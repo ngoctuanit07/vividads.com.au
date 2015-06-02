@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Webkul_Bgvideo>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Webkul_Bgvideo>
+    </modules>
+</config> 
+

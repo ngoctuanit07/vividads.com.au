@@ -1,0 +1,1023 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<style>
+iframe{
+	float:left;
+	border:none;
+}
+</style>
+<?php /*?> <div class="contact_info"><img src="<?php echo $this->getSkinUrl('images/phone_info.png');?>" alt="contact info"/></div><?php */?>
+<div class="intro"><h2>Trade Show <span style="color:#ec761c;">Display Kits</span></h2>
+<?php  $curCatId = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId(); ?>
+<?php echo $catDes = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getDescription();?>
+  <?php
+$full_des= $catDes;
+$full_des=explode(' ', $full_des);
+$first_des=$full_des[0].' '.$full_des[1].' '.$full_des[2].' '.$full_des[3].' '.$full_des[4].' '.$full_des[5].' '.$full_des[6].' '.$full_des[7].' '.$full_des[8].' '.$full_des[9];
+ $start = strlen($first_des);
+ $end = strlen($catDes);
+ //$rest_des=ltrim($full_des, $first_des.' ');
+//echo "$first + $rest";
+?>
+  <p><span style="color:#f37d4b;"><?php echo $first_des; ?></span>
+Our pop-up systems are effective as stand alone trade show displays for smaller shows or as part of a larger exhibitions. Advantages of pop up trade show displays include convenience, simplicity of set-up and tear-down, and ease of transportation. Portable systems are an ideal way to create a large seamless graphic display in minutes and the impact on clients is maximum. Its a great product for  marketing and advertising campaigns! 
+  <?php echo substr($catDes,$start,$end);?>
+  <?php //echo substr($catDes,0,655).".." ?>
+   </p>
+</div>
+<div class="cate_listing">
+<?php
+$categoryid = 4166;
+$category = new Mage_Catalog_Model_Category();
+$category->load($categoryid);
+$collection = $category->getProductCollection();
+$collection->addAttributeToSelect('*');
+foreach ($collection as $_product) { ?>
+<div class="banner"><a href="<?php echo $_product->getProductUrl() ?>"> <img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getThumbnail()); ?>" alt="" /> 
+</a>
+<?php /*?><a href="<?php echo $_product->getProductUrl() ?>"><img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product->getThumbnail()); ?>" alt="" /></a><?php */?>
+</div>
+<?php } ?>    
+<div class="banner">
+<p>  
+    <p>
+                  <font size="2" face="Arial"><b>WHY POP UP DISPLAY WALLS?</b></font></p>
+					<p align="left">
+                  <font size="2" face="Arial"><br>
+                  The potential of pop up displays can be a major component in 
+                  your marketing or promotional campaign. No longer are P.O.P. 
+                  signs thought of as mere product display stands only to 
+                  highlight special offers. Manufacturers and companies now use 
+                  POP up displays to deliver complex and subtle messages to help 
+                  distinguishing feature differences by comparison with other 
+                  brands. Improved technologies and manufacturing processes have 
+                  led to lower costs for these vibrant high quality displays and 
+                  faster delivery times too. <br>
+                  Each portable pop up display guarantees a creative and professional 
+                  appearance, one-person portability, and an easy set up. Pop up 
+                  trade show displays &amp; media backdrop banner walls may also be reconfigured into larger or 
+                  smaller displays, depending on show size requirements. Great 
+                  for promotional special events, business chambers or conventions, popup 
+                  trade show displays systems make it easy to plan your 
+                  presentation and business message your target audience. By 
+                  adding high-impact trade show booth graphics, counters, banner 
+                  stands, literature racks, lighting, flooring, shelving and 
+                  other trade show solutions, any pop up display wall will become 
+                  unique to your business. Our displays are a great product for 
+					marketing &amp; advertising promotions and promotional events.</font></p>
+				<p align="left">
+				<font size="2" face="Arial">When it comes to 
+                trade shows &amp; media backdrop banner walls, it’s all about 
+                catching the eye. The impact of your display can make or break 
+                your success at the show. Banner stands very popular because 
+                they’re portable, flexible, and not too expensive. One drawback 
+                is that everybody uses them. So how do you make sure your banner 
+                stand draws attention&mdash;and doesn’t make you blend in? Here are a 
+                few tips for using a banner stand effectively.<br>
+				<br>
+				The right graphics are crucial. Eye-catching graphics make a big 
+                difference. Many experts will tell you to use the same colors as 
+                your company colors and logo, but this isn’t necessarily the 
+                best way to go. There’s a fine line between having a 
+                polished-looking booth and having a monochromatic one. It can be 
+                a good idea to choose colors that contrast effectively with the 
+                rest of your display&mdash;contrasting colors are far more 
+                eye-catching than colors that match and blend well. Make sure 
+                there’s some nice contrast within the graphics of the banner 
+                stand&mdash;but don’t throw too much color in without giving careful 
+                consideration to how those graphics will interact. Dynamic 
+                photography can also be a good way to draw attention with your 
+                banner stand. But to make sure it comes out well, you’ll need to 
+                be sure your printer is up to the job. Exciting graphics might turn a few heads, but 
+				it’s your copy that will do the lion’s share of the work. Many 
+				trade show vendors simply put up their company name and tagline 
+				on their banner stand. But what do you want people to do? Read 
+				your banner stand as they walk by&mdash;or come in for a closer look? 
+				To tempt people inside, it’s crucial to have a call to action on 
+				your banner stand. This can be a message like “talk to us now” 
+				or “Give us your business card for a chance to win” or pretty 
+				much anything that asks the reader to do something. The idea is 
+				to get passers-by to initiate contact&mdash;so you don’t have to chase 
+				them down yourself.</font></p><p align="left">
+				<font size="2" face="Arial">Maximize the full sales potential of 
+				your company’s products and services. Reach into your market and 
+				grab customer attention, mindshare and market share. Whether you 
+				are a national B2B (Business to Business) corporation or a local 
+				retailer, you can leverage the creative marketing savvy of a 
+				corporate-class marketing agency to increase your company’s 
+				brand / branding awareness and income potential. Our firm 
+				specializes in creative marketing and advertising campaigns and 
+				ideas that provide profitable results to hundreds of clients. We 
+				put your company in front of your target audience and ensure 
+				that your image is brandable and professional. Try our marketing 
+				&amp; advertising agency services<br>
+				<br>
+				Vivid Ads has perfected the art of trade show exhibits and 
+				graphics. In fact, we've been getting companies like yours 
+				noticed for over 8 years. We've assembled a team of expert 
+				designers, project managers and printers to ensure your 
+				company's trade show presence is just as great as your company.
+				We welcome your business.</font></p><p>&nbsp;
+					  </p>
+    <p>
+					  <font color="#FFFFFF" size="2" face="Arial">We offer Portable 
+					    Banner Display &amp; Trade Show Displays, Banner Stands, PopUp / 
+					    Pop Up Wall Displays, Brochure Stands, Sign Holders, 
+					    Promotional Banners, Pull Up / Roll Up Banners, Crowd 
+		        Control Barriers, Display Boards</font></p></div>
+</div>
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script> 
+	<link rel="stylesheet" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/base/default/externalform/css/lightbox/lightbox.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="<?php echo Mage::getBaseUrl(); ?>externalform/js/prototype.lite.js"></script>
+	<script type="text/javascript" src="<?php echo Mage::getBaseUrl(); ?>externalform/js/moo.fx.js"></script>
+	<script type="text/javascript" src="<?php echo Mage::getBaseUrl(); ?>externalform/js/litebox-1.0.js"></script>
+        <script>
+            jQuery(document).ready(function(){
+		//Store Previous data start
+		var comment="comment";
+		jQuery("#"+comment).blur(function(){
+		    setCookie(comment,jQuery("#"+comment).val(),3);   
+		});
+		if (getCookie(comment)!="")
+		{
+		   jQuery("#"+comment).val(getCookie(comment)); 
+		}
+		var del_date="del_date";
+		jQuery("#"+del_date).blur(function(){
+		    setCookie(del_date,jQuery("#"+del_date).val(),3);   
+		});
+		if (getCookie(del_date)!="")
+		{
+		   jQuery("#"+del_date).val(getCookie(del_date)); 
+		}
+	       var shipaddress="shipaddress";
+               jQuery("#shipaddress").click(function(e){
+                    if(jQuery('#shipaddress').is(':checked')==true)
+                    {
+				     setCookie(shipaddress,1,3);   
+                                     jQuery('#ship_info').attr('style','display:block');
+                    }
+                    else
+                    {
+			//alert("bbb");
+                                     setCookie(shipaddress,"",3);   
+                                     jQuery('#ship_info').attr('style','display:none');    
+                    }
+               });
+                if (getCookie(shipaddress)!="")
+		{
+		   jQuery("#"+shipaddress).trigger("click");
+		} 
+		var fnamebill="fnamebill";
+		jQuery("#"+fnamebill).blur(function(){
+		    setCookie(fnamebill,jQuery("#"+fnamebill).val(),3);   
+		});
+		if (getCookie(fnamebill)!="")
+		{
+		   jQuery("#"+fnamebill).val(getCookie(fnamebill)); 
+		}
+		var lnamebill="lnamebill";
+		jQuery("#"+lnamebill).blur(function(){
+		    setCookie(lnamebill,jQuery("#"+lnamebill).val(),3);   
+		});
+		if (getCookie(lnamebill)!="")
+		{
+		   jQuery("#"+lnamebill).val(getCookie(lnamebill)); 
+		}
+		var comp_val="comp_val";
+		jQuery("#"+comp_val).blur(function(){
+		    setCookie(comp_val,jQuery("#"+comp_val).val(),3);   
+		});
+		if (getCookie(comp_val)!="")
+		{
+		   jQuery("#"+comp_val).val(getCookie(comp_val)); 
+		}
+		var add1bill="add1bill";
+		jQuery("#"+add1bill).blur(function(){
+		    setCookie(add1bill,jQuery("#"+add1bill).val(),3);   
+		});
+		if (getCookie(add1bill)!="")
+		{
+		   jQuery("#"+add1bill).val(getCookie(add1bill)); 
+		}
+		var add2bill="add2bill";
+		jQuery("#"+add2bill).blur(function(){
+		    setCookie(add2bill,jQuery("#"+add2bill).val(),3);   
+		});
+		if (getCookie(add2bill)!="")
+		{
+		   jQuery("#"+add2bill).val(getCookie(add2bill)); 
+		}
+		var citybill="citybill";
+		jQuery("#"+citybill).blur(function(){
+		    setCookie(citybill,jQuery("#"+citybill).val(),3);   
+		});
+		if (getCookie(citybill)!="")
+		{
+		   jQuery("#"+citybill).val(getCookie(citybill)); 
+		}
+		var statebill="statebill";
+		jQuery("#"+statebill).blur(function(){
+		    setCookie(statebill,jQuery("#"+statebill).val(),3);   
+		});
+		if (getCookie(statebill)!="")
+		{
+		   jQuery("#"+statebill).val(getCookie(statebill));
+		   jQuery("#"+statebill+" [value='"+getCookie(statebill)+"']").attr("selected","selected"); 
+		}
+		var zipbill="zipbill";
+		jQuery("#"+zipbill).blur(function(){
+		    setCookie(zipbill,jQuery("#"+zipbill).val(),3);   
+		});
+		if (getCookie(zipbill)!="")
+		{
+		   jQuery("#"+zipbill).val(getCookie(zipbill));
+		}
+		var phonebill="phonebill";
+		jQuery("#"+phonebill).blur(function(){
+		    setCookie(phonebill,jQuery("#"+phonebill).val(),3);   
+		});
+		if (getCookie(phonebill)!="")
+		{
+		   jQuery("#"+phonebill).val(getCookie(phonebill));
+		}
+		var emailbill="emailbill";
+		jQuery("#"+emailbill).blur(function(){
+		    setCookie(emailbill,jQuery("#"+emailbill).val(),3);   
+		});
+		if (getCookie(emailbill)!="")
+		{
+		   jQuery("#"+emailbill).val(getCookie(emailbill));
+		}
+		var fnameship="fnameship";
+		jQuery("#"+fnameship).blur(function(){
+		    setCookie(fnameship,jQuery("#"+fnameship).val(),3);   
+		});
+		if (getCookie(fnameship)!="")
+		{
+		   jQuery("#"+fnameship).val(getCookie(fnameship));
+		}
+		var lnameship="lnameship";
+		jQuery("#"+lnameship).blur(function(){
+		    setCookie(lnameship,jQuery("#"+lnameship).val(),3);   
+		});
+		if (getCookie(lnameship)!="")
+		{
+		   jQuery("#"+lnameship).val(getCookie(lnameship));
+		}
+		var comp_val_ship="comp_val_ship";
+		jQuery("#"+comp_val_ship).blur(function(){
+		    setCookie(comp_val_ship,jQuery("#"+comp_val_ship).val(),3);   
+		});
+		if (getCookie(comp_val_ship)!="")
+		{
+		   jQuery("#"+comp_val_ship).val(getCookie(comp_val_ship));
+		}
+		var add1ship="add1ship";
+		jQuery("#"+add1ship).blur(function(){
+		    setCookie(add1ship,jQuery("#"+add1ship).val(),3);   
+		});
+		if (getCookie(add1ship)!="")
+		{
+		   jQuery("#"+add1ship).val(getCookie(add1ship));
+		}
+		var add2ship="add2ship";
+		jQuery("#"+add2ship).blur(function(){
+		    setCookie(add2ship,jQuery("#"+add2ship).val(),3);   
+		});
+		if (getCookie(add2ship)!="")
+		{
+		   jQuery("#"+add2ship).val(getCookie(add2ship));
+		}
+		var cityship="cityship";
+		jQuery("#"+cityship).blur(function(){
+		    setCookie(cityship,jQuery("#"+cityship).val(),3);   
+		});
+		if (getCookie(cityship)!="")
+		{
+		   jQuery("#"+cityship).val(getCookie(cityship));
+		}
+		var stateship="stateship";
+		jQuery("#"+stateship).blur(function(){
+		    setCookie(stateship,jQuery("#"+stateship).val(),3);   
+		});
+		if (getCookie(stateship)!="")
+		{
+		   jQuery("#"+stateship).val(getCookie(stateship));
+		   jQuery("#"+stateship+" [value='"+getCookie(stateship)+"']").attr("selected","selected"); 
+		}
+		var zipship="zipship";
+		jQuery("#"+zipship).blur(function(){
+		    setCookie(zipship,jQuery("#"+zipship).val(),3);   
+		});
+		if (getCookie(zipship)!="")
+		{
+		   jQuery("#"+zipship).val(getCookie(zipship));
+		}
+		var phoneship="phoneship";
+		jQuery("#"+phoneship).blur(function(){
+		    setCookie(phoneship,jQuery("#"+phoneship).val(),3);   
+		});
+		if (getCookie(phoneship)!="")
+		{
+		   jQuery("#"+phoneship).val(getCookie(phoneship));
+		}
+		//Store Previous data end
+		initLightbox();
+                jQuery("#downloads_video_overlay").css("display","none");
+                jQuery("#add_more").click(function(){
+                    jQuery.ajax({
+                         url: "<?php echo Mage::getBaseUrl();?>index.php/externalform/index/addMore/",
+                         type: "POST",
+                         data: "store_id=<?php echo $storeId; ?>&root_cat=<?php echo $root_cat; ?>",
+                         success: function(abc){
+                                 jQuery("#all_pro_con").append(abc);
+                                 jQuery(".del_it").unbind("click");
+                                 jQuery(".del_it").bind("click",del_it);
+                         }
+                    });
+                });
+                jQuery("#sub_cusord").click(function(){
+                         var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        		 var address = document.getElementById("emailbill").value;
+        		// if(jQuery("#creditcardtype").attr("value")=="0")
+        		// {
+        		//		  jQuery("#creditcardtype").css("border","1px solid #fd0402");
+        		//		  jQuery("#creditcardtype").focus();
+        		//		  return false;
+        		// }
+        		// else
+        		// {
+        		//		  jQuery("#creditcardtype").css("border","3px solid #2F2F2F");
+        		// }
+        		// 
+        		// if(jQuery("#creditcardNum").attr("value")=="")
+        		// {
+        		//		  jQuery("#creditcardNum").css("border","1px solid #fd0402");
+        		//		  jQuery("#creditcardNum").focus();
+        		//		  return false;
+        		// }
+        		// else
+        		// {
+        		//		  jQuery("#creditcardNum").css("border","3px solid #2F2F2F");
+        		// }
+        		// 
+        		// if(jQuery("#ccVerNum").attr("value")=="")
+        		// {
+        		//		  jQuery("#ccVerNum").css("border","1px solid #fd0402");
+        		//		  jQuery("#ccVerNum").focus();
+        		//		  return false;
+        		// }
+        		// else
+        		// {
+        		//		  jQuery("#ccVerNum").css("border","3px solid #2F2F2F");
+        		// }
+        		 if(document.getElementById("fnamebill").value=="")
+        		 {
+        				  jQuery("#fnamebill").css("border","1px solid #fd0402");
+        				  jQuery("#fnamebill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#fnamebill").css("border","1px solid #ccc");
+        		 }
+        		 if(document.getElementById("lnamebill").value=="")
+        		 {
+        				  jQuery("#lnamebill").css("border","1px solid #fd0402");
+        				  jQuery("#lnamebill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#lnamebill").css("border","1px solid #ccc");
+        		 }
+        		 if((document.getElementById("add1bill").value==""))
+        		 {
+        				  jQuery("#add1bill").css("border","1px solid #fd0402");
+        				  jQuery("#add1bill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#add1bill").css("border","1px solid #ccc");
+        		 }
+        		 if(document.getElementById("citybill").value=="")
+        		 {
+        				  jQuery("#citybill").css("border","1px solid #fd0402");
+        				  jQuery("#citybill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#citybill").css("border","1px solid #ccc");
+        		 }
+        		 if(document.getElementById("statebill").value=="")
+        		 {
+        				  jQuery("#statebill").attr("style","border:1px solid #fd0402 !important");
+        				  jQuery("#statebill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#statebill").attr("style","border:1px solid #ccc !important");
+        		 }
+        		 if(document.getElementById("zipbill").value=="")
+        		 {
+        				  jQuery("#zipbill").css("border","1px solid #fd0402");
+        				  jQuery("#zipbill").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#zipbill").css("border","1px solid #ccc");
+        		 }
+        //		 if(document.getElementById("countrybill").value=="")
+        //		 {
+        //				  jQuery("#countrybill").css("border","1px solid #fd0402");
+        //                                  alert("Please enter the country.");
+        //				  jQuery("#countrybill").focus();
+        //				  return false;
+        //		 }
+        //		 else
+        //		 {
+        //				  jQuery("#countrybill").css("border","3px solid #2F2F2F");
+        //		 }
+                        if(document.getElementById("phonebill").value=="")
+                         {
+                                          jQuery("#phonebill").css("border","1px solid #fd0402");
+                                          jQuery("#phonebill").focus();
+                                          return false;
+                         }
+                         else
+                         {
+                                          jQuery("#phonebill").css("border","1px solid #ccc");
+                         }
+                         if(isNaN(document.getElementById("phonebill").value))
+                         {
+                                          jQuery("#phonebill").attr("value","");
+                                          jQuery("#phonebill").css("border","1px solid #fd0402");
+                                          alert('Please enter numeric number in billing phone');
+                                          jQuery("#phonebill").focus();
+                                          return false;
+                         }
+                         else
+                         {
+                                          jQuery("#phonebill").css("border","1px solid #ccc");
+                         }
+                         if(document.getElementById("emailbill").value=="")
+                         {
+                        		  jQuery("#emailbill").css("border","1px solid #fd0402");
+                        		  jQuery("#emailbill").focus();
+                        		  return false;
+                         }
+                         else
+                         {
+                        		  jQuery("#emailbill").css("border","1px solid #ccc");
+                         }
+                         if(reg.test(address) == false)
+                         {
+                        		  jQuery("#emailbill").attr("value","");
+                        		  jQuery("#emailbill").css("border","1px solid #fd0402");
+                                            alert('Please enter a valid email id');
+                        		  jQuery("#emailbill").focus();
+                        		  return false;
+                         }
+                         else
+                         {
+                        		  jQuery("#emailbill").css("border","1px solid #ccc");
+                         }
+			 /*if(document.getElementById("del_date").value=="")
+        		 {
+        				  jQuery("#del_date").css("border","1px solid #fd0402");
+        				  jQuery("#del_date").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#del_date").css("border","1px solid #ccc");
+        		 }
+			 if(document.getElementById("comment").value=="")
+        		 {
+        				  jQuery("#comment").attr("style","width:930px; height:280px;margin-top:10px;margin-left:-45px; border:1px solid red !important; background:#fff !important");
+        				  jQuery("#comment").focus();
+        				  return false;
+        		 }
+        		 else
+        		 {
+        				  jQuery("#comment").attr("style","border:1px solid #ccc; width:40%; height:100px;margin-left: -118px;");
+        		 }*/
+                         if(jQuery('#shipaddress').is(':checked')==true)
+                         {
+                                          if(document.getElementById("fnameship").value=="")
+                                          {
+                                                           jQuery("#fnameship").css("border","1px solid #fd0402");
+                                                           jQuery("#fnameship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#fnameship").css("border","1px solid #ccc");
+                                          }
+                                          if(document.getElementById("lnameship").value=="")
+                                          {
+                                                           jQuery("#lnameship").css("border","1px solid #fd0402");
+                                                           jQuery("#lnameship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#lnameship").css("border","1px solid #ccc");
+                                          }
+                                          if((document.getElementById("add1ship").value=="") /*&& (document.getElementById("add2ship").value=="")*/)
+                                          {
+                                                           jQuery("#add1ship").css("border","1px solid #fd0402");
+                                                           jQuery("#add1ship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#add1ship").css("border","1px solid #ccc");
+                                          }
+                                          if(document.getElementById("cityship").value=="")
+                                          {
+                                                           jQuery("#cityship").css("border","1px solid #fd0402");
+                                                           jQuery("#cityship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#cityship").css("border","1px solid #ccc");
+                                          }
+                                          if(document.getElementById("stateship").value=="")
+                                          {
+                                                           jQuery("#stateship").css("border","1px solid #fd0402");
+                                                           jQuery("#stateship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#stateship").css("border","1px solid #ccc");
+                                          }
+                                          if(document.getElementById("zipship").value=="")
+                                          {
+                                                           jQuery("#zipship").css("border","1px solid #fd0402");
+                                                           jQuery("#zipship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#zipship").css("border","1px solid #ccc");
+                                          }
+                                          //if(jQuery("#countryship").attr("value")=="")
+                                          //{
+                                          //                 jQuery("#countryship").css("border","1px solid #fd0402");
+                                          //                 jQuery("#countryship").focus();
+                                          //                 return false;
+                                          //}
+                                          //else
+                                          //{
+                                          //                 jQuery("#countryship").css("border","3px solid #2F2F2F");
+                                          //}
+                                          if(document.getElementById("phoneship").value=="")
+                                          {
+                                                           jQuery("#phoneship").css("border","1px solid #fd0402");
+                                                           jQuery("#phoneship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#phoneship").css("border","1px solid #ccc");
+                                          }
+                                          if(isNaN(document.getElementById("phoneship").value))
+                                          {
+                                                           jQuery("#phoneship").attr("value","");
+                                                           jQuery("#phoneship").css("border","1px solid #fd0402");
+                                                           alert('Please enter numeric number in shipping phone');
+                                                           jQuery("#phoneship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#phoneship").css("border","1px solid #FFFFFF");
+                                          }
+                         }
+                        var actionUrl=jQuery("#actionUrl").attr("value");
+                         //alert(actionUrl);
+                         jQuery("#loader_id").show();
+                         jQuery("#sub_cusord").hide();
+                        jQuery.ajax({
+                            url: actionUrl,
+                            type: "POST",
+                            data: jQuery("#cus_ordfrm").serialize(),
+                            success: function(abc){
+                                            //alert(abc);
+				    if(abc=="cap_err")
+                                    {
+                                             jQuery("#Success").html("You have entered an incorrect captcha code. Try again");
+					     jQuery("#loader_id").hide();
+                                             jQuery("#sub_cusord").show();
+					     jQuery("#captcha-form").attr("value","");
+						 jQuery("#captcha-form").css("border","1px solid #fd0402");
+					     jQuery("#change-image").trigger("click");
+                                             return false; 
+                                    }
+                                    arr=Array();
+                                    arr=abc.split("___");
+                                    var ord_success=arr[0];
+                                    var ord=arr[1];
+                                    if(arr[2] != '')
+                                    var stock=arr[2];
+                                    else
+                                    var stock='';
+                                    //alert(ord);
+                                    if(ord_success=="order")
+                                    {
+                                             //location.reload();
+                                             //jQuery("#Success").html("Your order has been placed . Your order id is #"+ord+'. '+stock);
+                                             jQuery("#cus_ordfrm").css("display","none");  
+					     jQuery("#thank_u").css("display","block");	
+                                             jQuery("#thank_u").html("Thank you for your interest, We will get back to you shortly. Your Invoice number is "+ord);
+						document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                             //location.reload();
+                                    }
+                                    else if(ord_success=="quote")
+                                    {
+                                             //location.reload();
+                                             //jQuery("#Success").html("Your quote has been placed . Your quote id is #"+ord+'. '+stock);
+					     jQuery("#cus_ordfrm").css("display","none");  
+					     jQuery("#thank_u").css("display","block");
+					     jQuery("#thank_u").html("Thank you for your interest, We will get back to you shortly. Your quote number is #"+ord);		
+						document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                                //location.reload();
+                                    }
+                                    else
+                                    {
+                                             jQuery("#Success").html("Something has gone wrong. "+stock);
+                                             jQuery("#loader_id").hide();
+                                            jQuery("#sub_cusord").show();
+                                    }
+				jQuery("#Success").html(abc);
+                            }
+                        });  
+                });
+                jQuery(".del_it").unbind("click");
+                jQuery(".del_it").bind("click",del_it);
+            });
+                function getProduct(catid,curr_ele){
+                    var param="catid="+catid+"&storeid="+'<?php echo $storeId?>';
+                    jQuery.ajax({
+                           type:'POST',
+                           url:'<?php echo Mage::getBaseUrl();?>index.php/externalform/index/getProduct/',
+                           data:param,
+                           success: function(ret){
+                           	//alert(ret);
+                              jQuery(curr_ele).parent().parent().parent().find(".proddiv").html(ret);
+                            }
+                });
+                }
+                function getProdImage(prodid,curr_ele){
+                    var param="prodid="+prodid;
+                    jQuery.ajax({
+                           type:'POST',
+                           url:'<?php echo Mage::getBaseUrl();?>index.php/externalform/index/getProductImage/',
+                           data:param,
+                           success: function(ret)
+                           {
+                            //alert(ret);
+                              //jQuery('#prodimgdiv').html(ret);
+                              jQuery(curr_ele).parent().parent().parent().find(".prodimgdiv").html(ret);
+                              initLightbox();
+                            }
+                });
+            }
+            function del_it()
+            {
+                jQuery(this).parent().parent().remove();
+            }
+        </script>
+<style type="text/css">
+.ds_box {
+	background-color: #FFF;
+	border: 1px solid #000;
+	position: absolute;
+	z-index: 32767;
+}
+.ds_tbl {
+	background-color: #FFF;
+}
+.ds_head {
+	background-color: #333;
+	color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: center;
+	letter-spacing: 2px;
+}
+.ds_subhead {
+	background-color: #CCC;
+	color: #000;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	width: 32px;
+}
+.ds_cell {
+	background-color: #EEE;
+	color: #000;
+	font-size: 13px;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 5px;
+	cursor: pointer;
+}
+.ds_cell:hover {
+	background-color: #F3F3F3;
+} /* This hover code won't work for IE */
+</style>
+<script type="text/javascript">
+// <!-- <![CDATA[
+// Project: Dynamic Date Selector (DtTvB) - 2006-03-16
+// Script featured on JavaScript Kit- http://www.javascriptkit.com
+// Code begin...
+// Set the initial date.
+var ds_i_date = new Date();
+ds_c_month = ds_i_date.getMonth() + 1;
+ds_c_year = ds_i_date.getFullYear();
+// Get Element By Id
+function ds_getel(id) {
+	return document.getElementById(id);
+}
+// Get the left and the top of the element.
+function ds_getleft(el) {
+	var tmp = el.offsetLeft;
+	el = el.offsetParent
+	while(el) {
+		tmp += el.offsetLeft;
+		el = el.offsetParent;
+	}
+	return tmp;
+}
+function ds_gettop(el) {
+	var tmp = el.offsetTop;
+	el = el.offsetParent
+	while(el) {
+		tmp += el.offsetTop;
+		el = el.offsetParent;
+	}
+	return tmp;
+}
+// Output Element
+var ds_oe = ds_getel('ds_calclass');
+// Container
+var ds_ce = ds_getel('ds_conclass');
+// Output Buffering
+var ds_ob = ''; 
+function ds_ob_clean() {
+	ds_ob = '';
+}
+function ds_ob_flush() {
+	ds_oe.innerHTML = ds_ob;
+	ds_ob_clean();
+}
+function ds_echo(t) {
+	ds_ob += t;
+}
+var ds_element; // Text Element...
+var ds_monthnames = [
+'January', 'February', 'March', 'April', 'May', 'June',
+'July', 'August', 'September', 'October', 'November', 'December'
+]; // You can translate it for your language.
+var ds_daynames = [
+'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
+]; // You can translate it for your language.
+// Calendar template
+function ds_template_main_above(t) {
+	return '<table cellpadding="3" cellspacing="1" class="ds_tbl">'
+	     + '<tr>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_py();"><<</td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_pm();"><</td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_hi();" colspan="3">[Close]</td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_nm();">></td>'
+		 + '<td class="ds_head" style="cursor: pointer" onclick="ds_ny();">>></td>'
+		 + '</tr>'
+	     + '<tr>'
+		 + '<td colspan="7" class="ds_head">' + t + '</td>'
+		 + '</tr>'
+		 + '<tr>';
+}
+function ds_template_day_row(t) {
+	return '<td class="ds_subhead">' + t + '</td>';
+	// Define width in CSS, XHTML 1.0 Strict doesn't have width property for it.
+}
+function ds_template_new_week() {
+	return '</tr><tr>';
+}
+function ds_template_blank_cell(colspan) {
+	return '<td colspan="' + colspan + '"></td>'
+}
+function ds_template_day(d, m, y) {
+	return '<td class="ds_cell" onclick="ds_onclick(' + d + ',' + m + ',' + y + ')">' + d + '</td>';
+	// Define width the day row.
+}
+function ds_template_main_below() {
+	return '</tr>'
+	     + '</table>';
+}
+// This one draws calendar...
+function ds_draw_calendar(m, y) {
+	// First clean the output buffer.
+	ds_ob_clean();
+	// Here we go, do the header
+	ds_echo (ds_template_main_above(ds_monthnames[m - 1] + ' ' + y));
+	for (i = 0; i < 7; i ++) {
+		ds_echo (ds_template_day_row(ds_daynames[i]));
+	}
+	// Make a date object.
+	var ds_dc_date = new Date();
+	ds_dc_date.setMonth(m - 1);
+	ds_dc_date.setFullYear(y);
+	ds_dc_date.setDate(1);
+	if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12) {
+		days = 31;
+	} else if (m == 4 || m == 6 || m == 9 || m == 11) {
+		days = 30;
+	} else {
+		days = (y % 4 == 0) ? 29 : 28;
+	}
+	var first_day = ds_dc_date.getDay();
+	var first_loop = 1;
+	// Start the first week
+	ds_echo (ds_template_new_week());
+	// If sunday is not the first day of the month, make a blank cell...
+	if (first_day != 0) {
+		ds_echo (ds_template_blank_cell(first_day));
+	}
+	var j = first_day;
+	for (i = 0; i < days; i ++) {
+		// Today is sunday, make a new week.
+		// If this sunday is the first day of the month,
+		// we've made a new row for you already.
+		if (j == 0 && !first_loop) {
+			// New week!!
+			ds_echo (ds_template_new_week());
+		}
+		// Make a row of that day!
+		ds_echo (ds_template_day(i + 1, m, y));
+		// This is not first loop anymore...
+		first_loop = 0;
+		// What is the next day?
+		j ++;
+		j %= 7;
+	}
+	// Do the footer
+	ds_echo (ds_template_main_below());
+	// And let's display..
+	ds_ob_flush();
+	// Scroll it into view.
+	ds_ce.scrollIntoView();
+}
+// A function to show the calendar.
+// When user click on the date, it will set the content of t.
+function ds_sh(t) {
+	// Set the element to set...
+	ds_element = t;
+	// Make a new date, and set the current month and year.
+	var ds_sh_date = new Date();
+	ds_c_month = ds_sh_date.getMonth() + 1;
+	ds_c_year = ds_sh_date.getFullYear();
+	// Draw the calendar
+	ds_draw_calendar(ds_c_month, ds_c_year);
+	// To change the position properly, we must show it first.
+	ds_ce.style.display = '';
+	// Move the calendar container!
+	the_left = ds_getleft(t);
+	the_top = ds_gettop(t) + t.offsetHeight;
+	ds_ce.style.left = the_left+ 'px';
+	ds_ce.style.top = the_top+ 'px';
+	// Scroll it into view.
+	//ds_ce.scrollIntoView();
+}
+// Hide the calendar.
+function ds_hi() {
+	ds_ce.style.display = 'none';
+}
+// Moves to the next month...
+function ds_nm() {
+	// Increase the current month.
+	ds_c_month ++;
+	// We have passed December, let's go to the next year.
+	// Increase the current year, and set the current month to January.
+	if (ds_c_month > 12) {
+		ds_c_month = 1; 
+		ds_c_year++;
+	}
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+// Moves to the previous month...
+function ds_pm() {
+	ds_c_month = ds_c_month - 1; // Can't use dash-dash here, it will make the page invalid.
+	// We have passed January, let's go back to the previous year.
+	// Decrease the current year, and set the current month to December.
+	if (ds_c_month < 1) {
+		ds_c_month = 12; 
+		ds_c_year = ds_c_year - 1; // Can't use dash-dash here, it will make the page invalid.
+	}
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+// Moves to the next year...
+function ds_ny() {
+	// Increase the current year.
+	ds_c_year++;
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+// Moves to the previous year...
+function ds_py() {
+	// Decrease the current year.
+	ds_c_year = ds_c_year - 1; // Can't use dash-dash here, it will make the page invalid.
+	// Redraw the calendar.
+	ds_draw_calendar(ds_c_month, ds_c_year);
+}
+// Format the date to output.
+function ds_format_date(d, m, y) {
+	// 2 digits month.
+	m2 = '00' + m;
+	m2 = m2.substr(m2.length - 2);
+	// 2 digits day.
+	d2 = '00' + d;
+	d2 = d2.substr(d2.length - 2);
+	// YYYY-MM-DD
+	return y + '-' + m2 + '-' + d2;
+}
+// When the user clicks the day.
+function ds_onclick(d, m, y) {
+	// Hide the calendar.
+	ds_hi();
+	// Set the value of it, if we can.
+	if (typeof(ds_element.value) != 'undefined') {
+		ds_element.value = ds_format_date(d, m, y);
+	// Maybe we want to set the HTML in it.
+	} else if (typeof(ds_element.innerHTML) != 'undefined') {
+		ds_element.innerHTML = ds_format_date(d, m, y);
+	// I don't know how should we display it, just alert it to user.
+	} else {
+		alert (ds_format_date(d, m, y));
+	}
+}
+// And here is the end.
+// ]]> -->
+function setCookie(cname,cvalue,exdays)
+{
+    var d = new Date();
+    d.setTime(d.getTime()+(exdays*24*60*60*1000));
+    var expires = "expires="+d.toGMTString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+function getCookie(cname)
+{
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) 
+      {
+      var c = ca[i].trim();
+      if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+      }
+    return "";
+}
+</script>

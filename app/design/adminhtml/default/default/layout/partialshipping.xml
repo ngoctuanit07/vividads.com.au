@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <partialshipping_adminhtml_partialshipping_index>
+        <reference name="content">
+            <block type="partialshipping/adminhtml_partialshipping" name="partialshipping" />
+        </reference>
+    </partialshipping_adminhtml_partialshipping_index>
+</layout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * MD_Quotemail.
+ * Company: Vivid Ads Inc Australia
+ * Author: AShfaq Ahmed
+ * 
+ *
+ * NOTICE OF LICENSE
+ *
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.vividads.com.au
+ *
+ * @category   MD
+ * @package    Quotemail
+ * @copyright  Copyright (c) 2014 Vivid Ads Ashfaq Ahmed (http://www.vividads.com.au)
+ */
+-->
+<config>
+    <tabs>
+        <md_quotemail>            
+            <label>Pre-defined Emails</label>
+            <sort_order>198</sort_order>
+        </md_quotemail>            
+    </tabs>
+    <sections>
+        <quotemail translate="label" module="quotemail">
+            <label>Pre-defined Email Settings</label>
+            <tab>md_quotemail</tab>
+            <frontend_type>text</frontend_type>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>               
+            <groups>
+                <general translate="label">
+                    <label>Pre-Defined Email</label>
+                    <sort_order>601</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>                    
+                        <quotemailenabled translate="label">
+                            <label>Enable/Disable Pre-Defined Email Templates</label>                            
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>48</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </quotemailenabled>               
+                        <logotitle translate="label">
+                            <label>Quote Email Title</label>                            
+                            <frontend_type>text</frontend_type>                                                                
+                            <comment>
+                <![CDATA[This input will be visible on the frontend the default title is "Emails".]]>
+                            </comment>
+                            <sort_order>49</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </logotitle>               
+                                
+                        <quotemailresizeenabled translate="label">
+                            <label>Enable Pre-Defined Email Resizing</label>                            
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </quotemailresizeenabled> 
+                    
+                                                                                               
+                    </fields>
+                </general>                    
+            </groups>
+        </quotemail>       
+    </sections>
+</config>

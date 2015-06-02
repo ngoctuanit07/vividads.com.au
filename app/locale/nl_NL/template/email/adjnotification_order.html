@@ -1,0 +1,17 @@
+﻿<!--
+/**
+ * Admin Email Notifications
+ *
+ * @category:    AdjustWare
+ * @package:     AdjustWare_Notification
+ * @version      2.2.1
+ * @license:     n/a
+ * @copyright:   Copyright (c) 2014 AITOC, Inc. (http://www.aitoc.com)
+ */
+--><!--@subject Notification:: New Order @--> 
+
+<html>
+
+{{htmlescape var=$order.getCustomerName()}} heeft een nieuwe order geplaatst # {{var order.increment_id}} .
+
+</html>

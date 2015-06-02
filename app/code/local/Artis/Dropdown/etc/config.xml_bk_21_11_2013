@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config>
+      <modules>
+            <Artis_Dropdown>
+                  <version>0.1.0</version>
+            </Artis_Dropdown>
+      </modules>
+
+
+      <global>
+     
+      <blocks>
+      <dropdown>
+          <class>Artis_Dropdown_Block</class>
+      </dropdown>
+      <page>
+          <rewrite>
+            <html_topmenu>Artis_Dropdown_Block_Html_Topmenu</html_topmenu>
+          </rewrite>
+      </page>
+        </blocks>
+      </global>
+</config>

@@ -1,0 +1,40 @@
+<script>
+<!--
+ jQuery(document).ready(function(e) {	
+	
+	var formData = {
+					store_id:19,					
+					}
+	
+	
+	
+	
+	jQuery.ajax({
+        url: "http://13expo.com.au/index.php/externalform/?store_id=19",
+        type: "post",
+        data: formData,
+		dataType:"html",			
+        success: function(data){
+           // alert("success");
+		   
+			//trace(dataStr);
+        },
+		complete: function(data){
+			var dataStr = '<iframe id="iframe" style="margin: 0px !important; background-color: transparent; overflow-y: hidden !important; overflow-x: hidden !important;" src="http://13expo.com.au/index.php/externalform/?store_id=19" frameborder="0" width="1024" height="1590"></iframe>';
+		   
+            jQuery("#inquiry_quote").html(dataStr);
+			},
+        error:function(){
+           // alert("failure");
+           // jQuery("#inquiry_quote").html('There is error while submit');
+        }
+    });
+	
+	
+});
+-->
+</script>
+
+<div id="inquiry_quote" >	
+<img id="loader_id" style="width:50px; height:50px; display:block; margin:auto;" src="http://13expo.com.au/skin/frontend/default/default/images/externalform/ajax-loader.gif" />
+</div>

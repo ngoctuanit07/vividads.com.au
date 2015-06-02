@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <GrafischDirect_Richsnippets>
+            <active>true</active>
+            <codePool>community</codePool>
+            <gd_name>
+                <![CDATA[Google rich snippets]]> 
+            </gd_name>
+            <gd_link>
+                <![CDATA[http://grafischdirect.com/magento-extension-google-rich-snippets]]> 
+            </gd_link>
+        </GrafischDirect_Richsnippets>
+    </modules>
+</config>

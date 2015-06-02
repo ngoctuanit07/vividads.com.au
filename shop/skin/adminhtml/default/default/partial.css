@@ -1,0 +1,10 @@
+.total_payment{border:1px solid #ccc; box-shadow:0px 0px 6px 0px #333;width: 361px !important;height: auto !important;padding: 20px;left: 50% !important;margin-left: -130px;}
+.total_payment .offline_payment table{width:100%;}
+.total_payment .offline_payment table td{text-align:left;padding: 2px 5px;}
+.total_payment .offline_payment table td.lebelall{text-align:right;}
+.total_payment .offline_payment table td input[type="text"]{width:100px;}
+.close_div{left: 355px !important;position: absolute !important;top: 7px !important;cursor: pointer;}
+.openpay{float:right; color:#676667 !important; text-decoration:underline; cursor:pointer;}
+
+.order-tables thead th{font-weight:bold; padding:3px 20px 3px 10px;}
+.order-tables thead th, .order-tables tbody td{text-align:left;}

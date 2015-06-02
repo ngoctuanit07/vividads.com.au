@@ -1,0 +1,131 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<div class="footer-container">
+<div class="footer clearfix">
+<div class="payment_strip">
+		<img src="<?php echo $this->getSkinUrl()?>images/payment_strip.png"  alt="<?php echo $this->__('Payment Method We Accept')?>" title="<?php echo $this->__('Payment Method We Accept')?>"/>
+</div>
+   <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('logos')->toHtml() ?>
+	        <div class="links">
+<div class="block-title"><strong><span><?php echo $this->__('Company')?></span></strong></div>
+<ul>
+<li><a href="<?php echo $this->getUrl('about_us');?>"><?php echo $this->__('About Us')?></a></li>
+<li><a href="<?php echo $this->getUrl();?>catalog/seo_sitemap/category"><?php echo $this->__('Sitemap')?></a></li>
+<li><a href="<?php echo $this->getUrl('terms');?>"><?php echo $this->__('Terms &amp; Conditions')?></a></li>
+<li><a href="<?php echo $this->getUrl('contact-us')?>"><?php echo $this->__('Contact Us')?></a></li>
+</ul>
+</div><div class="links">
+<div class="block-title"><strong><span><?php echo $this->__('Customer Service')?></span></strong></div>
+<ul>
+<li><a href="<?php echo $this->getUrl()?>customer/account/"><?php echo $this->__('My Account')?></a></li>
+<li><a href="<?php echo $this->getUrl('sales/order/history/')?>"><?php echo $this->__('Ordering')?></a></li>
+<li><a href="<?php echo $this->getUrl()?>ProductReturn/Front/List/"><?php echo $this->__('Shipping &amp; Returns')?></a></li>
+<li><a href="<?php echo $this->getUrl()?>sales/order/history/"><?php echo $this->__('Order Status')?></a></li>
+<li><a href="<?php echo $this->getUrl('faqs')?>"><?php echo $this->__('FAQs')?></a></li>
+</ul>
+</div><div class="links">
+<div class="block-title"><strong><span><?php echo $this->__('Services')?></span></strong></div>
+
+<ul>
+<li><a href="<?php echo $this->getUrl('artwork');?>"><?php echo $this->__('Artwork Guidelines')?></a></li>
+<li><a href="<?php echo $this->getUrl('artwork')?>"><?php echo $this->__('Graphic Templates')?></a></li>
+<li><a href="<?php echo $this->getUrl('upload')?>"><?php echo $this->__('Upload Artwork')?></a></li>
+<li><a href="#">Compress Artwork</a></li>
+</ul>
+</div>
+<div class="block block-subscribe">
+    <div class="block-title">
+        <strong><span>Newsletter</span></strong>
+    </div>
+<?php echo $this->getChildHtml('footer.newsletter'); ?>
+</div>
+<?php //echo $this->getLayout()->createBlock('newsletter/subscribe')->setTemplate('newsletter/subscribe.phtml')->toHtml(); ?>
+
+<div class="footer_social">
+<div class="block-title"><strong><span>Connect</span></strong>
+</div>
+<!--<a href="#" class="facebook">&nbsp;</a>
+<a href="#" class="twitter">&nbsp;</a>
+<a href="#" class="youtube">&nbsp;</a>
+<a href="#" class="vimeo">&nbsp;</a>
+<a href="#" class="google">&nbsp;</a>-->
+</div>	    
+<div  class="socialaddthis">
+ <?php echo $this->getLayout()->createBlock('sharingtool/share')->setBlockId('addthis_sharetool')->toHtml(); ?>
+ <table width="135" border="0" cellpadding="2" cellspacing="0" title="Click to Verify - This site chose Symantec SSL for secure e-commerce and confidential communications." style="float: right; width: 322px; margin: 0 0 0 0px ; padding: 0px;">
+<tr>
+<td width="135" align="center" valign="top"><script type="text/javascript" src="https://seal.websecurity.norton.com/getseal?host_name=www.vividads.com.au&amp;size=L&amp;use_flash=YES&amp;use_transparent=YES&amp;lang=en"></script><br />
+<a href="http://www.symantec.com/ssl-certificates" target="_blank"  style="color:#000000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing:.5px; text-align:center; margin:0px; padding:0px;">ABOUT SSL CERTIFICATES</a></td>
+</tr>
+</table>
+</div>
+<div class="contact-container">
+                
+<div class="textwidget"><h3>Free Call (Australia Only): <strong style="color:#000;">1300 721 614</strong></h3>
+<div class="footer_item"><strong style="color: rgb(0, 0, 0); float: left; font-size: 12px; letter-spacing: normal; width: 100%;">Head Office</strong>
+<p style="font-size: 12px; float: left; margin: 0px; line-height: normal;">1/2 Phillip Court, Port Melbourne<br>
+Victoria 3207 Australia </p>
+</div>
+<div class="footer_item" style="font-size: 12px; float: left; margin: 0px;"> Ph: 1300 72 16 14<br>
+  Fax: +613 8456 6234 </div>
+</div>
+</div>
+ <div style="float: left; width: 100%; text-align: center; padding: 0px 0px 20px; font-size:12px;" class="item">
+<?php echo $this->__('© VividAds Pty Limited  Australia. All rights reserved.'); ?>
+</div>
+</div>
+
+
+ 
+ </div>
+
+
+<script type="text/javascript">
+var __lc = {};
+__lc.license = 3920361;
+
+(function() {
+	var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+	lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+})();
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-886401-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

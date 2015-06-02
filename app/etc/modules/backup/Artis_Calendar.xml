@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Artis_Calendar>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Artis_Calendar>
+    </modules>
+</config> 

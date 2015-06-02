@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <gallery_admin_adminhtml_gallery_index>
+        <reference name="content">
+            <block type="gallery/adminhtml_gallery" name="gallery" />
+        </reference>
+    </gallery_admin_adminhtml_gallery_index>
+    <gallery_admin_adminhtml_album_index>
+        <reference name="content">
+            <block type="gallery/adminhtml_album" name="album" />
+        </reference>
+    </gallery_admin_adminhtml_album_index>
+
+	<gallery_admin_adminhtml_album_edit>
+        <reference name="head">
+        	<action method="addJs"><script>gallery/gallery.js</script></action>
+        </reference>
+	</gallery_admin_adminhtml_album_edit>
+	
+    <gallery_admin_adminhtml_review_index>
+        <reference name="content">
+            <block type="gallery/adminhtml_review" name="album" />
+        </reference>
+    </gallery_admin_adminhtml_review_index>
+    
+    <adminhtml_cache_index>
+        <reference name="content">
+        	<remove name="cache.additional" />
+            <block type="adminhtml/cache_additional" name="gallerypro.cache.additional" template="gallery/cache/additional.phtml"></block>
+        </reference>
+    </adminhtml_cache_index>
+    
+    <!-- 4.0  -->
+    <gallery_admin_adminhtml_multiadd_multiadd>
+        <reference name="head">
+            <action method="addJs"><script>gallery/mw_gallery_validate.js</script></action>
+        </reference>    
+    </gallery_admin_adminhtml_multiadd_multiadd>
+    
+    <adminhtml_system_config_edit>		
+		<reference name="head">
+			<action method="addCss"><stylesheet>mw_gallery/css/colorpicker.css</stylesheet></action>
+    		<action method="addJs"><script>jquery/jquery.min.js</script></action>
+      		<action method="addJs"><script>jquery/jquery_noconflict.js</script></action>   		
+    		<action method="addJs"><script>mw_gallery/gallery_colorpicker.js</script></action>
+    		<action method="addJs"><script>mw_gallery/color_gallery_validate.js</script></action>
+		</reference>
+	</adminhtml_system_config_edit>
+</layout>

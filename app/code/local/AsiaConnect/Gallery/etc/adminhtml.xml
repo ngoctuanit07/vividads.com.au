@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<gallery module="gallery">
+			<title>Gallery Pro</title>
+			<sort_order>71</sort_order>               
+			<children>
+				<albums module="gallery">
+					<title>Manage Albums</title>
+					<sort_order>10</sort_order>
+					<action>gallery_admin/adminhtml_album</action>
+				</albums>
+				<photos module="gallery">
+					<title>Manage Photos</title>
+					<sort_order>20</sort_order>
+					<action>gallery_admin/adminhtml_gallery</action>
+				</photos>
+				<reviews module="gallery">
+					<title>Manage Reviews</title>
+					<sort_order>30</sort_order>
+					<action>gallery_admin/adminhtml_review</action>
+				</reviews>
+				<configuration module="gallery">
+					<title>Configuration</title>
+					<sort_order>40</sort_order>
+					<action>adminhtml/system_config/edit/section/gallery</action>
+				</configuration>
+				<!-- 
+				<clearcache module="gallery">
+					<title>Clear Cache</title>
+					<sort_order>50</sort_order>
+					<action>gallery/adminhtml_clearcache</action>
+				</clearcache>
+				 -->
+			</children>
+		</gallery>
+	</menu>
+	<acl>
+		<resources>
+			<all>
+				<title>Allow Everything</title>
+			</all>
+			<admin>
+				<children>
+					<gallery module="gallery">
+						<title>Gallery Pro</title>
+						<sort_order>71</sort_order>               
+						<children>
+							<albums module="gallery">
+								<title>Manage Albums</title>
+								<sort_order>10</sort_order>
+							</albums>
+							<photos module="gallery">
+								<title>Manage Photos</title>
+								<sort_order>20</sort_order>
+							</photos>
+							<reviews module="gallery">
+								<title>Manage Reviews</title>
+								<sort_order>30</sort_order>
+							</reviews>
+							<configuration module="gallery">
+								<title>Configuration</title>
+								<sort_order>40</sort_order>
+							</configuration>
+							<!-- 
+							<clearcache module="gallery">
+								<title>Clear Cache</title>
+								<sort_order>50</sort_order>
+								<action>gallery/adminhtml_clearcache</action>
+							</clearcache>
+							 -->
+						</children>
+					</gallery>
+					<system>
+						<children>
+							<config>
+								<children>
+									<gallery translate="title" module="gallery">
+										<title>Gallery Pro</title>
+									</gallery>
+								</children>
+							</config>
+						</children>
+					</system>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+	<layout>
+		<updates>
+			<gallery>
+				<file>gallery.xml</file>
+			</gallery>
+		</updates>
+	</layout>
+	<translate>
+		<modules>
+			<AsiaCollect_Gallery>
+				<files>
+					<default>AsiaCollect_Gallery.csv</default>
+				</files>
+			</AsiaCollect_Gallery>
+		</modules>
+	</translate>
+</config>

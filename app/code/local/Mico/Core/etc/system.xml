@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<tabs>
+        <micosolutions translate="label" module="core">
+            <label>Mico Solutions</label>
+            <sort_order>200</sort_order>
+        </micosolutions>
+    </tabs>
+</config>

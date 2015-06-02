@@ -1,0 +1,1646 @@
+<?php
+
+class MDN_Quotation_AdminController extends Mage_Adminhtml_Controller_Action {
+
+    /**
+     * Select customer for new quote
+     */
+    public function SelectOrCreateCustomerAction() {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
+     * Edit quote
+     */
+    public function editAction() {
+        $quoteId = $this->getRequest()->getParam('quote_id');
+        $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+        Mage::register('current_quote', $quote);
+        if (!$quote->hasRealProduct())
+            Mage::getSingleton('adminhtml/session')->addError($this->__('Quote must contain at least one real product'));
+
+        $check = $quote->checkProducts();
+        if($check['error'] === true)
+            Mage::getSingleton('adminhtml/session')->addError($this->__($check['message']));
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
+     * Print quote
+     */
+    public function printAction() {
+        try {
+
+            $this->loadLayout();
+            $error = false;
+            $quoteId = $this->getRequest()->getParam('quote_id');
+            $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+
+            //create bundle product if not exists
+            if (($quote->getproduct_id() == null) || ($quote->getproduct_id() == 0)) {
+                if ($quote->getItems()->getSize() > 0)
+                    $quote->commit();
+                else {
+                    $error = true;
+                    Mage::getSingleton('adminhtml/session')->addError($this->__('Impossible to print an empty quotation.'));
+                }
+            }
+
+            //continue....
+            if (!$error) {
+                $pdf = Mage::getModel('Quotation/quotationpdf')->getPdf(array($quote));
+                $name = Mage::helper('quotation')->__('quotation_') . $quote->getincrement_id() . '.pdf';
+                $this->_prepareDownloadResponse($name, $pdf->render(), 'application/pdf');
+            }
+            else
+                $this->_redirect('Quotation/Admin/edit', array('quote_id' => $quoteId));
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addError($ex->getMessage());
+            $this->_redirectReferer();
+        }
+    }
+
+    /**
+     * Load layout to create a new quote
+     */
+    public function newAction() {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
+     * Save edited quote
+     */
+    public function postAction() {
+
+        $post = $this->getRequest()->getPost();
+        $data = $post['myform'];
+        $quoteId = $post["myform"]["quotation_id"];
+        $quote = Mage::getModel("Quotation/Quotation")->load($quoteId);
+
+        //set quotation information
+        foreach ($data as $key => $value) {
+            $quote->setData($key, $value);
+        }
+
+        //process attachment
+        try {
+            $delete = (isset($post['delete_attachment']) ? $post['delete_attachment'] : 0);
+            $this->postProcessAttachment($quote, $delete);
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addError($this->__('Error processing attachment: %s', $ex->getMessage()));
+        }
+
+        //save products information
+        try {
+            $this->postProcessSaveProducts($quote, $post);
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addError($this->__('Error saving products: %s', $ex->getMessage()));
+        }
+
+        //add products (standard or fake)
+        try {
+            $this->postProcessAddProducts($quote, $post);
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addError($this->__('Error adding products: %s', $ex->getMessage()));
+        }
+
+        // commercial part
+        try {
+            $proposalData = (isset($post["myform"]["proposal"]) ? $post["myform"]["proposal"] : array());
+            Mage::helper('quotation/Proposal')->save($proposalData, $quote);
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addError($this->__('Error saving proposal: %s', $ex->getMessage()));
+        }
+
+        //shipping
+        $this->postProcessShipping($quote, $post);
+
+        //update datas
+        if ($quote->getauto_calculate_price())
+            $quote->CalculateQuotationPriceHt();
+        if ($quote->getauto_calculate_weight())
+            $quote->CalculateWeight();
+
+
+        //delete associated product & promotion
+        Mage::getModel('Quotation/Quotation_Bundle')->deleteBundle($quote);
+        Mage::getModel('Quotation/Quotation_Promotion')->deletePromotion($quote);
+
+        //save
+        $quote->save();
+        
+        $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+        $quoteItems = $quote->getItems();
+        $id = '';
+        foreach ($quoteItems as $item) {
+            $id .= "'".$item->getId()."', ";
+            
+            $ProductId = $item->getProductId();
+            
+            /************** Start to add tax 30_01_2014 ********************/
+            
+            $_product = Mage::getModel('catalog/product')->load($ProductId);
+            $tax_helper = Mage::getSingleton('tax/calculation');
+            $tax_request = $tax_helper->getRateOriginRequest();
+            $tax_request->setProductClassId($_product->getTaxClassId());
+            
+            $tax = $tax_helper->getRate($tax_request);
+            
+            $item->setEcoTax($tax);
+            $item->save();
+            /************** End to add tax 30_01_2014 ********************/
+            
+             /************************** Start For bundle product *************************************/
+            
+            if($item->getProductType() == 'bundle')
+            {
+                
+                $temptableItem=Mage::getSingleton('core/resource')->getTableName('quotation_bundle_item');
+                $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+                
+                $connectionWrite->beginTransaction();
+                $condition = array($connectionWrite->quoteInto('parent_item_id=?', $item->getId()));
+                $connectionWrite->delete($temptableItem, $condition);
+                $connectionWrite->commit();
+                
+                // For checkbox
+                if(!empty($_REQUEST['bundle'][$ProductId]))
+                {
+                    $priceht = 0;
+                    foreach($_REQUEST['bundle'][$ProductId] as $key=>$options)
+                    {
+                            
+                        foreach($options as $selection)
+                        {                        
+                            $simple_product = Mage::getModel('catalog/product')->load($selection);
+                                            
+                            $simple_qty = $_REQUEST['bundle_qty'][$ProductId][$key][$selection];
+                            
+                            $priceht += $simple_product->getPrice() * $simple_qty;
+                            
+                            $connectionWrite->beginTransaction();
+                            $data1 = array();
+                            $data1['quotation_id']= $quote->getId();
+                            $data1['product_id']=$selection;
+                            $data1['parent_item_id']= $item->getId();
+                            $data1['qty']= $simple_qty;
+                            $data1['price']= $simple_product->getPrice() * $simple_qty;
+                            $data1['caption'] = $simple_product->getName();
+                            $data1['sku'] = $simple_product->getSku();
+                            $connectionWrite->insert($temptableItem, $data1);
+                            $connectionWrite->commit();
+                        }
+                    }
+                }
+                
+                 if(!empty($_REQUEST['bundle_radio'][$ProductId]))// For radio
+                {
+                    $priceht = 0;
+                    foreach($_REQUEST['bundle_radio'][$ProductId] as $key=>$options)
+                    {
+                                               
+                            $simple_product = Mage::getModel('catalog/product')->load($options);
+                                            
+                            $simple_qty = $_REQUEST['bundle_qty'][$ProductId][$key][$options];
+                            
+                            $priceht += $simple_product->getPrice() * $simple_qty;
+                            
+                            $connectionWrite->beginTransaction();
+                            $data1 = array();
+                            $data1['quotation_id']= $quote->getId();
+                            $data1['product_id']=$options;
+                            $data1['parent_item_id']= $item->getId();
+                            $data1['qty']= $simple_qty;
+                            $data1['price']= $simple_product->getPrice() * $simple_qty;
+                            $data1['caption'] = $simple_product->getName();
+                            $data1['sku'] = $simple_product->getSku();
+                            $connectionWrite->insert($temptableItem, $data1);
+                            $connectionWrite->commit();
+                       
+                    }
+                }
+               
+                if($_REQUEST['bundle_select'][$ProductId] != '')// For Drop-down
+                {
+                    $priceht = 0;
+                    foreach($_REQUEST['bundle_select'][$ProductId] as $key=>$options)
+                    {
+                        $simple_product = Mage::getModel('catalog/product')->load($options);
+                                        
+                        $simple_qty = $_REQUEST['bundle_qty_select'][$ProductId][$key];
+                        
+                        $priceht += $simple_product->getPrice() * $simple_qty;
+                        
+                        $connectionWrite->beginTransaction();
+                        $data1 = array();
+                        $data1['quotation_id']= $quote->getId();
+                        $data1['product_id']= $options;
+                        $data1['parent_item_id']= $item->getId();
+                        $data1['qty']= $simple_qty;
+                        $data1['price']= $simple_product->getPrice() * $simple_qty;
+                        $data1['caption'] = $simple_product->getName();
+                        $data1['sku'] = $simple_product->getSku();
+                        $connectionWrite->insert($temptableItem, $data1);
+                        $connectionWrite->commit();
+                    }
+                }
+                
+                 if(!empty($_REQUEST['bundle_multi'][$ProductId])) // For multi select
+                {
+                    $priceht = 0;
+                    foreach($_REQUEST['bundle_multi'][$ProductId] as $key=>$options)
+                    {
+                        foreach($options as $pro_id=>$selections)
+                        {
+                            $simple_product = Mage::getModel('catalog/product')->load($selections);
+                                            
+                            $simple_qty = $_REQUEST['bundle_qty_multi'][$ProductId][$key];
+                            
+                            $priceht += $simple_product->getPrice() * $simple_qty;
+                            
+                            $connectionWrite->beginTransaction();
+                            $data1 = array();
+                            $data1['quotation_id']= $quote->getId();
+                            $data1['product_id']=$selections;
+                            $data1['parent_item_id']= $item->getId();
+                            $data1['qty']= $simple_qty;
+                            $data1['price']= $simple_product->getPrice() * $simple_qty;
+                            $data1['caption'] = $simple_product->getName();
+                            $data1['sku'] = $simple_product->getSku();
+                            $connectionWrite->insert($temptableItem, $data1);
+                            $connectionWrite->commit();
+                        }
+                    }
+                }
+                   
+                
+                
+                $item->setPriceHt($priceht);
+                $item->save();
+            }
+            
+            /************************** End For bundle product *************************************/
+            
+            
+            /*********************** add planning auto *********************************/
+                $temptableShipping=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+                if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableShipping))
+		{
+                $sqlShipping="SELECT * FROM  ".$temptableShipping." WHERE quote_id = '".$quote->getId()."' AND item_id ='".$item->getId()."' AND product_id = '".$ProductId."' AND planning_type = 'quote' ";
+                $chkShipping = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlShipping);
+                }
+                
+                if(count($chkShipping) == 0)
+                {
+                
+                    $created_date = $quote->getCreatedTime();
+                    
+                    $Product = Mage::getModel('catalog/product')->load($ProductId);
+                    
+                    $temptableTimeline=Mage::getSingleton('core/resource')->getTableName('product_timeline');
+                    if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableTimeline))
+                    {
+                    $sqlTimeline="SELECT * FROM ".$temptableTimeline." WHERE product_id = '".$ProductId."' ";
+                    $chkTimeline = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlTimeline);
+                    }
+                
+                    $order_placed_date =  $created_date;
+                    $artwork_date = $this->gettimelinedate($chkTimeline[0]['artwork_day'],$created_date,$chkTimeline[0]['sunday_artwork'],$chkTimeline[0]['holiday_artwork']);
+                    $proof_date = $this->gettimelinedate($chkTimeline[0]['proof_day'],$created_date,$chkTimeline[0]['sunday_proof'],$chkTimeline[0]['holiday_proof']);
+                    $production_start_date = $this->gettimelinedate($chkTimeline[0]['production_day'],$created_date,$chkTimeline[0]['sunday_production'],$chkTimeline[0]['holiday_production']);
+                    $shipping_date = $this->gettimelinedate($chkTimeline[0]['shipping_day'],$created_date,$chkTimeline[0]['sunday_shipping'],$chkTimeline[0]['holiday_shipping']);
+                    $delivery_date = $this->gettimelinedate($chkTimeline[0]['delivary_day'],$created_date,$chkTimeline[0]['sunday_delivary'],$chkTimeline[0]['holiday_delivary']);
+                    
+                    
+                                      
+                    $temptableShipping=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+                    if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableShipping))
+                    {
+                    $sqlShipping="INSERT INTO  ".$temptableShipping." SET quote_id = '".$quote->getId()."', item_id ='".$item->getId()."', product_id = '".$ProductId."', planning_type = 'quote', order_placed_date = '$order_placed_date', artwork_date = '$artwork_date', proof_date = '$proof_date', start_date ='$production_start_date', shipping_date = '$shipping_date', delivery_date = '$delivery_date' ";
+                    $chkShipping = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlShipping);
+                    }
+                }
+                
+               
+            
+            /*********************** add planning auto *********************************/
+            
+            /************************ Get custom option value ******************************/
+                
+                $productOptions= $item->getOptions();
+                $productOptions = Mage::helper('quotation/Serialization')->unserializeObject($productOptions);
+                
+                $_product =Mage::getModel('catalog/product')->load($ProductId);
+           
+                foreach ($_product->getOptions() as $option) { 
+                  
+                   $values = $option->getValues(); 
+                    foreach ($values as $value)
+                    {
+                        if($option->getTitle() == 'Graphic Design Service'){
+                           
+                            if($value->getId() == $productOptions[$option->getId()])
+                            {
+                                $title = explode(' ',$value->getTitle());
+                                
+                                if (is_numeric($title[0]))
+                                $revison_number = $title[0];
+                                else
+                                $revison_number = 10000;
+                            }
+                        }
+                    }
+                }
+                
+                
+                $temptableProduct=Mage::getSingleton('core/resource')->getTableName('catalog_product_designer');
+                if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableProduct))
+                  {
+                        $sqlProduct="SELECT * FROM ".$temptableProduct." WHERE product_id = '".$ProductId."'";
+                        $chkProduct = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlProduct);
+                  }
+                
+                $adminid = $chkProduct[0]['user_id'];
+                 
+                $temptableDesign=Mage::getSingleton('core/resource')->getTableName('design_service');
+                if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableDesign))
+                {
+                    $sqlDesign="INSERT INTO  ".$temptableDesign." SET order_id = '".$quoteId."', type='quote', item_id ='".$item->getId()."', product_id = '".$ProductId."', revision_number = '".$revison_number."', assign_to = '".$adminid."', postdate = NOW() ";
+                    $chkDesign = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlDesign);
+                }
+                
+                /************************ Get custom option value ******************************/
+                
+            
+            
+          
+
+            
+            }
+        /******************* Delete exrta the planner from table *************************/
+        $id = rtrim($id,', ');
+
+
+        $temptableShipping=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableShipping) and $id != '')
+        {
+        $sqlShipping="DELETE FROM  ".$temptableShipping." WHERE quote_id = '".$quote->getId()."' AND item_id NOT IN($id) AND planning_type = 'quote' ";
+        $chkShipping = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlShipping);
+        }
+        /******************* Delete exrta the planner from table *************************/
+        
+        Mage::dispatchEvent('model_save_after', array('object'=>Mage::getModel("Quotation/Quotation")));
+	mage::helper('AdminLogger')->updatelog($quoteId,'Edit the Quote');
+        
+        $alert=array('Delete Proofs In quote','Add New Proof In Quote','Edit Proof Item In Quote','Add New Quote','Edit the Quote','Edit Product in the Quote','Delete the Quote','Create order From Quote','Edit Planning In Quote','Add New Design In quote','Assign the Designer In quote','dd Feedback in Quote','Delete Design In Quote');
+        Mage::getModel('systemalert/systemalert')->sendalert($alert,'order',$quote);
+
+
+        //confirm & redirect
+        Mage::getSingleton('adminhtml/session')->addSuccess($this->__('quotation successfully saved.'));
+        $this->_redirect('Quotation/Admin/edit', array('quote_id' => $quoteId, 'tab' => $this->getRequest()->getParam('tab_to_display')));
+    }
+    
+    
+    /***************************** Add custom function ***********************************/
+     public function isweekend($date){
+     $date = strtotime($date);
+     $date = date("l", $date);
+     $date = strtolower($date);
+     if($date == "sunday"){
+      return 1;
+     } else {
+      return 0;
+     }
+    }
+    
+    public function gettimelinedate($day_delay,$created_date,$sunday,$holiday)
+    {
+        if($sunday == 0 and $holiday == 0)
+        {
+            $artwork_date = date ( 'Y-m-j', strtotime ( '+'.$day_delay.' day' . $created_date ) );
+        }
+        else
+        {
+            if($sunday == 1)
+            {
+                $flag = 0;
+                $artwork_date = date ( 'Y-m-j', strtotime ( '+'.$day_delay.' day' . $created_date ) );
+                
+                $d = $this->isweekend($artwork_date);
+                if($holiday == 1)
+                {
+                    while($flag == 0)
+                    {
+                        $artwork_date = date ( 'Y-m-j', strtotime ( '+'.($day_delay+$d).' day' . $created_date ) );
+                        
+                        $temptableHoliday=Mage::getSingleton('core/resource')->getTableName('holiday');
+                        if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHoliday))
+                        {
+                        $sqlHoliday="SELECT * FROM ".$temptableHoliday." WHERE h_date = '".$artwork_date."' ";
+                        $chkHoliday = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlHoliday);
+                        }
+                        
+                        if(count($chkHoliday) > 0)
+                        {
+                            $d++;
+                        }
+                        else
+                        {
+                           $flag = 1; 
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    $artwork_date = date ( 'Y-m-j', strtotime ( '+'.($day_delay+$d).' day' . $created_date ) );
+                }
+                
+            }
+            else if($holiday == 1)
+            {
+                $flag = 0;
+                $d = 0;
+                while($flag == 0)
+                {
+                    $artwork_date = date ( 'Y-m-j', strtotime ( '+'.($day_delay+$d).' day' . $created_date ) );
+                    
+                    $temptableHoliday=Mage::getSingleton('core/resource')->getTableName('holiday');
+                    if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHoliday))
+                    {
+                    $sqlHoliday="SELECT * FROM ".$temptableHoliday." WHERE h_date = '".$artwork_date."' ";
+                    $chkHoliday = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlHoliday);
+                    }
+                    
+                    if(count($chkHoliday) > 0 or ($sunday == 1 and $this->isweekend($artwork_date) == 1))
+                    {
+                        $d++;
+                    }
+                    else
+                    {
+                       $flag = 1; 
+                    }
+                }
+            }
+            
+        }
+        
+        return $artwork_date;
+    }
+    /***************************** Add custom function ***********************************/
+
+    /**
+     * Process PDF attachment
+     */
+    protected function postProcessAttachment($quote, $delete) {
+        if (isset($_FILES['upload_pdf']) && $_FILES['upload_pdf']['name'] != "") {
+            $pdfAdditional = $_FILES['upload_pdf'];
+            $uploader = new Varien_File_Uploader($pdfAdditional);
+            $uploader->setAllowedExtensions(array('pdf'));
+            $uploader->setAllowCreateFolders(true);
+            $uploader->setAllowRenameFiles(true);
+            $uploader->setFilesDispersion(false);
+            $directory = Mage::helper('quotation/Attachment')->getAttachmentDirectory();
+            $fileName = Mage::helper('quotation/Attachment')->getFileName($quote);
+            $filePath = Mage::helper('quotation/Attachment')->getAttachmentPath($quote);
+            if (file_exists($filePath))
+                unlink($filePath);
+            $uploader->save($directory, $fileName);
+        }
+        else {
+            if ($delete) {
+                $filePath = Mage::helper('quotation/Attachment')->getAttachmentPath($quote);
+                if (file_exists($filePath))
+                    unlink($filePath);
+            }
+        }
+    }
+
+    /**
+     * Add products to quote (if applicable)
+     */
+    //protected function postProcessAddProducts($quote, $post) {
+    //
+    //    //add fake product
+    //    if ($post['fake_name'] != '') {
+    //        $quote->addFakeProduct($post['fake_name'], $post['fake_qty'], $post['fake_price'], $post['fake_weight']);
+    //    }
+    //
+    //    //add "regular" products
+    //    if (isset($post['add_product_log'])) {
+    //        $addString = $post['add_product_log'];
+    //        $lines = explode(';', $addString);
+    //        foreach ($lines as $line) {
+    //            $t = explode('=', $line);
+    //            if (count($t) == 2) {
+    //                $qty = $t[1];
+    //                $productId = str_replace('add_qty_', '', $t[0]);
+    //                $quote->addProduct($productId, $qty);
+    //            }
+    //        }
+    //    }
+    //}
+    
+    
+    protected function postProcessAddProducts($quote, $post) {
+
+        //add fake product
+        if ($post['fake_name'] != '') {
+            $quote->addFakeProduct($post['fake_name'], $post['fake_qty'], $post['fake_price'], $post['fake_weight']);
+        }
+
+        //add "regular" products
+        //if (isset($post['add_product_log'])) {
+        //    echo $addString = $post['add_product_log'];
+        //    $lines = explode(';', $addString);
+        //    print_r($lines);exit;
+        //    foreach ($lines as $line) {
+        //        $t = explode('=', $line);
+        //        if (count($t) == 2) {
+        //            $qty = $t[1];
+        //            $productId = str_replace('add_qty_', '', $t[0]);
+        //            $quote->addProduct($productId, $qty);
+        //        }
+        //    }
+        //}
+        
+        
+        if (isset($post['add_product_log'])) {
+            $addString = $post['add_product_log'];
+            $lines = explode(';', $addString);
+            
+            foreach ($lines as $line) {
+                $t = explode('=', $line);
+                if (count($t) == 2) {
+                    $pro[$t[0]] = $t[1];
+                }
+            }
+            
+            foreach ($pro as $key=>$line) {
+                    $qty = $line;
+                    $productId = str_replace('add_qty_', '', $key);
+                    $quote->addProduct($productId, $qty);
+            }
+        }
+    }
+
+    /**
+     * Process shipping
+     */
+    protected function postProcessShipping($quote, $post) {
+
+        $shippingMethod = null;
+        $shippingDescription = null;
+        $shippingRate = null;
+
+        if ($post["myform"]["shipping_method"]) {
+            $shippingMethod = $post["myform"]["shipping_method"];
+            $shippingObject = Mage::helper('quotation/ShippingRates')->getRate($quote, $quote->GetCustomerAddress(), $shippingMethod);
+            $shippingDescription = $shippingObject['carrier_title'] . ' / ' . $shippingObject['method_title'];
+            $shippingRate = $shippingObject['price'];
+        } else {
+            $shippingMethod = '';
+            $shippingDescription = '';
+            $shippingRate = '';
+        }
+
+        //save
+        $quote->setshipping_method($shippingMethod)
+                ->setshipping_description($shippingDescription)
+                ->setshipping_rate($shippingRate);
+    }
+
+    /**
+     * Save product information
+     */
+    protected function postProcessSaveProducts($quote, $post) {
+
+        foreach ($quote->getItems() as $item) {
+
+            if (isset($post["remove_" . $item->getId()])) {
+                $remove = $post["remove_" . $item->getId()];
+                if ($remove) {
+                    
+                    /*********************** Start for bundle product *********************************/
+                    $temptableItem=Mage::getSingleton('core/resource')->getTableName('quotation_bundle_item');
+                    $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+                    
+                    $connectionWrite->beginTransaction();
+                    $condition = array($connectionWrite->quoteInto('parent_item_id=?', $item->getId()));
+                    $connectionWrite->delete($temptableItem, $condition);
+                    $connectionWrite->commit();
+                    /*********************** End for bundle product *********************************/
+                    
+                    $item->delete();
+                    continue;
+                }
+            }
+
+            $exclude = 0;
+            if (isset($post["exclude_" . $item->getId()]))
+                $exclude = $post["exclude_" . $item->getId()];
+            $weight = $post["weight_" . $item->getId()];
+
+            //retrieve options and serialize
+            $options = '';
+            $optionsValue = array();
+            $product = Mage::getModel('catalog/product')->load($item->getproduct_id());
+            
+                foreach ($product->getProductOptionsCollection() as $option) {
+                    switch ($option->getType()) {
+                        case Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE:
+                        case Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX:
+                            $values = array();
+                            foreach ($option->getValues() as $possibleValue) {
+                                $chName = 'product_' . $item->getId() . '_option_' . $option->getId() . '_' . $possibleValue->getId();
+                                if (isset($post[$chName]))
+                                    $values[] = $possibleValue->getId();
+                            }
+                            if (count($values) > 0)
+                                $optionsValue[$option->getId()] = $values;
+                            break;
+                        case Mage_Catalog_Model_Product_Option::OPTION_TYPE_DATE:
+                            $optionFieldName = 'product_' . $item->getid() . '_option_' . $option->getid();
+                            if ((isset($post[$optionFieldName])) && ($post[$optionFieldName] != '')) {
+    
+                                $tmp = explode('-', $post[$optionFieldName]);
+    
+                                if (count($tmp) >= 3) {
+                                    $optionsValue[$option->getid()] = array(
+                                        'year' => (int) $tmp[0],
+                                        'month' => (int) $tmp[1],
+                                        'day' => (int) $tmp[2]
+                                    );
+                                }
+                            }
+                            break;
+                        default:
+                            $optionFieldName = 'product_' . $item->getId() . '_option_' . $option->getId();
+                            if ((isset($post[$optionFieldName])) && ($post[$optionFieldName] != ''))
+                                $optionsValue[$option->getId()] = $post[$optionFieldName];
+                            break;
+                    }
+                }
+                $options = Mage::helper('quotation/Serialization')->serializeObject($optionsValue);
+    
+                //save data
+                $item
+                        ->setorder($post["order_" . $item->getId()])
+                        ->setcaption($post["caption_" . $item->getId()])
+                        ->setsku($post["sku_" . $item->getId()])
+                        ->setweight($weight)
+                        ->setqty($post["qty_" . $item->getId()])
+                        ->setprice_ht($post["price_ht_" . $item->getId()])
+                        ->setdiscount_purcent($post["discount_purcent_" . $item->getId()])
+                        ->setexclude($exclude)
+                        ->setoptions($options);
+    
+                if (isset($post["description_" . $item->getId()]))
+                    $item->setdescription($post["description_" . $item->getId()]);
+                $item->save();
+            
+            
+        }
+        
+        
+         /************************************* Start by Dev *********************************************/
+        
+        $quoteItems = $quote->getItems();
+
+        foreach ($quoteItems as $item) {
+            
+            $ProductId = $item->getProductId();
+            
+            //$product = Mage::getModel('catalog/product')->load($ProductId);
+            //if($product->getTypeId() != 'bundle')
+            //{
+                $temptableOrganiger = Mage::getSingleton('core/resource')->getTableName('organizer_task');
+                
+                if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableOrganiger))
+                {
+                    $sqlOrganiger="SELECT * FROM ".$temptableOrganiger." WHERE ot_entity_type = 'product' AND ot_entity_id ='".$ProductId."'";
+                    $chkOrganiger = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlOrganiger);
+                    
+                   if($chkOrganiger)
+                    {
+                            
+                        foreach($chkOrganiger as $chkOrganiger1)
+                        {
+                            if($chkOrganiger1['ot_day'] != '')
+                            $finished_date = date ( 'Y-m-j', strtotime ( '+'.$chkOrganiger1['ot_day'].' day' . date('Y-m-d') ) );
+                            else
+                            $finished_date = date('Y-m-d');
+                            
+                           
+                            $temptableNumber=Mage::getSingleton('core/resource')->getTableName('subadmin_task_number');
+                            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableNumber))
+                            {
+                                $sqlNumber="SELECT * FROM ".$temptableNumber." WHERE entity_id = '1' ";
+                                $chkNumber = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlNumber);
+                            }
+                           
+                            $flag = 0;
+                            
+                            
+                             $finished_date = date('Y-m-j');
+                            if($chkNumber[0]['task_number'] != '')
+                            {
+                                while($flag == 0)
+                                {
+                                    $sqlTask2="SELECT * FROM ".$temptableOrganiger." WHERE ot_target_user = '".$chkOrganiger1['ot_target_user']."' AND ot_deadline ='".$finished_date."'";
+                                    $chkTask2 = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlTask2);
+                                    
+                                        if(count($chkTask2) > $chkNumber[0]['task_number'])
+                                        {
+                                            $finished_date = date ( 'Y-m-j', strtotime ( '+1 day' . $finished_date ) );
+                                            
+                                        }
+                                        else{
+                                            $flag = 1;
+                                        }
+                                   
+                                }
+                            }
+                         
+                            $sqlOrganiger1="INSERT INTO ".$temptableOrganiger." SET ot_created_at = NOW(), 
+                                           ot_author_user = '".$chkOrganiger1['ot_author_user']."' ,
+                                           ot_target_user ='".$chkOrganiger1['ot_target_user']."', 
+                                           ot_caption= '".addslashes($chkOrganiger1['ot_caption'])."', 
+                                           ot_description = '".addslashes($chkOrganiger1['ot_description'])."', 
+                                           ot_deadline = '".$finished_date."', 
+                                           ot_notify_date = '".$chkOrganiger1['ot_notify_date']."', 
+                                           ot_priority = '".$chkOrganiger1['ot_priority']."', 
+                                           ot_finished = '".$chkOrganiger1['ot_finished']."', 
+                                           ot_read ='".$chkOrganiger1['ot_read']."', 
+                                           ot_origin ='".$chkOrganiger1['ot_origin']."', 
+                                           ot_category = '".$chkOrganiger1['ot_category']."', 
+                                           ot_entity_type ='quote', 
+                                           ot_entity_id = '".$quote->getId()."', 
+                                           ot_entity_description = '".addslashes($chkOrganiger1['ot_entity_description'])."', 
+                                           ot_notification_read = '".$chkOrganiger1['ot_notification_read']."',
+                                           ot_task_type = '".$chkOrganiger1['ot_task_type']."'";
+                                           
+                           $chkOrganiger2 = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlOrganiger1);
+                           
+                            //For chain task
+                            $last_id = Mage::getSingleton('core/resource')->getConnection('core_write')->lastInsertId();
+                            
+                            $temptableChain = Mage::getSingleton('core/resource')->getTableName('task_chain');
+                            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableChain))
+                            {
+                                $sqlChain="INSERT INTO ".$temptableChain." SET task_id = '$last_id', 
+                                                order_quote_id = '".$quote->getId()."' ,
+                                                product_id ='".$chkOrganiger1['ot_entity_id']."', 
+                                                task_type = '".$chkOrganiger1['ot_task_type']."'";
+                                                
+                                $chkChain = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlChain);
+                            }
+                        }
+                    }
+                }
+           // }
+            
+            
+            
+    
+        
+        }
+        Mage::dispatchEvent('model_save_after', array('object'=>Mage::getModel("Quotation/Quotation")));
+	mage::helper('AdminLogger')->updatelog($quote->getId(),'Edit Product in the Quote');
+               
+        /************************************* End by dev ********************************************/
+        $quote->resetItems();
+        
+    }
+
+    /**
+     * Create new quote
+     */
+    public function createAction() {
+
+        $post = $this->getRequest()->getPost();
+        $customerId = $post["myform"]["customer_id"];
+        $caption = $post["myform"]["caption"];
+        $manager = Mage::getSingleton('admin/session')->getUser()->getusername();
+
+        //create quote
+        $quote = Mage::getModel("Quotation/Quotation")
+                        ->setCaption($caption)
+                        ->setcustomer_id($customerId)
+                        ->setmanager($manager)
+                        ->save();
+                        
+        /************************************* Start by Dev *********************************************/
+        $quoteItems = $quote->getItems();
+        foreach ($quoteItems as $item) {
+            
+            $ProductId = $item->getProductId();
+            
+            $temptableOrganiger = Mage::getSingleton('core/resource')->getTableName('organizer_task');
+            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableOrganiger))
+            {
+            $sqlOrganiger="SELECT * FROM ".$temptableOrganiger." WHERE ot_entity_type = 'product' AND ot_entity_id ='".$ProductId."'";
+            $chkOrganiger = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlOrganiger);
+            
+            
+            if($chkOrganiger)
+            {
+                 $sqlOrganiger1="INSERT INTO ".$temptableOrganiger." SET ot_created_at = NOW(), 
+                                ot_author_user = '".$chkOrganiger[0]['ot_author_user']."' ,
+                                ot_target_user ='".$chkOrganiger[0]['ot_target_user']."', 
+                                ot_caption= '".addslashes($chkOrganiger[0]['ot_caption'])."', 
+                                ot_description = '".addslashes($chkOrganiger[0]['ot_description'])."', 
+                                ot_deadline = '".$chkOrganiger[0]['ot_deadline']."', 
+                                ot_notify_date = '".$chkOrganiger[0]['ot_notify_date']."', 
+                                ot_priority = '".$chkOrganiger[0]['ot_priority']."', 
+                                ot_finished = '".$chkOrganiger[0]['ot_finished']."', 
+                                ot_read ='".$chkOrganiger[0]['ot_read']."', 
+                                ot_origin ='".$chkOrganiger[0]['ot_origin']."', 
+                                ot_category = '".$chkOrganiger[0]['ot_category']."', 
+                                ot_entity_type ='quote', 
+                                ot_entity_id = '".$quote->getId()."', 
+                                ot_entity_description = '".addslashes($chkOrganiger[0]['ot_entity_description'])."', 
+                                ot_notification_read = '".$chkOrganiger[0]['ot_notification_read']."'";
+                                
+                $chkOrganiger1 = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlOrganiger1);
+            }
+            }
+        }
+        
+        Mage::dispatchEvent('model_save_after', array('object'=>Mage::getModel("Quotation/Quotation")));
+	mage::helper('AdminLogger')->updatelog($quote->getId(),'Add New Quote');
+        
+        /************************************* End by dev ********************************************/
+
+        //confirm & redirect
+        Mage::getSingleton('adminhtml/session')->addSuccess($this->__('quotation successfully created.'));
+        $this->_redirect('Quotation/Admin/edit', array('quote_id' => $quote->getId()));
+    }
+
+    /**
+     * Delete quote
+     */
+    public function deleteAction() {
+        try {
+            $quoteId = $this->getRequest()->getParam('quote_id');
+            $quote = Mage::getModel("Quotation/Quotation")->load($quoteId);
+            $quote->delete();
+            Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Quotation successfully deleted.'));
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addError('Error while deleting Quotation: ' . $ex->getMessage());
+        }
+        
+        Mage::dispatchEvent('model_save_after', array('object'=>Mage::getModel("Quotation/Quotation")));
+	mage::helper('AdminLogger')->updatelog($quoteId,'Delete the Quote');
+
+        $this->_redirect('Quotation/Admin/List');
+    }
+
+    /**
+     * Display quote grid
+     */
+    public function ListAction() {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
+     * Quote duplication (select customer)
+     *
+     */
+    public function DuplicateAction() {
+        $this->loadLayout();
+
+        $quoteId = $this->getRequest()->getParam('quotation_id');
+        $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+        Mage::register('current_quote', $quote);
+
+        $this->getLayout()->getBlock('quotationduplicatecustomer')->setMode('duplicate');
+        $this->renderLayout();
+    }
+
+    /**
+     * Duplicate quote
+     *
+     */
+    public function ApplyDuplicateAction() {
+
+        $quoteId = $this->getRequest()->getParam('quotation_id');
+        $customerId = $this->getRequest()->getParam('customer_id');
+        $oldQuotation = Mage::getModel('Quotation/Quotation')->load($quoteId);
+        $newQuotation = $oldQuotation->duplicate($customerId);
+
+        //Confirm & redirect
+        Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Quotation successfully duplicated.'));
+        $this->_redirect('Quotation/Admin/edit', array('quote_id' => $newQuotation->getId()));
+    }
+
+    /**
+     * Get products grid
+     *
+     */
+    public function productSelectionGridAction() {
+        $quoteId = $this->getRequest()->getParam('quote_id');
+        $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+        Mage::register('current_quote', $quote);
+
+        $block = $this->getLayout()->createBlock('Quotation/Adminhtml_ProductSelection');
+        $this->getResponse()->setBody($block->toHtml());
+    }
+
+    /**
+     * Return customer grid
+     */
+    public function customerSelectionGridAction() {
+        $this->loadLayout();
+        $mode = $this->getRequest()->getParam('mode');
+        $quoteId = $this->getRequest()->getParam('quotation_id');
+        if ($quoteId) {
+            $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+            Mage::register('current_quote', $quote);
+        }
+        $block = $this->getLayout()->createBlock('Quotation/Adminhtml_SelectCustomer');
+        $block->setMode($mode);
+        $this->getResponse()->setBody($block->toHtml());
+    }
+
+    /**
+     * Notify customer
+     */
+    public function notifyAction() {
+        try {
+            $quoteId = $this->getRequest()->getParam('quote_id');
+            $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+            $quote->NotifyCustomer();
+
+            //confirm
+            Mage::getSingleton('adminhtml/session')->addSuccess($this->__('customer successfully notified.'));
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addError($this->__('Unable to notify customer : %s', $ex->getMessage()));
+        }
+
+        //redirect
+        $this->_redirect('Quotation/Admin/edit', array('quote_id' => $quoteId));
+    }
+
+    /**
+     * Remind customer
+     */
+    public function RemindCustomerAction() {
+        try {
+            $quoteId = $this->getRequest()->getParam('quote_id');
+            $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+            mage::getModel('Quotation/Quotation_Reminder')->sendCustomerReminder($quote);
+
+            //confirm
+            Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Customer successfully reminded.'));
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addError($this->__('An error occured : %s', $ex->getMessage()));
+        }
+        $this->_redirect('Quotation/Admin/edit', array('quote_id' => $quoteId));
+    }
+
+    /**
+     * Ajax refresh for quote grid in customer view
+     */
+    public function SelectedQuotationGridAction() {
+        $this->loadLayout();
+        $this->getResponse()->setBody(
+                $this->getLayout()->createBlock('Quotation/Adminhtml_Customer_Edit_Tab_Quotations')->setData('AjaxGrid', true)->toHtml()
+        );
+    }
+
+    /**
+     * Remove attached PDF
+     */
+    public function DeleteAdditionalPdfAction() {
+        $quoteId = $this->getRequest()->getParam('quote_id');
+        $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+        $path = Mage::helper('quotation/Attachment')->getAttachmentDirectory();
+        $file = $path . $quote->getadditional_pdf();
+
+        if (file_exists($file))
+            unlink($file);
+
+        $quote->setadditional_pdf('');
+        $quote->save();
+
+        Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Additional pdf deleted.'));
+
+        $this->_redirect('Quotation/Admin/edit', array('quote_id' => $quoteId));
+    }
+
+    /**
+     * Download attached PDF
+     */
+    public function DownloadAdditionalPdfAction() {
+        $quoteId = $this->getRequest()->getParam('quote_id');
+        try {
+            $quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+            $filePath = Mage::helper('quotation/Attachment')->getAttachmentPath($quote);
+            $content = file_get_contents($filePath);
+            $this->_prepareDownloadResponse($quote->getadditional_pdf() . '.pdf', $content, 'application/pdf');
+        } catch (Exception $ex) {
+            Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Unable to download attachment : %s', $ex->getMessage()));
+            $this->_redirect('Quotation/Admin/edit', array('quote_id' => $quoteId));
+        }
+    }
+
+    /**
+     * Ajax history grid
+     */
+    public function gridAjaxAction() {
+        try {
+            $quoteId = $this->getRequest()->getParam('quote_id');
+            $block = $this->getLayout()->createBlock('Quotation/Adminhtml_History');
+            $block->setCurrentQuote($quoteId);
+
+            $this->getResponse()->setBody(
+                    $block->toHtml()
+            );
+        } catch (Exception $e) {
+            $this->getResponse()->setBody($e->getMessage() . ' : ' . $e->getTraceAsString());
+        }
+    }
+
+    /**
+     * Check ACL
+     */
+    protected function _isAllowed() {
+        return Mage::getSingleton('admin/session')->isAllowed('customer/quotation_list');
+    }
+    
+    public function createorderAction() {
+        
+        $quote_id = $this->getRequest()->getParam('quote_id');
+        Mage::getSingleton('adminhtml/session')->setQuoteid($quote_id);
+        $quote = Mage::getModel('Quotation/Quotation')->load($quote_id);
+        Mage::register('current_quote', $quote);
+       
+        $customerId = $quote->getCustomerId();
+        
+        //Mage::getSingleton('adminhtml/session_quote')->clear();
+        //
+        //$eventData = array(
+        //    'order_create_model' => Mage::getSingleton('adminhtml/sales_order_create'),
+        //    'request_model'      => $this->getRequest(),
+        //    'session'            => $this->_getSession(),
+        //);
+        //
+        //Mage::dispatchEvent('adminhtml_sales_order_create_process_data_before', $eventData);
+        //
+        //
+        ////Mage::getSingleton('adminhtml/session_quote')->setCustomerId();
+        //
+        //
+        //Mage::getSingleton('adminhtml/session_quote')->setCustomerId((int) $customerId);
+        //
+        //$productHelper = Mage::helper('catalog/product');
+        //foreach ($quote->getItems() as $id => $item) {
+        //    $buyRequest = new Varien_Object($item);
+        //    $params = array('files_prefix' => 'item_' . $item->getProductId() . '_');
+        //    $buyRequest = $productHelper->addParamsToBuyRequest($buyRequest, $params);
+        //    if ($buyRequest->hasData()) {
+        //        $items[$item->getProductId()] = $buyRequest->toArray();
+        //    }
+        //    
+        //    $product = Mage::getModel('catalog/product')
+        //    ->setStoreId(Mage::getSingleton('adminhtml/session_quote')->getStoreId())
+        //    ->load($item->getProductId());
+        //    
+        //     if ($product->getId()) {
+        //    $product->setSkipCheckRequiredOption(true);
+        //    $buyRequest = $item->getBuyRequest();
+        //    if (is_numeric($qty)) {
+        //        $buyRequest->setQty($qty);
+        //    }
+        //    $item1 = Mage::getSingleton('adminhtml/session_quote')->getQuote()->addProduct($product, $buyRequest);
+        //    
+        //    if (is_string($item1)) {
+        //        return $item1;
+        //    }
+        //
+        //    if ($additionalOptions = $item->getProductOptionByCode('additional_options')) {
+        //        $item1->addOption(new Varien_Object(
+        //            array(
+        //                'product' => $item1->getProduct(),
+        //                'code' => 'additional_options',
+        //                'value' => serialize($additionalOptions)
+        //            )
+        //        ));
+        //    }
+        //
+        //    
+        //    
+        //}
+        
+        $_order = Mage::getModel('sales/order')->loadByIncrementId($quote->getIncrementId());
+      
+        if($_order->getId() != '')
+        {
+            Mage::getSingleton('adminhtml/session')->addError($this->__('The order allready exist for this quote'));
+            $this->_redirect('Quotation/Admin/edit', array('quote_id' => $quote_id));
+        }
+        else{
+                $customer = Mage::getModel('customer/customer')->load($customerId);
+        
+                $transaction = Mage::getModel('core/resource_transaction');
+                $storeId = $customer->getStoreId();
+                //$reservedOrderId = Mage::getSingleton('eav/config')->getEntityType('order')->fetchNewIncrementId($storeId);
+                
+                $reservedOrderId = $quote->getIncrementId();
+                
+                
+                
+                $currency_code = Mage::app()->getStore($storeId)->getCurrentCurrencyCode();
+                
+                $order = Mage::getModel('sales/order')
+                ->setIncrementId($reservedOrderId)
+                ->setStoreId($storeId)
+                ->setQuoteId(0)
+                ->setGlobal_currency_code($currency_code)
+                ->setBase_currency_code($currency_code)
+                ->setStore_currency_code($currency_code)
+                ->setOrder_currency_code($currency_code);
+                
+                // set Customer data
+                $order->setCustomer_email($customer->getEmail())
+                ->setCustomerFirstname($customer->getFirstname())
+                ->setCustomerLastname($customer->getLastname())
+                ->setCustomerGroupId($customer->getGroupId())
+                ->setCustomer_is_guest(0)
+                ->setCustomer($customer);
+                
+                // set Billing Address
+                $billing = $customer->getDefaultBillingAddress();
+		if($billing){
+		// exit('no billing address');
+                $billingAddress = Mage::getModel('sales/order_address')
+                ->setStoreId($storeId)
+                ->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_BILLING)
+                ->setCustomerId($customer->getId())
+                ->setCustomerAddressId($customer->getDefaultBilling())
+                ->setCustomer_address_id($billing->getId())
+                ->setPrefix($billing->getPrefix())
+                ->setFirstname($billing->getFirstname())
+                ->setMiddlename($billing->getMiddlename())
+                ->setLastname($billing->getLastname())
+                ->setSuffix($billing->getSuffix())
+                ->setCompany($billing->getCompany())
+                ->setStreet($billing->getStreet())
+                ->setCity($billing->getCity())
+                ->setCountry_id($billing->getCountryId())
+                ->setRegion($billing->getRegion())
+                ->setRegion_id($billing->getRegionId())
+                ->setPostcode($billing->getPostcode())
+                ->setTelephone($billing->getTelephone())
+                ->setFax($billing->getFax());
+                $order->setBillingAddress($billingAddress);
+                }else{
+                    $billingAddress = $billingAddress = Mage::getModel('sales/order_address')
+                    ->setStoreId($storeId)
+                    ->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_BILLING);
+                    $order->setBillingAddress($billingAddress);
+                }
+                
+                $shipping = $customer->getDefaultShippingAddress();
+                if($shipping){
+		// exit('no shipping address');
+
+                $shippingAddress = Mage::getModel('sales/order_address')
+                ->setStoreId($storeId)
+                ->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_SHIPPING)
+                ->setCustomerId($customer->getId())
+                ->setCustomerAddressId($customer->getDefaultShipping())
+                ->setCustomer_address_id($shipping->getId())
+                ->setPrefix($shipping->getPrefix())
+                ->setFirstname($shipping->getFirstname())
+                ->setMiddlename($shipping->getMiddlename())
+                ->setLastname($shipping->getLastname())
+                ->setSuffix($shipping->getSuffix())
+                ->setCompany($shipping->getCompany())
+                ->setStreet($shipping->getStreet())
+                ->setCity($shipping->getCity())
+                ->setCountry_id($shipping->getCountryId())
+                ->setRegion($shipping->getRegion())
+                ->setRegion_id($shipping->getRegionId())
+                ->setPostcode($shipping->getPostcode())
+                ->setTelephone($shipping->getTelephone())
+                ->setFax($shipping->getFax());
+               
+                $order->setShippingAddress($shippingAddress)
+                ->setShipping_method($quote->getShippingMethod())
+                ->setShippingDescription($quote->getShippingMethod());
+                } else{
+                    $shippingAddress = Mage::getModel('sales/order_address')
+                    ->setStoreId($storeId)
+                    ->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_SHIPPING);
+                    $order->setShippingAddress($shippingAddress);
+                }
+                
+                $orderPayment = Mage::getModel('sales/order_payment')
+                ->setStoreId($storeId)
+                ->setCustomerPaymentId(0)
+                ->setMethod('free');
+                $order->setPayment($orderPayment);
+                
+                // let say, we have 2 products
+                $subTotal = 0;
+                $total_qty_ordered = 0;
+                //$products = array('1' => array('qty' => 1),'2' =>array('qty' => 1));
+                foreach ($quote->getItems() as $productId=>$product) {
+                $_product = Mage::getModel('catalog/product')->load($product->getProductId());
+                $rowTotal = $_product->getPrice() * $product['qty'];
+                $orderItem = Mage::getModel('sales/order_item')
+                ->setStoreId($storeId)
+                ->setQuoteItemId(0)
+                ->setQuoteParentItemId(NULL)
+                ->setProductId($product->getProductId())
+                ->setProductType($_product->getTypeId())
+                ->setQtyBackordered(NULL)
+                ->setTotalQtyOrdered($product['qty'])
+                ->setQtyOrdered($product['qty'])
+                ->setName($_product->getName())
+                ->setSku($_product->getSku())
+                ->setPrice($_product->getPrice())
+                ->setBasePrice($_product->getPrice())
+                ->setOriginalPrice($_product->getPrice())
+                ->setRowTotal($rowTotal)
+                ->setBaseRowTotal($rowTotal);
+                
+                $total_qty_ordered += $product['qty'];
+                $subTotal += $rowTotal;
+                $order->addItem($orderItem);
+                }
+                
+                $order->setSubtotal($subTotal)
+                ->setBaseSubtotal($subTotal)
+                ->setGrandTotal($subTotal)
+                ->setTotalQtyOrdered($total_qty_ordered)
+                ->setBaseGrandTotal($subTotal);
+                
+                $order->save;
+                
+                
+                $transaction->addObject($order);
+                $transaction->addCommitCallback(array($order, 'place'));
+                $transaction->addCommitCallback(array($order, 'save'));
+                $transaction->save();
+                
+               
+                
+                // For adding the comment masage from quote to order   
+                $temptableHistory = Mage::getSingleton('core/resource')->getTableName('quotation_history');
+                $temptableComment = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_status_history');
+                if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHistory))
+                {
+                   $sqlHistory ="SELECT * FROM ".$temptableHistory." WHERE qh_quotation_id = '".$quote_id."'";
+                   $chkHistory = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlHistory);
+                   
+                   foreach($chkHistory as $history)
+                   {
+                       
+                       $sqlComment="INSERT INTO ".$temptableComment." SET parent_id = '".$order->getId()."', 
+                                      comment = '".strtoupper($history['qh_user'])." - ".addslashes($history['qh_message'])."' ,
+                                      created_at ='".$history['qh_date']."', entity_name = 'order'";
+                                      
+                       $chkComment = Mage::getSingleton('core/resource')->getConnection('core_write')->query($sqlComment);
+                   }
+                }
+                
+                $invoice = $order->prepareInvoice();
+                $invoice->register();
+                Mage::getModel('core/resource_transaction')
+                  ->addObject($invoice)
+                  ->save();
+                
+                $invoice->sendEmail(true, '');
+                
+                $connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+                $connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+                
+                $temptableDesign = Mage::getSingleton('core/resource')->getTableName('task_designer');
+        
+                 $temptableItems = Mage::getSingleton('core/resource')->getTableName('quotation_items');
+                
+                $select = $connectionRead->select()
+                ->from($temptableItems, array('*'))
+                ->where('quotation_id=?',$quote_id);
+                //$row =$connectionRead->fetchRow($select);
+                $result = $connectionRead->fetchAll($select);
+                
+                    
+                foreach($result as $quoteitem)
+                {
+                    $tableItemName = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item');
+                    
+                    $select = $connectionRead->select()
+                    ->from($tableItemName, array('*'))
+                    ->where('order_id=?',$order->getId())
+                    ->where('product_id=?',$quoteitem['product_id']);
+                    $row =$connectionRead->fetchRow($select);
+                    
+                
+                    $connectionWrite->beginTransaction();
+                    $data3 = array();
+                    $data3['order_quote_id'] = $order->getId();
+                    $data3['proof_type'] = 'order';
+                    $data3['item_id'] = $row['item_id'];
+                    $where1 = $connectionWrite->quoteInto("order_quote_id =? AND proof_type='quote' AND item_id = '".$quoteitem['quotation_item_id']."'", $quote_id);
+                    $connectionWrite->update($temptableDesign, $data3, $where1);
+                    $connectionWrite->commit();
+                    
+                    $temptableProofs = Mage::getSingleton('core/resource')->getTableName('proofs');
+                    
+                    $connectionWrite->beginTransaction();
+                    $data4 = array();
+                    $data4['order_id'] = $order->getId();
+                    $data4['proof_type'] = 'order';
+                    $data4['item_id'] = $row['item_id'];
+                    $where1 = $connectionWrite->quoteInto("order_id =? AND proof_type='quote' AND item_id = '".$quoteitem['quotation_item_id']."'", $quote_id);
+                    $connectionWrite->update($temptableProofs, $data4, $where1);
+                    $connectionWrite->commit();
+                }
+                
+                /********************** Set vendor in item table *******************************/
+                $items = $order->getAllItems();
+                foreach ($items as $item) {
+                    
+                    $select = $connectionRead->select()
+                    ->from($temptableProofs, array('*'))
+                    ->where('order_id=?',$order->getId())
+                    ->where('item_id=?',$item->getId())
+                    ->where('proof_type=?','order');
+                    //$row =$connectionRead->fetchRow($select);
+                    $result = $connectionRead->fetchAll($select);
+                    
+                    if(count($result) > 0)
+		    $file_recieved = 'yes';
+		    else
+		    $file_recieved = 'no';
+		    
+		    if($result[0]['status'] == 'Approved')
+		    $proof_approved = 'yes';
+		    else
+		    $proof_approved = 'no';
+                    
+                                      
+                    $temptableVendor=Mage::getSingleton('core/resource')->getTableName('vendor_item');
+                    
+                    $_product = Mage::getModel('catalog/product')->load($item->getProductId());
+                    
+                    $name = $_product->getAttributeText('vendor_id');
+                    $target_vendor = Mage::getResourceModel('catalog/product')->getAttribute("vendor_id")->getSource()->getOptionId($name);
+                    
+                    $connectionWrite->beginTransaction();
+                    $data2 = array();
+                    $data2['target_user']= $target_vendor;
+                    $data2['item_id'] = $item->getId();
+                    $data2['order_id'] = $order->getId();
+                    $data2['product_id'] = $item->getProductId();
+                    $data2['product_sku'] = addslashes($_product->getSku());
+                    $data2['postdate'] = NOW();
+                    $data2['order_status'] = $order->getStatus();
+                    
+                    $data2['file_recieved'] = $file_recieved;
+		    $data2['proof_approved'] = $proof_approved;
+		    $data2['proof_approve_date'] = Now();
+                    if($row['quantity'] != '')
+		    $data2['qty'] = $result[0]['quantity'];
+                    
+                    $connectionWrite->insert($temptableVendor, $data2);
+                    $connectionWrite->commit();
+                    
+                    
+                    /*********************** add planning auto *********************************/
+                        $ProductId = $item->getProductId();
+                        $temptableShipping=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+                        if($connectionWrite->isTableExists($temptableShipping))
+                        {
+                            if($connectionWrite->isTableExists($temptableShipping))
+                            {
+                                //$sqlShipping="SELECT * FROM  ".$temptableShipping." WHERE quote_id = '".$order->getId()."' AND item_id ='".$item->getId()."' AND product_id = '".$ProductId."' AND planning_type = 'order' ";
+                                $sqlShipping = $connectionRead->select()
+                                                ->from($temptableShipping, array('*'))
+                                                ->where("quote_id = '".$order->getId()."' AND item_id ='".$item->getId()."' AND product_id = '".$ProductId."' AND planning_type = 'order' ");
+                                $chkShipping = $connectionRead->fetchAll($sqlShipping);
+                            }
+                            
+                            if(count($chkShipping) == 0)
+                            {
+                            
+                                $created_date = $order->getCreatedAt();
+                                $Product = Mage::getModel('catalog/product')->load($ProductId);
+                                
+                                $temptableTimeline=Mage::getSingleton('core/resource')->getTableName('product_timeline');
+                                //$sqlTimeline="SELECT * FROM ".$temptableTimeline." WHERE product_id = '".$ProductId."' ";
+                                $sqlTimeline = $connectionRead->select()
+                                                ->from($temptableTimeline, array('*'))
+                                                ->where('product_id=?', $ProductId);
+                                $chkTimeline = $connectionWrite->fetchAll($sqlTimeline);
+                            
+                                $order_placed_date =  $created_date;
+                                
+                              
+                                    $order_placed_date = '';
+                                     $artwork_date = '';
+                                    $proof_date = '';
+                                    $production_start_date = '';
+                                    $shipping_date = '';
+                                    $delivery_date = '';
+                                
+                                
+                                                  
+                                $temptableShipping=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+                                if($connectionWrite->isTableExists($temptableShipping))
+                                {
+                                    //$sqlShipping="INSERT INTO  ".$temptableShipping." SET quote_id = '".$order->getId()."', item_id ='".$item->getId()."', product_id = '".$ProductId."', planning_type = 'order', order_placed_date = '$order_placed_date', artwork_date = '$artwork_date', proof_date = '$proof_date', start_date ='$production_start_date', shipping_date = '$shipping_date', delivery_date = '$delivery_date' ";
+                                    //$chkShipping = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlShipping);
+                                    $connectionWrite->beginTransaction();
+                                    $data = array();
+                                    $data['quote_id']= $order->getId();
+                                    $data['item_id'] = $item->getId();
+                                    $data['product_id'] = $ProductId; 
+                                    $data['planning_type'] = 'order'; 
+                                    $data['order_placed_date'] = $order_placed_date; 
+                                    $data['artwork_date'] = $artwork_date; 
+                                    $data['proof_date'] = $proof_date; 
+                                    $data['start_date'] = $production_start_date; 
+                                    $data['shipping_date'] = $shipping_date; 
+                                    $data['delivery_date']= $delivery_date; 
+                                    $connectionWrite->insert($temptableShipping, $data);
+                                    $connectionWrite->commit();
+                                }
+                            }
+                        }
+                  
+                
+            
+                /*********************** add planning auto *********************************/
+		                        
+                    
+                }
+                /********************** Set vendor in item table *******************************/
+                
+                $alert=array('Create order From Quote');
+                Mage::getModel('systemalert/systemalert')->sendalert($alert,'order',$order);
+                
+                // For deleting the quote
+                if($order->getId() != '')
+                {
+                   $quote = Mage::getModel("Quotation/Quotation")->load($quote_id);
+                   $quote->delete();
+                }
+                
+               // print_r($orderItem);
+                
+              
+                Mage::dispatchEvent('model_save_after', array('object'=>Mage::getModel("Quotation/Quotation")));
+                mage::helper('AdminLogger')->updatelog($quote_id,'Create order From Quote');
+                
+                
+                       
+               // exit();
+                $url = Mage::helper("adminhtml")->getUrl("adminhtml/sales_order/view/order_id/".$order->getId());
+                $url = str_replace('p//s','p/admin/s',$url);
+                //exit();
+                Mage::log($url);
+                Mage::app()->getResponse()->setRedirect($url);
+                //exit;
+        }
+    }
+    
+        public function UpdateAction()
+	{
+		//create planning
+                
+                extract($_REQUEST);
+                
+		$quoteId = $_REQUEST['quote_id'];
+		
+		try 
+		{
+			$quote = Mage::getModel('Quotation/Quotation')->load($quoteId);
+			$created_date = $quote->getCreated_time();
+			foreach($order_date as $key=>$value)
+                        {
+			
+                            $temptableShipping=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+                            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableShipping))
+                            {
+                            $sqlShipping="UPDATE  ".$temptableShipping." SET order_placed_date = '$value', artwork_date = '$artwork[$key]', proof_date = '$proof[$key]', start_date ='$start[$key]', shipping_date = '$shipping_date[$key]', delivery_date = '$delivery_date[$key]' WHERE entity_id = '".$key."'";
+                            $chkShipping = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlShipping);
+                            }
+                        }
+			
+                        Mage::dispatchEvent('model_save_after', array('object'=>Mage::getModel("Quotation/Quotation")));
+                        mage::helper('AdminLogger')->updatelog($quoteId,'Edit Planning In Quote');
+			
+			Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Planning created'));
+		}
+		catch (Exception $ex)
+		{
+			Mage::getSingleton('adminhtml/session')->addError($ex->getMessage());
+		}
+                
+               
+		
+		//redirect
+    	$this->_redirect('Quotation/Admin/edit', array('quote_id' => $quoteId));
+    	
+	}
+    
+
+   public function updateDatesAction(){
+        $quote_id=$this->getRequest()->getParam('quote_id');
+        $inputid=$this->getRequest()->getParam('objectid');
+        $retdate=$this->getRequest()->getParam('objectval');
+        if(preg_match('/[0-9]{2,5}$/',$inputid,$matchArr)){
+                $entity_id=$matchArr[0];
+
+                preg_match('/^[a-z_]+/',$inputid,$matchArr2);
+                $inputkey=trim($matchArr2[0],"_");
+
+        $startkey=0;
+        $return=array();
+        $seq=array('order_date','artwork','proof','start','shipping_date','delivery_date');
+                $sqlflip=array_flip($seq);
+                $startkey=($sqlflip[$inputkey])+1;
+
+
+                            $temptableShipping=Mage::getSingleton('core/resource')->getTableName('quote_planning');
+                            if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableShipping))
+                            {
+
+                $sqlShipping="SELECT product_id FROM  ".$temptableShipping." WHERE quote_id = '".$quote_id."' AND entity_id ='".$entity_id."'  AND planning_type = 'quote' ";
+                $chkShipping = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchCol($sqlShipping);
+                }
+                if(count($chkShipping) >= 0)
+                {
+                   $ProductId=$chkShipping[0];
+                    $Product = Mage::getModel('catalog/product')->load($ProductId);
+
+                    $temptableTimeline=Mage::getSingleton('core/resource')->getTableName('product_timeline');
+                    if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableTimeline))
+                    {
+                    $sqlTimeline="SELECT *,artwork_day as artwork,production_day as start,proof_day as proof, sunday_production as sunday_start, holiday_production as holiday_start, shipping_day as shipping_date, sunday_shipping as sunday_shipping_date, holiday_shipping as holiday_shipping_date,delivary_day as delivery_date,sunday_delivary as sunday_delivery_date , holiday_delivary as holiday_delivery_date  FROM ".$temptableTimeline." WHERE product_id = '".$ProductId."' ";
+                    $chkTimeline = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlTimeline);
+                    }
+
+			if($chkTimeline)
+                        for($k=$startkey;$k<sizeof($seq);$k++){
+                                $key=$seq[$k];
+                                    $return[$key][0] = $retdate= $this->gettimelinedate($chkTimeline[0][$key],$retdate,$chkTimeline[0]['sunday_'.$key],$chkTimeline[0]['holiday_'.$key]);
+                                    $return[$key][1] = date("d-M-y",strtotime($retdate));
+
+                                    /*$proof_date = $this->gettimelinedate($chkTimeline[0]['proof_day'],$artwork_date,$chkTimeline[0]['sunday_proof'],$chkTimeline[0]['holiday_proof']);
+                                    $production_start_date = $this->gettimelinedate($chkTimeline[0]['production_day'],$proof_date,$chkTimeline[0]['sunday_production'],$chkTimeline[0]['holiday_production']);
+                                    $shipping_date = $this->gettimelinedate($chkTimeline[0]['shipping_day'],$production_start_date,$chkTimeline[0]['sunday_shipping'],$chkTimeline[0]['holiday_shipping']);
+                                    $delivery_date = $this->gettimelinedate($chkTimeline[0]['delivary_day'],$shipping_date,$chkTimeline[0]['sunday_delivary'],$chkTimeline[0]['holiday_delivary']);
+                                        */
+                        }
+                        $return['objid']=$entity_id;
+                }
+                        echo json_encode($return);
+
+        }else{
+                echo 'notfound';
+        }
+   }
+   
+   public function addCommentAction()
+   {
+     //print_r($_REQUEST);
+     
+     extract($_REQUEST);
+     
+     
+    $user = Mage::getSingleton('admin/session');
+    $userName = $user->getUser()->getUsername();
+    
+    $temptableHistory=Mage::getSingleton('core/resource')->getTableName('quotation_history');
+    if(Mage::getSingleton('core/resource')->getConnection('core_write')->isTableExists($temptableHistory))
+    {
+        
+        $sqlHistory="INSERT INTO ".$temptableHistory." SET qh_quotation_id = '".$quote_id."', qh_message = '".$comment."', qh_date = NOW(), qh_user = '".$userName."' ";
+        $chkHistory = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlHistory);
+    }
+    
+    $quote = Mage::getModel('Quotation/Quotation')->load($quote_id);
+    foreach ($quote->getHistory()->setOrder('qh_id', 'desc') as $_item)
+        {
+            echo '<li>
+                <strong>'.Mage::helper('core')->formatDate($_item->getCreatedAtDate(), 'medium').'></strong>
+                '.Mage::helper('core')->formatTime($_item->getCreatedAtDate(), 'medium').'<span class="separator">|</span><strong>'.$_item->getStatusLabel() .'</strong><br/><small>'.$_item->getqh_user().'
+               </small>
+                
+                    <br/>'.$_item->getqh_message().'
+                
+            </li>';
+        }
+   }
+}

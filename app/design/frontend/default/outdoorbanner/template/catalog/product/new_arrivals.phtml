@@ -1,0 +1,44 @@
+
+<div class="new-arrivals slideshow">
+  <div class="slides">
+    <div class="overlay">
+      <h2>Newest Arrivals</h2>
+      <p>Available in-stores &amp; online</p>
+      <a class="form-button" href="<?php echo 'new-arrivals.html';?>">browse shoes</a> </div>
+    <div class="frame">
+    <div class="slide">
+      <?php 
+   		 /*fetching products from the category featured*/
+		  $_helper = Mage::helper('catalog/output');
+           $category = Mage::getModel('catalog/category')->load(99);  
+		   $product_collection = $category->getProductCollection()->addAttributeToSelect('*');
+				/*fetching products from the given category that is featured category*/							   
+		 foreach($product_collection as $_product){
+			 
+			 $product = Mage::getModel('catalog/product')->load($_product->getId());
+			$full_path_url = Mage::helper('catalog/image')->init($product, 'image')->resize(201,201);
+   ?>
+      
+      
+        
+        <div class="item">
+          <div class="image"> <a href="<?php echo $_product->getUrl_path();?>"> 
+          <img src="<?php echo $full_path_url; ?>" alt="<?php echo $_product->getName();?>" /> </a> </div>
+          <div class="description">
+            <h3><a href="<?php echo $_product->getUrl_path();?>">
+			<?php echo $_product->getName();?></a></h3>
+            <p><?php echo $_product->getName();?></p>
+            <p class="price">
+            <a href="<?php echo $_product->getUrl_path();?>">
+            <span class="price">$<?php echo $_product->getPrice();?></span></a></p>
+          </div>
+        </div>
+        
+    
+      <?php 
+	 }
+	?>
+      </div>
+    </div>
+  </div>
+</div>

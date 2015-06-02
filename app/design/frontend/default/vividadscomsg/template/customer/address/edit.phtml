@@ -1,0 +1,329 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Edit customer address template
+ *
+ * @see Mage_Customer_Block_Address_Edit
+ */
+ 
+ $pageid = $this->getRequest()->getParam('id');
+ $address = Mage::getModel('customer/address')->load($pageid);
+ 
+ //var_dump($this);
+ 
+  if(!isset($pageid)){
+	  $c_page = 'Add New Address ';
+	 }else{
+		 
+		$c_page = 'Edit Current Address ';
+		 if($this->isDefaultBilling()){
+				$c_page = 'Edit Current Billing  Address ';
+		 }
+		 
+		 if($this->isDefaultShipping()){
+				$c_page = 'Edit Current Shipping  Address ';
+		 }
+		 
+		 }
+ 
+?>
+ <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<div class="smart-wrap" style="margin:30px; float:left; width:100%;">
+<form action="<?php echo $this->getSaveUrl() ?>" method="post" id="form-validate" name="form-validate" onSubmit="return validateForm(this);">
+        	<div class="smart-forms smart-container wrap-1">
+            <div class="form-header header-yellow">
+            	<h4><i class="fa fa-pencil-square"></i><?php echo $c_page; ?></h4>
+	        </div>
+  <div class="form-body">            
+    <?php echo $this->getBlockHtml('formkey')?>
+    <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
+    <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
+    <div class="section">
+      <label class="field-label" for="Account Information"><?php echo $this->__('Account Information') ?></label>
+     </div>
+    <?php echo $this->getNameBlockHtml() ?>
+    
+    <div class="section">
+    <label for="Account Information" class="field-label">Company</label>
+       <label class="field prepend-icon" style="padding-bottom:10px;">
+       <input type="text" name="company" id="company" title="<?php echo $this->__('Company') ?>" value="<?php echo $this->escapeHtml($this->getAddress()->getCompany()) ?>" class="gui-input <?php echo $this->helper('customer/address')->getAttributeValidationClass('company') ?>" />
+       <label class="field-icon"><i class="fa fa-university"></i></label>  
+       </label>  
+    </div>
+    
+    <div class="section">
+    <label for="Account Information" class="field-label">Telephone<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+       <label class="field prepend-icon" style="padding-bottom:10px;">
+            <input type="text" name="telephone" value="<?php echo $this->escapeHtml($this->getAddress()->getTelephone()) ?>" title="<?php echo $this->__('Telephone') ?>" class="gui-input  <?php echo $this->helper('customer/address')->getAttributeValidationClass('telephone') ?>" id="telephone" />
+       <label class="field-icon"><i class="fa fa-phone-square"></i></label>  
+    </label>  
+    </div>
+
+    <div class="section">
+    <label for="Account Information" class="field-label">Fax</label>
+       <label class="field prepend-icon" style="padding-bottom:10px;">
+                        <input type="text" name="fax" id="fax" title="<?php echo $this->__('Fax') ?>" value="<?php echo $this->escapeHtml($this->getAddress()->getFax()) ?>" class="gui-input <?php echo $this->helper('customer/address')->getAttributeValidationClass('fax') ?>" />
+       <label class="field-icon"><i class="fa fa-fax"></i></label>  
+    </label>  
+         
+	</div>       
+    <div class="section">
+      <label class="field-label" for="Account Information"><?php echo $this->__('Address') ?></label>
+     </div>
+    
+
+
+    <div class="section">
+        <?php $_streetValidationClass = $this->helper('customer/address')->getAttributeValidationClass('street'); ?>
+    <label for="Account Information" class="field-label">Address<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+       <label class="field prepend-icon" style="padding-bottom:10px;">
+             <input type="text" name="street[]" value="<?php echo $this->escapeHtml($this->getAddress()->getStreet(1)) ?>" title="<?php echo $this->__('Street Address') ?>" id="street_1" class="gui-input <?php echo $_streetValidationClass ?>" />
+       <label class="field-icon"><i class="fa fa-home"></i></label>  
+    </label>  
+
+
+
+        <?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
+        <?php for ($_i = 2, $_n = $this->helper('customer/address')->getStreetLines(); $_i <= $_n; $_i++): ?>
+              <input type="text" name="street[]" value="<?php echo $this->escapeHtml($this->getAddress()->getStreet($_i)) ?>" title="<?php echo $this->__('Street Address %s', $_i) ?>" id="street_<?php echo $_i ?>" class="gui-input <?php echo $_streetValidationClass ?>" />
+         
+        <?php endfor; ?>
+   </div>        
+            <?php if ($this->helper('customer/address')->isVatAttributeVisible()) : ?>
+            <li class="wide">
+                <label for="vat_id"><?php echo $this->__('VAT Number') ?></label>
+                <div class="input-box">
+                    <input type="text" name="vat_id" value="<?php echo $this->escapeHtml($this->getAddress()->getVatId()) ?>" title="<?php echo $this->__('VAT Number') ?>" id="vat_id" class="input-text <?php echo $this->helper('customer/address')->getAttributeValidationClass('vat_id') ?>" />
+                </div>
+            </li>
+            <?php endif; ?>
+ <div class="section">
+   <label for="Account Information" class="field-label">City<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+       <label class="field prepend-icon" style="padding-bottom:10px;">
+
+       
+       
+       <input type="text" name="city" value="<?php echo $this->escapeHtml($this->getAddress()->getCity()) ?>"  title="<?php echo $this->__('City') ?>" class="gui-input <?php echo $this->helper('customer/address')->getAttributeValidationClass('city') ?>" id="city" />
+       <label class="field-icon"><i class="fa fa-home"></i></label>  
+    </label>  
+     </div>
+ <div class="section">
+   <label for="Account Information" class="field-label">State/Province<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+       <label class="field select" style="padding-bottom:10px;">
+		<?php 
+		
+		$store1 = Mage::getModel('core/store')->load(166);
+		//$store1 = 166;
+	   	Mage::app($store1->getCode());
+       	$countrycode = Mage::getStoreConfig('general/country/default',$store1);
+       	$statearray = Mage::getModel('directory/region')->getResourceCollection()
+	                 ->addCountryFilter(trim($countrycode,' '))->load();
+       	$vvl="";
+       
+	 //  foreach ($statearray as $_state) {
+       		//$s=trim($_state->getCode());
+			//var_dump($_state);
+        	//break;
+     //  }
+		
+		//var_dump($vvl);
+		
+		?>
+                        <select onChange="updateRegion(this.value);" id="region_id" name="region_id" title="<?php echo $this->__('State/Province') ?>" class="validate-select"   >
+                           <option  value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                       <?php foreach($statearray as $_state){ ?>
+                      	 	<option <?php if( $this->escapeHtml($this->getAddress()->getRegion()) == trim($_state->getCode()) ){ echo 'selected'; }?> value="<?php echo trim($_state->getCode()); ?>"><?php echo trim($_state->getName()); ?></option>
+                       <?php 
+                       }
+                       ?>
+                        </select>
+                        <i class="arrow double"></i> 
+                        </label>
+                         
+                        <script type="text/javascript">
+                        //<![CDATA[
+                            $('region_id').setAttribute('defaultValue',  "<?php echo $this->getAddress()->getRegionId() ?>");
+                        //]]>
+						function updateRegion(val){
+							//console.log(val);
+							document.getElementById('region').value = val;
+							}
+                        </script>
+                        <input  style="display:none;" type="text" id="region" name="region" value="<?php echo $this->escapeHtml($this->getAddress()->getRegion()) ?>"  title="<?php echo $this->__('State/Province') ?>" class="gui-input <?php echo $this->helper('customer/address')->getAttributeValidationClass('region') ?>" />
+         
+    </label>  
+   </div>
+
+ <div class="section">
+ <label for="Account Information" class="field-label">Zip/Postal Code<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+       <label class="field prepend-icon" style="padding-bottom:10px;">
+                        <input type="text" name="postcode" value="<?php echo $this->escapeHtml($this->getAddress()->getPostcode()) ?>" title="<?php echo $this->__('Zip/Postal Code') ?>" id="zip" class="gui-input validate-zip-international <?php echo $this->helper('customer/address')->getAttributeValidationClass('postcode') ?>" />
+       <label class="field-icon"><i class="fa fa-qrcode"></i></label>  
+    </label>  
+
+ </div>
+ <div class="section">
+ <label for="Account Information" class="field-label">Country<span style="color:red; font-size:12px; padding-left:10px">*</span></label>
+        <label class="field select" style="padding-bottom:10px;">
+                    <?php echo $this->getCountryHtmlSelect() ?>
+   <i class="arrow double"></i>   
+    </label>  
+
+     </div>
+   <?php  ?>  <div class="section">
+         
+                <?php if($this->isDefaultBilling()): ?>
+                    <strong><?php echo $this->__('Default Billing Address') ?></strong>
+                <?php elseif($this->canSetAsDefaultBilling()): ?>
+                    <input type="checkbox" id="primary_billing" name="default_billing" value="1" title="<?php echo $this->__('Use as My Default Billing Address') ?>" class="checkbox" /><label for="primary_billing"><?php echo $this->__('Use as my default billing address') ?></label>
+                <?php else: ?>
+                    <input type="hidden" name="default_billing" value="1" />
+                <?php endif; ?>
+        
+</div>
+ <div class="section">            
+                <?php if($this->isDefaultShipping()): ?>
+                    <strong><?php echo $this->__('Default Shipping Address') ?></strong>
+                <?php elseif($this->canSetAsDefaultShipping()): ?>
+                    <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" title="<?php echo $this->__('Use as My Default Shipping Address') ?>" class="checkbox" /><label for="primary_shipping"><?php echo $this->__('Use as my default shipping address') ?></label>
+                <?php else: ?>
+                    <input type="hidden" name="default_shipping" value="1" />
+                <?php endif; ?>
+</div>            
+<?php  ?>
+<div class="form-footer">
+        <p class="required"><?php echo $this->__('* Required Fields and needs to be must filled. ') ?></p>
+        <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+        <button type="submit" title="<?php echo $this->__('Save Address') ?>" class="button"><span><span><?php echo $this->__('Save Address') ?></span></span></button>
+         <button type="Reset" title="<?php echo $this->__('Reset') ?>" class="button"><span><span><?php echo $this->__('Reset') ?></span></span></button>
+    </div>
+    </div>
+    
+    </div>
+    
+</form>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    var dataForm = new VarienForm('form-validate', true);
+    new RegionUpdater('country', 'region', 'region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'zip');
+
+   ///validate form with elemetns
+   
+   function validateForm(elem){
+	   
+	   ////gettig the elements
+	   
+	   var formData = jQuery('#form-validate').serializeArray();
+	    //console.log(formData);
+		////jQuery formdata 
+		
+		var firstname = jQuery('#firstname');
+		var lastname = jQuery('#lastname');
+		var company = jQuery('#company');
+		var telephone  = jQuery('#telephone');
+		var street_1 = jQuery('#street_1');
+		var city = jQuery('#city');
+		var region_id = jQuery('#region_id');
+		var zip = jQuery('#zip');
+		var country = jQuery('#company');
+		
+		////////////////////////////////////////////////////////////
+		
+		
+		if(firstname.val()==''){
+			alert('Oops Firstname field is empty.');
+			firstname.focus();
+			firstname.select();
+			return false;
+			}
+			
+		if(lastname.val()==''){
+			alert('Oops Lastname field is empty.');
+			lastname.focus();
+			lastname.select();
+			return false;
+			}	
+		/*	
+		if(company.val()==''){
+			alert('Oops Company field is empty.');
+			company.focus();
+			company.select();
+			return false;
+			}
+		*/			
+		
+		if(telephone.val()==''){
+			alert('Oops Telephone field is empty.');
+			telephone.focus();
+			telephone.select();
+			return false;
+			}	
+		
+		if(street_1.val()==''){
+			alert('Oops Company field is empty.');
+			street_1.focus();
+			street_1.select();
+			return false;
+			}	
+		
+		if(city.val()==''){
+			alert('Oops City field is empty.');
+			city.focus();
+			city.select();
+			return false;
+			}	
+			
+		if(region_id.val()==''){
+			alert('Oops Region is not properly selected .');
+			region_id.focus();
+			region_id.select();
+			return false;
+			}	
+			
+		if(zip.val()==''){
+			alert('Oops Zip code is not properly inserted .');
+			zip.focus();
+			zip.select();
+			return false;
+			}	
+			
+		if(country.val()==''){
+			alert('Oops Country is not properly selected .');
+			country.focus();
+			country.select();
+			return false;
+			}		
+				
+				
+	    return true;
+	   }
+  
+
+//]]>
+</script>

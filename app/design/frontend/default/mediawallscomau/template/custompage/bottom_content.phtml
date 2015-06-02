@@ -1,0 +1,141 @@
+<div class="home-page-cms-content" style="margin-top:20px; margin-bottom:10px;">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+      <tr>
+        <td width="455" class="home-page-left">
+          <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial')->toHtml() ;
+   
+  ?>
+  <div class="menu2">
+                               <ul>
+                                       <li><img src="<?php echo $this->getSkinUrl(); ?>images/icon-price.png" alt=""><span class="txt"><span class="find-heading">Low Price Guarantee</span><br>We are happy to beat the price of our competitors</span></li>
+                                   <li><img src="<?php echo $this->getSkinUrl(); ?>images/icon-shipping.png" alt=""><span class="txt"><span class="find-heading">Reliable &amp; Fast Shipping</span><br>Make sure you get your product on time. We deliver Australia-Wide.</span></li>
+                                   <li><img src="<?php echo $this->getSkinUrl(); ?>images/icon-setup.png" alt=""> <span class="txt"><span class="find-heading">Easy setup Process</span><br>We’re here to help with setup if you need it</span></li>
+                                   <li><img src="<?php echo $this->getSkinUrl(); ?>images/icon-guarantee.png" alt=""><span class="txt"><span class="find-heading">Money Back Guarantee</span><br>We want our customers happy</span></li>
+                               </ul>
+                           </div>
+          <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('bottom_left_content')->toHtml() ?></td>
+     
+        <td class="home-page-right">
+        <div class="why-choose-heading"><img src="<?php echo $this->getSkinUrl()?>images/why_choose_us.jpg" /></div>
+        <div class="content">
+            <div class="para_txt">
+              <p>Media-Walls.com.au is a master in providing high quality special event banners,   Step and Repeat banners, media walls, press banners and banners for media   events. Our backdrop media banners are widely used at fashion events, press   conferences, and special media events. They are also widely used at TV and photo   shoots as a way to display brands and sports team&rsquo;s logos.Special event   professionals and sports teams prefer our media backdrops and use them for press   conferences and corporate events.<BR>
+                We take pride in supplying media walls and   backdrops at factory direct pricing to our large client base . We understand how   stressful it is to organize last minute events, however our quick turnaround   times ensure that your backdrops will be in your hands before the event.<BR>
+              We   are able to produce any media backdrop, of any size in standard or ultra HD   print. So call us now at 1300 72 16 14 and be a part of our massive client base   .</p>
+            </div>
+          </div>
+          <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('bottom_right_content')->toHtml() ?></td>
+      </tr>
+    </tbody>
+  </table>
+    <script src="<?php echo $this->getSkinUrl()?>js/jquery-1.9.1.min.js"></script>
+<script src="<?php echo $this->getSkinUrl()?>js/modernizr.js"></script>
+<script>
+    $(document).ready(function(){
+        if (Modernizr.touch) {
+            // show the close overlay button
+            $(".close-overlay").removeClass("hidden");
+            // handle the adding of hover class when clicked
+            $(".img").click(function(e){
+                if (!$(this).hasClass("hover")) {
+                    $(this).addClass("hover");
+                }
+            });
+            // handle the closing of the overlay
+            $(".close-overlay").click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                if ($(this).closest(".img").hasClass("hover")) {
+                    $(this).closest(".img").removeClass("hover");
+                }
+            });
+        } else {
+            // handle the mouseenter functionality
+            $(".img").mouseenter(function(){
+                $(this).addClass("hover");
+            })
+            // handle the mouseleave functionality
+            .mouseleave(function(){
+                $(this).removeClass("hover");
+            });
+        }
+    });
+</script>
+    <div id="effect-1" class="effects clearfix">
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall1.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall2.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall3.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall4.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall5.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall6.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall7.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall8.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall9.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall10.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            <div class="img">
+                <img src="<?php echo $this->getSkinUrl()?>images/event-media-wall11.jpg" alt="">
+                <div class="overlay" style="display:none;">
+                    <a href="#" class="expand-lay"><?php echo $this->__('Stocklands commissioned Mediawall to produce artwork and Media Walls for this awesome event. Within a tight timeframe we delivered on budget and on time,to a very happy client!')?></a>
+                </div>
+            </div>
+            
+        </div>
+</div>

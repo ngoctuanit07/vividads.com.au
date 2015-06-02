@@ -1,0 +1,125 @@
+<?php /*?><?php 
+
+    $layer = Mage::getSingleton('catalog/layer');
+
+    $_category = $layer->getCurrentCategory();
+
+    $currentCategoryId = $_category->getId();
+
+    if($currentCategoryId != 48){
+
+        $children = Mage::getModel('catalog/category')->getCategories($currentCategoryId);
+
+        ?>
+
+        <div class="block block-currency">
+
+            <div class="block-title">
+
+                <strong><span style='font-size:12px;'><?php echo $_category->getName();?></span></strong>
+
+            </div>
+
+            <div class="block-content menu">
+
+                <ul id="menu">
+
+                    <?php
+
+                    foreach ($children as $category)
+
+                    {
+
+                        echo '<li><a href="'.$this->getCategoryUrl($category).'">'.$category->getName()."</a></li>\n";
+
+                          //echo $category->getName(); // will return category name 
+
+                          //echo $category->getRequestPath(); // will return category URL
+
+                    }?>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    <?php                
+
+    }    
+
+    ?><?php */?>
+<?php /*?><div class="block block-currency">
+
+    <div class="block-title">
+
+        <strong><span>Categories</span></strong>
+
+    </div>
+
+    <div class="block-content menu">
+
+        <ul id="menu">
+
+            <?php
+
+            $obj = new Mage_Catalog_Block_Navigation();
+
+            $store_cats = $obj->getStoreCategories();
+
+            $current_cat    = $obj->getCurrentCategory();
+
+            $current_cat    = (is_object($current_cat) ? $current_cat->getName() : '');
+
+
+
+            foreach ($store_cats as $cat) {
+
+                if ($cat->getName() == $current_cat) {
+
+                    echo '<li class="current"><a href="'.$this->getCategoryUrl($cat).'">'.$cat->getName()."</a>\n\n";
+
+                } else {
+
+                    echo '<li><a href="'.$this->getCategoryUrl($cat).'">'.$cat->getName()."</a></li>\n";
+
+                }
+
+            }
+
+            ?>
+
+        </ul>
+
+    </div>
+
+</div><?php */?>
+<div class="left-menu productReturn">
+  <?php $_helper       = Mage::helper('catalog/category') ?>
+  <?php $_categories   = $_helper->getStoreCategories() ?>
+  <?php if (count($_categories) > 0): ?>
+  <div class="categories">
+    <h1><span><img src="<?php echo $this->getSkinUrl('images/icon-menu.jpg')?>" /></span>CATEGORIES</h1>
+    <ul>
+      <?php foreach ($_categories as $_category): ?>
+      <?php if($_category->getIsActive()): ?>
+      <li><a href="<?php echo $this->getCategoryUrl($_category) ?>"<?php if ($this->isCategoryActive($_category)): ?> class="current"<?php endif; ?>><?php echo $this->htmlEscape($_category->getName()) ?></a></li>
+      <?php endif ?>
+      <?php endforeach;?>
+    </ul>
+  </div>
+  <?php endif;?>
+  <div class="Testimonial productReturn">
+    <h1><span><img src="<?php echo $this->getSkinUrl('images/icon-menu.jpg')?>" /></span>TESTIMONIALS</h1>
+    	<div class="Testimonials">
+           <?php  echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonialhome')->toHtml() ?>
+
+        </div>
+    
+    
+    
+  </div>
+  
+  
+  
+</div>

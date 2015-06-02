@@ -1,0 +1,163 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+ echo '<script language="javascript">jQuery.noConflict();</script>';
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Your order has been received.') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+
+<?php if ($this->getOrderId()):?>
+<?php if ($this->getCanViewOrder()) :?>
+    <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p>
+<?php  else :?>
+    <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
+<?php endif;?>
+    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
+<?php if ($this->getCanViewOrder() && $this->getCanPrintOrder()) :?>
+    <p>
+        <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
+        <?php echo $this->getChildHtml() ?>
+    </p>
+<?php endif;?>
+<?php endif;?>
+
+<?php if ($this->getAgreementRefId()): ?>
+    <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
+<?php endif;?>
+
+<?php if ($profiles = $this->getRecurringProfiles()):?>
+<p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+<ul class="disc">
+<?php foreach($profiles as $profile):?>
+<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+    <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+<?php endforeach;?>
+</ul>
+<?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>
+
+
+
+
+<?php 
+			$orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+            $order = Mage::getModel('sales/order')->load($orderId);
+			
+?>
+ <?php 
+			$orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+            $order = Mage::getModel('sales/order')->load($orderId);
+			$Url= Mage::getBaseUrl();
+//			$total = Mage::helper('core')->formatPrice($order['grand_total'],true);
+//			$discount = Mage::helper('core')->formatPrice($order['discount_amount'],true);
+//			$shipping = Mage::helper('core')->formatPrice($order['shipping_amount'],true);
+//			$tax = Mage::helper('core')->formatPrice($order['tax_amount'],true);
+			$total = round($order['grand_total'],2);
+			$discount = round($order['discount_amount'],2);
+			$shipping = round($order['shipping_amount'],2);
+			$tax = round($order['tax_amount'],2);
+			$storeLocaleCode = Mage::getStoreConfig('general/locale/code');
+			$languageCode = Mage::getStoreConfig('general/locale/timezone');
+			$time = $order->getCreated_at();
+			$number = strtotime($time);
+			$ntime = strtotime('+7 Days',$number);
+			$ndate = date('Y-m-d', $ntime);
+			/**New Shipping Date**/
+			$Shipping = $order->getCreated_at();
+			$ship = strtotime($Shipping);
+			$shipday = strtotime('+10 Days',$ship);
+			$shipping_day = date('Y-m-d', $shipday);
+//			echo "<pre style='background-color:white'>";
+//			Zend_debug::dump($storeLocaleCode);
+//			Zend_debug::dump($languageCode);
+//			echo"</pre>";
+//			exit
+		
+			
+?>
+<!-- START Google Trusted Stores Order -->
+<div id="gts-order" style="display:none;" translate="no">
+
+  <!-- start order and merchant information -->
+  <span id="gts-o-id"><?php echo $order->getIncrement_id()?></span>
+  <span id="gts-o-domain">
+  <?php 
+			$Url =  str_replace('/', '' , $Url);
+			$Url =  str_replace('http:', '' , $Url);
+			echo $Url
+			
+			?>
+  
+  </span>
+  <span id="gts-o-email"><?php echo $order->getCustomer_email()?></span>
+  <span id="gts-o-country">AU</span>
+  <span id="gts-o-currency"><?php echo $order->getStore_currency_code()?></span>
+  <span id="gts-o-total"><?php echo strip_tags($total);?></span>
+  <span id="gts-o-discounts">-<?php echo strip_tags($discount)?></span>
+  <span id="gts-o-shipping-total"><?php echo strip_tags($shipping)?></span>
+  <span id="gts-o-tax-total"><?php echo strip_tags($tax)?></span>
+  <span id="gts-o-est-ship-date"><?php echo $ndate ?></span>
+  <span id="gts-o-est-delivery-date"><?php echo $shipping_day; ?><?php //echo $order->getDelivery_date()?></span>
+  <span id="gts-o-has-preorder">N</span>
+  <span id="gts-o-has-digital">N</span>
+
+
+     <?php  
+		$order_item = $order->getAllItems(); 
+		$storeLocaleCode = Mage::getStoreConfig('general/locale/code');
+		$languageCode = Mage::getStoreConfig('general/locale/timezone');
+		$store_id = Mage::app()->getStore()->getId();
+		 foreach ($order_item as $item) : 
+		//$Price = Mage::helper('core')->formatPrice($item['price'],true);
+		 $Price = round($item['price'],2);
+		 $Item_id = $item->getId();
+		 $sku = $item->getSku();
+
+
+	 
+	 ?>
+    <!-- start repeated item specific information -->
+    <span class="gts-item">
+        <span class="gts-i-name"><?php echo htmlentities($item->getName());
+?> 	</span>
+        <span class="gts-i-price"><?php echo strip_tags($Price) ?></span>
+        <span class="gts-i-quantity"><?php echo (int)$item->getQtyOrdered();
+?> </span>
+     <?php //if (isset($item['gs'])) : ?>
+        <span class="gts-i-prodsearch-id"><?php if($sku ==''){echo $Item_id;}
+			else{echo $sku;}?></span>
+        <span class="gts-i-prodsearch-store-id">102692478</span>
+        <span class="gts-i-prodsearch-country">AU</span>
+        <span class="gts-i-prodsearch-language">en</span>
+    <?php //endif; ?>
+    </span>
+    <?php endforeach; ?>
+</div>

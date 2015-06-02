@@ -1,0 +1,62 @@
+"Alternatively you can use the following code in CMS Pages and Static Blocks:<br/>{{block type=""socialbooster/bookmarks""}}","Alternatively you can use the following code in CMS Pages and Static Blocks:<br/>{{block type=""socialbooster/bookmarks""}}"
+Above Content,Above Content
+Above Short Description,Above Short Description
+Action,Action
+All Social Bookmarks,All Social Bookmarks
+and more...,and more...
+Back,Back
+Below Full Description,Below Full Description
+Bookmark #,Bookmark #
+Clicks,Clicks
+Default Block Position,Default Block Position
+Enabled,Enabled
+Featured Social Bookmarks,Featured Social Bookmarks
+Icon,Icon
+Ignore CMS Pages,Ignore CMS Pages
+Last Click,Last Click
+Left Side,Left Side
+Page View,Page View
+Page,Page
+Pages,Pages
+Product Page Block Position,Product Page Block Position
+Right Side,Right Side
+Service Name,Service Name
+Service,Service
+Services,Services
+Servise View,Servise View
+Share This!,Share This!
+Show on Category Pages,Show on Category Pages
+Show on CMS Pages,Show on CMS Pages
+Social Booster,Social Booster
+Use Default,Use Default
+Use the following code to insert block in custom design of product page:<br/>&lt;?php<br/>echo $this-&gt;getLayout()<br/>-&gt;createBlock('socialbooster/bookmarks')-&gt;toHtml();<br/>?&gt;,Use the following code to insert block in custom design of product page:<br/>&lt;?php<br/>echo $this-&gt;getLayout()<br/>-&gt;createBlock('socialbooster/bookmarks')-&gt;toHtml();<br/>?&gt;
+View,View
+Share this on %s,Share this on %s
+Submit this to %s,Submit this to %s
+Digg this!,Digg this!
+Post this on %s,Post this on %s
+Stumble upon something good? Share it on %s,Stumble upon something good? Share it on %s
+Post this to %s,Post this to %s
+Tweet This!,Tweet This!
+Add this to %s,Add this to %s
+Mark this on %s,Mark this on %s
+Moo this on %s!,Moo this on %s!
+Send this page to %s,Send this page to %s
+Bump this on %s,Bump this on %s
+Save this to %s,Save this to %s
+Tip this to %s,Tip this to %s
+Sphinn this on %s,Sphinn this on %s
+Grind this! on %s,Grind this! on %s
+Ping this on %s,Ping this on %s
+Blend this!,Blend this!
+Engage with this article!,Engage with this article!
+Push this on %s,Push this on %s
+Bookmarks this on %s,Bookmarks this on %s
+Store this link on %s,Store this link on %s
+Add to a lense on %s,Add to a lense on %s
+Submit this story to %s,Submit this story to %s
+Clip this to %s,Clip this to %s
+Submit this link to %s,Submit this link to %s
+Submit tip to %s,Submit tip to %s
+Promote this on %s,Promote this on %s
+Blog this on %s,Blog this on %s

@@ -1,0 +1,78 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+<div class="header-container">
+    <div class="header">
+        <?php if ($this->getIsHomePage()):?>
+        <h1 class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php else:?>
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+        <?php endif?>
+        <?php /*<div class="quick-access">
+            <?php echo $this->getChildHtml('topSearch') ?>
+            <p class="welcome-msg"><?php echo $this->getWelcome() ?> <?php echo $this->getAdditionalHtml() ?></p>
+            <?php echo $this->getChildHtml('topLinks') ?>
+            <?php echo $this->getChildHtml('store_language') ?>
+        </div>
+        <?php echo $this->getChildHtml('topContainer'); ?>*/?>
+                        <div class="more-dropdown">
+                            <span class="more_sp" id="select3">More</span>
+                            <select onchange="javascript:document.getElementById('select3').innerHTML=this.options[this.selectedIndex].text;" name="sel_mor_drop" class="styled20">
+                            <option value="0">More</option>
+                            <option value="2">Car & Truck</option>
+                            <option value="3">Australia</option>
+                            <option value="4">Fiji</option>
+                            <option value="5">Hawaii</option>
+                            <option value="6">New Zealand</option>
+                            <option value="6">UK</option>
+                            <option value="6">USA</option>
+                            <option value="6">More ></option>
+                        </select>
+                    </div>
+
+        <div id="top-bar">
+            <div class="top-bar-content">
+                <div class="storewidediscount">
+                    <a href="http://www.durabanners.com.au/qsi/calculator.php">October Storewide 5% Sale</a>
+                </div>
+                <div class="phone-number">
+                    <img src="<?php echo $this->getSkinUrl()?>images/freehelplinewizard.png">
+                </div>
+            </div>
+        </div>
+        <div class="top-links-custom">
+            <a title="Use this free and easy template generator here to create the perfect banner sign design online, you can type in any size and generate your own custom size, option and material template... easy!" href="mos.php"><img border="0" width="24" height="18" src="<?php echo $this->getSkinUrl()?>images/navicons-mos.png"> Easy Template Maker</a>
+            <a title="Important page showing you the best techniques to make your new sign banner designs for outdoor and indoor banners including free space around the edges, how to sign design for hems, pole pockets, your sizes, finish resolution and how we will generate a free design proof you to check. Full of terrific information, examples and tips that will help you make your banner sign designs accurate and easy! Click Here." href="#"><img border="0" width="21" height="18" src="<?php echo $this->getSkinUrl()?>images/navicons-artwork-how.png"> How to create artwork</a>
+            <span class="top-links-order">
+                <a title="Go to the Price Calculator to start buying cheap banner signs for sale you can choose banners, fencing and construction mesh, sporting event signage and advertising outdoor banner signs direct from the sign factory and delivered to you worldwide. Click Here." href="#"><img border="0" width="24" height="18" src="<?php echo $this->getSkinUrl()?>images/navicons-calculator.png">Order Here</a></span>
+	    <a href="#" title="View your local Currency options here, You can pay with PayPal or Visa or Mastercard from anywhere in the world."><span><img alt="PayPal" src="<?php echo $this->getSkinUrl()?>images/logos-pay.png"></span></a>
+        </div>
+    </div>
+</div>
+<?php //echo $this->getChildHtml('topMenu') ?>

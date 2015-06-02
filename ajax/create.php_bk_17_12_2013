@@ -1,0 +1,798 @@
+<?php
+ob_start();
+include_once '../app/Mage.php';
+Mage::app("tablethrows_com_au");
+$storeId=$_GET["store_id"];
+
+if($storeId==5)
+{
+    $root_cat=48;
+}
+else
+{
+    $root_cat=48;
+}
+
+$_category = Mage::getModel('catalog/category')->load($root_cat);
+$_subcategories = $_category->getChildrenCategories();
+
+
+
+?>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css" type="text/css" />
+    </head>
+    <body>
+        <form id="cus_ordfrm" name="cus_ordfrm" method="post" >
+            <div class="total-main" id="total-main_1">
+                <div class="con">
+                 
+                  <span class="lab">Category:</span>
+                  <span class="inp">
+                    <select name="category" id="cat" onchange="getProduct(this.value);">
+                      
+                        <option value="">Select a category</option>
+                      
+                          <?php
+                          foreach($_subcategories as $_sub){
+                          
+                          $_sub=Mage::getModel('catalog/category')->setStoreId($storeId)->load($_sub->getId());
+                          
+                          ?>    
+                          
+                              <option value="<?php echo $_sub->getId(); ?>"><?php echo $_sub->getName(); ?></option>
+                              
+                          <?php
+                          
+                          }
+                          
+                          ?>
+                      
+                      
+                    </select>
+                 </span>
+                    
+                </div>
+                <div class="con" id="proddiv">
+                    <span class="lab">
+                        Products:
+                    </span>
+                    <span class="inp">
+                        <select name="products" id="prod">
+                              <option value="">Select a product</option>
+                        </select>
+                    </span>
+                  
+                </div>
+                    
+                <div class="im_con" id="prodimgdiv">
+                    <span class="im">Product Image:</span>
+                    <div class="def_cl"></div>
+                    
+                </div>
+                
+                <div id="pro_qty">
+                    <span class="lab">
+                        Enter Quantity:
+                    </span>
+                    <input type="" name="quantity" id="quantity" value="1" />
+                </div>
+                
+              
+              
+                
+                
+               <!---------------------------------------------------------------> 
+                
+                
+                
+                <div class="desc-step3">
+                    <div class="all_bill">
+                            <div class="ship_add">Billing Address</div>
+                            <div class="m_con">
+                                <input type="checkbox" name="shipaddress" id="shipaddress" value="1"><span class="fontBrick">Click here if your shipping and billing address are different.</span>
+                            </div>
+                            <div class="name-head">
+                                <div class="nam1">First Name:<span class="fontRed">*</span></div>
+                                <div class="nam1">Last Name:<span class="fontRed">*</span></div>
+                            </div>
+                            
+                            <div class="name-data">
+                                <span class="nput1"><input type="text" id="fnamebill" name="fnamebill"> </span>
+                                <span class="nput2"><input type="text" id="lnamebill" name="lnamebill"> </span>
+                            </div>
+                            <div class="comp-head">
+                                <div class="nam1">Company:<span class="fontRed">*</span></div>
+                            </div>
+                            
+                            <div class="comp-data">
+                                <input type="text" id="comp_val" name="comp_val" class="bil-nput">                                
+                            </div>
+                            
+                            <div class="bill-head">
+                                <div class="nam1">Billing Address:<span class="fontRed">*</span></div>
+                            </div>
+                            
+                            <div class="bill-data">
+                                <input type="text" id="add1bill" name="add1bill" class="bil-nput">
+                                <input type="text" id="add2bill" name="add2bill" class="bil-nput">
+                            </div>
+                            
+                            
+                            <div class="loc-head">
+                               <div class="nam1">City:<span class="fontRed">*</span></div>
+                               <div class="nam2">State:<span class="fontRed">*</span></div>
+                            </div>
+                            
+                            <div class="loc-data">
+                                <span class="nput1"><input type="text" id="citybill" name="citybill"></span>
+                                <span class="nput2">
+                                    <select name="statebill" id="statebill" class="contenta">
+                                        <option value="" selected="">Choose State</option>
+                                        
+                                        <option value="ACT">ACT</option>
+                                        <option value="NSW">NSW</option>
+                                        <option value="QLD">QLD</option>
+                                        <option value="SA">SA</option>
+                                        <option value="TAS">TAS</option>
+                                        <option value="VIC">VIC</option>
+                                        <option value="WA">WA</option>
+                                        <option value="NT">NT</option>
+                                    </select>
+                                
+                                <!--<select class="contenta" id="statebill" name="statebill">
+                                    <option value="0" selected="selected">---Select State/Territory---</option>
+                                    <option value="AL">Alabama</option>
+                                    <option value="AK">Alaska</option>
+                                    <option value="AZ">Arizona</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="CA">California</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="CT">Connecticut</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="DC">District of Columbia</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">Massachussets</option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">Mississippi</option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="ND">North Dakota</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="RI">Rhode Island</option>
+                                    <option value="SC">South Carolina</option>
+                                    <option value="SD">South Dakota</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="UT">Utah</option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WV">West Virginia</option>
+                                    <option value="WI">Wisconsin</option>
+                                    <option value="WY">Wyoming</option>
+                                    <option value="0">------US Territories------</option>
+                                    <option value="GU">Guam</option>
+                                    <option value="PR">Puerto Rico</option>
+                                    <option value="VI">Virgin Islands</option>                        
+                                </select>--> </span>
+                            </div>
+                            
+                            <div class="coun-head">
+                                <div class="nam1">ZIP:<span class="fontRed">*</span></div>
+                                <!--<div class="nam1">Country:<span class="fontRed">*</span></div>-->
+                            </div>
+                            
+                            <div class="coun-data">
+                                <span class="nput1"><input type="text" id="zipbill" name="zipbill"></span>
+                                
+                            </div>
+                            
+                            <div class="ph-head">
+                                <div class="nam1">Phone:<span class="fontRed">*</span></div>
+                            </div>
+                            
+                            <div class="ph-data">
+                                <input type="text" id="phonebill" name="phonebill">
+                            </div>
+                            
+                            <div class="email-head">
+                               <div class="nam1"> E-mail:<span class="fontRed">*</span></div>
+                            </div>
+                            
+                            <div class="email-data">
+                                <input type="text" id="emailbill" name="emailbill">
+                            </div>
+                            <div class="inv-head">
+                               <div class="nam1"> Are you requesting for a quote/invoice<span class="fontRed">*</span></div>
+                            </div>
+                            
+                            <div class="inv-data">
+                                  <select class="verd2" name="type">
+                                    <option value="invoice">INVOICE</option>
+                                    <option value="quote">QUOTE</option>
+                                  </select>
+                            </div>
+                        </div>
+                    
+                    
+                    <!--section start for shipping--->
+                    
+                    <div id="ship_info" style="display:none;">
+                        
+                        <div class="ship_add">Shipping Address Information</div>
+                        
+                        <div class="name-head">
+                            <div class="nam1">First Name:<span class="fontRed">*</span></div>
+                            <div class="nam1">Last Name:<span class="fontRed">*</span></div>
+                        </div>
+                        
+                        <div class="name-data">
+                            <span class="nput1"><input type="text" id="fnameship" name="fnameship"> </span>
+                            <span class="nput2"><input type="text" id="lnameship" name="lnameship"> </span>
+                        </div>
+                        
+                        <div class="bill-head">
+                            <div class="nam1">Shipping Address:<span class="fontRed">*</span></div>
+                        </div>
+                        
+                        <div class="bill-data">
+                            <input type="text" id="add1ship" name="add1ship" class="bil-nput">
+                            <input type="text" id="add2ship" name="add2ship" class="bil-nput">
+                        </div>
+                        
+                        <div class="loc-head">
+                           <div class="nam1">City:<span class="fontRed">*</span></div>
+                           <div class="nam2">State:<span class="fontRed">*</span></div>
+                        </div>
+                        
+                        <div class="loc-data">
+                            <span class="nput1"><input type="text" id="cityship" name="cityship"></span>
+                            <span class="nput2">
+                                <select name="stateship" id="stateship" class="contenta">
+                                    <option value="" selected="">Choose State</option>
+                                    
+                                    <option value="ACT">ACT</option>
+                                    <option value="NSW">NSW</option>
+                                    <option value="QLD">QLD</option>
+                                    <option value="SA">SA</option>
+                                    <option value="TAS">TAS</option>
+                                    <option value="VIC">VIC</option>
+                                    <option value="WA">WA</option>
+                                    <option value="NT">NT</option>
+                                </select>
+                                <!--<select class="contenta" id="stateship" name="stateship">
+                                <option value="0" selected="selected">---Select State/Territory---</option>
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="DE">Delaware</option>
+                                <option value="DC">District of Columbia</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="HI">Hawaii</option>
+                                <option value="ID">Idaho</option>
+                                <option value="IL">Illinois</option>
+                                <option value="IN">Indiana</option>
+                                <option value="IA">Iowa</option>
+                                <option value="KS">Kansas</option>
+                                <option value="KY">Kentucky</option>
+                                <option value="LA">Louisiana</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachussets</option>
+                                <option value="MI">Michigan</option>
+                                <option value="MN">Minnesota</option>
+                                <option value="MS">Mississippi</option>
+                                <option value="MO">Missouri</option>
+                                <option value="MT">Montana</option>
+                                <option value="NE">Nebraska</option>
+                                <option value="NV">Nevada</option>
+                                <option value="NH">New Hampshire</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NM">New Mexico</option>
+                                <option value="NY">New York</option>
+                                <option value="NC">North Carolina</option>
+                                <option value="ND">North Dakota</option>
+                                <option value="OH">Ohio</option>
+                                <option value="OK">Oklahoma</option>
+                                <option value="OR">Oregon</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="SC">South Carolina</option>
+                                <option value="SD">South Dakota</option>
+                                <option value="TN">Tennessee</option>
+                                <option value="TX">Texas</option>
+                                <option value="UT">Utah</option>
+                                <option value="VT">Vermont</option>
+                                <option value="VA">Virginia</option>
+                                <option value="WA">Washington</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="WI">Wisconsin</option>
+                                <option value="WY">Wyoming</option>
+                                <option value="0">------US Territories------</option>
+                                <option value="GU">Guam</option>
+                                <option value="PR">Puerto Rico</option>
+                                <option value="VI">Virgin Islands</option>                        
+                            </select>--> </span>
+                        </div>
+                        
+                        <div class="coun-head">
+                            <div class="nam1">ZIP:<span class="fontRed">*</span></div>
+                            
+                        </div>
+                        
+                        <div class="coun-data">
+                            <span class="nput1"><input type="text" id="zipship" name="zipship"></span>
+                           
+                        </div>
+                        
+                        <div class="ph-head">
+                            <div class="nam1">Phone:<span class="fontRed">*</span></div>
+                        </div>
+                        
+                        <div class="ph-data">
+                            <input type="text" id="phoneship" name="phoneship">
+                        </div>
+                                               
+                        
+                    </div>        
+                    
+                    <!--section end for shipping-->
+                    
+                    
+                    
+                    <div class="req-head">
+                        <span class="fontRed">*</span> Required
+                    </div>
+                    
+                    <div class="pord-pic">
+                        <!--<img src="<?php //echo $this->getSkinUrl('images/zoomies-process_button.png'); ?>" alt="" />-->                            
+                        <input type="button" name="sub_cusord" id="sub_cusord" value="Submit">
+                    </div>
+                    
+                    <div class="liveord-head">
+                        By Clicking the "PROCESS ORDER" button, you will be placing a live order.
+                    </div>
+                  
+                        
+                        
+                        
+                </div>
+                
+                <input type="hidden" name="action" value="post_order">
+                <input type="hidden" name="actionUrl" id="actionUrl" value="<?php echo Mage::getBaseUrl() ?>ajax/ajax_placeorder.php">
+                
+                <!--------------------------------------------------------------->
+                
+                
+                <div class="Success" id="Success"></div>
+        
+                
+                
+                    
+            </div>
+        </form>
+        
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script> 
+        
+        <script>
+            
+            jQuery(document).ready(function(){
+                
+                
+                jQuery("#sub_cusord").click(function(){
+                    
+                    
+                    
+        //                 var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        //		 var address = jQuery("#emailbill").attr("value");
+        //		 
+        //		// if(jQuery("#creditcardtype").attr("value")=="0")
+        //		// {
+        //		//		  jQuery("#creditcardtype").css("border","1px solid #9E232A");
+        //		//		  jQuery("#creditcardtype").focus();
+        //		//		  return false;
+        //		// }
+        //		// else
+        //		// {
+        //		//		  jQuery("#creditcardtype").css("border","1px solid #2F2F2F");
+        //		// }
+        //		// 
+        //		// if(jQuery("#creditcardNum").attr("value")=="")
+        //		// {
+        //		//		  jQuery("#creditcardNum").css("border","1px solid #9E232A");
+        //		//		  jQuery("#creditcardNum").focus();
+        //		//		  return false;
+        //		// }
+        //		// else
+        //		// {
+        //		//		  jQuery("#creditcardNum").css("border","1px solid #2F2F2F");
+        //		// }
+        //		// 
+        //		// if(jQuery("#ccVerNum").attr("value")=="")
+        //		// {
+        //		//		  jQuery("#ccVerNum").css("border","1px solid #9E232A");
+        //		//		  jQuery("#ccVerNum").focus();
+        //		//		  return false;
+        //		// }
+        //		// else
+        //		// {
+        //		//		  jQuery("#ccVerNum").css("border","1px solid #2F2F2F");
+        //		// }
+        //		 		 
+        //		 if(jQuery("#fnamebill").attr("value")=="")
+        //		 {
+        //				  jQuery("#fnamebill").css("border","1px solid #9E232A");
+        //				  jQuery("#fnamebill").focus();
+        //				  return false;
+        //		 }
+        //		 else
+        //		 {
+        //				  jQuery("#fnamebill").css("border","1px solid #2F2F2F");
+        //		 }
+        //		 
+        //		 if(jQuery("#lnamebill").attr("value")=="")
+        //		 {
+        //				  jQuery("#lnamebill").css("border","1px solid #9E232A");
+        //				  jQuery("#lnamebill").focus();
+        //				  return false;
+        //		 }
+        //		 else
+        //		 {
+        //				  jQuery("#lnamebill").css("border","1px solid #2F2F2F");
+        //		 }
+        //		 
+        //		 if((jQuery("#add1bill").attr("value")=="") && (jQuery("#add2bill").attr("value")==""))
+        //		 {
+        //				  jQuery("#add1bill").css("border","1px solid #9E232A");
+        //				  jQuery("#add1bill").focus();
+        //				  return false;
+        //		 }
+        //		 else
+        //		 {
+        //				  jQuery("#add1bill").css("border","1px solid #2F2F2F");
+        //		 }
+        //		 
+        //		 if(jQuery("#citybill").attr("value")=="")
+        //		 {
+        //				  jQuery("#citybill").css("border","1px solid #9E232A");
+        //				  jQuery("#citybill").focus();
+        //				  return false;
+        //		 }
+        //		 else
+        //		 {
+        //				  jQuery("#citybill").css("border","1px solid #2F2F2F");
+        //		 }
+        //		 
+        //		 if(jQuery("#statebill").attr("value")=="0")
+        //		 {
+        //				  jQuery("#statebill").css("border","1px solid #9E232A");
+        //				  jQuery("#statebill").focus();
+        //				  return false;
+        //		 }
+        //		 else
+        //		 {
+        //				  jQuery("#statebill").css("border","1px solid #2F2F2F");
+        //		 }
+        //		 
+        //		 if(jQuery("#zipbill").attr("value")=="")
+        //		 {
+        //				  jQuery("#zipbill").css("border","1px solid #9E232A");
+        //				  jQuery("#zipbill").focus();
+        //				  return false;
+        //		 }
+        //		 else
+        //		 {
+        //				  jQuery("#zipbill").css("border","1px solid #2F2F2F");
+        //		 }
+        //		 
+        //		 if(jQuery("#countrybill").attr("value")=="")
+        //		 {
+        //				  jQuery("#countrybill").css("border","1px solid #9E232A");
+        //				  jQuery("#countrybill").focus();
+        //				  return false;
+        //		 }
+        //		 else
+        //		 {
+        //				  jQuery("#countrybill").css("border","1px solid #2F2F2F");
+        //		 }
+                         
+                        /* if(jQuery("#phonebill").attr("value")=="")
+                         {
+                                          jQuery("#phonebill").css("border","1px solid #9E232A");
+                                          jQuery("#phonebill").focus();
+                                          return false;
+                         }
+                         else
+                         {
+                                          jQuery("#phonebill").css("border","1px solid #2F2F2F");
+                         }
+                         
+                         if(isNaN(jQuery('#phonebill').attr('value')))
+                         {
+                                          jQuery("#phonebill").attr("value","");
+                                          jQuery("#phonebill").css("border","1px solid #9E232A");
+                                          jQuery("#phonebill").focus();
+                                          return false;
+                         }
+                         else
+                         {
+                                          jQuery("#phonebill").css("border","1px solid #2F2F2F");
+                         }*/
+                         
+                         
+                         
+                         
+                        // if(jQuery("#emailbill").attr("value")=="")
+                        // {
+                        //		  jQuery("#emailbill").css("border","1px solid #9E232A");
+                        //		  jQuery("#emailbill").focus();
+                        //		  return false;
+                        // }
+                        // else
+                        // {
+                        //		  jQuery("#emailbill").css("border","1px solid #2F2F2F");
+                        // }
+                        // 
+                        // if(reg.test(address) == false)
+                        // {
+                        //		  jQuery("#emailbill").attr("value","");
+                        //		  jQuery("#emailbill").css("border","1px solid #9E232A");
+                        //		  jQuery("#emailbill").focus();
+                        //		  return false;
+                        // }
+                        // else
+                        // {
+                        //		  jQuery("#emailbill").css("border","1px solid #2F2F2F");
+                        // }
+                         
+                         
+                        // if(jQuery('#shipaddress').is(':checked')==true)
+                         {
+                                
+                                       /*   if(jQuery("#fnameship").attr("value")=="")
+                                          {
+                                                           jQuery("#fnameship").css("border","1px solid #9E232A");
+                                                           jQuery("#fnameship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#fnameship").css("border","1px solid #2F2F2F");
+                                          }
+                                          
+                                          if(jQuery("#lnameship").attr("value")=="")
+                                          {
+                                                           jQuery("#lnameship").css("border","1px solid #9E232A");
+                                                           jQuery("#lnameship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#lnameship").css("border","1px solid #2F2F2F");
+                                          }
+                                          
+                                          if((jQuery("#add1ship").attr("value")=="") && (jQuery("#add2ship").attr("value")==""))
+                                          {
+                                                           jQuery("#add1ship").css("border","1px solid #9E232A");
+                                                           jQuery("#add1ship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#add1ship").css("border","1px solid #2F2F2F");
+                                          }
+                                          
+                                          if(jQuery("#cityship").attr("value")=="")
+                                          {
+                                                           jQuery("#cityship").css("border","1px solid #9E232A");
+                                                           jQuery("#cityship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#cityship").css("border","1px solid #2F2F2F");
+                                          }
+                                          
+                                          if(jQuery("#stateship").attr("value")=="0")
+                                          {
+                                                           jQuery("#stateship").css("border","1px solid #9E232A");
+                                                           jQuery("#stateship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#stateship").css("border","1px solid #2F2F2F");
+                                          }
+                                          
+                                          if(jQuery("#zipship").attr("value")=="")
+                                          {
+                                                           jQuery("#zipship").css("border","1px solid #9E232A");
+                                                           jQuery("#zipship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#zipship").css("border","1px solid #2F2F2F");
+                                          }
+                                          
+                                          if(jQuery("#countryship").attr("value")=="")
+                                          {
+                                                           jQuery("#countryship").css("border","1px solid #9E232A");
+                                                           jQuery("#countryship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#countryship").css("border","1px solid #2F2F2F");
+                                          }
+                                          
+                                          if(jQuery("#phoneship").attr("value")=="")
+                                          {
+                                                           jQuery("#phoneship").css("border","1px solid #9E232A");
+                                                           jQuery("#phoneship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#phoneship").css("border","1px solid #2F2F2F");
+                                          }
+                                          
+                                          if(isNaN(jQuery('#phoneship').attr('value')))
+                                          {
+                                                           jQuery("#phoneship").attr("value","");
+                                                           jQuery("#phoneship").css("border","1px solid #9E232A");
+                                                           jQuery("#phoneship").focus();
+                                                           return false;
+                                          }
+                                          else
+                                          {
+                                                           jQuery("#phoneship").css("border","1px solid #2F2F2F");
+                                          }*/
+                                                           
+                                                           
+                                                           
+                         }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        var actionUrl=jQuery("#actionUrl").attr("value");
+                         //alert(actionUrl);
+                         
+                        jQuery.ajax({
+                            url: actionUrl,
+                            type: "POST",
+                            data: jQuery("#cus_ordfrm").serialize(),
+                            success: function(abc){
+                                    //alert(abc);
+                                    arr=Array();
+                                    arr=abc.split("___");
+                                    var ord_success=arr[0];
+                                    var ord=arr[1];
+                                    //alert(ord);
+                                    
+                                    if(ord_success=="order")
+                                    {
+                                             //location.reload();
+                                             jQuery("#Success").html("Your order has been placed . Your order id is #"+ord);
+                                    }
+                                    else
+                                    {
+                                             jQuery("#Success").html("Something going wrong. Please try again later");
+                                    }
+                                    
+                                    
+                            }
+                        });  
+                    
+                    
+                    
+                });
+                
+                
+                
+                
+               jQuery("#shipaddress").click(function(e){
+                    if(jQuery('#shipaddress').is(':checked')==true)
+                    {
+                                     
+                                     jQuery('#ship_info').attr('style','display:block');
+                    }
+                    else
+                    {
+                                     
+                                     jQuery('#ship_info').attr('style','display:none');    
+                    }
+               });
+                
+                
+                
+                
+                
+                
+                
+                
+            });
+            
+                function getProduct(catid){
+                    
+                    var param="catid="+catid;
+                    jQuery.ajax({
+                           type:'POST',
+                           url:'<?php echo Mage::getBaseUrl();?>ajax/getProduct.php',
+                           data:param,
+                          
+                           success: function(ret)
+                           {
+                           
+                              jQuery('#proddiv').html(ret);
+             
+                              
+                            }
+                            
+              
+                });
+                }
+                
+                
+                   
+                function getProdImage(prodid){
+                    
+                    var param="prodid="+prodid;
+                    jQuery.ajax({
+                           type:'POST',
+                           url:'<?php echo Mage::getBaseUrl();?>ajax/getProductImage.php',
+                           data:param,
+                          
+                           success: function(ret)
+                           {
+                            
+                            
+                            //alert(ret);
+                           
+                              jQuery('#prodimgdiv').html(ret);
+             
+                              
+                            }
+                            
+              
+                });
+            }
+         
+        </script>
+    </body>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ 
+ * @category    ArtworkUploader
+ * @package     ArtworkUploader_Upload
+ * @copyright   Copyright (c) 2013 Vivid Ads. (http://www.vividads.com.au)
+ * @license     http://www.vividads.com.au  License (AFL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <ArtworkUploader_Upload>
+            <active>true</active>
+             <codePool>local</codePool>
+            <!-- this node point to dependency from other modules -->
+            <depends>
+              <!-- specifying that out module should be loaded after Mage_Catalog -->
+                <Mage_Cms />
+            </depends>
+        </ArtworkUploader_Upload>
+    </modules>
+</config>

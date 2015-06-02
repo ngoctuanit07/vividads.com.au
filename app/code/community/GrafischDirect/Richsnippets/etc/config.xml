@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<modules>
+		<GrafischDirect_Richsnippets>
+			<version>2.0.1</version>
+		</GrafischDirect_Richsnippets>
+	</modules>
+	<global>
+		<models>
+			<grafischdirectrichsnippets>
+				<class>GrafischDirect_Richsnippets_Model</class>
+			</grafischdirectrichsnippets>
+		</models>
+		<helpers>
+			<grafischdirectrichsnippets>
+				<class>GrafischDirect_Richsnippets_Helper</class>
+			</grafischdirectrichsnippets>
+		</helpers>		
+	</global>
+	<adminhtml>
+		<translate>
+			<modules>
+				<GrafischDirect_Richsnippets>
+					<files>
+						<default>GrafischDirect_Richsnippets.csv</default>
+					</files>
+				</GrafischDirect_Richsnippets>
+			</modules>
+		</translate>
+	</adminhtml>
+	<frontend>
+		<layout>
+			<updates>
+				<grafischdirectrichsnippets>
+					<file>richsnippets.xml</file>
+				</grafischdirectrichsnippets>
+			</updates>
+		</layout>	
+	</frontend>
+</config>

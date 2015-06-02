@@ -1,0 +1,55 @@
+<?php
+$BaseUrl = Mage::getBaseUrl();
+$categories = $this->getCategory()->getData();
+$category = $categories[0];
+
+//Zend_Debug::dump($categories);
+
+
+?>
+<div class="gallery-title">
+    <h1>
+        <?php echo $category['title'];?>
+    </h1>
+</div>
+
+<div class="vivid-gallery">
+    <!--<div class="top-content">
+        <p><?php echo $category['content'];?></p>
+    </div>-->
+    <!--br /-->
+    <div class="gallery-images">
+        <?php $cnt = count($this->getGallery()); ?>
+        <?php if($cnt > 0 ): //products-grid?>
+                <ul class="first even" style="width:100%">
+                    <?php $i = 0; foreach ($this->getGallery() as $item): ?>                  
+                        <li class="item <?php if($i == 0){echo 'first';}else if($i%3 == 0)echo "last"?> fadeIn animated" style="height: auto;width:100%;margin:0 18px 40px 0;padding: 0 0 25px;border-bottom: 1px solid #ddd;">
+                            <h2 class="product-name" style="text-align: left;margin-left: 25px;">
+                                <a href="<?php echo $BaseUrl.$item->getUrl().".html"; ?>"><strong><?php   echo $item->getTitle(); ?></strong></a></h2>
+                            <p style="margin-left: 25px;text-align: left;"><?php echo $item->getContent(); ?></p>
+                            <div style="width:400px; margin:auto;">
+                            <a class="product-image" href="<?php  echo $BaseUrl.$item->getUrl().".html"; ?>">
+                                <img src="<?php echo $this->resizeImage($item->getFilename(), 400, ''); ?>" alt="<?php   echo $item->getTitle(); ?>" title="<?php   echo $item->getTitle(); ?>" />
+                            </a>
+                            </div>
+                        </li>
+                    <?php $i++; endforeach;  ?> 
+                </ul>
+        <?php else: ?>
+        <div class="clearfix"><br /><p class="note-msg">No image(s) found under the selected category.</p><br /></div>
+        <?php endif; ?>
+    </div>
+    <!--<div class="bottom-content">
+        <p><?php echo $category['bottom_content'];?></p>
+    </div>-->
+    
+    <!--Pagination start here-->
+    
+    <div class="pagination" >
+   <?php echo $this->getPagerHtml(); ?>
+    		<< Pre  1 | 2 | 3  Next>>
+    </div>
+    
+    <!--End of Paginiation-->
+    
+</div>

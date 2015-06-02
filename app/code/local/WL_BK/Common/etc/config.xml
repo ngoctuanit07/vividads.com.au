@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <WL_Common>
+            <version>0.1.0</version>
+        </WL_Common>
+    </modules>
+    <global>
+    	<models>
+             <common>
+             	<class>WL_Common_Model</class>
+             </common>             
+        </models>
+        
+        <helpers>
+        	<wlcommon>
+        		<class>WL_Common_Helper</class>
+        	</wlcommon>
+        </helpers>
+
+		<blocks>
+			<wlcommon>
+				<class>WL_Common_Block</class>
+			</wlcommon>
+			<customer>
+				<rewrite>
+					<account_navigation>WL_Common_Block_Account_Navigation</account_navigation>
+				</rewrite>
+			</customer>
+		</blocks>
+	</global>
+</config>

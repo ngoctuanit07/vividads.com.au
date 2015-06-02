@@ -1,0 +1,22 @@
+<?php foreach ($this->getStoreCategories() as $_category): ?>
+ <?php $open = $this->isCategoryActive($_category); ?>
+ <?php
+$cur_category=Mage::getModel('catalog/category')->load($_category->getId(48));
+
+$layer = Mage::getSingleton('catalog/layer');
+$layer->setCurrentCategory($cur_category);
+if ($immagine = $this->getCurrentCategory()->getImageUrl()):
+
+ ?>
+ 
+	 <li class="item fadeIn animated"> 
+        <a class="product-image" href="<?php echo $this->getCategoryUrl($_category)?>">
+            <img src="<?php echo $immagine ?>"
+  alt="<?php echo $this->htmlEscape($this->getCurrentCategory()->getName()) ?>" width="310" height="250" />
+        </a>
+
+        
+    </li>
+
+	<?php endif; ?>
+    <?php endforeach; ?>

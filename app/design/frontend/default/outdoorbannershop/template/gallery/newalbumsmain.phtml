@@ -1,0 +1,64 @@
+<div class="box base-mini new-albums">
+  
+
+	<?php 	
+			$_model = Mage::getModel('gallery/album');
+			
+		//	$_albums = $_model->getCollection()->getData();
+		
+	
+	$new_albums = $this->getNewAlbums(); 
+	
+
+	//zend_debug::dump($new_albums);
+	
+	    $collection = Mage::getModel('gallery/gallery')->getCollection()->addFieldToFilter('status', true);
+		$collection->addFieldToFilter('album_id' , 16);
+		$collection ->addOrder('main_table.order','ASC')->addOrder('gallery_id','DESC');
+		
+		//Zend_debug::dump($collection->getData());
+	
+	
+	?>
+
+	<ul>
+	<?php	foreach ($new_albums as $item){
+		
+		$_album_id = $item->getAlbum_id();		
+		if($_album_id ==16 ){		
+		
+		
+		
+		?>
+			<li>	
+                <a href="<?php echo $item->getUrlRewrite(); ?>" alt="<?php echo $item->getTitle(); ?>"  class="gallery">
+                <img src="<?php echo $this->helper('gallery/image')->init($item->getFilename())->resize(201, 201); ?>"/>        </a>
+			</li>
+			
+			<?php
+			$i=0;
+				foreach($collection as $photo){
+					
+					
+					if($i<13){			?>
+			<li>	
+                <a href="<?php echo $item->getUrlRewrite(); ?>" alt="<?php echo $photo->getTitle(); ?>" class="gallery" >
+                <img src="<?php echo $this->helper('gallery/image')->init($photo->getFilename())->resize(201, 201); ?>"/>        </a>
+			</li>
+			<?php
+			}
+			$i++;
+					
+			
+				}
+			?>
+	
+	<?php 
+		} 
+	}
+	
+	?>
+	</ul>	
+
+	
+</div>

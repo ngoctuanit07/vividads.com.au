@@ -1,0 +1,169 @@
+<div class="display-list">
+<div class="display-list-top">
+ <?php /*?>   <div class="find-item">
+                       <img src="<?php echo $this->getSkinUrl();?>images/icon-magnifier.png" alt=""/><span class="find-heading">Find Your Perfect Display</span> Rollover the categories for a quick description of our products.
+    </div><?php */?>
+        <div class="feature-categories">
+                       <img src="<?php echo $this->getSkinUrl();?>images/featured-categories.jpg" alt=""/>
+    </div>
+</div>
+<div class="display-list-content" style="display:none;">
+    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+        <tbody>
+            
+            <tr>
+            
+            
+            <?php
+            
+            $store = Mage::app()->getStore()->getId();
+                
+                $rootId     = Mage::app()->getStore($store)->getRootCategoryId();
+                
+                $collection = Mage::getModel('catalog/category')->getCollection()
+                ->addFieldToFilter('path', array('like'=> "1/$rootId/%"))
+                ->addAttributeToSelect('name')
+                ->addAttributeToSelect('is_active')
+                ->addAttributeToSelect('thumbnail')
+                ->addAttributeToSelect('url')
+                ->addAttributeToSelect('description')
+                ->addAttributeToFilter('is_active', 1)
+                ->addAttributeToFilter('is_featured', 148)
+                ->setPage(0, 6)
+                ->load();
+                //echo "Count :".$collection->count();
+                $counteri = 0;
+                foreach ($collection as $_childCategory){
+                    $counteri++;
+                    $_img= $_childCategory->getThumbnail();
+                    $catName=$_childCategory->getName();
+                    $getCatUrl=$_childCategory->getUrl();
+                    $cur_category=Mage::getModel('catalog/category')->load($_childCategory->getId());
+                    // echo $getCatUrl;
+					// exit;
+            ?>
+            
+            <td class="<?php if($counteri==6){ echo 'last'; }?>">
+            <div class="display-list-category-img"> 
+            <a onmousemove="onHover(this);" title="<?php echo $catName; ?>" href="<?php echo $getCatUrl; ?>">
+                <img width="153" height="136" onmousemove="onHover(this);" src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$cur_category->getThumbnail()  ?>" alt="<?php echo $catName; ?>">
+                
+                <span class="display-list-category-details" style="display:none;">
+                    <span class="display-list-category-details-top"></span>
+                      <span class="display-list-category-details-content">
+                        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td width="210">
+                                        <img width="210" height="187" src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$cur_category->getThumbnail()  ?>" alt="<?php echo $catName; ?>"></td>
+                                    <td width="5">
+                                    </td>
+                                    <td class="description-td">
+                                        <p><strong><?php echo $catName; ?></strong></p>
+                                        <p></p><p style="font-size:14px; padding-top:8px; line-height:22px;">
+                                        <?php //echo $cur_category->getShortDescription(); ?>
+                                        <?php echo $cur_category->getDescription(); ?>
+                                        </p><p></p>	
+                                        <p><button class="browse" onclick="setLocation('<?php echo $getCatUrl; ?>');" title="Browse"><span>Browse</span></button></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </span>
+                      <span class="display-list-category-details-bottom"></span>
+                </span>
+                
+            </a>
+            </div>
+            <div class="display-list-category-button">
+                <span class="forfetcatname" onclick="setLocation('<?php echo $getCatUrl; ?>');"><?php echo $catName; ?></span><span class="forcartimg"></span>
+            </div>
+            &nbsp;
+            </td>
+            <?php } ?>
+            
+            </tr>
+            
+            
+        </tbody>
+    </table>
+</div>
+  <script src="<?php echo $this->getSkinUrl()?>js/jquery-1.9.1.min.js"></script>
+<script src="<?php echo $this->getSkinUrl()?>js/modernizr.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        if (Modernizr.touch) {
+            // show the close overlay button
+            $(".close-overlay").removeClass("hidden");
+            // handle the adding of hover class when clicked
+            $(".img").click(function(e){
+                if (!$(this).hasClass("hover")) {
+                    $(this).addClass("hover");
+                }
+            });
+            // handle the closing of the overlay
+            $(".close-overlay").click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                if ($(this).closest(".img").hasClass("hover")) {
+                    $(this).closest(".img").removeClass("hover");
+                }
+            });
+        } else {
+            // handle the mouseenter functionality
+            $(".img").mouseenter(function(){
+                $(this).addClass("hover");
+            })
+            // handle the mouseleave functionality
+            .mouseleave(function(){
+                $(this).removeClass("hover");
+            });
+        }
+    });
+</script>
+ <div id="effect-1" class="effects clearfix">
+     
+            <?php
+            
+            $store = Mage::app()->getStore()->getId();
+                
+                $rootId     = Mage::app()->getStore($store)->getRootCategoryId();
+                
+                $collection = Mage::getModel('catalog/category')->getCollection()
+                ->addFieldToFilter('path', array('like'=> "1/$rootId/%"))
+                ->addAttributeToSelect('name')
+                ->addAttributeToSelect('is_active')
+                ->addAttributeToSelect('thumbnail')
+                ->addAttributeToSelect('url')
+                ->addAttributeToSelect('description')
+                ->addAttributeToFilter('is_active', 1)
+                ->addAttributeToFilter('is_featured', 148)
+                ->setPage(0, 6)
+                ->load();
+                //echo "Count :".$collection->count();
+                $counteri = 0;
+                foreach ($collection as $_childCategory){
+                    $counteri++;
+                    $_img= $_childCategory->getThumbnail();
+                    $catName=$_childCategory->getName();
+                    $getCatUrl=$_childCategory->getUrl();
+                    $cur_category=Mage::getModel('catalog/category')->load($_childCategory->getId());
+                    // echo $getCatUrl;
+					// exit;
+            ?>
+            <div class="img">
+                <img src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$cur_category->getThumbnail()  ?>" alt="<?php echo $catName; ?>" title="<?php echo $catName; ?>" width="210" height="210">
+                <div class="overlay" >
+                    <a href="<?php echo $getCatUrl; ?>" class="expand-lay"><strong style="font-size:16px;"><?php echo $catName; ?></strong><br /><?php echo $cur_category->getDescription(); ?></a>
+                    <a href="<?php echo $getCatUrl; ?>" class="more-info">More Info</a>
+                </div></div>
+                <?php }?>
+                </div>
+
+<!--<div class="display-list-bottom"></div>-->
+</div>
+<div class="display-list-top" style="display:none;">
+    <div class="find-item">
+                       <span class="find-heading">Our Products</span>     </div>
+</div>
+                        <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('allproducts_13expo')->toHtml() ?>

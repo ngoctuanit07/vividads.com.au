@@ -1,0 +1,44 @@
+﻿"Add New Row","Een Nieuwe Rij Toevoegen"
+"Upload Files","Upload Bestandenen"
+"All Files","All Bestanden"
+Attachments,Bijlagen
+"Edit Custom Template","Aangepaste Sjabloon Bewerken"
+"Create Custom Template","Aangepaste Sjabloon Creeren"
+"No Templates Found","Geen Sjablonen Gevonden"
+"Default Template Name","Standaard Sjabloon Naam"
+"Default Template File","Standaard Sjabloon Bestand"
+"Custom Template Name","Aangepaste Sjabloon Naam"
+Subject,Onderwerp
+Sender,Afzender
+Action,Actie
+Back,Terug
+"Generate Templates","Sjablonen Genereren"
+"Replace In Custom Templates","Vervang In Aangepaste Sjablonen"
+"Default Config","Standaard Config"
+"E-mail Templates Manager","Email Sjablonen Beheerder"
+"Please choose Stores, which the Module`s functionality will be enabled for in System/Configuration/AITOC MODULES SETTINGS/Aitoc Module Manager/""Enable/Disable Modules Functionality""","Kies alstublieft de winkels, voor welke de functionaliteit van de modulus zal worden ingeschakeld in Systeem/Configuratie/AITOC MODULES INSTELLINGEN/Aitoc Modulus Beheer/""Inschakelen/Uitschakelen Functionaliteit van de Modulus"""
+"The selected scope is not available for the current license configuration. Available scope is selected automatically.","De geselecteerde toepassingsgebied is niet beschikbaar voor de huidige licentie configuratie. Beschikbare toepassingsgebied wordt automatisch geselecteerd."
+"Store Transactional Emails","Winkel Transactionele Emails"
+"Templates generated. Total %s entries replaced.","Sjablonen gegenereerd. In totaal %s vermeldingen vervangen."
+"Replace complete. Total %s entries replaced.","Vervanging voltooid. In totaal %s vermeldingen vervangen."
+"Transactional Emails","Transactionele Emails"
+"Aitemails Module","Aitemails Modulus"
+"Allow Everything","Alles Toelaten"
+"Email template manager","Email sjabloon beheerder"
+"Custom template saved successfully","Aangepaste sjabloon succesvol opgeslagen"
+"Replace In Templates","Vervang In Sjablonen"
+"Are you sure you want to overwrite existing custom templates?","Bent u zeker dat u de bestaande aangepaste sjablonen wilt overschrijven?"
+"Replace default entries","Vervang standaard vermeldingen"
+"Note that leading and trailing spaces (if any)  will not be trimmed","Let op dat leidende en naloop spaties (indien aanwezig) zullen niet zijn bijgesneden"
+"Delete existing custom templates for this store view","Verwijder de bestaande aangepaste sjablonen voor de overzicht van deze winkel"
+Find,Vinden
+"Replace with","Vervangen door"
+"Replace in custom templates","Vervang in aangepaste sjablonen"
+"Add one more row","Nog een rij toevoegen"
+"Current Configuration Scope:","Huidige Configuratie Omvang:"
+"Locale: ","Localisatie: "
+"(all symbols except letters and digits will be removed)","(alle symbolen behalve de letters en cijfers zullen worden verwijderd)"
+"Attachment Name",Bijlagenaam
+File,Bestand
+"Sort Order","Sorteer Bestelling"
+"This content requires last version of Adobe Flash Player. <a href=""%s"">Get Flash</a>","Deze inhoud vereist de laatste versie van Adobe Flash Player. <a href=""%s"">Flash Downloaden</a>"

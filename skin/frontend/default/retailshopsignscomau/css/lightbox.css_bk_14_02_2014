@@ -1,0 +1,280 @@
+/*body {
+font-family:verdana;
+font-size:15px;
+}
+
+a {color:#333; text-decoration:none}
+a:hover {color:#ccc; text-decoration:none}*/
+
+#mask {
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:9000;
+  background-color:#000;
+  display:none; opacity:0.5 !important;
+}  
+#boxes .window {
+  position:absolute;
+  left:0;
+  top:10px !important;
+  width:440px;
+  height:200px;
+  display:none;
+  z-index:9999;
+  padding:20px;
+}
+#boxes #dialog {  
+  width:536px;
+  /*height:203px;*/
+  height:auto;
+  padding:0px;
+  background-color:transparent;
+}
+
+a.close {display:block; width:auto; background:url("<?php echo $this->getSkinUrl(); ?>images/agree-btn-l.png")0 0 no-repeat; padding:0 0 0 11px; text-decoration:none; margin:0; height:37px; float:left; margin-right:15px;}
+a:hover.close {display:block; width:auto; background:url("<?php echo $this->getSkinUrl(); ?>images/agree-btn-l.png")0 100% no-repeat; padding:0 0 0 11px; text-decoration:none; margin:0; height:37px; float:left; margin-right:15px;}
+a.close span {display:block; width:auto; background:url("<?php echo $this->getSkinUrl(); ?>images/agree-btn-r.png")100% 0 no-repeat; padding:9px 22px 0 11px; text-decoration:none; margin:0; height:28px; float:left; font:normal 16px Arial, Helvetica, sans-serif; color:#fff;}
+a:hover.close span {display:block; width:auto; background:url("<?php echo $this->getSkinUrl(); ?>images/agree-btn-r.png")100% 100% no-repeat; padding:9px 22px 0 11px; text-decoration:none; margin:0; height:28px; float:left; font:normal 16px Arial, Helvetica, sans-serif; color:#fff;}
+
+
+/* poppup box ============================== */
+.dialog table.table_window {border-collapse: collapse; border-spacing: 0; width: 100%; margin: 0px; padding: 0px; }
+.dialog .mid .magento_w {background: url(../images/window_left.png) repeat-y left top; width: 17px; }
+
+
+
+
+#video_window_content{
+background:url(../images/ajax_mc_loader.gif) no-repeat center center;
+width:1012px!important;
+min-height:300px;
+}
+#media_window_content{
+width:950px!important;
+}
+
+.magento_close{
+background:url(../images/button_close.png) no-repeat left top;
+width:52px;
+height:52px;
+    position: absolute; z-index: 99; cursor:pointer;
+    right: -18px;
+    top: -22px;
+
+}
+.dialog .magento_content{
+background-color:#FFFFFF;
+}
+.dialog .top .magento_nw{
+background:url(../images/window_top_left.png) repeat-y left top;
+width:17px;
+
+}
+
+
+#loading-window  .top .magento_nw{ width:0; }
+
+
+.dialog .top .magento_n{
+background:url(../images/window_top.png) repeat-x left top;
+height:17px;
+}
+#loading-window  .top .magento_n{ background:none; }
+.dialog .top .magento_ne{
+background:url(../images/window_top_right.png) no-repeat left top;
+width:22px;
+}
+
+#loading-window  .top .magento_ne{ width:0; }
+.dialog .mid .magento_w{
+background:url(../images/window_left.png) repeat-y left top;
+width:17px;
+}
+#loading-window  .mid .magento_w{ width:0; background:none; }
+
+
+
+.dialog .mid .magento_e{
+background:url(../images/window_right.png) repeat-y left top;
+width:22px;
+}
+
+#loading-window  .mid .magento_e{ width:0; }
+
+
+
+.dialog .bot .magento_sw{
+background:url(../images/window_bottom_left.png) no-repeat -1px top;
+width:17px;
+height:25px;
+}
+
+#loading-window  .bot .magento_sw{ width:0; }
+
+.dialog .bot .magento_s{
+background:url(../images/window_bottom.png) repeat-x left top;
+height:25px;
+}
+
+#loading-window  .bot .magento_s{ background:none; height:0; }
+#loading-window #loading-window_row3,#loading-window #loading-window_row1{ position:absolute; top:-10000px; left:-10000px; display:none; }
+#loading-window{ height:auto!important; }
+.dialog .bot .magento_se{
+background:url(../images/window_bottom_right.png) no-repeat right bottom;
+height:25px;
+width:22px;
+}
+
+#loading-window  .bot .magento_se{ width:0; }
+
+
+
+.dialog .top.table_window{
+background:none;
+border:none;
+}
+
+.dialog .top .magento_n .title_window{
+color:#2B2B2B;
+font-size:1px;
+height:17px;
+padding:0;
+margin:0;
+line-height:10px;
+}
+
+#loading-window  .top .magento_n .title_window{ 
+font-size:12px;
+}
+
+
+
+.view-larger-div{ 
+display:block;
+width:100%;
+clear:both;
+text-align:center;
+}
+.view-larger {
+padding-left:13px;
+background:url(../images/view_larger_bg.png) no-repeat left center;
+font-weight:bold;
+}
+
+.view-larger-item-active{
+background:url(../images/view_larger_item_bg.png) no-repeat right center;
+}
+
+.view-larger-item{
+margin-bottom:10px;
+padding-right:6px;
+position:relative;
+}
+
+.view-larger-item .view-larger-item-a{ 
+display:block; 
+border:#ccc 1px solid; 
+cursor:pointer;
+position:relative;
+}
+.view-larger-item .view-larger-item-a img{
+border:#fff 2px solid; 
+display:block;
+cursor:pointer;
+}
+.view-larger-item .view-larger-item-a .video-button{
+position:absolute;
+top:0;
+left:0;
+}
+.view-larger-item-active .view-larger-item-a{
+border:#000 1px solid;
+}
+.view-larger-item-active .view-larger-item-a img{
+border:#000 2px solid; 
+}
+body .dialog .mid td{
+background:none;
+vertical-align:top;
+text-align:center;
+background-color:#fff;
+overflow:hidden;
+}
+
+#full-view-img-td .video-object{
+position:relative;
+margin:0 auto;
+}
+body .dialog .mid table{
+height:100%;
+margin-top:0;
+}
+
+.view-larger-button{
+border:0;
+background:url(../images/product.png) no-repeat -85px -253px;
+position:relative;
+cursor:pointer;
+top:25px;
+left:0;
+padding:0;
+margin:0;
+width:97px;
+height:20px;
+}
+.view-larger-button:active{
+top:26px;
+left:1px;
+}
+.view-larger-button span{
+position:absolute;
+top:0;
+left:-100000px;
+}
+
+
+.top.table_window {border-bottom: 4px solid #DEEBF0; }
+
+/* 01-07-13 ==================== */
+#customerquote-info-wrapper .form-list li input.input-text {width: 132px; float:left;}
+#top-customerquote h2 { background-color: #9BBC21; text-align: center; height: 38px; line-height: 38px; color: white; font-weight: bold; font-size: 18px; }
+#customerquote-login h3 {color: #444; }
+#customerquote-login, #customerquote-welcome {clear: left; border-bottom: 0px solid #CCC; margin: 5px 0; font-weight: bold; text-align:left; position:relative;}
+#top-customerquote h3 {text-align: center; margin-top: 10px; margin-bottom: 12px; clear: both; font-size:14px; }
+input.radio, input.checkbox {margin-right: 3px; font-size: 11px !important; margin-top: 2px; vertical-align: top; }
+#top-customerquote ul.form-list {width: 100% !important;}
+.form-list li {margin: 0 0 4px; vertical-align: top; }
+.form-list li.fields {margin: 0; }
+#top-customerquote .form-list label, .quote-details .form-list label, #top-customerquote .form-list input.input-text, .quote-details .form-list input.input-text, #top-customerquote .form-list textarea, .quote-details .form-list textarea {
+width: auto;
+font-size: 12px;
+}
+.required em {color: #F15C22; margin-right: 4px; }
+#customerquote-info-wrapper .form-list li input.street1 {width: 238px; }
+#top-customerquote .customer-infomation .form-list li, #top-customerquote .form-list li .field {float: left; width: 50%; clear: none; }
+.dialog .top .magento_n .title_window {color: #2B2B2B; font-size: 1px; height: 17px; padding: 0; margin: 0; line-height: 10px; }
+#top-customerquote .form-list select {width: 113px; }
+
+.dialog .bot .magento_s {background: url(../images/window_bottom.png) repeat-x left top; height: 25px;}
+.dialog .bot .magento_sw {background: url(../images/window_bottom_left.png) no-repeat -1px top; width: 17px; height: 25px; }
+.dialog .bot .magento_se {background: url(../images/window_bottom_right.png) no-repeat right bottom; height: 25px; width: 22px; }
+
+.form-list label{padding:2px 15px 0 0;}
+#top-customerquote #inhanddate {width: 100px; }
+#customerquote-info-wrapper .form-list select.shipping-country, #customerquote-info-wrapper .form-list select.billing-country {width: 152px; }
+#top-customerquote .button-wrapper {text-align: center; margin-top: 10px; }
+#top-customerquote a.button, #top-customerquote button.button span, #top-customerquote a.button span, #top-customerquote .button.button span span {border:0; background-color: transparent; background-image: url(../images/bkg_btn.gif); background-repeat: no-repeat; }
+#top-customerquote a.button span, #top-customerquote button.button span span {padding: 0 15px 1px 5px; color: white; background-position: 100% 0; display: -moz-inline-block;  display: inline-block; white-space: nowrap; font: bold 11px/20px Arial, Helvetica, sans-serif; height: 20px; }
+#top-customerquote .form-list label.required em{float:left !important; position:relative !important; top:auto !important; left:auto !important; right:auto !important; bottom:auto !important; }
+#top-customerquote span.control {position: relative; top: -17px; left: 30%; font-size: 12px; }
+#top-customerquote .billing-h3 {margin-bottom: 0; }
+
+#customerquote-info-wrapper .form-list li input.validate-zip-international {width: 104px; }
+.form-list li.fields .field {
+}
+
+#customerquote-login.login{position: absolute; right: 6px; top: -5px;} 
+.form-list li.email, .form-list li.password{float:left; display:block;}
+#customerquote-info-wrapper{border-top: 1px solid #B6B6B6;
+margin-top: 60px;}

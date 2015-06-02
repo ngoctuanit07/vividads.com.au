@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Artis_Externalform>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Artis_Externalform>
+    </modules>
+</config> 

@@ -1,0 +1,32 @@
+/******************************** 06-11-2013 *****************************************/
+.totaldiv{overflow:hidden;padding-top: 2px;}
+.totaldiv .tabclass{margin-bottom:8px; width:450px; }
+.totaldiv .tabclass .item_class{margin-left:12%;}
+
+/******************************** 07-11-2013 *****************************************/
+.systemalert-adminhtml-systemalert-index .file_class{text-align:right;}
+.systemalert-adminhtml-systemalert-index .tabclass2 .item_class{margin-left: 12%;}
+.systemalert-adminhtml-systemalert-index .tabclass2 {text-align: right;width: 450px;margin-bottom: 8px;}
+.systemalert-adminhtml-systemalert-index .total_proof tr td{padding:0 !important;}
+
+/* ====================== 08-11-2013 ====================== */
+
+#dvFile .tabclass{margin-bottom:6px;}
+#dvFile {width:124%;}
+
+
+/**************************** 27_11_2013 ****************************************/
+
+.totaltask{position: fixed;margin-left: 419px;top: 176px;background-color: white;width: 437px;height: 219px;box-shadow: 0 2px 4px rgba(0,0,0,.2);border: 1px solid #CCC; }
+.taskclose{float: right;margin-right: 13px;font-weight: bold;cursor:pointer;}
+.taskbody{margin-left: 20px;margin-top: 20px;}
+.taskbody textarea{width: 246px;height: 83px;} 
+.calendar{position: fixed;left: 660px;top: 228px;}
+
+.totalcondition{position: fixed;margin-left: 225px;top: 176px;background-color: white;width: 877px;min-height: 108px;box-shadow: 0 2px 4px rgba(0,0,0,.2);border: 1px solid #CCC; }
+.conditionclose{float: right;margin-right: 13px;font-weight: bold;cursor:pointer;}
+.conditionbody{margin-left: 20px;margin-top: 20px;}
+
+.totaldiv .tabclass { margin-bottom: 8px; width: 85% !important;}
+
+.total_proof .totaldiv .criteriadiv{float:left; padding-left:10px; width:475px; word-break:break-all; text-align:left;}

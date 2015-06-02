@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <testimonial_adminhtml_testimonial_index>
+    	
+        <reference name="content">
+            <block type="testimonial/adminhtml_testimonial" name="[module]" />
+        </reference>
+    </testimonial_adminhtml_testimonial_index>
+    <testimonial_adminhtml_testimonial_edit>
+    	<reference name="head">
+	    	<action method="addJs"><script>testimonial/mw_validate.js</script></action>		
+			<action method="addItem"><type>skin_js</type><name>mw_testimonial/js/jwplayer.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>mw_testimonial/js/prettyPhoto.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>mw_testimonial/js/mw_testimonial.js</name></action>
+			<action method="addItem"><type>skin_css</type><name>mw_testimonial/css/prettyPhoto.css</name></action> 
+      </reference> 
+    </testimonial_adminhtml_testimonial_edit>
+</layout>

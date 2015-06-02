@@ -1,0 +1,831 @@
+<?php
+class BS_Carpet_IndexController extends Mage_Core_Controller_Front_Action
+{
+    
+    public function array_put_to_position($array, $object, $position, $name = null)
+    {
+	$count = 0;
+	$return = array();
+	foreach ($array as $k => $v) 
+	{   
+		// insert new object
+		if ($count == $position)
+		{   
+			if (!$name) $name = $count;
+			$return[$name] = $object;
+			$inserted = true;
+		}   
+		// insert old object
+		$return[$k] = $v; 
+		$count++;
+	}   
+	if (!$name) $name = $count;
+	if (!$inserted) $return[$name];
+	$array = $return;
+	return $array;
+    }
+    
+    ///modified on 8-5-2014
+    public function loadproductAction(){
+	extract($_REQUEST);
+    	$category = new Mage_Catalog_Model_Category();
+	$category->load($catId);
+	$collection = $category->getProductCollection()->addAttributeToSelect('*');
+	$str ='<select class="textfield" id="product_sel" name="productid" onchange="loadProductDetails(this.value)"><option value="">--Please select--</option>';
+	
+	////8-5-2014 S
+	if(count($collection) > 1){
+	   $str .=  '<option value="0:'.$category->getUrl().'">View All</option>';
+	    
+	}
+	
+	////8-5-2014 E
+	
+	
+	
+	
+	foreach ($collection as $_product) { 
+            $str .= '<option value="'.$catId.':'.$_product->getProductUrl().'">'.$_product->getName().'</option>';
+	}
+	$str .= '<select>';
+	echo $str;
+    }
+        
+    public function loadproducthomeAction(){
+	extract($_REQUEST);
+    	$category = new Mage_Catalog_Model_Category();
+	$category->load($catId);
+	$collection = $category->getProductCollection()->addAttributeToSelect('*');
+	$str ='Product: <select class="textfield" id="threeway_product" style="width:215px; margin-left:8px;"><option value="">--Please select--</option>';
+	
+	foreach ($collection as $_product) { 
+            $str .= '<option value="'.$catId.':'.$_product->getId().'">'.$_product->getName().'</option>';
+	}
+	$str .= '<select>';
+	echo $str;
+    }
+    ///modified on 30-4-2014
+    public function loadproductdetailsAction(){
+  
+	extract($_REQUEST);
+	$prctArr = explode(":",$pId);
+	$productid = $prctArr[1];
+	//echo "prod id::".$productid; die;
+	$_Product = Mage::getModel('catalog/product')->load($productid);
+	$price = '$'.number_format($_Product->getPrice(),2);
+	$url = '<a href="'.$_Product->getProductUrl().'?c='.$prctArr[0].'"><input type="button" style="color:transparent;" value="start order" class="startOrder-btn" title="Start Order" name="getprice"></a>'; ///28-4-2014
+	$optArr = $_Product->getOptions();
+	$str = '';
+	$retStr = '';
+	$i = 0;
+	
+	if($optArr){
+	
+	    if($flg == 'ua' ){
+	    
+		foreach($optArr as $optionKey => $optionVal) {
+			$i++;
+			if($optionVal->getIsDependent() == 0){ $style ='style ="display:block;"'; $parent='parent';}
+			else{$style ='style ="display:none;"'; $parent=''; }
+			
+			if($optionVal->getType()=="drop_down"){
+			    $str .='<dl class="clearfix '.$parent.'" id="opt__'.$optionKey.'" '.$style.'><dt><label><b>'.$optionVal->getTitle().'</b></label></dt><dd><select class="textfield txthm" id="select_'.$optionKey.'" onchange="getchildren('.$optionKey.',this.value)"><option value="" price="0">-- Please Select --</option>';
+			    
+			    foreach($optionVal->getValues() as $valuesKey => $valuesVal){
+			        
+				if($i > 1){$prc = "+$".number_format($valuesVal->getPrice(),2);}
+			        
+				$str .='<option value="'.$valuesVal->getId().'">'.$valuesVal->getTitle().''.$prc.'</option>';
+			    }
+			    
+			    $str .='</select></dd></dl>';
+			}
+		   
+		}
+		    
+	    }else{    
+		
+		foreach($optArr as $optionKey => $optionVal) {
+		    
+    		    if($optionVal->getIsDependent() == 0 && $optionVal->getType()=="drop_down"){ //$style ='style ="display:block;"';} else{$style ='style ="display:none;"';
+			
+			$str .='<input class="hideoption" type="hidden" value="0" id="hideopt_'.$optionKey.'"/><dl class="clearfix" id="opt__'.$optionKey.'" '.$style.'><dt><label><b>'.$optionVal->getTitle().'</b></label></dt><dd><select class="textfield txthm" id="select_'.$optionKey.'" onchange="getchildren('.$optionKey.',this.value)"><option value="" price="0">-- Please Select --</option>';
+			
+			foreach($optionVal->getValues() as $valuesKey => $valuesVal){
+			   
+			    $str .='<option value="'.$valuesVal->getId().'">'.$valuesVal->getTitle().'</option>';
+			}
+			  
+			$str .='</select></dd></dl>';
+		    }
+		   
+		    
+		}
+	    
+	    }
+	    
+	    
+	    $retStr = $price."##".$str."##".$url; ///28-4-2014
+	    
+	    echo $retStr;
+	}else{
+	    echo $retStr;
+	}
+	
+    }
+		
+    public function loadproductdetailspopAction(){
+  //echo 'zzzz'; die;
+	//extract($_REQUEST);
+	//$prctArr = explode(":",$pId);
+	$productid =$_REQUEST['pId'];
+	//echo "prod id::".$productid; die;
+	$_Product = Mage::getModel('catalog/product')->load($productid);
+	$price = '$'.number_format($_Product->getPrice(),2);
+	
+	$optArr = $_Product->getOptions();
+	$str = '';
+	$retStr = '';
+	
+	
+	if($optArr){
+	foreach($optArr as $optionKey => $optionVal) {
+	    
+	    if($optionVal->getIsDependent() == 0){ //$style ='style ="display:block;"';} else{$style ='style ="display:none;"';
+		
+    		$str .='<input class="hideoption" type="hidden" value="0" id="hideopt_'.$optionKey.'"/><dl class="clearfix" id="opt__'.$optionKey.'" '.$style.'><dt><label><b>'.$optionVal->getTitle().'</b></label></dt><dd>
+				<select class="textfield pop" id="select_'.$optionKey.'" onchange="getchildrenpop('.$optionKey.',this.value)"><option value="" price="0">-- Please Select --</option>';
+		
+		foreach($optionVal->getValues() as $valuesKey => $valuesVal){
+		   
+		    $str .='<option value="'.$valuesVal->getId().'">'.$valuesVal->getTitle().'</option>';
+		}
+		  
+		$str .='</select></dd></dl>';
+	    }
+	   
+	    
+	}
+	$retStr = $price."##".$str;
+	
+	echo $retStr;
+	}else{
+	    echo $retStr;
+	}
+	
+    }		
+		
+		
+		
+    
+    public function getchildoptAction(){
+	extract($_REQUEST);
+	$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+	$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+	$tableName = Mage::getSingleton('core/resource')->getTableName('catalog_product_option_type_value');
+	$tableName1 = Mage::getSingleton('core/resource')->getTableName('catalog_product_option_title');
+	$tableName2 = Mage::getSingleton('core/resource')->getTableName('catalog_product_option_type_title');
+	$tableName3 = Mage::getSingleton('core/resource')->getTableName('catalog_product_option_type_price');
+	
+	
+	$select = $connectionRead->select()->from($tableName, array('*'))->where("option_id = '".$optId."' AND option_type_id = '".$optvalId."'");
+	$row = $connectionRead->fetchrow($select);
+	$denidsArr=explode(",", $row['dependent_ids']);
+	$subopt = array();
+	$suboptVal = array();
+	$retStr = '';
+	//$retArr = array();
+	if($row['dependent_ids'] != ''){
+	    foreach($denidsArr as $di){
+		$select1 = $connectionRead->select()->from($tableName, array('*'))->where("in_group_id = '".$di."'");
+		$row1 = $connectionRead->fetchrow($select1);
+    		
+		if (!in_array($row1['option_id'],$subopt)) {
+		   $subopt[] = $row1['option_id']; 
+		}
+		
+		foreach($subopt as $so){
+		    if (in_array($so,$row1)) {
+			$suboptVal[$so][] = $row1['option_type_id']; 
+			
+		    }
+		    
+		}
+		
+	    }
+	    
+	    if($flg == 'flg'){
+		foreach($subopt as $so){
+		   $retStr .= $so."##";
+		    
+		}
+		echo $retStr;
+	    }else{
+	    
+		foreach ($suboptVal as $k=>$v){
+		    $select2 = $connectionRead->select()->from($tableName1, array('*'))->where("option_id = '".$k."'");
+		    $row2 = $connectionRead->fetchrow($select2);
+		    //echo '<br>'; echo $row2['title'];
+		    
+		    $retStr .= '<input class="hideoption" type="hidden" value="0" id="hideopt_'.$k.'"/><dl id="opt__'.$k.'" class="clearfix"><dt><label><b>'.$row2['title'].'</b></label></dt><dd><select class="textfield txthm" id="select_'.$k.'"><option price="0" value="">-- Please Select --</option>';
+		    
+		    foreach($v as $val){
+			$select3 = $connectionRead->select()->from($tableName2, array('*'))->where("option_type_id = '".$val."'")->order('option_type_title_id');
+			$row3 = $connectionRead->fetchrow($select3);
+			
+			$select4 = $connectionRead->select()->from($tableName3, array('*'))->where("option_type_id = '".$val."'")->order('option_type_id');
+			$row4 = $connectionRead->fetchrow($select4);
+			
+			if($row4['price'] != ''){
+			    $price = number_format($row4['price'],2);
+			    $pStr = '+$'.$price;
+			    
+			}else{
+			    $pStr = '';
+			}
+			
+			
+			$retStr .= '<option value="'.$val.'">'.$row3['title'].' '.$pStr.'</option>';
+			
+		    }
+		    $retStr .= '</select></dd></dl>';
+		    
+		}
+		
+		echo $retStr;   
+	    }
+	}else{
+	   echo $retStr; 
+	}
+	
+    }
+    //9-4-2014
+		
+		
+public function getchildoptpopAction(){
+	//extract($_REQUEST);
+	$connectionRead = Mage::getSingleton('core/resource')->getConnection('core_read');
+	$connectionWrite = Mage::getSingleton('core/resource')->getConnection('core_write');
+	$tableName = Mage::getSingleton('core/resource')->getTableName('catalog_product_option_type_value');
+	$tableName1 = Mage::getSingleton('core/resource')->getTableName('catalog_product_option_title');
+	$tableName2 = Mage::getSingleton('core/resource')->getTableName('catalog_product_option_type_title');
+	$tableName3 = Mage::getSingleton('core/resource')->getTableName('catalog_product_option_type_price');
+	//echo $optId."***".$optvalId; die;
+	$optId=$_REQUEST['optId'];
+	$optvalId=$_REQUEST['optvalId'];
+	$select = $connectionRead->select()->from($tableName, array('*'))->where("option_id = '".$optId."' AND option_type_id = '".$optvalId."'");
+	$row = $connectionRead->fetchrow($select);
+	$denidsArr=explode(",", $row['dependent_ids']);
+	$subopt = array();
+	$suboptVal = array();
+	$retStr = '';
+	if($row['dependent_ids'] != ''){
+	    foreach($denidsArr as $di){
+		$select1 = $connectionRead->select()->from($tableName, array('*'))->where("in_group_id = '".$di."'");
+		$row1 = $connectionRead->fetchrow($select1);
+    		
+		if (!in_array($row1['option_id'],$subopt)) {
+		   $subopt[] = $row1['option_id']; 
+		}
+		
+		foreach($subopt as $so){
+		    if (in_array($so,$row1)) {
+			$suboptVal[$so][] = $row1['option_type_id']; 
+			
+		    }
+		    
+		}
+		
+	    }
+	    
+	    foreach ($suboptVal as $k=>$v){
+		$select2 = $connectionRead->select()->from($tableName1, array('*'))->where("option_id = '".$k."'");
+		$row2 = $connectionRead->fetchrow($select2);
+		//echo '<br>'; echo $row2['title'];
+		
+		$retStr .= '<input class="hideoption" type="hidden" value="0" id="hideopt_'.$k.'"/><dl id="opt__'.$k.'" class="clearfix"><dt><label><b>'.$row2['title'].'</b></label></dt><dd><select class="textfield pop" id="select_'.$k.'"><option price="0" value="">-- Please Select --</option>';
+		
+		foreach($v as $val){
+		    $select3 = $connectionRead->select()->from($tableName2, array('*'))->where("option_type_id = '".$val."'")->order('option_type_title_id');
+		    $row3 = $connectionRead->fetchrow($select3);
+		    
+		    $select4 = $connectionRead->select()->from($tableName3, array('*'))->where("option_type_id = '".$val."'")->order('option_type_id');
+		    $row4 = $connectionRead->fetchrow($select4);
+		    
+		    if($row4['price'] != ''){
+			$price = number_format($row4['price'],2);
+			$pStr = '+$'.$price;
+			
+		    }else{
+			$pStr = '';
+		    }
+		    
+		    
+		    $retStr .= '<option value="'.$val.'">'.$row3['title'].' '.$pStr.'</option>';
+		    
+		}
+		$retStr .= '</select></dd></dl>';
+		
+	    }
+	    
+	    echo $retStr;   
+	    
+	}else{
+	   echo $retStr; 
+	}
+	
+    }
+	
+		
+    public function getartworkAction(){
+	extract($_REQUEST);
+	//print_r($_REQUEST);
+	$_Product = Mage::getModel('catalog/product')->load($prodId);
+	$category = Mage::getModel('catalog/category')->load($catId);
+	$img = Mage::helper('catalog/image')->init($_Product, 'image')->resize(250);
+	
+        
+    
+	$str='<div class="clearfix"></div>
+		<div class="float-L clearfix" id="innerLeft-tabing">
+		  <div id="uploadYourArtworkData" class="innerLeft-tabing">
+		  <div class="title">Submit Your Artwork Details </div>
+		  
+		  <div id="subret" style="display:none"></div>
+		  <div style="overflow: auto; width: 625px;" id="printreadytab1" class="detailtab">
+			<dl class="clearfix">
+			  <dt>Project Name</dt>
+			  <dd>
+			    <input type="text" value="" maxlength="70" class="textfield" id="projectname" name="projectname">
+			  </dd>
+			</dl>
+			<dl class="clearfix">
+			  <dt>Category</dt>
+			  <dd>
+			  <input type="text" value="'.$category->getName().'" maxlength="70" class="textfield products" id="categoryName" name="categoryName" readonly="readonly">
+			</dd>
+			</dl>
+			<dl class="clearfix">
+			  <dt>Product Name</dt>
+			  <dd>
+				
+			    <input type="text" value="'.$_Product->getName().'" maxlength="70" class="textfield products" id="productName" name="productName" readonly="readonly">
+			  </dd>
+			</dl>
+			
+		
+			';
+			
+			
+			$str2='<dl class="clearfix">
+			    <dt>Price</dt>
+			    
+			    <dd id="total_display_pr">
+				<div class="price-box">
+				<span itemprop="offers" itemscope="" itemtype="http://schema.org/Offer" id="product-price-610" class="regular-price">
+				<span itemprop="price" id="price-to-change" class="price">AU$'.number_format($_Product->getprice(),2).'</span></span>
+				<input type="hidden" id="price_get" value='.$_Product->getprice().' />
+				<input type="hidden" id="opt_price" value="0" />
+				<input type="hidden" id="product_id" value='.$_Product->getId().' />
+				</div>
+			    </dd>
+		        </dl>
+			<dl class="float-L">
+			    <dd class="text float-L">Include any notes or requests to our production team before they process your file...Type here...</dd>
+			    <dd class="float-L textarea">
+			    <textarea class="textfield w587" id="description_pr" name="description_pr" onkeyup="changLimit(this.value)" maxlength="255"></textarea>
+			    <div class="shadowSprite shadow590"></div>
+			    <dd class="text float-L">
+			    <div class="allowedWords">Allowed Words (<span id="tWords">255</span>)</div>
+			    </dd>
+			    </dd>
+			    
+			</dl>
+			<dl class="float-L upload">
+			    <dd class="text float-L">Select Upload Options</dd>
+			    <dd class="text">
+			    <div class="upload-module clear">
+			    <div class="Options1">
+			    <form action="" method="post" id="form-validate" enctype="multipart/form-data">
+			    <input type="file" name="artworkfile" id="artworkfile" /> <span class="sizelimit">Upto 2GB</size>
+			    <input type="hidden" name="optarr" id="optarr" value="" />
+			    <input type="hidden" name="cusprice" id="cusprice" value="" />
+			    <input type="hidden" name="cusnote" id="cusnote" value="" />
+			    <input type="hidden" name="prodId" id="prodId" value="'.$_Product->getId().'" />
+					<input type="hidden" id="width" />
+				  <input type="hidden" id="length" />
+				  <input type="hidden" name="dimension" id="dimension"/> 
+			    <input type="hidden" name="form_key" value="'.Mage::getSingleton('core/session')->getFormKey().'" />
+			    
+			    </form>
+			    
+			    </div>
+			    
+			    
+			    
+			    </div>
+			    </dd>
+			    <div class="shadowSprite shadow590"></div>
+			</dl>
+			<dl class="clearfix float-R">
+			    
+			    <input type="button" onclick="addToCartGc('.$_Product->getId().');" name="addCartBtn" id="addCartBtn" value="Add to Cart" class="cart-button add-to-cart">
+			</dl>
+			<dl style="height:20px;">
+			</dl>
+	
+		  </div>
+		</div>
+		
+    	</div>';
+	
+	$str3 = '<div class="float-R clearfix" id="innerRight-specifications">
+		<div style="width:270px; height:220px; border:0px solid #ccc;margin-top:15px;">
+		<p class="product-image">
+				      
+	        <img title="Custom Mesh Banner" alt="Custom Mesh Banner" src="'.$img.'" id="mainImage">
+				       
+		      
+		  </p>
+		</div>
+		<div style="margin-top:30px;">
+		<div class="mrg-B10">
+		  <dl class="clearfix">
+		    <dt>File Type</dt>
+		    <dd> JPEG, PDF, DOC, JPG, DOCX,
+		      EPS, CDR, AI, GIF, PSD, TIF,
+		      TIFF, PPT, PNG, BMP </dd>
+		  </dl>
+		  <dl class="clearfix">
+		    <dt>Resolution</dt>
+		    <dd>150 DPI to 600 DPI</dd>
+		  </dl>
+		  <dl class="clearfix">
+		    <dt>Color Mode</dt>
+		    <dd>CMYK</dd>
+		  </dl>
+		  <dl class="clearfix">
+		    <dt>Text</dt>
+		    <dd>Convert to Outlines</dd>
+		  </dl>
+		  <dl class="clearfix">
+		    <dt>Layers</dt>
+		    <dd>Flatten to a Background Layer</dd>
+		  </dl>
+		  <dl class="clearfix">
+		    <dt>Compression</dt>
+		    <dd>Zip files if necessary</dd>
+		  </dl>
+		</div>
+		
+		<div class="clear">
+		  <p>&nbsp;</p>
+		</div>
+		<div class="supportModule float-R">
+		  <div class="supportIcon"></div>
+		  <div class="smalltext">Need Help or questions?</div>
+		  <div class="box grey-gredient-bg">
+		    <div class="float-L">
+		      <div class="calltext">(03) 8400-4345</div>
+		      <a href="mailto:Array" class="emailink" title="send us email" rel="nofollow">send us email</a>&nbsp; » </div>
+		    <div class="float-L livesupport"> 
+		    <a rel="nofollow" href="#" >
+		    <img align="bottom" alt="Live Support" title="Live Support" src="https://image.providesupport.com/image/bannerbuzz/current"></a> </div>
+		  </div>
+		  
+		</div>
+	      </div>';
+	
+	echo $str."##".$str2.'##'.$str3;
+    }
+    
+   
+   public function addcartartworkAction(){
+	extract($_REQUEST);
+	$_product = Mage::getModel('catalog/product')->load($prodId);
+	$_helper = Mage::helper('catalog/output');
+	//echo $optarr."**";die;
+	$Arr = explode("**",$optarr);
+	$selArr = explode("##",$Arr[0]);
+	$optArr = explode("##",$Arr[1]);
+	array_pop($optArr);
+	array_pop($selArr);
+	$sel = array();
+	foreach($selArr as $key=>$val){
+	    $sel[$val]=$optArr[$key];
+	    
+	}
+	
+	$string=trim($_FILES['artworkfile']['name']);
+	$size=$_FILES['artworkfile']['size'];
+	$arr= explode('.', $string);
+	$ext=$arr[count($arr)-1];
+	//echo $ext;
+	$extArr = array("jpeg", "pdf", "doc", "jpg", "docx", "eps", "cdr", "ai", "gif", "psd", "tif", "tiff", "ppt", "png", "bmp");
+	
+	if(in_array($ext,$extArr) && $_FILES["artworkfile"]["size"] < 2097152){
+	    if(isset($_FILES['artworkfile']['name'])){
+		
+		$time = time();
+		$path = Mage::getBaseDir('media') . DS ."artworkfiles" . DS;
+		
+		$fileExt = strtolower(substr(strrchr($_FILES['artworkfile']['name'], "."), 1));
+                $filename = "artwork_".$prodId."_".time().".".$fileExt;
+		$uploader = new Varien_File_Uploader('artworkfile');
+		$uploader->setAllowedExtensions($extArr);
+		$uploader->setAllowCreateFolders(true);
+		$uploader->setAllowRenameFiles(false);
+		$uploader->setFilesDispersion(false);
+    		$uploader->save($path,$filename);
+		$url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."artworkfiles/".$filename;
+		$dimension=$_REQUEST['dimension'];
+		//echo $dimension; die;
+		
+		$params = array(
+		'product' => $proId,
+		'qty' => 1,
+		'price' => $cusprice,
+		'artworkfile' => $url,
+		'customernotes' => $cusnote,
+		'dimension' => $dimension,
+		'options' => $sel
+		);
+		
+		$cart = Mage::getModel('checkout/cart');
+		Mage::getSingleton('core/session', array('name'=>'frontend'));
+		
+		$cart->addProduct($_product, $params);
+		$cart->save();
+		Mage::getSingleton('checkout/session')->setCartWasUpdated(true);
+		echo "Product ".$_product->getName()." has been added to your cart";
+	    }else{
+		echo "No file name found";   
+	    }
+		    
+	}else{
+	    echo "File type is not allowed or file size is too large";
+	}
+	
+   }
+	 
+    public function gettireunitpriceAction(){
+	$qty=$_REQUEST['qty'];
+	$old_price=$_REQUEST['old_price'];
+	$opt_price=$_REQUEST['opt_price'];
+	$_product=Mage::getModel('catalog/product')->load($_REQUEST['pId']);
+	$price_calculate=($_product->getTierPrice($qty) + $opt_price) * $qty;
+	echo number_format($price_calculate,2);
+    }
+    public function addcartmainhomeAction(){
+	$prodidArr=explode(':',$_REQUEST['productid']);
+	$_product = Mage::getModel('catalog/product')->load($prodidArr[1]);
+	$_helper = Mage::helper('catalog/output');
+	$optarr=$_REQUEST['optarr_home'];
+	$cusprice=$_REQUEST['cusprice_home'];
+	$dimension=$_REQUEST['dimension_home'];
+	$Arr = explode("**",$optarr);
+	$selArr = explode("##",$Arr[0]);
+	$optArr = explode("##",$Arr[1]);
+	array_pop($optArr);
+	array_pop($selArr);
+	$sel = array();
+	foreach($selArr as $key=>$val){
+	    $sel[$val]=$optArr[$key];
+	}
+	$params = array(
+	'product' => $prodidArr[1],
+	'qty' => 1,
+	'price' => $cusprice,
+	'dimension'=>$dimension,
+	'options' => $sel
+	);
+	$cart = Mage::getModel('checkout/cart');
+	Mage::getSingleton('core/session', array('name'=>'frontend'));
+	try{
+	$cart->addProduct($_product, $params);
+	$cart->save();
+	Mage::getSingleton('checkout/session')->setCartWasUpdated(true);
+	//echo "Product ".$_product->getName()." has been added to your cart";
+	  //$message=$this->__('Your Review To '.$_product->getName().' has been saved.');
+	$message=$this->__(' Product '.$_product->getName().' has been added to your cart');
+	Mage::getSingleton('core/session')->addSuccess($message);
+	$this->_redirectReferer();
+	
+	}
+	
+	catch(Exception $e){
+	    echo "cart saving error ".$e; die;
+	
+	}
+    
+    }
+
+    ///////////29-4-2014 S//////////////////
+    public function getgodetailsAction(){
+	extract($_REQUEST);
+    	$proArr = explode(":",$productid);
+	$_product = Mage::getModel('catalog/product')->load($proArr[1]);
+	$url = $_product->getProductUrl();
+	$param = $major.'__'.$room_width.'__'.$room_length.'__'.$cusprice_home.'__'.$optarr_home.'__'.$proArr[1].'__'.$dimension_home.'__'.$quantity.'__'.$proArr[0]; ///7-5-2014
+	
+    	$session1 = Mage::getSingleton("core/session",  array("name"=>"frontend"));
+	$session1->setData("prodval", $param);
+
+    	$this->_redirectUrl($url);
+	
+    }
+
+    ///////////30-4-2014 S//////////////////
+    public function goartworkAction(){
+	extract($_REQUEST);
+	//echo "<pre>"; print_r($_REQUEST);
+	//exit;
+	$url = Mage::getBaseUrl().'uploadartwork/';
+	$session1 = Mage::getSingleton("core/session",  array("name"=>"frontend"));
+	$session1->setData("prodet", $_REQUEST);
+    	$this->_redirectUrl($url);
+    }
+    
+    ///1-5-2014
+    public function addartworkAction(){
+	extract($_REQUEST);
+	$_product = Mage::getModel('catalog/product')->load($prodId);
+	$_helper = Mage::helper('catalog/output');
+	$string=trim($_FILES['artworkfile']['name']);
+	$size=$_FILES['artworkfile']['size'];
+	$arr= explode('.', $string);
+	$ext=$arr[count($arr)-1];
+    	$extArr = array("jpeg", "pdf", "doc", "jpg", "docx", "eps", "cdr", "ai", "gif", "psd", "tif", "tiff", "ppt", "png", "bmp");
+	$ret = '';
+	if(in_array($ext,$extArr) && $_FILES["artworkfile"]["size"] < 2097152){
+	    if(isset($_FILES['artworkfile']['name'])){
+		
+		$time = time();
+		$path = Mage::getBaseDir('media') . DS ."artworkfiles" . DS;
+		
+		$fileExt = strtolower(substr(strrchr($_FILES['artworkfile']['name'], "."), 1));
+                $filename = "artwork_".$prodId."_".time().".".$fileExt;
+		$uploader = new Varien_File_Uploader('artworkfile');
+		$uploader->setAllowedExtensions($extArr);
+		$uploader->setAllowCreateFolders(true);
+		$uploader->setAllowRenameFiles(false);
+		$uploader->setFilesDispersion(false);
+    		$uploader->save($path,$filename);
+		$url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."artworkfiles/".$filename;
+		
+		$session1 = Mage::getSingleton("core/session",  array("name"=>"frontend"));
+		$session1->setData("artimag", $url);
+		
+		$ret =  $url;
+	    }else{
+		$ret =  2;   
+	    }
+		    
+	}else{
+	    $ret = 3;
+	}
+	
+	echo $ret;
+    }
+    
+    public function addcartnewAction(){
+	extract($_REQUEST);
+	$session1 = Mage::getSingleton("core/session",  array("name"=>"frontend"));
+	$outputMessage=$session1->getData("artimag");
+	$str = $str1 = '';
+	$_product = Mage::getModel('catalog/product')->load($prodId);
+	$_helper = Mage::helper('catalog/output');
+    	$Arr = explode("**",$optArr);
+	$selArr = explode("##",$Arr[0]);
+	$optArr = explode("##",$Arr[1]);
+	array_pop($optArr);
+	array_pop($selArr);
+	$sel = array();
+	$sR = array();
+	foreach($selArr as $key=>$val){
+	    $sel[$val]=$optArr[$key];
+	    
+	}
+	
+	if($_two_sided_price){
+	    $sid = explode("__",$_two_sided_price);
+    	    $sel[$sid[1]]=$sid[0];
+	}
+	if($_proof_request){
+	    $pfid = explode("__",$_proof_request);
+    	    $sel[$pfid[1]]=$pfid[0];
+	}
+	if($_upgraded_banner){
+	    $upid = explode("__",$_upgraded_banner);
+    	    $sel[$upid[1]]=$upid[0];
+	}
+	if($_wind_flaps){
+	    $wfid = explode("__",$_wind_flaps);
+    	    $sel[$wfid[1]]=$wfid[0];
+	}
+	if($_lamination_option){
+	    $lmid = explode("__",$_lamination_option);
+    	    $sel[$lmid[1]]=$lmid[0];
+	}
+	if($_velcro_bool){
+	    $vlid = explode("__",$_velcro_bool);
+    	    $sel[$vlid[1]]=$vlid[0];
+	}
+	
+	$url = $outputMessage;
+	$dimension="width=".$room_width."".$major." length=".$room_length."".$major;
+	$nameDesc = $projectname." : ".$description_pr;
+	$params = array(
+	    'product' => $proId,
+	    'qty' => $qty,
+	    'price' => $price,
+	    'artworkfile' => $url,
+	    'customernotes' => $nameDesc,
+	    'dimension' => $dimension,
+	    'options' => $sel
+	);
+	
+	$cart = Mage::getModel('checkout/cart');
+	Mage::getSingleton('core/session', array('name'=>'frontend'));
+	try{
+	    $cart->addProduct($_product, $params);
+	    $cart->save();
+	    Mage::getSingleton('checkout/session')->setCartWasUpdated(true);
+	    //$msg = "Product ".$_product->getName()." has been added to your cart";
+	    //$urlR = Mage::getBaseUrl().'uploadartwork/';  
+	    //$this->_redirectUrl($urlR,);
+	    $session = Mage::getSingleton("core/session", array("name"=>"frontend"));
+	    $session->unsetData('artimag');
+	    $session->unsetData('prodval');
+	    $session->unsetData('prodet');
+	    
+	    $msg = 'Product '.$_product->getName().' has been added to your cart';
+	    //$message=$this->__(' Product '.$_product->getName().' has been added to your cart');
+	    //Mage::getSingleton('core/session')->addSuccess($message);
+	    //$this->_redirectReferer();
+	}catch(Exception $e){
+	    $msg = ' cart saving error '.$e;
+	    //$message=$this->__(' cart saving error '.$e);
+	    //Mage::getSingleton('core/session')->addError($message);
+	    //$this->_redirectReferer();
+	    
+	
+	}
+	
+	//////////////cart
+	$cr_currency = Mage::app()->getLocale()->currency(
+	Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+	$quote = Mage::getSingleton('checkout/session')->getQuote();
+	$items = $quote->getAllVisibleItems();			
+	
+	foreach($items as $item){
+	    
+	    $amount[] = $item->getPrice(); 
+	    $quantity[] = $item->getQtyToInvoice(); 
+	    $sku[] = $item->getSku(); 
+	    $description[] = $item->getName(); 
+	}
+	if(is_array($amount)){
+	    $totalPrice = $cr_currency. ' '.number_format(array_sum($amount),2);
+	}
+	$str .= count($items).'Item(s) - '.$totalPrice;
+	$cStore=Mage::app()->getStore();
+	$storeId= $cStore->getWebsiteId();
+	foreach ($items as $item) {	
+		$_product = Mage::getModel('catalog/product')->load($item->getId());
+		$images = $_product->getMediaGalleryImages () ;
+		$i=1;
+		foreach($images as $image){
+		    if($i=0){
+			$imageUrl = $image->getUrl();
+		    }
+		}
+		if($imageUrl!=''){
+		    $imageUrl;
+		}else{
+		    $imageUrl= Mage::helper('catalog/image')->init($_product, 'image')->resize(60,60); 
+		}
+		$str1 .='<li>
+		<a href="'.$_product->getUrl().'" target="_parent" >
+		<div class="imageBox"><img src="'.$imageUrl.'" width="56" height="56" /></div>
+		<h1>'.$item->getName().'</h1>
+		<h2>'.$cr_currency. ' '.number_format($item->getPrice(), 2).'</h2></a>
+		</li>';
+	}
+	
+	$str2 = '<div class="totalItems">
+	    <a href="'.Mage::getBaseUrl().'"checkout/cart/">'
+	    .count($items).'item(s)</a>
+	</div>
+	<div class="TotalPrice">
+		<a href="'.Mage::getBaseUrl().'"checkout/cart/">Total: '.$totalPrice.'</a>
+	</div>';
+	///////////////cart
+	echo $msg."__".$str."__".$str1."__".$str2;
+	
+    }
+}
+
+
+
+?>

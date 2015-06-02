@@ -1,0 +1,904 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<?php 
+$productCount = $_product->getProductCount();
+if(!$_product->getProductCount()){
+		$productCount = rand(30000, 50000);
+}
+/*echo $_product->getName();
+echo '<pre>';
+//var_dump
+print_r($_product);
+echo '</pre>'; */
+?>
+<?php $_product = $this->getProduct();
+		$product = Mage::registry('current_product');
+        if ($product->getId()) {
+            $relatedIds = $product->getRelatedProductIds();
+        }
+?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view">
+  <div class="product-essential">
+    <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?> style="float: left; width: 100%;">
+      <div class="no-display">
+        <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+        <input type="hidden" name="related_product" id="related-products-field" value="" />
+      </div>
+      <div class="product-img-box">
+      <div class="sale_history" style="float: left; z-index: 1000; position: absolute; width: 325px; left: 12px;">
+<!--starts here-->
+<?php
+	$arr_status = array('complete','processing');
+	// Getting current productid
+	$product_id = $this->getProduct()->getId();
+	//$sku=$this->getProduct()->getSku();
+	$customer_order_flag=0;
+	if(Mage::getSingleton('customer/session')->getCustomerId()){
+		$orderCollection = Mage::getModel('sales/order')->getCollection(); 
+		$orders = $orderCollection->addAttributeToFilter("customer_id", Mage::getSingleton('customer/session')->getCustomerId())->addAttributeToFilter('status',array('in' => $arr_status));
+		$purchased = array(); // will contain IDs of purchased items
+		foreach($orders as $order){
+    		$items = $order->getAllItems();
+    		foreach($items as $item){
+				$purchased[] = $item->getProductId();
+			}
+		}
+	if(in_array($product_id,$purchased)){
+		$customer_order_flag=1;	
+	}
+	else{
+		$customer_order_flag=0;
+	}
+}
+$items = Mage::getModel('sales/order_item')->getCollection()->addFieldToFilter('product_id', $product_id);
+//$cnt = 0;
+$order_arr = array();
+foreach($items as $item){
+	$order_arr[] =  $item->order_id;
+	//$cnt += $item->getQtyOrdered() - $item->getQtyCanceled() - $item->getQtyRefunded();
+}
+$collection = Mage::getModel('sales/order')->getCollection()->addFieldToFilter('status',array('in' => $arr_status));
+$collection->addAttributeToFilter('entity_id',array('in' => $order_arr));
+$cnt = count($collection); ?>
+<?php /*?><ul style="float:left; width:300px;background:#fdc85e;padding:5px; margin-top:5px; text-align:left; font-family:Arial; font-size:12px;">
+<?php
+if($cnt > 0){
+	if($customer_order_flag==1)
+	   {
+		$cnt = $productCount -1;
+//		$cnt=$cnt-1;
+		//Displaying the total no of customers purchased this product
+		echo '<li style="float:left; width:100%;">';
+		echo $this->__($cnt.' Units Sold');	
+		echo '</li>';
+       }else {
+		//Displaying the total no of customers purchased this product
+		$cnt = $productCount + $cnt;
+		echo '<li style="float:left; width:100%;">';
+		echo $this->__($cnt.' Units Sold');
+		echo '</li>';
+	  }
+  } else {
+	$cnt = $productCount;
+		echo '<li style="float:left; width:100%;">';	
+		echo $this->__($cnt.' Units Sold');
+		echo '</li>';
+}
+		echo '<li style="float:left; width:100%;">';	
+		echo rand(1, 10).' People Viewing This Product';
+		echo '</li>';
+?>
+</ul><?php */?>
+<?php
+$_product = $this->getProduct();
+//Getting the current productid
+$productId = $_product->getId();
+//Getting the current productname
+$productName = $_product->getName();
+$stock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product);
+$childProducts = Mage::getModel('catalog/product_type_configurable')->getUsedProducts('null', $_product);
+$outofstock_instock = 0;
+$getIsInStock = array();
+if(!empty($childProducts)){
+	foreach($childProducts as $childVal){
+		$availability = (int) $childVal->isAvailable();
+		$getIsInStock[] = (int) $childVal->getIsInStock();
+		if($availability == 0){
+			$outOfStock = true;
+			break;
+		}
+	}
+	//    }die;
+	if(in_array("1", $getIsInStock)){
+		$outofstock_instock = 1;
+	}
+	//          if (!in_array("1", $getIsInStock)) {
+	//
+	//              $outofstock_instock = "0";
+	//          }
+}
+$crtlPageUrl = '';
+$productUrl = $_product->getUrlInStore();
+//echo strlen('A computer is a programmable machine designed to automatically carry out a sequence of arithmetic or logical operations. The particular sequence of operations can be changed readily, allowing the computer to solve more than one kind of problem. An important class of computer operations on some computing platforms is the accepting of input from human operators and the output of results formatted for human consumption.');
+$crtlPageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . '/outofstocknotification/index/storeNotificationProductData';
+?>
+<!--ends here-->
+      </div>
+       <?php echo $this->getChildHtml('media') ?> 
+      </div>
+      <div class="main_right_float"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('vertical_categories')->toHtml() ?> 
+        <!--<div class="right_float" >
+					</div>--> 
+      </div>
+      <div style="float:left;margin-top:-530px; padding:0px;" class="pro_left wide">
+        <div class="main-floating">
+                <?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
+
+        <div class="product-shop"> 
+      <!--<div class="shopheader"></div>-->
+      <div class="product-name">
+        <h1 >
+          <?php echo $_product->getName();?> <br>
+          <span >(Product Model # :</span><span><?php echo Mage::app()->getStore()->getId(); ?>-<?php echo $_product->getSku(); ?>)</span></h1>
+      </div>
+      <div class="total_float">
+        <div class="main_float">
+          <div class="productmodel">
+            <?php /*?><span class="prodmoddet"><span>Product Model # :</span><span><?php echo $_product->getSku(); ?></span></span><?php */?>
+                    <?php 
+			$specialPrice = round($_product->getSpecialPrice(),2);
+			if($specialPrice>0) { ?>
+            <span class="prodmoddet"><span>
+             <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getSpecialPrice(),true,false);?> + GST
+            </span> </span>
+              <?php	} else{ ?>
+              <?php echo $_formattedActualPrice = Mage::helper('core')->currency($_product->getPrice(),true,false);?> + GST
+            </span> </span>
+            <?php }?>
+            </div>
+          <div class="display_heading">Display Options</div>
+          <?php
+        $product = Mage::registry('current_product');
+        if ($product->getId()) {
+           ?>
+          <div class="itempro">
+            <div class="itemtotal"> <span class="itemcheck">
+              <input onclick="linkto('<?php echo $product->getProductUrl();?>')" <?php if($product->getId() == $product->getId()){echo 'checked';}?> type="radio" name="subproduct"/>
+              </span> <span class="itemimage"><img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($product->getSmallImage()); ?>" width="85" height="85" alt=""  /></span>
+              <div class="itemoption"> <span class="itemname"><?php echo $product->getName();?></span>
+              <?php /*?>  <?php
+                        if($product->getId() == $product->getId()){
+                        ?>
+                <div class="itemoption_drop">
+                  <?php if ($product->isSaleable() && $this->hasOptions()):?>
+                  <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+                  <?php endif;?>
+                </div>
+                <?php }?><?php */?>
+              </div>
+            </div>
+          </div>
+          <?php
+               /***************** Start for related product 13_02_2014 *************************/
+                foreach ($relatedIds as $cat_id) {
+                    $cat_product = Mage::getModel('catalog/product')->load($cat_id);
+                    ?>
+          <div class="itempro">
+            <div class="itemtotal"> <span class="itemcheck">
+              <input onclick="linkto('<?php echo $cat_product->getProductUrl();?>')" <?php if($cat_product->getId() == $product->getId()){echo 'checked';}?> type="radio" name="subproduct"/>
+              </span> <span class="itemimage"><img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($cat_product->getSmallImage()); ?>" width="85" height="85" alt=""  /></span>
+              <div class="itemoption"> <span class="itemname"><?php echo $cat_product->getName();?></span>
+             <?php /*?>   <?php
+                        if($cat_product->getId() == $product->getId()){
+                        ?>
+                <div class="itemoption_drop">
+                  <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+                  <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+                  <?php endif;?>
+                </div>
+                <?php }?><?php */?>
+              </div>
+            </div>
+          </div>
+          <?
+                }
+               // break;//11_02_2014
+            }
+       // }
+        ?>
+        </div>
+      </div>
+<input id="currentid" type="hidden"/>
+      <?php
+        /***********************************************************************
+        ?>
+      <?php echo $this->getChildHtml('other');?>
+      <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+      <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+      <?php endif;*/?>
+      <div class="closingimg"></div>
+    </div>
+    </div>
+        <div class="right_float" >
+                    <?php
+                     $upsp1 = Mage::getModel('catalog/product')->load($product->getId());
+                        $upsell_product = $upsp1->getUpSellProductCollection();
+                        //print_r($upsell_product);
+                        foreach($upsell_product as $_upsell)
+                        {
+                            $upsp = Mage::getModel('catalog/product')->load($_upsell->getId());
+                            ?>
+                            <div id="related_<?php echo $_upsell->getId()?>" class="mini-upsell-ite" >
+                                <a href="<?php echo $upsp->getProductUrl();?>">
+                                    <div><img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($upsp->getSmallImage()); ?>" width="85" height="85" alt="" /></div>
+                                    <div><?php echo $upsp->getName();?></div>
+                                </a>
+                            </div>
+                            <?php
+                        }
+                    ?>
+                </div>
+               
+      <script src="<?php echo $this->getJsUrl();?>rcarousel/jquery.bxslider.js"></script>
+      <link rel="stylesheet" href="<?php echo $this->getSkinUrl();?>css/jquery.bxslider.css" type="text/css" />
+<script type="text/javascript">
+function linkto(url)
+{
+    jQuery('.waitdiv').show();
+    //jQuery('.overlay').show();
+    location.href=url;
+}
+  jQuery(document).ready(function(){
+jQuery('.right_float').bxSlider({
+  mode: 'vertical',
+  slideMargin: 5
+});
+  jQuery(window).scroll(function(){
+    //alert(jQuery(this).scrollTop());
+    ;
+    //alert(jQuery('body').css('top')+'================'+jQuery('.product-shop').css('top'));
+    var height = jQuery('.product-shop').css('height').split('px');
+    if(parseInt(height) < 600)
+    {    
+        if(jQuery(this).scrollTop() > 200 && jQuery(this).scrollTop() < 500)
+        jQuery('.product-shop').css('top',jQuery(this).scrollTop()-220);
+    }
+});
+  jQuery(".bx-wrapper").css('left','600px');
+    jQuery(".bx-wrapper").css('top','-751px');
+    jQuery(".bx-wrapper").delay(1500).animate({'left':'100%'},1200);
+    jQuery(".bx-viewport").css('height','481px !important');
+  });
+</script>   
+        
+        <?php echo $this->getChildHtml('alert_urls') ?>
+        <div class="rowd">
+        <div class="pro-desc">
+            <h1><span>1</span>Product Description</h1>
+            <h2>
+			<?php //echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
+            <?php $pro_desc = $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description')?>
+            <?php echo $pro_desc; ?>
+            </h2>
+          </div>
+          <div class="pro-feature">
+            <h1><span>2</span>Product Features</h1>
+           <h2><img src="<?php echo $this->getSkinUrl()?>images/products_feature.jpg" alt="<?php echo ("Products Features")?>" /></h2>
+          </div></div>
+        <div class="new-prod-desc">
+           <div class="package-includes">
+            <h1><span>3</span>Package Includes</h1>
+            <?php
+		  $product = Mage::registry('current_product');
+		    if($product->getTypeID() == 'bundle')
+		    {
+			$bundle_item = array();
+			$bundled_product = Mage::getModel('catalog/product')->load($product->getId());
+			$selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
+			    $bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
+			);
+			$optionCollection =  $bundled_product->getTypeInstance(true)->getOptions($bundled_product);
+			foreach($optionCollection as $val)
+			{
+			    echo '<div  class="bundle_items" ><div class="item_boxes"><table>';
+			   // <div class="bundle_name"><strong>'.$val->getDefaultTitle().'</strong></div><div class="item_box"><table>';
+			    foreach($selectionCollection as $option)
+			    {
+				if($val->getId() == $option->getOptionId())
+				{
+				     echo '<tr><td>'.round($option->getSelectionQty()).' - '.$option->getName().'</td></tr>';
+                                }
+                            }
+			    echo '</table></div></div>';
+			}
+		    }
+		  ?>
+            <div class="pro-img-right">
+              <?php if($_product->getPackage_image() !='')
+{
+$filePaths=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getPackage_image()
+?>
+              <img src="<?php echo $filePaths;?>" width="335"  />
+            </div>
+        <?php /*?>    <?php }else {?>
+            <div class="pro-img-right">
+        <?php
+     $_product = $this->getProduct();
+	 $imageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $_product->getImage(); ?>
+        <img  width="335" src="<?php echo $imageUrl;?>" alt="nothing" /> 
+        </div><?php */?>
+        <?php }?>
+          </div>
+          <div class="additional-information">
+            <h1><span>4</span>Additional Information</h1>
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
+            <?php if($_product->getWire_frame() !='')
+        {
+        $filePath=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getWire_frame()
+        ?>
+            <div class="image-sketch"> <img src="<?php echo $filePath;?>" width="400"/> </div>
+            <?php } ?>
+          </div>
+          <div class="additional-featured" >
+            <h1><span>5</span>Additional Features</h1>
+            <p style="font-size: 15px; margin-left: 38px; width: 861px; font-family: Arial;">
+			<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_text')->toHtml() ?> </p>
+            <div class="additional_featured">
+              <ul>
+                <li><img src="<?php echo $this->getSkinUrl()?>images/dye_fabric.jpg" /></li>
+                <li><img src="<?php echo $this->getSkinUrl()?>images/life_time_warranty.jpg" /></li>
+                <li><img src="<?php echo $this->getSkinUrl()?>images/setup_time.jpg" /></li>
+                <li><img src="<?php echo $this->getSkinUrl()?>images/shippment_time.jpg" /></li>
+              </ul>
+            </div>
+          </div>
+          <div class="video-section">
+            <h1><span>6</span>Product Video</h1>
+            <div class="video-counter">
+              <p> <?php echo ('Portable Slimline Fabric Tension Wall Series / Tradeshow Kit  provide maximum portability along with 
+	 amazing visual impact. These designs set apart your brand name in a tradeshow from all your competitors.
+	  Fabric Tradeshow displays are the ideal choice for all your tradeshow needs. Material: Stretchable Blockout; 360gsm Polyester.
+	   Stretchable Blockout; 360gsm Polyester. ')?> </p>
+              <div class="video-player">
+                <?php 
+		$product_video = $_product->getData('introvideo'); 
+		if($product_video !=null){ ?>
+                <iframe width="825" height="450" frameborder="0" allowfullscreen="" mozallowfullscreen="" webkitallowfullscreen="" src="//player.vimeo.com/video/<?php echo $product_video;?>"></iframe>
+                <?php }else{ ?>
+                <?php echo '<h2>No Video For This Product</h2>'?>
+                <?php } ?>
+              </div>
+            </div>
+          </div>
+          <div class="products-downloads" >
+            <h1><span>7</span>Downloads (Graphic Templates)</h1>
+            <div class="prod-downloads">
+              <div class="prod-descp">
+                <p><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('downloads')->toHtml() ?></p>
+                <div class="download-button">
+                  <?php
+			$productid=Mage::registry('product')->getId();
+                        $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_relation');
+                        $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE product_id='".$productid."'";
+                        try {
+                        $chkSaleOrderGrid = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                        } catch (Exception $e){
+                        //echo $e>getMessage();
+                        }
+                        ?>
+                  <!--<h2><strong>Files Attached:</strong></h2>-->
+                  <?php
+                        if(count($chkSaleOrderGrid) > 0)
+                        {
+                        ?>
+                  <?php foreach($chkSaleOrderGrid as $res_objects) :
+                            $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_files');
+                            $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE file_id='".$res_objects["file_id"]."'";
+                            try {
+                            $chkSaleOrderGrid2 = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                            } catch (Exception $e){
+                            //echo $e>getMessage();
+                            }
+                            foreach($chkSaleOrderGrid2 as $res_objects2) 
+                            {
+                            ?>
+                  <div class="download-button"><a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$res_objects2["file_id"].'/'.$res_objects2["filename"]; ?>" title="<?php echo $res_objects2["filename"]; ?>" target="_blank"><img src="<?php echo $this->getSkinUrl()?>images/download_graphics.jpg "/></a> </div>
+                  <?php                         
+                            }
+                        endforeach; 
+                        ?>
+                  <?php 
+                        }
+                        else
+                        {
+							?>
+                  <div class='download-button'><img src="<?php echo $this->getSkinUrl()?>images/no_file_found.jpg "/></div>
+                  <?php   }
+		?>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="order-process"> 
+            <script language="javascript">
+	var active_circle = '.step1';
+	var mobile_width = 480;
+	jQuery(document).ready(function(e) {
+	jQuery('#order_process').find(active_circle).addClass('active');
+	jQuery('#order_process  .step').hover(
+			function(){
+					 jQuery('#order_process  .step').each(function(){jQuery(this).removeClass('active')});
+			},
+			function(){
+					 jQuery('#order_process').find(active_circle).addClass('active');
+			});
+	jQuery('#order_process  .step').on('touchstart', function () {
+		jQuery('#order_process  .step').each(function(){
+			if(jQuery(window).width() > 480)
+			{
+				jQuery(this).removeClass('active');
+				jQuery('#order_process').find('.caption').hide();
+			}
+		});
+		jQuery(this).addClass('active');
+		jQuery(this).find('.caption').show();
+	});
+	});
+	function hideOrderProcess(){
+		  jQuery('.order_process_wrapper').fadeOut('slow');
+		  jQuery("#hide_button").text('View More');
+		  jQuery('html, body').animate({
+		        scrollTop: parseInt(jQuery("#order_process").offset().top)
+		    }, 1000);
+	}
+	function showOrderProcess(){
+		jQuery('.order_process_wrapper').fadeIn('slow');
+		jQuery("#hide_button").text('Hide');
+	}
+	jQuery("#hide_button").click(function() { 
+		  return (this.tog = !this.tog) ? hideOrderProcess() : showOrderProcess();
+	});
+	jQuery(window).resize(function(){
+		if(jQuery(window).width() > 480)
+			showOrderProcess();
+	});
+</script>
+            <h1><span>8</span>Our Order Process</h1>
+            <div class="order_text">
+              <p><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('order_process_text')->toHtml() ?></p>
+            </div>
+            <div id="order_process">
+              <div class="order_process_wrapper">
+                <div class="step1 step active">
+                <a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step1.png" alt="">
+                 <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step1_hover.png" alt=""></a>
+                  <span class="caption"><span class="step_number">step # 1</span> <span class="step_title">CHOOSE</span>
+                 <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('choose_display')->toHtml() ?>
+                  </span></div>
+                <div class="step2 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step2.png" alt=""> 
+                <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step2_hover.png" alt=""></a> <span class="caption">
+                <span class="step_number">step # 2</span> <span class="step_title">REQUEST QUOTE</span>
+                <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('request_quote')->toHtml() ?>
+                </span></div>
+                <div class="step3 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step3.png" alt="">
+                 <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step3_hover.png" alt=""></a> 
+                 <span class="caption"> <span class="step_number">step # 3</span> <span class="step_title">PLACE ORDER</span>
+                 <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('place_order')->toHtml() ?> </span></div>
+                <div class="step4 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step4.png" alt=""> 
+                <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step4_hover.png" alt=""></a> <span class="caption">
+                <span class="step_number">step # 4</span> <span class="step_title">PAYMENT </span>
+               	<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('payment')->toHtml() ?></span></div>
+                <div class="step5 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step5.png" alt=""> 
+                <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step5_hover.png" alt=""></a> 
+                <span class="caption"><span class="step_number">step # 5</span> <span class="step_title">UPLOAD YOUR ARTWORK</span>
+                <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('upload_artwork')->toHtml() ?></span> </div>
+                <div class="step6 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step6.png" alt=""> 
+                <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step6_hover.png" alt=""></a> <span class="caption"> 
+                <span class="step_number">step # 6</span> <span class="step_title">PROOFS &amp; APPROVAL</span>
+               <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('proofs')->toHtml() ?></span></div>
+                <div class="step7 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step7.png" alt="">
+                <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step7_hover.png" alt=""></a>
+                 <span class="caption"><span class="step_number">step # 7</span> <span class="step_title">PRODUCTION</span>
+                 <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('production')->toHtml() ?></span> </div>
+                <div class="step8 step"><a class="img-wrapper"><img src="<?php echo $this->getSkinUrl()?>images/step8.png" alt="">
+                 <img class="hover" src="<?php echo $this->getSkinUrl()?>images/step8_hover.png" alt=""></a> <span class="caption"> 
+                 <span class="step_number">step # 8</span> <span class="step_title">DELIVERY</span>
+                 <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('delivery')->toHtml() ?></span></div>
+              </div>
+              <span id="hide_button">Hide</span></div>
+          </div>
+          <div class="payment-methods">
+            <h1><span>9</span>Payment Methods</h1>
+            <div class="payment_info">
+              <p><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('payment_methods')->toHtml() ?> </p>
+              <img src="<?php echo $this->getSkinUrl()?>images/creadit_card.jpg" /> </div>
+          </div>
+          <!--Cusotmer REviews-->
+          <div class="payment-methods">
+          <h1><span>10</span>Product Reviews</h1>
+          <div class="payment_info">
+            
+            <?php  echo $this->getReviewsSummaryHtml($_product, false, true);?>
+            <?php echo $this->getChildHtml('review_form');?>
+            
+            </div>
+            </div>
+<?php /*?>          <?php
+$product->getId();
+$upsp1 = Mage::getModel('catalog/product')->load($product->getId());
+$upsell_product = $upsp1->getUpSellProductCollection();
+if(count($upsell_product)>0){ ?>
+          <div class="related_prod">
+            <div class="related-heading"> <img src="<?php echo $this->getSkinUrl()?>images/related_heading.jpg"  alt="Related Products"/> </div>
+            <div class="category-products" style="float:left;">
+              <ul class="products-grid" style="width:920px;">
+                <?php
+foreach($upsell_product as $_upsell)
+{
+$_upsell->getId();
+$upsp = Mage::getModel('catalog/product')->load($_upsell->getId());
+ $Img = $upsp->getSmallImage();
+ $url = $this->getUrl('');
+ $_img_path = Mage::getBaseUrl('media').'catalog/product/'.$Img; 
+ $productUrl = $url.$upsp->getUrlPath(); 
+?>
+                <!--<div id="related_<?php //echo $_upsell->getId()?>" class="mini-upsell-ite" >-->
+                <li class="hover_pro item" style="margin-bottom:36px;">
+                  <div class="mask-product">
+                    <div class="pro-det-con"> 
+                    <a href="<?php echo $upsp->getProductUrl(); //echo $productUrl; ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image">
+                    <img width="181" height="241" src="<?php echo $_img_path; ?>"  alt="" /></a>
+                      <?php
+                if($_product->getPromotionicon() !='')
+                {
+                    $filePath=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getPromotionicon()
+                ?>
+                      <div class="promoicon-image"> <img width="75" height="75.5" style="position:absolute;  right:0;  top:0; " src="<?php echo $filePath; ?>" /> </div>
+                      <?php
+                }
+                ?>
+                    </div>
+                  </div>
+                  <?php 
+						$_p_model = $_product->getSku();
+						$_store_id = Mage::app()->getStore()->getStoreId();
+				?>
+                <?php //echo $_product->getSku()?>
+                  <?php //echo $this->getPriceHtml($_product, true) ?>
+                </li>
+                <?php
+}?>
+              </ul>
+            </div>
+          </div>
+          <?php } ?><?php */?>
+        </div>          
+        
+        <?php if ($_product->getDescription()):?>
+        <div class="description_text">
+			<p><?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?></p>
+        </div>
+        <?php endif;?>
+        
+<!---Package Includes Block Start Here--->
+        <div class="row-packages">
+        <div class="head"><h2><span>Package Includes</span></h2></div>
+            <?php
+		  $product = Mage::registry('current_product');
+		    if($product->getTypeID() == 'bundle')
+		    {
+			$bundle_item = array();
+			$bundled_product = Mage::getModel('catalog/product')->load($product->getId());
+			$selectionCollection = $bundled_product->getTypeInstance(true)->getSelectionsCollection(
+			    $bundled_product->getTypeInstance(true)->getOptionsIds($bundled_product), $bundled_product
+			);
+			$optionCollection =  $bundled_product->getTypeInstance(true)->getOptions($bundled_product);
+			foreach($optionCollection as $val)
+			{
+			    echo '<div  class="tabs-items" ><div class="packages tab-item-block"><ul>';
+			   // <div class="bundle_name"><strong>'.$val->getDefaultTitle().'</strong></div><div class="item_box"><table>';
+			    foreach($selectionCollection as $option)
+			    {
+				if($val->getId() == $option->getOptionId())
+				{
+				     echo '<li>'.round($option->getSelectionQty()).' - '.$option->getName().'</li>';
+                                }
+                            }
+			    echo '</ul></div></div>';
+			}
+		    }
+		  ?>
+            <div class="pro-img-right">
+              <?php if($_product->getPackage_image() !='')
+{
+$filePaths=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getPackage_image()
+?>
+              <img src="<?php echo $filePaths;?>" width="550"  />
+            </div>
+        <?php /*?>    <?php }else {?>
+            <div class="pro-img-right">
+        <?php
+     $_product = $this->getProduct();
+	 $imageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $_product->getImage(); ?>
+        <img  width="335" src="<?php echo $imageUrl;?>" alt="nothing" /> 
+        </div><?php */?>
+        <?php }?>
+          </div>
+<!---Package Includes Block End Here--->
+<!---Additional Informaion Block Start Here--->
+        <div class="additional_infos">
+        <div class="head"><h2><span>Additional Information</span></h2></div>
+             <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('additional_info')->toHtml() ?>
+            <?php if($_product->getWire_frame() !='')
+        {
+        $filePath=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product->getWire_frame()
+        ?>
+            <div class="image-sketch"> <img src="<?php echo $filePath;?>" width="400"/> </div>
+            <?php } ?>
+          </div>
+<!---Additional Informaion Block End Here--->
+<!---Related Products Start--->
+		<div class="category-products" style="float:left; margin-bottom:-10px;">
+           <ul class="products-grid">
+             <div class="head"><h2><span>Related Products</span></h2></div>
+              <?php
+$crossselll_product_collection = $_product->getCrossSellProducts();
+$i=1;
+$store_id = $this->helper('core')->getStoreId();
+foreach($crossselll_product_collection as $pdt)
+{
+    $pdt_id=$pdt->getId();
+    $model_crosssell = Mage::getModel('catalog/product');
+    $_product_crosssell = $model_crosssell->load($pdt_id);
+    $crosssell_name= $_product_crosssell->getName();
+    $crosssell_price= number_format($_product_crosssell->getPrice(),2);
+	// $Imgs = $pdt->getSmallImage();
+	//$crosssell_img_url = Mage::getBaseUrl('media').'catalog/product/'.$Imgs; 
+	//$crosssell_img_url = $this->helper('catalog/image')->init($_product_crosssell, 'image')->keepFrame(false)->resize(100,100);
+?>
+<li class="hover_pro item<?php if($i%3==0): ?> last<?php endif; ?>">
+      <div class="mask-product">
+        <div class="pro-det-con"> <a href="<?php echo $_product_crosssell->getProductUrl(); ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product_crosssell, 'small_image'), null, true) ?>" class="product-image">
+        <!--<img src="<?php echo $this->helper('catalog/image')->init($_product_crosssell, 'small_image')->resize(220); ?>" width="220" height="252" alt="<?php  echo $this->stripTags($this->getImageLabel($_product_crosssell, 'small_image'), null, true) ?>" />-->
+        <img src="<?php echo Mage::getModel('catalog/product_media_config')->getMediaUrl($_product_crosssell->getThumbnail()); ?>" width="220" height="252" alt="<?php echo $this->stripTags($this->getImageLabel($_product_crosssell, 'small_image'), null, true) ?>" />
+        </a>
+          <?php
+                /**************For assign to promotion product************************/
+                if($_product->getPromotionicon() !='')
+                {
+                    $filePath=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."blfa_files/".$_product_crosssell->getPromotionicon()
+                ?>
+          <div class="promoicon-image"> <img width="75" height="75.5" style="position:absolute;  right:0;  top:0; " src="<?php echo $filePath; ?>" /> </div>
+          <?php
+                }
+                /**************End assign to promotion product************************/
+                ?>
+          <?php if($_product_crosssell->isSaleable()): ?>
+          <?php else: ?>
+          <div style="height: 110px; width: 110px; margin-top: 50px; margin-left: 75px;" class="out-of-stock"><img style="position: absolute; left: 75px; opacity:.75;" src="<?php echo $this->getSkinUrl(); ?>images/sold.png" class="promoicon-image"></div>
+          <?php endif; ?>
+          <div style="top:0;" class="product-detail-content">
+            <div class="product-detail-description"> 
+			<?php 
+		    $desc_Size=$_product_crosssell->getDescriptionSize();
+			$productDescription=$_product_crosssell->getShortDescription();
+			if(!($desc_Size)){?>
+			<?php echo  substr($productDescription,0,150)."..."; ?> 
+            <?php }else { ?>
+            			<?php echo  substr($desc_Size,0,150)."..."; ?> 
+			<?php }?>
+            </div>
+            <p class="product-detail-read-more"> <a href="<?php echo $_product_crosssell->getProductUrl() ?>">Read More</a> </p>
+          </div>
+        </div>
+        <h2 class="product-name"><a href="<?php echo $_product_crosssell->getProductUrl() ?>" title="<?php echo $this->stripTags($_product_crosssell->getName(), null, true) ?>"> <?php echo substr(($_helper->productAttribute($_product_crosssell, $_product->getName(), 'name')),0,35)."...";?> </a></h2>
+      </div>
+      <?php 
+							$product_crosssell = Mage::getModel('catalog/product')->load($_product_crosssell->getId());
+	   ?>
+      <div style="background-color: #818181;
+    color: #F6F6F6;
+    font-size: 13px;
+    padding-left: 10px;
+    position: relative;
+    font-family:'swis721_cn_btroman';
+    text-align: center;
+    font-weight: normal;">Model # <?php echo $store_id."-".$product_crosssell->getSku() ?></div>
+      <div class="btn-bg">
+        <div class="pric-btn" style=" text-align: center; color: #fff; font: 12px 'swis721_cn_btroman'; text-decoration: none; height:26px; width:134px; float:left; line-height:26px;">
+          <?php //echo $this->getPriceHtml($_product, true);
+					  echo Mage::helper('core')->currency($product_crosssell->getPrice());
+					  ?>
+        </div>
+        <div class="browse-btn"> <a class="category-browse" title="<?php echo $this->stripTags($product_crosssell->getName(), null, true) ?>" href="<?php echo $product_crosssell->getProductUrl() ?>"> <span>More Info</span> </a> </div>
+      </div>
+      <?php //echo $this->getPriceHtml($_product, true) ?>
+    </li>                  
+                  
+                  
+<?php $i++; }?>
+</ul>
+          <div class="pro_upselling">
+         <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('cross_selling')->toHtml() ?>
+          </div>
+
+      
+      </div>
+<!--- Related Produts End--->       
+<!----Start Download Section--->
+		<div class="products_download">
+                <div class="head"><h2><span>Download Design Template(s)</span></h2></div>
+              <div class="products_download_desc">
+                <span><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('downloads')->toHtml() ?></span>
+                
+     
+                <?php
+			$productid=Mage::registry('product')->getId();
+                        $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_relation');
+                        $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE product_id='".$productid."'";
+                        try {
+                        $chkSaleOrderGrid = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                        } catch (Exception $e){
+                        //echo $e>getMessage();
+                        }
+                        ?>
+                  <?php
+                        if(count($chkSaleOrderGrid) > 0)
+                        {
+                        ?>
+                  <?php foreach($chkSaleOrderGrid as $res_objects) :
+				  					
+
+                            $temptableSaleOrderGrid=Mage::getSingleton('core/resource')->getTableName('downloads_files');
+                            $sqlSaleOrderGrid="select * from ".$temptableSaleOrderGrid." WHERE file_id='".$res_objects["file_id"]."'";
+                            try {
+                            $chkSaleOrderGrid2 = Mage::getSingleton('core/resource')->getConnection('core_write')->fetchAll($sqlSaleOrderGrid);
+                            } catch (Exception $e){
+                            //echo $e>getMessage();
+                            }
+                            foreach($chkSaleOrderGrid2 as $res_objects2)
+								
+                            {
+								//var_dump($res_objects2)
+                            ?>
+     <div class="down">
+      <a href="<?php echo Mage::getBaseUrl().'downloads/dl/file/id/'.$res_objects2["file_id"].'/'.$res_objects2["filename"]; ?>" title="<?php echo $res_objects2["filename"]; ?>" target="_blank" style="position: relative; z-index: 1000;">Download</a>
+      <p class="top" style="position: relative; z-index: -11;">click to begin</p>
+      <p class="bottom" style="z-index: -100; position: relative;"><?php $filesize = ($res_objects2['size']/1024)/1024; echo round($filesize)."MB";?></p>
+    </div>
+    <?php } 
+	endforeach;?>
+    <?php } else {
+		?>
+    <div class="down">
+      <a href="#" style="position: relative; z-index: 1000;">No Attachments</a>
+      <p class="top" style="position: relative; z-index: -11;">click to begin</p>
+      <p class="bottom" style="z-index: -100; position: relative;">1.2MB .zip</p>
+    </div>
+        <?php }?>
+              
+              </div>
+                                    <div class="head"><h2><span>Customer Reviews</span></h2></div>
+
+            </div>
+<!----End Download Section--->
+
+      <div class="clearer"></div>
+
+          </div>    
+    </form>
+     
+  </div> 
+  </div>
+  <!--<div id="quoteLoader" style="float:left; clear:both"></div>-->
+    <script type="text/javascript">
+    //<![CDATA[
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+        productAddToCartForm.submit = function(button, url) {
+            if (this.validator.validate()) {
+                var form = this.form;
+                var oldUrl = form.action;
+                if (url) {
+                   form.action = url;
+                }
+                var e = null;
+                try {
+                    this.form.submit();
+                } catch (e) {
+                }
+                this.form.action = oldUrl;
+                if (e) {
+                    throw e;
+                }
+                if (button && button != 'undefined') {
+                    button.disabled = true;
+                }
+            }
+        }.bind(productAddToCartForm);
+        productAddToCartForm.submitLight = function(button, url){
+            if(this.validator) {
+                var nv = Validation.methods;
+                delete Validation.methods['required-entry'];
+                delete Validation.methods['validate-one-required'];
+                delete Validation.methods['validate-one-required-by-name'];
+                if (this.validator.validate()) {
+                    if (url) {
+                        this.form.action = url;
+                    }
+                    this.form.submit();
+                }
+                Object.extend(Validation.methods, nv);
+            }
+        }.bind(productAddToCartForm);
+    //]]>
+    </script> 
+  <!-- <iframe src='http://usedbooths.com.au/index.php/externalform/?store_id=166' height='1450' width='930'></iframe>-->  
+ 
+  <?php $quoteurl =  $this->getUrl().'index.php/externalform/?'.$store_id ?>
+<script language="javascript">
+<!--
+ //Loading external quotatoin form
+	jQuery(document).ready(function(e) {
+		 var quoteUrl = '<?php echo $quoteurl;?>';
+		 var formVars = { quoteUrl:'<?php echo $quoteurl;?>',
+		 				  form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey();?>',
+							};
+		 console.log(formVars);
+		 jQuery.ajax({
+			 url:quoteUrl,
+			 dataType:"html",
+			 data:formVars,
+			 type:'POST',
+			 beforeSend: function(xError){
+				 //console.log(xError);
+				 html = 'Please wait form is loading...';
+				  jQuery('#quoteLoader').html();
+				 },
+			 success: function(response){
+				  //console.log(response);
+				  jQuery('#quoteLoader').html(html);
+				  jQuery('#quoteLoader').html(response);
+				 },
+			 error: function(error){
+				  console.log(error);
+				 },
+			 });
+    });
+-->
+</script>

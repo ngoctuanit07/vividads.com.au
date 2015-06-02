@@ -1,0 +1,207 @@
+<?php
+/**
+ * Email Template Manager
+ *
+ * @category:    Aitoc
+ * @package:     Aitoc_Aitemails
+ * @version      2.0.13
+ * @license:     POwWoRanFs2vVHb6wy050abrHO3ftlyCeMSf01dXU3
+ * @copyright:   Copyright (c) 2013 AITOC, Inc. (http://www.aitoc.com)
+ */
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design_default
+ * @package     Mage_Downloadable
+ * @copyright   Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * @see Mage_Downloadable_Block_Adminhtml_Catalog_Product_Edit_Tab_Downloadable_aitattachments
+ */
+?>
+
+<?php $_template = $this->getEmailTemplate() ?>
+<div class="fieldset">
+    <div class="grid">
+        <div class="hor-scroll">
+            <?php echo $this->__('(all symbols except letters and digits will be removed)'); ?>
+            <table cellspacing="0" class="data border">
+                <col />
+                <col width="1" />
+                <col width="1" />
+                <col width="1" />
+                <thead>
+                    <tr class="headings">
+                        <th><?php echo Mage::helper('aitemails')->__('Attachment Name') ?></th>
+                        <th><?php echo Mage::helper('aitemails')->__('File') ?></th>
+                        <th><span class="nobr"><?php echo Mage::helper('aitemails')->__('Sort Order') ?></span></th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="a-right"><?php echo $this->getAddButtonHtml() ?>&nbsp;<?php echo $this->getUploadButtonHtml() ?></td>
+                    </tr>
+                </tfoot>
+                <tbody id="aitattachment_items_body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[>
+var aitattachmentTemplate = '<tr>'+
+                        '<td>'+
+                            '<input type="hidden" class="__delete__" name="aitemails[aitattachment][{{id}}][is_delete]" value="" />'+
+                            '<input type="hidden" name="aitemails[aitattachment][{{id}}][aitattachment_id]" value="{{aitattachment_id}}" />'+
+                            '<input type="text" class="input-text" name="aitemails[aitattachment][{{id}}][title]" value="{{title}}" />'+
+                            '<?php echo $_template->getStoreId()?'<br /><input type="checkbox" id="aitemails_aitattachment_{{id}}_title" name="aitemails[aitattachment][{{id}}][use_default_title]" value="1" /><label class="normal" for="aitemails_aitattachment_{{id}}_title">Use Default Value</label>':'' ?>'+
+                        '</td>'+
+                        '<td>'+
+                            '<div class="files-wide">'+
+                                '<div class="row">'+
+                                    '<label for="aitemails_aitattachment_{{id}}_file_type"><input type="radio" class="radio validate-one-required-by-name" id="aitemails_aitattachment_{{id}}_file_type" name="aitemails[aitattachment][{{id}}][type]" value="file"{{file_checked}} /> File:</label>'+
+                                    '<input type="hidden" class="validate-aitemails-file" id="aitemails_aitattachment_{{id}}_file_save" name="aitemails[aitattachment][{{id}}][file]" value="{{file_save}}" />'+
+                                    '<div id="aitemails_aitattachment_{{id}}_file" class="uploader">'+
+                                        '<div id="aitemails_aitattachment_{{id}}_file-old" class="file-row-info"></div>'+
+                                        '<div id="aitemails_aitattachment_{{id}}_file-new" class="file-row-info new-file"></div>'+
+                                        '<div class="buttons">'+
+                                            '<div id="aitemails_aitattachment_{{id}}_file-install-flash" style="display:none">'+
+                                                '<?php echo Mage::helper('media')->__('This content requires last version of Adobe Flash Player. <a href="%s">Get Flash</a>', 'http://www.adobe.com/go/getflash/') ?>'+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<div class="clear"></div>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="row" style="display: none;">'+
+                                    '<label for="aitemails_aitattachment_{{id}}_url_type"><input type="radio" class="radio validate-one-required-by-name" id="aitemails_aitattachment_{{id}}_url_type" name="aitemails[aitattachment][{{id}}][type]" value="url"{{url_checked}} /> URL:</label> <input type="text" class="validate-aitemails-url input-text" name="aitemails[aitattachment][{{id}}][aittemplate_url]" value="{{aittemplate_url}}" />'+
+                                '</div>'+
+                                '<div>'+
+                                    '<span id="aitemails_aitattachment_{{id}}_container"></span>'+
+                                '</div>'+
+                            '</div>'+
+
+                        '</td>'+
+                        '<td class="a-center"><input type="text" name="aitemails[aitattachment][{{id}}][sort_order]" value="{{sort_order}}" class="input-text sort" /></td>'+
+                        '<td>'+
+                            '<button type="button" class="scalable delete icon-btn delete-aitattachment-item"><span>Delete</span></button>'+
+                        '</td>'+
+                    '</tr>';
+var aitattachmentItems = {
+    tbody : $('aitattachment_items_body'),
+    templateSyntax : /(^|.|\r|\n)({{(\w+)}})/,
+    templateText : aitattachmentTemplate,
+    itemCount : 0,
+    add : function(data) {
+        alertAlreadyDisplayed = false;
+        this.template = new Template(this.templateText, this.templateSyntax);
+
+        if(!data.aitattachment_id){
+            data = {};
+            data.aitattachment_type = 'file';
+            data.aitattachment_id  = 0;
+        }
+
+        data.id = this.itemCount;
+
+        if (data.aitattachment_type == 'url') {
+            data.url_checked = ' checked="checked"';
+        } else if (data.aitattachment_type == 'file') {
+            data.file_checked = ' checked="checked"';
+        }
+
+        Element.insert(this.tbody, {'bottom':this.template.evaluate(data)});
+
+        scopeTitle = $('aitemails_aitattachment_'+data.id+'_title');
+        if (scopeTitle) {
+            Event.observe(scopeTitle, 'click', function(event){
+                scopeElm = $(Event.findElement(event, 'input'));
+                titleField = scopeElm.up(0).down('input[type="text"]');
+                if (scopeElm.checked == true) {
+                    titleField.disabled = true;
+                } else {
+                    titleField.disabled = false;
+                }
+            });
+        }
+        if (!data.store_title && scopeTitle) {
+            scopeTitle.up(0).down('input[type="text"]').disabled = true;
+            scopeTitle.checked = true;
+        }
+
+        aitattachmentUrl = $('aitemails_aitattachment_'+data.id+'_url_type');
+
+        if (!data.file_save) {
+            data.file_save = [];
+        }
+        new Downloadable.FileUploader(
+            'aitattachment',
+            data.id,
+            aitattachmentUrl.up('td').down('div.uploader'),
+            'aitemails[aitattachment]['+data.id+']',
+            data.file_save,
+            'aitemails_aitattachment_'+data.id+'_file',
+            <?php echo $this->getConfigJson() ?>
+        );
+        aitattachmentUrl.advaiceContainer = 'aitemails_aitattachment_'+data.id+'_container';
+        aitattachmentFile = $('aitemails_aitattachment_'+data.id+'_file_type');
+        aitattachmentFile.advaiceContainer = 'aitemails_aitattachment_'+data.id+'_container';
+        $('aitemails_aitattachment_'+data.id+'_file_save').advaiceContainer = 'aitemails_aitattachment_'+data.id+'_container';
+
+        this.itemCount++;
+        this.bindRemoveButtons();
+    },
+    remove : function(event){
+        var element = $(Event.findElement(event, 'tr'));
+        alertAlreadyDisplayed = false;
+        if(element){
+            element.down('input[type="hidden"].__delete__').value = '1';
+            element.down('div.flex').remove();
+            element.addClassName('no-display');
+            element.addClassName('ignore-validate');
+            element.hide();
+        }
+    },
+    bindRemoveButtons : function(){
+        var buttons = $$('tbody#aitattachment_items_body .delete-aitattachment-item');
+        for(var i=0;i<buttons.length;i++){
+            if(!$(buttons[i]).binded){
+                $(buttons[i]).binded = true;
+                Event.observe(buttons[i], 'click', this.remove.bind(this));
+            }
+        }
+    }
+}
+
+aitattachmentItems.bindRemoveButtons();
+
+if($('add_aitemails_item')){
+    Event.observe('add_aitemails_item', 'click', aitattachmentItems.add.bind(aitattachmentItems));
+}
+
+<?php foreach ($this->getAttachmentData() as $item): ?>
+    aitattachmentItems.add(<?php echo $item->toJson() ?>);
+<?php endforeach; ?>
+
+//]]>
+</script>

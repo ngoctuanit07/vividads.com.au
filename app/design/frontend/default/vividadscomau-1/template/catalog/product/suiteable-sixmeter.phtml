@@ -1,0 +1,83 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_modern
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('top_menu_slider')->toHtml() ?>
+<!--<div class="contact_info"><img src="<?php //echo $this->getSkinUrl('images/phone_info.png');?>" alt="contact info"/></div>-->
+<?php  $catName = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getName(); ?>
+<?php  $curCatId = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId(); ?>
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');?>
+
+<div class="cate_listing"> <img src="<?php echo $this->getSkinUrl()?>images/6x3-headings.jpg" style="margin-left:10px;" />
+  <p style="color:#fff; padding:10px; line-height:25px; margin:0px;"> Our pop-up systems are effective as stand alone trade show displays for smaller shows or as part of a larger exhibitions. Advantages of pop up trade show displays include convenience, simplicity of set-up and tear-down, and ease of transportation. Portable systems are an ideal way to create a large seamless graphic display in minutes and the impact on clients is maximum. Its a great product for  marketing and advertising campaigns! . </p>
+</div>
+<?php  $imageUrl = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getImageUrl();?>
+<?php if(!$_productCollection->count()): ?>
+<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('external-block')->toHtml() ?>
+
+<!--<p class="note-msg"><?php //echo $this->__('There are no products matching the selection.') ?></p>-->
+
+<?php else: ?>
+<div class="cate_listing">
+  <?php // List mode ?>
+  <?php $_iterator = 0; ?>
+  <?php ?>
+  <?php foreach ($_productCollection as $_product):    ?>
+  <?php  $productId =  $_product->getId(); ?>
+  <?php //$p_sku = $product->getSku();?>
+  <?php  
+//		if($productId == 697 && $productId == 1390 && $productId == 1392 && $productId == 1398 && $productId == 1399 && $productId ==1463 && $productId == 1464) {
+//		1391 1393 1394 1395 1396 1397 1400 1401 1402 1403 1404 	
+		if($productId != 697 && $productId != 1390 && $productId != 1391 && $productId != 1392 && $productId != 1393 && $productId != 1394 && $productId != 1395 && $productId != 1398 && $productId != 1399 && $productId !=1400 && $productId != 1401 && $productId != 1402 && $productId != 1403 && $productId != 1404 && $productId != 1463 && $productId != 1464) {
+			$product = Mage::getModel('catalog/product')->load($_product->getId());
+		//print_r($_product->getId());
+			
+
+			   
+
+	   ?>
+  <?php  $imageName =  $_product->getData('small_image');?>
+  <?php //echo '<pre>'; print_r($_product); echo '</pre>';?>
+  <?php  $imageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $imageName; 	?>
+  <?php //echo $imageUrl = Mage::getModel('catalog/product_media_config')->getMediaUrl($_product>getThumbnail()); ?>
+  <div class="pro_left wide">
+    <div class="banner" style="width:99%;"> <a style="width:100%;" href="<?php //echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"> <img style="width:100%; height:auto !important; " src="<?php echo $imageUrl; ?>"  alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /> </a> </div>
+  </div>
+  <?php // Product Image ?>
+  <?php // Product description ?>
+  <?php } ?>
+  <?php endforeach; ?>
+  <script type="text/javascript">decorateList('products-list', 'none-recursive')</script> 
+</div>
+<?php endif; ?>

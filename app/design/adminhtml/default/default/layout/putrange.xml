@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <putrange_adminhtml_putrange_index>
+        <reference name="content">
+            <block type="putrange/adminhtml_putrange" name="putrange" />
+        </reference>
+    </putrange_adminhtml_putrange_index>
+</layout>

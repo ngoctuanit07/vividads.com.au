@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Mico_Core>
+			<version>0.1.0</version>
+		</Mico_Core>
+	</modules>	
+	<global>
+		<models>
+			<mcore>
+				<class>Mico_Core_Model</class>
+			</mcore>
+		</models>	
+	</global>
+	<adminhtml>
+		<acl>
+			<resources>
+				<admin>
+					<children>
+					  <system>
+						<children>
+						  <config>
+							<children>
+							  <mico>
+								<title>Mico Solutions</title>
+							  </mico>
+							</children>
+						  </config>
+						</children>
+					  </system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+	</adminhtml>
+</config>

@@ -1,0 +1,311 @@
+<?php
+
+class Artis_Calendar_Adminhtml_CalendarController extends Mage_Adminhtml_Controller_action
+{
+
+	protected function _initAction() {
+		$this->loadLayout()
+			->_setActiveMenu('calendar/items')
+			->_addBreadcrumb(Mage::helper('adminhtml')->__('Items Manager'), Mage::helper('adminhtml')->__('Item Manager'));
+		
+		return $this;
+	}   
+ 
+	public function indexAction() {
+		$this->_initAction()
+			->renderLayout();
+	}
+
+	public function editAction() {
+		$id     = $this->getRequest()->getParam('id');
+		$model  = Mage::getModel('calendar/calendar')->load($id);
+
+		if ($model->getId() || $id == 0) {
+			$data = Mage::getSingleton('adminhtml/session')->getFormData(true);
+			if (!empty($data)) {
+				$model->setData($data);
+			}
+
+			Mage::register('calendar_data', $model);
+
+			$this->loadLayout();
+			$this->_setActiveMenu('calendar/items');
+
+			$this->_addBreadcrumb(Mage::helper('adminhtml')->__('Item Manager'), Mage::helper('adminhtml')->__('Item Manager'));
+			$this->_addBreadcrumb(Mage::helper('adminhtml')->__('Item News'), Mage::helper('adminhtml')->__('Item News'));
+
+			$this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
+
+			$this->_addContent($this->getLayout()->createBlock('calendar/adminhtml_calendar_edit'))
+				->_addLeft($this->getLayout()->createBlock('calendar/adminhtml_calendar_edit_tabs'));
+
+			$this->renderLayout();
+		} else {
+			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('calendar')->__('Item does not exist'));
+			$this->_redirect('*/*/');
+		}
+	}
+ 
+	public function newAction() {
+		$this->_forward('edit');
+	}
+ 
+	public function saveAction() {
+		//print_r($_REQUEST);exit;
+		
+		$temptableHoliday=Mage::getSingleton('core/resource')->getTableName('holiday');
+		$sqlHoliday="SELECT * FROM ".$temptableHoliday." WHERE country_name = '".$_REQUEST['title']."'";
+		$chkHoliday = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlHoliday);
+		
+		if(!$chkHoliday[0]['entity_id'])
+		{
+		
+		if ($data = $this->getRequest()->getPost()) {
+			
+			/**************************************************************/
+			if($_REQUEST['link'] != '')
+			{
+				$contents = file_get_contents($_REQUEST['link']);
+							
+				//file_put_contents(Mage::getBaseDir(). DS.'calender_xml' . DS.$_REQUEST['title'].'.xml', $contents);
+			}
+			
+			$holidays = simplexml_load_string($contents);
+			
+			for($i=0;$i<=count($holidays->entry);$i++)
+			{
+			    
+				$event = $holidays->entry[$i]->title;
+				$summary = $holidays->entry[$i]->summary;
+				$summery_all = explode(' ',$summary);
+				//print_r($summery_all);
+				
+				//$first_str = explode(' ',$summery_all[0]);
+				if($summery_all[2] < 10 )
+				$date = '0'.$summery_all[2];
+				else
+				$date = $summery_all[2];
+				
+				//$key = array_search($date, $first_str);
+				
+				//$month1 = $first_str[$key-1];
+				
+				$month1 = date('m', strtotime($summery_all[3]));
+				
+				//$year1 = explode(' ',$summery_all[1]);
+				$year1 = explode('<br',$summery_all[4]);
+				$year = $year1[0];
+				
+				//print_r($year1[0]);
+				
+				$holi[$date][$month][$year] =   $event;
+				$date1 = $year.'-'.$month1.'-'.$date;
+			    
+				if($event != '')
+				{
+					$temptableHoliday=Mage::getSingleton('core/resource')->getTableName('holiday');
+					$sqlHoliday="SELECT * FROM ".$temptableHoliday." WHERE h_date = '".$date1."' AND event ='".$event."'";
+					$chkHoliday = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlHoliday);
+					//print_r($chkHoliday[0]['date']);
+					if($chkHoliday[0]['h_date'] == '')
+					{
+						$temptableHoliday=Mage::getSingleton('core/resource')->getTableName('holiday');
+						$sqlHoliday="INSERT INTO ".$temptableHoliday." SET country_name = '".$_REQUEST['title']."', h_date = '".$date1."' , event ='".$event."', color = '".$_REQUEST['color']."'";
+						$chkHoliday = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlHoliday);
+					}
+				}
+			}
+		
+			
+			
+			/*************************************************************/
+	//		
+	//		if(isset($_FILES['filename']['name']) && $_FILES['filename']['name'] != '') {
+	//			try {	
+	//				/* Starting upload */	
+	//				$uploader = new Varien_File_Uploader('filename');
+	//				
+	//				// Any extention would work
+	//           		$uploader->setAllowedExtensions(array('jpg','jpeg','gif','png'));
+	//				$uploader->setAllowRenameFiles(false);
+	//				
+	//				// Set the file upload mode 
+	//				// false -> get the file directly in the specified folder
+	//				// true -> get the file in the product like folders 
+	//				//	(file.jpg will go in something like /media/f/i/file.jpg)
+	//				$uploader->setFilesDispersion(false);
+	//						
+	//				// We set media as the upload dir
+	//				$path = Mage::getBaseDir('media') . DS ;
+	//				$uploader->save($path, $_FILES['filename']['name'] );
+	//				
+	//			} catch (Exception $e) {
+	//	      
+	//	        }
+	        
+		        //this way the name is saved in DB
+	  			$data['filename'] = $_FILES['filename']['name'];
+			//}
+	  			
+	  			
+			$model = Mage::getModel('calendar/calendar');		
+			$model->setData($data)
+				->setId($this->getRequest()->getParam('id'));
+			
+			try {
+				if ($model->getCreatedTime == NULL || $model->getUpdateTime() == NULL) {
+					$model->setCreatedTime(now())
+						->setUpdateTime(now());
+				} else {
+					$model->setUpdateTime(now());
+				}	
+				
+				$model->save();
+				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('calendar')->__('Item was successfully saved'));
+				Mage::getSingleton('adminhtml/session')->setFormData(false);
+
+				if ($this->getRequest()->getParam('back')) {
+					$this->_redirect('*/*/edit', array('id' => $model->getId()));
+					return;
+				}
+				$this->_redirect('*/*/');
+				return;
+				} catch (Exception $e) {
+				    Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+				    Mage::getSingleton('adminhtml/session')->setFormData($data);
+				    $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+				    return;
+				}
+			    }
+	}
+	else
+	{
+		Mage::getSingleton('adminhtml/session')->addError(Mage::helper('calendar')->__('THis Country name allready exit.'));
+		Mage::getSingleton('adminhtml/session')->setFormData($data);
+		$this->_redirect('*/*/');
+	}
+        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('calendar')->__('Unable to find item to save'));
+        $this->_redirect('*/*/');
+	}
+ 
+	public function deleteAction() {
+		if( $this->getRequest()->getParam('id') > 0 ) {
+			try {
+				$model = Mage::getModel('calendar/calendar');
+				 
+			
+					
+				/*****************************************************************/
+				$temptableHoliday=Mage::getSingleton('core/resource')->getTableName('calendar');
+				$sqlHoliday="SELECT * FROM ".$temptableHoliday." WHERE calendar_id ='".$this->getRequest()->getParam('id')."'";
+				$chkHoliday = Mage::getSingleton('core/resource')->getConnection('core_read')->fetch($sqlHoliday);
+				
+				$temptableHoliday1=Mage::getSingleton('core/resource')->getTableName('holiday');
+				$sqlHoliday1="DELETE FROM ".$temptableHoliday1." SET country_name = '".$chkHoliday['title']."'";
+				$chkHoliday1 = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlHoliday1);
+				/****************************************************************/
+				//exit;
+				$model->setId($this->getRequest()->getParam('id'))
+				->delete();
+					 
+				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item was successfully deleted'));
+				$this->_redirect('*/*/');
+			} catch (Exception $e) {
+				Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+				$this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+			}
+		}
+		$this->_redirect('*/*/');
+	}
+
+    public function massDeleteAction() {
+        $calendarIds = $this->getRequest()->getParam('calendar');
+        if(!is_array($calendarIds)) {
+			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('Please select item(s)'));
+        } else {
+            try {
+                foreach ($calendarIds as $calendarId) {
+			
+			/*****************************************************************/
+			$temptableHoliday=Mage::getSingleton('core/resource')->getTableName('calendar');
+			$sqlHoliday="SELECT * FROM ".$temptableHoliday." WHERE calendar_id ='".$calendarId."'";
+			$chkHoliday = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlHoliday);
+			
+			$temptableHoliday1=Mage::getSingleton('core/resource')->getTableName('holiday');
+			$sqlHoliday1="DELETE FROM ".$temptableHoliday1." WHERE country_name = '".$chkHoliday[0]['title']."'";
+			$chkHoliday1 = Mage::getSingleton('core/resource')->getConnection('core_read')->query($sqlHoliday1);
+			/****************************************************************/
+			
+                    $calendar = Mage::getModel('calendar/calendar')->load($calendarId);
+                    $calendar->delete();
+                }
+                Mage::getSingleton('adminhtml/session')->addSuccess(
+                    Mage::helper('adminhtml')->__(
+                        'Total of %d record(s) were successfully deleted', count($calendarIds)
+                    )
+                );
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            }
+        }
+        $this->_redirect('*/*/index');
+    }
+	
+    public function massStatusAction()
+    {
+        $calendarIds = $this->getRequest()->getParam('calendar');
+        if(!is_array($calendarIds)) {
+            Mage::getSingleton('adminhtml/session')->addError($this->__('Please select item(s)'));
+        } else {
+            try {
+                foreach ($calendarIds as $calendarId) {
+                    $calendar = Mage::getSingleton('calendar/calendar')
+                        ->load($calendarId)
+                        ->setStatus($this->getRequest()->getParam('status'))
+                        ->setIsMassupdate(true)
+                        ->save();
+                }
+                $this->_getSession()->addSuccess(
+                    $this->__('Total of %d record(s) were successfully updated', count($calendarIds))
+                );
+            } catch (Exception $e) {
+                $this->_getSession()->addError($e->getMessage());
+            }
+        }
+        $this->_redirect('*/*/index');
+    }
+  
+    public function exportCsvAction()
+    {
+        $fileName   = 'calendar.csv';
+        $content    = $this->getLayout()->createBlock('calendar/adminhtml_calendar_grid')
+            ->getCsv();
+
+        $this->_sendUploadResponse($fileName, $content);
+    }
+
+    public function exportXmlAction()
+    {
+        $fileName   = 'calendar.xml';
+        $content    = $this->getLayout()->createBlock('calendar/adminhtml_calendar_grid')
+            ->getXml();
+
+        $this->_sendUploadResponse($fileName, $content);
+    }
+
+    protected function _sendUploadResponse($fileName, $content, $contentType='application/octet-stream')
+    {
+        $response = $this->getResponse();
+        $response->setHeader('HTTP/1.1 200 OK','');
+        $response->setHeader('Pragma', 'public', true);
+        $response->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true);
+        $response->setHeader('Content-Disposition', 'attachment; filename='.$fileName);
+        $response->setHeader('Last-Modified', date('r'));
+        $response->setHeader('Accept-Ranges', 'bytes');
+        $response->setHeader('Content-Length', strlen($content));
+        $response->setHeader('Content-type', $contentType);
+        $response->setBody($content);
+        $response->sendResponse();
+        die;
+    }
+}

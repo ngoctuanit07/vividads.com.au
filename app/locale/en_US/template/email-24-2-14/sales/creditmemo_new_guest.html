@@ -1,0 +1,170 @@
+<!--@subject {{var store.getFrontendName()}}: Credit Memo # {{var creditmemo.increment_id}} for Order # {{var order.increment_id}} @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+"var logo_alt":"Email Logo Image Alt",
+"htmlescape var=$billing.getName()":"Guest Customer Name (Billing)",
+"var store.getFrontendName()":"Store Name",
+"var creditmemo.increment_id":"Credit Memo Id",
+"var order.increment_id":"Order Id",
+"var order.billing_address.format('html')":"Billing Address",
+"var payment_html":"Payment Details",
+"var order.shipping_address.format('html')":"Shipping Address",
+"var order.shipping_description":"Shipping Description",
+"layout handle=\"sales_email_order_creditmemo_items\" creditmemo=$creditmemo order=$order":"Credit Memo Items Grid",
+"var comment":"Credit Memo Comment"}
+@-->
+<!--@styles
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+@-->
+
+
+<body style="background:#fff; font-family:Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;"><div style="background:#fff; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<table cellspacing="0" cellpadding="0" border="0" height="100%" width="100%">
+<tr>
+    <td align="center" valign="top" style="padding:20px 0 20px 0">
+      
+      <table width="1200" border="0" cellspacing="0" cellpadding="10">
+  <tr>
+    <td><table width="1200" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td><img src="{{skin url=images/invoice/order_info.png}}" /></td>
+        <td><a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px; text-align:right; float:right;" border="0"/></a></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td bgcolor="#D9DBD9" style="font-size:15px; text-align:center; font-weight:bold; padding:10px;" >Your Credit Memo #{{var creditmemo.increment_id}} for Order #{{var order.increment_id}}</td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; line-height:30px;"><span style="color:#ea0809; font-family:Arial, serif, sans-serif;">Hello, {{htmlescape var=$billing.getName()}}</span><br>
+              Thank you for your order from {{var store.getFrontendName()}}.
+                        If you have any questions about your order please contact us at <a href="mailto:{{config path='trans_email/ident_support/email'}}" style="color:#ea0809;">{{config path='trans_email/ident_support/email'}}</a> or call us at {{config path='general/store_information/phone'}} Monday - Friday, 8am - 5pm PST.
+                    </td>
+          </tr>
+          <tr>
+            <td height="15"></td>
+          </tr>
+          <tr>
+            <td height="15"></td>
+          </tr>
+          <tr>
+            <td height="35" valign="middle"><img src="{{skin url=images/invoice/order_info.jpg}}"></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;"><table cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tbody>
+                <tr>
+                  <td width="325" valign="top" style="font-size:12px; padding:7px 0px; ">{{var order.billing_address.format('html')}} </td>
+                  <td width="10">&nbsp;</td>
+                  <td width="325" valign="top" style="font-size:12px; padding:7px 0px; ">{{var payment_html}} </td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="15"></td>
+          </tr>
+          <tr>
+            <td height="35" valign="middle"><img src="{{skin url=images/invoice/tax_invoic.jpg}}"></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;">
+            {{depend order.getIsNotVirtual()}}
+            <table cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tbody>
+                <tr>
+                  <td width="325" valign="top" style="font-size:12px; padding:7px 0px; "> {{var order.shipping_address.format('html')}}
+                    &nbsp; </td>
+                  <td width="10">&nbsp;</td>
+                  <td width="325" valign="top" style="font-size:12px; padding:7px 0px; "> {{var order.shipping_description}}&nbsp; </td>
+                </tr>
+              </tbody>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="35" valign="middle"><img src="{{skin url=images/invoice/order_summary.jpg}}"></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:10px;  line-height:30px;">{{/depend}}
+                    {{layout handle="sales_email_order_creditmemo_items" creditmemo=$creditmemo order=$order}}<br>
+                    <span style="font-size:12px; margin:0 10px 10px 0">{{var comment}}</span></td>
+          </tr>
+          <tr>
+            <td height="15"></td>
+          </tr>
+          <tr>
+          	<td height="40" valign="middle"><img src="{{skin url=images/invoice/need_info.jpg}}"></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px; line-height:30px;"><span style="font-size:12px; line-height:30px; margin:0;">If you have any questions, please feel free to contact us at <a href="mailto:{{config path='trans_email/ident_support/email'}}" style="color:#ea0809;">{{config path='trans_email/ident_support/email'}}</a> or by phone at {{config path='general/store_information/phone'}}. </span></td>
+          </tr>
+          <tr height="15"></tr>
+          
+         
+          <tr>
+            <td height="35" valign="middle"><img src="{{skin url=images/invoice/upload_artwork.jpg}}"   alt=""/></td>
+          </tr>
+              <tr>
+                <td valign="top" style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;"><span style="color:#ea0809; font-weight:bold;"></span>For us to attach your artwork with the right order and right account we need you to enter your Quote/Invoice/Order number. Your Quote / Invoice / Order number is located in the Quote / Invoice / Order email(s) sent to you. If you have not already requested a Quote or placed your order please do so to receive your number.Please goto our website and add product to the cart to place your order or request a quote / Invoice</td>
+              </tr>
+          <tr>
+            <td height="35" valign="middle"><img src="{{skin url=images/invoice/how_did_we_do.jpg}}"  alt=""/></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="left" valign="top" style="font-size:12px; padding:7px  0px; line-height:20px; ">We aim to ensure that whatever you are looking to buy, we make your search a success. If we've failed in any way please contact us here and let us know; <br>
+we prefer feedback via <a href="mailto:{{config path='trans_email/ident_support/email'}}" style="color:#ea0809;">{{config path='trans_email/ident_support/email'}}</a> or <span style="font-size:12px; padding:7px 0px; "> by phone at {{config path='general/store_information/phone'}}. </span> Thanks again for shopping with us.</td>
+              </tr>
+              <tr>
+                <td align="left" valign="top" style="font-size:12px; padding:10px  0px; line-height:20px;"><a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px; text-align:right; float:left;" border="0"/></a></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="15"></td>
+          </tr>
+          <tr>
+            <td valign="top" style="font-size:12px; padding:10px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9; border-top:1px solid #d9dbd9; line-height:30px;"><span style="color:#ea0809; font-weight:bold;">Please Carefully Check the Details on This Invoice</span><br>
+              We attempt to process all orders as fast as possible and as a result we may not be able to change this order. If you do notice an error or need to change an order it is essential that you contact us by phone on 1300 72 16 14 urgently during our business hours (Mon-Fri, 9am-5pm Australian Eastern Time) so we can try make your change before the order is processed.<br>
+              <span style="color:#ea0809; font-weight:bold;">No Questions Asked Money Back Policy</span><br>
+              At {{var store.getFrontendName()}} you can shop with total peace of mind. For most things, if you change your mind when you receive your order, you can send it back to us for your money back. No questions asked and no hard feelings. More here Click here<br>
+              <span style="color:#ea0809; font-weight:bold;">Damaged or Faulty Items</span><br>
+              All items are sold with a Warranty that ensures what you ordered is received by you in good working order and is able to be used as intended by the manufacturer and / or as specified by us.<br>
+              {{var store.getFrontendName()}} is a division of  Vivid Ads Pty. Ltd. (ABN 49210655341)
+              302 Bridge Street, Port Melbourne, Victoria 3207 Australia</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+        </table></td>
+        <td width="10">&nbsp;</td>
+        <td width="300" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><img src="{{skin url=images/invoice/recomendid.png}}"></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px; padding:7px 3px 7px 3px; border-left:1px solid #d9dbd9; border-bottom:1px solid #d9dbd9; border-right:1px solid #d9dbd9;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td height="10"></td>
+          </tr>
+          <tr>
+            <td><img src="{{skin url=images/invoice/joinus.png}}"></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td bgcolor="#EAEAEA" align="center" style="background:#EAEAEA; text-align:center;"><center><p style="font-size:12px; margin:0;">Thank you, <strong style="color:#ea0809;">{{var store.getFrontendName()}}</strong></p></center></td>
+  </tr>
+      </table></td>
+</tr>
+</table>
+</div></body>

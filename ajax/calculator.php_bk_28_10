@@ -1,0 +1,114 @@
+<?php   
+// Now login on MAGENTO
+include('../app/Mage.php');
+Mage::app();
+
+Mage::getSingleton('core/session', array('name' => 'adminhtml'));
+$proId = $_REQUEST['p_id'];
+$CategoryCollection = Mage::getModel('catalog/category')->getCategories(63);
+$ReacConn = Mage::getSingleton('core/resource')->getConnection('core_read');
+$CustomOptionImageTable = Mage::getSingleton('core/resource')->getTableName('imageoption');
+/*echo '
+         <ul class="label_1" id="custom_id_sw">';
+         $Procollection = Mage::getModel('catalog/product')->load($proId);
+         foreach($Procollection->getOptions() as $optionKey => $optionVal) {
+         $OptioTitle = $optionVal->getTitle();
+         $OptioTitleId = $optionVal->getId();?>
+         <li class="title-option"><span class="customoption_title">
+         <?php echo $OptioTitle?></span><?php }?>
+	 <a class="question_image" target="_blank" href="#"></a></li>
+	 <li class="sub_label_1"><span class="custom_arrow_down"></span>
+            <?php foreach($optionVal->getValues() as $valuesKey => $valuesVal) {
+                  $Selectsql="SELECT * FROM ".$CustomOptionImageTable." WHERE option_type_id = '".$valuesVal->getId()."'" ;
+                  try {
+                  $chkSystem = $ReacConn->query($Selectsql);
+                  $fetchSelectOI = $chkSystem->fetch();
+                  } catch (Exception $e){
+                  echo $e->getMessage();
+              }?>
+              <?php if($valuesVal->getSku() != ''){?><span class="customoption_img">
+              <img alt="customoption" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)?>imageoptions/<?php echo $Procollection->getId() ?>/<?php echo $fetchSelectOI['option_id']."_".$valuesVal->getId()?>/<?php echo $fetchSelectOI['image']?>"></span> <?php }?>
+              <span class="customoption_txt1">
+                <span class="customoption_txt"><?php echo $valuesVal->getTitle()?></span><?php if($valuesVal->getSku() != ''){?>
+                <span class="Text_customoption"><?php echo $valuesVal->getSku()?></span><?php }}?>
+                </span>
+              <input type="hidden" id="cusoptioid" value="<?php echo $valuesVal->getId()?>" />
+            
+            <ul class="label_2" style="display: none;">
+               <?php foreach($optionVal->getValues() as $valuesKey => $valuesVal) {
+                       //echo "<pre>";print_r($valuesVal);
+                       $Selectsql="SELECT * FROM ".$CustomOptionImageTable." WHERE option_type_id = '".$valuesVal->getId()."'" ;
+                       try {
+                       $chkSystem = $ReacConn->query($Selectsql);
+                       $fetchSelectOI = $chkSystem->fetch();
+                       } catch (Exception $e){
+                       echo $e->getMessage();
+                   }
+?>
+               <?php if($valuesVal->getSku() == ''){?>
+               <li class="sub_label_2"><span class="whole_customoption_txt"><span class="customoption_txt" id="<?php echo $valuesVal->getId()?>"><?php echo $valuesVal->getTitle()?></span><input type="hidden" id="cusoptioid" value="<?php echo $valuesVal->getId()?>" /></span></span></li>
+               <?php } else{?>
+               <li class="sub_label_2"><span class="total_img_customoption"><span class="customoption_img"><img alt="customoption" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)?>imageoptions/<?php echo $Procollection->getId() ?>/<?php echo $fetchSelectOI['option_id']."_".$valuesVal->getId()?>/<?php echo $fetchSelectOI['image']?>"></span> <span class="whole_customoption_txt1"><span class="customoption_txt" id="<?php echo $valuesVal->getId()?>"><?php echo $valuesVal->getTitle()?></span><span class="Text_customoption"><?php echo $valuesVal->getSku()?></span><input type="hidden" id="cusoptioid" value="<?php echo $valuesVal->getId()?>" /></span></span></li><?php }?>
+               <?php }?>
+       </ul>
+       </li>
+            <?php //echo '</li>';?>
+         <?php echo '</ul>';
+*/
+?>
+<ul class="label_1" id="custom_id_sw">
+    <?php 
+									
+									
+									$Procollection = Mage::getModel('catalog/product')->load($proId);
+									foreach($Procollection->getOptions() as $optionKey => $optionVal) {
+									$OptioTitle = $optionVal->getTitle();
+									$OptioTitleId = $optionVal->getId();
+									//echo "<pre>";print_r($optionVal);?>
+									<?php 
+									$CountId = 1;//foreach($optionVal->getValues() as $valuesKey => $valuesVal) {
+									if($CountId == 1){
+									//echo "<pre>";print_r($v);?>
+									<li class="title-option"><span class="customoption_title"><?php echo $OptioTitle?></span><?php }?>
+									<a class="question_image" target="_blank" href="#"></a></li>
+										<li class="sub_label_1">
+									<?php if($CountId == 1){?><span class="custom_arrow_down"></span>
+									<?php $CountOId = 1;foreach($optionVal->getValues() as $valuesKey => $valuesVal) {
+										$Selectsql="SELECT * FROM ".$CustomOptionImageTable." WHERE option_type_id = '".$valuesVal->getId()."'" ;
+										try {
+										$chkSystem = $ReacConn->query($Selectsql);
+										$fetchSelectOI = $chkSystem->fetch();
+										} catch (Exception $e){
+										echo $e->getMessage();
+									    }?>
+										<?php if($CountOId == 1){?>
+										<?php if($valuesVal->getSku() != ''){?><span class="customoption_img"><img alt="customoption" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)?>imageoptions/<?php echo $Procollection->getId() ?>/<?php echo $fetchSelectOI['option_id']."_".$valuesVal->getId()?>/<?php echo $fetchSelectOI['image']?>"></span> <?php }?><span class="customoption_txt1">
+										<span class="customoption_txt"><?php echo $valuesVal->getTitle()?></span><?php if($valuesVal->getSku() != ''){?><span class="Text_customoption"><?php echo $valuesVal->getSku()?></span><?php }?><input type="hidden" id="cusoptioid" value="<?php echo $valuesVal->getId()?>" /><?php }?></span>
+										<?php $CountOId++; }}?>
+								
+								<ul class="label_2" style="display: none;">
+									<?php foreach($optionVal->getValues() as $valuesKey => $valuesVal) {
+										//echo "<pre>";print_r($valuesVal);
+										$Selectsql="SELECT * FROM ".$CustomOptionImageTable." WHERE option_type_id = '".$valuesVal->getId()."'" ;
+										try {
+										$chkSystem = $ReacConn->query($Selectsql);
+										$fetchSelectOI = $chkSystem->fetch();
+										} catch (Exception $e){
+										echo $e->getMessage();
+									    }
+?>
+									<?php if($valuesVal->getSku() == ''){?>
+									<li class="sub_label_2"><span class="whole_customoption_txt"><span class="customoption_txt" id="<?php echo $valuesVal->getId()?>"><?php echo $valuesVal->getTitle()?></span><input type="hidden" id="cusoptioid" value="<?php echo $valuesVal->getId()?>" /></span></span></li>
+									<?php } else{?>
+									<li class="sub_label_2"><span class="total_img_customoption"><span class="customoption_img"><img alt="customoption" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)?>imageoptions/<?php echo $Procollection->getId() ?>/<?php echo $fetchSelectOI['option_id']."_".$valuesVal->getId()?>/<?php echo $fetchSelectOI['image']?>"></span> <span class="whole_customoption_txt1"><span class="customoption_txt" id="<?php echo $valuesVal->getId()?>"><?php echo $valuesVal->getTitle()?></span><span class="Text_customoption"><?php echo $valuesVal->getSku()?></span><input type="hidden" id="cusoptioid" value="<?php echo $valuesVal->getId()?>" /></span></span></li><?php }?>
+									<?php }?>
+								</ul>
+								</li>
+								<?php $CountId++;
+								//}
+								}
+								//$CountCatid++;
+								?>
+							   
+							
+							    </ul>

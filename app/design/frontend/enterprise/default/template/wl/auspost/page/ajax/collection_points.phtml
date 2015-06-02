@@ -1,0 +1,23 @@
+<?php
+    $postcode = $this->getRequest()->getParam('postcode');
+    if (!empty($postcode))
+        $collection_points = $this->getCollectionPoints($postcode);
+?>
+<?php if (!empty($collection_points) && empty($collection_points['ErrorMessage'])) : ?>
+    <select style="z-index: -2000;" id="colection-point-select-box" class="select" onchange="syncCollectionPoint('<?php echo $this->getUrl("auspost/data/getCollectionPointByIdAjax")?>')">
+        <option>&nbsp;</option>
+        <?php foreach ($collection_points as $point) : ?>
+            <?php if (!empty($point['DeliveryPointIdentifier'])) : ?>
+                <option value="<?php echo $point['DeliveryPointIdentifier'] ?>">
+                    <?php echo $point['AddressLine'][2].', '.$point['SuburbOrPlaceOrLocality'].', '.$point['StateOrTerritory'].', '.$point['PostCode'].', '.$point['CountryName'] ?>
+                </option>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </select>
+<?php elseif (empty($postcode)) : ?>
+    <span style="color: red;"><?php echo $this->__('Invalid postcode')?></span>
+<?php elseif (!empty($collection_points['ErrorMessage'])) : ?>
+    <span style="color: red;"><?php echo $collection_points['ErrorMessage']; ?></span>
+<?php else : ?>
+    <span style="color: red;"><?php echo $this->__('No collection point available')?></span>
+<?php endif; ?>

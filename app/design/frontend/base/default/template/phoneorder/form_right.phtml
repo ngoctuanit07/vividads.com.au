@@ -1,0 +1,42 @@
+<?php if($this->isEnabled()): ?>
+    <?php 
+        $_product = $this->getProduct(); 
+        $_productUrl = $_product->getProductUrl('url_path');
+        $_availabilityMsg = $this->getAvailabilityMsg();
+        $_style = $this->getStyleName();
+    ?>
+
+    <div class="phone-order-kit-<?php echo $_style; ?>-right">
+        <div class="po-title">
+            <?php echo $this->__('Order product by phone') ?>
+        </div>
+        <div class="po-content">
+            <div class="po-info">
+                <?php echo $this->__('If you would like to order product by phone, leave your number. We will contact you as soon as possible to complete your order.') ?>
+            </div>
+            <div class="po-form">
+                <form action="<?php echo Mage::getBaseUrl(); ?>phoneorder/index/addPhoneOrder" method="get">
+                    <input type="hidden" name="url" value="<?php echo $_productUrl; ?>">             
+                    <label><?php echo $this->__('Your phone number') ?></label>
+                    <input type="text" name="phone" placeholder="<?php echo $this->__('e.g.') ?> 602243631" class="input-text">
+                    <div class="po-btn-contener">
+                        <button type="submit" class="po-btn">
+                            <span>
+                                <?php echo $this->__('Request a call') ?>
+                            </span>
+                        </button>      
+                    </div>                                 
+                </form>                
+            </div>
+        </div>
+        <?php if(!empty($_availabilityMsg)) : ?>
+            <div class="po-footer">
+                <p class="po-availbility">
+                    <span class="po-star">*</span><?php echo $_availabilityMsg; ?>
+                </p>            
+            </div>
+        <?php endif; ?> 
+    </div>
+
+
+<?php endif; ?>

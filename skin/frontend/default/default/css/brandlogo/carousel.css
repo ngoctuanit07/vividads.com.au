@@ -1,0 +1,119 @@
+#carousel_inner {
+float:left; /* important for inline positioning */
+width:666px; /* important (this width = width of list item(including margin) * items shown */ 
+overflow: hidden;  /* important (hide the items outside the div) */
+/* non-important styling bellow */
+/*background: #F0F0F0;*/
+position: relative;
+margin: 0;
+height:112px;
+border-top: 1px solid #ECECEC;
+border-bottom: 1px solid #ECECEC;
+
+}
+
+#carousel_ul {
+position:relative;
+left:-210px; /* important (this should be negative number of list items width(including margin) */
+list-style-type: none; /* removing the default styling for unordered list items */
+margin: 0px;
+padding: 0px;
+width:9999px; /* important */
+/* non-important styling bellow */
+padding-bottom:10px;
+}
+
+#carousel_ul li{
+    float: left;
+    height: 85px;
+    margin: 5px 5px 0;
+    padding: 10px 0;
+    width: 120px;
+}
+
+#carousel_ul li img {
+.margin-bottom:-4px; /* IE is making a 4px gap bellow an image inside of an anchor (<a href...>) so this is to fix that*/
+/* styling */
+cursor:pointer;
+cursor: hand; 
+border:0px; 
+width:100px;
+height: 60
+}
+#left_scroll{
+    border: 1px solid #ECECEC;
+    float: left;
+    height: 90px;
+    padding-left: 5px;
+    padding-top: 20px;
+    width: 25px;
+    /*background: #C0C0C0; */
+    
+    /* IE10 Consumer Preview */ 
+    background-image: -ms-linear-gradient(right, #EC9A1D 0%, #E36913 100%);
+
+    /* Mozilla Firefox */ 
+    background-image: -moz-linear-gradient(right, #EC9A1D 0%, #E36913 100%);
+
+    /* Opera */ 
+    background-image: -o-linear-gradient(right, #EC9A1D 0%, #E36913 100%);
+
+    /* Webkit (Safari/Chrome 10) */ 
+    background-image: -webkit-gradient(linear, right left, right left, color-stop(0, #EC9A1D), color-stop(1, #E36913));
+
+    /* Webkit (Chrome 11+) */ 
+    background-image: -webkit-linear-gradient(right, #EC9A1D 0%, #E36913 100%);
+
+    /* W3C Markup, IE10 Release Preview */ 
+    background-image: linear-gradient(to left, #EC9A1D 0%, #E36913 100%);
+}
+#right_scroll{
+    border: 1px solid #ECECEC;
+    float: left;
+    height: 90px;
+    padding-left: 5px;
+    padding-top: 20px;
+    width: 25px;
+    /*background: #C0C0C0; */
+    /* IE10 Consumer Preview */ 
+    background-image: -ms-linear-gradient(left, #EC9A1D 0%, #E36913 100%);
+
+    /* Mozilla Firefox */ 
+    background-image: -moz-linear-gradient(left, #EC9A1D 0%, #E36913 100%);
+
+    /* Opera */ 
+    background-image: -o-linear-gradient(left, #EC9A1D 0%, #E36913 100%);
+
+    /* Webkit (Safari/Chrome 10) */ 
+    background-image: -webkit-gradient(linear, left right, left right, color-stop(0, #EC9A1D), color-stop(1, #E36913));
+
+    /* Webkit (Chrome 11+) */ 
+    background-image: -webkit-linear-gradient(left, #EC9A1D 0%, #E36913 100%);
+
+    /* W3C Markup, IE10 Release Preview */ 
+    background-image: linear-gradient(to right, #EC9A1D 0%, #E36913 100%);
+    
+}
+#left_scroll:hover{background: #E36913;}
+#right_scroll:hover{background: #E36913;}
+#left_scroll img, #right_scroll img{
+border:0; /* remove the default border of linked image */
+/*styling*/
+cursor: pointer;
+cursor: hand;
+margin-top: 30px;
+}
+.carosel_title
+{
+    
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    
+    
+}
+
+
+
+

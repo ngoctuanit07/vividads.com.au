@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+		<reference name="head">		    
+			<action method="addCss"><stylesheet>css/faqs/accordion.css</stylesheet></action>		
+		</reference>
+		
+		<reference name="right">
+			<block type="faqs/block" name="block" before="-">
+				<action method="setTemplate">
+					<template>faqs/block.phtml</template>
+				</action>
+			</block>
+		</reference>
+    </default>
+    
+    <faqs_index_index>
+		 <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+         </reference>
+		<reference name="content">
+			<block type="faqs/topic" name="faqs" template="faqs/topics.phtml" ></block>
+		</reference>
+	</faqs_index_index>    
+		    
+    <faqs_index_view>
+	<reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+			<reference name="root">
+			<block type="page/html_head" name="head" as="head">
+				<!--css only -->
+				<action method="addCss"><stylesheet>css/styles.css</stylesheet></action>
+				<action method="addCss"><stylesheet>css/hover_pack.css</stylesheet></action>
+				<action method="addCss"><stylesheet>ajaxcontacts/css/styles.css</stylesheet></action>
+				<action method="addCss"><stylesheet>css/vividslider/slider/slider.css</stylesheet></action>
+				<action method="addCss"><stylesheet>ajaxcontacts/css/styles.css</stylesheet></action>
+				<action method="addJs"><script>prototype/prototype.js</script></action>
+                <action method="addJs"><script>prototype/validation.js</script></action>	
+                <action method="addJs"><script>varien/js.js</script></action>							
+                <action method="addJs"><script>varien/form.js</script></action>
+                <action method="addJs"><script>mage/translate.js</script></action>				
+				
+				<action method="addJs"><script>faqs/jquery-1.4.2.min.js</script></action>
+				<action method="addJs"><script>jquery/jquery-1.7.1-min.js</script></action>	
+				<action method="addJs"><script>vividslider/slider/jquery-1-10-3-ui.js</script></action>	
+				<action method="addJs"><script>vividslider/slider/slider.js</script></action>
+                <action method="addItem"><type>skin_css</type><name>css/styles-ie.css</name><params/><if>lt IE 8</if></action>
+			</block>
+			</reference>
+        </reference>
+		<reference name="content">
+				<block type="faqs/faqs" name="faqs" template="faqs/faqs.phtml" ></block>
+		</reference>  
+    </faqs_index_view>
+    
+    <faqs_index_search>
+		<reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+         </reference>
+		<reference name="head">		    	
+			<action method="addJs"><script>faqs/jquery-1.4.2.min.js</script></action>
+		</reference>
+		<reference name="content">
+				<block type="faqs/faqs" name="faqs" template="faqs/searchresults.phtml"></block>
+		</reference> 
+		
+    </faqs_index_search>
+	
+<!--	<catalog_product_view>
+		<reference name="content">
+			<reference name="product.info">
+			
+					<block type="faqs/ProductFaqs" name="product.info.faqs" as="product_faqs">
+						<action method="setFromXml">
+							<from_xml>yes</from_xml>
+						</action>
+					</block>
+			
+			</reference>
+		</reference>
+	</catalog_product_view>-->
+<!--	<catalog_product_view>
+		<reference name="content">
+			<reference name="product.info">
+				<reference name="product.info.additional">
+					<block type="faqs/ProductFaqs" name="product.info.faqs" as="product_faqs">
+						<action method="setFromXml">
+							<from_xml>yes</from_xml>
+						</action>
+					</block>
+				</reference>
+			</reference>
+		</reference>
+	</catalog_product_view>	-->
+    
+</layout>         
+        
+        
+	    
+        
+    

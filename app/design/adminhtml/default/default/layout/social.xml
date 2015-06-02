@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_catalog_product_new>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>MagenTools</name>
+                <block>social/adminhtml_catalog_product_tab</block>
+            </action>
+        </reference>
+    </adminhtml_catalog_product_new>
+    <adminhtml_catalog_product_edit>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>MagenTools</name>
+                <block>social/adminhtml_catalog_product_tab</block>
+            </action>
+        </reference>
+    </adminhtml_catalog_product_edit>
+</layout>

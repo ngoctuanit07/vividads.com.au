@@ -1,0 +1,46 @@
+button.auspost-address-popup {
+    background: transparent url("images/btn_my_deliveries.png") no-repeat scroll top right;
+    width: 286px;
+    height: 37px;
+    border: 0 none;
+    cursor: pointer;
+    margin: 0;
+    overflow: visible;
+    padding: 0;
+}
+
+button.auspost-address-popup:hover {
+     background: transparent url("images/btn_my_deliveries.png") no-repeat scroll top right;
+}
+
+button.auspost-address-popup:active {
+     background: transparent url("images/btn_my_deliveries.png") no-repeat scroll top right;
+}
+
+.tooltip {
+  background-color: #EEEEEE;
+  border: 1px solid #DDDDDD;
+  border-radius: 5px 5px 5px 5px;
+  color: #333333;
+  margin: 0 0 0 15px;
+  padding: 8px;
+  position: absolute;
+  right: 330px;
+  width: 230px;
+  z-index: 9000;
+}
+.infotip {
+  background: url("images/icon_tooltip.png") no-repeat scroll left top transparent;
+  border: medium none;
+  cursor: pointer;
+  height: 16px;
+  overflow: hidden;
+  text-indent: -99999px;
+  margin-bottom: 2px;
+  width: 16px;
+}
+.texttip {
+	font-weight: bold;
+    margin-bottom: 5px;
+	margin-top: 10px;
+}

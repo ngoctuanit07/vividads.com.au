@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="left">
+            <block type="gallery/left" name="leftgellerymenu" template="gallery/left.phtml" before="-" />
+        </reference>
+    </default>
+	<gallery_index_index>
+        <reference name="content">
+            <block type="gallery/category" name="category" template="gallery/category.phtml" />
+        </reference>
+    </gallery_index_index>
+    <gallery_category_index>
+        <reference name="content">
+            <block type="gallery/gallery" name="gallery" template="gallery/gallery.phtml" />
+        </reference>
+    </gallery_category_index>
+	<gallery_image_index>
+        <reference name="content">
+            <block type="gallery/gallery" name="gallery" template="gallery/image.phtml" />
+            <block type="Quotation/Frontend_AnonymousQuoteRequest" name="quotationanonymousrequest" as="quotationanonymousrequest" template="Quotation/AnonymousQuoteRequest.phtml"/>
+        </reference>
+    </gallery_image_index>
+</layout> 

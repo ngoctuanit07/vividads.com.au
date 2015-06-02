@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Artis_Freesample>
+      <active>true</active>
+      <codePool>local</codePool>
+      <version>1.7.0</version>
+    </Artis_Freesample>
+  </modules>
+</config>

@@ -1,0 +1,96 @@
+<div class="display-list">
+<div class="display-list-top">
+    <div class="find-item">
+                     <span class="find-heading">Choose Your Display</span> 
+    </div>
+</div>
+
+<div class="display-list-content">
+    <div class="home-category">
+	<ul>
+      <?php
+            
+            $store = Mage::app()->getStore()->getId();
+                
+                $rootId     = Mage::app()->getStore($store)->getRootCategoryId();
+                
+				
+                $collection = Mage::getModel('catalog/category')->getCollection()
+                ->addFieldToFilter('path', array('like'=> "1/$rootId/%"))
+                ->addAttributeToSelect('name')
+                ->addAttributeToSelect('is_active')
+                ->addAttributeToSelect('thumbnail')
+				->addAttributeToSelect('url')
+                ->addAttributeToSelect('url_path')
+                ->addAttributeToSelect('description')
+                ->addAttributeToFilter('is_active', 1)
+                ->addAttributeToFilter('is_featured', 148)
+                ->setPage(0, 15)
+                ->load();
+                //echo "Count :".$collection->count();
+                $counteri = 0;
+				$counter = 0;
+                foreach ($collection as $_childCategory){
+                    $counteri++;
+					$counter++;
+                    
+					$_img= $_childCategory->getThumbnail();
+                    $catName=$_childCategory->getName();
+                    $getCatUrl=$_childCategory->getUrl();
+                    $cur_category=Mage::getModel('catalog/category')->load($_childCategory->getId());
+                    // echo $getCatUrl;
+					// exit;
+            ?>
+    
+    	<li>
+        	      <div class="display-list-category-img"> 
+            <a onmousemove="onHover(this);" title="<?php echo $catName; ?>" href="<?php echo $getCatUrl; ?>">
+                	<img width="230" height="207" onmousemove="onHover(this);" src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$cur_category->getThumbnail()  ?>" alt="<?php echo $catName; ?>" />
+                
+                <span class="display-list-category-details c20">
+                    <span class="display-list-category-details-top"></span>
+                      <span class="display-list-category-details-content">
+                        
+                        
+                         <img width="230" height="207" src="<?php echo Mage::getBaseUrl('media').'catalog/category/'.$cur_category->getThumbnail()  ?>" alt="<?php echo $catName; ?>" />
+                        
+                        <strong><?php echo $catName ;?></strong><br />
+                      
+						<?php echo $cur_category->getDescription(); ?><br />
+                        <button class="browse" onclick="setLocation('<?php echo $getCatUrl; ?>');" title="Browse">Browse</button>
+                       
+                        
+                    </span>
+                      <span class="display-list-category-details-bottom"></span>
+                </span>
+                
+            </a>
+            </div>
+            <div class="display-list-category-button">
+                <span class="forfetcatname" onclick="setLocation('<?php echo $getCatUrl; ?>');">
+				 <?php 
+				 //echo  substr($catName,0,15)."...";
+				 echo $catName;
+				  ?>
+
+                </span><span class="forcartimg"></span>
+            </div>
+        </li>
+
+       <?php
+			
+				
+				
+			
+			} ?>
+    
+    
+    	</ul>
+
+
+</div>
+</div>
+</div>
+
+
+

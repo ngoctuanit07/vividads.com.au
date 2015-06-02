@@ -1,0 +1,247 @@
+<div class="home-page-cms-content">
+
+    <!--<table width="100%" cellspacing="0" cellpadding="0" border="0">
+
+        <tbody>
+
+            <tr>
+
+                <td width="321" class="home-page-left">
+
+                   <div class="menu2">
+
+                               <ul>
+
+                                       <li><img src="<?php echo $this->getSkinUrl(); ?>images/icon-price.png" alt=""><span class="txt"><span class="find-heading">Low Price Guarantee</span><br>We are happy to beat the price of our competitors</span></li>
+
+                                   <li><img src="<?php echo $this->getSkinUrl(); ?>images/icon-shipping.png" alt=""><span class="txt"><span class="find-heading">Reliable &amp; Fast Shipping</span><br>Make sure you get your product on time. We deliver Australia-Wide.</span></li>
+
+                                   <li><img src="<?php echo $this->getSkinUrl(); ?>images/icon-setup.png" alt=""> <span class="txt"><span class="find-heading">Easy setup Process</span><br>We’re here to help with setup if you need it</span></li>
+
+                                   <li><img src="<?php echo $this->getSkinUrl(); ?>images/icon-guarantee.png" alt=""><span class="txt"><span class="find-heading">Money Back Guarantee</span><br>We want our customers happy</span></li>
+
+                               </ul>
+
+                           </div> 
+
+                    <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('bottom_left_content')->toHtml() ?>
+
+                </td>
+
+                <td class="home-page-right">
+
+                                            <div class="content">
+
+                                <h1>About Our Products</h1>
+
+                                <div class="para_txt">
+
+                                    <p>High impact, professional presentation: With only a fleeting moment to attract the attention of a trade show attendee, your exhibit must appeal to your target audience's interests. Your display must effectively communicate who you are, what you do and how your company can help them. We can help you with our promotion, advertising and marketing displays &amp; equipments. We sell cheap and affordable high quality products directly to consumers. </p>
+
+                        
+
+                                    <p>Exhibitions and conventions are the perfect opportunity to introduce your company to the public &amp; we want to help you with your image design. We have a huge selection of Tradeshow Exhibits, Media Wall, Tradeshow Banner Stands, Accessories, Pop Up Booths,  Portable Exhibits &amp; presentation boards. Here is everything you need to get noticed, creating successful sales opportunities. Make an impression with an interchangeable graphic board or banner poles.</p>
+
+                                    
+
+                                    <p>Vivid Ads (Creative Advertising &amp; Display Solutions) is Australia's choice to buy In-Stock exhibit stands, fabric mural media backdrop walls, expo booth displays, road show displays, trade fair booths (exhibit / expo) equipments and interactive / interactivity display screens. We also have a established banner graphic and design department to compliment your display banner stands.</p>
+
+                                    
+
+                                     <p class="learn_more">
+
+                                        <button class="button" title="Learn More" type="submit" onClick="setLocation('about-us')"><span><span>Learn More</span></span></button>
+
+                                     </p>
+
+                                      
+
+                                </div>
+
+                        </div>
+
+
+
+                    
+
+                   <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('bottom_right_content')->toHtml() ?>
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>-->
+
+    <script src="<?php echo $this->getSkinUrl()?>js/jquery-1.9.1.min.js"></script>
+
+<script src="<?php echo $this->getSkinUrl()?>js/modernizr.js"></script>
+
+<script>
+
+    $(document).ready(function(){
+
+        if (Modernizr.touch) {
+
+            // show the close overlay button
+
+            $(".close-overlay").removeClass("hidden");
+
+            // handle the adding of hover class when clicked
+
+            $(".img").click(function(e){
+
+                if (!$(this).hasClass("hover")) {
+
+                    $(this).addClass("hover");
+
+                }
+
+            });
+
+            // handle the closing of the overlay
+
+            $(".close-overlay").click(function(e){
+
+                e.preventDefault();
+
+                e.stopPropagation();
+
+                if ($(this).closest(".img").hasClass("hover")) {
+
+                    $(this).closest(".img").removeClass("hover");
+
+                }
+
+            });
+
+        } else {
+
+            // handle the mouseenter functionality
+
+            $(".img").mouseenter(function(){
+
+                $(this).addClass("hover");
+
+            })
+
+            // handle the mouseleave functionality
+
+            .mouseleave(function(){
+
+                $(this).removeClass("hover");
+
+            });
+
+        }
+
+    });
+
+</script>
+
+    <div id="effect-1" class="effects clearfix">
+
+             <div class="product_detail">
+             
+              <div class="product_img">
+               <img src="<?php echo $this->getSkinUrl()?>images/productimage2.png" alt="">
+              </div>
+              <div class="product_des">
+              <h2>Outdoor &amp; Indoor Teardrop / Flying Banners &amp; Flages (Small)</h2>
+              <p style="width: 100%;">
+              <ul style="margin:10px 0;"> 
+              <li style="list-style:none;"> Product Model: <span> VDK27SHG (Small)</span></li>
+              <li style="list-style:none;"> Small: <span> $199.00 + GST(2.1mH)</span></li>
+              </ul>
+              True Double Sided Printing. This means no more mirror images of your logo. Correnct read on both sides
+(3 layers of material back to back).
+Easy to position, erect and remove. Ideal for garge forecourts outdoor events or large open indoor areas
+and retail stores. The water filled base ensures stability even in high winds. Double Sided Printing
+to target public traffic from both sides. Great for outdoor promotions and retail marketting.
+              </p>
+              <div class="btnInfo">
+              <a href="<?php echo $this->getUrl('product-detail');?>"><img src="<?php echo $this->getSkinUrl();?>images/btnmoreinfo.png" /></a>
+              </div>
+              </div>
+             </div>
+             <div class="product_detail">
+             
+              <div class="product_img">
+               <img src="<?php echo $this->getSkinUrl()?>images/teardrop-banners-5.png" alt="">
+              </div>
+              <div class="product_des">
+              <h2>Outdoor &amp; Indoor Teardrop / Flying Banners &amp; Flages (Small)</h2>
+              <p style="width: 100%;">
+              <ul style="margin:10px 0;"> 
+              <li style="list-style:none;"> Product Model: <span> VDK27SHG (Small)</span></li>
+              <li style="list-style:none;"> Small: <span> $199.00 + GST(2.1mH)</span></li>
+              </ul>
+              True Double Sided Printing. This means no more mirror images of your logo. Correnct read on both sides
+(3 layers of material back to back).
+Easy to position, erect and remove. Ideal for garge forecourts outdoor events or large open indoor areas
+and retail stores. The water filled base ensures stability even in high winds. Double Sided Printing
+to target public traffic from both sides. Great for outdoor promotions and retail marketting.
+              </p>
+              <div class="btnInfo">
+              <a href="<?php echo $this->getUrl('product-detail');?>"><img src="<?php echo $this->getSkinUrl();?>images/btnmoreinfo.png" /></a>
+              </div>
+              </div>
+             </div>
+              
+
+ <div class="display-list">
+
+<div style="float: left; margin-top: 30px;" class="display-list-top">
+
+    <div class="find-item">
+
+                       <img alt="" src="http://teardrop-banners.com.au/skin/frontend/default/teardropbannerscomau/images/icon-magnifier.png">
+                       <span class="find-heading">Our Past Orders</span> 
+    </div>
+
+</div>
+
+<div class="display-list-content">
+
+    
+
+</div>
+
+<!--<div class="display-list-bottom"></div>-->
+
+</div>
+
+     
+
+ 
+
+ 
+             <div class="product_detail">
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-1.jpg"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-2.png"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-3.png"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-4.png"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-5.png"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-6.jpg"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-7.jpg"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-8.jpg"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-9.png"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-10.png"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-11.jpg"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-12.jpg"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-13.jpg"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-14.jpg"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-15.jpg"  />
+              <img class="thm" src="<?php echo $this->getSkinUrl();?>images/teardrop-banners-16.jpg"  />
+                  
+                  
+              
+               
+               
+             </div>
+    
+
+        </div>
+
+</div>

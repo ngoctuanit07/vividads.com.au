@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addJs" ifconfig="ajaxcontacts/general/enabled"><script>prototype/effects.js</script></action>
+            <action method="addJs" ifconfig="ajaxcontacts/general/enabled"><script>prototype/window.js</script></action>
+            <action method="addJs" ifconfig="ajaxcontacts/general/enabled"><script>ajaxcontacts/script.js</script></action>
+            <action method="addCss" ifconfig="ajaxcontacts/general/enabled"><script>ajaxcontacts/css/styles.css</script></action>
+            <action method="addItem" ifconfig="ajaxcontacts/general/enabled"><type>js_css</type><script>prototype/windows/themes/default.css</script></action>
+            <action method="addItem" ifconfig="ajaxcontacts/general/enabled"><type>js_css</type><script>prototype/windows/themes/alphacube.css</script></action>
+            <block type="ajaxcontacts/wrapper" name="mp.ajaxcontacts.wrapper" as="ajaxcontacts_wrapper" template="ajaxcontacts/wrapper.phtml" />
+        </reference>
+    </default>
+    <ajaxcontacts_index_index>
+        <reference name="content">
+            <block type="ajaxcontacts/ajaxcontacts" name="ajaxcontacts" template="ajaxcontacts/ajaxcontacts.phtml" />
+        </reference>
+    </ajaxcontacts_index_index>
+</layout> 

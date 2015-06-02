@@ -1,0 +1,62 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE  
+  
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<style> 
+iframe {
+    border: medium none;
+    float: left;
+    margin-left: -5px;  
+}
+</style>
+<div class="intro"><h2 style="display:none;">Get A Free <span style="color:#ec761c;">Quote Within 2 Minutes</span></h2>
+<?php /*?><p>
+<span>Vivid Ads Pty. Ltd. (ABN 49210655341)</span><br />
+<span>302 Bridge Street, Port Melbourne, Victoria 3207 Australia</span><br />
+<span>Tel: 1300 72 16 14;   Fax: 03 8456 6234</span><br />
+<span>Opening Hours:   Monday - Friday (9.00am - 5.00pm)</span><br />
+Please call us to book your appointment!  We are 3km's from Melbourne Convention and Exhibition Centre (South Wharf).
+ </p>
+<?php */?>
+<p>
+<?php  echo (Mage::getStoreConfig('general/store_information/address'));?>
+<div data-id="8dd164f879" class="livechat_button" style="float: right; margin: -90px 10px 0px 0px ;padding: 0;"><a href="http://www.livechatinc.com/?partner=lc_3920361&amp;utm_source=chat_button">live chat software</a></div>
+</p>
+</div>
+
+<div id="quoteLoader" style="width:100%; height:856px;float:left;">
+<?php echo $this->getLayout()->createBlock('externalform/externalform')->setTemplate('externalform/externalform.phtml')->toHtml(); ?>
+
+</div>
+
+</div>

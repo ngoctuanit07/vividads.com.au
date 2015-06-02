@@ -1,0 +1,59 @@
+<?php 
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2013 Amasty (http://www.amasty.com)
+* @package Amasty_Zoom
+*/  
+?>
+<?php
+$zoomerEnable   = Mage::getStoreConfig('amzoom/zoom_on_category_grid/enable');
+$productCollection = Mage::getModel('catalog/product')->getCollection();
+
+$images = $ids = $titles = '';
+foreach ($productCollection as $product) {
+	continue; //disabled 
+    $products = Mage::getModel('catalog/product')->load($product->getId());
+    $ids    .= $product->getId() . ';';
+    $images .= Mage::helper('catalog/image')->init($products, 'small_image') . ';';
+    $titles .= $products->getImageLabel() . ';';
+}
+?>
+<script type="text/javascript">     
+    AmZoomerOptions = Object.extend({
+        zoomEnable:      <?php echo intval(Mage::getStoreConfig('amzoom/zoom_on_category_grid/enable'))?>,
+        zoomType:        'outside',
+        viewerPosition:  '<?php echo Mage::getStoreConfig('amzoom/zoom_on_category_grid/viewer_position')?>',
+        viewerMargin:    '<?php echo Mage::getStoreConfig('amzoom/zoom_on_category_grid/viewer_margin')?>',
+        viewerWidth:     '<?php echo intval(Mage::getStoreConfig('amzoom/zoom_on_category_grid/viewer_width'))?>',
+        viewerHeight:    '<?php echo intval(Mage::getStoreConfig('amzoom/zoom_on_category_grid/viewer_height'))?>',
+        showProductName: <?php echo intval(Mage::getStoreConfig('amzoom/zoom_on_category_grid/show_product_name'))?>,
+        // Zoomer will be used on category grid 
+        categoryGrid: true
+    }, window.AmZoomerOptions || {});
+    
+    var ids = '<?php echo $ids ?>';
+    ids = ids.split(';');
+    var images = '<?php echo $images ?>';
+    images = images.split(';');
+    var titles = '<?php echo $titles ?>';
+    titles = titles.split(';');
+     
+    AmZoomerOptions.images = [];
+    for(var i = 0; i < <?php echo $productCollection->count() ?>; i++) {
+        AmZoomerOptions.images[ids[i]] = new Array(images[i], titles[i]);
+    }
+    setStructureForGrid('<?php echo Mage::getBaseUrl('js') . 'amasty/amzoom/images/preloaderSmall.gif' ?>');
+
+    <?php if ($zoomerEnable): ?>
+        <?php if (!Mage::app()->getRequest()->isAjax()): ?>
+            Event.observe(window, 'load', function(){
+        <?php endif; ?>
+
+        new AmZoomer();
+
+        <?php if (!Mage::app()->getRequest()->isAjax()): ?>
+            });
+        <?php endif; ?>
+    <?php endif; ?>
+</script>
+         

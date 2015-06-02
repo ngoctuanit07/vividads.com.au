@@ -1,0 +1,93 @@
+<script type="text/javascript">
+  <!--
+//  console.log(screen.availWidth);
+  if (screen.width <= 800) {
+    window.location = "<?php echo Mage::getBaseUrl()?>/m";
+  }
+  
+  //-->  
+</script>
+
+<?php
+	$iphone = strpos($_SERVER['HTTP_USER_AGENT'],'iPhone');
+	$android = strpos($_SERVER['HTTP_USER_AGENT'],'Android');
+	$palmpre = strpos($_SERVER['HTTP_USER_AGENT'],'webOS');
+	$berry = strpos($_SERVER['HTTP_USER_AGENT'],'BlackBerry');
+	$ipod = strpos($_SERVER['HTTP_USER_AGENT'],'iPod');
+
+	if ($iphone || $android || $palmpre || $ipod || $berry == true) 
+	{
+		echo "<script>window.location='".Mage::getBaseUrl()."/m'</script>";
+	 }
+?>
+<?php
+#ini_set('zlib.output_compression', 4096);
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<meta http-equiv="Content-Type" content="<?php echo $this->getContentType() ?>" />
+<title><?php echo $this->getTitle() ?></title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="<?php echo htmlspecialchars($this->getDescription()) ?>" />
+<meta name="keywords" content="<?php echo htmlspecialchars($this->getKeywords()) ?>" />
+<meta name="robots" content="<?php echo htmlspecialchars($this->getRobots()) ?>" />
+<link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:300,400,500,700,600" />
+<link rel="stylesheet" href="<?php echo $this->getSkinUrl()?>css/quote.css" type="text/css" /> 
+
+
+<link rel="stylesheet" href="<?php echo $this->getSkinUrl()?>css/nav.css" type="text/css" /> 
+
+
+<!--<script type="text/javascript" src="<?php echo $this->getJsUrl(); ?>lightbox/jquery.js"></script>-->
+<!--<script src="<?php echo $this->getSkinUrl()?>jquery.min.js"></script>-->
+<!--<script src="<?php echo $this->getJsUrl(); ?>extjs/jquery-1.9.1.min.js"></script>
+--><!--<script type="text/javascript" src="<?php echo $this->getSkinUrl()?>js/hover_pack.js"></script>-->
+<!--[if lt IE 7]>
+<script type="text/javascript">
+//<![CDATA[
+    var BLANK_URL = '<?php echo $this->helper('core/js')->getJsUrl('blank.html') ?>';
+    var BLANK_IMG = '<?php echo $this->helper('core/js')->getJsUrl('spacer.gif') ?>';
+//]]>
+</script>
+<![endif]--> 
+<!-- Start of Woopra Code -->
+<?php /*?><script>
+(function(){
+        var t,i,e,n=window,o=document,a=arguments,s="script",r=["config","track","identify","visit","push","call","trackForm","trackClick"],c=function(){var t,i=this;for(i._e=[],t=0;r.length>t;t++)(function(t){i[t]=function(){return i._e.push([t].concat(Array.prototype.slice.call(arguments,0))),i}})(r[t])};for(n._w=n._w||{},t=0;a.length>t;t++)n._w[a[t]]=n[a[t]]=n[a[t]]||new c;i=o.createElement(s),i.async=1,i.src="//static.woopra.com/js/t/5.js",e=o.getElementsByTagName(s)[0],e.parentNode.insertBefore(i,e)
+})("woopra");
+
+woopra.config({
+    domain: '<?php echo Mage::getBaseUrl()?>'
+});
+woopra.track();
+</script><?php */?>
+<!-- End of Woopra Code -->
+<?php echo $this->getCssJsHtml() ?>
+<?php  echo $this->getChildHtml() ?>
+<?php // echo $this->helper('core/js')->getTranslatorScript() ?>
+<?php echo $this->getIncludes() ?>

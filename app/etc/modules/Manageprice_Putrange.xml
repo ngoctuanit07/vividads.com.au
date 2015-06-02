@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Manageprice_Putrange>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Manageprice_Putrange>
+    </modules>
+</config> 

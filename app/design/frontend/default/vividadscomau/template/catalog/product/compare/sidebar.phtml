@@ -1,0 +1,464 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE 
+ * 
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/* @var $this Mage_Catalog_Block_Product_Compare_Sidebar */
+?>
+<script language="javascript">
+	jQuery(document).ready(function(e) {
+		 var col_main = jQuery('.col-main');
+		 var clm_height= col_main.height();
+		 
+		  
+		 var block_list = jQuery('.block-list');
+		 var left_menu = jQuery('.leftmenu');
+		 var phone_left = jQuery('.phone_left');
+		 
+		 
+		
+		 var parmanent_elements = {
+			 					'block_list':block_list,								
+								'left_menu':left_menu,							  
+			 };  
+		var pre_height = 0;		
+		
+		jQuery.each(parmanent_elements,function(key, val){
+			   // console.log(val.height());
+			  pre_height += val.height();
+			});
+		
+		///check if we are on product view page
+		 
+		   if( jQuery('body').hasClass('catalog-product-view')) {
+			   clm_height = clm_height-1250;
+			//console.log(jQuery('body').hasClass('catalog-product-view'));
+			   }
+			 /*
+			 if( jQuery('body').hasClass('catalog-category-view')) {
+			   clm_height = clm_height-1150;
+			//console.log(jQuery('body').hasClass('catalog-product-view'));
+			   }   
+			   */
+			///check if we are on product view page
+		 /*
+		   if( jQuery('body').hasClass('cms-home')) {
+			    clm_height = clm_height-1200;
+			//console.log(jQuery('body').hasClass('catalog-product-view'));
+			   }   
+		 */
+		 // console.log('pre='+pre_height);
+		  
+		
+		var elements = {
+		 				 
+						  'phone_left':jQuery('#phone_left'),
+						  'cl_banner':jQuery('#clients_banner'),
+		 				  'testimonial':jQuery('#testimonial'),
+						  'artwork_banner':jQuery('#artwork_banner'),						  
+						  'save_img':jQuery('#save_img'),
+						  'tnt_img':jQuery('#tnt_img'),
+						  'quality_img':jQuery('#quality_img'),
+						  'customer_services_img':jQuery('#customer_services_img'),
+						  'best_offer':jQuery('#best_offer'),
+						  'best_choice':jQuery('#best_choice'),
+						  'best_seller':jQuery('#best_seller'),						 
+						  'secure':jQuery('#secure'),
+						  'likeus':jQuery('#likeus'),
+						  'stand_design':jQuery('#stand_design'),						 
+						  //'sale_banner':jQuery('#sale_banner'),
+						  'educational_banner':jQuery('#educational_banner'),
+						}
+		//defining array of divs for meauring heights
+		var divheights= Array();
+		var totalHeight= pre_height;
+		
+		 if( jQuery('body').hasClass('cms-home')) {
+			    clm_height = clm_height-1200;
+			//console.log(jQuery('body').hasClass('catalog-product-view'));
+					jQuery('.clients-banner').show();					
+					jQuery('.artwork-banner').show();
+					jQuery('.testimonial').show();
+					//jQuery('.price-guarante').show();
+					jQuery('.stand_design').show();
+					jQuery('.likeus').show();
+					 
+					
+			
+			   }else{   
+		 
+		
+		jQuery.each(elements,function(key , val){
+			 	 val.hide();
+				var phone_left_height = elements.phone_left.height();
+				 				 
+				totalHeight +=val.height();				
+			 	//console.log('main Column Height = '+clm_height);
+				//console.log(val+'='+totalHeight+'='+clm_height);
+				
+				if( parseInt(totalHeight) < parseInt(clm_height)){					
+					 divheights [key]= val.height();
+					  // console.log(jQuery(val).attr('id')+'='+totalHeight);
+					  
+					  // console.log(jQuery(val).attr('id')+'='+val.height());
+				  jQuery('#'+key).show(); 
+				}
+				 
+				/*
+				
+				if(clm_height > 435 && clm_height <820 ){
+					elements.phone_left.show();
+				}
+				if(clm_height > 820 && clm_height <1095 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+				}
+				if(clm_height > 1095 && clm_height <=1780 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+					elements.testimonial.show();
+				}
+				if(clm_height > 1780 && clm_height <2062 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+					elements.testimonial.show();
+					elements.artwork_banner.show();
+				}
+/*				if(clm_height > 1930 && clm_height <2062 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+					elements.testimonial.show();
+					elements.artwork_banner.show();
+					elements.save_img.show();
+				}*/
+				
+				/*
+				if(clm_height > 2062 && clm_height <2190 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+					elements.testimonial.show();
+					elements.artwork_banner.show();
+					elements.save_img.show();
+					elements.tnt_img.show();
+				}
+				if(clm_height > 2190 && clm_height <2325 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+					elements.testimonial.show();
+					elements.artwork_banner.show();
+					elements.save_img.show();
+					elements.tnt_img.show();
+					elements.quality_img.show();
+				}
+				if(clm_height > 2325 && clm_height <=3000 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+					elements.testimonial.show();
+					elements.artwork_banner.show();
+					elements.save_img.show();
+					elements.tnt_img.show();
+					elements.quality_img.show();
+					elements.customer_services_img.show();
+					elements.best_offer.show();
+					elements.best_choice.show();
+		
+				}
+				if(clm_height > 3000 && clm_height <4000 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+					elements.testimonial.show();
+					elements.artwork_banner.show();
+					elements.save_img.show();
+					elements.tnt_img.show();
+					elements.quality_img.show();
+					elements.best_seller.hide();
+					elements.customer_services_img.show();
+					//elements.best_seller
+/*					elements.likeus.show();
+					elements.stand_design.show(); 
+					
+				}
+   
+				if(clm_height > 4000 && clm_height <=4364 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+					elements.testimonial.show();
+					elements.artwork_banner.show();
+					elements.save_img.show();
+					elements.tnt_img.show();
+					elements.quality_img.show();
+					elements.customer_services_img.show();
+					elements.best_offer.show();
+					elements.best_choice.show();
+					elements.best_seller.show();
+					elements.secure.hide();
+					elements.likeus.hide();
+					elements.stand_design.hide();
+				}
+
+				if(clm_height > 4364 && clm_height <=4639 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+					elements.testimonial.show();
+					elements.artwork_banner.show();
+					elements.save_img.show();
+					elements.tnt_img.show();
+					elements.quality_img.show();
+					elements.customer_services_img.show();
+					elements.best_offer.show();
+					elements.secure.show();
+					elements.likeus.show();
+					elements.stand_design.show();
+//					elements.sale_banner.show();
+				}
+				if(clm_height > 4639 && clm_height <=5170 ){
+					elements.phone_left.show();
+					elements.cl_banner.show();
+					elements.testimonial.show();
+					elements.artwork_banner.show();
+					elements.save_img.show();
+					elements.tnt_img.show();
+					elements.quality_img.show();
+					elements.customer_services_img.show();
+					elements.best_offer.show();
+					elements.secure.show();
+					elements.likeus.show();
+					elements.stand_design.show();
+					elements.educational_banner.show();
+//					elements.sale_banner.show();
+				}
+				
+				
+				if(clm_height > 5170  ){
+					val.show();
+    				console.log('Column Height = '+clm_height);						
+				}
+				*/
+
+			 });
+			 
+		 	//console.log(divheights); 
+	       }//end of home
+	});
+</script>
+
+<link rel="stylesheet" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>frontend/base/default/css/phoneorder.css" type="text/css" media="screen" />
+<!--<div class="clearer"></div>-->
+<div class="block block-list block-compare" style="margin-bottom:0px; border:none 0px;">
+  <div class="cate-heading"> <?php echo ('SHOP BY PRODUCT')?> </div>
+</div>
+<?php $_helper = Mage::helper('catalog/category');
+$counter =0;
+ ?>
+<?php $_categories = $_helper->getStoreCategories() ?>
+<?php $currentCategory = Mage::registry('current_category') ?>
+<?php if (count($_categories) > 0): ?>
+<div class="leftmenu" style="height:auto; min-height:375px;">
+  <ul class="left_nav">
+    <?php foreach($_categories as $_category): $counter++ ?>
+    <li><a href="<?php echo $_helper->getCategoryUrl($_category) ?>" style="padding-right:20px;">&nbsp;<span><?php echo $counter ?>&nbsp;-</span><?php echo $_category->getName() ?></a> </li>
+    <?php $_category = Mage::getModel('catalog/category')->load($_category->getId()); ?>
+    <?php $_counter =0?>
+    <?php $_subcategories = $_category->getChildrenCategories();?>
+    <?php if (count($_subcategories) > 0): ?>
+    <?php /*?><ul class="submenu">
+      <?php foreach($_subcategories as $_subcategory):?>
+      <?php $_counter++;?>
+      <li> <a href="<?php echo $_helper->getCategoryUrl($_subcategory) ?>" style="padding-right:10px;">&nbsp;<span><?php echo $_counter ?>&nbsp;-</span><?php echo $_subcategory->getName() ?> </a> </li>
+      <?php endforeach; ?>
+    </ul><?php */?>
+    <?php endif; ?>
+    <?php endforeach; ?>
+  </ul>
+</div>
+<?php endif; ?>
+<div id="phone_left" class="phone_left" style="float:left;width:239px; margin:10px 0; height:241px;">
+  <?php //if($this->isEnabled()){ ?>
+  <?php 
+        $_product = $this->getProduct(); 
+		if($_product){
+        $_productUrl = $_product->getProductUrl('url_path');
+		} else {
+		$_productUrl = $this->getUrl('');			
+			}
+        $_availabilityMsg = $this->getAvailabilityMsg();
+        $_style = $this->getStyleName();
+    ?>
+  <div class="phone-order-kit-<?php echo $_style; ?>pink-right">
+    <div class="po-title"> <?php echo $this->__('Request Callback') ?> </div>
+    <div class="po-content">
+      <div class="po-info"> <?php echo $this->__('If you would like to get more information by phone, leave your number. We will contact you as soon as possible.') ?> </div>
+      <div class="po-form">
+        <div class="error"></div>
+        <form id="addphone" action="">
+          <input type="hidden" id="url" name="url" value="<?php echo $_productUrl; ?>">
+          <label id="phone_error"><?php echo $this->__('Your phone number') ?></label>
+          <input type="text" id="phone" name="phone" placeholder="<?php echo $this->__('e.g.') ?> 0403184210" class="input-text">
+          <label id="cusName_error" style="float:left;" ><?php echo $this->__('Your Name') ?></label>
+          <input type="text" id="cusName" name="cusName" placeholder="<?php echo $this->__('e.g.') ?> Glenn Maxwell" class="input-text">
+          <div class="po-btn-contener">
+            <button id="submit" type="submit" class="po-btn"> <span> <?php echo $this->__('Request a call') ?> </span> </button>
+          </div>
+        </form>
+      </div>
+      <div id="formsuccess"></div>
+    </div>
+    <?php if(!empty($_availabilityMsg)) : ?>
+    <div class="po-footer">
+      <p class="po-availbility"> <span class="po-star">*</span><?php echo $_availabilityMsg; ?> </p>
+    </div>
+    <?php endif; ?>
+  </div>
+</div>
+<?php //} ?>
+<!--<div class="clients"></div>-->
+<div id="clients_banner" class="clients-banner" style="display:none !important; height:414px;"> <a href="<?php echo $this->getUrl('our-clients')?>"><img src="<?php echo $this->getSkinUrl()?>images/client_banner.png" /></a> </div>
+<div id="testimonial" class="testimonial" style="display:none !important; height:486px;"> <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial')->toHtml() ?> </div>
+<div id="artwork_banner" class="artwork-banner" style="display:none !important; height:412px;"> <a href="<?php echo $this->getUrl('upload')?>"><img src="<?php echo $this->getSkinUrl()?>images/upload_banner.png" /></a> </div>
+<div class="price-guarante"  >
+  <ul>
+    <li id="save_img"  style="display:none !important; height:130px;"><img src="<?php echo $this->getSkinUrl()?>images/buy_factory.png "/></li>
+    <li id="tnt_img" style="display:none !important; height:130px;" ><img src="<?php echo $this->getSkinUrl()?>images/fast_delivery.png "/></li>
+    <li id="quality_img" style="display:none !important; height:130px;" ><img src="<?php echo $this->getSkinUrl()?>images/quality_assurance_banner.png "/></li>
+    <li id="customer_services_img" style="display:none !important; height:130px;" ><img src="<?php echo $this->getSkinUrl()?>images/customer_care.png "/></li>
+  </ul>
+</div>
+<div class="best_offer"  >
+  <ul>
+    <li id="best_offer" style="display:none !important; height:158px;" ><img src="<?php echo $this->getSkinUrl()?>images/best_offer.png" alt="Best Offer" /> </li>
+    <li id="best_choice" style="display:none !important; height:158px;" ><img src="<?php echo $this->getSkinUrl()?>images/best_choice.png" alt="Best Choice" /> </li>
+    <li id="best_seller" style="display:none !important; height:79px;" ><img src="<?php echo $this->getSkinUrl()?>images/best_seller.png" alt="Best Seller" /> </li>
+  </ul>
+</div>
+<div class="stand_design" id="stand_design" style="display:none !important; height:255px;"> <img src="<?php echo $this->getSkinUrl()?>images/stand_design.png"  alt="Banner Stand"/> </div>
+<div id="secure" class="secure" style="display:none !important; height:271px;"> <img src="<?php echo $this->getSkinUrl()?>images/securely_accept.png" alt="Securely Accept" /></div>
+<div id="likeus" class="likeus" style="display:none !important; height:105px;"> <img src="<?php echo $this->getSkinUrl()?>images/likeus.png" alt="Like Us on Facebook" /></div>
+<?php /*?><div class="sale_banner" id="sale_banner"> <img src="<?php echo $this->getSkinUrl()?>images/sale_banner.png" alt="Sales" /> </div><?php */?>
+<div class="educational_banner" id="educational_banner" style="display:none !important; height:345px;"> <img src="<?php echo $this->getSkinUrl()?>images/educational_banner.png" alt="Educational Banner" /> </div>
+<?php /*?>
+        <div class="gallery-bg">
+     	<a href="https://picasaweb.google.com/107954288426326953438/TradeShowPopupDisplayStands?noredirect=1" target="_blank"> <img src="<?php echo $this->getSkinUrl()?>images/TradeShowPopupDisplayStands.jpg " style="position:relative; left:18px;"/></a>
+        <p>Trade Show Popup Display Stands</p>
+        </div>
+        <div class="gallery-bg">
+     	<a href="https://picasaweb.google.com/107954288426326953438?noredirect=1" target="_blank"> <img src="<?php echo $this->getSkinUrl()?>images/BannerStandsRollupPullupRetractable.jpg " style="position:relative; left:18px;"/></a>
+        <p>Banner Stands (Rollup / Pullup / Retractable)</p>
+        </div>
+        <div class="stand_design">
+        <img src="<?php echo $this->getSkinUrl()?>images/exhibition_services_australia.jpg" />
+        </div><?php */?>
+<?php $formUrl = Mage::getBaseUrl().'phoneorder/index/addPhoneOrder';
+if($_product){	?>
+<script type="text/javascript">
+//	var $ = jQuery.noConflict();
+jQuery(function() {
+    jQuery("#submit").click(function() {
+      // validate and process form here
+  	  var phone = jQuery("#phone").val();
+  	  var cusName = jQuery("#cusName").val();	  
+	  var url = jQuery("#url").val();
+  		if (phone == "") {
+		jQuery("label#phone_error").css("color", "red");		
+        jQuery("input#phone").focus();
+        return false;
+      } 
+			 var filter = /^[0-9-+]+$/;
+		// console.log(filter.test(phone));
+		  if (!(filter.test(phone))) {
+		jQuery("label#phone_error").css("color", "red");		
+        jQuery("input#phone").focus();			  
+ 	        return false;
+		    }
+
+  		if (cusName == "") {
+        jQuery("label#cusName_error").css("color", "red");		
+        jQuery("input#name").focus();
+        return false;
+      }
+
+		var dataString = 'phone='+ phone + '&url=' + url + '&cusName='+cusName;
+		var getUrl = '<?php echo $formUrl;?>';
+		//console.log(dataString+getUrl);
+  //alert (dataString);return false;
+  jQuery.ajax({
+    type: "get",
+    url: getUrl,
+    data: dataString,
+    success: function() {
+	  jQuery('#formsuccess').html("<div id='message'></div>");
+      jQuery('#message').html("<p>We will be in touch shortly.</p>")
+    }
+  });
+	return false;  
+    });
+  });
+//  return false;		
+	</script>
+<?php } else { ?>
+<script type="text/javascript">
+	var $ = jQuery.noConflict();
+jQuery(function(jQuery) {
+    jQuery("#submit").click(function() {
+      // validate and process form here
+  	  var phone = jQuery("#phone").val();
+  	  var cusName = jQuery("#cusName").val();	  	  
+	  var url = jQuery("#url").val();
+  		if (phone == "") {
+		jQuery("label#phone_error").css("color", "red");		
+        jQuery("input#phone").focus();
+        return false;
+         } 
+		 var filter = /^[0-9-+]+$/;
+		// console.log(filter.test(phone));
+		  if (!(filter.test(phone))) {
+		jQuery("label#phone_error").css("color", "red");		
+        jQuery("input#phone").focus();			  
+ 	        return false;
+		    }
+		 
+  		if (cusName == "") {
+        jQuery("label#cusName_error").css("color", "red");		
+        jQuery("input#name").focus();
+        return false;
+      }
+
+		var dataString = 'phone='+ phone + '&url=' + url + '&cusName='+cusName;
+		var getUrl = '<?php echo $formUrl;?>';
+		//console.log(dataString+getUrl);
+  //alert (dataString);return false;
+  jQuery.ajax({
+    type: "get",
+    url: getUrl,
+    data: dataString,
+    success: function() {
+	  jQuery('#formsuccess').html("<div id='message'></div>");
+      jQuery('#message').html("<p>We will be in touch shortly.</p>")
+//      .append("")
+    }
+  });
+	return false;  
+    });
+  });
+//  return false;		
+	</script>
+<?php	}?>
